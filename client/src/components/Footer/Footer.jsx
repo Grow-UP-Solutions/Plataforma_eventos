@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './Footer.module.css';
 
-import Logo from '../../assets/imgs/loquequierohacer.svg';
+import { logo } from '../../assets/imgs/';
 import { ImFacebook, ImTwitter, ImYoutube, ImLinkedin2 } from 'react-icons/im';
 
 import { FaTiktok, FaInstagram } from 'react-icons/fa';
@@ -9,7 +9,7 @@ import { FaTiktok, FaInstagram } from 'react-icons/fa';
 const Footer = () => {
   return (
     <div className={styles.footer}>
-      <img src={Logo} alt="logo-empresa" className={styles.footerImg} />
+      <img src={logo} alt="logo-empresa" className={styles.footerImg} />
       <div className={styles.footerItems}>
         <div className={styles.footerList}>
           <p className={styles.titleList}>Empresa</p>
