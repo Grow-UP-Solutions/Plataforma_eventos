@@ -1,6 +1,6 @@
 const categories= [
     {
-        name:'Al aire libre',
+        name:'Al Aire Libre',
         description: 'Duis autem vel eum iriure'
     },
     {
