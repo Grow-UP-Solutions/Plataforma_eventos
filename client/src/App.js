@@ -1,12 +1,11 @@
 import React from 'react';
 import './App.css';
-import Footer from './components/Footer/Footer';
-import HowItWorks from './components/HowItWorks/HowItWorks';
+import Home from './components/Home/Home';
+
 function App() {
   return (
     <div className="App">
-      <HowItWorks />
-      <Footer />
+      <Home />
     </div>
   );
 }
