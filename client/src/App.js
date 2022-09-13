@@ -1,14 +1,11 @@
 import React from 'react';
 import './App.css';
-import Categories from './components/Categories/Categories';
-import Footer from './components/Footer/Footer';
-import HowItWorks from './components/HowItWorks/HowItWorks';
+import Home from './components/Home/Home';
+
 function App() {
   return (
     <div className="App">
-      <Categories />
-      <HowItWorks />
-      <Footer />
+      <Home />
     </div>
   );
 }
