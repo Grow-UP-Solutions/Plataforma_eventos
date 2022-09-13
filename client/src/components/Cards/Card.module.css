@@ -1,0 +1,119 @@
+.card {
+    width: 35rem;
+    height: 50rem;
+    background-color: rgba(248,248,248,255);
+    overflow: hidden;
+    border-radius: 1rem;
+    box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.2);
+    position: relative;
+    display: inline-block;
+}
+
+.cardDate{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    border-radius: 1rem;
+    box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.2);
+    background-color: white;
+    padding: 1rem 2rem;
+    font-weight: normal;
+    color: rgba(134,134,134,255);
+    font-size: 2rem;
+}
+
+.cardAddFav{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border-radius: 50%;
+    box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.2);
+    background-color: white;
+    padding: 1rem;
+    font-weight: normal;
+    color: var(--color-grey-1);
+    font-size: 2rem;
+}
+
+.cardImgEvent{
+    object-fit: cover;
+    height: 30rem;
+  }
+
+.cardRating{
+    margin-right:0rem,
+}
+
+.cardText {
+    padding: 1rem 2rem;
+}
+
+.cardTitle {
+    font-size: 2rem;
+    font-weight: bold;
+    color: rgba(134,134,134,255);
+    margin-bottom: 0.5rem;
+  }
+
+.cardNick {
+    font-size: 2rem;
+    font-weight: bold;
+    color: rgba(134,134,134,255);
+    margin-bottom: 0.5rem;
+  }
+
+.cardDescription {
+    font-size: 1.4rem;
+    color: #585858;
+  }
+
+.cardHr{
+    border: 1px solid #f0f0f0;
+    width: 85%;
+    margin-left: 2rem;
+}
+
+.cardOrgInfo{
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.cardOrgPicture{
+    margin-left: 2rem;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+}
+
+.cardOrgName{
+    font-size: 1.4rem;
+    color:  #585858;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.cardPrice{
+    font-size: 1.4rem;
+    color: rgba(134,134,134,255);
+    font-weight: 700;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.cardDetails{
+    font-size: 1.4rem;
+    color: #d74c42;
+    font-weight: 700;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.vLine{
+    border:1px solid #f0f0f0;
+    height: 5rem;
+}
+
+
+  
+  
