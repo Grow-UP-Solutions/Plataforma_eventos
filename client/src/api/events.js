@@ -1,8 +1,10 @@
 const events = [
     {
-        name:'HIKING WITH MY DOG',
-        description: 'dsadsadsadas asjbdka dask dj dkj asjd askjd asj dkas d as',
-        date: 'Junio 14 2019',
+        id: 1,
+        name:'Hiking with my dog',
+        nick: 'Bring your camera',
+        description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
+        date: 'Junio 14 / 2019',
         time: '20:00 - 22:00',
         state: 'Antioquia',
         city: 'Medellin',
@@ -80,9 +82,11 @@ const events = [
         ]
     },
     {
-        name:'MUSIC',
-        description: 'dsadsadsadas asjbdka dask dj dkj asjd askjd asj dkas d as',
-        date: 'Enero 19 2019',
+        id: 2,
+        name:'Music',
+        nick: 'Bring your instruments!',
+        description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
+        date: 'Enero 19 / 2019',
         time: '20:00 - 22:00',
         state: 'Antioquia',
         city: 'Medellin',
@@ -161,9 +165,11 @@ const events = [
         ]
     },
     {
-        name:'FUTBOL',
-        description: 'dsadsadsadas asjbdka dask dj dkj asjd askjd asj dkas d as',
-        date: 'Marzo 2 2019',
+        id: 3,
+        name:'Futbol',
+        nick: 'Bring your camera',
+        description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
+        date: 'Marzo 2 / 2019',
         time: '20:00 - 22:00',
         state: 'Antioquia',
         city: 'Medellin',
@@ -241,9 +247,11 @@ const events = [
         ]
     },
     {
-        name:'COCINA',
-        description: 'dsadsadsadas asjbdka dask dj dkj asjd askjd asj dkas d as',
-        date: 'Abril 8 2019',
+        id: 4,
+        name:'Lets cook!',
+        nick: 'Bring your camera',
+        description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
+        date: 'Abril 8 / 2019',
         time: '13:00 - 16:00',
         state: 'Antioquia',
         city: 'Medellin',
@@ -321,9 +329,11 @@ const events = [
         ]
     },
     {
-        name:'FRENCH LESSONS',
-        description: 'dsadsadsadas asjbdka dask dj dkj asjd askjd asj dkas d as',
-        date: 'Abril 6 2019',
+        id: 5,
+        name:'French lessons',
+        nick: 'Bring your camera',
+        description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
+        date: 'Abril 6 / 2019',
         time: '13:00 - 16:00',
         state: 'Antioquia',
         city: 'Medellin',
@@ -401,5 +411,7 @@ const events = [
         ]
     }
 ]
+
+export default events
 
 
