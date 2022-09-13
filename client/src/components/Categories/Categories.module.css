@@ -18,6 +18,7 @@
 }
 
 .categorie {
+  cursor: pointer;
   width: 26rem;
   height: 21rem;
   overflow: hidden;
