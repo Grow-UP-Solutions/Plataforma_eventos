@@ -8,13 +8,13 @@ import styles from './Home.module.css';
 
 const Home = () => {
   return (
-    <div className={styles.container}>
-      <Navbar />
-      <CarrouselHome />
-      <HowItWorks />
-      <Categories />
-      <Footer />
-    </div>
+    <>
+      <div className={styles.container}>
+        <CarrouselHome />
+        <HowItWorks />
+        <Categories />
+      </div>
+    </>
   );
 };
 
