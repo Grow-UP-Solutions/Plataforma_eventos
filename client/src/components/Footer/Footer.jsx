@@ -5,11 +5,14 @@ import { logo } from '../../assets/imgs/';
 import { ImFacebook, ImTwitter, ImYoutube, ImLinkedin2 } from 'react-icons/im';
 
 import { FaTiktok, FaInstagram } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
     <div className={styles.footer}>
-      <img src={logo} alt="logo-empresa" className={styles.footerImg} />
+      <Link to={'/'}>
+        <img src={logo} alt="logo-empresa" className={styles.footerImg} />
+      </Link>
       <div className={styles.footerItems}>
         <div className={styles.footerList}>
           <p className={styles.titleList}>Empresa</p>
@@ -43,7 +46,9 @@ const Footer = () => {
           <p className={styles.titleList}>Ayuda</p>
           <ul>
             <li>
-              <a href="#">Contáctanos</a>
+              <Link to={'/contactanos'}>
+                <a href="#">Contáctanos</a>
+              </Link>
             </li>
             <li>
               <a href="#">Preguntas Frecuentes</a>

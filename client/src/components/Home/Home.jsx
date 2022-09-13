@@ -3,6 +3,7 @@ import Navbar from '../Header/Navbar';
 import CarrouselHome from '../CarrouselHome/CarrouselHome';
 import HowItWorks from '../HowItWorks/HowItWorks';
 import Footer from '../Footer/Footer';
+import Categories from '../Categories/Categories';
 import Card from '../Cards/Card'
 import events from '../../api/events'
 import styles from './Home.module.css';
@@ -43,8 +44,7 @@ const Home = () => {
   // }
 
   return (
-    <div>
-      <Navbar />
+    <div className={styles.container}>
       <CarrouselHome />
       <HowItWorks />
       <div className={styles.cardsSection}>
@@ -124,9 +124,9 @@ const Home = () => {
           <a className={styles.switchLeft}>{'<'}</a>
           <a className={styles.switchRigth}>{'>'}</a>
       </div>
-      <Footer />
+      <Categories />
     </div>
   );
-}
+};
 
 export default Home;

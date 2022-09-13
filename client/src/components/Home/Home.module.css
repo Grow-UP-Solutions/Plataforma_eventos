@@ -1,3 +1,10 @@
+
+.container {
+  max-width: 1420px;
+  margin: 0 auto;
+
+}
+
 .cardsSection{
     max-width: 1422px;
     margin: 0 auto;
@@ -44,3 +51,4 @@
   position:absolute;
   right:-50px
 }
+
