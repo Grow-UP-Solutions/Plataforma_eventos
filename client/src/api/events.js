@@ -178,7 +178,7 @@ const events = [
                 time: '2 minutes ago',
                 rating: 4,
                 opinion: 'Tremendo',
-                picture: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtAshSG70Bulh6QdiRjZUm0fbQLDDTwbn-ng&usqp=CAU'
+                picture:  'https://i.insider.com/54e79e766bb3f76a6db7118f?width=600&format=jpeg',
               
             },
             {
@@ -186,7 +186,7 @@ const events = [
                 time: '2 minutes ago',
                 rating: 4,
                 opinion: 'Me encanto el evento… sigan asi',
-                picture: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtAshSG70Bulh6QdiRjZUm0fbQLDDTwbn-ng&usqp=CAU'
+                picture:  'https://i.insider.com/54e79e766bb3f76a6db7118f?width=600&format=jpeg',
 
             },
             {
@@ -194,7 +194,7 @@ const events = [
                 time: '2 minutes ago',
                 rating: 4,
                 opinion: 'Buenisimo',
-                picture: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtAshSG70Bulh6QdiRjZUm0fbQLDDTwbn-ng&usqp=CAU'
+                picture:  'https://i.insider.com/54e79e766bb3f76a6db7118f?width=600&format=jpeg'
 
             },
             {
@@ -202,7 +202,7 @@ const events = [
                 time: '2 minutes ago',
                 rating: 4,
                 opinion: 'Volvere',
-                picture: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtAshSG70Bulh6QdiRjZUm0fbQLDDTwbn-ng&usqp=CAU'
+                picture:  'https://i.insider.com/54e79e766bb3f76a6db7118f?width=600&format=jpeg'
 
             },
             {
@@ -210,7 +210,7 @@ const events = [
                 time: '2 minutes ago',
                 rating: 4,
                 opinion: 'Supero las espectativas',
-                picture: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtAshSG70Bulh6QdiRjZUm0fbQLDDTwbn-ng&usqp=CAU'
+                picture:  'https://i.insider.com/54e79e766bb3f76a6db7118f?width=600&format=jpeg'
 
             },
         ]
