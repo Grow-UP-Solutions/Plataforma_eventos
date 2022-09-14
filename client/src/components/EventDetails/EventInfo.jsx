@@ -4,6 +4,8 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import WarningOutlinedIcon from '@mui/icons-material/WarningOutlined';
 import LaunchOutlinedIcon from '@mui/icons-material/LaunchOutlined';
+import { ImFacebook, ImTwitter, ImLinkedin2 } from 'react-icons/im';
+import { FaInstagram } from 'react-icons/fa';
 import { Swiper, SwiperSlide } from 'swiper/react/swiper-react';
 import { Pagination , Scrollbar , Navigation } from 'swiper';
 import 'swiper/swiper.min.css';
@@ -36,6 +38,13 @@ const EventInfo = ({event}) => {
           <img className={style.img} src={event.pictures[0]} alt="Not Found ):"/>
         }
       </Swiper>
+
+      <div className={style.redes}>
+        <ImFacebook  className={style.icons}/>
+        <ImTwitter className={style.icons}/>
+        <ImLinkedin2 className={style.icons}/>
+        <FaInstagram className={style.icons}/>
+      </div>
       
       <div className={style.container_icon_heart}>
         <FavoriteIcon className={style.icon_heart} sx={{ fontSize: 25 }}/>
