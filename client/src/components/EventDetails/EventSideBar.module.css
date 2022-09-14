@@ -1,0 +1,61 @@
+.container{
+    background-color: rgba(244,244,244,255);
+    display: inline-block;
+    padding: 3rem;
+    width:100%;
+    margin-top: 8rem;
+    margin-left: 3rem;
+    margin-right: 3rem;
+}
+
+.container2{
+   margin-top:3rem;
+   margin-bottom: 3rem;
+   display: inline-block;
+   align-items: center;
+   justify-content: center;
+}
+
+.c2title{
+    width: 100%;
+    display: flex;
+    color:rgba(88,88,88,255);
+    font-weight: bold;
+    font-size: 1.3rem;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+
+
+
+
+
+
+
+.subcontainer2{
+    display : flex;
+}
+
+.c2subtitle{
+    color:rgba(112,112,112,255);
+    width: 100%;
+    display: flex;
+    font-size: 1.25rem;
+    letter-spacing: 1.2px;
+    margin-bottom: 0.5rem;
+    line-height: 1.3rem;
+}
+
+.icon{
+    color:red;
+    height: 22px;
+    width: 20px;
+    font-size: 2.5rem;
+}
+
+.cardHr {
+    border: 0.1px solid rgb(219, 219, 219);
+    width: 100%;
+  }
