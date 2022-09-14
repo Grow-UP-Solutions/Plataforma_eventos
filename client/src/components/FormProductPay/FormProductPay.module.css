@@ -1,0 +1,146 @@
+.formPayProduct {
+  background-color: var(--color-grey-6);
+  padding: 4rem 3rem;
+  width: 46rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 6.2px;
+}
+
+.formGroup:nth-child(6) {
+  margin-bottom: 2rem;
+}
+
+.formGroup label {
+  font-size: 13;
+  color: var(--color-grey-1);
+  margin-bottom: 5px;
+}
+
+.formGroup input {
+  height: 4rem;
+  border: 1px solid var(--color-grey-4);
+  border-radius: 10px;
+  background-color: white;
+  padding-left: 1rem;
+  color: var(--color-grey-2);
+}
+
+.formGroup select {
+  height: 4rem;
+  border: 1px solid var(--color-grey-4);
+  border-radius: 10px;
+  background-color: white;
+  padding-left: 1rem;
+  color: var(--color-grey-2);
+}
+
+.formGroup select:focus {
+  outline: none;
+  border: 2px solid var(--color-green);
+}
+
+.formGroup input:focus {
+  outline: none;
+  border: 2px solid var(--color-green);
+}
+
+.checkContainer {
+  height: 8.3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 3rem;
+  background-color: white;
+  border: 1px solid var(--color-grey-4);
+  margin-bottom: 1.3rem;
+  border-radius: 10px;
+}
+
+.checkContainer label {
+  font-size: 1.4rem;
+  color: var(--color-grey-2);
+}
+
+.checkContainer img {
+  height: 5rem;
+  width: 5rem;
+  object-fit: cover;
+}
+
+.checkContainer input {
+  width: 2rem;
+  height: 2rem;
+
+  accent-color: #74992e;
+}
+
+.containerDetailsBuy {
+  margin: 3rem 0;
+}
+
+.detailsBuy {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--color-grey-2);
+}
+
+.detailsBuy:not(:last-child) {
+  margin-bottom: 1.4rem;
+}
+
+.detailsBuy p {
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+
+.detailsBuy span {
+  font-size: 1.4rem;
+}
+
+.detailsBuy .detailDiscount {
+  color: var(--color-orange);
+}
+
+.totalBuy {
+  margin-top: 2.4rem;
+  color: var(--color-orange);
+  font-weight: bold;
+}
+
+.formDivisor {
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-grey-4);
+  margin-bottom: 2rem;
+}
+
+.textTerms {
+  font-size: 1.2rem;
+  color: var(--color-grey-2);
+  margin-bottom: 2rem;
+
+  line-height: 1.2;
+}
+
+.containerButtonForm {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.btnForm {
+  background-color: var(--color-orange);
+  color: white;
+  border: none;
+  padding: 1rem 4rem;
+  border-radius: 10rem;
+
+  font-size: 1.4rem;
+  font-weight: bold;
+  cursor: pointer;
+}
