@@ -1,4 +1,5 @@
 const app = require('./src/app.js');
+require('./src/DB.js')
 
 const PORT = process.env.PORT || 3001
 
