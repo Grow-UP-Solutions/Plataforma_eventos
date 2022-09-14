@@ -7,7 +7,7 @@ import { Rating } from '@mui/material';
 import { iconAdd } from '../../assets/imgs';
 
 const Card = ({ event }) => {
-  console.log('evento:', event);
+  
 
   return (
     <div className={styles.card}>
@@ -21,14 +21,14 @@ const Card = ({ event }) => {
       <div className={styles.cardText}>
         {event.cupos === 0 ? (
           <p className={styles.cardCupos}>Cupos llenos</p>
-        ) : event.date.length > 1 ? (
+        ) : event.date &&  event.date.length > 1 ?  (
           event.date.map((event) => (
             <ul>
-              <li className={styles.cardDate}>{event.date}</li>
+              <li className={styles.cardDate}>{event.dates}</li>
             </ul>
           ))
         ) : (
-          <p className={styles.cardDate}>{event.date}</p>
+          <p className={styles.cardDate}>{event.dates[0].date}</p>
         )}
 
         <div className={styles.cardAddFav}>
