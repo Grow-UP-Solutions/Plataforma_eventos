@@ -1,15 +1,207 @@
 .container{
-    color:none
+   padding: 3rem;
+   width: 100%;
+}
+
+.header{
+    display: flex;
+    margin-bottom: 3rem;
+    margin-top: 3rem;
+    width: 100%;
+    justify-content: left;
+    align-items: center;
 }
 
 .title{
-    color:none
+    color:rgba(88,88,88,255);
+    font-weight: bold;
+    font-size: 1.6rem;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+    align-items: center
 }
 
+.img{
+    width: 3rem;
+    height: 3rem;
+}
+
+.subTitle{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+
 .ratNumber{
-    color:none
+   
+    display: flex;
+    color:rgba(88,88,88,255);
+    font-weight: bold;
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+    align-items: center;
+    justify-content: center;
 }
 
 .ratProm{
-    color:none
+    width: 30%;
+    display: flex;
+    color:rgba(88,88,88,255);
+    font-weight: bold;
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+    align-items: center;
+    justify-content: center;
 }
+
+.comment{
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+}
+
+.userComment{
+    display:flex;
+    margin-bottom: 3rem;
+    align-items: center;
+}
+
+.picture{
+    width: 5.5rem;
+    height: 5.5rem;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-right: 1.5rem;
+}
+
+.nameDan{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+
+.namRat{
+    display: flex;
+    
+}
+
+.user{
+   
+    display: flex;
+    color:rgba(88,88,88,255);
+    font-weight: bold;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+    align-items: center;
+    margin-right: 2rem;
+}
+
+
+.cardRating {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    margin-left: 2rem;
+  }
+  
+  .cardRating span {
+    font-size: 1.2rem;
+  }
+  
+  .cardRating .rating {
+    font-size: 2rem;
+  }
+
+  .time{
+   
+    color:#cbcbcb;
+    font-weight: bold;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+    align-items: center
+
+  }
+
+  .opinion{
+    color:#707070;
+    font-size: 1.25rem;
+    letter-spacing: 1.2px;
+    margin-bottom: 0.5rem;
+    line-height: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .hr{
+    border: 0.1px solid rgb(219, 219, 219);
+    width: 100%;
+  }
+
+  .textarea{
+    height: 10rem;
+    border: 1px solid var(--color-grey-4);
+    border-radius: 10px;
+    background-color: white;
+    padding-left: 1rem;
+    color: var(--color-grey-2);
+    width: 100%;
+    margin-top: 3rem;
+  }
+
+ .contRate{
+    width: 100%;
+    display: flex;
+    justify-content: right;
+    margin-top: 1rem;
+ }
+
+ .pRate{
+    color:#707070;
+    font-size: 1.4rem;
+    letter-spacing: 1.2px;
+    margin-bottom: 0.5rem;
+    line-height: 1.5rem;
+    margin-bottom: 2.5rem;
+    margin-right: 1.5rem;
+
+ }
+
+  .rate{
+    margin-right: 0;
+  }
+
+  .contBtn{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .button {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: var(--color-orange);
+    background-color: white;
+    border: 1px solid var(--color-orange);
+    border-radius: 18px ;
+    text-align: center;
+    padding: 8px 30px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    margin-top: 10px;
+    justify-content: center;
+    
+    margin-bottom: 3rem;
+  
+  }
+  
+  .button:hover {
+    background-color: var(--color-orange);
+    color: white;
+    
+  }

@@ -551,7 +551,7 @@ const users =[
         documentNº: 33333333,
         city: 'Medellin',
         email: 'sssssssss@gmail.com',
-        picture: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtAshSG70Bulh6QdiRjZUm0fbQLDDTwbn-ng&usqp=CAU',
+        picture:  'https://i.insider.com/54e79e766bb3f76a6db7118f?width=600&format=jpeg',
         isSuperAdmin: true,
         isAdmin: true,
         isOrganizer: true,
