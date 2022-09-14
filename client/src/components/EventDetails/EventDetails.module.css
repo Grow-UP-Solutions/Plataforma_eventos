@@ -1,12 +1,4 @@
 .container {
   display: grid;
   grid-template-columns: 60% 40% ;
-  grid-template-rows: 1 fr 1 fr 1 fr;
-  grid-row: 1 / 2;
-}
-
-.item4 {
-  grid-column-start: 1;
-  grid-column-end: 2;
-  grid-row-start: 3;
 }
