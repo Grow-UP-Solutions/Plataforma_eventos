@@ -5,11 +5,11 @@ import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
 
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleClick = (e) => {
     e.preventDefault();
-    /* navigate('/'); */
+    navigate('/');
   }
 
   return (

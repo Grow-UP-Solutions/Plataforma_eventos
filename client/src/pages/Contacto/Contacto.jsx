@@ -1,10 +1,14 @@
-import React from 'react';
-
+import React, { useEffect } from 'react';
 import styles from './Contacto.module.css';
-
 import { pin, phone, mail } from '../../assets/imgs';
+import { animateScroll as scroll } from 'react-scroll';
 
 const Contacto = () => {
+
+  useEffect(() => {
+    scroll.scrollToTop()
+  }, []);
+
   return (
     <div className={styles.pageContacto}>
       <h1 className={styles.contactoTitle}>Contáctanos</h1>
