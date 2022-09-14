@@ -75,7 +75,7 @@ const Card = ({ event }) => {
         <div className={styles.vLine}></div>
         <p className={styles.cardPrice}>{event.price}</p>
         <div className={styles.vLine}></div>
-        <Link className={styles.link} to={`/eventId/${event.id}`}>
+        <Link className={styles.link} to={`/eventdetails/${event.id}`}>
           <p className={styles.cardDetails}>Ver más</p>
         </Link>
       </div>

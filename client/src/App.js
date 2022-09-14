@@ -6,6 +6,7 @@ import Home from './components/Home/Home';
 import Contacto from './pages/Contacto/Contacto';
 import Navbar from './components/Header/Navbar';
 import Footer from './components/Footer/Footer';
+import EventDetails from './components/EventDetails/EventDetails';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/contactanos" element={<Contacto />} />
+        <Route path="/eventdetails/:id" element={<EventDetails />} />
       </Routes>
       <div className="container">
         <Footer />
