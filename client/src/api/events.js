@@ -1,6 +1,6 @@
 const events = [
     {
-        id: 1,
+        id:1,
         name:'Hiking with my dog',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -83,7 +83,7 @@ const events = [
         ]
     },
     {
-        id: 2,
+        id:2,
         name:'Music',
         nick: 'Bring your instruments!',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -130,7 +130,7 @@ const events = [
                 rating: 4,
                 opinion: 'Tremendo',
                 picture: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtAshSG70Bulh6QdiRjZUm0fbQLDDTwbn-ng&usqp=CAU'
-
+              
             },
             {
                 user: 'Pepito Perez',
@@ -167,7 +167,7 @@ const events = [
         ]
     },
     {
-        id: 3,
+        id:3,
         name:'Futbol',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -250,7 +250,7 @@ const events = [
         ]
     },
     {
-        id: 4,
+        id:4,
         name:'Lets cook!',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -333,7 +333,7 @@ const events = [
         ]
     },
     {
-        id: 5,
+        id:5,
         name:'French lessons',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -416,7 +416,7 @@ const events = [
         ]
     },
     {
-        id: 5,
+        id:5,
         name:'French lessons',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -499,7 +499,7 @@ const events = [
         ]
     },
     {
-        id: 5,
+        id:5,
         name:'French lessons',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -582,7 +582,7 @@ const events = [
         ]
     },
     {
-        id: 5,
+        id:5,
         name:'French lessons',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -665,7 +665,7 @@ const events = [
         ]
     },
     {
-        id: 4,
+        id:4,
         name:'Lets cook!',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -748,7 +748,7 @@ const events = [
         ]
     },
     {
-        id: 4,
+        id:4,
         name:'Lets cook!',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -831,7 +831,7 @@ const events = [
         ]
     },
     {
-        id: 4,
+        id:4,
         name:'Lets cook!',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -914,7 +914,7 @@ const events = [
         ]
     },
     {
-        id: 4,
+        id:4,
         name:'Lets cook!',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -997,7 +997,7 @@ const events = [
         ]
     },
     {
-        id: 4,
+        id:4,
         name:'Lets cook!',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -1080,7 +1080,7 @@ const events = [
         ]
     },
     {
-        id: 4,
+        id:4,
         name:'Lets cook!',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -1163,7 +1163,7 @@ const events = [
         ]
     },
     {
-        id: 4,
+        id:4,
         name:'Lets cook!',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -1246,7 +1246,7 @@ const events = [
         ]
     },
     {
-        id: 4,
+        id:4,
         name:'Lets cook!',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -1329,7 +1329,7 @@ const events = [
         ]
     },
     {
-        id: 4,
+        id:4,
         name:'Lets cook!',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -1412,7 +1412,7 @@ const events = [
         ]
     },
     {
-        id: 4,
+        id:4,
         name:'Lets cook!',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -1495,7 +1495,7 @@ const events = [
         ]
     },
     {
-        id: 4,
+        id:4,
         name:'Lets cook!',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -1578,7 +1578,7 @@ const events = [
         ]
     },
     {
-        id: 4,
+        id:4,
         name:'Lets cook!',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -1661,7 +1661,7 @@ const events = [
         ]
     },
     {
-        id: 4,
+        id:4,
         name:'Lets cook!',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -1744,7 +1744,7 @@ const events = [
         ]
     },
     {
-        id: 4,
+        id:4,
         name:'Lets cook!',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -1827,7 +1827,7 @@ const events = [
         ]
     },
     {
-        id: 4,
+        id:4,
         name:'Lets cook!',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -1910,7 +1910,7 @@ const events = [
         ]
     },
     {
-        id: 4,
+        id:4,
         name:'Lets cook!',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
