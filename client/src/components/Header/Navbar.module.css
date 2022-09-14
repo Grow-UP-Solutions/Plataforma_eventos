@@ -1,14 +1,18 @@
 .container {
+  position: fixed;
   display: flex;
-  background-color: var(--color-grey-3);
+  background-color: transparent;
   align-items: center;
   padding-top: 5px;
+  width: 100%;
+  z-index: 100;
 }
 
 .container img {
   width: 8rem;
   height: 8rem;
   margin-left: 200px;
+  cursor: pointer;
 }
 
 .container_div {
