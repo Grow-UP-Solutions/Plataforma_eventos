@@ -1,14 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route, Link, useLocation } from 'react-router-dom';
 
 import Home from './components/Home/Home';
 import Contacto from './pages/Contacto/Contacto';
 import Navbar from './components/Header/Navbar';
 import Footer from './components/Footer/Footer';
 import EventDetails from './components/EventDetails/EventDetails';
+import Cart from './pages/Cart/Cart';
 
 function App() {
+  const location = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
+
   return (
     <div className="App">
       <Navbar />
@@ -16,6 +22,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/contactanos" element={<Contacto />} />
         <Route path="/eventdetails/:id" element={<EventDetails />} />
+        <Route path="/cart" element={<Cart />} />
       </Routes>
       <div className="container">
         <Footer />
