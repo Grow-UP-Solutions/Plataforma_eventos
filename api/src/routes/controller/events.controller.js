@@ -3,7 +3,7 @@ const Category = require("../../models/db/Category.js");
 require("../../DB.js");
 const Events = require("../../models/db/Events.js");
 const Users = require("../../models/db/Users.js");
-const Opinions = require('../../models/db/Opinions')
+const Opinions = require("../../models/db/Opinions");
 const {
   getAllEvents,
   createEvents,
@@ -12,49 +12,24 @@ const {
 const router = Router();
 
 router.get("/", async (req, res) => {
-  const allEvents = await getAllEvents();
-  return res.json(allEvents);
+  try {
+    const allEvents = await getAllEvents();
+    return res.json(allEvents);
+  } catch (error) {
+    return res.status(400).json({ ERROR_EVENTS: error });
+  }
 });
-router.post("/", async (req, res) => {
-  const {
-    name,
-    nick,
-    description,
-    date,
-    time,
-    state,
-    city,
-    price,
-    cupos,
-    rating,
-    enLinea,
-    pictures,
-    participants,
-    organizer,
-    category,
-   
-  } = req.body;
 
-  const users = await Users.findOne({ name: organizer });
-  const categories =  category.map(async e=> await Category.find({name: e}))
-  console.log(categories)
-  const eventCreat = await createEvents({
-    name,
-    nick,
-    description,
-    date,
-    time,
-    state,
-    city,
-    price,
-    cupos,
-    rating,
-    enLinea,
-    pictures,
-    participants,
-    organizer: users._id,
-  });
-  return eventCreat;
+router.post("/", async (req, res) => {
+  try {
+    const event = req.body;
+
+    const eventCreat = await createEvents(event);
+
+    return res.status(200).json(eventCreat);
+  } catch (error) {
+    return res.status(400).json({ ERROR_EVENT_CREATE: error });
+  }
 });
 
 module.exports = router;

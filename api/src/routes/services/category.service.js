@@ -8,7 +8,7 @@ module.exports={
         return category
     },
     createCategory: async function(category) {
-        const categories = Category.create(category)
-        return (await categories).save()
+        const categories = new Category(category)
+        return await categories.save()
     }
 }

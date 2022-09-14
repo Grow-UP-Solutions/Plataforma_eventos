@@ -6,9 +6,9 @@ module.exports = {
     const allUsers = await Users.find().populate({ path: "myEventsCreated" });
     return allUsers;
   },
-  
-  createUsers: async function (user) {
-    const users = Users.create(user);
-    return (await users).save();
+
+  createUsers: async function (user) {    
+    const users = new Users(user);
+    return await users.save();
   },
 };
