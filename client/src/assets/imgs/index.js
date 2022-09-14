@@ -6,5 +6,23 @@ import pin from './pin.svg';
 import mail from './mail.svg';
 import phone from './phone.svg';
 import iconAdd from './iconAdd.svg';
-
-export { iconHowIt1, iconHowIt2, iconHowIt3, logo, pin, phone, mail, iconAdd };
+import iconArrowLeft from './arrowLeft.svg';
+import iconArrowRight from './arrowRight.svg';
+import iconExclamation from './iconExclamation.svg';
+import iconPayU from './payU.png';
+import iconAchPse from './achpse.png';
+export {
+  iconHowIt1,
+  iconHowIt2,
+  iconHowIt3,
+  logo,
+  pin,
+  phone,
+  mail,
+  iconAdd,
+  iconArrowLeft,
+  iconArrowRight,
+  iconExclamation,
+  iconAchPse,
+  iconPayU,
+};
