@@ -1,30 +1,76 @@
 import React from "react";
-
-
-
+import style from './EventInfo.module.css'; 
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
+import WarningOutlinedIcon from '@mui/icons-material/WarningOutlined';
+import LaunchOutlinedIcon from '@mui/icons-material/LaunchOutlined';
+import { Swiper, SwiperSlide } from 'swiper/react/swiper-react';
+import { Pagination , Scrollbar , Navigation } from 'swiper';
+import 'swiper/swiper.min.css';
+import 'swiper/modules/pagination/pagination.min.css';
+import 'swiper/modules/scrollbar/scrollbar.min.css';
+import 'swiper/modules/navigation/navigation.min.css';
 
 const EventInfo = ({event}) => {
 
 
-    return (
-      <div >
-       {event.pictures.length > 1 ?
-        event.pictures.map( picture =>
-            <img src={picture} alt="Not Found ):" width="200x" height="300"/>
-            )
-       : <img src={event.pictures[0]} alt="Not Found ):" width="200x" height="300"/>}
-       <p>AddFav</p>
-       <p>Link Redes</p>
-       <p>{event.name}</p>
-       <p>{event.rating}</p>
-       <p>Ver Opiniones</p>
-       <p>Descripcion Del Evento</p>
-       <p>{event.description}</p>
-       <p>Ver mas</p>
-       <p>Reportar Contenido Inapropiado</p>
+  return (
+    <div className={style.container}>
 
+      <Swiper
+        slidesPerView={1}
+        spaceBetween={40}
+        navigation
+        onSlideChange={() => console.log('slide change')}
+        onSwiper={(swiper) => console.log(swiper)}
+        modules={[Pagination , Navigation]}
+        className={style.mySwipper}
+      >
+        {
+          event.pictures.length > 1 ?
+          event.pictures.map(picture =>
+            <SwiperSlide>
+              <img className={style.img} src={picture} alt="Not Found ):"/>
+            </SwiperSlide>
+          ) :
+          <img className={style.img} src={event.pictures[0]} alt="Not Found ):"/>
+        }
+      </Swiper>
+      
+      <div className={style.container_icon_heart}>
+        <FavoriteIcon className={style.icon_heart} sx={{ fontSize: 25 }}/>
       </div>
-    );
-  };
+
+      <div className={style.container_icon_share}>
+        <LaunchOutlinedIcon className={style.icon_share} sx={{ fontSize: 25 }}/>
+      </div>
+
+      <div className={style.title}>
+        <p >{event.name}</p>
+      </div>
+      
+      <p>{event.rating}</p>
+
+      <div className={style.container_opinions}>
+        <p className={style.opinions}>Ver Opiniones</p>
+      </div>
+      
+      <p className={style.title_description}>
+        <DescriptionOutlinedIcon fontSize="large" />  Descripcion Del Evento
+      </p>
+
+      <p className={style.description}>{event.description}</p>
+      
+      <div className={style.container_plus}>
+        <p>Ver mas</p>
+      </div>
+
+      <p className={style.report}>
+        <WarningOutlinedIcon fontSize="medium"/>   Reportar Contenido Inapropiado
+      </p>
+
+    </div>
+  );
+};
   
-  export default EventInfo;
+export default EventInfo;
