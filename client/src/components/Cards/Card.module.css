@@ -1,0 +1,202 @@
+.card {
+  width: 30rem;
+  height: 38rem;
+  background-color: rgba(248, 248, 248, 255);
+  overflow: hidden;
+  border-radius: 1rem;
+  box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.2);
+  position: relative;
+  display: inline-block;
+}
+
+.cardDate {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  border-radius: 1rem;
+  box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.2);
+  background-color: white;
+  padding: 1rem 2rem;
+  font-weight: normal;
+  color: rgba(134, 134, 134, 255);
+  font-size: 1.3rem;
+}
+
+.cardCupos {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  border-radius: 1rem;
+  box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.2);
+  background-color: rgba(213, 62, 39, 255);
+  padding: 1rem 2rem;
+  font-weight: normal;
+  color: white;
+  font-size: 1.3rem;
+}
+
+.cardAddFav {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border-radius: 50%;
+  box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.2);
+  background-color: white;
+  font-weight: normal;
+  color: var(--color-grey-2);
+}
+
+.cardAddFav input {
+  display: none;
+}
+
+.cardAddFav label {
+  display: inline-block;
+  padding: 1rem;
+  cursor: pointer;
+}
+
+.cardAddFav img {
+  width: 2rem;
+  height: 2rem;
+}
+
+.cardAddFavMenu {
+  position: absolute;
+  text-align: center;
+  top: 5.2rem;
+  left: 0;
+  width: 20rem;
+  padding: 2rem;
+  border-radius: 1rem;
+  transform: translateX(-80%);
+  background-color: white;
+
+  display: none;
+  animation: cardMenuOpen 0.5s;
+}
+
+.cardAddFavMenu p {
+  font-size: 1.4rem;
+}
+
+.cardAddFavMenu a {
+  font-weight: bold;
+  color: var(--color-orange);
+}
+
+.cardAddFav input:checked ~ .cardAddFav label {
+  transform: rotate(180deg);
+  color: red;
+}
+
+.cardAddFav input:checked ~ .cardAddFavMenu {
+  display: block;
+}
+
+.cardImgEvent {
+  object-fit: cover;
+  height: 20rem;
+}
+
+.cardRating {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.cardRating span {
+  font-size: 1.2rem;
+}
+
+.cardRating .rating {
+  font-size: 2rem;
+}
+
+.cardText {
+  padding: 1rem 2rem;
+}
+
+.cardTitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: rgba(134, 134, 134, 255);
+  margin-bottom: 0.5rem;
+}
+
+.cardNick {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: rgba(134, 134, 134, 255);
+  margin-bottom: 0.5rem;
+}
+
+.cardDescription {
+  font-size: 1.1rem;
+  color: #585858;
+}
+
+.cardHr {
+  border: 1px solid #f0f0f0;
+  width: 85%;
+  margin-left: 2rem;
+}
+
+.cardOrgInfo {
+  display: flex;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.cardOrgPicture {
+  margin-left: 2rem;
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.link {
+  text-decoration: none;
+}
+
+.cardOrgName {
+  font-size: 1.1rem;
+  color: #585858;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.cardPrice {
+  font-size: 1.4rem;
+  color: rgba(134, 134, 134, 255);
+  font-weight: 700;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.cardDetails {
+  font-size: 1rem;
+  color: #d74c42;
+  font-weight: 700;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  cursor: pointer;
+}
+
+.vLine {
+  border: 1px solid #f0f0f0;
+  height: 5rem;
+}
+
+@keyframes cardMenuOpen {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 100;
+  }
+}

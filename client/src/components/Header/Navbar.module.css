@@ -1,0 +1,47 @@
+.container {
+  position: fixed;
+  display: flex;
+  background-color: transparent;
+  align-items: center;
+  padding-top: 5px;
+  width: 100%;
+  z-index: 100;
+}
+
+.container img {
+  width: 8rem;
+  height: 8rem;
+  margin-left: 200px;
+  cursor: pointer;
+}
+
+.container_div {
+  display: flex;
+  align-items: center;
+  margin-left: 450px;
+}
+
+.container_div p {
+  font-size: 1.4rem;
+  font-weight: bold;
+  padding: 0 20px;
+  color: var(--color-grey-5);
+}
+
+.button {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: var(--color-grey-4);
+  background-color: var(--color-orange);
+  border-radius: 18px;
+  text-align: center;
+  padding: 8px 30px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: var(--color-grey-4);
+  color: var(--color-orange);
+}
+
+

@@ -1,0 +1,36 @@
+.container {
+    height: 100vh;
+    background-color: var(--color-grey-3);
+}
+  
+.mySwipper {
+    height: 100vh;
+}
+  
+.img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;   
+}
+
+.container_p {
+    font-size: 4rem;
+    font-weight: bold;
+    position: absolute;
+    top: 280px;
+    left: 290px;
+    z-index: 1;
+    color: var(--color-grey-6);
+}
+
+.item_p {
+    font-size: 2rem;
+    font-weight: normal;
+}
+
+.search {
+    position: absolute;
+    top: 517px;
+    right: 300px;
+    z-index: 1;
+}
