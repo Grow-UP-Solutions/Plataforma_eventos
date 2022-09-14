@@ -4,7 +4,7 @@ import EventInfo from "./EventInfo";
 import EventLocation from "./EventLocation";
 import EventComments from "./EventComments";
 import EventSideBar from "./EventSideBar";
-
+import style from './EventDetails.module.css';  
 import events from '../../api/events';
 
 
@@ -17,11 +17,22 @@ const EventDetails = () => {
     const eventDetails = allEvents.filter( event => event.name === 'Music')[0]
    
     return (
-      <div >
-        <EventInfo event={eventDetails}/>
-        <EventLocation event={eventDetails}/>
-        <EventComments event={eventDetails}/>
-        <EventSideBar event={eventDetails}/>
+      <div className={style.container}>
+        <div className={style.item1}>
+          <EventInfo event={eventDetails}/>
+        </div>
+
+        <div className={style.item2}>
+          <EventSideBar event={eventDetails}/>
+        </div>
+        
+        <div className={style.item3}>
+          <EventLocation event={eventDetails}/>
+        </div>
+        
+        <div className={style.item4}>
+          <EventComments event={eventDetails}/>
+        </div>
       </div>
     );
   };
