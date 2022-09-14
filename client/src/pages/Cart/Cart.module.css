@@ -1,0 +1,45 @@
+.pageCart {
+  padding-top: 12rem;
+}
+
+.pageCartTitle {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--color-grey-3);
+
+  margin-bottom: 4.4rem;
+}
+
+.containerPageCart {
+  display: grid;
+  gap: 9.6rem;
+  grid-template-columns: 2fr 1fr;
+}
+
+.containerCardProduct {
+  padding-top: 5rem;
+}
+
+/* OPTIONS */
+
+.summaryCart {
+  width: 70%;
+  margin: 0 auto;
+}
+
+.summaryTitle {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: var(--color-orange);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.summaryTitle img {
+  width: 1.2rem;
+}
+
+.summaryDescription {
+  font-size: 1.4rem;
+}

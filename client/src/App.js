@@ -7,6 +7,7 @@ import Contacto from './pages/Contacto/Contacto';
 import Navbar from './components/Header/Navbar';
 import Footer from './components/Footer/Footer';
 import EventDetails from './components/EventDetails/EventDetails';
+import Cart from './pages/Cart/Cart';
 
 function App() {
   const location = useLocation();
@@ -21,6 +22,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/contactanos" element={<Contacto />} />
         <Route path="/eventdetails/:id" element={<EventDetails />} />
+        <Route path="/cart" element={<Cart />} />
       </Routes>
       <div className="container">
         <Footer />
