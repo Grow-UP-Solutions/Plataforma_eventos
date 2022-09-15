@@ -9,16 +9,15 @@ import styles from './Home.module.css';
 import { animateScroll as scroll } from 'react-scroll';
 
 const Home = () => {
-
   useEffect(() => {
-    scroll.scrollToTop()
+    scroll.scrollToTop();
   }, []);
 
   return (
-    <div className={styles.container}>
+    <div>
       <CarrouselHome />
       <HowItWorks />
-      <Events/>
+      <Events />
       <Categories />
     </div>
   );

@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import style from './CarrouselHome.module.css'; 
+import style from './CarrouselHome.module.css';
 import { Swiper, SwiperSlide } from 'swiper/react/swiper-react';
+<<<<<<< HEAD
 import { Pagination , Autoplay , Navigation } from 'swiper';
+=======
+import { Pagination, Scrollbar, Navigation } from 'swiper';
+>>>>>>> Development
 import 'swiper/swiper.min.css';
 import 'swiper/modules/pagination/pagination.min.css';
 import 'swiper/modules/scrollbar/scrollbar.min.css';
@@ -9,17 +13,18 @@ import 'swiper/modules/navigation/navigation.min.css';
 import Search from '../Search/Search';
 
 const CarrouselHome = () => {
-
   const images = [
     {
       id: 1,
       title: 'image1',
-      url: 'https://res.cloudinary.com/djsp3n1qy/image/upload/v1663114004/Plataforma_Eventos/gas1_wm6wph.jpg'
+      url:
+        'https://res.cloudinary.com/djsp3n1qy/image/upload/v1663114004/Plataforma_Eventos/gas1_wm6wph.jpg',
     },
     {
       id: 2,
       title: 'image2',
-      url: 'https://res.cloudinary.com/djsp3n1qy/image/upload/v1663113988/Plataforma_Eventos/gas2_corxwc.jpg'
+      url:
+        'https://res.cloudinary.com/djsp3n1qy/image/upload/v1663113988/Plataforma_Eventos/gas2_corxwc.jpg',
     },
     {
       id: 3,
@@ -37,12 +42,15 @@ const CarrouselHome = () => {
       url: 'https://res.cloudinary.com/djsp3n1qy/image/upload/v1663114004/Plataforma_Eventos/gas1_wm6wph.jpg'
     },
   ];
-  
+
   return (
-    <div className={style.container}>
+    <div id="hero" className={style.container}>
       <Swiper
         slidesPerView={1}
+<<<<<<< HEAD
         spaceBetween={0}
+=======
+>>>>>>> Development
         pagination={{
           clickable: true,
         }}
@@ -52,6 +60,7 @@ const CarrouselHome = () => {
         }}
         onSlideChange={() => console.log('slide change')}
         onSwiper={(swiper) => console.log(swiper)}
+<<<<<<< HEAD
         modules={[Autoplay, Pagination, Navigation]}
         className={style.mySwipper}
       >
@@ -68,24 +77,39 @@ const CarrouselHome = () => {
                 )
               })
             ) : (
+=======
+        modules={[Pagination, Navigation]}
+        className={style.mySwipper}
+      >
+        {images.length ? (
+          images.map((e) => {
+            return (
+              <SwiperSlide>
+                <div key={e.id}>
+                  <img className={style.img} src={e.url} alt={e.title} />
+                </div>
+              </SwiperSlide>
+            );
+          })
+        ) : (
+>>>>>>> Development
           <h5>No hay imagenes</h5>
-          )
-        }
-
-      </Swiper> 
+        )}
+      </Swiper>
 
       <div className={style.container_p}>
         <p>Aqui va un texto de</p>
         <p>enganche grande</p>
-        <p className={style.item_p}>Aqui un texto que acompañe el titulo de enganche</p>
+        <p className={style.item_p}>
+          Aqui un texto que acompañe el titulo de enganche
+        </p>
       </div>
 
       <div className={style.search}>
-        <Search/>
+        <Search />
       </div>
-      
     </div>
   );
-}
+};
 
 export default CarrouselHome;
