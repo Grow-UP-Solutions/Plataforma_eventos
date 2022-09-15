@@ -11,14 +11,19 @@
 .container img {
   width: 8rem;
   height: 8rem;
-  margin-left: 200px;
   cursor: pointer;
+}
+
+.containerInfo {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .container_div {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  margin-left: 450px;
 }
 
 .container_div p {
@@ -37,11 +42,11 @@
   text-align: center;
   padding: 8px 30px;
   cursor: pointer;
+  border: 1px solid transparent;
 }
 
 .button:hover {
-  background-color: var(--color-grey-4);
+  background-color: transparent;
   color: var(--color-orange);
+  border: 1px solid var(--color-orange);
 }
-
-
