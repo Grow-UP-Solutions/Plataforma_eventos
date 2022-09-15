@@ -1,11 +1,11 @@
 .container {
   position: relative;
-  width: 60rem;
 }
 
-.input {
+.inputHome {
   border-radius: 25px;
-  width: 100%;
+  width: 45rem;
+
   height: 40px;
 
   border: none;
@@ -16,12 +16,12 @@
   border: 2px solid transparent;
 }
 
-.input:focus {
+.inputHome:focus {
   outline: none;
   border: 2px solid var(--color-orange);
 }
 
-.searchBtn {
+.searchBtnHome {
   position: absolute;
   top: 0;
   right: 0rem;
@@ -34,8 +34,43 @@
   cursor: pointer;
 }
 
-.iconSearch {
+.iconSearchHome {
   width: 2rem;
   height: 2rem;
   color: white;
+}
+
+/* NOT HOME */
+
+.inputNotHome {
+  width: 45rem;
+  border: 1px solid var(--color-grey-4);
+  padding: 1rem 2rem;
+  border-radius: 5px;
+  color: var(--color-grey-5);
+}
+
+.inputNotHome:focus {
+  outline: none;
+  border: 1px solid var(--color-orange);
+}
+
+.inputNotHome::placeholder {
+  color: var(--color-grey-4);
+}
+
+.searchBtnNotHome {
+  position: absolute;
+  right: 0;
+  background-color: transparent;
+  border: none;
+  padding: 0 2rem 0 1rem;
+  border-top-right-radius: 25px;
+  border-bottom-right-radius: 25px;
+  height: 100%;
+  cursor: pointer;
+}
+
+.iconSearchNotHome {
+  color: var(--color-grey-4);
 }
