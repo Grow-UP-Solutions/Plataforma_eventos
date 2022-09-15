@@ -23,6 +23,8 @@ const EventLocation =  ({event}) => {
       </div>
       
       <p className={style.description}>{event.description}</p>
+
+      <div className={style.line}></div>
     </div>
   );
 };
