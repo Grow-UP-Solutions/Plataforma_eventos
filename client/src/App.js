@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import './App.css';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
-
 import Home from './components/Home/Home';
 import Contacto from './pages/Contacto/Contacto';
 import Navbar from './components/Header/Navbar';
 import Footer from './components/Footer/Footer';
 import EventDetails from './components/EventDetails/EventDetails';
+import OrganizerDetails from './components/Organizer/OrganizerDetailes';
 import Cart from './pages/Cart/Cart';
 
 function App() {
@@ -22,6 +22,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/contactanos" element={<Contacto />} />
         <Route path="/eventdetails/:id" element={<EventDetails />} />
+        <Route path="/organizerDetails/:id" element={<OrganizerDetails />} />
         <Route path="/cart" element={<Cart />} />
       </Routes>
       <div className="container">
