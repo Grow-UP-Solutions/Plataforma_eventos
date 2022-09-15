@@ -16,7 +16,6 @@ import 'swiper/modules/navigation/navigation.min.css';
 
 const EventInfo = ({event}) => {
 
-
   return (
     <div className={style.container}>
 
@@ -39,20 +38,47 @@ const EventInfo = ({event}) => {
           <img className={style.img} src={event.pictures[0]} alt="Not Found ):"/>
         }
       </Swiper>
-
-      <div className={style.redes}>
-        <ImFacebook  className={style.icons}/>
-        <ImTwitter className={style.icons}/>
-        <ImLinkedin2 className={style.icons}/>
-        <FaInstagram className={style.icons}/>
-      </div>
       
       <div className={style.container_icon_heart}>
         <FavoriteIcon className={style.icon_heart} sx={{ fontSize: 25 }}/>
       </div>
 
       <div className={style.container_icon_share}>
-        <LaunchOutlinedIcon className={style.icon_share} sx={{ fontSize: 25 }}/>
+        <input type="checkbox" id="check"/>
+        <label htmlFor="check" className={style.label}>
+          <LaunchOutlinedIcon className={style.icon_share} sx={{ fontSize: 25 }}/>
+        </label>
+
+        <div className={style.redes}>
+          <a href='https://www.facebook.com/'
+            target='_blank'
+            rel='noreferrer noopener'
+          >
+            <ImFacebook className={style.icons}/>
+          </a>
+
+          <a href='https://www.twitter.com/'
+            target='_blank'
+            rel='noreferrer noopener'
+          >
+            <ImTwitter className={style.icons}/>
+          </a>
+          
+          <a href='https://www.linkedin.com/'
+            target='_blank'
+            rel='noreferrer noopener'
+          >
+            <ImLinkedin2 className={style.icons}/>
+          </a>
+
+          <a href='https://www.instagram.com/'
+            target='_blank'
+            rel='noreferrer noopener'
+          >
+            <FaInstagram className={style.icons}/>
+          </a>
+  
+        </div>
       </div>
 
       <div className={style.title}>
@@ -82,8 +108,10 @@ const EventInfo = ({event}) => {
       <p className={style.description}>{event.description}</p>
       
       <div className={style.container_plus}>
-        <p>Ver mas</p>
+        <p>Ver más</p>
       </div>
+
+      <div className={style.line}></div>
 
       <p className={style.report}>
         <WarningOutlinedIcon fontSize="medium"/>   Reportar Contenido Inapropiado
