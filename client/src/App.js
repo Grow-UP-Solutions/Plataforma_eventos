@@ -8,6 +8,10 @@ import Footer from './components/Footer/Footer';
 import EventDetails from './components/EventDetails/EventDetails';
 import OrganizerDetails from './components/Organizer/OrganizerDetailes';
 import Cart from './pages/Cart/Cart';
+import OrganizaUnEvento from './components/OrganizaUnEvento/OrganizaUnEvento';
+import Ingresa from './components/Ingresa/Ingresa';
+import Register from './components/Register/Register';
+
 
 function App() {
   const location = useLocation();
@@ -28,6 +32,9 @@ function App() {
         <Route path="/eventdetails/:id" element={<EventDetails />} />
         <Route path="/organizerDetails/:id" element={<OrganizerDetails />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/ingresa" element={<Ingresa />} />
+        <Route path="/registrate" element={<Register />} />
+        <Route path="/organiza-un-evento" element={<OrganizaUnEvento />} />
       </Routes>
       <div className="container">
         <Footer />
