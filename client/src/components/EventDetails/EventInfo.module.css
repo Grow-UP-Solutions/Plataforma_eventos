@@ -9,7 +9,7 @@
   height: 440px;
 }
 
-.title p {
+.title {
   color: var(--color-blue);
   font-size: 3.5rem;
   font-weight: bold;
@@ -97,3 +97,49 @@
   color: var(--color-orange);
   cursor: pointer;
 }
+
+.redes {
+  width: 150px;
+  height: 50px;
+  color: var(--color-orange);
+  background-color: var(--color-grey-6);
+  position: relative;
+  border-radius: 10px;
+  bottom: 23px;
+  left: 80px;
+  z-index: 100;
+  margin-top: 3.2rem;
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+}
+
+.icons {
+  width: 2rem;
+  height: 2rem;
+  color: var(--color-grey-4);
+  transition: all 0.2s;
+  cursor: pointer;
+  margin: auto;
+}
+
+.icons:hover {
+  color: var(--color-orange);
+  transform: scale(1.2);
+}
+
+.title {
+  display: flex;
+}
+
+.container_rating {
+  margin-left: auto;
+}
+
+.numberRating {
+  color: var(--color-grey-3);
+  font-size: 2rem;
+  margin: auto 0;
+  font-weight: normal;
+}
+
