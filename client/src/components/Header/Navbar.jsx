@@ -5,6 +5,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import Search from '../Search/Search';
 import { GrMail } from 'react-icons/gr';
 import { IoNotifications } from 'react-icons/io5';
+import { Link } from 'react-router-dom';
 
 const user = {
   userLog: false,
@@ -41,13 +42,19 @@ const Navbar = ({ upper }) => {
         </div>
         <div className={style.container_div}>
           {user.userLog && <a href="$">Mi lista</a>}
-          <p className={`${user.userLog ? style.buttonOrganizar : ''}`}>
-            Organiza un evento
-          </p>
+          <Link to={`/organiza-un-evento`}>
+            <p className={`${user.userLog ? style.buttonOrganizar : ''}`}>
+              Organiza un evento
+            </p>
+          </Link>
           {!user.userLog ? (
             <>
-              <p>Ingresa</p>
-              <span className={style.button}>Registrate</span>
+              <Link to={`/ingresa`}>
+               <p>Ingresa</p>
+              </Link>
+              <Link to={`/registrate`}>
+               <span className={style.button}>Registrate</span>
+              </Link>
             </>
           ) : (
             <>
