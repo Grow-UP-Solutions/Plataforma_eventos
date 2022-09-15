@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import style from './CarrouselHome.module.css';
 import { Swiper, SwiperSlide } from 'swiper/react/swiper-react';
-import { Pagination, Scrollbar, Navigation } from 'swiper';
+import { Pagination , Autoplay , Navigation } from 'swiper';
 import 'swiper/swiper.min.css';
 import 'swiper/modules/pagination/pagination.min.css';
 import 'swiper/modules/scrollbar/scrollbar.min.css';
@@ -22,31 +22,53 @@ const CarrouselHome = () => {
       url:
         'https://res.cloudinary.com/djsp3n1qy/image/upload/v1663113988/Plataforma_Eventos/gas2_corxwc.jpg',
     },
+    {
+      id: 3,
+      title: 'image3',
+      url: 'https://res.cloudinary.com/djsp3n1qy/image/upload/v1663114004/Plataforma_Eventos/gas1_wm6wph.jpg'
+    },
+    {
+      id: 4,
+      title: 'image4',
+      url: 'https://res.cloudinary.com/djsp3n1qy/image/upload/v1663113988/Plataforma_Eventos/gas2_corxwc.jpg'
+    },
+    {
+      id: 5,
+      title: 'image5',
+      url: 'https://res.cloudinary.com/djsp3n1qy/image/upload/v1663114004/Plataforma_Eventos/gas1_wm6wph.jpg'
+    },
   ];
 
   return (
     <div id="hero" className={style.container}>
       <Swiper
         slidesPerView={1}
+        spaceBetween={0}
         pagination={{
           clickable: true,
         }}
+        autoplay={{
+          delay: 6000,
+          disableOnInteraction: false,
+        }}
         onSlideChange={() => console.log('slide change')}
         onSwiper={(swiper) => console.log(swiper)}
-        modules={[Pagination, Navigation]}
+        modules={[Autoplay, Pagination, Navigation]}
         className={style.mySwipper}
       >
-        {images.length ? (
-          images.map((e) => {
-            return (
-              <SwiperSlide>
-                <div key={e.id}>
-                  <img className={style.img} src={e.url} alt={e.title} />
-                </div>
-              </SwiperSlide>
-            );
-          })
-        ) : (
+          
+        {
+          images.length ? (
+              images.map((e) => {
+                return (
+                  <SwiperSlide>
+                    <div key={e.id}>
+                      <img className={style.img} src={e.url} alt={e.title} />
+                    </div>
+                  </SwiperSlide>
+                )
+              })
+            ) : (
           <h5>No hay imagenes</h5>
         )}
       </Swiper>
