@@ -1,23 +1,30 @@
 import React from "react";
-import {mapa} from '../../assets/imgs/mapa.png'
-
-
+import mapa from '../../assets/imgs/mapa2.png'
+import { IoLocationOutline } from 'react-icons/io5';
+import style from './EventLocation.module.css';
 
 const EventLocation =  ({event}) => {
 
-   
-
-
-    return (
-      <div >
+  return (
+    <div className={style.container}>
+      <div className={style.container_location}>
+        <IoLocationOutline className={style.icon}/>
         <p>Ubicacion</p>
-        <span>{event.city}</span>
-        <span>{event.state}</span>
-        <p>La ubicación exacta se te enviará al adquirir tu entrada</p>
-        <div>MAPA</div>
-        <p>{event.description}</p>
       </div>
-    );
-  };
+      
+      <br />
+
+      <span className={style.city}>{event.city} / </span>
+      <span className={style.state}>{event.state}</span>
+      <p className={style.texto}>La ubicación exacta se te enviará al adquirir tu entrada</p>
+
+      <div className={style.img}>
+        <img src={mapa} alt="imagen_mapa" />
+      </div>
+      
+      <p className={style.description}>{event.description}</p>
+    </div>
+  );
+};
   
-  export default EventLocation;
+export default EventLocation;

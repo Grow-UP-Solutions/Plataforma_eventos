@@ -1,0 +1,41 @@
+.container {
+  width: 94%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 35px;
+}
+
+.container_location {
+  display: flex;
+}
+
+.container_location p {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--color-grey-2);
+}
+
+.city, .state {
+  font-size: 1.6rem;
+  color: var(--color-grey-2);
+}
+
+.texto {
+  font-size: 1.4rem;
+  color: var(--color-grey-2);
+  margin-top: 10px;
+}
+
+.img {
+  margin-top: 10px;
+}
+
+.description {
+  font-size: 1.4rem;
+  color: var(--color-grey-2);
+  margin-top: 10px;
+}
+
+.icon {
+  font-size: 25px;
+}

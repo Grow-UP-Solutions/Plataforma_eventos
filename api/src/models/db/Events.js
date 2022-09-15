@@ -6,13 +6,13 @@ const EventSchema = new Schema({
   description: String,
   date: [
     {
-      type: Date,
+      type: String,
     },
   ],
   time: String,
   state: String,
   city: String,
-  price: Number,
+  price: String,
   cupos: Number,
   rating: Number,
   enLinea: Boolean,

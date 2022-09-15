@@ -3,6 +3,7 @@ import styles from './EventOrganizer.module.css';
 import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
 
 
+
 const EventOrganizer = ({event}) => {
 
    
