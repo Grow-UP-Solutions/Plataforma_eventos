@@ -7,6 +7,10 @@ import { Rating } from '@mui/material';
 import { iconAdd } from '../../assets/imgs';
 
 const Card = ({ event }) => {
+
+  
+  const currentYear = new Date().getFullYear()
+
   
 
   return (
@@ -19,17 +23,56 @@ const Card = ({ event }) => {
         height="300"
       />
       <div className={styles.cardText}>
-        {event.cupos === 0 ? (
+        {/* {event.cupos === 0 ? (
           <p className={styles.cardCupos}>Cupos llenos</p>
-        ) : event.date &&  event.date.length > 1 ?  (
-          event.date.map((event) => (
+        ) : event.dates &&  event.dates.length > 1 ?  (
+          event.dates.map((date) => (
             <ul>
-              <li className={styles.cardDate}>{event.dates}</li>
+              { date.date.slice(11,15) === currentYear ?
+              <li className={styles.cardDate}>{date.date.slice(0,8)}</li>
+              :<li className={styles.cardDate}>{date.date}</li>
+            }
             </ul>
           ))
         ) : (
-          <p className={styles.cardDate}>{event.dates[0].date}</p>
-        )}
+          
+          event.dates && event.dates[0].date.slice(11,15) === currentYear ?          
+          <p className={styles.cardDate}>{event.dates[0].date.slice(0,8)}</p>
+          : <p className={styles.cardDate}>{event.dates[0].date}</p>
+        
+        )} */}
+
+        {
+          event.dates && event.dates.length > 1 ?
+          (
+            event.dates.map(
+              (date) =>(
+                <ul className={styles.ul}>
+                  { date.cupos === 0 ? 
+                     <li className={styles.cardCupos}>Cupos Llenos</li> 
+                     : (
+                     date.year === currentYear ?
+                     <li className={styles.cardDate}>{date.date.slice(0,8)}</li>
+                     :
+                     <li className={styles.cardDate}>{date.date}</li>
+                     )
+                  
+                }
+                </ul>
+              )
+            )
+          )
+          :
+          event.dates[0].cupos === 0 ?
+          <p className={styles.cardCuposCurrent}>Cupos LLenos</p>
+          : (
+            event.dates[0].year === 2022 ?
+            <p className={styles.cardDateCurrent}>{event.dates[0].date.slice(0,8)}</p>
+            :
+            <p className={styles.cardDateCurrent}>{event.dates[0].date}</p>
+          )
+          
+        }
 
         <div className={styles.cardAddFav}>
           <input type="checkbox" id={event.id} />
@@ -48,8 +91,10 @@ const Card = ({ event }) => {
         <div className={styles.cardRating}>
           <Rating
             className={styles.rating}
-            name="read-only"
             value={event.rating}
+            name="half-rating" 
+            defaultValue={2.5} 
+            precision={0.5} 
             readOnly
           />
           <span>({event.rating})</span>
@@ -60,7 +105,7 @@ const Card = ({ event }) => {
       </div>
       <hr className={styles.cardHr}></hr>
       <div className={styles.cardOrgInfo}>
-        <Link className={styles.link} to={`/organizerId/${event.organizer.id}`}>
+        <Link className={styles.link} to={`/organizerDetails/${event.organizer.id}`}>
           <img
             className={styles.cardOrgPicture}
             src={event.organizer.picture}
@@ -69,7 +114,7 @@ const Card = ({ event }) => {
             height="3px"
           />
         </Link>
-        <Link className={styles.link} to={`/organizerId/${event.organizer.id}`}>
+        <Link className={styles.link} to={`/organizerDetails/${event.organizer.id}`}>
           <p className={styles.cardOrgName}>{event.organizer.name}</p>
         </Link>
         <div className={styles.vLine}></div>

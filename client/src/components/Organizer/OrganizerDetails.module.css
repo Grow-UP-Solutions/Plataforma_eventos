@@ -1,0 +1,109 @@
+.container{
+    max-width: 1420px;
+    margin: 0 auto;
+    justify-content: center;
+    align-items: center;
+    padding: 10rem;
+    width:100%;
+    text-align: center;
+}
+
+.background{
+    background-color: #750a0a;
+}
+
+.img{
+  width: 20rem;
+  height: 20rem;
+  border-radius: 50%;
+  margin-bottom: 3rem;
+}
+
+.name{
+    font-size: 2.5rem;
+    color: #1B3C6A;
+    font-family: 'Raleway';
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.rating{
+   
+    display: flex;
+    color:rgba(88,88,88,255);
+    font-weight: bold;
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.containerDir{
+    display: flex;
+    justify-content: center;
+
+}
+
+
+
+.direction{
+    font-size: 1.6rem;
+    color: #868686;
+    font-family: 'Raleway';
+    margin-bottom: 1rem;
+    font-family: 'Raleway';
+
+}
+
+.member{
+    font-size: 1.6rem;
+    color: #868686;
+    font-family: 'Raleway';
+    margin-bottom: 1rem;
+    font-family: 'Raleway';
+
+}
+
+.containerMess{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.message{
+    background-color: rgba(244,244,244,255);
+    border:none;
+    color:#d53e27;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.containerButtons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn{
+    font-size: 1.6rem;
+    color: #868686;
+    letter-spacing: 1px;
+    font-family: 'Raleway';
+    background-color:#86868600 ;
+    border:none;
+    cursor: pointer;
+}
+
+.btn:hover{
+    color:#d53e27;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.vLine {
+    border: 1px solid #868686;
+    height: 1rem;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+  }

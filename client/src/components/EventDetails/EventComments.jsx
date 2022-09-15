@@ -57,12 +57,14 @@ const EventComments =  ({event}) => {
           />
         <div className={styles.contRate}>
           <p className={styles.pRate}>Rate:</p>
-         <Rating
-          className={styles.rating}
-          name="read-only"
-          value={event.rating}
-          readOnly
-        />
+         
+        <Rating
+            className={styles.rating}
+            name="half-rating" 
+            defaultValue={0}
+            precision={0.5} 
+          
+          />
         </div>
         <div className={styles.contBtn}>
           <button  className={styles.button}>Enviar</button>
