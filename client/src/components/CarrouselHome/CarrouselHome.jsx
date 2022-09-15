@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import style from './CarrouselHome.module.css';
 import { Swiper, SwiperSlide } from 'swiper/react/swiper-react';
-<<<<<<< HEAD
 import { Pagination , Autoplay , Navigation } from 'swiper';
-=======
-import { Pagination, Scrollbar, Navigation } from 'swiper';
->>>>>>> Development
 import 'swiper/swiper.min.css';
 import 'swiper/modules/pagination/pagination.min.css';
 import 'swiper/modules/scrollbar/scrollbar.min.css';
@@ -47,10 +43,7 @@ const CarrouselHome = () => {
     <div id="hero" className={style.container}>
       <Swiper
         slidesPerView={1}
-<<<<<<< HEAD
         spaceBetween={0}
-=======
->>>>>>> Development
         pagination={{
           clickable: true,
         }}
@@ -60,7 +53,6 @@ const CarrouselHome = () => {
         }}
         onSlideChange={() => console.log('slide change')}
         onSwiper={(swiper) => console.log(swiper)}
-<<<<<<< HEAD
         modules={[Autoplay, Pagination, Navigation]}
         className={style.mySwipper}
       >
@@ -77,22 +69,6 @@ const CarrouselHome = () => {
                 )
               })
             ) : (
-=======
-        modules={[Pagination, Navigation]}
-        className={style.mySwipper}
-      >
-        {images.length ? (
-          images.map((e) => {
-            return (
-              <SwiperSlide>
-                <div key={e.id}>
-                  <img className={style.img} src={e.url} alt={e.title} />
-                </div>
-              </SwiperSlide>
-            );
-          })
-        ) : (
->>>>>>> Development
           <h5>No hay imagenes</h5>
         )}
       </Swiper>
