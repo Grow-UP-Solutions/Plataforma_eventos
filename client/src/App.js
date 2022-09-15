@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import Home from './components/Home/Home';
@@ -15,11 +15,15 @@ function App() {
     window.scrollTo(0, 0);
   }, [location]);
 
+  const [navBar, setNavBar] = useState(false);
+
+  console.log(navBar);
+
   return (
     <div className="App">
-      <Navbar />
+      <Navbar upper={navBar} />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home handleNav={setNavBar} />} />
         <Route path="/contactanos" element={<Contacto />} />
         <Route path="/eventdetails/:id" element={<EventDetails />} />
         <Route path="/organizerDetails/:id" element={<OrganizerDetails />} />
