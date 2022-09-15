@@ -4,6 +4,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import WarningOutlinedIcon from '@mui/icons-material/WarningOutlined';
 import LaunchOutlinedIcon from '@mui/icons-material/LaunchOutlined';
+import { Rating } from '@mui/material';
 import { ImFacebook, ImTwitter, ImLinkedin2 } from 'react-icons/im';
 import { FaInstagram } from 'react-icons/fa';
 import { Swiper, SwiperSlide } from 'swiper/react/swiper-react';
@@ -55,10 +56,20 @@ const EventInfo = ({event}) => {
       </div>
 
       <div className={style.title}>
-        <p >{event.name}</p>
+        <p>{event.name}</p>
+
+        <div className={style.container_rating}>
+          <Rating
+            className={style.rating}
+            name="read-only"
+            value={event.rating}
+            readOnly
+            sx={{ fontSize: 25 }}
+          />
+        </div>
+
+        <p className={style.numberRating}>({event.rating})</p>
       </div>
-      
-      <p>{event.rating}</p>
 
       <div className={style.container_opinions}>
         <p className={style.opinions}>Ver Opiniones</p>

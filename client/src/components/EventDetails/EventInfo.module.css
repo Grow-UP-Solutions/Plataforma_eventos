@@ -9,7 +9,7 @@
   height: 440px;
 }
 
-.title p {
+.title {
   color: var(--color-blue);
   font-size: 3.5rem;
   font-weight: bold;
@@ -127,3 +127,19 @@
   color: var(--color-orange);
   transform: scale(1.2);
 }
+
+.title {
+  display: flex;
+}
+
+.container_rating {
+  margin-left: auto;
+}
+
+.numberRating {
+  color: var(--color-grey-3);
+  font-size: 2rem;
+  margin: auto 0;
+  font-weight: normal;
+}
+
