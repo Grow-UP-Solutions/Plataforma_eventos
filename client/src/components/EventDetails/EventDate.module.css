@@ -90,8 +90,6 @@
 }
 
 .parrafo2 {
-  width: 100%;
-  display: flex;
   color: var(--color-grey-2);
   font-weight: bold;
   font-size: 1.4rem;
