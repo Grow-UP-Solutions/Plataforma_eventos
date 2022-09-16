@@ -1,22 +1,26 @@
 .container{
-    max-width: 1420px;
+   
     margin: 0 auto;
     justify-content: center;
     align-items: center;
-    padding: 10rem;
     width:100%;
     text-align: center;
 }
 
-.background{
-    background-color: #750a0a;
+.top{
+    background-color:#d1d1d1;
+    width: 100%;
+    top:0;
+    height: 200px;
 }
+
 
 .img{
   width: 20rem;
   height: 20rem;
   border-radius: 50%;
   margin-bottom: 3rem;
+  margin-top: -9rem;
 }
 
 .name{
@@ -69,6 +73,7 @@
     display: flex;
     justify-content: center;
     margin-bottom: 2rem;
+    
 }
 
 .message{
@@ -77,6 +82,7 @@
     color:#d53e27;
     text-decoration: underline;
     cursor: pointer;
+    margin-left: 0.5rem;
 }
 
 .containerButtons{
