@@ -15,12 +15,13 @@ import OrganizaUnEvento from './components/OrganizaUnEvento/OrganizaUnEvento';
 import Ingresa from './components/Ingresa/Ingresa';
 import Register from './components/Register/Register';
 import Payment from './pages/Payment/Payment';
-
+import { animateScroll as scroll } from 'react-scroll';
 function App() {
   const location = useLocation();
+
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [location]);
+    scroll.scrollToTop();
+  }, []);
 
   const [navBar, setNavBar] = useState(false);
 
