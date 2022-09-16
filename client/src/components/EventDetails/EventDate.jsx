@@ -11,6 +11,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { iconArrowLeft, iconArrowRight } from '../../assets/imgs';
 
 import { formatDate } from '../../utils/formatDate';
+import { Link } from 'react-router-dom';
 const EventDate = ({ event }) => {
   const [getNewDate, setGetNewDate] = useState(false);
   const [date, setDate] = useState(null);
@@ -87,7 +88,10 @@ const EventDate = ({ event }) => {
           </tbody>
         </table>
       </div>
-      <button className={styles.button}>Comprar</button>
+
+      <Link to={'/cart'}>
+        <button className={styles.button}>Comprar</button>
+      </Link>
       <p className={styles.parrafo}>
         Nuevas fechas pueden ser solicitadas en cuyo caso un mínimo aplicaría de
         cupos a ser adquiridos por el solicitante, será sujeto a aprobación de

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from './FormProductPay.module.css';
 import { iconPayU, iconAchPse } from '../../assets/imgs';
+import { Link } from 'react-router-dom';
 const FormProductPay = () => {
   const [isPayAchpse, setIsPayAchpse] = useState(false);
 
@@ -124,9 +125,11 @@ const FormProductPay = () => {
         </p>
 
         <div className={styles.containerButtonForm}>
-          <button type="submit" className={styles.btnForm}>
-            Pagar
-          </button>
+          <Link to={'/payment'}>
+            <button type="submit" className={styles.btnForm}>
+              Pagar
+            </button>
+          </Link>
         </div>
       </form>
     </div>

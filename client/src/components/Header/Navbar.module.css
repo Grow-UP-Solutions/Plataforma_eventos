@@ -11,6 +11,7 @@
   width: 8rem;
   height: 8rem;
   cursor: pointer;
+  transition: all 0.2s;
 }
 
 .container img:hover {

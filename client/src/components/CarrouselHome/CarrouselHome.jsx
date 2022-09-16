@@ -51,7 +51,7 @@ const CarrouselHome = () => {
           clickable: true,
         }}
         autoplay={{
-          delay: 4000,
+          delay: 6000,
           disableOnInteraction: false,
         }}
         onSlideChange={() => console.log('slide change')}

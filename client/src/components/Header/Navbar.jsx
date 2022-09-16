@@ -8,7 +8,7 @@ import { IoNotifications } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
 
 const user = {
-  userLog: false,
+  userLog: true,
   name: 'Jean',
   lastName: 'Huaman',
   img: 'https://i.pravatar.cc/150?img=4',
@@ -27,6 +27,7 @@ const Navbar = ({ upper }) => {
   return (
     <div
       id="navbar"
+      style={{ position: pathname === '/' ? 'fixed' : 'sticky' }}
       className={`${style.container} ${
         pathname !== '/' || upper === false ? style.customizeNavBar : ''
       }`}
@@ -50,10 +51,10 @@ const Navbar = ({ upper }) => {
           {!user.userLog ? (
             <>
               <Link to={`/ingresa`}>
-               <p>Ingresa</p>
+                <p>Ingresa</p>
               </Link>
               <Link to={`/registrate`}>
-               <span className={style.button}>Registrate</span>
+                <span className={style.button}>Registrate</span>
               </Link>
             </>
           ) : (
