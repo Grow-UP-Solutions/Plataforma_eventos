@@ -1,8 +1,8 @@
+
 import axios from "axios";
 
+const categories = [
 
-
- const categories = [
   {
     name: 'Al Aire Libre',
     img:
@@ -132,10 +132,13 @@ import axios from "axios";
   },
 ];
 
+
 function createCategorys() {
   categories.forEach((e) => {
       axios.post("http://localhost:3001/category/create", e);
   });
   return "ok";
 }
+
+export default categories;
 
