@@ -1,0 +1,101 @@
+.pagePayment {
+}
+
+.containerLogoPayment {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3.8rem;
+  margin-bottom: 2.3rem;
+}
+
+.containerLogoPayment span {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--color-blue);
+}
+
+.containerLogoPayment img {
+  height: 11rem;
+  width: 11rem;
+}
+
+.containerListOptions {
+  display: flex;
+  justify-content: center;
+  gap: 1.4rem;
+}
+
+.containerOption {
+  width: 48rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2.2rem;
+  padding: 1.2rem;
+
+  margin-bottom: 5.2rem;
+}
+.containerOption p {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+.optionIcon {
+  width: 4.9rem;
+  height: 4.9rem;
+}
+
+.optionAprobed {
+  border: 1px solid var(--color-green);
+  color: var(--color-green);
+}
+
+.optionReject {
+  border: 1px solid red;
+  color: red;
+}
+
+.optionPending {
+  border: 1px solid #eba914;
+  color: #eba914;
+}
+
+.containerPaymentDetails {
+  display: flex;
+  justify-content: center;
+  font-size: 1.8rem;
+  color: var(--color-grey-1);
+}
+
+.containerPaymentDetails span {
+  font-weight: bold;
+}
+
+.containerPaymentDetails ul {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+.containerPaymentDetails p {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.containerBtn {
+  margin-top: 4.3rem;
+  display: flex;
+  justify-content: center;
+}
+
+.btnSend {
+  color: white;
+  background-color: var(--color-orange);
+  border: none;
+  padding: 0.5rem 2.5rem;
+  font-size: 1.4rem;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+}

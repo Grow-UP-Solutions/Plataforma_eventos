@@ -1,7 +1,7 @@
 const events = [
     {
-        id:1,
-        name:'Hiking with my dog',
+        id:'1',
+        name:'Hiking with my dog in the nature and make friends!!',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
         date:[ 'Junio 1 / 2019'],
@@ -19,7 +19,7 @@ const events = [
         price: '$250.000',
         cupos: 10,
         rating: 4.5,
-        enLinea: false,
+        enLinea: true,
         pictures:[
             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3LJVx4Si1ZAl45KUHRGvJyaQh2weSey-KA7Q7aOV09ySDIm-7TiiXkKLRs-7pwSCvpiM&usqp=CAU',
             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3LJVx4Si1ZAl45KUHRGvJyaQh2weSey-KA7Q7aOV09ySDIm-7TiiXkKLRs-7pwSCvpiM&usqp=CAU',
@@ -91,7 +91,7 @@ const events = [
         ]
     },
     {
-        id:2,
+        id:'2',
         name:'Music',
         nick: 'Bring your instruments!',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -182,24 +182,33 @@ const events = [
         ]
     },
     {
-        id:3,
+        id:'3',
         name:'Futbol',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
         date:[ 'Junio 1 / 2019'],
-        dates:[{
-            date:'Enero 19 / 2019',
-            cupos: 10,
-            time: '12.00-14.00',
-            price: '$300.000',
-            year:2019
-        },
-        {
-            date:'Enero 30 / 2019',
+        dates:[{ 
+            id:'1',
+            date:'Enero 30 / 2022',
             cupos: 5,
             time: '20.00-22.00',
             price: '$150.000',
-            year:2019
+            year:2022
+        },
+            {
+            id:'2',
+            date:'Enero 19 / 2023',
+            cupos: 10,
+            time: '12.00-14.00',
+            price: '$300.000',
+            year:2023
+        },
+        {   id:'3',
+            date:'Junio 30 / 2023',
+            cupos: 3,
+            time: '20.00-22.00',
+            price: '$800.000',
+            year:2023
         },
      
     ],
@@ -281,7 +290,7 @@ const events = [
         ]
     },
     {
-        id:4,
+        id:'4',
         name:'Lets cook!',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -380,7 +389,7 @@ const events = [
         ]
     },
     {
-        id:5,
+        id:'5',
         name:'French lessons',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -472,7 +481,7 @@ const events = [
         ]
     },
     {
-        id:5,
+        id:'6',
         name:'French lessons',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -584,7 +593,7 @@ const events = [
         ]
     },
     {
-        id:5,
+        id:'7',
         name:'French lessons',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -696,7 +705,7 @@ const events = [
         ]
     },
     {
-        id:5,
+        id:'8',
         name:'French lessons',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -808,7 +817,7 @@ const events = [
         ]
     },
     {
-        id:4,
+        id:'9',
         name:'Lets cook!',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -920,7 +929,7 @@ const events = [
         ]
     },
     {
-        id:4,
+        id:'10',
         name:'Lets cook!',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -1032,7 +1041,7 @@ const events = [
         ]
     },
     {
-        id:4,
+        id:'11',
         name:'Lets cook!',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -1144,7 +1153,7 @@ const events = [
         ]
     },
     {
-        id:4,
+        id:'12',
         name:'Lets cook!',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -1256,7 +1265,7 @@ const events = [
         ]
     },
     {
-        id:4,
+        id:'13',
         name:'Lets cook!',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -1368,7 +1377,7 @@ const events = [
         ]
     },
     {
-        id:4,
+        id:'14',
         name:'Lets cook!',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -1480,7 +1489,7 @@ const events = [
         ]
     },
     {
-        id:4,
+        id:'15',
         name:'Lets cook!',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -1592,7 +1601,7 @@ const events = [
         ]
     },
     {
-        id:4,
+        id:'16',
         name:'Lets cook!',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -1704,7 +1713,7 @@ const events = [
         ]
     },
     {
-        id:4,
+        id:'17',
         name:'Lets cook!',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -1816,7 +1825,7 @@ const events = [
         ]
     },
     {
-        id:4,
+        id:'18',
         name:'Lets cook!',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -1928,7 +1937,7 @@ const events = [
         ]
     },
     {
-        id:4,
+        id:'19',
         name:'Lets cook!',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -2040,7 +2049,7 @@ const events = [
         ]
     },
     {
-        id:4,
+        id:'20',
         name:'Lets cook!',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -2152,7 +2161,7 @@ const events = [
         ]
     },
     {
-        id:4,
+        id:'21',
         name:'Lets cook!',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -2264,7 +2273,7 @@ const events = [
         ]
     },
     {
-        id:4,
+        id:'22',
         name:'Lets cook!',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -2376,7 +2385,7 @@ const events = [
         ]
     },
     {
-        id:4,
+        id:'23',
         name:'Lets cook!',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
@@ -2488,7 +2497,7 @@ const events = [
         ]
     },
     {
-        id:4,
+        id:'24',
         name:'Lets cook!',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',

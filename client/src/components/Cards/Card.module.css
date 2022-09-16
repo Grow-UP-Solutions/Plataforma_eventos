@@ -9,14 +9,11 @@
   display: inline-block;
 }
 
-.ul {
+.cardDate {
   position: absolute;
   top: 10px;
   left: 10px;
-  /* transform: translateY(20px) */
- }
-
-.cardDate {
+  border: none;
   border-radius: 1rem;
   box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.2);
   background-color: white;
@@ -24,11 +21,12 @@
   font-weight: normal;
   color: rgba(134, 134, 134, 255);
   font-size: 1.3rem;
-  float:none;
-  width:150px
+  float: none;
+  width: 150px;
+  cursor: pointer;
 }
 
-.cardCupos {
+/* .cardCupos {
   border-radius: 1rem;
   box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.2);
   background-color: rgba(213, 62, 39, 255);
@@ -37,8 +35,9 @@
   color: white;
   font-size: 1.3rem;
   float:none;
-  width:150px
-}
+  width:150px;
+  display: none;
+} */
 .cardDateCurrent {
   position: absolute;
   top: 10px;
@@ -50,8 +49,8 @@
   font-weight: normal;
   color: rgba(134, 134, 134, 255);
   font-size: 1.3rem;
-  float:none;
-  width:150px
+  float: none;
+  width: 150px;
 }
 
 .cardCuposCurrent {
@@ -65,12 +64,9 @@
   font-weight: normal;
   color: white;
   font-size: 1.3rem;
-  float:none;
-  width:150px
+  float: none;
+  width: 150px;
 }
-
-
-
 
 .cardAddFav {
   position: absolute;
@@ -157,11 +153,50 @@
 }
 
 .cardTitle {
+  position: relative;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: rgba(134, 134, 134, 255);
+  margin-bottom: 0.8rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.cardTitle:before {
+  content: attr(data-hover);
+  visibility: hidden;
+  opacity: 0;
+  width: 250px;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid grey;
+  color: grey;
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px 0;
+  transition: opacity 1s ease-in-out;
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: 110%;
+  white-space: normal;
+  text-overflow: normal;
+  overflow: visible;
+}
+
+.cardTitle:hover:before {
+  opacity: 1;
+  visibility: visible;
+  overflow: visible;
+  white-space: normal;
+}
+
+/* .cardTitle {
   font-size: 1.5rem;
   font-weight: bold;
   color: rgba(134, 134, 134, 255);
   margin-bottom: 0.5rem;
-}
+} */
 
 .cardNick {
   font-size: 1.5rem;

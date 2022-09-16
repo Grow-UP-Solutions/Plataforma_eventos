@@ -2,6 +2,8 @@
   display: inline;
   align-items: center;
   justify-content: center;
+
+  position: relative;
 }
 
 .containerTitle {
@@ -88,9 +90,7 @@
 }
 
 .parrafo2 {
-  width: 100%;
-  display: flex;
-  color: rgba(88, 88, 88, 255);
+  color: var(--color-grey-2);
   font-weight: bold;
   font-size: 1.4rem;
   letter-spacing: px;
@@ -103,4 +103,127 @@
 
 .checkBox {
   accent-color: var(--color-orange);
+}
+
+.containerNumberBuyCupos {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 2.4rem;
+}
+
+.containerNumberBuyCupos button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 4px;
+
+  border: none;
+  background-color: transparent;
+  color: #707070;
+  border-radius: 100px;
+  box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+.containerNumberBuyCupos button img {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+/* MENU DATE */
+
+.containerMenuGetDate {
+  position: absolute;
+  padding: 2rem;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 10px 20px 2px rgba(0, 0, 0, 0.2);
+}
+
+.containerDescription {
+  margin-bottom: 2.4rem;
+}
+
+.containerDescription p {
+  font-size: 1.6rem;
+  color: var(--color-grey-3);
+}
+
+.menuTitle {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--color-grey-1);
+  margin-bottom: 1.1rem;
+}
+
+.containerFormDate {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.menuOptions {
+  padding: 2rem 4rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.2rem;
+}
+.formGroup label {
+  font-size: 1.6rem;
+  color: var(--color-grey-3);
+  margin-bottom: 0.5rem;
+}
+
+.formGroup input {
+  font-size: 1.6rem;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  border: 1px solid var(--color-grey-4);
+  color: var(--color-grey-1);
+}
+
+.formGroup input:focus {
+  outline: none;
+  border: 1px solid var(--color-grey-4);
+}
+
+.formGroup div {
+  display: flex;
+}
+
+.containerInputTime {
+  display: flex;
+  gap: 1.1rem;
+}
+
+.containerBtn {
+  display: flex;
+  justify-content: center;
+}
+
+.btnMenuDate {
+  background-color: var(--color-green);
+  color: white;
+  border-radius: 5px;
+  padding: 1rem 2.4rem;
+  border: none;
+  cursor: pointer;
+}
+
+.closeMenuGetDate {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.closeMenuGetDate button {
+  background-color: transparent;
+  border: none;
+
+  font-size: 2.4rem;
+  color: var(--color-grey-3);
+  cursor: pointer;
 }

@@ -10,10 +10,12 @@ import { animateScroll as scroll } from 'react-scroll';
 
 const EventDetails = () => {
   const id = useParams().id;
+  console.log('id:',id)
 
   const allEvents = events;
 
-  const eventDetails = allEvents.filter((event) => event.name === 'Music')[0];
+  const eventDetails = allEvents.filter((event) => event.id === id)[0];
+  console.log('eventDetails:',eventDetails)
 
   useEffect(() => {
     scroll.scrollToTop();
