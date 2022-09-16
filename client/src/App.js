@@ -14,7 +14,7 @@ import { Data } from './context/Context';
 import OrganizaUnEvento from './components/OrganizaUnEvento/OrganizaUnEvento';
 import Ingresa from './components/Ingresa/Ingresa';
 import Register from './components/Register/Register';
-
+import Payment from './pages/Payment/Payment';
 
 function App() {
   const location = useLocation();
@@ -24,12 +24,10 @@ function App() {
 
   const [navBar, setNavBar] = useState(false);
 
-  console.log(navBar);
-
   return (
     <div className="App">
       <Data>
-        <Navbar upper={navBar}/>
+        <Navbar upper={navBar} />
         <Routes>
           <Route path="/" element={<Home handleNav={setNavBar} />} />
           <Route path="/contactanos" element={<Contacto />} />
@@ -41,6 +39,7 @@ function App() {
           <Route path="/ingresa" element={<Ingresa />} />
           <Route path="/registrate" element={<Register />} />
           <Route path="/organiza-un-evento" element={<OrganizaUnEvento />} />
+          <Route path="/payment" element={<Payment />} />
         </Routes>
         <div className="container">
           <Footer />
