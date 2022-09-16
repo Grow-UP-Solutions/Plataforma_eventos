@@ -10,7 +10,10 @@ import 'swiper/modules/scrollbar/scrollbar.min.css';
 import 'swiper/modules/navigation/navigation.min.css';
 
 const Events = () => {
+
   const eventsShow = events.slice(0, 20);
+
+
   return (
     <div className={styles.cardsSection}>
       <p className={styles.titleCards}>Populares</p>

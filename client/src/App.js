@@ -16,6 +16,7 @@ import Ingresa from './components/Ingresa/Ingresa';
 import Register from './components/Register/Register';
 import Payment from './pages/Payment/Payment';
 import { animateScroll as scroll } from 'react-scroll';
+
 function App() {
   const location = useLocation();
 
@@ -41,6 +42,7 @@ function App() {
           <Route path="/registrate" element={<Register />} />
           <Route path="/organiza-un-evento" element={<OrganizaUnEvento />} />
           <Route path="/payment" element={<Payment />} />
+         
         </Routes>
         <div className="container">
           <Footer />
