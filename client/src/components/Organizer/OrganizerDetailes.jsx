@@ -7,6 +7,11 @@ import { animateScroll as scroll } from 'react-scroll';
 import { useParams } from "react-router-dom";
 import { IoLocationOutline } from 'react-icons/io5';
 import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
+import AboutOrganizer from './AboutOrganizer.jsx';
+import NextEvents from './NextEvents.jsx';
+import Opinions from './Opinions.jsx';
+import { useState } from 'react';
+
 
 
 const OrganizerDetails = () => {
@@ -23,6 +28,17 @@ const OrganizerDetails = () => {
     useEffect(() => {
       scroll.scrollToTop()
     }, []);
+
+    const [component, setComponent] = useState('')
+
+    const handleInput = (e) => {
+      const name = e.target.name
+      if (name === 'AboutOrganizer') setComponent(<AboutOrganizer userDetail={userDetail} />)
+      if (name === 'NextEvents') setComponent(<NextEvents userDetail={userDetail}/>)
+      if (name === 'Opinions') setComponent(<Opinions userDetail={userDetail}/>)
+    }
+
+  console.log('estado:',component)
    
 
 
@@ -47,11 +63,15 @@ const OrganizerDetails = () => {
             <button className={styles.message}>Enviar Mensaje</button>
         </div>
         <div className={styles.containerButtons}>
-            <button className={styles.btn}>Sobre El Organizador</button>
+        
+            <button className={styles.btn} name='AboutOrganizer' onClick={handleInput}>Sobre El Organizador</button>
             <div className={styles.vLine}></div>
-            <button className={styles.btn}>Proximo Evento</button>
+            <button className={styles.btn} name='NextEvents' onClick={handleInput}>Próximos Eventos</button>
             <div className={styles.vLine}></div>
-            <button className={styles.btn}>Opiniones</button>
+            <button className={styles.btn} name='Opinions' onClick={handleInput}>Opiniones</button>
+        </div>
+        <div>
+        <div className={styles.containerSection}>{component}</div>
         </div>
     </div>
   );

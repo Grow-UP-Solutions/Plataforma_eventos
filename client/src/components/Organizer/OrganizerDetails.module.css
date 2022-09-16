@@ -8,10 +8,10 @@
 }
 
 .top{
-    background-color:#d1d1d1;
+    background-color:#F4F4F4;
     width: 100%;
     top:0;
-    height: 200px;
+    height: 180px;
 }
 
 
@@ -20,7 +20,7 @@
   height: 20rem;
   border-radius: 50%;
   margin-bottom: 3rem;
-  margin-top: -9rem;
+  margin-top: -13rem;
 }
 
 .name{
@@ -28,7 +28,7 @@
     color: #1B3C6A;
     font-family: 'Raleway';
     font-weight: bold;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
 }
 
 .rating{
@@ -40,7 +40,7 @@
     letter-spacing: 1px;
     align-items: center;
     justify-content: center;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
 }
 
 .containerDir{
@@ -64,7 +64,7 @@
     font-size: 1.6rem;
     color: #868686;
     font-family: 'Raleway';
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
     font-family: 'Raleway';
 
 }
@@ -72,7 +72,7 @@
 .containerMess{
     display: flex;
     justify-content: center;
-    margin-bottom: 2rem;
+    margin-bottom: 4rem;
     
 }
 
@@ -89,6 +89,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    
 }
 
 .btn{
@@ -112,4 +113,8 @@
     height: 1rem;
     margin-left: 1.5rem;
     margin-right: 1.5rem;
+  }
+
+  .containerSection{
+
   }
