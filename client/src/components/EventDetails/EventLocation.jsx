@@ -14,13 +14,25 @@ const EventLocation =  ({event}) => {
       
       <br />
 
-      <span className={style.city}>{event.city} / </span>
-      <span className={style.state}>{event.state}</span>
-      <p className={style.texto}>La ubicación exacta se te enviará al adquirir tu entrada</p>
+      {
+        event.enLinea === false ?
+        <div>
+          <div>
+            <span className={style.city}>{event.city} / </span>
+            <span className={style.state}>{event.state}</span>
+            <p className={style.texto}>La ubicación exacta se te enviará al adquirir tu entrada</p>
+          </div>
+            <div className={style.img}>
+            <img src={mapa} alt="imagen_mapa" />
+          </div>
+        </div>
+        :
+        <div>
+         <span className={style.city}>En Linea</span>
+         <p className={style.texto}>El enlace para el evento se te enviara al momento de adquirir tu cupo</p>
+        </div>
+      }
 
-      <div className={style.img}>
-        <img src={mapa} alt="imagen_mapa" />
-      </div>
       
       <p className={style.description}>{event.description}</p>
 
