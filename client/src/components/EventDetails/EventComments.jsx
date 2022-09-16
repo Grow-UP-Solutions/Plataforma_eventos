@@ -42,7 +42,9 @@ const EventComments =  ({event}) => {
                     <p  className={styles.time}>{opinion.time}</p>
                     <p  className={styles.opinion}>{opinion.opinion}</p>
                   </div>
-                    <ReportProblemIcon sx={{ fontSize: '40px', color: '#cbcbcb' }}/>
+                    <div className={styles.reportCom} data-hover='Reportar contenido inapropiado'>
+                    <ReportProblemIcon sx={{ fontSize: '40px', color: '#cbcbcb'  }}/>
+                    </div>
                 </div>
               </div>
                 <hr className={styles.hr}></hr>

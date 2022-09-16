@@ -1,7 +1,7 @@
 const events = [
     {
         id:1,
-        name:'Hiking with my dog',
+        name:'Hiking with my dog in the nature and make friends!!',
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
         date:[ 'Junio 1 / 2019'],
@@ -187,7 +187,8 @@ const events = [
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
         date:[ 'Junio 1 / 2019'],
-        dates:[{ id:1,
+        dates:[{ 
+            id:'1',
             date:'Enero 30 / 2022',
             cupos: 5,
             time: '20.00-22.00',
@@ -195,19 +196,19 @@ const events = [
             year:2022
         },
             {
-            id:2,
-            date:'Enero 19 / 2019',
+            id:'2',
+            date:'Enero 19 / 2023',
             cupos: 10,
             time: '12.00-14.00',
             price: '$300.000',
-            year:2019
+            year:2023
         },
-        {   id:3,
-            date:'Junio 30 / 2019',
-            cupos: 0,
+        {   id:'3',
+            date:'Junio 30 / 2023',
+            cupos: 3,
             time: '20.00-22.00',
-            price: '$150.000',
-            year:2019
+            price: '$800.000',
+            year:2023
         },
      
     ],

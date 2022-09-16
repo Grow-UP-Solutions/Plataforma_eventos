@@ -11,7 +11,8 @@ const Card = ({ event }) => {
   
   const currentYear = new Date().getFullYear()
 
-  
+
+ 
 
   return (
     <div className={styles.card}>
@@ -31,8 +32,8 @@ const Card = ({ event }) => {
                 date.cupos > 0 ?
                  (
                   date.year === currentYear ? 
-                  <option value={date.date.slice(0,8)}>{date.date.slice(0,8)}</option>
-                  :<option value={date.date}>{date.date}</option>
+                  <option value={date.id}>{date.date.slice(0,8)}</option>
+                  :<option value={date.id}>{date.date}</option>
                  )
                 : 'N'  
               )
@@ -76,7 +77,13 @@ const Card = ({ event }) => {
           />
           <span>({event.rating})</span>
         </div>
-        <p className={styles.cardTitle}>{event.name}</p>
+
+        
+          <p className={styles.cardTitle} data-hover={event.name}>
+            {event.name}
+          </p>
+        
+       
         <p className={styles.cardNick}>{event.nick}</p>
         <p className={styles.cardDescription}>{event.description}</p>
       </div>
