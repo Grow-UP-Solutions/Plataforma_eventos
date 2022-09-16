@@ -7,32 +7,48 @@ const UserSchema = new Schema({
   city: String,
   email: String,
   picture: String,
-  isSuperAdmin:{
+  isSuperAdmin: {
     type: Boolean,
-    default:false
+    default: false,
   },
-  isAdmin:{
+  isAdmin: {
     type: Boolean,
-    default:false
+    default: false,
   },
   isOrganizer: {
     type: Boolean,
-    default:false
+    default: false,
   },
   isLogged: {
     type: Boolean,
-    default:false
+    default: false,
   },
   membership: String,
   descriptionOrganizer: String,
-  myEventsCreated: [{
-    type: Schema.Types.ObjectId,
-    ref:'Events'
-  }],
-  myOpinions:[{
-    type: Schema.Types.ObjectId,
-    ref:'Opinions'
-  }]
+  myEventsCreated: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Events",
+    },
+  ],
+  myFavourites: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Events",
+    },
+  ],
+  myEventsBooked: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Events",
+    },
+  ],
+  myOpinions: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Opinions",
+    },
+  ],
 });
 
-module.exports= model('Users', UserSchema)
+module.exports = model("Users", UserSchema);

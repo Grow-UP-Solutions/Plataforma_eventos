@@ -1,7 +1,7 @@
 const { Router } = require("express");
 require("../../DB");
 const Users = require("../../models/db/Users");
-const { getAllUsers, createUsers, userUpdate } = require("../services/users.services");
+const { getAllUsers, createUsers, userUpdate, userDelete } = require("../services/users.services");
 
 const router = Router();
 
@@ -24,7 +24,7 @@ router.post("/create", async (req, res) => {
     return res.status(400).json({ERROR_USER_CREATE:error})
   }
 });
-router.post('/update/:id',async (req,res)=>{
+router.put('/update/:id',async (req,res)=>{
   try {
     
     const {id}= req.params
@@ -33,6 +33,17 @@ router.post('/update/:id',async (req,res)=>{
     return res.status(200).json(usersUpdate)
   } catch (error) {
     return res.status(400).json({ERROR_USER_UPDATE:error})
+  }
+})
+router.delete('/delete/:id', async (req,res)=>{
+  try {
+    const {id} = req.params
+      
+    const deleteUser= await userDelete(id)
+    return res.status(200).json({user: deleteUser,msg: 'El usuario ha sido eliminado con exito'})
+    
+  } catch (error) {
+    return res.status(400).json({FALLO_USER_DELETE: error})
   }
 })
 module.exports = router;

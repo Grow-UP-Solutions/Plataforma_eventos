@@ -33,7 +33,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.post("/:id", async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const {id} = req.params;
     console.log("ESTO ES ID EN CONTROLLER", id);
