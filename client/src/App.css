@@ -8,11 +8,11 @@
 }
 
 .swiper-button-next {
-  right: 20px !important ;
+  right: 2rem !important ;
 }
 
 .swiper-button-prev {
-  left: 20px !important;
+  left: 2rem !important;
 }
 
 .swiper-button-prev::after,

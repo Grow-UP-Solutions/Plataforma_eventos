@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './EventOrganizer.module.css';
 import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
+import { Link } from '@mui/material';
 
 const EventOrganizer = ({ event }) => {
   return (
@@ -13,7 +14,13 @@ const EventOrganizer = ({ event }) => {
         </div>
       </div>
       <div className={styles.orgCont}>
+      <Link
+          className={styles.link}
+          to={`/organizerDetails/${event.organizer.id}`}
+        >
         <img className={styles.orgImg} src={event.organizer.picture} alt="N" />
+        </Link>
+
         <div className={styles.orgSubCont}>
           <p className={styles.orgName}>{event.organizer.name}</p>
           <p className={styles.orgMembership}>

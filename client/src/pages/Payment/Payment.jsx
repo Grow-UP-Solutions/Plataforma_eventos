@@ -6,6 +6,7 @@ import { AiOutlineCloseCircle, AiOutlineCheckCircle } from 'react-icons/ai';
 import { BiTime } from 'react-icons/bi';
 
 import { iconAchPse } from '../../assets/imgs';
+import { Link } from 'react-router-dom';
 
 const Payment = () => {
   return (
@@ -75,7 +76,9 @@ const Payment = () => {
         </ul>
       </div>
       <div className={styles.containerBtn}>
-        <button className={styles.btnSend}>Volver</button>
+        <Link to={'/'}>
+          <button className={styles.btnSend}>Volver</button>
+        </Link>
       </div>
     </div>
   );

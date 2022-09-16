@@ -9,7 +9,6 @@
   display: inline-block;
 }
 
-
 .cardDate {
   position: absolute;
   top: 10px;
@@ -22,8 +21,8 @@
   font-weight: normal;
   color: rgba(134, 134, 134, 255);
   font-size: 1.3rem;
-  float:none;
-  width:150px;
+  float: none;
+  width: 150px;
   cursor: pointer;
 }
 
@@ -50,8 +49,8 @@
   font-weight: normal;
   color: rgba(134, 134, 134, 255);
   font-size: 1.3rem;
-  float:none;
-  width:150px
+  float: none;
+  width: 150px;
 }
 
 .cardCuposCurrent {
@@ -65,12 +64,9 @@
   font-weight: normal;
   color: white;
   font-size: 1.3rem;
-  float:none;
-  width:150px
+  float: none;
+  width: 150px;
 }
-
-
-
 
 .cardAddFav {
   position: absolute;
@@ -156,7 +152,6 @@
   padding: 1rem 2rem;
 }
 
-
 .cardTitle {
   position: relative;
   font-size: 1.5rem;
@@ -166,10 +161,7 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  
-} 
-
-
+}
 
 .cardTitle:before {
   content: attr(data-hover);
@@ -189,16 +181,15 @@
   top: 110%;
   white-space: normal;
   text-overflow: normal;
-  overflow: visible; 
+  overflow: visible;
 }
 
 .cardTitle:hover:before {
   opacity: 1;
   visibility: visible;
-  overflow: visible; 
+  overflow: visible;
   white-space: normal;
 }
-
 
 /* .cardTitle {
   font-size: 1.5rem;

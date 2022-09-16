@@ -50,10 +50,10 @@ const CarrouselHome = () => {
         pagination={{
           clickable: true,
         }}
-        /*  autoplay={{
-          delay: 4000,
+        autoplay={{
+          delay: 6000,
           disableOnInteraction: false,
-        }} */
+        }}
         onSlideChange={() => console.log('slide change')}
         onSwiper={(swiper) => console.log(swiper)}
         modules={[Autoplay, Pagination, Navigation]}

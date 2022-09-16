@@ -104,3 +104,8 @@
     margin-left: 0;
     cursor: pointer;
 }
+
+.link {
+    text-decoration: none;
+  }
+  
