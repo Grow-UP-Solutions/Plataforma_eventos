@@ -19,7 +19,7 @@ const events = [
         price: '$250.000',
         cupos: 10,
         rating: 4.5,
-        enLinea: true,
+        enLinea: false,
         pictures:[
             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3LJVx4Si1ZAl45KUHRGvJyaQh2weSey-KA7Q7aOV09ySDIm-7TiiXkKLRs-7pwSCvpiM&usqp=CAU',
             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3LJVx4Si1ZAl45KUHRGvJyaQh2weSey-KA7Q7aOV09ySDIm-7TiiXkKLRs-7pwSCvpiM&usqp=CAU',
@@ -2611,5 +2611,3 @@ const events = [
 ]
 
 export default events
-
-

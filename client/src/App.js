@@ -44,6 +44,7 @@ function App() {
           <Route path="/registrate" element={<Register />} />
           <Route path="/organiza-un-evento" element={<OrganizaUnEvento />} />
           <Route path="/payment" element={<Payment />} />
+         
           <Route path="/categories" element={<CategoriesResult />} />
         </Routes>
         <div className="container">
