@@ -1,17 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './Cart.module.css';
 import {
   iconArrowLeft,
   iconArrowRight,
   iconExclamation,
 } from '../../assets/imgs';
-
+import { animateScroll as scroll } from 'react-scroll';
 import events from '../../api/events';
 import CardProduct from '../../components/CardProduct/CardProduct';
 import FormProductPay from '../../components/FormProductPay/FormProductPay';
 
 const event = events[2];
 const Cart = () => {
+
+  useEffect(() => {
+    scroll.scrollToTop();
+  }, []);
+
   return (
     <div className={`${styles.pageCart} container`}>
       <h1 className={styles.pageCartTitle}>Usted está comprando</h1>
