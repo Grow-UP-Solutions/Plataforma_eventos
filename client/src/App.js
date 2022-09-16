@@ -8,6 +8,7 @@ import Navbar from './components/Header/Navbar';
 import Footer from './components/Footer/Footer';
 import EventDetails from './components/EventDetails/EventDetails';
 import Cart from './pages/Cart/Cart';
+import Payment from './pages/Payment/Payment';
 
 function App() {
   const location = useLocation();
@@ -27,6 +28,7 @@ function App() {
         <Route path="/contactanos" element={<Contacto />} />
         <Route path="/eventdetails/:id" element={<EventDetails />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/payment" element={<Payment />} />
       </Routes>
       <div className="container">
         <Footer />
