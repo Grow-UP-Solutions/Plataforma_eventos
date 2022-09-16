@@ -18,7 +18,7 @@
 }
 
 .categorie {
-  cursor: pointer;
+  
   width: 26rem;
   height: 21rem;
   overflow: hidden;
@@ -40,6 +40,7 @@
   font-weight: bold;
   color: var(--color-grey-1);
   margin-bottom: 0.5rem;
+  cursor: pointer;
 }
 
 .categorieDescription {

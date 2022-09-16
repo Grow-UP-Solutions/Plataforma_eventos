@@ -60,22 +60,58 @@ const Footer = () => {
           <p className={styles.titleSocial}>Siguenos</p>
           <ul className={styles.listSocial}>
             <li>
-              <ImFacebook className={styles.icons} />
+              <a
+                href="https://www.facebook.com/"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                <ImFacebook className={styles.icons} />
+              </a>
             </li>
             <li>
-              <FaInstagram className={styles.icons} />
+              <a
+                href="https://www.instagram.com/"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                <FaInstagram className={styles.icons} />
+              </a>
             </li>
             <li>
-              <ImTwitter className={styles.icons} />
+              <a
+                href="https://www.twitter.com/"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                <ImTwitter className={styles.icons} />
+              </a>
             </li>
             <li>
-              <FaTiktok className={styles.icons} />
+              <a
+                href="https://www.tiktok.com/"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                <FaTiktok className={styles.icons} />
+              </a>
             </li>
             <li>
-              <ImYoutube className={styles.icons} />
+              <a
+                href="https://www.youtube.com/"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                <ImYoutube className={styles.icons} />
+              </a>
             </li>
             <li>
-              <ImLinkedin2 className={styles.icons} />
+              <a
+                href="https://www.linkedin.com/"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                <ImLinkedin2 className={styles.icons} />
+              </a>
             </li>
           </ul>
         </div>

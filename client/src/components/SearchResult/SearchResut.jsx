@@ -1,11 +1,16 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Context } from '../../context/Context';
 import style from './SearchResult.module.css';
 import Card from '../Cards/Card';
+import { animateScroll as scroll } from 'react-scroll';
 
 const SearchResut = () => {
 
   const {result} = useContext(Context);
+
+  useEffect(() => {
+    scroll.scrollToTop();
+  }, []);
 
   return (
     <div className={style.container}>
