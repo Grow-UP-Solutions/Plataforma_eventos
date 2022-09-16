@@ -1,4 +1,5 @@
 require("../../DB.js");
+const { updateMany } = require("../../models/db/Category.js");
 const Category = require("../../models/db/Category.js");
 const Events = require("../../models/db/Events.js");
 const Users = require("../../models/db/Users.js");
@@ -12,7 +13,6 @@ module.exports = {
     return allEvents;
   },
   createEvents: async function (event) {
-    
     const {
       name,
       nick,
@@ -53,5 +53,12 @@ module.exports = {
     users.myEventsCreated.push(events._id);
     await users.save();
     return await events.save();
+  },
+  eventsUpdate: async function (id, newEvent) {
+    const newEvents = await Events.findByIdAndUpdate({ _id: id }, newEvent, {
+      new: 1,
+    });
+
+    return newEvents;
   },
 };
