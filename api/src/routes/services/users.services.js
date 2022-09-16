@@ -7,8 +7,15 @@ module.exports = {
     return allUsers;
   },
 
-  createUsers: async function (user) {    
+  createUsers: async function (user) {
+    const { email } = user;
+    const userDB = await Users.findOne({ email: email });
+    if(userDB){
+      console.log('existe')
+      return {msg: 'Este email ya se encuentra registrado'}
+    }
     const users = new Users(user);
+    console.log('creado')
     return await users.save();
   },
   userUpdate: async function (id, newUser) {
@@ -17,5 +24,14 @@ module.exports = {
     });
 
     return newUsers;
+  },
+  userDelete: async function (id) {
+    console.log(id)
+    const deleteUser = await Users.findByIdAndDelete({_id:id})
+      .populate("myEventsCreated")
+      .populate("myOpinions");
+    if (!deleteUser) "Usuario no encontardo";
+
+    return deleteUser;
   },
 };
