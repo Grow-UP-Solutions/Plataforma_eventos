@@ -1,11 +1,12 @@
-import React from 'react';
-import logo from '../../assets/imgs/logoNav.svg';
+import React, { useState } from 'react';
 import style from './Navbar.module.css';
-import { useNavigate, useLocation } from 'react-router-dom';
+
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import Search from '../Search/Search';
+
 import { GrMail } from 'react-icons/gr';
-import { IoNotifications } from 'react-icons/io5';
-import { Link } from 'react-router-dom';
+import { IoNotifications, IoCaretDownSharp } from 'react-icons/io5';
+import logo from '../../assets/imgs/logoNav.svg';
 
 const user = {
   userLog: true,
@@ -15,6 +16,7 @@ const user = {
 };
 
 const Navbar = ({ upper }) => {
+  const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   const { pathname } = useLocation();
@@ -75,8 +77,33 @@ const Navbar = ({ upper }) => {
                 <p>{user.name}</p>
                 <p>{user.lastName}</p>
               </div>
-              <div className={style.containerImg}>
-                <img className={style.userImg} src={user.img} alt="img-user" />
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  position: 'relative',
+                }}
+                onClick={() => setMenuOpen(!menuOpen)}
+              >
+                <div className={style.containerImg}>
+                  <img
+                    className={style.userImg}
+                    src={user.img}
+                    alt="img-user"
+                  />
+                </div>
+                <IoCaretDownSharp className={style.iconMenu} />
+                {menuOpen && (
+                  <div className={style.containerProfileMenu}>
+                    <a href="#">Mis eventos</a>
+                    <a href="#">Perfil</a>
+                    <a href="#">Plan de referidos</a>
+                    <a href="#">Preferencias</a>
+                    <hr />
+                    <a href="#">Cerrar</a>
+                  </div>
+                )}
               </div>
             </>
           )}
