@@ -13,6 +13,10 @@
   cursor: pointer;
 }
 
+.container img:hover {
+  transform: scale(1.1);
+}
+
 .containerInfo {
   display: flex;
   justify-content: space-between;
