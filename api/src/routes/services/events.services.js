@@ -58,7 +58,6 @@ module.exports = {
     const newEvents = await Events.findByIdAndUpdate({ _id: id }, newEvent, {
       new: 1,
     });
-
     return newEvents;
   },
 };

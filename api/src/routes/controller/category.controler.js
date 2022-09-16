@@ -21,7 +21,7 @@ router.post("/create", async (req, res) => {
     return res.status(400).json({ ERROR_CATEGORY_CREATE: error });
   }
 });
-router.post('/update/:id', async (req,res)=>{
+router.put('/update/:id', async (req,res)=>{
   try {
     const id = req.params
     const newCategory = req.body
