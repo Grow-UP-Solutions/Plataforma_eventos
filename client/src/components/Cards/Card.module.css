@@ -9,14 +9,12 @@
   display: inline-block;
 }
 
-.ul {
+
+.cardDate {
   position: absolute;
   top: 10px;
   left: 10px;
-  /* transform: translateY(20px) */
- }
-
-.cardDate {
+  border: none;
   border-radius: 1rem;
   box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.2);
   background-color: white;
@@ -25,10 +23,11 @@
   color: rgba(134, 134, 134, 255);
   font-size: 1.3rem;
   float:none;
-  width:150px
+  width:150px;
+  cursor: pointer;
 }
 
-.cardCupos {
+/* .cardCupos {
   border-radius: 1rem;
   box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.2);
   background-color: rgba(213, 62, 39, 255);
@@ -37,8 +36,9 @@
   color: white;
   font-size: 1.3rem;
   float:none;
-  width:150px
-}
+  width:150px;
+  display: none;
+} */
 .cardDateCurrent {
   position: absolute;
   top: 10px;

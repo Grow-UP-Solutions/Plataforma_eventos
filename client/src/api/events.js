@@ -187,16 +187,24 @@ const events = [
         nick: 'Bring your camera',
         description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
         date:[ 'Junio 1 / 2019'],
-        dates:[{
+        dates:[{ id:1,
+            date:'Enero 30 / 2022',
+            cupos: 5,
+            time: '20.00-22.00',
+            price: '$150.000',
+            year:2022
+        },
+            {
+            id:2,
             date:'Enero 19 / 2019',
             cupos: 10,
             time: '12.00-14.00',
             price: '$300.000',
             year:2019
         },
-        {
-            date:'Enero 30 / 2019',
-            cupos: 5,
+        {   id:3,
+            date:'Junio 30 / 2019',
+            cupos: 0,
             time: '20.00-22.00',
             price: '$150.000',
             year:2019

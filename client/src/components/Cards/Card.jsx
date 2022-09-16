@@ -23,50 +23,27 @@ const Card = ({ event }) => {
         height="300"
       />
       <div className={styles.cardText}>
-        {/* {event.cupos === 0 ? (
-          <p className={styles.cardCupos}>Cupos llenos</p>
-        ) : event.dates &&  event.dates.length > 1 ?  (
-          event.dates.map((date) => (
-            <ul>
-              { date.date.slice(11,15) === currentYear ?
-              <li className={styles.cardDate}>{date.date.slice(0,8)}</li>
-              :<li className={styles.cardDate}>{date.date}</li>
-            }
-            </ul>
-          ))
-        ) : (
-          
-          event.dates && event.dates[0].date.slice(11,15) === currentYear ?          
-          <p className={styles.cardDate}>{event.dates[0].date.slice(0,8)}</p>
-          : <p className={styles.cardDate}>{event.dates[0].date}</p>
-        
-        )} */}
-
         {
           event.dates && event.dates.length > 1 ?
-          (
-            event.dates.map(
+          (<select className={styles.cardDate}>
+            {event.dates.map(
               (date) =>(
-                <ul className={styles.ul}>
-                  { date.cupos === 0 ? 
-                     <li className={styles.cardCupos}>Cupos Llenos</li> 
-                     : (
-                     date.year === currentYear ?
-                     <li className={styles.cardDate}>{date.date.slice(0,8)}</li>
-                     :
-                     <li className={styles.cardDate}>{date.date}</li>
-                     )
-                  
-                }
-                </ul>
+                date.cupos > 0 ?
+                 (
+                  date.year === currentYear ? 
+                  <option value={date.date.slice(0,8)}>{date.date.slice(0,8)}</option>
+                  :<option value={date.date}>{date.date}</option>
+                 )
+                : 'N'  
               )
-            )
+            )}
+           </select>  
           )
           :
           event.dates[0].cupos === 0 ?
           <p className={styles.cardCuposCurrent}>Cupos LLenos</p>
           : (
-            event.dates[0].year === 2022 ?
+            event.dates[0].year === currentYear ?
             <p className={styles.cardDateCurrent}>{event.dates[0].date.slice(0,8)}</p>
             :
             <p className={styles.cardDateCurrent}>{event.dates[0].date}</p>
