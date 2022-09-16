@@ -1,16 +1,29 @@
 import React, { useState } from 'react';
 import styles from './EventDate.module.css';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import { AiOutlineClose } from 'react-icons/ai';
+
 import { Calendar } from 'react-date-range';
 import * as locales from 'react-date-range/dist/locale';
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
+
+import { AiOutlineClose } from 'react-icons/ai';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import { iconArrowLeft, iconArrowRight } from '../../assets/imgs';
+
 import { formatDate } from '../../utils/formatDate';
 const EventDate = ({ event }) => {
   const [getNewDate, setGetNewDate] = useState(false);
   const [date, setDate] = useState(null);
   const [dateFormatted, setDateFormatted] = useState('');
+
+  const [numberBuyCupos, setNumberBuyCupos] = useState(0);
+
+  const handleNumberBuyCupos = (num) => {
+    if (num <= -1) return;
+    if (num > 10) return;
+
+    setNumberBuyCupos(num);
+  };
 
   const handleFormatDate = (date) => {
     setDate(date);
@@ -56,11 +69,18 @@ const EventDate = ({ event }) => {
                 <td>{event.time}</td>
                 <td>{event.price}</td>
                 <td>{event.cupos}</td>
-                <td className={styles.number}>
-                  <input
-                    type="number"
-                    value={event.id}
-                  ></input>
+                <td className={styles.containerNumberBuyCupos}>
+                  <button
+                    onClick={() => handleNumberBuyCupos(numberBuyCupos - 1)}
+                  >
+                    <img src={iconArrowLeft} alt="icon-left" />
+                  </button>
+                  <span>{numberBuyCupos}</span>
+                  <button
+                    onClick={() => handleNumberBuyCupos(numberBuyCupos + 1)}
+                  >
+                    <img src={iconArrowRight} alt="icon-left" />
+                  </button>
                 </td>
               </tr>
             ))}
