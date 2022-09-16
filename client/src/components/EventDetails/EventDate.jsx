@@ -1,21 +1,22 @@
-import React from "react";
+import React from 'react';
 import styles from './EventDate.module.css';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
-
-
-const EventDate = ({event}) => {
-
-  
-   
-    return (
-      <div className={styles.container} >
-        <div className={styles.containerTitle}>
-          <CalendarMonthIcon sx={{ fontSize: '16px', color: '#585858', "& :hover": { color: "#ef5350" } }} />
-          <p className={styles.title}>Próximas Fechas</p>
-       </div>
-       <div>
-       <table className={styles.table}>
+const EventDate = ({ event }) => {
+  return (
+    <div className={styles.container}>
+      <div className={styles.containerTitle}>
+        <CalendarMonthIcon
+          sx={{
+            fontSize: '16px',
+            color: '#585858',
+            '& :hover': { color: '#ef5350' },
+          }}
+        />
+        <p className={styles.title}>Próximas Fechas</p>
+      </div>
+      <div>
+        <table className={styles.table}>
           <thead>
             <tr>
               <th></th>
@@ -29,10 +30,10 @@ const EventDate = ({event}) => {
           <tbody>
             {event.dates.map((event) => (
               <tr key={event.id}>
-                <td >
+                <td>
                   <input
-                    type='checkbox'
-                    class='checkbox'
+                    type="checkbox"
+                    class={styles.checkBox}
                     value={event.id}
                     defaultChecked={false}
                   ></input>
@@ -43,7 +44,7 @@ const EventDate = ({event}) => {
                 <td>{event.cupos}</td>
                 <td>
                   <input
-                    type='number'
+                    type="number"
                     value={event.id}
                     defaultChecked={false}
                   ></input>
@@ -52,15 +53,16 @@ const EventDate = ({event}) => {
             ))}
           </tbody>
         </table>
-          
-       </div>
-        <button  className={styles.button}>Comprar</button>
-        <p className={styles.parrafo}>Nuevas fechas pueden ser solicitadas en cuyo caso un mínimo aplicaría de cupos a ser adquiridos por el solicitante, será sujeto a aprobación de fecha</p>
-        <p className={styles.parrafo2}>Solicitar nuevas fechas</p>
       </div>
-    );
-  };
-  
-  export default EventDate;
+      <button className={styles.button}>Comprar</button>
+      <p className={styles.parrafo}>
+        Nuevas fechas pueden ser solicitadas en cuyo caso un mínimo aplicaría de
+        cupos a ser adquiridos por el solicitante, será sujeto a aprobación de
+        fecha
+      </p>
+      <p className={styles.parrafo2}>Solicitar nuevas fechas</p>
+    </div>
+  );
+};
 
-
+export default EventDate;

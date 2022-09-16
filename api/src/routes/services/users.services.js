@@ -11,4 +11,11 @@ module.exports = {
     const users = new Users(user);
     return await users.save();
   },
+  userUpdate: async function (id, newUser) {
+    const newUsers = await Users.findByIdAndUpdate({ _id: id }, newUser, {
+      new: 1,
+    });
+
+    return newUsers;
+  },
 };

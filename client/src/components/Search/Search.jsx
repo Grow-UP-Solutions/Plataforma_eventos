@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import events from '../../api/events';
 import { Context } from '../../context/Context';
 
-const Search = () => {
+const Search = ({ location = 'home' }) => {
 
   const [input, setInput] = useState('');
   const navigate = useNavigate();
@@ -41,17 +41,27 @@ const Search = () => {
 
   return (
     <div className={style.container}>
-
-      <input 
+      <input
         onChange={handleChange} 
         onKeyPress={handleKeyPress}
         value={input} 
-        className={style.input} 
-        type="text" 
-        placeholder="Buscar" 
+        className={`${
+          location !== 'home' ? style.inputNotHome : style.inputHome
+        }`}
+        type="text"
+        placeholder="Buscar"
       />
-      <button onClick={handleSubmit} className={style.searchBtn}>
-        <BsSearch className={style.iconSearch} />
+      <button
+        onClick={handleSubmit}
+        className={`${
+          location !== 'home' ? style.searchBtnNotHome : style.searchBtnHome
+        }`}
+      >
+        <BsSearch
+          className={`${
+            location !== 'home' ? style.iconSearchNotHome : style.iconSearchHome
+          }`}
+        />
       </button>
 
     </div>
