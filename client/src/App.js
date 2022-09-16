@@ -15,9 +15,11 @@ import OrganizaUnEvento from './components/OrganizaUnEvento/OrganizaUnEvento';
 import Ingresa from './components/Ingresa/Ingresa';
 import Register from './components/Register/Register';
 import Payment from './pages/Payment/Payment';
+import CategoriesResult from './components/CategoriesResult/CategoriesResult';
 import { animateScroll as scroll } from 'react-scroll';
 
 function App() {
+  
   const location = useLocation();
 
   useEffect(() => {
@@ -43,6 +45,7 @@ function App() {
           <Route path="/organiza-un-evento" element={<OrganizaUnEvento />} />
           <Route path="/payment" element={<Payment />} />
          
+          <Route path="/categories" element={<CategoriesResult />} />
         </Routes>
         <div className="container">
           <Footer />

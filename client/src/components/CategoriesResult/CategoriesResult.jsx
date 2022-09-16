@@ -1,10 +1,10 @@
 import React, { useContext, useEffect } from 'react';
 import { Context } from '../../context/Context';
-import style from './SearchResult.module.css';
+import style from './CategoriesResult.module.css';
 import Card from '../Cards/Card';
 import { animateScroll as scroll } from 'react-scroll';
 
-const SearchResut = () => {
+const CategoriesResult = () => {
 
   const {result} = useContext(Context);
 
@@ -16,7 +16,6 @@ const SearchResut = () => {
     <div className={style.container}>
       <p className={style.title}>Eventos</p>
       <div className={style.containerCard}>
-       
         {
           result.length ? 
           (
@@ -29,10 +28,9 @@ const SearchResut = () => {
             })
           ) : (<h5>No hay eventos</h5>)
         }
-        
       </div>
     </div>
   );
 }
 
-export default SearchResut;
+export default CategoriesResult;
