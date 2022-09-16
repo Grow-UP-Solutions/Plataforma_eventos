@@ -5,17 +5,22 @@ import HowItWorks from '../HowItWorks/HowItWorks';
 import Footer from '../Footer/Footer';
 import Categories from '../Categories/Categories';
 import Events from '../Events/Events';
-import styles from './Home.module.css';
 import { animateScroll as scroll } from 'react-scroll';
-
-const Home = () => {
+import { InView } from 'react-intersection-observer';
+const Home = ({ handleNav }) => {
   useEffect(() => {
     scroll.scrollToTop();
   }, []);
 
   return (
     <div>
-      <CarrouselHome />
+      <InView
+        rootMargin="-100px"
+        as="div"
+        onChange={(inView, entry) => handleNav(inView)}
+      >
+        <CarrouselHome />
+      </InView>
       <HowItWorks />
       <Events />
       <Categories />
