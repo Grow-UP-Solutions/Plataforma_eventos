@@ -1,4 +1,4 @@
-export const categories = [
+const categories = [
   {
     name: 'Al Aire Libre',
     img:
@@ -127,3 +127,5 @@ export const categories = [
     description: 'Duis autem vel eum iriure',
   },
 ];
+
+export default categories;
