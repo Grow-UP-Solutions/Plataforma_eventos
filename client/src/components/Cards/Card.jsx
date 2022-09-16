@@ -11,6 +11,8 @@ const Card = ({ event }) => {
   
   const currentYear = new Date().getFullYear()
 
+  console.log('eventId',event.id)
+
 
  
 

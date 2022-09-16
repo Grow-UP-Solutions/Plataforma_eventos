@@ -1,0 +1,18 @@
+.container{
+    margin-top: 9rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; 
+}
+
+.containercard{
+    width: 80%;
+    display: grid;
+    grid-template-columns: 1fr 1fr  1fr 1fr 1fr;
+}
+
+.card{
+    margin-bottom: 3rem;
+    text-align: left;
+}
