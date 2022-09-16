@@ -1,22 +1,24 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import styles from './Categories.module.css';
 import events from '../../api/events';
 import categories from '../../api/categories';
+import { Context } from '../../context/Context';
+import { useNavigate } from 'react-router-dom';
 
 const Categories = () => {
 
-  const [data, setData] = useState('');
-  const [state, setState] = useState([]);
+  const {setResult} = useContext(Context);
+  const navigate = useNavigate();
   const allEvents = events;
   const allCategories = categories;
 
   const handleClick = (e) => {
     e.preventDefault();
-    setData(e.target.name);
     const filtro = allEvents.filter((event) =>
-      event.category.name === e.target.name
+      event.category.name === e.target.id
     );
-    setState(filtro);
+    setResult(filtro);
+    navigate('/categories/');
   }
 
   return (
@@ -26,9 +28,9 @@ const Categories = () => {
         {allCategories.map((categorie) => {
           return (
             <li className={styles.categorie}>
-              <img name={categorie.name} onClick={handleClick} src={categorie.img} alt={categorie.name} />
+              <img src={categorie.img} alt={categorie.name} />
               <div className={styles.categorieText}>
-                <p className={styles.categorieTitle}>{categorie.name}</p>
+                <p id={categorie.name} onClick={handleClick} className={styles.categorieTitle}>{categorie.name}</p>
                 <p className={styles.categorieDescription}>
                   {categorie.description}
                 </p>
