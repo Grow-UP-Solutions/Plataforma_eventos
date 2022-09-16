@@ -139,3 +139,5 @@ function createCategorys() {
   return "ok";
 }
 
+export default categories;
+
