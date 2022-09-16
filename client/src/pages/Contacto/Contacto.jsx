@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import styles from './Contacto.module.css';
 import { pin, phone, mail } from '../../assets/imgs';
 import { animateScroll as scroll } from 'react-scroll';
+import { Link } from 'react-router-dom';
 
 const Contacto = () => {
 
@@ -28,7 +29,7 @@ const Contacto = () => {
       </address>
       <div className={styles.containerForm}>
         <p className={styles.info}>
-          ¿Ya visitaste nuestra sección de <a href="#"> Preguntas frecuentes</a>
+          ¿Ya visitaste nuestra sección de <Link to={'/faq'}><a href="#"> Preguntas frecuentes</a></Link> 
           ? En ella podrás encontrar respuesta a muchas de las preguntas más
           comunes.
         </p>

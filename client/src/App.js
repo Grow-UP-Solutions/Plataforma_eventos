@@ -8,6 +8,9 @@ import Navbar from './components/Header/Navbar';
 import Footer from './components/Footer/Footer';
 import EventDetails from './components/EventDetails/EventDetails';
 import Cart from './pages/Cart/Cart';
+import Faq from './pages/FAQ/Faq';
+import SearchResut from './components/SearchResult/SearchResut';
+import { Data } from './context/Context';
 
 function App() {
   const location = useLocation();
@@ -17,19 +20,23 @@ function App() {
 
   return (
     <div className="App">
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/contactanos" element={<Contacto />} />
-        <Route path="/eventdetails/:id" element={<EventDetails />} />
-        <Route path="/cart" element={<Cart />} />
-      </Routes>
-      <div className="container">
-        <Footer />
-      </div>
-      <div className="footer_extra">
-        <p>© 2019 LO QUE QUIERO HACER S.A.S</p>
-      </div>
+      <Data>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/contactanos" element={<Contacto />} />
+          <Route path="/faq" element={<Faq />} />
+          <Route path="/eventdetails/:id" element={<EventDetails />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/search" element={<SearchResut />} />
+        </Routes>
+        <div className="container">
+          <Footer />
+        </div>
+        <div className="footer_extra">
+          <p>© 2019 LO QUE QUIERO HACER S.A.S</p>
+        </div>
+      </Data>
     </div>
   );
 }
