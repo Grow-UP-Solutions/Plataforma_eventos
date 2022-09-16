@@ -33,3 +33,11 @@
 .rdrDayToday .rdrDayNumber span::after {
   background-color: var(--color-orange) !important;
 }
+
+.swiper-pagination-bullet {
+  background-color: white !important;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: var(--color-orange) !important;
+}
