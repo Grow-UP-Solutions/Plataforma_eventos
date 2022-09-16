@@ -13,7 +13,7 @@ const EventDetails = () => {
 
   const allEvents = events;
 
-  const eventDetails = allEvents.filter((event) => event.name === 'Music')[0];
+  const eventDetails = events.filter((event) => event.name === 'Music')[0];
 
   useEffect(() => {
     scroll.scrollToTop();

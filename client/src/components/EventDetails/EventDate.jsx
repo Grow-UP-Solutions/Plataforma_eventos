@@ -56,11 +56,10 @@ const EventDate = ({ event }) => {
                 <td>{event.time}</td>
                 <td>{event.price}</td>
                 <td>{event.cupos}</td>
-                <td>
+                <td className={styles.number}>
                   <input
                     type="number"
                     value={event.id}
-                    defaultChecked={false}
                   ></input>
                 </td>
               </tr>

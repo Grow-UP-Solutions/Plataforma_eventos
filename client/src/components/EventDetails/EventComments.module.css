@@ -138,6 +138,40 @@
     margin-bottom: 2.5rem;
   }
 
+  .reportCom {
+    position: relative;
+    font-size: 1.5rem;
+    color: rgba(134, 134, 134, 255);
+    cursor: pointer;
+  }
+  
+  .reportCom:before {
+    content: attr(data-hover);
+    visibility: hidden;
+    opacity: 0;
+    width: 250px;
+    height: 50px;
+    justify-content: center;
+    background-color: rgb(248, 248, 248);
+    color: grey;
+    text-align: center;
+    font-style: italic;
+    border-radius: 10px;
+    padding: 5px 0;
+    transition: opacity 1s ease-in-out;
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    top: 110%;
+    padding: 1rem;
+  }
+  
+  .reportCom:hover:before {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+
   .hr{
     border: 0.1px solid rgb(219, 219, 219);
     width: 100%;

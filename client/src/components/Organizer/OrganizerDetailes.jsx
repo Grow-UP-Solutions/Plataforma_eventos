@@ -28,6 +28,7 @@ const OrganizerDetails = () => {
 
   return (
     <div className={styles.container}>
+      <div className={styles.top}></div>
         <img className={styles.img} src={userDetail.picture} alt='N' />
         <p  className={styles.name}>{userDetail.name}</p>
         <Rating
