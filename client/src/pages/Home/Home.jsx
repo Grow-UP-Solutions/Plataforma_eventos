@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
-import Navbar from '../Header/Navbar';
-import CarrouselHome from '../CarrouselHome/CarrouselHome';
-import HowItWorks from '../HowItWorks/HowItWorks';
-import Footer from '../Footer/Footer';
-import Categories from '../Categories/Categories';
-import Events from '../Events/Events';
-import { animateScroll as scroll } from 'react-scroll';
 import { InView } from 'react-intersection-observer';
+import { animateScroll as scroll } from 'react-scroll';
+
+import {
+  CarrouselHome,
+  Categories,
+  Events,
+  HowItWorks,
+} from '../../components';
+
 const Home = ({ handleNav }) => {
   useEffect(() => {
     scroll.scrollToTop();
@@ -15,7 +17,7 @@ const Home = ({ handleNav }) => {
   return (
     <div>
       <InView
-        rootMargin="-100px"
+        rootMargin="-150px"
         as="div"
         onChange={(inView, entry) => handleNav(inView)}
       >
