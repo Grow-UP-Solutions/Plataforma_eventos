@@ -7,9 +7,9 @@ import { animateScroll as scroll } from 'react-scroll';
 import { useParams } from 'react-router-dom';
 import { IoLocationOutline } from 'react-icons/io5';
 import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
-import AboutOrganizer from './AboutOrganizer.jsx';
-import NextEvents from './NextEvents.jsx';
-import Opinions from './Opinions.jsx';
+import AboutOrganizer from '../../components/Organizer/AboutOrganizer.jsx';
+import NextEvents from '../../components/Organizer/NextEvents.jsx';
+import Opinions from '../../components/Organizer/Opinions.jsx';
 import { useState } from 'react';
 
 const OrganizerDetails = () => {

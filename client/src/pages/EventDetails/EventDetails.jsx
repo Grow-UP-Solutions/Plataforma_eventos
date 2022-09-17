@@ -1,21 +1,22 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import EventInfo from './EventInfo';
-import EventLocation from './EventLocation';
-import EventComments from './EventComments';
-import EventSideBar from './EventSideBar';
+
+import EventInfo from '../../components/EventDetails/EventInfo';
+import EventLocation from '../../components/EventDetails/EventLocation';
+import EventComments from '../../components/EventDetails/EventComments';
+import EventSideBar from '../../components/EventDetails/EventSideBar';
 import style from './EventDetails.module.css';
 import events from '../../api/events';
 import { animateScroll as scroll } from 'react-scroll';
 
 const EventDetails = () => {
   const id = useParams().id;
-  console.log('id:',id)
+  console.log('id:', id);
 
   const allEvents = events;
 
   const eventDetails = allEvents.filter((event) => event.id === id)[0];
-  console.log('eventDetails:',eventDetails)
+  console.log('eventDetails:', eventDetails);
 
   useEffect(() => {
     scroll.scrollToTop();

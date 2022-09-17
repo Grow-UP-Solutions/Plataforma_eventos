@@ -9,7 +9,7 @@ import { IoNotifications, IoCaretDownSharp } from 'react-icons/io5';
 import logo from '../../assets/imgs/logoNav.svg';
 
 const user = {
-  userLog: false,
+  userLog: true,
   name: 'Jean',
   lastName: 'Huaman',
   img: 'https://i.pravatar.cc/150?img=4',

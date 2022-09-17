@@ -10,15 +10,16 @@ import { Link } from 'react-router-dom';
 const Footer = () => {
   return (
     <div className={styles.footer}>
-     
-        <img src={logo} alt="logo-empresa" className={styles.footerImg} />
-      
+      <img src={logo} alt="logo-empresa" className={styles.footerImg} />
+
       <div className={styles.footerItems}>
         <div className={styles.footerList}>
           <p className={styles.titleList}>Empresa</p>
           <ul>
             <li>
-              <a href="#">Empleo</a>
+              <Link to="/workWithUs">
+                <a href="#">Empleo</a>
+              </Link>
             </li>
             <li>
               <a href="#">Noticias</a>
