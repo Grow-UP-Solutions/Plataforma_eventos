@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { animateScroll as scroll } from 'react-scroll';
 import './App.css';
-
 import {
   Cart,
   Contacto,
   Faq,
   Home,
   Ingresa,
-  OrganizaUnEvento,
+  EventCreate,
+  EventCreateForm,
   Organizer,
   Payment,
   Register,
@@ -44,7 +44,8 @@ function App() {
           <Route path="/search" element={<SearchResult />} />
           <Route path="/ingresa" element={<Ingresa />} />
           <Route path="/registrate" element={<Register />} />
-          <Route path="/organiza-un-evento" element={<OrganizaUnEvento />} />
+          <Route path="/organiza-un-evento" element={<EventCreate />} />
+          <Route path="/oganiza-un-evento-form" element={<EventCreateForm />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/categories" element={<CategoriesResult />} />
           <Route path="/workWithUs" element={<WorkWithUs />} />
