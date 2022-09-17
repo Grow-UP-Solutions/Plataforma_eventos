@@ -11,11 +11,12 @@ import Cart from './pages/Cart/Cart';
 import Faq from './pages/FAQ/Faq';
 import SearchResut from './components/SearchResult/SearchResut';
 import { Data } from './context/Context';
-import OrganizaUnEvento from './components/OrganizaUnEvento/OrganizaUnEvento';
+import EventCreate from './components/EventCreate/EventCreate';
 import Ingresa from './components/Ingresa/Ingresa';
 import Register from './components/Register/Register';
 import Payment from './pages/Payment/Payment';
 import CategoriesResult from './components/CategoriesResult/CategoriesResult';
+import EventCreateForm from './components/EventCreate/EventCreateForm';
 import { animateScroll as scroll } from 'react-scroll';
 
 function App() {
@@ -42,9 +43,9 @@ function App() {
           <Route path="/search" element={<SearchResut />} />
           <Route path="/ingresa" element={<Ingresa />} />
           <Route path="/registrate" element={<Register />} />
-          <Route path="/organiza-un-evento" element={<OrganizaUnEvento />} />
+          <Route path="/organiza-un-evento" element={<EventCreate />} />
+          <Route path="/oganiza-un-evento-form" element={<EventCreateForm />} />
           <Route path="/payment" element={<Payment />} />
-         
           <Route path="/categories" element={<CategoriesResult />} />
         </Routes>
         <div className="container">
