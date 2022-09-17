@@ -1,8 +1,44 @@
-.containerall{
-    width: 100%
+.container{
+  width: 100%; 
 }
+
+.containerBtn{
+  width: 100%;
+  margin-top: -15rem;
+  margin-left: 18rem;
+}
+
+.btn{
+font-size: 1.4rem;
+font-weight: bold;
+color: var(--color-grey-4);
+background-color: var(--color-orange);
+border-radius: 18px;
+text-align: center;
+padding: 8px 30px;
+cursor: pointer;
+border: 1px solid transparent;
+}
+
+.btn:hover {
+  background-color: transparent;
+  color: var(--color-orange);
+  border: 1px solid var(--color-orange);
+}
+
+.containerContent {
+  font-family: 'Raleway';
+  width: 100%;
+  letter-spacing: 1.2px;
+  line-height: 2rem;
+  margin-top: 20rem;
+  text-align: center;
+  justify-content: center;
+  
+  }
+
 .header{
-    width: 80%;
+    
     text-align: center;
     margin-top: 10rem;
     margin-bottom: 10rem;
@@ -14,44 +50,32 @@
     margin-bottom: 2rem
 }
 
-.btnCont{
-    width: 80%;
-    margin-top: -10rem;
-   
-}
-.btn{
-    font-size: 1.4rem;
-  font-weight: bold;
-  color: var(--color-grey-4);
-  background-color: var(--color-orange);
-  border-radius: 18px;
-  text-align: center;
-  padding: 8px 30px;
-  cursor: pointer;
-  border: 1px solid transparent;
+.containerItems{
+  display: grid;
+  grid-template-columns: 1fr 1fr  1fr ;
+  width: 50%;
+  margin:0px auto
 }
 
-.btn:hover {
-    background-color: transparent;
-    color: var(--color-orange);
-    border: 1px solid var(--color-orange);
-  }
+.items {
+  padding:3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+  position: relative;
+  width: 30rem;
+  border:none;
+  box-shadow: 10px 5px 5px rgb(231, 230, 230);
+  margin:1rem
+}
 
-.container {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    margin-top: 6rem;
-    justify-content: center;
-    align-items: center;
-    width: 80%; 
-    
-  }
+.img {
+  width: 10rem;
+  height: 10rem;
+}
 
-  .card{
-    background-color: var(--color-grey-6);
-    padding: 8rem 0;
-  }
-
+ 
   .title {
     font-size: 3rem;
     font-weight: bold;
@@ -60,10 +84,7 @@
     margin-bottom: 8rem;
   }
 
-  .img {
-    width: 10rem;
-    height: 10rem;
-  }
+  
 
   .subTitle{
     color:#707070;
@@ -71,13 +92,3 @@
     font-size: 1.3rem;
 }
 
-.items {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 3rem;
-    position: relative;
-    width: 30rem;
-    border:1px solid grey
-  }
-  
