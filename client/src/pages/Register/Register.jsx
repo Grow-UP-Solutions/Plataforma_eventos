@@ -1,15 +1,7 @@
-import React, { useEffect } from 'react';
-import styles from './Register.module.css';
-
-
+import React from 'react';
 
 const Register = () => {
-   
-
-
- return (
-    <div></div>
- )
-}
+  return <div></div>;
+};
 
 export default Register;

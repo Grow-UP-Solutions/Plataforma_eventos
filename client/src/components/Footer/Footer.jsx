@@ -1,10 +1,10 @@
 import React from 'react';
 import styles from './Footer.module.css';
 
+import { ImFacebook, ImLinkedin2, ImTwitter, ImYoutube } from 'react-icons/im';
 import { logo } from '../../assets/imgs/';
-import { ImFacebook, ImTwitter, ImYoutube, ImLinkedin2 } from 'react-icons/im';
 
-import { FaTiktok, FaInstagram } from 'react-icons/fa';
+import { FaInstagram, FaTiktok } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {

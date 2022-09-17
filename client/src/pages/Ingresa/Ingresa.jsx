@@ -1,15 +1,7 @@
-import React, { useEffect } from 'react';
-import styles from './Ingresa.module.css';
-
-
+import React from 'react';
 
 const Ingresa = () => {
-   
-
-
- return (
-    <div></div>
- )
-}
+  return <div></div>;
+};
 
 export default Ingresa;

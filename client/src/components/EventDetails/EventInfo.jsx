@@ -1,27 +1,24 @@
-import React from 'react';
-import style from './EventInfo.module.css';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
-import WarningOutlinedIcon from '@mui/icons-material/WarningOutlined';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import LaunchOutlinedIcon from '@mui/icons-material/LaunchOutlined';
+import WarningOutlinedIcon from '@mui/icons-material/WarningOutlined';
 import { Rating } from '@mui/material';
-import { ImFacebook, ImTwitter, ImLinkedin2 } from 'react-icons/im';
-import { FaInstagram } from 'react-icons/fa';
-import { Swiper, SwiperSlide } from 'swiper/react/swiper-react';
-import { Pagination , Scrollbar , Navigation } from 'swiper';
-import { useState } from "react";
-import 'swiper/swiper.min.css';
-import 'swiper/modules/pagination/pagination.min.css';
-import 'swiper/modules/scrollbar/scrollbar.min.css';
-import 'swiper/modules/navigation/navigation.min.css';
-import { AiOutlineClose } from 'react-icons/ai';
-import * as locales from 'react-date-range/dist/locale';
+import React, { useState } from 'react';
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
+import { AiOutlineClose } from 'react-icons/ai';
+import { FaInstagram } from 'react-icons/fa';
+import { ImFacebook, ImLinkedin2, ImTwitter } from 'react-icons/im';
+import { Navigation, Pagination } from 'swiper';
+import 'swiper/modules/navigation/navigation.min.css';
+import 'swiper/modules/pagination/pagination.min.css';
+import 'swiper/modules/scrollbar/scrollbar.min.css';
+import { Swiper, SwiperSlide } from 'swiper/react/swiper-react';
+import 'swiper/swiper.min.css';
 import { formatDate } from '../../utils/formatDate';
+import style from './EventInfo.module.css';
 
-const EventInfo = ({event}) => {
-
+const EventInfo = ({ event }) => {
   const [getDanger, setGetDanger] = useState(false);
   const [check, setCheck] = useState(null);
   const [checked, setChecked] = useState('');
@@ -30,7 +27,6 @@ const EventInfo = ({event}) => {
     setCheck(check);
     setChecked(formatDate(check));
   };
-
 
   return (
     <div className={style.container}>
@@ -143,7 +139,7 @@ const EventInfo = ({event}) => {
       </p> */}
 
       <p onClick={() => setGetDanger(!getDanger)} className={style.report}>
-        <WarningOutlinedIcon fontSize="medium"/>   Reportar Contenido Inapropiado
+        <WarningOutlinedIcon fontSize="medium" /> Reportar Contenido Inapropiado
       </p>
 
       {getDanger && (
@@ -154,43 +150,73 @@ const EventInfo = ({event}) => {
             </button>
           </div>
           <div className={style.containerDescription}>
-            <h2 className={style.menuTitle}>¿Por qué consideras que el contenido de esta opinión es inapropiado? </h2>
+            <h2 className={style.menuTitle}>
+              ¿Por qué consideras que el contenido de esta opinión es
+              inapropiado?{' '}
+            </h2>
           </div>
           <div className={style.containerDanger}>
-           
             <div className={style.containerFormDanger}>
-              
               <div className={style.menuOptions}>
                 <form action="">
                   <div className={style.formGroup}>
                     <label htmlFor="check">
-                    <input type="checkbox" id="check" value={checked} defaultChecked={false} />
-                    Despectivo</label>
+                      <input
+                        type="checkbox"
+                        id="check"
+                        value={checked}
+                        defaultChecked={false}
+                      />
+                      Despectivo
+                    </label>
                   </div>
                   <div className={style.formGroup}>
-                  <label htmlFor="check">
-                    <input type="checkbox" id="check" value={checked} defaultChecked={false} />
-                    Racista</label>
+                    <label htmlFor="check">
+                      <input
+                        type="checkbox"
+                        id="check"
+                        value={checked}
+                        defaultChecked={false}
+                      />
+                      Racista
+                    </label>
                   </div>
                   <div className={style.formGroup}>
-                  <label htmlFor="check">
-                    <input type="checkbox" id="check" value={checked} defaultChecked={false} />
-                    Incita a la violencia</label>
+                    <label htmlFor="check">
+                      <input
+                        type="checkbox"
+                        id="check"
+                        value={checked}
+                        defaultChecked={false}
+                      />
+                      Incita a la violencia
+                    </label>
                   </div>
                   <div className={style.formGroup}>
-                  <label htmlFor="check">
-                    <input type="checkbox" id="check" value={checked} defaultChecked={false} />
-                    Sexual explicito</label>
+                    <label htmlFor="check">
+                      <input
+                        type="checkbox"
+                        id="check"
+                        value={checked}
+                        defaultChecked={false}
+                      />
+                      Sexual explicito
+                    </label>
                   </div>
                   <div className={style.formGroup}>
-                  <label htmlFor="check">
-                    <input type="checkbox" id="check" value={checked} defaultChecked={false} />
-                    Otro</label>
+                    <label htmlFor="check">
+                      <input
+                        type="checkbox"
+                        id="check"
+                        value={checked}
+                        defaultChecked={false}
+                      />
+                      Otro
+                    </label>
                   </div>
                   <div className={style.formGroup}>
                     <label htmlFor="check">Si otro, indicar cual: </label>
                     <input type="text" id="check" value={checked} />
-                    
                   </div>
                   <div className={style.containerBtn}>
                     <button type="submit" className={style.btnMenuDanger}>
@@ -206,8 +232,6 @@ const EventInfo = ({event}) => {
           </div>
         </div>
       )}
-      
-
     </div>
   );
 };

@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import styles from './OrganizaUnEvento.module.css';
+import React from 'react';
 
 const OrganizaUnEvento = () => {
   return <div></div>;

@@ -88,14 +88,14 @@ const WorkWithUs = () => {
       <h1 className={styles.titleWorkWithUs}>Trabaja con nosotros</h1>
       <div>
         {works.map((work) => (
-          <div className={styles.containerWork}>
+          <div key={work.id} className={styles.containerWork}>
             <div className={styles.containerInfoWork}>
               <h2 className={styles.titleWork}>
                 {work.title} ({work.quantity})
               </h2>
               <p>{work.description}</p>
             </div>
-            <Link to="/workWithUs/form">
+            <Link to={`/workWithUs/form/:${work.title}`}>
               <a href="#" className={styles.btnWork}>
                 Aplicar
               </a>
