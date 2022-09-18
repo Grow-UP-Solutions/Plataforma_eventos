@@ -9,6 +9,7 @@ export { default as Payment } from './Payment/Payment';
 export { default as Register } from './Register/Register';
 export { default as SearchResult } from './SearchResult/SearchResult';
 export { default as WorkWithUs } from './WorkWithUs/WorkWithUs';
+export { default as WorkWithUsForm } from './WorkWithUsForm/WorkWithUsForm';
 export { default as EventDetails } from './EventDetails/EventDetails';
 export { default as CategoriesResult } from './CategoriesResult/CategoriesResult';
 export { default as EventCreate } from './EventCreate/EventCreate';

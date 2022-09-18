@@ -15,6 +15,7 @@ import {
   Register,
   SearchResult,
   WorkWithUs,
+  WorkWithUsForm,
   EventDetails,
   CategoriesResult,
 } from './pages';
@@ -49,6 +50,7 @@ function App() {
           <Route path="/payment" element={<Payment />} />
           <Route path="/categories" element={<CategoriesResult />} />
           <Route path="/workWithUs" element={<WorkWithUs />} />
+          <Route path="/workWithUs/form/:work" element={<WorkWithUsForm />} />
         </Routes>
         <div className="container">
           <Footer />
