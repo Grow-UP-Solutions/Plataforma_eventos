@@ -9,21 +9,104 @@ import iconExclamacion2 from '../../assets/imgs/iconExclamacion2.svg'
 import calendar from '../../assets/imgs/calendar.svg'
 import basquet from '../../assets/imgs/basquet.svg'
 import infoIcon from '../../assets/imgs/infoIcon.svg'
+import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
+
 import { Calendar } from 'react-date-range';
+import { useRef } from 'react';
+import { useState } from 'react';
 
 
 
 const EventCreateForm = () => {
-   
-console.log(categories)
+
+
 
  return (
+    <div>
     <div className={styles.container}>
+
+
+        {/* /*Linea vertical */}
+
+    <div className={styles.containerVerticalLine} >
+    
+
+        <div className={styles.containerLine}>
+            <ul className={styles.timeVerticalRed}>
+                <li><b></b><span>1</span></li>
+            </ul>
+            <ul className={styles.timeVertical}>
+                <li><b></b></li>
+                <li><b></b></li>
+                <li><b></b></li>
+                <li><b></b></li>
+            </ul>
+        </div>
+        <div className={styles.containerLine}>
+            <ul className={styles.timeVerticalRed}>
+                <li><b></b><span>2</span></li>
+            </ul>
+            <ul className={styles.timeVertical}>
+                <li><b></b></li>
+                <li><b></b></li>
+                <li><b></b></li>
+                <li><b></b></li>
+            </ul>
+        </div>
+        <div className={styles.containerLine}>
+            <ul className={styles.timeVerticalRed}>
+                <li><b></b><span>3</span></li>
+            </ul>
+            <ul className={styles.timeVertical}>
+                <li><b></b></li>
+                <li><b></b></li>
+                <li><b></b></li>
+                <li><b></b></li>
+            </ul>
+        </div>
+        <div className={styles.containerLine}>
+            <ul className={styles.timeVerticalRed}>
+                <li><b></b><span>4</span></li>
+            </ul>
+            <ul className={styles.timeVertical}>
+                <li><b></b></li>
+                <li><b></b></li>
+                <li><b></b></li>
+                <li><b></b></li>
+            </ul>
+        </div>
+        <div className={styles.containerLine}>
+            <ul className={styles.timeVerticalRed}>
+                <li><b></b><span>5</span></li>
+            </ul>
+            <ul className={styles.timeVertical}>
+                <li><b></b></li>
+                <li><b></b></li>
+                <li><b></b></li>
+                <li><b></b></li>
+            </ul>
+        </div>
+        <div className={styles.containerLine}>
+            <ul className={styles.timeVerticalRed}>
+                <li><b></b><span>6</span></li>
+            </ul>
+            <ul className={styles.timeVertical}>
+                <li><b></b></li>
+                <li><b></b></li>
+                <li><b></b></li>
+                <li><b></b></li>
+            </ul>
+        </div>
+        
+
+    </div>
+
+    {/* /*Form */}
     <div className={styles.containerForm}>
       <form>
       {/* Seccion 1 */}
 
-       <div>
+       <div className={styles.container1}>
         <p className={styles.title}>Nombre del Evento</p>
         <p className={styles.subTitle}>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolaore te feugait nulla facilisi.
         </p>
@@ -33,9 +116,9 @@ console.log(categories)
 
        {/* Seccion 2 */}
 
-       <div>
+       <div className={styles.container1}>
         <p className={styles.title}>Escoge hasta 3 categorías</p>
-        <p className={styles.subTitle}>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolaore te feugait nulla facilisi.</p>
+        <p className={styles.subTitle}>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.  </p>
         <div className={styles.containerChecks}>
         {
             categories.map (categorie =>
@@ -56,17 +139,17 @@ console.log(categories)
        </div>
 
        {/* Seccion 3 */}
-       <div>
+       <div className={styles.container1}>
 
         <div className={styles.containerDescription}>
             <p className={styles.title}>Descripción breve</p>
-            <p className={styles.subTitle}>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolaore te feugait nulla facilisi.</p>
+            <p className={styles.subTitle}>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.  </p>
             <input className={styles.input3} type='text' placeholder='descripción breve del evento'/>
             <p className={styles.subTitle}>Máximo xx de caracteres</p>
         </div>
         <div className={styles.containerDescription}>
             <p className={styles.title}>Descripción detallada</p>
-            <p className={styles.subTitle}>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolaore te feugait nulla facilisi.</p>
+            <p className={styles.subTitle}>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.  </p>
             <input className={styles.input3} type='text' placeholder='descripción detallada del evento'/>
             <p className={styles.subTitle}>Minimo 75 palabras</p>
         </div>
@@ -74,9 +157,9 @@ console.log(categories)
 
       {/* Seccion 4 */}
 
-      <div className={styles.container4}>
+      <div className={styles.container1}>
         <p  className={styles.title}>Agrega fotos y/o videos</p>
-        <p className={styles.subTitle}>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolaore te feugait nulla facilisi.</p>
+        <p className={styles.subTitle}>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.  </p>
         <p className={styles.subTitle4}>Fotos del Evento</p>
         <input className={styles.inputPicture} type='text' placeholder='Arrastra los archivos aquí o haz clic en Agregar archivos'/>
         <label className={styles.subInput}>
@@ -86,11 +169,11 @@ console.log(categories)
 
        {/* Seccion 5 */}
 
-       <div className={styles.container5}>
+       <div className={styles.container1}>
         <p className={styles.title}>Donde es el Evento?</p>
-        <p className={styles.subTitle}>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolaore te feugait nulla facilisi.</p>
+        <p className={styles.subTitle}>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.  </p>
         <div className={styles.containerEnlinea}>
-            <label className={styles.subTitle}>
+            <label>
                 <input className={styles.checkBox4} type='checkbox'/>
                 Este es un evento en linea
             </label>
@@ -141,17 +224,17 @@ console.log(categories)
         <p className={styles.subtextEspecial}>Accesibilidad y requerimientos especiales</p>
         <div className={styles.especialDiv}>
             <span><img  className={styles.iconExclamacion2} src={iconExclamacion2} alt='n' /></span>
-            <span><p className={styles.subtitle}>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolaore te feugait nulla facilisi.</p></span>
+            <span> <p className={styles.subTitle}>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.  </p></span>
         </div>
        </div>
 
        {/* Seccion 6 */}
 
-       <div className={styles.container6}>
+       <div className={styles.container1}>
         
         <div>
             <p className={styles.title}>Costo y fecha</p>
-            <p className={styles.subTitle}>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolaore te feugait nulla facilisi.</p>
+            <p className={styles.subTitle}>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.  </p>
             
             <div className={styles.containerInfo}>
 
@@ -163,8 +246,10 @@ console.log(categories)
 
              <div className={styles.containerSubInfo}>
                 <label className={styles.subInfoTitle}>Precio por cupo
-                    <p>$</p>
+                <div className={styles.labelS}>
+                <p>$</p>
                 <input className={styles.subInfoInput} type='txt' placeholder='20.00'/>
+                </div>
                 </label>
                 <p>$21.990</p>
                 <p className={styles.subInfotxt}>Precio al público incluyendo costo de manejo e IVA</p>
@@ -172,8 +257,10 @@ console.log(categories)
 
              <div className={styles.containerSubInfo}>
                 <label className={styles.subInfoTitle}>Tu ganas por cupo
+                <div className={styles.labelS}>
                 <p>$</p>
-                <input className={styles.subInfoInput} type='txt' placeholder='20.00'/>
+                <input className={styles.subInfoInput} type='txt' placeholder='16.099'/>
+                </div>
                 </label>
                 <p className={styles.subInfotxt}>Después de nuestra comisión + IVA</p>
                 <button className={styles.btn6}>Ver Más</button>
@@ -266,7 +353,16 @@ console.log(categories)
 
 
       </form>
+        
+        
       </div>
+    </div>
+    {/*SECTIONS BUTTONS*/}
+    <div className={styles.containerBtnSection}>
+        <button className={styles.btnSectionMove} >NEXT</button>
+        <button className={styles.btnSectionMove} >PREV</button>
+
+        </div>
     </div>
  )
 }
