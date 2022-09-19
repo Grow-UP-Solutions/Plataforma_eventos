@@ -1,0 +1,208 @@
+.containerUserForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.containerPhotoProfile {
+}
+
+.containerPhoto {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.containerPhoto img {
+  border-radius: 50%;
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2);
+
+  margin-right: 20rem;
+}
+
+.addPhoto {
+  padding: 5rem;
+  border-radius: 50%;
+  border: 1px solid var(--color-grey-4);
+  box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.1);
+}
+
+.iconAddPhoto {
+  width: 5.2rem;
+  height: 5.2rem;
+  color: var(--color-grey-4);
+}
+
+.btnAddPhoto,
+.btnAddPhotoFile {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 0.5rem;
+
+  border: 1px solid var(--color-grey-4);
+  border-radius: 5px;
+  background-color: transparent;
+
+  cursor: pointer;
+}
+
+.btnAddPhotoIcon {
+  color: var(--color-grey-4);
+}
+
+.btnAddPhoto span {
+  font-size: 1.4rem;
+  color: var(--color-grey-4);
+}
+
+.divisor {
+  width: 70%;
+  height: 1px;
+  background-color: var(--color-grey-4);
+}
+
+/* FORM INPUTS */
+
+.formGroup {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  margin-bottom: 1.2rem;
+}
+
+.inputsContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.inputsContainer label {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: var(--color-grey-1);
+  margin-bottom: 0.6rem;
+}
+
+.inputsContainer input {
+  background-color: transparent;
+  border: 1px solid var(--color-grey-4);
+  font-size: 1.6rem;
+  color: var(--color-grey-2);
+  border-radius: 5px;
+  height: 4rem;
+  padding: 0 1.2rem;
+}
+
+.inputsContainer span {
+  margin-top: 6px;
+  font-size: 1.2rem;
+  font-style: italic;
+}
+
+.inputsContainer input::placeholder {
+  font-family: inherit;
+  font-size: 1.6rem;
+  color: var(--color-grey-3);
+}
+
+.inputsContainer input:focus {
+  outline: none;
+  border: 1px solid var(--color-orange);
+}
+
+.formGroup button {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid var(--color-orange);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.formGroup button span {
+  color: var(--color-orange);
+}
+
+.formGroup button .iconEdit {
+  color: var(--color-orange);
+}
+
+/* UPLOAD IMAGES */
+
+.containerPhotosCedula {
+  margin-top: 2rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  text-align: center;
+}
+
+.photoFront,
+.photoBack {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.photoFront > span,
+.photoBack > span {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: var(--color-grey-1);
+  margin-bottom: 1.2rem;
+}
+
+.photoFront > p,
+.photoBack > p {
+  font-size: 1.2rem;
+  font-style: italic;
+  margin-bottom: 2rem;
+}
+
+.dragDni {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 1rem 2rem;
+  border: 1px solid var(--color-grey-4);
+
+  margin-bottom: 0.6rem;
+
+  position: relative;
+}
+
+.dragDni span {
+  font-size: 1.2rem;
+}
+
+.inputFile {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.iconCameraFile {
+  width: 5rem;
+  height: 5rem;
+  color: var(--color-grey-4);
+}
+
+.btnAddPhotoFile {
+  position: relative;
+  justify-content: center;
+}
+
+.btnAddPhotoFile span {
+  font-size: 1.2rem;
+  color: var(--color-grey-4);
+}

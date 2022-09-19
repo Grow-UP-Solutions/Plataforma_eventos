@@ -8,3 +8,4 @@ export { default as FormProductPay } from './FormProductPay/FormProductPay';
 export { default as HowItWorks } from './HowItWorks/HowItWorks';
 export { default as Navbar } from './Navbar/Navbar';
 export { default as Search } from './Search/Search';
+export { default as UserForm } from './UserForm/UserForm';
