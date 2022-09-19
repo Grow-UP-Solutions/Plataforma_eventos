@@ -1,4 +1,4 @@
-const departamentos = [
+const dptos = [
 
     'Amazonas',	
 'Antioquia',
@@ -36,5 +36,4 @@ const departamentos = [
 
 ]
 
-export default departamentos
-
+export default dptos
