@@ -52,7 +52,7 @@ const Footer = () => {
               </Link>
             </li>
             <li>
-              <a href="#">Preguntas Frecuentes</a>
+              <Link to={'/faq'}><a>Preguntas Frecuentes</a></Link>
             </li>
           </ul>
         </div>

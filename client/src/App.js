@@ -23,6 +23,7 @@ import {
 import { Footer, Navbar } from './components';
 
 import { Data } from './context/Context';
+import Help from './pages/Help/Help';
 
 function App() {
   useEffect(() => {
@@ -51,6 +52,7 @@ function App() {
           <Route path="/categories" element={<CategoriesResult />} />
           <Route path="/workWithUs" element={<WorkWithUs />} />
           <Route path="/workWithUs/form/:work" element={<WorkWithUsForm />} />
+          <Route path="/help" element={<Help />} />
         </Routes>
         <div className="container">
           <Footer />

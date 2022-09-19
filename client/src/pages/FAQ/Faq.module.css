@@ -1,0 +1,119 @@
+.header {
+  padding-top: 100px;
+  text-align: center;
+  background-color: var(--color-orange);
+  position: relative;
+  height: 448px;
+}
+
+.header h1 {
+  color: var(--color-grey-6);
+  font-size: 6rem;
+}
+
+.input {
+  margin-top: 30px;
+  width: 848px;
+  height: 47px;
+  border-radius: 8px;
+  border: none;
+  padding: 1rem 2rem;
+}
+
+.input::placeholder {
+  font-size: 2rem;
+  color: var(--color-grey-1);
+  font-family: 'Raleway', sans-serif;
+}
+
+.input:focus {
+  outline: none;
+  border: 1px solid var(--color-orange);
+}
+
+.button {
+  position: relative;
+  right: 35px;
+  background-color: transparent;
+  border: none;
+}
+
+.loop {
+  color: var(--color-orange);
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+.container_box {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 30px;
+  margin-bottom: 50px;
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+  height: 89px;
+  width: 175px;
+  background-color: var(--color-grey-4);
+  border-bottom: 5px solid var(--color-orange);
+  opacity: 100%;
+  border-radius: 1px;
+  box-shadow: 0px 3px 5px 2px var(--color-grey-4);
+  text-align: center;
+}
+
+.box p {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--color-grey-3);
+  margin: auto;
+}
+
+.icon {
+  width: 50px;
+  height: 45px;
+  color: var(--color-grey-3);
+  margin: auto;  
+}
+
+.headset {
+  width: 420px;
+  height: 365px;
+  color: rgb(0, 0, 0);
+  position: absolute;
+  bottom: 70px;
+  right: 400px;
+  opacity: 0.2;
+}
+
+.container_accordion {
+  padding: 2rem 30rem;
+}
+
+.text {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--color-grey-5);
+}
+
+.parrafo {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 1.4rem;
+  color: var(--color-grey-3);
+}
+
+.link {
+  color: var(--color-orange);
+}
+
+.detail {
+  background-color: var(--color-grey-4);
+  font-size: 1.4rem;
+  font-family: 'Raleway', sans-serif;
+  color: var(--color-grey-3);
+}

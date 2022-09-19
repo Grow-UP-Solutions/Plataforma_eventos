@@ -1,4 +1,4 @@
-const users =[
+const users = [
     {
         id: '1',
         name: 'Jean Pierre',
@@ -14,22 +14,23 @@ const users =[
         isLogged: true,
         membership: 'Marzo 2003',
         descriptionOrganizer: 'Description del organizador consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero ero',
-        rating:5,
-        myEventsCreated:[
+        rating: 5,
+        myEventsCreated: [
             {
                 id:'2',
                 name:'Music',
                 nick: 'Bring your instruments!',
                 description: 'Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem',
-                date:[ 'Junio 1 / 2019'],
-                dates:[{
-                date:'Junio 7 / 2023',
-                cupos: 10,
-                time: '12.00-14.00',
-                price: '$300.000',
-                year:2023
-            },
-        ],
+                date: ['Junio 1 / 2019'],
+                dates: [
+                    {
+                        date:'Junio 7 / 2023',
+                        cupos: 10,
+                        time: '12.00-14.00',
+                        price: '$300.000',
+                        year:2023
+                    },
+                ],
         state: 'Antioquia',
         city: 'Medellin',
         price: '$300.000',
