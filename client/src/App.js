@@ -1,27 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import './App.css';
-import { Routes, Route, Link, useLocation } from 'react-router-dom';
-import Home from './components/Home/Home';
-import Contacto from './pages/Contacto/Contacto';
-import Navbar from './components/Header/Navbar';
-import Footer from './components/Footer/Footer';
-import EventDetails from './components/EventDetails/EventDetails';
-import OrganizerDetails from './components/Organizer/OrganizerDetailes';
-import Cart from './pages/Cart/Cart';
-import Faq from './pages/FAQ/Faq';
-import SearchResut from './components/SearchResult/SearchResut';
-import { Data } from './context/Context';
-import OrganizaUnEvento from './components/OrganizaUnEvento/OrganizaUnEvento';
-import Ingresa from './components/Ingresa/Ingresa';
-import Register from './components/Register/Register';
-import Payment from './pages/Payment/Payment';
-import CategoriesResult from './components/CategoriesResult/CategoriesResult';
+import { Route, Routes } from 'react-router-dom';
 import { animateScroll as scroll } from 'react-scroll';
+import './App.css';
+import {
+  Cart,
+  Contacto,
+  Faq,
+  Home,
+  Ingresa,
+  EventCreate,
+  EventCreateForm,
+  Organizer,
+  Payment,
+  Register,
+  SearchResult,
+  WorkWithUs,
+  WorkWithUsForm,
+  EventDetails,
+  CategoriesResult,
+} from './pages';
+
+import { Footer, Navbar } from './components';
+
+import { Data } from './context/Context';
+import Help from './pages/Help/Help';
 
 function App() {
-  
-  const location = useLocation();
-
   useEffect(() => {
     scroll.scrollToTop();
   }, []);
@@ -36,15 +40,19 @@ function App() {
           <Route path="/" element={<Home handleNav={setNavBar} />} />
           <Route path="/contactanos" element={<Contacto />} />
           <Route path="/faq" element={<Faq />} />
-          <Route path="/organizerDetails/:id" element={<OrganizerDetails />} />
+          <Route path="/organizerDetails/:id" element={<Organizer />} />
           <Route path="/eventdetails/:id" element={<EventDetails />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/search" element={<SearchResut />} />
+          <Route path="/search" element={<SearchResult />} />
           <Route path="/ingresa" element={<Ingresa />} />
           <Route path="/registrate" element={<Register />} />
-          <Route path="/organiza-un-evento" element={<OrganizaUnEvento />} />
+          <Route path="/organiza-un-evento" element={<EventCreate />} />
+          <Route path="/oganiza-un-evento-form" element={<EventCreateForm />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/categories" element={<CategoriesResult />} />
+          <Route path="/workWithUs" element={<WorkWithUs />} />
+          <Route path="/workWithUs/form/:work" element={<WorkWithUsForm />} />
+          <Route path="/help" element={<Help />} />
         </Routes>
         <div className="container">
           <Footer />

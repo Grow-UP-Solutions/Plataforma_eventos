@@ -6,20 +6,19 @@ import { Context } from '../../context/Context';
 import { useNavigate } from 'react-router-dom';
 
 const Categories = () => {
-
-  const {setResult} = useContext(Context);
+  const { setResult } = useContext(Context);
   const navigate = useNavigate();
   const allEvents = events;
   const allCategories = categories;
 
   const handleClick = (e) => {
     e.preventDefault();
-    const filtro = allEvents.filter((event) =>
-      event.category.name === e.target.id
+    const filtro = allEvents.filter(
+      (event) => event.category.name === e.target.id
     );
     setResult(filtro);
     navigate('/categories/');
-  }
+  };
 
   return (
     <div className={styles.sectionCategories}>
@@ -30,7 +29,13 @@ const Categories = () => {
             <li className={styles.categorie}>
               <img src={categorie.img} alt={categorie.name} />
               <div className={styles.categorieText}>
-                <p id={categorie.name} onClick={handleClick} className={styles.categorieTitle}>{categorie.name}</p>
+                <p
+                  id={categorie.name}
+                  onClick={handleClick}
+                  className={styles.categorieTitle}
+                >
+                  {categorie.name}
+                </p>
                 <p className={styles.categorieDescription}>
                   {categorie.description}
                 </p>

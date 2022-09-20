@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import style from './CarrouselHome.module.css';
-import { Swiper, SwiperSlide } from 'swiper/react/swiper-react';
-import { Pagination, Autoplay, Navigation } from 'swiper';
-import 'swiper/swiper.min.css';
+import React from 'react';
+import { Autoplay, Navigation, Pagination } from 'swiper';
+import 'swiper/modules/navigation/navigation.min.css';
 import 'swiper/modules/pagination/pagination.min.css';
 import 'swiper/modules/scrollbar/scrollbar.min.css';
-import 'swiper/modules/navigation/navigation.min.css';
+import { Swiper, SwiperSlide } from 'swiper/react/swiper-react';
+import 'swiper/swiper.min.css';
 import Search from '../Search/Search';
+import style from './CarrouselHome.module.css';
 
 const CarrouselHome = () => {
   const images = [

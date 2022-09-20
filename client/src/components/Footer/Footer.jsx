@@ -1,24 +1,25 @@
 import React from 'react';
 import styles from './Footer.module.css';
 
+import { ImFacebook, ImLinkedin2, ImTwitter, ImYoutube } from 'react-icons/im';
 import { logo } from '../../assets/imgs/';
-import { ImFacebook, ImTwitter, ImYoutube, ImLinkedin2 } from 'react-icons/im';
 
-import { FaTiktok, FaInstagram } from 'react-icons/fa';
+import { FaInstagram, FaTiktok } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
     <div className={styles.footer}>
-     
-        <img src={logo} alt="logo-empresa" className={styles.footerImg} />
-      
+      <img src={logo} alt="logo-empresa" className={styles.footerImg} />
+
       <div className={styles.footerItems}>
         <div className={styles.footerList}>
           <p className={styles.titleList}>Empresa</p>
           <ul>
             <li>
-              <a href="#">Empleo</a>
+              <Link to="/workWithUs">
+                <a href="#">Empleo</a>
+              </Link>
             </li>
             <li>
               <a href="#">Noticias</a>
@@ -51,7 +52,7 @@ const Footer = () => {
               </Link>
             </li>
             <li>
-              <a href="#">Preguntas Frecuentes</a>
+              <Link to={'/faq'}><a>Preguntas Frecuentes</a></Link>
             </li>
           </ul>
         </div>
