@@ -2,9 +2,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  padding: 2rem 0;
 }
 
 .containerPhotoProfile {
+  margin-bottom: 2rem;
 }
 
 .containerPhoto {
@@ -12,13 +15,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
+
+  position: relative;
+
+  margin-bottom: 1.2rem;
 }
 
 .containerPhoto img {
+  width: 16rem;
+  height: 16rem;
   border-radius: 50%;
   box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2);
-
-  margin-right: 20rem;
 }
 
 .addPhoto {
@@ -46,6 +53,8 @@
   background-color: transparent;
 
   cursor: pointer;
+
+  position: relative;
 }
 
 .btnAddPhotoIcon {
@@ -61,6 +70,63 @@
   width: 70%;
   height: 1px;
   background-color: var(--color-grey-4);
+  margin-bottom: 4rem;
+}
+
+/* FOR ORGANIZER */
+
+.isUserIsProfileCompleted {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+
+  margin-bottom: 2rem;
+}
+
+.isUserIsProfileCompleted span {
+  color: var(--color-grey-3);
+  font-size: 1.6rem;
+}
+
+.containerBtnOrganizer {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+
+  position: relative;
+}
+
+.btnApplyForOrganizer {
+  border: 1px solid var(--color-orange);
+  color: var(--color-orange);
+  padding: 1rem 4rem;
+  background-color: transparent;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.btnIconMoreInfo {
+  width: 2rem;
+  height: 2rem;
+  color: var(--color-grey-3);
+}
+
+.containerMoreInfo {
+  position: absolute;
+  bottom: -150%;
+  right: -50%;
+
+  color: var(--color-grey-2);
+  background-color: var(--color-grey-4);
+  padding: 2rem 4rem;
+  border-radius: 10px;
+
+  display: none;
+}
+
+.btnIconMoreInfo:hover ~ .containerMoreInfo {
+  display: block;
 }
 
 /* FORM INPUTS */
@@ -97,6 +163,7 @@
 }
 
 .inputsContainer span {
+  color: var(--color-grey-3);
   margin-top: 6px;
   font-size: 1.2rem;
   font-style: italic;
@@ -133,7 +200,7 @@
 /* UPLOAD IMAGES */
 
 .containerPhotosCedula {
-  margin-top: 2rem;
+  margin: 2rem 0;
 
   display: flex;
   align-items: center;
@@ -161,15 +228,20 @@
   font-size: 1.2rem;
   font-style: italic;
   margin-bottom: 2rem;
+  color: var(--color-grey-3);
 }
 
 .dragDni {
+  width: 30rem;
+  height: 15rem;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
 
   padding: 1rem 2rem;
   border: 1px solid var(--color-grey-4);
+  border-radius: 10px;
 
   margin-bottom: 0.6rem;
 
@@ -178,6 +250,7 @@
 
 .dragDni span {
   font-size: 1.2rem;
+  color: var(--color-grey-3);
 }
 
 .inputFile {
@@ -200,9 +273,161 @@
 .btnAddPhotoFile {
   position: relative;
   justify-content: center;
+  cursor: pointer;
 }
 
 .btnAddPhotoFile span {
   font-size: 1.2rem;
   color: var(--color-grey-4);
+  cursor: pointer;
+}
+
+/* RENT */
+.containerPeopleRent {
+  width: 100%;
+  padding-left: 20rem;
+  margin-bottom: 2rem;
+}
+
+.containerPeopleRent p {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: var(--color-grey-5);
+  margin-bottom: 2rem;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.checkbox input {
+  accent-color: var(--color-orange);
+}
+
+.checkbox label {
+  font-size: 1.6rem;
+  color: var(--color-grey-2);
+}
+
+.containerDrag {
+  margin-top: 4rem;
+  padding-right: 18rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.containerDrag p {
+  font-size: 1.4rem;
+  color: var(--color-grey-3);
+  font-style: italic;
+}
+
+.dragRent {
+  width: 30rem;
+  height: 15rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+  border: 1px solid var(--color-grey-4);
+  border-radius: 10px;
+}
+
+.dragRent span {
+  color: var(--color-grey-3);
+}
+
+/* ABOUT ME */
+
+.containerAboutMe {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.containerAboutMe > div {
+  width: 60%;
+}
+
+.containerTitle {
+  display: flex;
+  justify-content: space-between;
+}
+
+.containerTitle p {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: var(--color-grey-5);
+}
+
+.containerTitle button {
+  color: var(--color-orange);
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid var(--color-orange);
+
+  display: flex;
+  align-items: center;
+}
+
+.containerAboutMeInput {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  margin-bottom: 5.2rem;
+}
+
+.containerAboutMeInput textarea {
+  width: 100%;
+  resize: none;
+  border-radius: 10px;
+  border: 1px solid var(--color-grey-4);
+  padding: 1rem 2rem;
+
+  font-family: inherit;
+  font-size: 1.4rem;
+  color: var(--color-grey-5);
+}
+
+.containerAboutMeInput textarea:focus {
+  outline: none;
+  border: 1px solid var(--color-orange);
+}
+
+.containerMainButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.4rem;
+}
+
+.btnSave {
+  font-size: 1.6rem;
+  font-weight: bold;
+  padding: 1rem 4rem;
+  color: white;
+  background-color: var(--color-orange);
+  box-shadow: 0px 1px 10px 5px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  border: none;
+  border-radius: 20px;
+}
+
+.btnCancel {
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid var(--color-orange);
+  font-size: 1.6rem;
+  color: var(--color-orange);
 }

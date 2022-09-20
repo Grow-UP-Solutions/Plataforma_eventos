@@ -22,6 +22,7 @@ import iconShield from './shield.svg';
 import iconTicket from './ticket.svg';
 import iconUser from './user.svg';
 import iconWarning from './warning.svg';
+import imgMoney from './imgMoney.svg';
 export {
   iconHowIt1,
   iconHowIt2,
@@ -46,4 +47,5 @@ export {
   iconWarning,
   iconArrowBottom,
   iconArrowTop,
+  imgMoney,
 };

@@ -20,7 +20,7 @@ import {
   iconArrowLeft,
 } from '../../assets/imgs';
 
-import { UserForm } from '../../components';
+import { ReferralPlan, UserForm } from '../../components';
 
 const user = {
   isUserComplete: true,
@@ -99,7 +99,8 @@ const User = () => {
         </div>
       </div>
       {/* TODO */}
-      <UserForm />
+      {/* <UserForm /> */}
+      <ReferralPlan />
     </div>
   );
 };
