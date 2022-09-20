@@ -18,6 +18,7 @@ import {
   WorkWithUsForm,
   EventDetails,
   CategoriesResult,
+  User,
 } from './pages';
 
 import { Footer, Navbar } from './components';
@@ -52,6 +53,7 @@ function App() {
           <Route path="/categories" element={<CategoriesResult />} />
           <Route path="/workWithUs" element={<WorkWithUs />} />
           <Route path="/workWithUs/form/:work" element={<WorkWithUsForm />} />
+          <Route path="/user/profile" element={<User />} />
           <Route path="/help" element={<Help />} />
         </Routes>
         <div className="container">
