@@ -1,7 +1,6 @@
 import React, { useEffect ,useRef , useState } from 'react';
 import { useDispatch } from 'react-redux'
 import styles from './EventCreateForm.module.css';
-
 import categories from '../../api/categories';
 import dptos from '../../api/dptos';
 import mapa from '../../assets/imgs/mapa2.png'
@@ -16,6 +15,12 @@ import { Calendar } from 'react-date-range';
 import { style } from '@mui/system';
 import { formatDate } from '../../utils/formatDate';
 import * as locales from 'react-date-range/dist/locale';
+import { Swiper, SwiperSlide, useSwiper } from 'swiper/react/swiper-react';
+import { Pagination, Scrollbar, Navigation } from 'swiper';
+import 'swiper/swiper.min.css';
+import 'swiper/modules/pagination/pagination.min.css';
+import 'swiper/modules/scrollbar/scrollbar.min.css';
+import 'swiper/modules/navigation/navigation.min.css';
 
 
 
@@ -27,9 +32,11 @@ const EventCreateForm = () => {
 const [post, setPost] = useState({
     title: '',
     categories:[],
+    otherCategories:[],
     shortDescription:'',
     longDescription:'',
-    enLinea:'',
+    pictures:[],
+    online:'',
     link:'',
     departamento:'',
     direccion:'',
@@ -48,6 +55,13 @@ function handleChange(e) {
 
 
 function handleCategories(e) {  
+    setPost({
+    ...post,
+    [e.target.name] : [...post.categories, e.target.value],
+    })
+}
+
+function handleOtherCategories(e) {  
     setPost({
     ...post,
     [e.target.name] : [...post.categories, e.target.value],
@@ -96,6 +110,10 @@ const scrollSections = (px) => {
 
 //--------------------------------------------------//
 //                  AUTOCOMPLETADO                  //
+
+
+//--------------------------------------------------//
+//                  CALENDAR                 //
 
 const [date, setDate] = useState(null);
 const [dateFormatted, setDateFormatted] = useState('');
@@ -196,10 +214,28 @@ const handleFormatDate = (date) => {
                     )
                 }
                 </div>
-                <label className={styles.subTitle}>Si escogiste ‘otro’, especifica :
-                <input className={styles.input2} type='text'/>
-                </label>
+                <div className={styles.checkOther}>
+                    <input
+                    className={styles.checkBox}
+                    defaultChecked={false}
+                    type='checkbox'
+                    name= 'categories'
+                    value={post.categories}
+                    />
+                    <label className={styles.labelsChecks}>Otros</label>
+
+                    <div className={styles.otherCategorie}>
+                        <label className={styles.subTitle}>Si escogiste ‘otros’, especifica : </label>
+                        <input 
+                          className={styles.input2}
+                          type='text'
+                          name='otherCategories'
+                          values={post.otherCategories}
+                          onChange={(e) => handleOtherCategories(e)}/>
+                    </div>
+                </div>
                 
+               
             </div>
 
        </div>
@@ -226,7 +262,8 @@ const handleFormatDate = (date) => {
           {/* form */}
 
             <div className={styles.container1}>
-
+            
+             {/* shortDescription */}
             <div className={styles.containerDescription}>
                 <p className={styles.title}>Descripción breve</p>
                 <p className={styles.subTitle}>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.  </p>
@@ -240,6 +277,8 @@ const handleFormatDate = (date) => {
                 />
                 <p className={styles.subTitle}>Máximo xx de caracteres</p>
             </div>
+
+            {/* longDescription */}
             <div className={styles.containerDescription}>
                 <p className={styles.title}>Descripción detallada</p>
                 <p className={styles.subTitle}>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.  </p>
@@ -257,10 +296,11 @@ const handleFormatDate = (date) => {
 
        </div>
 
-      {/* SECTION 4 */}
+      {/* SECTION 4: Pictures */}
 
       <div className={styles.section}>
-
+      
+       {/* linea vertical */}
       <div className={styles.containerLine}>
             <ul className={styles.timeVerticalRed}>
                 <li><b></b><span>4</span></li>
@@ -273,11 +313,41 @@ const handleFormatDate = (date) => {
             </ul>
         </div>
 
+
+       {/* form */}
       <div className={styles.container1}>
         <p  className={styles.title}>Agrega fotos y/o videos</p>
         <p className={styles.subTitle}>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.  </p>
         <p className={styles.subTitle4}>Fotos del Evento</p>
-        <input className={styles.inputPicture} type='text' placeholder='Arrastra los archivos aquí o haz clic en Agregar archivos'/>
+
+        
+        
+        
+        <div >
+            <Swiper
+                slidesPerView={1}
+                navigation
+                spaceBetween={0}
+                modules={[Navigation]}
+                className={styles.mySwipper}
+                >
+          {post.pictures.length ? (
+            post.pictures.map((picture, index) => {
+              return (
+                <SwiperSlide>
+                  <picture/>
+                </SwiperSlide>
+              );
+            })
+          ) : (
+            <input 
+                className={styles.inputPicture} 
+                type='text' 
+                placeholder='Arrastra los archivos aquí o haz clic en Agregar archivos'/>
+          )}
+        </Swiper>
+      </div>
+        
         <label className={styles.subInput}>
             <input className={styles.checkBox4} type='checkbox'/>
             Quiero que esta sea la portada</label>
@@ -307,29 +377,29 @@ const handleFormatDate = (date) => {
 
             <div className={styles.container1}>
                
-               {/* Titulo*/}
+               {/* Title*/}
 
                 <p className={styles.title}>¿Dónde es el evento?</p>
                 <p className={styles.subTitle}>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.  </p>
 
-                {/* CheckBoxEnLinea*/}
+                {/* CheckBoxOnLine*/}
 
-                <div className={styles.containerEnlinea}>
+                <div className={styles.containerOnLine}>
                     
                     <input 
                         className={styles.checkBox4} 
                         type='checkbox'
                         defaultChecked={false}
-                        name='enLinea'
-                        value={post.enLinea}
+                        name='online'
+                        value={post.online}
                         onChange={(e) => handleCheck(e)}
                         id='check'
                     />
                     <label> Este es un evento en linea</label>
 
-                    {/*EnLinea*/}
+                    {/*Online*/}
                        
-                    <div className={styles.enLinea}>
+                    <div className={styles.online}>
                         <input 
                         type='text' 
                         placeholder='Colocar el enlace del evento'
@@ -339,9 +409,9 @@ const handleFormatDate = (date) => {
                         />
                     </div>
 
-                   {/*NoLinea*/}
+                   {/*notOnline*/}
                 
-                    <div className={styles.noLinea} >
+                    <div className={styles.notOnline} >
 
                         {/* Dpto - Municipio*/}
                         <div className={styles.containerDirection}>
@@ -395,7 +465,7 @@ const handleFormatDate = (date) => {
                             onChange={(e) => handleChange(e)}
                         />
 
-                        {/* Mapa*/}
+                        {/* Map*/}
 
                         <div  className={styles.containerMap}>
 
@@ -414,9 +484,9 @@ const handleFormatDate = (date) => {
                 </div>
              
 
-                {/*Accesibilidad*/}  
+                {/*especialRequires*/}  
 
-                <div className={styles.accesibilidad}>
+                <div className={styles.especialRequires}>
                     <hr  className={styles.hr}></hr>
                     <p className={styles.subtextEspecial}>Accesibilidad y requerimientos especiales</p>
                     <div className={styles.especialDiv}>
@@ -533,7 +603,7 @@ const handleFormatDate = (date) => {
                     <label htmlFor="date">Fecha</label>         
                     
                     
-                    <div className={styles.contInputCal}>
+                    <div className={styles.contInputDate}>
                         <input type="text" id="date" value={dateFormatted} />
 
                         <div className={styles.containerDate}>
@@ -548,17 +618,17 @@ const handleFormatDate = (date) => {
                                 />
                             <label htmlFor="checkCalendar" className={styles.label}>
                                     <img src={calendar} alt='n' />
-                                </label>                     
+                            </label>                     
                             
 
-                                <div className={styles.calendar}>
-                                    <Calendar
-                                            color={'#D53E27'}
-                                            locale={locales['es']}
-                                            date={date}
-                                            onChange={(item) => handleFormatDate(item)}
-                                        /> 
-                                </div>
+                            <div className={styles.calendar}>
+                                <Calendar
+                                        color={'#D53E27'}
+                                        locale={locales['es']}
+                                        date={date}
+                                        onChange={(item) => handleFormatDate(item)}
+                                    /> 
+                            </div>
                             
                         </div>
                     </div>
@@ -599,16 +669,15 @@ const handleFormatDate = (date) => {
 
             <div  className={styles.containerBono}>
                 <div>
-
-                <label className={styles.subTitle} >
                     <input className={styles.checkDescuento} type='checkbox'/>
+                    <label className={styles.subTitle} >
                     Brindar códigos de descuento 
-                </label>
-                <img className={styles.infoIcon} src={infoIcon} alt='n' />
+                    </label>
+                    <img className={styles.infoIcon} src={infoIcon} alt='n' />
                 </div>
                 <div>
-                <button className={styles.btnbono}>Mostrar</button>
-                <button className={styles.btnbono}>Ocultar</button>
+                    <button className={styles.btnbono}>Mostrar</button>
+                    <button className={styles.btnbono}>Ocultar</button>
                 </div>
             </div>
 
@@ -617,7 +686,7 @@ const handleFormatDate = (date) => {
           <hr  className={styles.hr}></hr>
 
           <div>
-            <button className={styles.newdate}> + Crer Nueva Fecha</button>
+            <button className={styles.newdate}> + Crear Nueva Fecha</button>
           </div>
 
          
@@ -651,10 +720,10 @@ const handleFormatDate = (date) => {
    
     {/*SECTIONS BUTTONS*/}
     <div className={styles.containerBtnSection}>
-        <button className={styles.btnSectionMove} onClick={() => scrollSections(-1000)}> 
+        <button className={styles.btnSectionMove} onClick={() => scrollSections(-2000)}> 
             <KeyboardArrowUpIcon sx={{ fontSize: '40px', color: 'white',  border: "none", borderRadius: 10, backgroundColor:'#D53E27'  }}/>
         </button>
-        <button className={styles.btnSectionMove} onClick={() => scrollSections(1000)}> 
+        <button className={styles.btnSectionMove} onClick={() => scrollSections(2000)}> 
             <KeyboardArrowDownRoundedIcon sx={{ fontSize: '40px', color: 'white',  border: "none", borderRadius: 10, backgroundColor:'#D53E27'  }}/> 
         </button>
          
