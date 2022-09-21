@@ -1,10 +1,9 @@
-
 import React from 'react';
-import { Card } from '../../components';
-import styles from './PreferencesUser.module.css';
+import { Card } from '..';
+import styles from './PreferencesOrg.module.css';
 import users from '../../api/users';
 
-const PreferencesUser = () => {
+const PreferencesOrg = () => {
 
     const opcionesEliminar = [
         'Tengo otra cuenta de Lo que quiero hacer',
@@ -84,4 +83,4 @@ const PreferencesUser = () => {
   );
 };
 
-export default PreferencesUser;
+export default PreferencesOrg;

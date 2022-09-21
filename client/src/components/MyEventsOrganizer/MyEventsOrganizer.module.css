@@ -1,22 +1,18 @@
 .container{
-    margin-top: 9rem;
-    width: 100%; 
-    text-align: center;
+    margin-top: 4rem;
+   max-width: 1000px;
+    margin-left: 3rem;
 }
 
 .title{
-    width: 50%;
     justify-content: start;
     color:#1B3C6A;
-    font-size: 2.4rem;
+    font-size: 2rem;
     font-weight: bold;
     margin-bottom: 1.5rem;
-    margin-left: 5rem;
 }
 
 .containercard{
-    width: 50%;
-    margin: 0 auto;
     margin-bottom:6rem
 }
 
@@ -65,19 +61,44 @@
   }
 
 .btn{
-        font-size: 1.6rem;
-        text-decoration: underline;
-        cursor: pointer;
-        background-color: white;
-        color:#D53E27;
-        border:none;
-        margin-top: -2rem;  
-        margin-left: 5rem;
+    font-size: 1.6rem;
+    text-decoration: underline;
+    cursor: pointer;
+    background-color: white;
+    color:#D53E27;
+    border:none;
+    margin-top: -2rem;  
+    margin-left: 5rem;
 }
 
 .mySwipper {
+   position: relative;
+  }
+
+  .cardHr {
+    border: 0.1px solid rgb(219, 219, 219);
+    width: 100%;
+    margin-bottom: 5rem;
+  }
+
+
+
+ 
+  
+  .titleCards {
+    font-size: 2.5rem;
+    color: var(--color-grey-3);
+    letter-spacing: 1px;
+    margin: 5rem;
+    margin-left: 0;
+    margin-bottom: 1rem;
+    font-weight: bold;
+  }
+  
+  .mySwipper {
     position: relative;
   }
+  
 
 
   
@@ -85,3 +106,5 @@
 
 
 
+
+ 

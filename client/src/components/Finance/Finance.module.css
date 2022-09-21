@@ -1,13 +1,13 @@
 .container{
-    margin-top: 9rem;
+    margin-top: 4rem;
     width: 100%; 
 }
 
 .containerSub{
     margin: auto 0;
-    margin-bottom: 8rem;
+    margin-bottom: 4rem;
     width: 90%; 
-    height: 25rem;
+    height: 26rem;
     box-shadow:rgb(127, 125, 125) ;
     border:1px solid rgb(127, 125, 125);
     border-radius: 1rem;
@@ -23,7 +23,7 @@
 
 .title{
     color:#1B3C6A;
-    font-size: 2.4rem;
+    font-size: 2rem;
     font-weight: bold;
     margin-bottom: 1.5rem;
     margin-left: 5rem;
@@ -58,7 +58,8 @@
     height: 1rem;
     text-align: right;
     background-color: #29aa7900;
-    margin-left: -20rem;
+    margin-left: -10rem;
+    margin-top: 2.5rem;
 }
 
 
@@ -73,7 +74,7 @@
 
 .containerBankAccount{
     display: flex;
-    margin-left: 3rem;
+    margin-left: 5rem;
     margin-bottom: 3rem;
     margin-top: 3rem;
    
@@ -92,7 +93,6 @@
 .containerBankAccount div p{
     color:#868686;
     font-size: 1.7rem;
-    margin-left: 2rem;
 }
 
 
@@ -103,6 +103,51 @@
     color:white;
     cursor: pointer;
 }
+
+.containerBtnAccount{
+    text-align: left;
+    display: flex;
+    margin-right: 2rem;
+}
+
+
+.btnEdit{
+    display: flex;
+}
+
+.btnDelete{
+    display: flex;
+}
+
+.btnAccount{
+    flex: 1 1 auto;
+    width: 100%;
+    font-size: 1.6rem;
+    text-decoration: underline;
+    cursor: pointer;
+    color:#D53E27;
+    border:none; 
+    height: 1rem;
+    text-align: right;
+    background-color: #29aa7900;
+    margin-left: -5rem;
+}
+
+
+.basquet{
+    height: 1.5rem;
+    width:1.5rem;
+    cursor: pointer;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+
+.vLine {
+    margin-left: 3rem;
+    border: 1px solid rgb(219, 219, 219);
+    height: 2rem;
+  }
 
 .hr {
     border: 0.1px solid rgb(219, 219, 219);

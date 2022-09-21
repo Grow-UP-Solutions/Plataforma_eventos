@@ -19,13 +19,6 @@ import {
   EventDetails,
   CategoriesResult,
   User,
-  MyListUser,
-  MyListOrganizer,
-  MyEventsOrganizer,
-  GoodPracticeOrg,
-  PreferencesOrg,
-  PreferencesUser,
-  Finance
 } from './pages';
 import { Footer, Navbar } from './components';
 import { Data } from './context/Context';
@@ -60,18 +53,7 @@ function App() {
           <Route path="/workWithUs/form/:work" element={<WorkWithUsForm />} />
           <Route path="/user/profile" element={<User />} />
           <Route path="/privacy" element={<PanelPrivacy />} />
-          <Route path="/help" element={<Help />} />
-          <Route path="/mylistuser" element={<MyListUser />} />
-          <Route path="/MyListOrganizer" element={<MyListOrganizer />} />
-          <Route path="/MyEventsOrganizer" element={<MyEventsOrganizer />} />
-          <Route path="/GoodPracticeOrg" element={<GoodPracticeOrg />} />
-          <Route path="/PreferencesOrg" element={<PreferencesOrg />} />
-          <Route path="/PreferencesUser" element={<PreferencesUser />} />
-          <Route path="/Finance" element={<Finance />} />
-
-          
-
-          
+          {/* <Route path="/help" element={<Help />} /> */}      
         </Routes>
         <div className="container">
           <Footer />

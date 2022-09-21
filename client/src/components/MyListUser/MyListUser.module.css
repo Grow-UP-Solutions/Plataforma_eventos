@@ -1,21 +1,19 @@
 .container{
-    margin-top: 9rem;
+    margin-top: 4rem;
     width: 100%; 
-    text-align: center;
+    margin-left: 5rem;
 }
 
 .title{
     width: 50%;
     justify-content: start;
     color:#1B3C6A;
-    font-size: 2.4rem;
+    font-size: 2rem;
     font-weight: bold;
     margin-bottom: 1.5rem;
-    margin-left: 5rem;
 }
 
 .containercard{
-    width: 50%;
     display: grid;
     grid-template-columns: 1fr 1fr  1fr ;
     margin: 0 auto;

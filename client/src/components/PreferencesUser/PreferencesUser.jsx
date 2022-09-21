@@ -1,9 +1,10 @@
+
 import React from 'react';
-import { Card } from '../../components';
-import styles from './PreferencesOrg.module.css';
+import { Card } from '..';
+import styles from './PreferencesUser.module.css';
 import users from '../../api/users';
 
-const PreferencesOrg = () => {
+const PreferencesUser = () => {
 
     const opcionesEliminar = [
         'Tengo otra cuenta de Lo que quiero hacer',
@@ -53,6 +54,7 @@ const PreferencesOrg = () => {
                 
                     <p className={styles.title}>Eliminar Cuenta</p>
                     <p className={styles.texto}>Quiero eliminar mi cuenta</p>
+                    <div >
                     <select className={styles.select} defaultValue='default'>
                         <option value='default' disabled>Escoge una opcion</option>
                         {opcionesEliminar &&
@@ -62,6 +64,7 @@ const PreferencesOrg = () => {
                             </option>
                             ))}
                     </select>
+                    </div>
 
                 
             </div>
@@ -83,4 +86,4 @@ const PreferencesOrg = () => {
   );
 };
 
-export default PreferencesOrg;
+export default PreferencesUser;

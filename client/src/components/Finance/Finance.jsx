@@ -1,7 +1,7 @@
 import React from 'react';
-import { Card } from '../../components';
 import styles from './Finance.module.css';
 import users from '../../api/users';
+import basquet from '../../assets/imgs/basquet.svg'
 
 const Finance = () => {
 
@@ -46,9 +46,18 @@ const Finance = () => {
                 <div>
                     <p>Xxxx-xxxx-xxxx-2367</p>
                 </div>
-                <div>
-                    <button className={styles.btn}>Editar</button>  
-                    <button className={styles.btn}>Eliminar</button>  
+                <div className={styles.containerBtnAccount}>
+                    <div className={styles.btnEdit}>
+                    
+                    <button className={styles.btnAccount}>
+                    <img className={styles.basquet} src={basquet} alt='n' /> Editar
+                    </button>  
+                    <div className={styles.vLine}></div>
+                    </div>
+                    <div className={styles.btnDelete}>
+                    <img className={styles.basquet} src={basquet} alt='n' />
+                    <button className={styles.btnAccount}>Eliminar</button> 
+                    </div>    
                 </div>
             </div>
             <hr className={styles.hr}></hr>

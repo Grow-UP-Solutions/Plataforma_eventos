@@ -1,5 +1,6 @@
+
 import React from 'react';
-import { Card } from '../../components';
+import Card from '../Cards/Card';
 import styles from './MyEventsOrganizer.module.css';
 import users from '../../api/users';
 import iconEditar from '../../assets/imgs/iconEditar.svg'
@@ -31,7 +32,7 @@ const MyEventsOrganizer = () => {
         {
            userDetail.myEventsCreated.map((event) => (
           <div className={styles.card}>
-            <SwiperSlide> 
+             <SwiperSlide>  
             <Card event={event} />
             <div className={styles.containerDatos}>
                 <div className={styles.datos}>
@@ -47,18 +48,19 @@ const MyEventsOrganizer = () => {
                 </div>
                 <div  className={styles.datos}>
                     <p>Ganancias:</p>
-                    <h4>9003</h4>
+                    <h4>$9003</h4>
                     <button>Ver</button>
                 </div>
             </div>
             <button className={styles.btn}>Editar</button>
-            </SwiperSlide> 
+             </SwiperSlide>  
           </div>
         ))
         }
-        </Swiper>
+         </Swiper> 
 
       </div>
+      <hr className={styles.cardHr}></hr>
 
       <p className={styles.title}>Por Publicar</p>
 
@@ -70,13 +72,17 @@ const MyEventsOrganizer = () => {
           modules={[Navigation]}
           className={styles.mySwipper}
         >
-        {
-            userDetail.myEventsCreated.map((event) => (
-            <SwiperSlide>       
-            <Card event={event} />        
-            </SwiperSlide>
-        ))
-        }
+          {userDetail.myEventsCreated.length ? (
+            userDetail.myEventsCreated.map((event, index) => {
+              return (
+                <SwiperSlide>
+                  <Card event={event} />
+                </SwiperSlide>
+              );
+            })
+          ) : (
+            <h5>No Tienes Eventos Por Publicar</h5>
+          )}
         </Swiper>
         </div>
     </div>
