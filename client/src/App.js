@@ -18,9 +18,7 @@ import {
   WorkWithUsForm,
   EventDetails,
   CategoriesResult,
-<<<<<<< HEAD
   User,
-=======
   MyListUser,
   MyListOrganizer,
   MyEventsOrganizer,
@@ -28,7 +26,6 @@ import {
   PreferencesOrg,
   PreferencesUser,
   Finance
->>>>>>> Guille
 } from './pages';
 import { Footer, Navbar } from './components';
 import { Data } from './context/Context';
