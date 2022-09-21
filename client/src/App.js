@@ -20,9 +20,7 @@ import {
   CategoriesResult,
   User,
 } from './pages';
-
 import { Footer, Navbar } from './components';
-
 import { Data } from './context/Context';
 import PanelPrivacy from './pages/PanelPrivacy/PanelPrivacy';
 import Notifications from './components/Notifications/Notifications';

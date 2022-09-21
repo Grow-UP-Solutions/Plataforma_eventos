@@ -49,6 +49,10 @@ const UserSchema = new Schema({
       ref: "Opinions",
     },
   ],
+  opinionsOrg:[{
+    type:Schema.Types.ObjectId,
+    ref:"Opinions"
+  }]
 });
 
 module.exports = model("Users", UserSchema);
