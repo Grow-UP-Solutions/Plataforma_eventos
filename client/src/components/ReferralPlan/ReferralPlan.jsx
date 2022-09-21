@@ -101,6 +101,30 @@ const ReferralPlan = () => {
             </div>
           </div>
         </div>
+
+        <div className={styles.containerShowReferred}>
+          <div className={styles.headerDetailsCode}>
+            <h2>Mostrar referidos</h2>
+            <span>Mostrar</span>
+          </div>
+          <div className={styles.tableReferreds}>
+            <div className={styles.columnTableReferred}>
+              <p>Tus referidos</p>
+              <div className={styles.containerProfileReferred}>
+                <img src="https://i.pravatar.cc/150?img=3" alt="img-profile" />
+                <p>Pepito Perez</p>
+              </div>
+            </div>
+            <div className={styles.columnTableReferred}>
+              <p>Total saldo pendiente 20.000$</p>
+              <p>5.000$</p>
+            </div>
+            <div className={styles.columnTableReferred}>
+              <p>Total saldo</p>
+              <p>1.000$</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
