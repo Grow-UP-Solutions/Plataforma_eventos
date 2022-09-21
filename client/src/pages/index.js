@@ -15,3 +15,13 @@ export { default as CategoriesResult } from './CategoriesResult/CategoriesResult
 export { default as EventCreate } from './EventCreate/EventCreate';
 export { default as EventCreateForm } from './EventCreateForm/EventCreateForm';
 export { default as User } from './User/User';
+export { default as MyListUser } from './MyListUser/MyListUser';
+export { default as MyListOrganizer } from './MyListOrganizer/MyListOrganizer';
+export { default as MyEventsOrganizer } from './MyEventsOrganizer/MyEventsOrganizer';
+export { default as GoodPracticeOrg } from  './GoodPracticeOrg/GoodPracticeOrg';
+export { default as PreferencesOrg } from  './PreferencesOrg/PreferencesOrg';
+export { default as PreferencesUser } from  './PreferencesUser/PreferencesUser';
+export { default as Finance } from  './Finance/Finance';
+
+
+
