@@ -20,9 +20,7 @@ import {
   CategoriesResult,
   User,
 } from './pages';
-
 import { Footer, Navbar } from './components';
-
 import { Data } from './context/Context';
 import PanelPrivacy from './pages/PanelPrivacy/PanelPrivacy';
 
@@ -55,6 +53,7 @@ function App() {
           <Route path="/workWithUs/form/:work" element={<WorkWithUsForm />} />
           <Route path="/user/profile" element={<User />} />
           <Route path="/privacy" element={<PanelPrivacy />} />
+          {/* <Route path="/help" element={<Help />} /> */}      
         </Routes>
         <div className="container">
           <Footer />

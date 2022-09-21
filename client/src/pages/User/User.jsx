@@ -6,6 +6,15 @@ import { Calendar, DateRangePicker } from 'react-date-range';
 import * as locales from 'react-date-range/dist/locale';
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
+import Finance from '../../components/Finance/Finance';
+import GoodPracticeOrg from '../../components/GoodPracticeOrg/GoodPracticeOrg';
+import PreferencesOrg from '../../components/PreferencesOrg/PreferencesOrg';
+import PreferencesUser from '../../components/PreferencesUser/PreferencesUser';
+import MyListOrganizer from '../../components/MyListOrganizer/MyListOrganizer';
+import MyListUser from '../../components/MyListUser/MyListUser';
+import ExpectToAttendUser from '../../components/ExpectToAttendUser/ExpectToAttendUser';
+import MyEventsOrganizer from '../../components/MyEventsOrganizer/MyEventsOrganizer'
+import Events from '../../components/Events/Events';
 
 import {
   iconFinances,
@@ -24,11 +33,30 @@ import { ReferralPlan, UserForm } from '../../components';
 
 const user = {
   isUserComplete: true,
-  isOrganizer: false,
+  isOrganizer: true,
 };
 
 const User = () => {
   const [date, setDate] = useState();
+
+
+const [component, setComponent] = useState('');
+
+const handleInput = (e) => {
+  const name = e.target.name;
+  if (name === 'Finance') setComponent(<Finance />);
+  if (name === 'Guia Del Organizador') setComponent(<GoodPracticeOrg />);
+  if (name === 'Mi lista') setComponent(<MyListUser />);
+  if (name === 'Pendientes por Asistir') setComponent(<ExpectToAttendUser />);
+  if (name === 'Mis Eventos') setComponent(<MyEventsOrganizer />);
+  if (name === 'Perfil') setComponent(<UserForm />);
+  if (name === 'Plan de Referidos') setComponent(<ReferralPlan />);
+  if (name === 'Preferencias') setComponent(<PreferencesUser />);
+};
+
+
+
+
 
   return (
     <div className={`${styles.pageUser} container`}>
@@ -38,11 +66,27 @@ const User = () => {
             <>
               <li className={styles.optionMenu}>
                 <img src={iconFinances} alt="icon-alt" />
-                <span>Finanzas</span>
+                <span>
+                <button
+                  className={styles.btn}
+                  name="Finance"
+                  onClick={handleInput}
+                  >
+                  Finanzas
+                </button>
+                </span>
               </li>
               <li className={styles.optionMenu}>
                 <img src={iconGuideForOrganizer} alt="icon-alt" />
-                <span>Guía del organizador</span>
+                <span>
+                <button
+                  className={styles.btn}
+                  name="Guia Del Organizador"
+                  onClick={handleInput}
+                  >
+                  Guia Del Organizador
+                </button>
+                </span>
               </li>
             </>
           )}
@@ -52,8 +96,61 @@ const User = () => {
             <img src={iconArrowRight} alt="icon-alt" />
           </li>
           <li className={styles.optionMenu}>
+            <img src={iconCalendarEvents} alt="icon-alt" />
+            <span> 
+              <button
+                  className={styles.btn}
+                  name="Mi lista"
+                  onClick={handleInput}
+                  >
+                  Mi lista
+                </button>
+            </span>
+            <img src={iconArrowRight} alt="icon-alt" />
+          </li>
+          <li className={styles.optionMenu}>
+            <img src={iconCalendarEvents} alt="icon-alt" />
+            <span> 
+              <button
+                  className={styles.btn}
+                  name="Pendientes por Asistir"
+                  onClick={handleInput}
+                  >
+                  Pendientes por Asistir
+                </button>
+            </span>
+            <img src={iconArrowRight} alt="icon-alt" />
+          </li>
+          {user.isOrganizer && (
+            <>
+            <li className={styles.optionMenu}>
+            <img src={iconCalendarEvents} alt="icon-alt" />
+            <span> 
+              <button
+                  className={styles.btn}
+                  name='Mis Eventos'
+                  onClick={handleInput}
+                  >
+                  Mis Eventos
+                </button>
+            </span>
+            <img src={iconArrowRight} alt="icon-alt" />
+          </li>
+              
+            </>
+          )}
+          
+          <li className={styles.optionMenu}>
             <img src={iconUser} alt="icon-alt" />
-            <span>Perfil</span>
+            <span>
+                <button
+                  className={styles.btn}
+                  name="Perfil"
+                  onClick={handleInput}
+                  >
+                  Perfil
+                </button>
+             </span>
             <div className={styles.perfilStatus}>
               {user.isUserComplete ? (
                 <>
@@ -70,11 +167,27 @@ const User = () => {
           </li>
           <li className={styles.optionMenu}>
             <img src={iconTicket} alt="icon-alt" />
-            <span>Plan de referidos</span>
+            <span>
+                <button
+                  className={styles.btn}
+                  name="Plan de Referidos"
+                  onClick={handleInput}
+                  >
+                  Plan de Referidos
+                </button>
+             </span>
           </li>
           <li className={styles.optionMenu}>
             <img src={iconSettings} alt="icon-alt" />
-            <span>Preferencias</span>
+            <span>
+                <button
+                  className={styles.btn}
+                  name="Preferencias"
+                  onClick={handleInput}
+                  >
+                  Preferencias
+                </button>
+                </span>
           </li>
         </ul>
         <div className={styles.menuCalendar}>
@@ -100,7 +213,7 @@ const User = () => {
       </div>
       {/* TODO */}
       {/* <UserForm /> */}
-      <ReferralPlan />
+      <div>{component}</div>
     </div>
   );
 };
