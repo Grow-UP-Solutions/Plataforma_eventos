@@ -23,7 +23,7 @@ import {
 import { Footer, Navbar } from './components';
 
 import { Data } from './context/Context';
-import Help from './pages/Help/Help';
+import PanelPrivacy from './pages/PanelPrivacy/PanelPrivacy';
 
 function App() {
   useEffect(() => {
@@ -52,7 +52,8 @@ function App() {
           <Route path="/categories" element={<CategoriesResult />} />
           <Route path="/workWithUs" element={<WorkWithUs />} />
           <Route path="/workWithUs/form/:work" element={<WorkWithUsForm />} />
-          <Route path="/help" element={<Help />} />
+          <Route path="/privacy" element={<PanelPrivacy />} />
+          <Route path="/legal" element={<PanelPrivacy />} />
         </Routes>
         <div className="container">
           <Footer />
