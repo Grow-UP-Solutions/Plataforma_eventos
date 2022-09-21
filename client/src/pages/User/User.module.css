@@ -109,3 +109,18 @@
 .publicEvents > div {
   background-color: var(--color-blue);
 }
+
+.btn{
+  background-color: transparent;
+  border: none;
+  color:#868686;
+  font-family: 'Raleway';
+  cursor: pointer;
+}
+
+.btn:focus{
+  color:#D53E27;
+  font-weight: bold;
+}
+
+

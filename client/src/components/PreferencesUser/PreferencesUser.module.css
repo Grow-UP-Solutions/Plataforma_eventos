@@ -1,0 +1,160 @@
+.container{
+    margin-top: 4rem;
+    width: 100%; 
+}
+
+.containerSub{
+    margin: auto 0;
+    margin-bottom: 4rem;
+    width: 90%; 
+    height: 22rem;
+    box-shadow:rgb(127, 125, 125) ;
+    border:1px solid #D6D6D6;
+    border-radius: 1rem;
+    margin-left: 10rem;
+    display: flex;
+    
+}
+
+.containerSub1{
+    flex: 1 1 auto;
+}
+
+
+
+.title{
+    color:#1B3C6A;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    margin-left: 5rem;
+    margin-top: 3rem;
+}
+
+
+.texto{
+    color:#868686;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    margin-left: 5rem;
+    margin-top: 3rem;
+}
+
+
+.cont_txt_btn{
+    display: flex;
+}
+
+.btn{
+    font-size: 1.6rem;
+    text-decoration: underline;
+    cursor: pointer;
+    background-color: white;
+    color:#D53E27;
+    border:none; 
+    margin-left: 1rem;
+    height: 1rem;
+    margin-top: 3rem;
+}
+
+.titleOpcion{
+    color:#585858;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    margin-right: 5rem;
+    margin-top: 3rem;
+    text-align: right;
+}
+
+.cont_check{
+    margin-top: 3rem;
+    text-align: right;
+    margin-right: 7rem;
+}
+
+.check{
+    accent-color:#29AA79;
+    height: 2rem;
+    width: 2rem;
+    color:white;
+    cursor: pointer;
+}
+
+.check:checked{
+    color: white
+}
+
+.containerSub2{
+    flex: 1 1 auto;
+}
+
+.select{
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    margin-left: 5rem;
+    margin-top: 3rem;
+    cursor: pointer;
+    background-color: white;
+    border:1px solid #D6D6D6;
+    height: 5rem;
+    padding: 1rem;
+    color:#868686;
+    font-size: 1.8rem;
+    
+}
+
+
+
+.contbutton{
+    flex: 1 1 auto;   
+    
+   
+}
+
+.button{
+  font-size: 1.6rem;
+  border-radius: 18px;
+  text-align: center;
+  padding: 8px 30px;
+  cursor: pointer;
+  background-color:#D6D6D6;
+  color: #868686;
+  box-shadow: none;
+  border: none;
+  margin-top: 12rem;
+  margin-left: 15rem;
+}
+
+
+
+
+
+
+.containerSub3{
+    width: 50%;
+    margin-left: 15rem;
+}
+
+.titleOptionSelect{
+    justify-content: start;
+    color:#585858;
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    margin-right: 5rem;
+    margin-top: 3rem;
+}
+
+.input{
+    height:15rem;
+    border: 1px solid var(--color-grey-4);
+    border-radius: 10px;
+    color:black;
+    background-color: white;
+}
+
+
+
+
+
