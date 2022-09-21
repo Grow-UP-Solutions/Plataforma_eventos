@@ -24,6 +24,7 @@ import {
 import { Footer, Navbar } from './components';
 import { Data } from './context/Context';
 import PanelPrivacy from './pages/PanelPrivacy/PanelPrivacy';
+import Notifications from './components/Notifications/Notifications';
 
 function App() {
   useEffect(() => {
@@ -56,6 +57,7 @@ function App() {
           <Route path="/privacy" element={<PanelPrivacy />} />
           {/* <Route path="/help" element={<Help />} /> */}
           <Route path="/user/message" element={<Message />} />
+          <Route path="/notifications" element={<Notifications />} />
         </Routes>
         <div className="container">
           <Footer />
