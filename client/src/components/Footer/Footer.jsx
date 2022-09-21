@@ -33,7 +33,7 @@ const Footer = () => {
           <p className={styles.titleList}>Legal</p>
           <ul>
             <li>
-              <a href="#">Privacidad</a>
+              <Link to={'/privacy'}><a>Privacidad</a></Link>
             </li>
             <li>
               <a href="#">Seguridad</a>
