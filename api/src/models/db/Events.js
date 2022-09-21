@@ -4,18 +4,18 @@ const EventSchema = new Schema({
   name: String,
   nick: String,
   description: String,
-  date: [
+  date: [String],
+  dates: [
     {
-      type: Schema.Types.ObjectId,
-      ref: 'Date'
+      date: String,
+      cupos: Number,
+      time: String,
+      price: String,
+      year: Number,
     }
     
   ],
-  time: String,
-  state: String,
-  city: String,
-  price: String,
-  cupos: Number,
+ 
   rating: Number,
   enLinea: Boolean,
   pictures: [String],

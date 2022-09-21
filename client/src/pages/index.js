@@ -1,6 +1,6 @@
 export { default as Cart } from './Cart/Cart';
 export { default as Contacto } from './Contacto/Contacto';
-export { default as Faq } from './Faq/Faq';
+export { default as Faq } from './FAQ/Faq';
 export { default as Home } from './Home/Home';
 export { default as Ingresa } from './Ingresa/Ingresa';
 export { default as OrganizaUnEvento } from './EventCreate/EventCreate';
