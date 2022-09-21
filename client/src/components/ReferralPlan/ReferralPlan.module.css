@@ -165,6 +165,7 @@
 
 .containerCodeRedeemed {
   text-align: start;
+  margin-bottom: 5rem;
 }
 
 .titleCodeRedeemed {
@@ -191,4 +192,35 @@
 
 .columnTableRedeemed span {
   color: var(--color-grey-2);
+}
+
+.tableReferreds {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.columnTableReferred {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  height: 100%;
+}
+
+.columnTableReferred p {
+  justify-self: flex-start;
+}
+
+.containerProfileReferred {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.containerProfileReferred img {
+  width: 7rem;
+  height: 7rem;
+
+  border-radius: 50%;
 }
