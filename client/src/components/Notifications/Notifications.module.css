@@ -1,0 +1,57 @@
+
+.container_title {
+  position: relative;  
+} 
+
+.title {
+  font-family: 'Raleway', sans-serif;
+  font-size: 3rem;
+  font-weight: bold;
+  color: var(--color-blue);
+  text-align: center;
+  margin-top: 6rem;
+}
+
+.button {
+  background-color: transparent;
+  border: none;
+  position: absolute;
+  right: 48rem;
+  top: 6rem;
+  cursor: pointer;
+}
+
+.text {
+  font-family: 'Raleway', sans-serif;
+  font-size: 1.4rem;
+  color: var(--color-grey-2);
+  border-bottom: .5px solid var(--color-grey-3);
+}
+
+.container_notifications {
+  margin-top: 3.5rem;
+}
+
+.notification {
+  display: flex;
+  border-bottom: 0.1px solid rgb(219, 219, 219);
+  width: 80.6rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2rem;
+}
+
+.notification p {
+  font-family: 'Raleway', sans-serif;
+  font-size: 1.4rem;
+  color: var(--color-grey-2);
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 2rem;
+}
+
+.icon {
+  color: var(--color-grey-3);
+  width: 2.7rem;
+  height: 2.7rem;
+}
