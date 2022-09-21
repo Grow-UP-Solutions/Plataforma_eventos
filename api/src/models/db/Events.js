@@ -6,8 +6,10 @@ const EventSchema = new Schema({
   description: String,
   date: [
     {
-      type: String,
-    },
+      type: Schema.Types.ObjectId,
+      ref: 'Date'
+    }
+    
   ],
   time: String,
   state: String,
