@@ -97,7 +97,9 @@ const Navbar = ({ upper }) => {
                 {menuOpen && (
                   <div className={style.containerProfileMenu}>
                     <a href="#">Mis eventos</a>
-                    <a href="#">Perfil</a>
+                    <Link to="/user/profile">
+                      <a>Perfil</a>
+                    </Link>
                     <a href="#">Plan de referidos</a>
                     <a href="#">Preferencias</a>
                     <hr />
