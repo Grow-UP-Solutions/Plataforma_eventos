@@ -1,0 +1,87 @@
+.container{
+    margin-top: 9rem;
+    width: 100%; 
+    text-align: center;
+}
+
+.title{
+    width: 50%;
+    justify-content: start;
+    color:#1B3C6A;
+    font-size: 2.4rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    margin-left: 5rem;
+}
+
+.containercard{
+    width: 50%;
+    margin: 0 auto;
+    margin-bottom:6rem
+}
+
+.card{
+    margin-bottom: 3rem;
+    text-align: left;
+}
+
+.containerDatos{
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    width: 100%;
+}
+
+.datos{
+    display: flex;
+    justify-content: flex-start;
+}
+
+.datos p{
+    color:#585858;
+    font-size: 1.6rem;
+    font-weight: bold;
+    height: 2rem;
+    margin-bottom: 2rem;
+    margin-right:2rem;
+}
+
+.datos h4{
+    color:#a8a8a8;
+    font-size: 1.6rem;
+    font-weight: bold;
+    height: 2rem;
+    margin-bottom: 2rem;
+    margin-right: 1.5rem;
+}
+
+.datos button{
+    font-size: 1.6rem;
+    text-decoration: underline;
+    cursor: pointer;
+    background-color: white;
+    color:#D53E27;
+    border:none;
+    margin-top: -2rem;
+  }
+
+.btn{
+        font-size: 1.6rem;
+        text-decoration: underline;
+        cursor: pointer;
+        background-color: white;
+        color:#D53E27;
+        border:none;
+        margin-top: -2rem;  
+        margin-left: 5rem;
+}
+
+.mySwipper {
+    position: relative;
+  }
+
+
+  
+
+
+
+
