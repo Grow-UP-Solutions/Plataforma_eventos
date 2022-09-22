@@ -2,34 +2,38 @@ import React, { useState } from 'react';
 
 import styles from './User.module.css';
 
-import { Calendar, DateRangePicker } from 'react-date-range';
+import { Calendar } from 'react-date-range';
 import * as locales from 'react-date-range/dist/locale';
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
-import Finance from '../../components/Finance/Finance';
-import GoodPracticeOrg from '../../components/GoodPracticeOrg/GoodPracticeOrg';
-import PreferencesOrg from '../../components/PreferencesOrg/PreferencesOrg';
-import PreferencesUser from '../../components/PreferencesUser/PreferencesUser';
-import MyListOrganizer from '../../components/MyListOrganizer/MyListOrganizer';
-import MyListUser from '../../components/MyListUser/MyListUser';
-import ExpectToAttendUser from '../../components/ExpectToAttendUser/ExpectToAttendUser';
-import MyEventsOrganizer from '../../components/MyEventsOrganizer/MyEventsOrganizer'
-import Events from '../../components/Events/Events';
 
 import {
-  iconFinances,
-  iconGuideForOrganizer,
-  iconSettings,
-  iconUser,
-  iconCalendarEvents,
-  iconTicket,
-  iconShield,
-  iconWarning,
-  iconArrowRight,
-  iconArrowLeft,
-} from '../../assets/imgs';
+  ExpectToAttendUser,
+  GoodPracticeOrg,
+  MyEventsOrganizer,
+  MyListUser,
+  PreferencesUser,
+  Finance,
+  ReferralPlan,
+  UserForm,
+} from '../../components';
 
-import { ReferralPlan, UserForm } from '../../components';
+import {
+  IconFinances,
+  IconEvents,
+  IconGuide,
+  IconPreferences,
+  IconReferred,
+  IconUser,
+  IconShield,
+  IconWarning,
+} from '../../assets/Icons';
+
+import {
+  IoIosArrowForward,
+  IoIosArrowUp,
+  IoIosArrowDown,
+} from 'react-icons/io';
 
 const user = {
   isUserComplete: true,
@@ -39,155 +43,168 @@ const user = {
 const User = () => {
   const [date, setDate] = useState();
 
+  const [component, setComponent] = useState('');
 
-const [component, setComponent] = useState('');
+  const [isOpenMenu, setIsMenuOpen] = useState(false);
 
-const handleInput = (e) => {
-  const name = e.target.name;
-  if (name === 'Finance') setComponent(<Finance />);
-  if (name === 'Guia Del Organizador') setComponent(<GoodPracticeOrg />);
-  if (name === 'Mi lista') setComponent(<MyListUser />);
-  if (name === 'Pendientes por Asistir') setComponent(<ExpectToAttendUser />);
-  if (name === 'Mis Eventos') setComponent(<MyEventsOrganizer />);
-  if (name === 'Perfil') setComponent(<UserForm />);
-  if (name === 'Plan de Referidos') setComponent(<ReferralPlan />);
-  if (name === 'Preferencias') setComponent(<PreferencesUser />);
-};
-
-
-
-
+  const handleInput = (e) => {
+    const name = e.target.name;
+    if (name === 'Finance') setComponent(<Finance />);
+    if (name === 'Guia Del Organizador') setComponent(<GoodPracticeOrg />);
+    if (name === 'Mi lista') setComponent(<MyListUser />);
+    if (name === 'Pendientes por Asistir') setComponent(<ExpectToAttendUser />);
+    if (name === 'Mis Eventos') setComponent(<MyEventsOrganizer />);
+    if (name === 'Perfil') setComponent(<UserForm />);
+    if (name === 'Plan de Referidos') setComponent(<ReferralPlan />);
+    if (name === 'Preferencias') setComponent(<PreferencesUser />);
+  };
 
   return (
     <div className={`${styles.pageUser} container`}>
       <div className={styles.sideMenu}>
-        <ul className={styles.containerOptionMenu}>
+        <ul className={styles.containerListOptionsMenu}>
           {user.isOrganizer && (
             <>
-              <li className={styles.optionMenu}>
-                <img src={iconFinances} alt="icon-alt" />
-                <span>
-                <button
-                  className={styles.btn}
-                  name="Finance"
-                  onClick={handleInput}
+              <li className={styles.containerItemOptionMenu}>
+                <div className={styles.optionMenu}>
+                  <button
+                    className={styles.btn}
+                    name="Finance"
+                    onClick={handleInput}
                   >
-                  Finanzas
-                </button>
-                </span>
+                    Finanzas
+                  </button>
+                  <IconFinances className={styles.iconMenu} />
+                  <IoIosArrowForward className={styles.iconArrow} />
+                </div>
               </li>
-              <li className={styles.optionMenu}>
-                <img src={iconGuideForOrganizer} alt="icon-alt" />
-                <span>
-                <button
-                  className={styles.btn}
-                  name="Guia Del Organizador"
-                  onClick={handleInput}
+              <li className={styles.containerItemOptionMenu}>
+                <div className={styles.optionMenu}>
+                  <button
+                    className={styles.btn}
+                    name="Guia Del Organizador"
+                    onClick={handleInput}
                   >
-                  Guia Del Organizador
-                </button>
-                </span>
+                    Guia Del Organizador
+                  </button>
+                  <IconGuide className={styles.iconMenu} />
+                  <IoIosArrowForward className={styles.iconArrow} />
+                </div>
               </li>
             </>
           )}
-          <li className={styles.optionMenu}>
-            <img src={iconCalendarEvents} alt="icon-alt" />
-            <span>Eventos</span>
-            <img src={iconArrowRight} alt="icon-alt" />
-          </li>
-          <li className={styles.optionMenu}>
-            <img src={iconCalendarEvents} alt="icon-alt" />
-            <span> 
+
+          <li className={`${styles.optionMenu} ${styles.containerMenuEvent}`}>
+            <div className={styles.menuEvent}>
               <button
-                  className={styles.btn}
-                  name="Mi lista"
-                  onClick={handleInput}
-                  >
-                  Mi lista
-                </button>
-            </span>
-            <img src={iconArrowRight} alt="icon-alt" />
-          </li>
-          <li className={styles.optionMenu}>
-            <img src={iconCalendarEvents} alt="icon-alt" />
-            <span> 
-              <button
-                  className={styles.btn}
-                  name="Pendientes por Asistir"
-                  onClick={handleInput}
-                  >
-                  Pendientes por Asistir
-                </button>
-            </span>
-            <img src={iconArrowRight} alt="icon-alt" />
-          </li>
-          {user.isOrganizer && (
-            <>
-            <li className={styles.optionMenu}>
-            <img src={iconCalendarEvents} alt="icon-alt" />
-            <span> 
-              <button
-                  className={styles.btn}
-                  name='Mis Eventos'
-                  onClick={handleInput}
-                  >
-                  Mis Eventos
-                </button>
-            </span>
-            <img src={iconArrowRight} alt="icon-alt" />
-          </li>
-              
-            </>
-          )}
-          
-          <li className={styles.optionMenu}>
-            <img src={iconUser} alt="icon-alt" />
-            <span>
-                <button
-                  className={styles.btn}
-                  name="Perfil"
-                  onClick={handleInput}
-                  >
-                  Perfil
-                </button>
-             </span>
-            <div className={styles.perfilStatus}>
-              {user.isUserComplete ? (
-                <>
-                  <img src={iconShield} alt="icon-alt" />
-                  <span>Completo</span>
-                </>
+                className={styles.btn}
+                onClick={() => setIsMenuOpen(!isOpenMenu)}
+              >
+                Eventos
+              </button>
+              <IconEvents className={styles.iconMenu} />
+              {isOpenMenu ? (
+                <IoIosArrowDown className={styles.iconEvent} />
               ) : (
-                <>
-                  <img src={iconWarning} alt="icon-alt" />
-                  <span>Incompleto</span>
-                </>
+                <IoIosArrowUp />
               )}
             </div>
-          </li>
-          <li className={styles.optionMenu}>
-            <img src={iconTicket} alt="icon-alt" />
-            <span>
-                <button
-                  className={styles.btn}
-                  name="Plan de Referidos"
-                  onClick={handleInput}
+
+            {isOpenMenu && (
+              <ul className={styles.listMenuEvent}>
+                <li className={styles.optionMenu}>
+                  <button
+                    className={styles.btn}
+                    name="Mi lista"
+                    onClick={handleInput}
                   >
-                  Plan de Referidos
-                </button>
-             </span>
-          </li>
-          <li className={styles.optionMenu}>
-            <img src={iconSettings} alt="icon-alt" />
-            <span>
-                <button
-                  className={styles.btn}
-                  name="Preferencias"
-                  onClick={handleInput}
+                    Mi lista
+                  </button>
+                  <IconEvents className={styles.iconMenu} />
+                  <IoIosArrowForward className={styles.iconArrow} />
+                </li>
+                <li className={styles.optionMenu}>
+                  <button
+                    className={styles.btn}
+                    name="Pendientes por Asistir"
+                    onClick={handleInput}
                   >
-                  Preferencias
-                </button>
-                </span>
+                    Pendientes por Asistir
+                  </button>
+                  <IconEvents className={styles.iconMenu} />
+                  <IoIosArrowForward className={styles.iconArrow} />
+                </li>
+                {user.isOrganizer && (
+                  <>
+                    <li className={styles.optionMenu}>
+                      <button
+                        className={styles.btn}
+                        name="Mis Eventos"
+                        onClick={handleInput}
+                      >
+                        Mis Eventos
+                      </button>
+                      <IconEvents className={styles.iconMenu} />
+                      <IoIosArrowForward className={styles.iconArrow} />
+                    </li>
+                  </>
+                )}
+              </ul>
+            )}
+          </li>
+
+          <li className={styles.containerItemOptionMenu}>
+            <div className={styles.optionMenu}>
+              {' '}
+              <button
+                className={styles.btn}
+                name="Perfil"
+                onClick={handleInput}
+              >
+                Perfil
+              </button>
+              <IconUser className={styles.iconMenu} />
+              <div className={styles.perfilStatus}>
+                {user.isUserComplete ? (
+                  <>
+                    <IconShield />
+                    <span>Completo</span>
+                  </>
+                ) : (
+                  <>
+                    <IconWarning />
+                    <span>Incompleto</span>
+                  </>
+                )}
+              </div>
+              <IoIosArrowForward className={styles.iconArrow} />
+            </div>
+          </li>
+          <li className={styles.containerItemOptionMenu}>
+            <div className={styles.optionMenu}>
+              <button
+                className={styles.btn}
+                name="Plan de Referidos"
+                onClick={handleInput}
+              >
+                Plan de Referidos
+              </button>
+              <IconReferred className={styles.iconMenu} />
+              <IoIosArrowForward className={styles.iconArrow} />
+            </div>
+          </li>
+          <li className={styles.containerItemOptionMenu}>
+            <div className={styles.optionMenu}>
+              <button
+                className={styles.btn}
+                name="Preferencias"
+                onClick={handleInput}
+              >
+                Preferencias
+              </button>
+              <IconPreferences className={styles.iconMenu} />
+              <IoIosArrowForward className={styles.iconArrow} />
+            </div>
           </li>
         </ul>
         <div className={styles.menuCalendar}>
@@ -211,8 +228,7 @@ const handleInput = (e) => {
           </div>
         </div>
       </div>
-      {/* TODO */}
-      {/* <UserForm /> */}
+
       <div>{component}</div>
     </div>
   );
