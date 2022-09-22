@@ -24,6 +24,7 @@ import { Footer, Navbar } from './components';
 import { Data } from './context/Context';
 import PanelPrivacy from './pages/PanelPrivacy/PanelPrivacy';
 import Notifications from './components/Notifications/Notifications';
+import Bills from './components/Finance/Bills';
 
 function App() {
   useEffect(() => {
@@ -55,6 +56,7 @@ function App() {
           <Route path="/user/profile" element={<User />} />
           <Route path="/privacy" element={<PanelPrivacy />} />
           <Route path="/notifications" element={<Notifications />} />
+          <Route path="/bills" element={<Bills />} />
         </Routes>
         <div className="container">
           <Footer />
