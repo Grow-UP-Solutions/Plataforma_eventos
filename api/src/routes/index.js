@@ -1,8 +1,8 @@
-const { Router } = require("express");
-const eventsController = require("./controller/events.controller");
-const usersController = require("./controller/users.controller");
-const categoryController = require("./controller/category.controller");
-const contactContoller = require("../routes/controller/contact.controller");
+import { Router } from "express";
+import eventsController from "./controller/events.controller.js";
+import usersController from "./controller/users.controller.js";
+import categoryController from "./controller/category.controller.js";
+import contactContoller from "../routes/controller/contact.controller.js";
 
 const router = Router();
 
@@ -12,4 +12,4 @@ router.use("/category", categoryController);
 router.use("/contact", contactContoller);
 
 
-module.exports = router;
+export default router;

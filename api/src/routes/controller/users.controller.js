@@ -1,7 +1,7 @@
-const { Router } = require("express");
-require("../../DB");
-const Users = require("../../models/db/Users");
-const { getAllUsers, createUsers, userUpdate, userDelete } = require("../services/users.services");
+import { Router } from "express";
+import "../../DB.js";
+import { getOneUserDb } from "../../models/util/functionDB/UserDb.js";
+import { getAllUsers, createUsers, userUpdate, userDelete } from "../services/users.services.js";
 
 const router = Router();
 
@@ -9,6 +9,17 @@ router.get("/", async (req, res) => {
   try {
     const allUsers = await getAllUsers();
     return res.status(200).json(allUsers);
+    
+  } catch (error) {
+    return res.status(400).json({ERROR_USER:error})
+  }
+});
+router.get("/user", async (req, res) => {
+  const {name}= req.query
+  console.log(name)
+  try {
+    const user = await getOneUserDb(name);
+    return res.status(200).json(user);
     
   } catch (error) {
     return res.status(400).json({ERROR_USER:error})
@@ -46,4 +57,4 @@ router.delete('/delete/:id', async (req,res)=>{
     return res.status(400).json({FALLO_USER_DELETE: error})
   }
 })
-module.exports = router;
+export default router;
