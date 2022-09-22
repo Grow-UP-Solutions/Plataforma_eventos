@@ -2,9 +2,14 @@
   "name": "api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./api/index.js",
+  "engines": {
+    "node": "v16.16.0",
+    "npm": "8.8.0"
+  },
   "scripts": {
-    "start": "nodemon -L",
+    "start": "node index.js",
+    "dev": "nodemon -L",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -17,6 +22,7 @@
     "express": "^4.18.1",
     "mongoose": "^6.6.0",
     "morgan": "^1.10.0",
-    "nodemailer": "^6.7.8"
+    "nodemailer": "^6.7.8",
+    "nodemon": "^2.0.20"
   }
 }
