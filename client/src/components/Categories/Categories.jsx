@@ -26,7 +26,7 @@ const Categories = () => {
       <ul className={styles.listCategories}>
         {allCategories.map((categorie) => {
           return (
-            <li className={styles.categorie}>
+            <li key={categorie.name} className={styles.categorie}>
               <img src={categorie.img} alt={categorie.name} />
               <div className={styles.categorieText}>
                 <p

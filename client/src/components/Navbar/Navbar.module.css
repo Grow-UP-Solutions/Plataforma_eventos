@@ -41,12 +41,13 @@
   font-weight: bold;
   padding: 0 20px;
   color: var(--color-grey-3);
+  cursor: pointer;
 }
 
 .button {
   font-size: 1.4rem;
   font-weight: bold;
-  color: var(--color-grey-4);
+  color: white;
   background-color: var(--color-orange);
   border-radius: 18px;
   text-align: center;

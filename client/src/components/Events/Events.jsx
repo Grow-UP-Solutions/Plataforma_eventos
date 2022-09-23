@@ -10,9 +10,7 @@ import 'swiper/modules/scrollbar/scrollbar.min.css';
 import 'swiper/modules/navigation/navigation.min.css';
 
 const Events = () => {
-
   const eventsShow = events.slice(0, 20);
-
 
   return (
     <div className={styles.cardsSection}>
@@ -28,7 +26,7 @@ const Events = () => {
           {eventsShow.length ? (
             eventsShow.map((event, index) => {
               return (
-                <SwiperSlide>
+                <SwiperSlide key={event.id}>
                   <Card event={event} />
                 </SwiperSlide>
               );
@@ -44,15 +42,13 @@ const Events = () => {
           slidesPerView={4.2}
           spaceBetween={0}
           navigation
-          onSlideChange={() => console.log('slide change')}
-          onSwiper={(swiper) => console.log(swiper)}
           modules={[Pagination, Navigation]}
           className={styles.mySwipper}
         >
           {eventsShow.length ? (
             eventsShow.map((event, index) => {
               return (
-                <SwiperSlide>
+                <SwiperSlide key={event.id}>
                   <div key={index}>
                     <Card event={event} />
                   </div>
@@ -70,16 +66,14 @@ const Events = () => {
           slidesPerView={4.2}
           spaceBetween={0}
           navigation
-          onSlideChange={() => console.log('slide change')}
-          onSwiper={(swiper) => console.log(swiper)}
           modules={[Pagination, Navigation]}
           className={styles.mySwipper}
         >
           {eventsShow.length ? (
             eventsShow.map((event, index) => {
               return (
-                <SwiperSlide>
-                  <div key={index}>
+                <SwiperSlide key={index}>
+                  <div>
                     <Card event={event} />
                   </div>
                 </SwiperSlide>
@@ -96,16 +90,14 @@ const Events = () => {
           slidesPerView={4.2}
           spaceBetween={0}
           navigation
-          onSlideChange={() => console.log('slide change')}
-          onSwiper={(swiper) => console.log(swiper)}
           modules={[Pagination, Navigation]}
           className={styles.mySwipper}
         >
           {eventsShow.length ? (
             eventsShow.map((event, index) => {
               return (
-                <SwiperSlide>
-                  <div key={index}>
+                <SwiperSlide key={index}>
+                  <div>
                     <Card event={event} />
                   </div>
                 </SwiperSlide>

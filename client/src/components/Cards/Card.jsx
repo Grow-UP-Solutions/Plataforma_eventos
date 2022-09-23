@@ -9,8 +9,6 @@ import { iconAdd } from '../../assets/imgs';
 const Card = ({ event }) => {
   const currentYear = new Date().getFullYear();
 
-  console.log('eventId', event.id);
-
   return (
     <div className={styles.card}>
       <img
@@ -23,12 +21,16 @@ const Card = ({ event }) => {
       <div className={styles.cardText}>
         {event.dates && event.dates.length > 1 ? (
           <select className={styles.cardDate}>
-            {event.dates.map((date) =>
+            {event.dates.map((date, index) =>
               date.cupos > 0 ? (
                 date.year === currentYear ? (
-                  <option value={date.id}>{date.date.slice(0, 8)}</option>
+                  <option key={index} value={date.id}>
+                    {date.date.slice(0, 8)}
+                  </option>
                 ) : (
-                  <option value={date.id}>{date.date}</option>
+                  <option key={index} value={date.id}>
+                    {date.date}
+                  </option>
                 )
               ) : (
                 'N'

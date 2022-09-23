@@ -15,6 +15,21 @@ const useValidateForm = (formData, setFormData) => {
     const regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{12,20}$/;
     let checkValidate = false;
 
+    if (id === 'canReceivedInformation') {
+      console.log({ event: e.target });
+      return setFormData({
+        ...formData,
+        [id]: !formData.canReceivedInformation,
+      });
+    }
+
+    if (id === 'name' || id === 'lastName') {
+      return setFormData({
+        ...formData,
+        [id]: value,
+      });
+    }
+
     if (value.length === 0) {
       return setErrorsInputs({
         ...errorsInputs,
@@ -28,7 +43,6 @@ const useValidateForm = (formData, setFormData) => {
 
     if (id === 'password') {
       checkValidate = regex.test(value);
-      console.log(checkValidate);
     }
 
     if (id === 'confirmPassword') {

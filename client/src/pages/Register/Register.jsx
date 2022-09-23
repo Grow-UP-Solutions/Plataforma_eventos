@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styles from './Register.module.css';
-
-import { IconFacebook, IconGoogle } from '../../assets/Icons';
 import { Link } from 'react-router-dom';
 
+import { IconFacebook, IconGoogle } from '../../assets/Icons';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 
 import useValidateForm from '../../hooks/useValidateForm';
+import { UIContext } from '../../context/ui';
 
 const Register = () => {
+  const { toggleScreenLogin } = useContext(UIContext);
+
   const [formData, setFormData] = useState({
     name: '',
     lastName: '',
@@ -63,21 +65,21 @@ const Register = () => {
           <div className={styles.formGroup}>
             <label htmlFor="name">Nombre(s)</label>
             <input
-              value={formData.name}
               autoComplete="off"
               type="text"
               id="name"
               onChange={handleChangeInputValue}
+              required
             />
           </div>
           <div className={styles.formGroup}>
             <label htmlFor="lastName">Apellido(s)</label>
             <input
-              value={formData.lastName}
               autoComplete="off"
               type="text"
               id="lastName"
               onChange={handleChangeInputValue}
+              required
             />
           </div>
           <div className={styles.formGroup}>
@@ -92,7 +94,9 @@ const Register = () => {
               autoComplete="off"
               required
             />
-            {errorsInputs.mail === false && <span>Formato invalido</span>}
+            {errorsInputs.mail === false && (
+              <span className={styles.errorMessage}>Formato invalido</span>
+            )}
           </div>
           <div className={styles.formGroup}>
             <label htmlFor="password">Contraseña</label>
@@ -110,7 +114,7 @@ const Register = () => {
                 autoComplete="off"
               />
 
-              {/* {!isPasswordVisible.password ? (
+              {!isPasswordVisible.password ? (
                 <FiEye
                   onClick={() => handleChangeVisiblePassword('password')}
                   className={styles.iconVisiblePassword}
@@ -120,10 +124,11 @@ const Register = () => {
                   onClick={() => handleChangeVisiblePassword('password')}
                   className={styles.iconVisiblePassword}
                 />
-              )} */}
-
+              )}
               {errorsInputs.password === false && (
-                <span>Contraseña sin el formato especificado.</span>
+                <span className={styles.errorMessage}>
+                  Contraseña sin el formato especificado.
+                </span>
               )}
             </div>
           </div>
@@ -154,7 +159,9 @@ const Register = () => {
                 />
               )}
               {errorsInputs.confirmPassword === false && (
-                <span>Las contraseñas no coinciden</span>
+                <span className={styles.errorMessage}>
+                  Las contraseñas no coinciden
+                </span>
               )}
             </div>
           </div>
@@ -170,6 +177,11 @@ const Register = () => {
               value={formData.codeReferred}
               type="text"
             />
+            {errorsInputs.codeReferred === false && (
+              <span className={styles.errorMessage}>
+                El código no es válido.
+              </span>
+            )}
           </div>
         </div>
 
@@ -197,7 +209,12 @@ const Register = () => {
         </div>
 
         <div className={styles.containerPromotionAndEmails}>
-          <input checked={formData.canReceivedInformation} type="checkbox" />
+          <input
+            id="canReceivedInformation"
+            checked={formData.canReceivedInformation}
+            type="checkbox"
+            onChange={handleChangeInputValue}
+          />
           <p>
             Quiero recibir información sobre promociones, actualizaciones y
             eventos que me puedan interesar.
@@ -211,7 +228,7 @@ const Register = () => {
 
       <div className={styles.containerOptionLogin}>
         <p>¿Ya tienes cuenta?</p>
-        <button>Entrar</button>
+        <button onClick={toggleScreenLogin}>Entrar</button>
       </div>
     </div>
   );
