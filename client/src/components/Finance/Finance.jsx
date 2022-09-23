@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './Finance.module.css';
 import users from '../../api/users';
 import basquet from '../../assets/imgs/basquet.svg'
+import { Link } from 'react-router-dom';
 
 const Finance = () => {
 
@@ -24,7 +25,7 @@ const Finance = () => {
                 <p className={styles.texto}>Ganancias totales en facturas ya emitidas: </p>
                 <p className={styles.texto}>Ganancias pendientes en facturas por emitir: </p>
                 <p className={styles.subtexto}>Cifras mostradas son netas, es decir el monto indicado ya ha sido depositado en tu cuenta bancaria o esta proximo a ser liquidado.</p>
-                <button className={styles.btn}>Detalles</button>               
+                <Link to={'/bills'}><button className={styles.btn}>Detalles</button></Link>               
             </div>
         </div>
 
