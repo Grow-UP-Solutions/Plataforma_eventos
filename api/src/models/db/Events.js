@@ -1,21 +1,21 @@
-const { Schema, model } = require("mongoose");
+import { Schema, model } from "mongoose";
 
 const EventSchema = new Schema({
   name: String,
   nick: String,
   description: String,
-  date: [String],
+  
   dates: [
     {
       date: String,
       cupos: Number,
-      time: String,
-      price: String,
-      year: Number,
-    }
-    
+      start: String,
+      end:String
+    }    
   ],
- 
+  
+  price: String,
+  year: Number,
   rating: Number,
   enLinea: Boolean,
   pictures: [String],
@@ -38,4 +38,4 @@ const EventSchema = new Schema({
   ],
 });
 
-module.exports = model("Events", EventSchema);
+export default model("Events", EventSchema);

@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+import { Schema, model } from "mongoose";
 
 const OpinionsSchema = new Schema({
   title:String,
@@ -13,5 +13,11 @@ const OpinionsSchema = new Schema({
   rating: Number,
   opinion: String,
   picture: String,
+  event:{
+    type:Schema.Types.ObjectId,
+    ref:"Events"
+  }
+
 });
-module.exports = model("Opinions", OpinionsSchema);
+export default model("OpinionsEvente", OpinionsSchema);
+

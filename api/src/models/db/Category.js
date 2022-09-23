@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+import { Schema, model } from "mongoose";
 
 const CategorySchema = new Schema({
   name: String,
@@ -6,11 +6,6 @@ const CategorySchema = new Schema({
   description: String,
 });
 
-module.exports = model("Category", CategorySchema);
+export default model("Category", CategorySchema);
 
-// {
-//     name: 'Artes',
-//     img:
-//       'https://img.freepik.com/fotos-premium/pincel-manchado-pintura_23-2148002444.jpg?w=2000',
-//     description: 'Duis autem vel eum iriure',
-//   }
+
