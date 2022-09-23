@@ -4,16 +4,14 @@ const EventSchema = new Schema({
   name: String,
   nick: String,
   description: String,
-  
   dates: [
     {
       date: String,
-      cupos: Number,
       start: String,
-      end:String
-    }    
+      end: String,
+    },
   ],
-  
+  cupos: Number,
   price: String,
   year: Number,
   rating: Number,
@@ -33,7 +31,7 @@ const EventSchema = new Schema({
   opinions: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Opinions",
+      ref: "OpinionsEvente",
     },
   ],
 });

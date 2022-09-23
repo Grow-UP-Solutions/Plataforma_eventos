@@ -5,6 +5,7 @@ const opinionsOrganizerSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Users",
   },
+  email:String,
   time: {
     type: Date,
     default: Date.now(),
