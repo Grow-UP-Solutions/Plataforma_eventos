@@ -95,7 +95,6 @@ const Bills = () => {
               billsPerPage={billsPerPage}
               state={state.data.data.length}
               paginado={paginado}
-              currentPage={currentPage}
             />
           </div>
 
