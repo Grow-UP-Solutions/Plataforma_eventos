@@ -1,14 +1,14 @@
 import "../../DB.js";
 import Events from "../../models/db/Events.js";
 
-import { getOneCategoryDb, } from "../../models/util/functionDB/CategoryDb.js";
-import { getAllEventsDb}  from "../../models/util/functionDB/EventesDb.js"
-import { getOneUserDb } from "../../models/util/functionDB/UserDb.js";
+import { OneCategoryDb, } from "../../models/util/functionDB/CategoryDb.js";
+import { AllEventsDb}  from "../../models/util/functionDB/EventesDb.js"
+import { OneUserDb } from "../../models/util/functionDB/UserDb.js";
 
 
 
   export async function getAllEvents() {
-    const allEvents = getAllEventsDb();
+    const allEvents = AllEventsDb();
     return allEvents;
   }
   export async function createEvents (event) {
@@ -33,9 +33,9 @@ import { getOneUserDb } from "../../models/util/functionDB/UserDb.js";
 
       const eventDB = await Events.findOne({ name: name });
 
-      const users = await getOneUserDb(organizer);
+      const users = await OneUserDb(organizer);
       const temp = category.map(async (e) => {
-        let temp = await getOneCategoryDb(e);
+        let temp = await OneCategoryDb(e);
         return temp;
       });
 

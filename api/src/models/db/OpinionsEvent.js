@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import  { Schema, model } from "mongoose";
 
 const OpinionsSchema = new Schema({
   title:String,
@@ -6,6 +6,7 @@ const OpinionsSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Users",
   },
+  email:String,
   time: {
     type: Date,
     default: Date.now(),
@@ -19,5 +20,6 @@ const OpinionsSchema = new Schema({
   }
 
 });
-export default model("OpinionsEvente", OpinionsSchema);
+
+export default model("OpinionsEven", OpinionsSchema);
 

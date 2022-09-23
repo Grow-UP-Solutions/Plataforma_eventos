@@ -1,21 +1,26 @@
 .container {
-    max-width: 1422px;
-    margin-bottom: 8rem;
-    border: 0.1px dashed white;
-    
-}
-    
-.title {
-    font-size: 2.5rem;
-    color: var(--color-grey-3);
-    letter-spacing: 1px;
-    margin-top: 20px;
-    font-weight: bold;
-    text-align: center;
+  max-width: 1420px;
+  margin: 0 auto;
 }
   
+.title {
+  font-size: 2.5rem;
+  color: var(--color-grey-3);
+  letter-spacing: 1px;
+  margin-top: 6rem;
+  font-weight: bold;
+  text-align: center;
+}
+
 .containerCard {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
+  gap: 2rem;
+  align-content: flex-start;
+}
+
+.container_pagination {
+  margin-top: 3rem;
 }
