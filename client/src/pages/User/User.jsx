@@ -43,7 +43,7 @@ const user = {
 const User = () => {
   const [date, setDate] = useState();
 
-  const [component, setComponent] = useState('');
+  const [component, setComponent] = useState(<UserForm />);
 
   const [isOpenMenu, setIsMenuOpen] = useState(false);
 
