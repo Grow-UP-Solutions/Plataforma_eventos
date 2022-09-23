@@ -6,16 +6,17 @@ const evente = [
     nick: "Bring your camera",
     description:
       "Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem",
-    date: ["Junio 1 / 2019"],
+    
     dates: [
       {
         date: "Enero 19 / 2022",
-        cupos: 15,
-        time: "12.00-14.00",
-        price: "$300.000",
-        year: 2022,
+        start: "12.00",
+        end:"14.00"
       },
     ],
+    cupos: 15,
+    price: "$300.000",
+    year: 2022,
 
     rating: 4.5,
     enLinea: false,
@@ -36,17 +37,17 @@ const evente = [
     nick: "Bring your instruments!",
     description:
       "Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem",
-    date: ["Junio 1 / 2019"],
+    
     dates: [
       {
-        date: "Junio 7 / 2023",
-        cupos: 10,
-        time: "12.00-14.00",
-        price: "$300.000",
-        year: 2023,
+        date: "Enero 19 / 2022",
+        start: "12.00",
+        end:"14.00"
       },
     ],
-
+    cupos: 15,
+    price: "$300.000",
+    year: 2022,
     rating: 5,
     enLinea: false,
     pictures: [
@@ -66,34 +67,17 @@ const evente = [
     nick: "Bring your camera",
     description:
       "Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem",
-    date: ["Junio 1 / 2019"],
+    
     dates: [
       {
-        id: "1",
-        date: "Enero 30 / 2022",
-        cupos: 6,
-        time: "20.00-22.00",
-        price: "$150.000",
-        year: 2022,
-      },
-      {
-        id: "2",
-        date: "Enero 19 / 2023",
-        cupos: 14,
-        time: "12.00-14.00",
-        price: "$300.000",
-        year: 2023,
-      },
-      {
-        id: "3",
-        date: "Junio 30 / 2023",
-        cupos: 3,
-        time: "20.00-22.00",
-        price: "$800.000",
-        year: 2023,
+        date: "Enero 19 / 2022",
+        start: "12.00",
+        end:"14.00"
       },
     ],
-
+    cupos: 15,
+    price: "$300.000",
+    year: 2022,
     rating: 4,
     enLinea: false,
     pictures: [
@@ -114,23 +98,16 @@ const evente = [
     nick: "Bring your camera",
     description:
       "Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem",
-    date: ["Junio 1 / 2019"],
-    dates: [
-      {
-        date: "Enero 19 / 2019",
-        cupos: 13,
-        time: "12.00-14.00",
-        price: "$300.000",
-        year: 2019,
-      },
-      {
-        date: "Enero 30 / 2019",
-        cupos: 25,
-        time: "20.00-22.00",
-        price: "$150.000",
-        year: 2019,
-      },
-    ],
+      dates: [
+        {
+          date: "Enero 19 / 2022",
+          start: "12.00",
+          end:"14.00"
+        },
+      ],
+      cupos: 15,
+      price: "$300.000",
+      year: 2022,
 
     enLinea: false,
     pictures: [
@@ -150,16 +127,16 @@ const evente = [
     nick: "Bring your camera",
     description:
       "Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem",
-    date: ["Junio 1 / 2019"],
-    dates: [
-      {
-        date: "Enero 19 / 2019",
-        cupos: 1,
-        time: "12.00-14.00",
-        price: "$300.000",
-        year: 2019,
-      },
-    ],
+      dates: [
+        {
+          date: "Enero 19 / 2022",
+          start: "12.00",
+          end:"14.00"
+        },
+      ],
+      cupos: 15,
+      price: "$300.000",
+      year: 2022,
     time: "13:00 - 16:00",
     state: "Antioquia",
     city: "Medellin",
@@ -183,20 +160,16 @@ const evente = [
     nick: "Bring your camera",
     description:
       "Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem",
-    date: ["Junio 1 / 2019"],
-    dates: [
-      {
-        date: "Enero 19 / 2022",
-        cupos: 15,
-        time: "12.00-14.00",
-        price: "$300.000",
-        year: 2022,
-      },
-    ],
-    time: "20:00 - 22:00",
-    state: "Antioquia",
-    city: "Medellin",
-    price: "$250.000",
+      dates: [
+        {
+          date: "Enero 19 / 2022",
+          start: "12.00",
+          end:"14.00"
+        },
+      ],
+      cupos: 15,
+      price: "$300.000",
+      year: 2022,
     cupos: 10,
     rating: 4.5,
     enLinea: false,
@@ -246,34 +219,16 @@ const evente = [
     nick: "Bring your camera",
     description:
       "Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem",
-    date: ["Junio 1 / 2019"],
-    dates: [
-      {
-        id: "1",
-        date: "Enero 30 / 2022",
-        cupos: 6,
-        time: "20.00-22.00",
-        price: "$150.000",
-        year: 2022,
-      },
-      {
-        id: "2",
-        date: "Enero 19 / 2023",
-        cupos: 14,
-        time: "12.00-14.00",
-        price: "$300.000",
-        year: 2023,
-      },
-      {
-        id: "3",
-        date: "Junio 30 / 2023",
-        cupos: 3,
-        time: "20.00-22.00",
-        price: "$800.000",
-        year: 2023,
-      },
-    ],
-   
+      dates: [
+        {
+          date: "Enero 19 / 2022",
+          start: "12.00",
+          end:"14.00"
+        },
+      ],
+      cupos: 15,
+      price: "$300.000",
+      year: 2022,
     rating: 4,
     enLinea: false,
     pictures: [
@@ -296,20 +251,19 @@ const evente = [
     date: ["Junio 1 / 2019"],
     dates: [
       {
-        date: "Enero 19 / 2019",
-        cupos: 13,
-        time: "12.00-14.00",
-        price: "$300.000",
-        year: 2019,
+        date: "Enero 19 / 2022",
+        start: "12.00",
+        end:"14.00"
       },
       {
-        date: "Enero 30 / 2019",
-        cupos: 25,
-        time: "20.00-22.00",
-        price: "$150.000",
-        year: 2019,
+        date: "Enero 19 / 2022",
+        start: "19.00",
+        end:"18.00"
       },
     ],
+    cupos: 15,
+    price: "$300.000",
+    year: 2022,
     
     rating: 4,
     enLinea: false,
@@ -383,16 +337,16 @@ const evente = [
     nick: "Bring your camera",
     description:
       "Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem",
-    date: ["Junio 1 / 2019"],
-    dates: [
-      {
-        date: "Enero 19 / 2022",
-        cupos: 15,
-        time: "12.00-14.00",
-        price: "$300.000",
-        year: 2022,
-      },
-    ],
+      dates: [
+        {
+          date: "Enero 19 / 2022",
+          start: "12.00",
+          end:"14.00"
+        },
+      ],
+      cupos: 15,
+      price: "$300.000",
+      year: 2022,
     
     rating: 4.5,
     enLinea: false,
@@ -412,16 +366,16 @@ const evente = [
     nick: "Bring your instruments!",
     description:
       "Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem",
-    date: ["Junio 1 / 2019"],
-    dates: [
-      {
-        date: "Junio 7 / 2023",
-        cupos: 10,
-        time: "12.00-14.00",
-        price: "$300.000",
-        year: 2023,
-      },
-    ],
+      dates: [
+        {
+          date: "Enero 19 / 2022",
+          start: "12.00",
+          end:"14.00"
+        },
+      ],
+      cupos: 15,
+      price: "$300.000",
+      year: 2022,
   
     rating: 5,
     enLinea: false,
@@ -441,33 +395,16 @@ const evente = [
     nick: "Bring your camera",
     description:
       "Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem",
-    date: ["Junio 1 / 2019"],
-    dates: [
-      {
-        id: "1",
-        date: "Enero 30 / 2022",
-        cupos: 6,
-        time: "20.00-22.00",
-        price: "$150.000",
-        year: 2022,
-      },
-      {
-        id: "2",
-        date: "Enero 19 / 2023",
-        cupos: 14,
-        time: "12.00-14.00",
-        price: "$300.000",
-        year: 2023,
-      },
-      {
-        id: "3",
-        date: "Junio 30 / 2023",
-        cupos: 3,
-        time: "20.00-22.00",
-        price: "$800.000",
-        year: 2023,
-      },
-    ],
+      dates: [
+        {
+          date: "Enero 19 / 2022",
+          start: "12.00",
+          end:"14.00"
+        },
+      ],
+      cupos: 15,
+      price: "$300.000",
+      year: 2022,
   
     rating: 4,
     enLinea: false,
@@ -487,23 +424,16 @@ const evente = [
     nick: "Bring your camera",
     description:
       "Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem",
-    date: ["Junio 1 / 2019"],
-    dates: [
-      {
-        date: "Enero 19 / 2019",
-        cupos: 13,
-        time: "12.00-14.00",
-        price: "$300.000",
-        year: 2019,
-      },
-      {
-        date: "Enero 30 / 2019",
-        cupos: 25,
-        time: "20.00-22.00",
-        price: "$150.000",
-        year: 2019,
-      },
-    ],  
+      dates: [
+        {
+          date: "Enero 19 / 2022",
+          start: "12.00",
+          end:"14.00"
+        },
+      ],
+      cupos: 15,
+      price: "$300.000",
+      year: 2022,
     rating: 4,
     enLinea: false,
     pictures: [
@@ -522,38 +452,16 @@ const evente = [
     nick: "Bring your camera",
     description:
       "Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem",
-    date: ["Junio 1 / 2019"],
-    dates: [
-      {
-        date: "Enero 19 / 2019",
-        cupos: 10,
-        time: "12.00-14.00",
-        price: "$300.000",
-        year: 2019,
-      },
-      {
-        date: "Enero 19 / 2019",
-        cupos: 10,
-        time: "12.00-14.00",
-        price: "$300.000",
-        year: 2019,
-      },
-      {
-        date: "Enero 19 / 2019",
-        cupos: 10,
-        time: "12.00-14.00",
-        price: "$300.000",
-        year: 2019,
-      },
-      {
-        date: "Enero 19 / 2019",
-        cupos: 10,
-        time: "12.00-14.00",
-        price: "$300.000",
-        year: 2019,
-      },
-    ],
-    
+      dates: [
+        {
+          date: "Enero 19 / 2022",
+          start: "12.00",
+          end:"14.00"
+        },
+      ],
+      cupos: 15,
+      price: "$300.000",
+      year: 2022,
     rating: 4,
     enLinea: true,
     pictures: [
@@ -572,16 +480,16 @@ const evente = [
     nick: "Bring your camera",
     description:
       "Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem",
-    date: ["Junio 1 / 2019"],
-    dates: [
-      {
-        date: "Enero 19 / 2022",
-        cupos: 15,
-        time: "12.00-14.00",
-        price: "$300.000",
-        year: 2022,
-      },
-    ],
+      dates: [
+        {
+          date: "Enero 19 / 2022",
+          start: "12.00",
+          end:"14.00"
+        },
+      ],
+      cupos: 15,
+      price: "$300.000",
+      year: 2022,
    
     rating: 4.5,
     enLinea: false,
@@ -601,20 +509,16 @@ const evente = [
     nick: "Bring your instruments!",
     description:
       "Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem",
-    date: ["Junio 1 / 2019"],
-    dates: [
-      {
-        date: "Junio 7 / 2023",
-        cupos: 10,
-        time: "12.00-14.00",
-        price: "$300.000",
-        year: 2023,
-      },
-    ],
-    state: "Antioquia",
-    city: "Medellin",
-    price: "$300.000",
-    cupos: 30,
+      dates: [
+        {
+          date: "Enero 19 / 2022",
+          start: "12.00",
+          end:"14.00"
+        },
+      ],
+      cupos: 15,
+      price: "$300.000",
+      year: 2022,
     rating: 5,
     enLinea: false,
     pictures: [
@@ -633,33 +537,27 @@ const evente = [
     nick: "Bring your camera",
     description:
       "Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem",
-    date: ["Junio 1 / 2019"],
+    
     dates: [
       {
-        id: "1",
         date: "Enero 30 / 2022",
-        cupos: 6,
-        time: "20.00-22.00",
-        price: "$150.000",
-        year: 2022,
+        start: "12.00",
+        end:"14.00"
       },
       {
-        id: "2",
-        date: "Enero 19 / 2023",
-        cupos: 14,
-        time: "12.00-14.00",
-        price: "$300.000",
-        year: 2023,
+        date: "Enero 19 / 2022",
+        start: "20.00",
+        end:"22.00"
       },
       {
-        id: "3",
-        date: "Junio 30 / 2023",
-        cupos: 3,
-        time: "20.00-22.00",
-        price: "$800.000",
-        year: 2023,
+        date: "Enero 10 / 2022",
+        start: "12.00",
+        end:"14.00"
       },
     ],
+    cupos: 15,
+    price: "$300.000",
+    year: 2022,
     
     rating: 4,
     enLinea: false,
@@ -679,24 +577,21 @@ const evente = [
     nick: "Bring your camera",
     description:
       "Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem",
-    date: ["Junio 1 / 2019"],
-    dates: [
-      {
-        date: "Enero 19 / 2019",
-        cupos: 13,
-        time: "12.00-14.00",
-        price: "$300.000",
-        year: 2019,
-      },
-      {
-        date: "Enero 30 / 2019",
-        cupos: 25,
-        time: "20.00-22.00",
-        price: "$150.000",
-        year: 2019,
-      },
-    ],
-    
+      dates: [
+        {
+          date: "Enero 19 / 2022",
+          start: "12.00",
+          end:"14.00"
+        },
+        {
+          date: "Enero 7 / 2022",
+          start: "18.00",
+          end:"22.00"
+        },
+      ],
+      cupos: 15,
+      price: "$300.000",
+      year: 2022,
     rating: 4,
     enLinea: false,
     pictures: [
@@ -766,21 +661,16 @@ const evente = [
     nick: "Bring your camera",
     description:
       "Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem",
-    date: ["Junio 1 / 2019"],
-    dates: [
-      {
-        date: "Enero 19 / 2022",
-        cupos: 15,
-        time: "12.00-14.00",
-        price: "$300.000",
-        year: 2022,
-      },
-    ],
-    time: "20:00 - 22:00",
-    state: "Antioquia",
-    city: "Medellin",
-    price: "$250.000",
-    cupos: 10,
+      dates: [
+        {
+          date: "Enero 19 / 2022",
+          start: "12.00",
+          end:"14.00"
+        },
+      ],
+      cupos: 15,
+      price: "$300.000",
+      year: 2022,
     rating: 4.5,
     enLinea: false,
     pictures: [
@@ -799,37 +689,41 @@ const evente = [
     nick: "Bring your camera",
     description:
       "Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem",
-    date: ["Junio 1 / 2019"],
-    dates: [
-      {
-        date: "Enero 19 / 2019",
-        cupos: 10,
-        time: "12.00-14.00",
-        price: "$300.000",
-        year: 2019,
-      },
-      {
-        date: "Enero 19 / 2019",
-        cupos: 10,
-        time: "12.00-14.00",
-        price: "$300.000",
-        year: 2019,
-      },
-      {
-        date: "Enero 19 / 2019",
-        cupos: 10,
-        time: "12.00-14.00",
-        price: "$300.000",
-        year: 2019,
-      },
-      {
-        date: "Enero 19 / 2019",
-        cupos: 10,
-        time: "12.00-14.00",
-        price: "$300.000",
-        year: 2019,
-      },
-    ],
+      dates: [
+        {
+          date: "Enero 19 / 2022",
+          start: "12.00",
+          end:"14.00"
+        },
+        {
+          date: "Enero 19 / 2022",
+          start: "22.00",
+          end:"23.00"
+        },
+        {
+          date: "Enero 19 / 2022",
+          start: "2.00",
+          end:"4.00"
+        },
+        {
+          date: "Enero 19 / 2022",
+          start: "1.00",
+          end:"4.00"
+        },
+        {
+          date: "Enero 19 / 2022",
+          start: "12.00",
+          end:"14.00"
+        },
+        {
+          date: "Enero 19 / 2022",
+          start: "3.00",
+          end:"5.00"
+        },
+      ],
+      cupos: 15,
+      price: "$300.000",
+      year: 2022,
     
     rating: 4,
     enLinea: true,
@@ -849,37 +743,44 @@ const evente = [
     nick: "Bring your camera",
     description:
       "Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem",
-    date: ["Junio 1 / 2019"],
-    dates: [
-      {
-        date: "Enero 19 / 2019",
-        cupos: 10,
-        time: "12.00-14.00",
-        price: "$300.000",
-        year: 2019,
-      },
-      {
-        date: "Enero 19 / 2019",
-        cupos: 10,
-        time: "12.00-14.00",
-        price: "$300.000",
-        year: 2019,
-      },
-      {
-        date: "Enero 19 / 2019",
-        cupos: 10,
-        time: "12.00-14.00",
-        price: "$300.000",
-        year: 2019,
-      },
-      {
-        date: "Enero 19 / 2019",
-        cupos: 10,
-        time: "12.00-14.00",
-        price: "$300.000",
-        year: 2019,
-      },
-    ],
+      description:
+      "Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem",
+      dates: [
+        {
+          date: "Enero 19 / 2022",
+          start: "12.00",
+          end:"14.00"
+        },
+        {
+          date: "Enero 9 / 2022",
+          start: "22.00",
+          end:"23.00"
+        },
+        {
+          date: "Enero 25 / 2022",
+          start: "2.00",
+          end:"4.00"
+        },
+        {
+          date: "Enero 29 / 2022",
+          start: "1.00",
+          end:"4.00"
+        },
+        {
+          date: "Enero 18 / 2022",
+          start: "12.00",
+          end:"14.00"
+        },
+        {
+          date: "Enero 15 / 2022",
+          start: "3.00",
+          end:"5.00"
+        },
+      ],
+      cupos: 15,
+      price: "$300.000",
+      year: 2022,
+    
     
     rating: 4,
     enLinea: true,
@@ -899,16 +800,16 @@ const evente = [
     nick: "Bring your camera",
     description:
       "Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem",
-    date: ["Junio 1 / 2019"],
-    dates: [
-      {
-        date: "Enero 19 / 2022",
-        cupos: 15,
-        time: "12.00-14.00",
-        price: "$300.000",
-        year: 2022,
-      },
-    ],
+      dates: [
+        {
+          date: "Enero 19 / 2022",
+          start: "12.00",
+          end:"14.00"
+        },
+      ],
+      cupos: 15,
+      price: "$300.000",
+      year: 2022,
     
     rating: 4.5,
     enLinea: false,

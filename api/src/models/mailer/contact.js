@@ -1,9 +1,10 @@
-const nodemailer = require('nodemailer')
-require('dotenv').config()
+import { createTransport } from 'nodemailer';
+import dotenv from "dotenv";
+dotenv.config()
  const { EMAIL, PASSWORD } = process.env;
 
-this.enviar_mail_contact = async (name, email,tlf,msg) => {
-  const transporter = nodemailer.createTransport({
+ export const enviar_mail_contact = async (name, email,tlf,msg) => {
+  const transporter = createTransport({
     service: 'gmail',
     secure: true,
     auth: {
@@ -36,4 +37,3 @@ this.enviar_mail_contact = async (name, email,tlf,msg) => {
   }
 }
 
-module.exports = this

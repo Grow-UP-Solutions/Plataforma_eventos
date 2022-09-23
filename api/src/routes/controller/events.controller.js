@@ -1,14 +1,6 @@
-const { Router } = require("express");
-const Category = require("../../models/db/Category.js");
-require("../../DB.js");
-const Events = require("../../models/db/Events.js");
-const Users = require("../../models/db/Users.js");
-const Opinions = require("../../models/db/Opinions");
-const {
-  getAllEvents,
-  createEvents,
-  eventsUpdate,
-} = require("../services/events.services.js");
+import { Router } from "express";
+import "../../DB.js";
+import { getAllEvents, createEvents, eventsUpdate } from "../services/events.services.js";
 
 const router = Router();
 
@@ -51,4 +43,4 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

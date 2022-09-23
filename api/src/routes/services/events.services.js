@@ -1,81 +1,80 @@
-require("../../DB.js");
+import "../../DB.js";
+import Events from "../../models/db/Events.js";
 
-const Category = require("../../models/db/Category.js");
+import { getOneCategoryDb, } from "../../models/util/functionDB/CategoryDb.js";
+import { getAllEventsDb}  from "../../models/util/functionDB/EventesDb.js"
+import { getOneUserDb } from "../../models/util/functionDB/UserDb.js";
 
-const Events = require("../../models/db/Events.js");
-const Users = require("../../models/db/Users.js");
 
-module.exports = {
-  getAllEvents: async function () {
-    const allEvents = await Events.find()
-      .populate({ path: "organizer" })
-      .populate({ path: "category" })
-      .populate({ path: "opinions" });
+
+  export async function getAllEvents() {
+    const allEvents = getAllEventsDb();
     return allEvents;
-  },
-  createEvents: async function (event) {
-   try {
-    
-     const {
-       name,
-       nick,
-       description,
-       dates,
-       time,
-       state,
-       city,
-       price,
-       cupos,
-       rating,
-       enLinea,
-       pictures,
-       participants,
-       organizer,
-       category,
-     } = event;
-       
-     const eventDB = await Events.findOne({ name: name, date: dates.date });
- 
-     const users = await Users.findOne({ name: organizer });
- 
-     const temp = category.map(
-       async (e) => await Category.findOne({ name: e })
-     );
- 
-     const categories = await Promise.all(temp);
-     if (eventDB) {
-       return { msg: "El evento ya existe" };
-     } else {
-       const events = new Events({
-         name,
-         nick,
-         description,
-         dates,
-         time,
-         state,
-         city,
-         price,
-         cupos,
-         rating,
-         enLinea,
-         pictures,
-         participants,
-         organizer: users._id,
-         category: categories.map((e) => e._id),
-       });
-       users.myEventsCreated.push(events._id);
-       await users.save();
-       return await events.save();
-     }
-   } catch (error) {
-    console.log('fallo service', error)
-   }
-  },
+  }
+  export async function createEvents (event) {
+    try {
+      const {
+        name,
+        nick,
+        description,
+        dates,
+        time,
+        state,
+        city,
+        price,
+        cupos,
+        rating,
+        enLinea,
+        pictures,
+        participants,
+        organizer,
+        category,
+      } = event;
 
-  eventsUpdate: async function (id, newEvent) {
+      const eventDB = await Events.findOne({ name: name });
+
+      const users = await getOneUserDb(organizer);
+      const temp = category.map(async (e) => {
+        let temp = await getOneCategoryDb(e);
+        return temp;
+      });
+
+      const categories = await Promise.all(temp);
+
+      if (eventDB) {
+        return { msg: "El evento ya existe" };
+      } else {
+        const events = new Events({
+          name,
+          nick,
+          description,
+          dates,
+          time,
+          state,
+          city,
+          price,
+          cupos,
+          rating,
+          enLinea,
+          pictures,
+          participants,
+          organizer: users._id,
+          category: categories.map((e) => e._id),
+        });
+        await events.save();
+        console.log("EVENTES", events);
+        users.myEventsCreated.push(events._id);
+        await users.save();
+        return events;
+      }
+    } catch (error) {
+      console.log("fallo service event", error);
+    }
+  }
+
+  export async function eventsUpdate (id, newEvent) {
     const newEvents = await Events.findByIdAndUpdate({ _id: id }, newEvent, {
       new: 1,
     });
     return newEvents;
-  },
-};
+  }

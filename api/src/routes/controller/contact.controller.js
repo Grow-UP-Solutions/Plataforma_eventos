@@ -1,6 +1,5 @@
-const { Router } = require("express");
-const { enviar_mail_contact } = require("../../models/mailer/contact");
-const { contact } = require("../services/contact.service");
+import { Router } from "express";
+import { contact } from "../services/contact.service.js";
 
 const router = Router();
 
@@ -14,4 +13,4 @@ router.post("/", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
