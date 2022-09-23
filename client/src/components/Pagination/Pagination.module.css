@@ -1,0 +1,22 @@
+
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+.page {
+  display: inline-block;
+  cursor: pointer;
+  padding: .1rem .4rem;
+}
+
+.number:hover {
+  color: var(--color-orange);
+}
+
+.number {
+  color: var(--color-grey-3);
+  text-decoration: none;
+  font-size: 2.5rem;
+  font-family: 'Raleway', sans-serif;
+}

@@ -56,7 +56,6 @@ function App() {
           <Route path="/workWithUs/form/:work" element={<WorkWithUsForm />} />
           <Route path="/user/profile" element={<User />} />
           <Route path="/privacy" element={<PanelPrivacy />} />
-          {/* <Route path="/help" element={<Help />} /> */}
           <Route path="/user/message" element={<Message />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/bills" element={<Bills />} />
