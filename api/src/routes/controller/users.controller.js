@@ -1,6 +1,6 @@
 import { Router } from "express";
 import "../../DB.js";
-import { getOneUserDb } from "../../models/util/functionDB/UserDb.js";
+import { OneUserDb } from "../../models/util/functionDB/UserDb.js";
 import { getAllUsers, createUsers, userUpdate, userDelete } from "../services/users.services.js";
 
 const router = Router();
@@ -18,7 +18,7 @@ router.get("/user", async (req, res) => {
   const {name}= req.query
   console.log(name)
   try {
-    const user = await getOneUserDb(name);
+    const user = await OneUserDb(name);
     return res.status(200).json(user);
     
   } catch (error) {
