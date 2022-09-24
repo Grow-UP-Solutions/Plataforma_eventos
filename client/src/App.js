@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { animateScroll as scroll } from 'react-scroll';
 import './App.css';
@@ -21,11 +21,12 @@ import {
   User,
   Message,
 } from './pages';
-import { Footer, Navbar } from './components';
+import { Footer, Login, Navbar } from './components';
 import { Data } from './context/Context';
 import PanelPrivacy from './pages/PanelPrivacy/PanelPrivacy';
 import Notifications from './components/Notifications/Notifications';
 import Bills from './components/Finance/Bills';
+import { UIContext } from './context/ui';
 
 function App() {
   useEffect(() => {
@@ -33,6 +34,8 @@ function App() {
   }, []);
 
   const [navBar, setNavBar] = useState(false);
+
+  const { isMenuLoginOpen } = useContext(UIContext);
 
   return (
     <div className="App">
@@ -66,6 +69,7 @@ function App() {
         <div className="footer_extra">
           <p>© 2019 LO QUE QUIERO HACER S.A.S</p>
         </div>
+        {isMenuLoginOpen && <Login />}
       </Data>
     </div>
   );

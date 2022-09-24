@@ -54,16 +54,14 @@ const CarrouselHome = () => {
           delay: 6000,
           disableOnInteraction: false,
         }}
-        onSlideChange={() => console.log('slide change')}
-        onSwiper={(swiper) => console.log(swiper)}
         modules={[Autoplay, Pagination, Navigation]}
         className={style.mySwipper}
       >
         {images.length ? (
           images.map((e) => {
             return (
-              <SwiperSlide>
-                <div key={e.id}>
+              <SwiperSlide key={e.id}>
+                <div>
                   <img className={style.img} src={e.url} alt={e.title} />
                 </div>
               </SwiperSlide>

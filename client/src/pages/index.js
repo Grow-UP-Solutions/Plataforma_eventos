@@ -15,5 +15,4 @@ export { default as CategoriesResult } from './CategoriesResult/CategoriesResult
 export { default as EventCreate } from './EventCreate/EventCreate';
 export { default as EventCreateForm } from './EventCreateForm/EventCreateForm';
 export { default as User } from './User/User';
-
 export { default as Message } from './Messages/Message';

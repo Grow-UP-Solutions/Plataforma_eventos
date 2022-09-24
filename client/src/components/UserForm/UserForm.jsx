@@ -6,8 +6,8 @@ import styles from './UserForm.module.css';
 import {
   BsCamera,
   BsCardImage,
-  BsPencilSquare,
   BsInfoCircle,
+  BsPencilSquare,
 } from 'react-icons/bs';
 
 const UserForm = () => {
