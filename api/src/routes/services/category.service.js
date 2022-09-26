@@ -14,7 +14,7 @@ export async function createCategory(category) {
   const { name } = category;
   const categoryDB = OneCategoryDb(name);
   if (categoryDB) {
-    console.log("lacategoria existe");
+    
     return "La categoria existe";
   }
   const categories = new Category(category);

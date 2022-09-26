@@ -16,7 +16,7 @@ router.get("/", async (req, res) => {
 });
 router.get("/user", async (req, res) => {
   const {name}= req.query
-  console.log(name)
+  
   try {
     const user = await OneUserDb(name);
     return res.status(200).json(user);
