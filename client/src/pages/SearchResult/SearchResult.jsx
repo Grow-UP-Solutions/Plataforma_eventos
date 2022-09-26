@@ -8,6 +8,7 @@ import { Card } from '../../components';
 import Pagination from '../../components/Pagination/Pagination';
 
 const SearchResult = () => {
+  
   const { result } = useContext(stateContext);
   const [currentPage, setCurretPage] = useState(1);
   const CardPerPage = 8;
