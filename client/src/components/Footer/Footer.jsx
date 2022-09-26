@@ -33,7 +33,9 @@ const Footer = () => {
           <p className={styles.titleList}>Legal</p>
           <ul>
             <li>
-              <Link to={'/privacy'}><a>Privacidad</a></Link>
+              <Link to={'/privacy'}>
+                <a>Privacidad</a>
+              </Link>
             </li>
             <li>
               <a href="#">Seguridad</a>
@@ -52,7 +54,9 @@ const Footer = () => {
               </Link>
             </li>
             <li>
-              <Link to={'/faq'}><a>Preguntas Frecuentes</a></Link>
+              <Link to={'/faq'}>
+                <a>Preguntas Frecuentes</a>
+              </Link>
             </li>
           </ul>
         </div>

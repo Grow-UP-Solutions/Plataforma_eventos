@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import style from './Navbar.module.css';
 
 import { Link, useNavigate, useLocation } from 'react-router-dom';
@@ -7,15 +7,17 @@ import Search from '../Search/Search';
 import { GrMail } from 'react-icons/gr';
 import { IoNotifications, IoCaretDownSharp } from 'react-icons/io5';
 import logo from '../../assets/imgs/logoNav.svg';
+import { UIContext } from '../../context/ui';
 
 const user = {
-  userLog: true,
+  userLog: false,
   name: 'Jean',
   lastName: 'Huaman',
   img: 'https://i.pravatar.cc/150?img=4',
 };
 
 const Navbar = ({ upper }) => {
+  const { toggleScreenLogin } = useContext(UIContext);
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -52,9 +54,7 @@ const Navbar = ({ upper }) => {
           </Link>
           {!user.userLog ? (
             <>
-              <Link to={`/ingresa`}>
-                <p>Ingresa</p>
-              </Link>
+              <p onClick={toggleScreenLogin}>Ingresa</p>
               <Link to={`/registrate`}>
                 <span className={style.button}>Registrate</span>
               </Link>

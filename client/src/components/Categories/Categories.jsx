@@ -2,11 +2,11 @@ import React, { useContext } from 'react';
 import styles from './Categories.module.css';
 import events from '../../api/events';
 import categories from '../../api/categories';
-import { Context } from '../../context/Context';
+import { stateContext } from '../../context/state/stateContext';
 import { useNavigate } from 'react-router-dom';
 
 const Categories = () => {
-  const { setResult } = useContext(Context);
+  const { setResult } = useContext(stateContext);
   const navigate = useNavigate();
   const allEvents = events;
   const allCategories = categories;
@@ -26,7 +26,7 @@ const Categories = () => {
       <ul className={styles.listCategories}>
         {allCategories.map((categorie) => {
           return (
-            <li className={styles.categorie}>
+            <li key={categorie.name} className={styles.categorie}>
               <img src={categorie.img} alt={categorie.name} />
               <div className={styles.categorieText}>
                 <p

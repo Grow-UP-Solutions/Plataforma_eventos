@@ -16,3 +16,4 @@ export { default as PreferencesUser } from './PreferencesUser/PreferencesUser';
 export { default as MyListUser } from './MyListUser/MyListUser';
 export { default as ExpectToAttendUser } from './ExpectToAttendUser/ExpectToAttendUser';
 export { default as MyEventsOrganizer } from './MyEventsOrganizer/MyEventsOrganizer';
+export { default as Login } from './Login/Login';

@@ -1,7 +1,7 @@
 import React from 'react';
 import style from './Pagination.module.css';
 
-const Pagination = ({ billsPerPage, state, paginado, currentPage }) => {
+const Pagination = ({ billsPerPage, state, paginado }) => {
 
   const pageNumbers = [];
 
