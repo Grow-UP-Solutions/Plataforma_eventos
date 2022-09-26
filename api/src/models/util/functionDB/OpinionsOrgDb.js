@@ -1,6 +1,6 @@
 import "../../../DB.js";
 
-import OpinionsOrganizer from "../../db/OpinionsOrganizer.js";
+import OpinionsOrganizer from "../../DB/OpinionsOrganizer.js";
 
 /** basic user database operations */
 
@@ -14,11 +14,10 @@ export async function oneOpinionsOrgDb(params) {
   );
 }
 export async function updateOneOpinionsOrgDb(id, newOpinions) {
-  return await OpinionsOrganizer.findByIdAndUpdate({_id:id}, newOpinions, {
+  return await OpinionsOrganizer.findByIdAndUpdate({ _id: id }, newOpinions, {
     new: 1,
   }).populate("user");
 }
 export async function deleteOneOpinionsOrgDb(id) {
-    return await OpinionsOrganizer.findByIdAndDelete(id)
-    
+  return await OpinionsOrganizer.findByIdAndDelete(id);
 }

@@ -1,5 +1,5 @@
 import "../../../DB.js";
-import Category from "../../db/Category.js";
+import Category from "../../DB/Category.js";
 
 /** basic user database operations */
 

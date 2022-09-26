@@ -1,5 +1,5 @@
 import "../../../DB.js";
-import Users from "../../db/Users.js";
+import Users from "../../DB/Users.js";
 
 /** basic user database operations */
 
