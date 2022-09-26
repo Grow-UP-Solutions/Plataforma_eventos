@@ -3,13 +3,13 @@ import style from './Search.module.css';
 import { BsSearch } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import events from '../../api/events';
-import { Context } from '../../context/Context';
+import { stateContext } from '../../context/state/stateContext';
 
 const Search = ({ location = 'home' }) => {
 
   const [input, setInput] = useState('');
   const navigate = useNavigate();
-  const {setResult} = useContext(Context);
+  const {setResult} = useContext(stateContext);
   const allEvents = events;
 
   const handleChange = (e) => {
