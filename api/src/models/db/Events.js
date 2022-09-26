@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import OpinionsEvent from "./OpinionsEvent.js";
 
 const EventSchema = new Schema({
   name: String,
@@ -31,7 +32,7 @@ const EventSchema = new Schema({
   opinions: [
     {
       type: Schema.Types.ObjectId,
-      ref: "OpinionsEvente",
+      ref: OpinionsEvent,
     },
   ],
 });
