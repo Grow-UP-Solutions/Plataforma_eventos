@@ -8,7 +8,7 @@ export async function AllCategoyDb() {
 }
 
 export async function OneCategoryDb(name) {
-  console.log("category", name);
+  
   return await Category.findOne({ name: name });
 }
 
