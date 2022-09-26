@@ -22,14 +22,16 @@ import {
   Message,
 } from './pages';
 import { Footer, Login, Navbar } from './components';
-import { Data } from './context/Context';
+import { Data } from './context/state/stateProvider';
 import PanelPrivacy from './pages/PanelPrivacy/PanelPrivacy';
 import Notifications from './components/Notifications/Notifications';
 import Bills from './components/Finance/Bills';
 import { UIContext } from './context/ui';
 
 function App() {
+
   useEffect(() => {
+
     scroll.scrollToTop();
   }, []);
 
