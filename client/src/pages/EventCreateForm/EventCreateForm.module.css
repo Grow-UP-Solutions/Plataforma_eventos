@@ -517,7 +517,19 @@
 
 /*Nueva Fecha*/
 
-.newdate {
+
+
+.checkOtherDate {
+  margin-bottom: 2rem;
+  margin-left: 1rem;
+  text-align: center;
+}
+
+.checkOtherDate input {
+  display: none;
+}
+
+.checkOtherDate label {
   background-color: white;
   border: none;
   color: red;
@@ -528,6 +540,15 @@
   width: 100%;
   margin-bottom: 7rem;
   cursor: pointer;
+}
+
+
+.newDate {
+  display: none;
+}
+
+.checkOtherDate input:checked ~ .newDate {
+  display: block;
 }
 
 /*TERMS N CONDITIONS*/
@@ -739,3 +760,17 @@
   background-color: DodgerBlue !important;
   color: #ffffff;
 }
+
+/*ERRORES*/
+.error {
+  font-family: sans-serif;
+  color: #ba150a;
+  font-size: 14px;
+}
+
+.subTitleError {
+  font-family: sans-serif;
+  color: #ba150a;
+  font-size: 14px;
+}
+
