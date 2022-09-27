@@ -9,7 +9,7 @@
     "npm": "8.8.0"
   },
   "scripts": {
-    "start": "node index.js",
+    "start": "nodemon -L",
     "dev": "nodemon -L",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
