@@ -12,9 +12,7 @@ export async function getAllUsers() {
 }
 export async function getUser(name) {
   const user = OneUserDb(name);
-  if (!user) {
-    msg: `El usuario ${name} no fue encontrado`;
-  }
+  if (!user) { msg: `El usuario ${name} no fue encontrado`}
   return user;
 }
 export async function createUsers(user) {

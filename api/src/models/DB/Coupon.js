@@ -10,4 +10,4 @@ const cuponSchema= new Schema({
     }
 })
 
-export default model('cupon', cuponSchema)
+export default model('Cupon', cuponSchema)
