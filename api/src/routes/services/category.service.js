@@ -1,6 +1,8 @@
-import "../../DB.js";
-import Category from "../../models/db/Category.js";
-import { AllCategoyDb, OneCategoryDb, updateOneCategoryDb } from "../../models/util/functionDB/CategoryDb.js";
+import {
+  AllCategoyDb,
+  OneCategoryDb,
+  updateOneCategoryDb,
+} from "../../models/util/functionDB/CategoryDb.js";
 
 export async function getAllCategory() {
   const category = AllCategoyDb();
@@ -11,19 +13,21 @@ export async function getCategory(name) {
   return category;
 }
 export async function createCategory(category) {
-  const { name } = category;
-  const categoryDB = OneCategoryDb(name);
-  if (categoryDB) {
-    console.log("lacategoria existe");
-    return "La categoria existe";
+  try {
+    const { name } = category;
+    const categoryDB = OneCategoryDb(name);
+    if (categoryDB) {
+      return "La categoria existe";
+    }
+    const categories = await createCategory(category);
+    console.log("SEcreo");
+    return categories;
+  } catch (error) {
+    console.log("FALLO CATEGORY", error);
   }
-  const categories = new Category(category);
-  console.log('SEcreo');
-  return await categories.save();
 }
 export async function categoryUpdate(id, newCategory) {
   const newCategorys = updateOneCategoryDb(id, newCategory);
-
 
   return newCategorys;
 }

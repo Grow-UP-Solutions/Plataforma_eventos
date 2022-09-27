@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Context } from '../../context/Context';
+import { stateContext } from '../../context/state/stateContext';
 import style from './CategoriesResult.module.css';
 import { Card } from '../../components';
 import { animateScroll as scroll } from 'react-scroll';
@@ -7,7 +7,7 @@ import Pagination from '../../components/Pagination/Pagination';
 
 const CategoriesResult = () => {
 
-  const { result } = useContext(Context);
+  const { result } = useContext(stateContext);
   const [currentPage, setCurretPage] = useState(1);
   const CardPerPage = 8;
   const indexOfLastCard = currentPage * CardPerPage;

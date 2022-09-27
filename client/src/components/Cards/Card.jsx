@@ -97,7 +97,7 @@ const Card = ({ event }) => {
       <div className={styles.cardOrgInfo}>
         <Link
           className={styles.link}
-          to={`/organizerDetails/${event.organizer.id}`}
+          to={`/organizerDetails/${event.organizer._id}`}
         >
           <img
             className={styles.cardOrgPicture}
@@ -109,14 +109,14 @@ const Card = ({ event }) => {
         </Link>
         <Link
           className={styles.link}
-          to={`/organizerDetails/${event.organizer.id}`}
+          to={`/organizerDetails/${event.organizer._id}`}
         >
           <p className={styles.cardOrgName}>{event.organizer.name}</p>
         </Link>
         <div className={styles.vLine}></div>
         <p className={styles.cardPrice}>{event.price}</p>
         <div className={styles.vLine}></div>
-        <Link className={styles.link} to={`/eventdetails/${event.id}`}>
+        <Link className={styles.link} to={`/eventdetails/${event._id}`}>
           <p className={styles.cardDetails}>Ver más</p>
         </Link>
       </div>

@@ -22,20 +22,25 @@ import {
   Message,
 } from './pages';
 import { Footer, Login, Navbar } from './components';
-import { Data } from './context/Context';
+import { Data } from './context/state/stateProvider';
 import PanelPrivacy from './pages/PanelPrivacy/PanelPrivacy';
 import Notifications from './components/Notifications/Notifications';
 import Bills from './components/Finance/Bills';
 import { UIContext } from './context/ui';
+import { useDispatch } from 'react-redux';
+import { getCategories, getEvents } from './redux/actions';
 
 function App() {
-  useEffect(() => {
-    scroll.scrollToTop();
-  }, []);
 
   const [navBar, setNavBar] = useState(false);
-
+  const dispatch = useDispatch();
   const { isMenuLoginOpen } = useContext(UIContext);
+
+  useEffect(() => {
+    dispatch(getEvents());
+    dispatch(getCategories());
+    scroll.scrollToTop();
+  }, []);
 
   return (
     <div className="App">

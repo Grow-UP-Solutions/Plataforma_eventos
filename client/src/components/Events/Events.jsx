@@ -1,16 +1,18 @@
 import React from 'react';
 import styles from './Events.module.css';
 import Card from '../Cards/Card';
-import events from '../../api/events';
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react/swiper-react';
 import { Pagination, Scrollbar, Navigation } from 'swiper';
 import 'swiper/swiper.min.css';
 import 'swiper/modules/pagination/pagination.min.css';
 import 'swiper/modules/scrollbar/scrollbar.min.css';
 import 'swiper/modules/navigation/navigation.min.css';
+import { useSelector } from 'react-redux';
 
 const Events = () => {
-  const eventsShow = events.slice(0, 20);
+
+  const allEvents = useSelector((state) => state.events);
+  const allEventsSlice = allEvents.slice(0, 20);
 
   return (
     <div className={styles.cardsSection}>
@@ -23,8 +25,8 @@ const Events = () => {
           modules={[Navigation]}
           className={styles.mySwipper}
         >
-          {eventsShow.length ? (
-            eventsShow.map((event, index) => {
+          {allEventsSlice.length ? (
+            allEventsSlice.map((event, index) => {
               return (
                 <SwiperSlide key={event.id}>
                   <Card event={event} />
@@ -45,8 +47,8 @@ const Events = () => {
           modules={[Pagination, Navigation]}
           className={styles.mySwipper}
         >
-          {eventsShow.length ? (
-            eventsShow.map((event, index) => {
+          {allEventsSlice.length ? (
+            allEventsSlice.map((event, index) => {
               return (
                 <SwiperSlide key={event.id}>
                   <div key={index}>
@@ -69,8 +71,8 @@ const Events = () => {
           modules={[Pagination, Navigation]}
           className={styles.mySwipper}
         >
-          {eventsShow.length ? (
-            eventsShow.map((event, index) => {
+          {allEventsSlice.length ? (
+            allEventsSlice.map((event, index) => {
               return (
                 <SwiperSlide key={index}>
                   <div>
@@ -93,8 +95,8 @@ const Events = () => {
           modules={[Pagination, Navigation]}
           className={styles.mySwipper}
         >
-          {eventsShow.length ? (
-            eventsShow.map((event, index) => {
+          {allEventsSlice.length ? (
+            allEventsSlice.map((event, index) => {
               return (
                 <SwiperSlide key={index}>
                   <div>

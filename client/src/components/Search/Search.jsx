@@ -2,15 +2,15 @@ import React, { useContext, useState } from 'react';
 import style from './Search.module.css';
 import { BsSearch } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
-import events from '../../api/events';
-import { Context } from '../../context/Context';
+import { stateContext } from '../../context/state/stateContext';
+import { useSelector } from 'react-redux';
 
 const Search = ({ location = 'home' }) => {
 
   const [input, setInput] = useState('');
+  const allEvents = useSelector((state) => state.events);
   const navigate = useNavigate();
-  const {setResult} = useContext(Context);
-  const allEvents = events;
+  const { setResult } = useContext(stateContext);
 
   const handleChange = (e) => {
     e.preventDefault();

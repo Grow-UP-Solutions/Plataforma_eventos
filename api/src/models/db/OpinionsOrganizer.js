@@ -1,9 +1,10 @@
 import { Schema, model } from "mongoose";
 
+
 const opinionsOrganizerSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
-    ref: "Users",
+    ref: 'Users',
   },
   email:String,
   time: {

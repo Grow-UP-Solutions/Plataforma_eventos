@@ -2,13 +2,14 @@ import React, { useContext, useEffect, useState } from 'react';
 import style from './SearchResult.module.css';
 
 import { animateScroll as scroll } from 'react-scroll';
-import { Context } from '../../context/Context';
+import { stateContext } from '../../context/state/stateContext';
 
 import { Card } from '../../components';
 import Pagination from '../../components/Pagination/Pagination';
 
 const SearchResult = () => {
-  const { result } = useContext(Context);
+  
+  const { result } = useContext(stateContext);
   const [currentPage, setCurretPage] = useState(1);
   const CardPerPage = 8;
   const indexOfLastCard = currentPage * CardPerPage;

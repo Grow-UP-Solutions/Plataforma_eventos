@@ -1,10 +1,16 @@
+import '../../../DB.js'
 import Events from "../../db/Events.js";
 /**basic user database operations  */
 export async function AllEventsDb() {
-  return await Events.find()
-    .populate({ path: "organizer" })
-    .populate({ path: "category" })
-    .populate({ path: "opinions" });
+    try {
+        return await Events.find()
+          .populate({ path: "organizer" })
+          .populate({ path: "category" })
+          .populate({ path: "opinions" }).exec();
+        
+    } catch (error) {
+        console.log(error)
+    }
 }
 export async function oneEventDb(params) {
   return (
@@ -31,10 +37,14 @@ export async function deleteOneEventDb(id) {
 /**Creating event in Database */
 
 export async function createOneEventDb(event) {
-  const eventCreated = new Events(event);
-  await eventCreated.save();
-  return eventCreated
-    .populate({ path: "organizer" })
-    .populate({ path: "category" })
-    .populate({ path: "opinions" });
+  try {
+    const eventCreated = new Events(event);
+    await eventCreated.save();
+    
+    return eventCreated
+    
+  } catch (error) {
+    console.log(error)
+    return { FALLO_EVENTSCREATE_DB:error };
+  }
 }
