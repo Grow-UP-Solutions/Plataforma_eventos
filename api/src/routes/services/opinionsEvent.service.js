@@ -5,6 +5,7 @@ import {
 } from "../../models/util/functionDB/OpinionsEventDb.js";
 import { OneUserDb } from "../../models/util/functionDB/UserDb.js";
 
+
 export async function getOpiniosEvent() {
   const opinionsEvent = AllOpinionsEvent();
 

@@ -1,5 +1,5 @@
 import "../../../DB.js";
-import Users from "../../DB/Users.js";
+import Users from "../../db/Users.js";
 
 /** basic user database operations */
 
@@ -52,8 +52,7 @@ export async function deleteOneUserDb(id) {
 /**Creating user in Database */
 
 export async function createOneUserDb(user) {
-  try {
-    
+  try {    
     const userCreated = new Users(user);
     await userCreated.save();
     return userCreated;

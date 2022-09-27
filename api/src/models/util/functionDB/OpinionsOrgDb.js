@@ -1,6 +1,6 @@
 import "../../../DB.js";
 
-import OpinionsOrganizer from "../../DB/OpinionsOrganizer.js";
+import OpinionsOrganizer from "../../db/OpinionsOrganizer.js";
 
 /** basic user database operations */
 
