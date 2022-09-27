@@ -13,6 +13,11 @@ export const AuthProvider = ({ children }) => {
     dispatch({ type: 'Auth - Login', payload: user });
   };
 
+  const logout = () => {
+    localStorage.clear();
+    dispatch({ type: 'Auth - Logout' });
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -20,6 +25,7 @@ export const AuthProvider = ({ children }) => {
 
         //Methods
         login,
+        logout,
       }}
     >
       {children}

@@ -4,7 +4,7 @@ const validateFields = (req, res, next) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    return res.status(200).json({
+    return res.status(400).json({
       message: 'Ingrese los datos correctamente',
     });
   }

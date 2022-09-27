@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { IconFacebook, IconGoogle } from '../../assets/Icons';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
+import { MdOutlineClose } from 'react-icons/md';
 
 import useValidateForm from '../../hooks/useValidateForm';
 import { UIContext } from '../../context/ui';
@@ -44,14 +45,28 @@ const Register = () => {
   TODO: SEND FORM REGISTER TO BACKEND 
   */
 
-  /* Error regitrandose */
+  /* Error registrandose */
   const [messageError, setMessageError] = useState({
     error: false,
     message: '',
   });
 
+  const [succesRegister, setSuccesRegister] = useState(false);
+
   const onRegister = async (e) => {
     e.preventDefault();
+
+    if (
+      formData.name === '' ||
+      formData.password === '' ||
+      formData.confirmPassword === ''
+    ) {
+      return setMessageError({
+        error: true,
+        message: 'Ingrese los datos correctamente',
+      });
+    }
+
     const userData = {
       name: `${formData.name} ${formData.lastName}`,
       email: formData.mail,
@@ -63,9 +78,18 @@ const Register = () => {
         'http://localhost:3001/users/create',
         userData
       );
-      console.log({ result });
+
+      setMessageError({
+        error: false,
+        message: '',
+      });
+
+      setSuccesRegister(true);
     } catch (error) {
-      console.log(error);
+      setMessageError({
+        error: true,
+        message: error.response.data.message,
+      });
     }
   };
 
@@ -215,7 +239,7 @@ const Register = () => {
           </div>
           {messageError.error && (
             <div className={styles.messageError}>
-              <p>Mensaje de error</p>
+              <p>{messageError.message}</p>
             </div>
           )}
         </div>
@@ -265,6 +289,31 @@ const Register = () => {
         <p>¿Ya tienes cuenta?</p>
         <button onClick={toggleScreenLogin}>Entrar</button>
       </div>
+
+      {succesRegister && (
+        <div className={styles.overlay}>
+          <div className={styles.boxContent}>
+            <MdOutlineClose
+              onClick={() => setSuccesRegister(false)}
+              className={styles.iconOverlay}
+            />
+            <div className={styles.containerInfoOverlay}>
+              <h2>Ya casi eres parte de 'LO QUE QUIERO HACER'</h2>
+              <p>
+                Hemos enviado un código de validación a tu correo electrónico,
+                lo necesitarás para finalizar tu proceso de registro. Recuerda
+                ver la lista de no deseados y agréganos a tu lista de contactos.
+              </p>
+              <button
+                onClick={() => setSuccesRegister(false)}
+                className={styles.btnOverlay}
+              >
+                Listo
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

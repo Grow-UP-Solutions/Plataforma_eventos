@@ -9,12 +9,13 @@ import { AuthContext } from '../../context/auth';
 import Search from '../Search/Search';
 
 import { GrMail } from 'react-icons/gr';
+import { FaUserCircle } from 'react-icons/fa';
 import { IoNotifications, IoCaretDownSharp } from 'react-icons/io5';
 import logo from '../../assets/imgs/logoNav.svg';
 
 const Navbar = ({ upper }) => {
   const { toggleScreenLogin } = useContext(UIContext);
-  const { user, logged } = useContext(AuthContext);
+  const { user, logged, logout } = useContext(AuthContext);
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -71,7 +72,8 @@ const Navbar = ({ upper }) => {
               </div>
 
               <div className={style.containerName}>
-                <p>{user.name}</p>
+                <p>{user.name.split(' ')[0]}</p>
+                <p>{user.name.split(' ')[1]}</p>
               </div>
               <div
                 style={{
@@ -83,11 +85,15 @@ const Navbar = ({ upper }) => {
                 onClick={() => setMenuOpen(!menuOpen)}
               >
                 <div className={style.containerImg}>
-                  <img
-                    className={style.userImg}
-                    src={user.img}
-                    alt="img-user"
-                  />
+                  {user.img ? (
+                    <img
+                      className={style.userImg}
+                      src={user.img}
+                      alt="img-user"
+                    />
+                  ) : (
+                    <FaUserCircle className={style.userImg} />
+                  )}
                 </div>
                 <IoCaretDownSharp className={style.iconMenu} />
                 {menuOpen && (
@@ -99,7 +105,14 @@ const Navbar = ({ upper }) => {
                     <a href="#">Plan de referidos</a>
                     <a href="#">Preferencias</a>
                     <hr />
-                    <a href="#">Cerrar</a>
+                    <a
+                      onClick={(e) => {
+                        e.preventDefault();
+                        logout();
+                      }}
+                    >
+                      Cerrar
+                    </a>
                   </div>
                 )}
               </div>

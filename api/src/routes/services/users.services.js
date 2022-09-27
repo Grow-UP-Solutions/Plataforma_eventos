@@ -8,16 +8,15 @@ import {
 
 import bcrypt from 'bcryptjs';
 
-
-
 export async function getAllUsers() {
   const allUsers = allUserDb();
   return allUsers;
-  
 }
 export async function getUser(name) {
   const user = OneUserDb(name);
-  if (!user) { msg: `El usuario ${name} no fue encontrado`}
+  if (!user) {
+    msg: `El usuario ${name} no fue encontrado`;
+  }
   return user;
 }
 export async function createUsers(user) {
@@ -26,13 +25,13 @@ export async function createUsers(user) {
     const userDB = await OneUserDb(email);
 
     if (userDB) {
-      return { msg: 'Este email ya se encuentra registrado' };
+      throw new Error('El email ya se encuentra registrado');
     }
     const users = await createOneUserDb(user);
 
     return users;
   } catch (error) {
-    return { FALLO_USERCREATE_SERVICIO: error };
+    throw new Error(error.message);
   }
 }
 export async function userUpdate(id, newUser) {

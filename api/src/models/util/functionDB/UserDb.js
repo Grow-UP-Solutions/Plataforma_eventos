@@ -53,27 +53,14 @@ export async function deleteOneUserDb(id) {
 /**Creating user in Database */
 
 export async function createOneUserDb(user) {
-<<<<<<< HEAD
-  const userCreated = new Users(user);
-
-  const salt = bcrypt.genSaltSync();
-
-  userCreated.password = bcrypt.hashSync(user.password, salt);
-
-  await userCreated.save();
-  return userCreated
-    .populate({ path: 'myEventsCreated' })
-    .populate({ path: 'myFavourites' })
-    .populate({ path: 'myEventsBooked' })
-    .populate({ path: 'myOpinions' })
-    .populate({ path: 'opinionsOrg' });
-=======
-  try {    
+  try {
     const userCreated = new Users(user);
+    const salt = bcrypt.genSaltSync();
+
+    userCreated.password = bcrypt.hashSync(user.password, salt);
     await userCreated.save();
     return userCreated;
   } catch (error) {
-    return {FALLO_CREATEUSER_DB:error}
+    return { FALLO_CREATEUSER_DB: error };
   }
->>>>>>> Development
 }

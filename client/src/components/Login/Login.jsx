@@ -44,11 +44,12 @@ const Login = () => {
     try {
       result = await axios.post('http://localhost:3001/users/login', user);
 
-      localStorage.setItem(('token', result.data.token));
+      localStorage.setItem('token', result.data.token);
 
       login(result.data);
       toggleScreenLogin();
     } catch (error) {
+      console.log(error);
       setErrorLogin(true);
     }
   };

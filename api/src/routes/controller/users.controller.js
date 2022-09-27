@@ -47,14 +47,14 @@ router.post(
       const user = req.body;
       const userCreate = await createUsers(user);
 
-      const token = generateJWT(userCreate._id, userCreate.name);
+      const token = await generateJWT(userCreate._id, userCreate.name);
 
       return res.json({
         ...userCreate,
         token,
       });
     } catch (error) {
-      return res.status(400).json({ ERROR_USER_CREATE: error });
+      return res.status(400).json({ message: error.message });
     }
   }
 );
