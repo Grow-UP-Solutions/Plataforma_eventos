@@ -42,7 +42,10 @@ const Login = () => {
 
     let result;
     try {
-      result = await axios.post('http://localhost:3001/users/login', user);
+      result = await axios.post(
+        'https://plataformaeventos-production-6111.up.railway.app//users/login',
+        user
+      );
 
       localStorage.setItem('token', result.data.token);
 

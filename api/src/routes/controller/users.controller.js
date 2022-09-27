@@ -25,15 +25,9 @@ router.get('/', async (req, res) => {
     return res.status(400).json({ ERROR_USER: error });
   }
 });
-<<<<<<< HEAD
-router.get('/user', async (req, res) => {
-  const { name } = req.query;
-  console.log(name);
-=======
-router.get("/:id", async (req, res) => {
-  const {id}= req.params
-  
->>>>>>> Development
+router.get('/:id', async (req, res) => {
+  const { id } = req.params;
+
   try {
     const user = await OneUserDb(id);
     return res.status(200).json(user);
