@@ -1,6 +1,4 @@
 import { Schema, model } from "mongoose";
-
-
 import OpinionsEvent from "./OpinionsEvent.js";
 
 const EventSchema = new Schema({
