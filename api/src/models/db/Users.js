@@ -1,7 +1,6 @@
-import { Schema, model } from "mongoose";
-
-import OpinionsEvent from "./OpinionsEvent.js";
-import OpinionsOrganizer from "./OpinionsOrganizer.js";
+import { Schema, model } from 'mongoose';
+import OpinionsEvent from './OpinionsEvent.js';
+import OpinionsOrganizer from './OpinionsOrganizer.js';
 
 const UserSchema = new Schema({
   name: String,
@@ -11,9 +10,10 @@ const UserSchema = new Schema({
   city: String,
   email: String,
   picture: String,
-  isBlocked:{
-    type:Boolean,
-    default:false
+  password: String,
+  isBlocked: {
+    type: Boolean,
+    default: false,
   },
   isSuperAdmin: {
     type: Boolean,
@@ -57,10 +57,12 @@ const UserSchema = new Schema({
       ref: OpinionsEvent,
     },
   ],
-  opinionsOrg:[{
-    type:Schema.Types.ObjectId,
-    ref:OpinionsOrganizer
-  }]
+  opinionsOrg: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: OpinionsOrganizer,
+    },
+  ],
 });
 
-export default model("Users", UserSchema);
+export default model('Users', UserSchema);
