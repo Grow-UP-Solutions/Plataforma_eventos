@@ -14,7 +14,7 @@ mongoose.connect(uri).catch((err) => {
 const db = mongoose.connection;
 
 db.on("open", (_) => {
-  console.log("conectado a ", uri);
+  console.log("conectado a mongo atlas ok");
 });
 db.on("error", (err) => {
   console.log("error en db", err);
