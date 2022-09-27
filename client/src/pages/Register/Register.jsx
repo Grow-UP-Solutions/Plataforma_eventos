@@ -75,7 +75,7 @@ const Register = () => {
 
     try {
       const result = await axios.post(
-        'https://plataformaeventos-production-6111.up.railway.app//users/create',
+        'https://plataformaeventos-production-6111.up.railway.app/users/create',
         userData
       );
 

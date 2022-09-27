@@ -43,7 +43,7 @@ const Login = () => {
     let result;
     try {
       result = await axios.post(
-        'https://plataformaeventos-production-6111.up.railway.app//users/login',
+        'https://plataformaeventos-production-6111.up.railway.app/users/login',
         user
       );
 
