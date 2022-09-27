@@ -1,15 +1,51 @@
-import React, { useContext } from 'react';
-
+import React, { useContext, useState } from 'react';
 import styles from './Login.module.css';
 
-import { IconFacebook, IconGoogle } from '../../assets/Icons';
+import { UIContext } from '../../context/ui';
+import { AuthContext } from '../../context/auth/';
 
+import { IconFacebook, IconGoogle } from '../../assets/Icons';
 import { CgClose } from 'react-icons/cg';
 
-import { UIContext } from '../../context/ui';
+import useValidateForm from '../../hooks/useValidateForm';
+import axios from 'axios';
 
 const Login = () => {
+  const { login } = useContext(AuthContext);
   const { toggleScreenLogin } = useContext(UIContext);
+  const [saveSession, setSaveSession] = useState(false);
+  const [formData, setFormData] = useState({
+    mail: '',
+    password: '',
+  });
+
+  const [errorsInputs, handleChangeInputValue] = useValidateForm(
+    formData,
+    setFormData
+  );
+
+  /* 
+    TODO: LOGIN
+  */
+
+  const onLogin = async (e) => {
+    e.preventDefault();
+
+    const user = {
+      email: formData.mail,
+      password: formData.password,
+    };
+
+    let result;
+    try {
+      result = await axios.post('http://localhost:3001/users/login', user);
+      login(result.data);
+      toggleScreenLogin();
+    } catch (error) {
+      console.log(error);
+      alert('Corrija sus datos');
+    }
+  };
 
   return (
     <div className={styles.containerLogin}>
@@ -31,19 +67,36 @@ const Login = () => {
           <p>O</p>
           <div className={styles.lineOfDivisor} />
         </div>
-        <form className={styles.formContainer}>
+        <form onSubmit={onLogin} className={styles.formContainer}>
           <div className={styles.formGroup}>
             <label htmlFor="mail">Usuario</label>
-            <input type="mail" id="mail" />
+            <input
+              required
+              onChange={handleChangeInputValue}
+              type="mail"
+              id="mail"
+            />
+            {errorsInputs.mail === false && (
+              <span>Ingrese un correo válido</span>
+            )}
           </div>
           <div className={styles.formGroup}>
             <label htmlFor="password">Contraseña</label>
-            <input type="password" id="password" />
+            <input
+              required
+              onChange={handleChangeInputValue}
+              type="password"
+              id="password"
+            />
           </div>
 
           <div className={styles.optionLogin}>
             <div className={styles.checkboxRemember}>
-              <input type="checkbox" />
+              <input
+                checked={saveSession}
+                onChange={() => setSaveSession(!saveSession)}
+                type="checkbox"
+              />
               <span>Recuérdame</span>
             </div>
 

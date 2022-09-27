@@ -2,22 +2,19 @@ import React, { useContext, useState } from 'react';
 import style from './Navbar.module.css';
 
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+
+import { UIContext } from '../../context/ui';
+import { AuthContext } from '../../context/auth';
+
 import Search from '../Search/Search';
 
 import { GrMail } from 'react-icons/gr';
 import { IoNotifications, IoCaretDownSharp } from 'react-icons/io5';
 import logo from '../../assets/imgs/logoNav.svg';
-import { UIContext } from '../../context/ui';
-
-const user = {
-  userLog: false,
-  name: 'Jean',
-  lastName: 'Huaman',
-  img: 'https://i.pravatar.cc/150?img=4',
-};
 
 const Navbar = ({ upper }) => {
   const { toggleScreenLogin } = useContext(UIContext);
+  const { user, logged } = useContext(AuthContext);
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -46,13 +43,13 @@ const Navbar = ({ upper }) => {
           )}
         </div>
         <div className={style.container_div}>
-          {user.userLog && <a href="$">Mi lista</a>}
+          {logged && <a href="$">Mi lista</a>}
           <Link to={`/organiza-un-evento`}>
-            <p className={`${user.userLog ? style.buttonOrganizar : ''}`}>
+            <p className={`${logged ? style.buttonOrganizar : ''}`}>
               Organiza un evento
             </p>
           </Link>
-          {!user.userLog ? (
+          {!logged ? (
             <>
               <p onClick={toggleScreenLogin}>Ingresa</p>
               <Link to={`/registrate`}>
@@ -75,7 +72,6 @@ const Navbar = ({ upper }) => {
 
               <div className={style.containerName}>
                 <p>{user.name}</p>
-                <p>{user.lastName}</p>
               </div>
               <div
                 style={{

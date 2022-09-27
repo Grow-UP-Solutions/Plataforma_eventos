@@ -7,6 +7,7 @@ import { FiEye, FiEyeOff } from 'react-icons/fi';
 
 import useValidateForm from '../../hooks/useValidateForm';
 import { UIContext } from '../../context/ui';
+import axios from 'axios';
 
 const Register = () => {
   const { toggleScreenLogin } = useContext(UIContext);
@@ -39,6 +40,25 @@ const Register = () => {
     });
   };
 
+  /* 
+  TODO: SEND FORM REGISTER TO BACKEND 
+  */
+  const onRegister = async (e) => {
+    e.preventDefault();
+    const userData = {
+      name: `${formData.name} ${formData.lastName}`,
+      email: formData.mail,
+      password: formData.password,
+    };
+
+    const result = await axios.post(
+      'http://localhost:3001/users/create',
+      userData
+    );
+
+    console.log(result);
+  };
+
   return (
     <div className={`${styles.pageRegister} container`}>
       <h1 className={styles.title}>Registrate</h1>
@@ -60,7 +80,7 @@ const Register = () => {
 
       {/* FORM */}
 
-      <form className={styles.formContainer}>
+      <form onSubmit={onRegister} className={styles.formContainer}>
         <div className={styles.containerInputsForm}>
           <div className={styles.formGroup}>
             <label htmlFor="name">Nombre(s)</label>

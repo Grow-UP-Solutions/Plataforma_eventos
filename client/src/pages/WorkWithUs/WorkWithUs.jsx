@@ -95,7 +95,7 @@ const WorkWithUs = () => {
               </h2>
               <p>{work.description}</p>
             </div>
-            <Link to={`/workWithUs/form/:${work.title}`}>
+            <Link to={`/workWithUs/form/${work.title}`}>
               <a href="#" className={styles.btnWork}>
                 Aplicar
               </a>

@@ -16,7 +16,6 @@ const useValidateForm = (formData, setFormData) => {
     let checkValidate = false;
 
     if (id === 'canReceivedInformation') {
-      console.log({ event: e.target });
       return setFormData({
         ...formData,
         [id]: !formData.canReceivedInformation,
