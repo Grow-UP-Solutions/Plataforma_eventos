@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './EventOrganizer.module.css';
 import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
-import { Link } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 const EventOrganizer = ({ event }) => {
   return (
@@ -16,7 +16,7 @@ const EventOrganizer = ({ event }) => {
       <div className={styles.orgCont}>
       <Link
           className={styles.link}
-          to={`/organizerDetails/${event.organizer.id}`}
+          to={`/organizerDetails/${event.organizer._id}`}
         >
         <img className={styles.orgImg} src={event.organizer.picture} alt="N" />
         </Link>
