@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-
 import styles from './User.module.css';
-
 import { Calendar } from 'react-date-range';
 import * as locales from 'react-date-range/dist/locale';
 import 'react-date-range/dist/styles.css'; // main css file

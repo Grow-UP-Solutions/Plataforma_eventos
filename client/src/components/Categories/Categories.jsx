@@ -1,14 +1,15 @@
 import React, { useContext } from 'react';
 import styles from './Categories.module.css';
 import { stateContext } from '../../context/state/stateContext';
+import { UIContext } from '../../context/ui';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const Categories = () => {
 
-  const allCategories = useSelector((state) => state.categories);
   const allEvents = useSelector((state) => state.events);
   const { setResult } = useContext(stateContext);
+  const { categories } = useContext(UIContext);
   const navigate = useNavigate();
 
   const handleClick = (e) => {
@@ -25,7 +26,7 @@ const Categories = () => {
     <div className={styles.sectionCategories}>
       <h2 className={styles.titleCategories}>Categorías</h2>
       <ul className={styles.listCategories}>
-        {allCategories.map((categorie) => {
+        {categories.map((categorie) => {
           return (
             <li key={categorie.name} className={styles.categorie}>
               <img src={categorie.img} alt={categorie.name} />

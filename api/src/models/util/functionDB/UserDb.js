@@ -21,7 +21,7 @@ export async function OneUserDb(parms) {
         .populate({ path: 'myEventsBooked' })
         .populate({ path: 'myOpinions' })
         .populate({ path: 'opinionsOrg' })) ||
-      (await Users.findOne({ name: parms })
+      (await Users.findById({ _id: parms })
         .populate({ path: 'myEventsCreated' })
         .populate({ path: 'myFavourites' })
         .populate({ path: 'myEventsBooked' })
