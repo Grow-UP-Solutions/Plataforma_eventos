@@ -27,17 +27,20 @@ import PanelPrivacy from './pages/PanelPrivacy/PanelPrivacy';
 import Notifications from './components/Notifications/Notifications';
 import Bills from './components/Finance/Bills';
 import { UIContext } from './context/ui';
+import { useDispatch } from 'react-redux';
+import { getCategories, getEvents } from './redux/actions';
 
 function App() {
 
-  useEffect(() => {
+  const [navBar, setNavBar] = useState(false);
+  const dispatch = useDispatch();
+  const { isMenuLoginOpen } = useContext(UIContext);
 
+  useEffect(() => {
+    dispatch(getEvents());
+    dispatch(getCategories());
     scroll.scrollToTop();
   }, []);
-
-  const [navBar, setNavBar] = useState(false);
-
-  const { isMenuLoginOpen } = useContext(UIContext);
 
   return (
     <div className="App">
