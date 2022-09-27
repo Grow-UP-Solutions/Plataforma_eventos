@@ -3,6 +3,7 @@ import { UIContext, uiReducer } from './';
 
 const UI_INITIAL_STATE = {
   isMenuLoginOpen: false,
+  categories: [],
 };
 
 export const UIProvider = ({ children }) => {
@@ -12,6 +13,12 @@ export const UIProvider = ({ children }) => {
     dispatch({ type: 'UI - Toggle Login' });
   };
 
+  const getCategories = async() => {
+    const data = await fetch('https://plataformaeventos-production-6111.up.railway.app/category');
+    const json = await data.json();
+    dispatch({ type: 'GET_CATEGORIES', payload: json });
+  }
+
   return (
     <UIContext.Provider
       value={{
@@ -19,6 +26,7 @@ export const UIProvider = ({ children }) => {
 
         //Methods
         toggleScreenLogin,
+        getCategories,
       }}
     >
       {children}

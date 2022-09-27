@@ -1,6 +1,4 @@
 import { Schema, model } from "mongoose";
-import Users from './Users.js'
-import Category from "./Category.js";
 import OpinionsEvent from "./OpinionsEvent.js";
 
 const EventSchema = new Schema({
@@ -23,12 +21,12 @@ const EventSchema = new Schema({
   participants: Number,
   organizer: {
     type: Schema.Types.ObjectId,
-    ref: Users,
+    ref: 'Users',
   },
   category: [
     {
       type: Schema.Types.ObjectId,
-      ref: Category,
+      ref: 'Category',
     },
   ],
   opinions: [

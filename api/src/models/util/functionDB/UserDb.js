@@ -1,5 +1,5 @@
 import "../../../DB.js";
-import Users from "../../DB/Users.js";
+import Users from "../../db/Users.js";
 
 /** basic user database operations */
 
@@ -20,7 +20,7 @@ export async function OneUserDb(parms) {
         .populate({ path: "myEventsBooked" })
         .populate({ path: "myOpinions" })
         .populate({ path: "opinionsOrg" })) ||
-      (await Users.findOne({ name: parms })
+      (await Users.findById({_id:parms})
         .populate({ path: "myEventsCreated" })
         .populate({ path: "myFavourites" })
         .populate({ path: "myEventsBooked" })
@@ -52,8 +52,7 @@ export async function deleteOneUserDb(id) {
 /**Creating user in Database */
 
 export async function createOneUserDb(user) {
-  try {
-    
+  try {    
     const userCreated = new Users(user);
     await userCreated.save();
     return userCreated;
