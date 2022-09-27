@@ -6,9 +6,12 @@ import {
   createOneUserDb,
 } from "../../models/util/functionDB/UserDb.js";
 
+
+
 export async function getAllUsers() {
   const allUsers = allUserDb();
   return allUsers;
+  
 }
 export async function getUser(name) {
   const user = OneUserDb(name);
