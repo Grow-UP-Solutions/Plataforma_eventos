@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+
 import OpinionsEvent from "./OpinionsEvent.js";
 import OpinionsOrganizer from "./OpinionsOrganizer.js";
 
@@ -35,19 +36,19 @@ const UserSchema = new Schema({
   myEventsCreated: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Events",
+      ref: 'Events',
     },
   ],
   myFavourites: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Events",
+      ref: 'Events',
     },
   ],
   myEventsBooked: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Events",
+      ref: 'Events',
     },
   ],
   myOpinions: [

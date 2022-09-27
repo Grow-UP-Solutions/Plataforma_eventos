@@ -4,7 +4,7 @@ const OpinionsSchema = new Schema({
   title:String,
   user: {
     type: Schema.Types.ObjectId,
-    ref: "Users",
+    ref: 'Users'
   },
   email:String,
   time: {
@@ -16,7 +16,7 @@ const OpinionsSchema = new Schema({
   picture: String,
   event:{
     type:Schema.Types.ObjectId,
-    ref:"Events"
+    ref: 'Events'
   }
 
 });

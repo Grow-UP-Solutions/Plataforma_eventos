@@ -1,3 +1,4 @@
+import '../../../DB.js'
 import Events from "../../db/Events.js";
 /**basic user database operations  */
 export async function AllEventsDb() {

@@ -21,12 +21,12 @@ const EventSchema = new Schema({
   participants: Number,
   organizer: {
     type: Schema.Types.ObjectId,
-    ref: "Users",
+    ref: 'Users',
   },
   category: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Category",
+      ref: 'Category',
     },
   ],
   opinions: [
