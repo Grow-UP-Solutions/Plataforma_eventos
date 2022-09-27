@@ -1,5 +1,5 @@
 import "../../../DB.js";
-import OpinionsEvent from "../../db/OpinionsEvent.js";
+import OpinionsEvent from "../../DB/OpinionsEvent.js";
 /** basic user database operations */
 export async function AllOpinionsEventDb() {
   return await OpinionsEvent.find()

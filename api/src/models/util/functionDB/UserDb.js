@@ -1,5 +1,5 @@
 import "../../../DB.js";
-import Users from "../../db/Users.js";
+import Users from "../../DB/Users.js";
 
 /** basic user database operations */
 
@@ -52,12 +52,12 @@ export async function deleteOneUserDb(id) {
 /**Creating user in Database */
 
 export async function createOneUserDb(user) {
-  const userCreated = new Users(user);
-  await userCreated.save();
-  return userCreated
-    .populate({ path: "myEventsCreated" })
-    .populate({ path: "myFavourites" })
-    .populate({ path: "myEventsBooked" })
-    .populate({ path: "myOpinions" })
-    .populate({ path: "opinionsOrg" });
+  try {
+    
+    const userCreated = new Users(user);
+    await userCreated.save();
+    return userCreated;
+  } catch (error) {
+    return {FALLO_CREATEUSER_DB:error}
+  }
 }

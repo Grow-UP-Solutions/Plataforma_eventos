@@ -6,6 +6,6 @@ const CategorySchema = new Schema({
   description: String,
 });
 
-export default model("Category", CategorySchema);
+export default model( "Category", CategorySchema);
 
 

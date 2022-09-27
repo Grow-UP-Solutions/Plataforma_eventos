@@ -1,4 +1,4 @@
-import Events from "../../db/Events.js";
+import Events from "../../DB/Events.js";
 /**basic user database operations  */
 export async function AllEventsDb() {
     try {
