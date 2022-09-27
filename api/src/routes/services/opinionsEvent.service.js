@@ -4,7 +4,7 @@ import {
   OneOpinionEvente,
 } from "../../models/util/functionDB/OpinionsEventDb.js";
 import { OneUserDb } from "../../models/util/functionDB/UserDb.js";
-import Users from "../../models/DB/Users.js";
+
 
 export async function getOpiniosEvent() {
   const opinionsEvent = AllOpinionsEvent();

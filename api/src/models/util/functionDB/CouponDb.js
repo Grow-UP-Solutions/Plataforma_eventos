@@ -1,5 +1,5 @@
 import "../../../DB.js";
-import Coupon from "../../DB/Coupon.js";
+import Coupon from "../../db/Coupon.js";
 
 export async function allCouponDb() {
   return await Coupon.find();
