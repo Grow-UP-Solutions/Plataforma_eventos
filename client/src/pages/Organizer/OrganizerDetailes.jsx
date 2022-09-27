@@ -15,8 +15,9 @@ const OrganizerDetails = () => {
 
   const id = useParams().id;
   const [component, setComponent] = useState('');
-  const allUsers = useSelector((state) => state.users);
-  const userDetail = allUsers.filter((user) => user._id === id)[0];
+  const events = useSelector((state) => state.events);
+  const userDetail = events.filter((e) => e.organizer._id === id)[0];
+  console.log('userdetail:', userDetail);
 
   useEffect(() => {
     scroll.scrollToTop();
@@ -25,28 +26,28 @@ const OrganizerDetails = () => {
   const handleInput = (e) => {
     const name = e.target.name;
     if (name === 'AboutOrganizer')
-      setComponent(<AboutOrganizer userDetail={userDetail} />);
+      setComponent(<AboutOrganizer userDetail={userDetail.organizer} />);
     if (name === 'NextEvents')
-      setComponent(<NextEvents userDetail={userDetail} />);
-    if (name === 'Opinions') setComponent(<Opinions userDetail={userDetail} />);
+      setComponent(<NextEvents userDetail={userDetail.organizer} />);
+    if (name === 'Opinions') setComponent(<Opinions userDetail={userDetail.organizer} />);
   };
 
   return (
     <div className={`${styles.container} `}>
       <div className={styles.top}></div>
-      <img className={styles.img} src={userDetail.picture} alt="N" />
-      <p className={styles.name}>{userDetail.name}</p>
+      <img className={styles.img} src={userDetail.organizer.picture} alt="N" />
+      <p className={styles.name}>{userDetail.organizer.name}</p>
       <Rating
         className={styles.rating}
         name="read-only"
-        value={userDetail.rating}
+        value={userDetail.organizer.rating}
         readOnly
       />
       <div className={styles.containerDir}>
         <IoLocationOutline className={styles.icon} />
-        <p className={styles.direction}>{userDetail.direction}</p>
+        <p className={styles.direction}>{userDetail.organizer.direction}</p>
       </div>
-      <p className={styles.member}>Miembor desde {userDetail.membership}</p>
+      <p className={styles.member}>Miembor desde {userDetail.organizer.membership}</p>
       <div className={styles.containerMess}>
         <LocalPostOfficeIcon sx={{ fontSize: '13px', color: '#d53e27' }} />
         <button className={styles.message}>Enviar Mensaje</button>

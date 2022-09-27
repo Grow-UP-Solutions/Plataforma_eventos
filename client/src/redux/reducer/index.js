@@ -1,7 +1,7 @@
+
 const initialState = {
   events: [],
   categories: [],
-  users: [],
 };
 
 function rootReducer(state = initialState, action) {
@@ -17,12 +17,6 @@ function rootReducer(state = initialState, action) {
       return {
         ...state,
         categories: action.payload,
-      }
-
-    case 'GET_USERS':
-      return {
-        ...state,
-        users: action.payload,
       }
 
     default:

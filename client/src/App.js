@@ -28,18 +28,17 @@ import Notifications from './components/Notifications/Notifications';
 import Bills from './components/Finance/Bills';
 import { UIContext } from './context/ui';
 import { useDispatch } from 'react-redux';
-import { getCategories, getEvents, getUsers } from './redux/actions';
+import { getEvents } from './redux/actions';
 
 function App() {
 
   const [navBar, setNavBar] = useState(false);
   const dispatch = useDispatch();
-  const { isMenuLoginOpen } = useContext(UIContext);
+  const { isMenuLoginOpen, getCategories } = useContext(UIContext);
 
   useEffect(() => {
     dispatch(getEvents());
-    dispatch(getCategories());
-    dispatch(getUsers());
+    getCategories();
     scroll.scrollToTop();
   }, []);
 
