@@ -277,3 +277,9 @@
   bottom: -1.7rem;
   right: 0;
 }
+
+.messageError {
+  font-size: 2.4rem;
+  font-weight: bold;
+  color: var(--color-orange);
+}

@@ -5,7 +5,7 @@ const validateFields = (req, res, next) => {
 
   if (!errors.isEmpty()) {
     return res.status(200).json({
-      errors: errors.mapped(),
+      message: 'Ingrese los datos correctamente',
     });
   }
 

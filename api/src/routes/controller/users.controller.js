@@ -101,8 +101,6 @@ router.post(
         throw new Error('Correo o contraseña invalida');
       }
 
-      console.log(user);
-
       const token = await generateJWT(user._id, user.name);
 
       res.status(200).json({

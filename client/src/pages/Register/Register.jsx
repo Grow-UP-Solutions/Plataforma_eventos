@@ -43,6 +43,13 @@ const Register = () => {
   /* 
   TODO: SEND FORM REGISTER TO BACKEND 
   */
+
+  /* Error regitrandose */
+  const [messageError, setMessageError] = useState({
+    error: false,
+    message: '',
+  });
+
   const onRegister = async (e) => {
     e.preventDefault();
     const userData = {
@@ -51,12 +58,15 @@ const Register = () => {
       password: formData.password,
     };
 
-    const result = await axios.post(
-      'http://localhost:3001/users/create',
-      userData
-    );
-
-    console.log(result);
+    try {
+      const result = await axios.post(
+        'http://localhost:3001/users/create',
+        userData
+      );
+      console.log({ result });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -203,6 +213,11 @@ const Register = () => {
               </span>
             )}
           </div>
+          {messageError.error && (
+            <div className={styles.messageError}>
+              <p>Mensaje de error</p>
+            </div>
+          )}
         </div>
 
         <div className={styles.divisorWithoutO} />

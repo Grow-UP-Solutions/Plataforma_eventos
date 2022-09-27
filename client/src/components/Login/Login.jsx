@@ -28,8 +28,12 @@ const Login = () => {
     TODO: LOGIN
   */
 
+  const [errorLogin, setErrorLogin] = useState(false);
+
   const onLogin = async (e) => {
     e.preventDefault();
+
+    if (errorLogin) setErrorLogin(false);
 
     const user = {
       email: formData.mail,
@@ -39,11 +43,13 @@ const Login = () => {
     let result;
     try {
       result = await axios.post('http://localhost:3001/users/login', user);
+
+      localStorage.setItem(('token', result.data.token));
+
       login(result.data);
       toggleScreenLogin();
     } catch (error) {
-      console.log(error);
-      alert('Corrija sus datos');
+      setErrorLogin(true);
     }
   };
 
@@ -89,7 +95,11 @@ const Login = () => {
               id="password"
             />
           </div>
-
+          {errorLogin && (
+            <div className={styles.messageError}>
+              <p>Correo o contraseña incorrectos</p>
+            </div>
+          )}
           <div className={styles.optionLogin}>
             <div className={styles.checkboxRemember}>
               <input
