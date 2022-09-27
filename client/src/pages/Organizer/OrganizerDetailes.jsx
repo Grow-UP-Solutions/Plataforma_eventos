@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
 import styles from './OrganizerDetails.module.css';
-import events from '../../api/events';
-import users from '../../api/users';
 import { Rating } from '@mui/material';
 import { animateScroll as scroll } from 'react-scroll';
 import { useParams } from 'react-router-dom';
@@ -11,21 +9,18 @@ import AboutOrganizer from '../../components/Organizer/AboutOrganizer.jsx';
 import NextEvents from '../../components/Organizer/NextEvents.jsx';
 import Opinions from '../../components/Organizer/Opinions.jsx';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const OrganizerDetails = () => {
+
   const id = useParams().id;
-
-  const allUsers = users;
-
-  const userDetail = allUsers.filter((user) => user.name === 'Jean Pierre')[0];
-
-  console.log('user:', userDetail);
+  const [component, setComponent] = useState('');
+  const allUsers = useSelector((state) => state.users);
+  const userDetail = allUsers.filter((user) => user._id === id)[0];
 
   useEffect(() => {
     scroll.scrollToTop();
   }, []);
-
-  const [component, setComponent] = useState('');
 
   const handleInput = (e) => {
     const name = e.target.name;
@@ -35,8 +30,6 @@ const OrganizerDetails = () => {
       setComponent(<NextEvents userDetail={userDetail} />);
     if (name === 'Opinions') setComponent(<Opinions userDetail={userDetail} />);
   };
-
-  console.log('estado:', component);
 
   return (
     <div className={`${styles.container} `}>

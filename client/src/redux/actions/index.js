@@ -29,3 +29,17 @@ export function getCategories() {
   }
 }
 
+//USERS
+export function getUsers() {
+
+  return async function (dispatch) {
+
+    const json = await axios.get('https://plataformaeventos-production-6111.up.railway.app/users');
+
+    return dispatch({
+      type: 'GET_USERS',
+      payload: json.data,
+    });
+  }
+}
+

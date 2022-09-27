@@ -28,7 +28,7 @@ import Notifications from './components/Notifications/Notifications';
 import Bills from './components/Finance/Bills';
 import { UIContext } from './context/ui';
 import { useDispatch } from 'react-redux';
-import { getCategories, getEvents } from './redux/actions';
+import { getCategories, getEvents, getUsers } from './redux/actions';
 
 function App() {
 
@@ -39,6 +39,7 @@ function App() {
   useEffect(() => {
     dispatch(getEvents());
     dispatch(getCategories());
+    dispatch(getUsers());
     scroll.scrollToTop();
   }, []);
 
