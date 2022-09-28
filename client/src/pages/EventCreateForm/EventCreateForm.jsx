@@ -16,6 +16,7 @@ import calendar from '../../assets/imgs/calendar.svg';
 import iconEditar from '../../assets/imgs/iconEditar.svg';
 import iconExclamacion2 from '../../assets/imgs/iconExclamacion2.svg';
 import infoIcon from '../../assets/imgs/infoIcon.svg';
+import ImageIcon from '@mui/icons-material/Image';
 import mapa from '../../assets/imgs/mapa2.png';
 import { formatDate } from '../../utils/formatDate';
 import styles from './EventCreateForm.module.css';
@@ -171,6 +172,52 @@ const EventCreateForm = () => {
         })
     }
 };
+
+//--------------------------------------------------//
+  //                 DROP DRAG IMAGES                //
+
+  
+const wrapperRef = useRef(null);
+
+const [fileList, setFileList] = useState([]);
+
+const onDragEnter = () => wrapperRef.current.classList.add('dragover');
+
+const onDragLeave = () => wrapperRef.current.classList.remove('dragover');
+
+const onDrop = () => wrapperRef.current.classList.remove('dragover');
+
+const onFileDrop = (e) => {
+  
+  if (e.target.files[0]) {
+      const reader = new FileReader()
+      reader.readAsDataURL(e.target.files[0])
+      reader.onload = (e)=>{
+          e.preventDefault();
+          setFileList([...fileList,e.target.result]
+         ) 
+         setPost({
+          ...post,
+          pictures: [...post.pictures, e.target.result]}
+         )
+         }
+      // const updatedList = [...fileList, newFile];
+      // setFileList(updatedList);
+      ;
+  }
+}
+const fileRemove = (file) => {
+  const updatedList = [...fileList];
+  const updatedPictures=[...post.pictures]
+  updatedList.splice(fileList.indexOf(file), 1);
+  setFileList(updatedList);
+  updatedPictures.splice(post.pictures.indexOf(file), 1);
+  setPost({
+    ...post,
+    pictures:updatedList
+  })
+  ;
+}
 
 
   //-----------------------------------------------------//
@@ -484,31 +531,54 @@ const EventCreateForm = () => {
               </p>
               <p className={styles.subTitle4}>Fotos del Evento</p>
 
-              <div>
-                <Swiper
-                  slidesPerView={1}
-                  navigation
-                  spaceBetween={0}
-                  modules={[Navigation]}
-                  className={styles.mySwipper}
-                >
-                  {post.pictures.length ? (
-                    post.pictures.map((picture, index) => {
-                      return (
-                        <SwiperSlide>
-                          <picture />
-                        </SwiperSlide>
-                      );
-                    })
-                  ) : (
-                    <input
-                      className={styles.inputPicture}
-                      type="text"
-                      placeholder="Arrastra los archivos aquí o haz clic en Agregar archivos"
-                    />
-                  )}
-                </Swiper>
+              <div
+                ref={wrapperRef}
+                  className={styles.dropFileIput}
+                  onDragEnter={onDragEnter}
+                  onDragLeave={onDragLeave}
+                  onDrop={onDrop}
+                > 
+                <ImageIcon sx={{ fontSize: '13px', color: 'grey' }} />
+                <p>Fotos: Jpg, png, Max.100kb </p> 
+                <p>Videos: .MP4 Max 100kb</p>      
+                <p>"Arrastra los archivos aquí o haz click en Agregar archivos"</p>
+                <input 
+                  type="file" 
+                  value="" 
+                  name="pictures"
+                  onChange={onFileDrop}
+                />
               </div>
+
+              {
+                fileList.length > 0 ? (
+                  <div className={styles.dropFilePreview}>
+                    <p>
+                      Ready to upload
+                    </p>
+                    <Swiper
+                      slidesPerView={1}
+                      navigation
+                      spaceBetween={0}
+                      modules={[Navigation]}
+                      className={styles.mySwipper}
+                    >
+                    {
+                        fileList.map((item, index) => (
+                            <div key={index} className={styles.mySwiper}>
+                              <SwiperSlide>
+                                <img className={styles.mySwiperImg} src={item} alt=''/>                                
+                                <button className={styles.mySwiperBtnDel} onClick={() => fileRemove(item)}>x</button>
+                              </SwiperSlide>
+                            </div>
+                        ))
+                    }
+                    </Swiper>
+                  </div>
+                ) : null
+              }
+
+              
 
               <label className={styles.subInput}>
                 <input className={styles.checkBox4} type="checkbox" />
