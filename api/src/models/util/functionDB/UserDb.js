@@ -29,7 +29,7 @@ export async function OneUserDb(parms) {
         .populate({ path: 'opinionsOrg' }))
     );
   } catch (error) {
-    return null;
+    throw new Error('Ha fallado one user db')
   }
 }
 export async function updateOneUserDb(id, newUser) {
