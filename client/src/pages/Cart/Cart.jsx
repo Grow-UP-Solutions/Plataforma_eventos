@@ -6,12 +6,18 @@ import {
   iconExclamation,
 } from '../../assets/imgs';
 import { animateScroll as scroll } from 'react-scroll';
-import events from '../../api/events';
 import CardProduct from '../../components/CardProduct/CardProduct';
 import FormProductPay from '../../components/FormProductPay/FormProductPay';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
-const event = events[2];
 const Cart = () => {
+
+  const id = useParams().id;
+  console.log('id:', id);
+  const events = useSelector((state) => state.events);
+  const eventDetail = events.filter((e) => e._id === id)[0];
+  console.log('eventdetails:', eventDetail);
 
   useEffect(() => {
     scroll.scrollToTop();
@@ -22,7 +28,7 @@ const Cart = () => {
       <h1 className={styles.pageCartTitle}>Usted está comprando</h1>
       <div className={styles.containerPageCart}>
         <div className={styles.containerCardProduct}>
-          <CardProduct event={events[2]} />
+          <CardProduct event={eventDetail} />
           <div className={styles.summaryCart}>
             <h2 className={styles.summaryTitle}>
               <img src={iconExclamation} alt="icon-exclamation" />
@@ -44,7 +50,3 @@ const Cart = () => {
 };
 
 export default Cart;
-
-{
-  /* */
-}
