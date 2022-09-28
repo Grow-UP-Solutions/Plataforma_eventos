@@ -2,22 +2,20 @@ import React, { useContext, useState } from 'react';
 import style from './Navbar.module.css';
 
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+
+import { UIContext } from '../../context/ui';
+import { AuthContext } from '../../context/auth';
+
 import Search from '../Search/Search';
 
 import { GrMail } from 'react-icons/gr';
+import { FaUserCircle } from 'react-icons/fa';
 import { IoNotifications, IoCaretDownSharp } from 'react-icons/io5';
 import logo from '../../assets/imgs/logoNav.svg';
-import { UIContext } from '../../context/ui';
-
-const user = {
-  userLog: false,
-  name: 'Jean',
-  lastName: 'Huaman',
-  img: 'https://i.pravatar.cc/150?img=4',
-};
 
 const Navbar = ({ upper }) => {
   const { toggleScreenLogin } = useContext(UIContext);
+  const { user, logged, logout } = useContext(AuthContext);
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -46,13 +44,13 @@ const Navbar = ({ upper }) => {
           )}
         </div>
         <div className={style.container_div}>
-          {user.userLog && <a href="$">Mi lista</a>}
+          {logged && <a href="$">Mi lista</a>}
           <Link to={`/organiza-un-evento`}>
-            <p className={`${user.userLog ? style.buttonOrganizar : ''}`}>
+            <p className={`${logged ? style.buttonOrganizar : ''}`}>
               Organiza un evento
             </p>
           </Link>
-          {!user.userLog ? (
+          {!logged ? (
             <>
               <p onClick={toggleScreenLogin}>Ingresa</p>
               <Link to={`/registrate`}>
@@ -74,8 +72,8 @@ const Navbar = ({ upper }) => {
               </div>
 
               <div className={style.containerName}>
-                <p>{user.name}</p>
-                <p>{user.lastName}</p>
+                <p>{user.name.split(' ')[0]}</p>
+                <p>{user.name.split(' ')[1]}</p>
               </div>
               <div
                 style={{
@@ -87,11 +85,15 @@ const Navbar = ({ upper }) => {
                 onClick={() => setMenuOpen(!menuOpen)}
               >
                 <div className={style.containerImg}>
-                  <img
-                    className={style.userImg}
-                    src={user.img}
-                    alt="img-user"
-                  />
+                  {user.img ? (
+                    <img
+                      className={style.userImg}
+                      src={user.img}
+                      alt="img-user"
+                    />
+                  ) : (
+                    <FaUserCircle className={style.userImg} />
+                  )}
                 </div>
                 <IoCaretDownSharp className={style.iconMenu} />
                 {menuOpen && (
@@ -103,7 +105,14 @@ const Navbar = ({ upper }) => {
                     <a href="#">Plan de referidos</a>
                     <a href="#">Preferencias</a>
                     <hr />
-                    <a href="#">Cerrar</a>
+                    <a
+                      onClick={(e) => {
+                        e.preventDefault();
+                        logout();
+                      }}
+                    >
+                      Cerrar
+                    </a>
                   </div>
                 )}
               </div>

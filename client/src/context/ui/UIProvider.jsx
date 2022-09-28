@@ -1,5 +1,5 @@
 import React, { useReducer } from 'react';
-import { UIContext, uiReducer } from './';
+import { UIContext, uiReducer } from '.';
 
 const UI_INITIAL_STATE = {
   isMenuLoginOpen: false,
