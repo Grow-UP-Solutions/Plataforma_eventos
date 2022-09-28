@@ -1,9 +1,10 @@
 import {
   allUserDb,
-  OneUserDb,
+  oneUserDb,
   updateOneUserDb,
   deleteOneUserDb,
   createOneUserDb,
+  validateEmailUserDb,
 } from '../../models/util/functionDB/UserDb.js';
 
 import bcrypt from 'bcryptjs';
@@ -12,8 +13,8 @@ export async function getAllUsers() {
   const allUsers = allUserDb();
   return allUsers;
 }
-export async function getUser(name) {
-  const user = OneUserDb(name);
+export async function getUser(id) {
+  const user = oneUserDb(id);
   if (!user) {
     msg: `El usuario ${name} no fue encontrado`;
   }
@@ -22,7 +23,7 @@ export async function getUser(name) {
 export async function createUsers(user) {
   const { email } = user;
   try {
-    const userDB = await OneUserDb(email);
+    const userDB = await validateEmailUserDb(email);
 
     if (userDB) {
       throw new Error('El email ya se encuentra registrado');
@@ -49,7 +50,7 @@ export async function userDelete(id) {
 
 export async function login(email, password) {
   try {
-    const user = await OneUserDb(email);
+    const user = await validateEmailUserDb(email);
 
     if (!user) {
       throw new Error('El usuario no está registrado');

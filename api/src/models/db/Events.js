@@ -21,18 +21,25 @@ const EventSchema = new Schema({
   participants: Number,
   organizer: {
     type: Schema.Types.ObjectId,
-    ref: 'Users',
+    ref: "Users",
   },
   category: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'Category',
+      ref: "Category",
     },
   ],
   opinions: [
     {
-      type: Schema.Types.ObjectId,
-      ref: OpinionsEvent,
+      title: String,
+      email: String,
+      time: {
+        type: Date,
+        default: Date.now(),
+      },
+      rating: Number,
+      opinion: String,
+      picture: String,
     },
   ],
 });

@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import '../../DB.js';
-import { OneUserDb } from '../../models/util/functionDB/UserDb.js';
 import {
   getAllUsers,
   createUsers,
@@ -11,9 +10,9 @@ import {
 } from '../services/users.services.js';
 
 import { check } from 'express-validator';
-import validateFields from '../../middlewares/validate-fields.js';
-import { generateJWT } from '../../helpers/jwt.js';
-import { validateJWT } from '../../middlewares/validate-jwt.js';
+import validateFields from '../../models/util/middlewares/validate-fields.js';
+import { generateJWT } from '../../models/util/helpers/jwt.js';
+import { validateJWT } from '../../models/util/middlewares/validate-jwt.js';
 
 const router = Router();
 
@@ -29,7 +28,7 @@ router.get('/:id', async (req, res) => {
   const { id } = req.params;
 
   try {
-    const user = await OneUserDb(id);
+    const user = await getUser(id);
     return res.status(200).json(user);
   } catch (error) {
     return res.status(400).json({ ERROR_USER: error });
@@ -58,7 +57,6 @@ router.post(
     }
   }
 );
-
 router.put('/update/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -69,7 +67,6 @@ router.put('/update/:id', async (req, res) => {
     return res.status(400).json({ ERROR_USER_UPDATE: error });
   }
 });
-
 router.delete('/delete/:id', async (req, res) => {
   try {
     const { id } = req.params;
