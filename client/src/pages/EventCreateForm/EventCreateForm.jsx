@@ -39,13 +39,7 @@ const EventCreateForm = () => {
     specialRequires: '',
     cupos:'',
     price: '',
-    dates: [
-      {
-        date: '',
-        start: '',
-        end: '',
-      },
-    ],
+    dates:[{ date: "", start : "", end:""}]
   });
 
   const [errors, setErrors] = useState({
@@ -218,6 +212,44 @@ const fileRemove = (file) => {
   })
   ;
 }
+
+//-----------------------------------------------------//
+  //                  Date                   //
+
+
+  const [fecha, setFecha] = useState([{ date: "", start : "", end:""}])
+
+  let handleChanges = (i, e) => {
+    let newFechas = [...fecha];
+    newFechas[i][e.target.name] = e.target.value;
+    setFecha(newFechas);
+    setPost({
+      ...post,
+      dates: [...post.dates, newFechas]}
+     )
+  }
+    
+  let addFormFields = () => {
+    setFecha([...fecha, { date: "", start : "", end:""}])
+    setPost({
+      ...post,
+      dates:{ date: "", start : "", end:""}
+    })
+  }
+
+  let removeFormFields = (i) => {
+      let newFechas = [...fecha];
+      newFechas.splice(i, 1);
+      setFecha(newFechas)
+      setPost({
+        ...post,
+        dates : newFechas
+      })
+  }
+
+
+
+
 
 
   //-----------------------------------------------------//
@@ -538,10 +570,12 @@ const fileRemove = (file) => {
                   onDragLeave={onDragLeave}
                   onDrop={onDrop}
                 > 
-                <ImageIcon sx={{ fontSize: '13px', color: 'grey' }} />
+                <div>
+                <ImageIcon sx={{ fontSize: '50px', color: 'grey' }} />
+                </div>
                 <p>Fotos: Jpg, png, Max.100kb </p> 
                 <p>Videos: .MP4 Max 100kb</p>      
-                <p>"Arrastra los archivos aquí o haz click en Agregar archivos"</p>
+                <p>"Arrastra los archivos aquí o haz click para agregar archivos"</p>
                 <input 
                   type="file" 
                   value="" 
@@ -887,185 +921,75 @@ const fileRemove = (file) => {
 
               <hr className={styles.hr}></hr>
 
-              {/* time and date*/}
 
-              <div className={styles.contTimeAndDate}>
-                {/* date*/}
-
-                <div className={styles.contDate}>
-                  <label htmlFor="date">Fecha</label>
-
-                  <div className={styles.contInputDate}>
-                    <input type="text" id="date" value={dateFormatted} />
-
-                    <div className={styles.containerDate}>
-                      <input
-                        type="checkbox"
-                        defaultChecked={false}
-                        name="date"
-                        value={post.dates.date}
-                        onChange={(e) => handleCheck(e)}
-                        id="checkCalendar"
-                      />
-                      <label htmlFor="checkCalendar" className={styles.label}>
-                        <img src={calendar} alt="n" />
-                      </label>
-
-                      <div className={styles.calendar}>
-                        <Calendar
-                          color={'#D53E27'}
-                          locale={locales['es']}
-                          date={date}
-                          onChange={(item) => handleFormatDate(item)}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* start*/}
-
-                <div className={styles.contStart}>
-                  <label>Comienza</label>
-                  <input type="time" 
-                  name="start"
-                  value={post.dates.start}
-                  onChange={(e) => handleDate(e)}
-                  />
-                </div>
-
-                {/* end*/}
-
-                <div className={styles.contStart}>
-                  <label>Termina</label>
-                  <input type="time" 
-                  name="end"
-                  value={post.dates.end}
-                  onChange={(e) => handleDate(e)}
-                  />
-                </div>
-
-                {/* basquet*/}
+               {/* fechas*/}
 
                 <div>
-                  <img className={styles.basquet} src={basquet} alt="n" />
-                </div>
-              </div>
-
-              {/* Code*/}
-
-              <div className={styles.containerBono}>
-                <div>
-                  <input className={styles.checkDescuento} type="checkbox" />
-                  <label className={styles.subTitle}>
-                    Brindar códigos de descuento
-                  </label>
-                  <img className={styles.infoIcon} src={infoIcon} alt="n" />
-                </div>
-                <div>
-                  <button className={styles.btnbono}>Mostrar</button>
-                  <button className={styles.btnbono}>Ocultar</button>
-                </div>
-              </div>
-
-              <hr className={styles.hr}></hr>
-
-            
-              <div  className={styles.checkOtherDate}>
-                <input type="checkbox" id="check" />
-                <label htmlFor="check"  > + Crear Nueva Fecha</label>
-                               
-                  {/* NEwdate*/}
-                  <div className={styles.newDate}>
-
-                    <div className={styles.contTimeAndDate}>
-                      {/* date*/}
-
+                      
+                  {fecha.map((element, index) => (
+                    <div  className={styles.contTimeAndDate} key={index}>
                       <div className={styles.contDate}>
-                        <label htmlFor="date">Fecha</label>
+                        <label>Fechas</label>
+                        <div className={styles.contInputDate}>             
+                            <input type="text" id="date" value={dateFormatted} />
 
-                        <div className={styles.contInputDate}>
-                          <input type="text" id="date" value={dateFormatted} />
-
-                          <div className={styles.containerDate}>
-                            <input
-                              type="checkbox"
-                              defaultChecked={false}
-                              name="date"
-                              value={post.dates.date}
-                              onChange={(e) => handleCheck(e)}
-                              id="checkCalendar"
-                            />
-                            <label htmlFor="checkCalendar" className={styles.label}>
-                              <img src={calendar} alt="n" />
-                            </label>
-
-                            <div className={styles.calendar}>
-                              <Calendar
-                                color={'#D53E27'}
-                                locale={locales['es']}
-                                date={date}
-                                onChange={(item) => handleFormatDate(item)}
+                            <div className={styles.containerDate}>
+                              <input
+                                type="checkbox"
+                                defaultChecked={false}
+                                name="date"
+                                value={element.date || ""}
+                                onChange={e => handleChanges(index, e)}
+                                id="checkCalendar"
                               />
-                            </div>
-                          </div>
+                              <label htmlFor="checkCalendar" className={styles.label}>
+                                <img src={calendar} alt="n" />
+                              </label>
+
+                              <div className={styles.calendar}>
+                                <Calendar
+                                  color={'#D53E27'}
+                                  locale={locales['es']}
+                                  date={date}
+                                  onChange={(item) => handleFormatDate(item)}
+                                />
+                              </div>
+                            </div>                          
                         </div>
                       </div>
-
-                      {/* start*/}
-
                       <div className={styles.contStart}>
+                      
+
                         <label>Comienza</label>
-                        <input type="time" 
-                        name="start"
-                        value={post.dates.start}
-                        onChange={(e) => handleDate(e)}
-                        />
+                        <input type="time" name="start" value={element.start || ""} onChange={e => handleChanges(index, e)} />
+
                       </div>
-
-                      {/* end*/}
-
                       <div className={styles.contStart}>
-                        <label>Termina</label>
-                        <input type="time" 
-                        name="end"
-                        value={post.dates.end}
-                        onChange={(e) => handleDate(e)}
-                        />
-                      </div>
 
-                      {/* basquet*/}
 
-                      <div>
-                        <img className={styles.basquet} src={basquet} alt="n" />
+                      <label>End</label>
+                      <input type="time" name="end" value={element.end || ""} onChange={e => handleChanges(index, e)} />
+
                       </div>
+                      {
+                        index ? 
+                          <button lassName={styles.addDelete}  type="button"  onClick={() => removeFormFields(index)}>
+                            <img className={styles.basquet} src={basquet} alt="n" />
+                          </button> 
+                        : null
+                      }
                     </div>
-
-                    {/* Code*/}
-
-                    <div className={styles.containerBono}>
-                      <div>
-                        <input className={styles.checkDescuento} type="checkbox" />
-                        <label className={styles.subTitle}>
-                          Brindar códigos de descuento
-                        </label>
-                        <img className={styles.infoIcon} src={infoIcon} alt="n" />
-                      </div>
-                      <div>
-                        <button className={styles.btnbono}>Mostrar</button>
-                        <button className={styles.btnbono}>Ocultar</button>
-                      </div>
-                    </div>
-
-                    <hr className={styles.hr}></hr>
-
-                    <input type="checkbox" id="checknewDate" />
-                    <label htmlFor="checknewDate"  > + Crear Nueva Fecha</label>
+                  ))}
 
                 </div>
-              </div>
 
-              
+          <hr className={styles.hr}></hr> 
+
+          <div  >
+              <button className={styles.addDate}  type="button" onClick={() => addFormFields()}> + Crear Nueva Fecha</button>
+          </div>
+
+   
 
               <div>
                 <p className={styles.acceptText}>

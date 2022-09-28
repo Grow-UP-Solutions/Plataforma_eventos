@@ -185,6 +185,22 @@
   height: 100%;
   cursor: pointer;
 }
+
+.dropFileIput input::placeholder {
+  color: var(--color-grey-2);
+}
+
+.dropFileIput p{
+  color: var(--color-grey-2);
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.dropFileIput div{
+  color: var(--color-grey-2);
+  text-align: center;
+  margin-top: 1rem;
+}
   
 .dropFileIput:hover,
 .dropFileIput.dragover {
@@ -220,7 +236,7 @@
 
 .mySwiperImg{
   width: 100%;
-  max-height: 20rem;
+  max-height: 25rem;
   border: 2px solid var(--color-grey-4);
   border-radius: 10px;
 
@@ -236,7 +252,7 @@
   justify-content: center;
   position: absolute;
   top: 10%;
-  left:95%;
+  left:90%;
   transform: translateY(-50%);
   cursor: pointer;
   color:#d53e27;
@@ -849,4 +865,32 @@
   color: #ba150a;
   font-size: 14px;
 }
+
+
+
+
+.containerDatess input{
+  margin-bottom: 2rem;
+
+}
+
+.addDate{
+  background-color: transparent;
+  color:red;
+  cursor:pointer;
+  margin-bottom: 2rem;
+  border:none;
+  text-align: center;
+}
+
+.delete{
+  background-color: transparent;
+  color:red;
+  cursor:pointer;
+  margin-bottom: 2rem;
+  border:none;
+  text-align: center;
+  margin-left: 2rem;
+}
+
 
