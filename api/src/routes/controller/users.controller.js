@@ -58,6 +58,7 @@ router.post(
     }
   }
 );
+
 router.put('/update/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -68,6 +69,7 @@ router.put('/update/:id', async (req, res) => {
     return res.status(400).json({ ERROR_USER_UPDATE: error });
   }
 });
+
 router.delete('/delete/:id', async (req, res) => {
   try {
     const { id } = req.params;

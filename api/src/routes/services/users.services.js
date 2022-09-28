@@ -27,6 +27,7 @@ export async function createUsers(user) {
     if (userDB) {
       throw new Error('El email ya se encuentra registrado');
     }
+
     const users = await createOneUserDb(user);
 
     return users;
