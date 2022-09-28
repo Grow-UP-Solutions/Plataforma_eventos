@@ -28,6 +28,7 @@ export async function createUsers(user) {
     if (userDB) {
       throw new Error('El email ya se encuentra registrado');
     }
+
     const users = await createOneUserDb(user);
 
     return users;
@@ -49,7 +50,7 @@ export async function userDelete(id) {
 
 export async function login(email, password) {
   try {
-    const user = await OneUserDb(email);
+    const user = await validateEmailUserDb(email);
 
     if (!user) {
       throw new Error('El usuario no está registrado');
