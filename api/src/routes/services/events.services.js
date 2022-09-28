@@ -1,5 +1,5 @@
 import { OneCategoryDb } from "../../models/util/functionDB/CategoryDb.js";
-import { OneUserDb } from "../../models/util/functionDB/UserDb.js";
+import { oneUserDb } from "../../models/util/functionDB/UserDb.js";
 import {
   AllEventsDb,
   createOneEventDb,
@@ -18,7 +18,7 @@ export async function createEvents(event) {
   try {
     const { organizer, category } = event;
 
-    const users = await OneUserDb(organizer);
+    const users = await oneUserDb(organizer);
     const temp = category.map(async (e) => {
       let temp = await OneCategoryDb(e);
       return temp;

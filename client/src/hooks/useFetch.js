@@ -1,25 +1,23 @@
-
-import { useCallback, useState } from "react";
-import sendRequest from "../utils/sendRequest";
+import { useCallback, useState } from 'react';
+import sendRequest from '../utils/sendRequest';
 
 export default function useFetch() {
-
   const [fetchState, setFetchState] = useState({
     isLoading: false,
     isSuccess: false,
     isFailed: false,
     data: null,
-    error: null
+    error: null,
   });
 
-  const fetchData = useCallback(async function ({ url, method, body }) {
+  const fetchData = useCallback(async function({ url, method, body }) {
     try {
       setFetchState({
         isLoading: true,
         isSuccess: false,
         isFailed: false,
         error: null,
-        data: null
+        data: null,
       });
 
       const result = await sendRequest({ url, method, body });
@@ -28,18 +26,17 @@ export default function useFetch() {
         isSuccess: true,
         isFailed: false,
         error: null,
-        data: result
+        data: result,
       });
 
       return result;
-      
     } catch (error) {
       setFetchState({
         isLoading: false,
         isSuccess: false,
         isFailed: true,
         error,
-        data: null
+        data: null,
       });
     }
   }, []);

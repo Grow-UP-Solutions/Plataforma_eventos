@@ -65,9 +65,7 @@ const WorkWithUsForm = () => {
     <div className={`${styles.pageWorkWithUsForm} container`}>
       <h1 className={styles.titleWorkWithUsForm}>Trabaja con nosotros</h1>
       <form onSubmit={(e) => e.preventDefault()}>
-        <h2 className={styles.titleForm}>
-          Inscribete para ser ({work.replace(':', '')})
-        </h2>
+        <h2 className={styles.titleForm}>Inscribete para ser ({work})</h2>
 
         <div className={styles.formGroup}>
           <label htmlFor="name">Nombre completo:</label>

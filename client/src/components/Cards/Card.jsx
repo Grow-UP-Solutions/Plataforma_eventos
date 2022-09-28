@@ -4,9 +4,12 @@ import add from '../../assets/imgs/add.svg';
 import { Link } from 'react-router-dom';
 import { Rating } from '@mui/material';
 import { iconAdd } from '../../assets/imgs';
+import { useContext } from 'react';
+import { UIContext } from '../../context/ui';
 
 const Card = ({ event }) => {
 
+  const { toggleScreenLogin } = useContext(UIContext);
   const currentYear = new Date().getFullYear();
 
   return (
@@ -55,8 +58,17 @@ const Card = ({ event }) => {
 
           <div className={styles.cardAddFavMenu}>
             <p>
-              Para agregar este evento a tu lista <a href="#">Ingresa</a> o{' '}
-              <a href="#">Regístrate</a>
+              Para agregar este evento a tu lista{' '}
+              <a
+                onClick={(e) => {
+                  e.preventDefault();
+                  toggleScreenLogin();
+                }}
+                href="#"
+              >
+                Ingresa
+              </a>{' '}
+              o <Link to={'/registrate'}>Registrate</Link>
             </p>
           </div>
         </div>

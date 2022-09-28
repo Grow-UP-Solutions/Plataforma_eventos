@@ -16,9 +16,12 @@ import calendar from '../../assets/imgs/calendar.svg';
 import iconEditar from '../../assets/imgs/iconEditar.svg';
 import iconExclamacion2 from '../../assets/imgs/iconExclamacion2.svg';
 import infoIcon from '../../assets/imgs/infoIcon.svg';
+import ImageIcon from '@mui/icons-material/Image';
 import mapa from '../../assets/imgs/mapa2.png';
 import { formatDate } from '../../utils/formatDate';
 import styles from './EventCreateForm.module.css';
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const EventCreateForm = () => {
   const [post, setPost] = useState({
@@ -34,8 +37,59 @@ const EventCreateForm = () => {
     direccion: '',
     barrio: '',
     specialRequires: '',
+    cupos:'',
     price: '',
+    dates:[{ date: "", start : "", end:""}]
   });
+
+  const [errors, setErrors] = useState({
+    title: '',
+    categories:'',
+    shortDescription: '',
+    longDescription: '',
+    cupos:'',
+    price:''
+  
+  })
+
+  useEffect(() => {
+    setErrors(validate(post))
+  }, [post])
+
+  function validate(post) {
+    let errors = {}
+    let nameRegex = /^[a-zA-Z0-9 _]*$/g
+    let titleRegex = /^[a-zA-Z _]*$/g
+    if (!post.title) {
+      errors.title = 'Ingresar titulo (!)'
+    }
+
+    if (post.title.length > 75) {
+      errors.title = 'Alcanzaste el limite de characteres'
+    }
+
+
+    if (post.categories.length > 3) {
+      errors.title = 'Alcanzaste el limite de characteres'
+    }
+
+    if (post.longDescription.length < 75) {
+      errors.title = 'Alcanzaste el limite de characteres'
+    }
+
+    if (post.cupos && !post.cupos.match(/^[0-9]*$/g)) {
+      errors.cupos = 'Debe ser un numero'
+    }
+
+    
+
+    if (post.price && !post.price.match(/([1-9][0-9]{,2}(,[0-9]{3})*|[0-9]+)(\.[0-9]{1,9})?$/g)) {
+      errors.price = 'Debe ser un numero'
+    }
+
+    
+    return errors
+  }
 
   function handleChange(e) {
     setPost({
@@ -45,6 +99,7 @@ const EventCreateForm = () => {
   }
 
   function handleCategories(e) {
+    if (!post.categories.includes(e.target.value))
     setPost({
       ...post,
       [e.target.name]: [...post.categories, e.target.value],
@@ -78,6 +133,124 @@ const EventCreateForm = () => {
       [e.target.name]: e.target.value,
     });
   }
+
+  function handleDate(e) {
+    setPost({
+      ...post,
+      dates: { ...post.dates, [e.target.name]: e.target.value },
+    })
+  }
+
+  // const [failedSubmit, setFailedSubmit] = useState(false)
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (Object.values(errors).length > 0) alert("Please fill in all the fields")
+    else {
+        // dispatch(postRecipe(post))
+        alert('¡Recipe Created!')
+        setPost({
+          title: '',
+          categories: [],
+          otherCategories: [],
+          shortDescription: '',
+          longDescription: '',
+          pictures: [],
+          online: '',
+          link: '',
+          departamento: '',
+          direccion: '',
+          barrio: '',
+          specialRequires: '',
+          price: '',
+        })
+    }
+};
+
+//--------------------------------------------------//
+  //                 DROP DRAG IMAGES                //
+
+  
+const wrapperRef = useRef(null);
+
+const [fileList, setFileList] = useState([]);
+
+const onDragEnter = () => wrapperRef.current.classList.add('dragover');
+
+const onDragLeave = () => wrapperRef.current.classList.remove('dragover');
+
+const onDrop = () => wrapperRef.current.classList.remove('dragover');
+
+const onFileDrop = (e) => {
+  
+  if (e.target.files[0]) {
+      const reader = new FileReader()
+      reader.readAsDataURL(e.target.files[0])
+      reader.onload = (e)=>{
+          e.preventDefault();
+          setFileList([...fileList,e.target.result]
+         ) 
+         setPost({
+          ...post,
+          pictures: [...post.pictures, e.target.result]}
+         )
+         }
+      // const updatedList = [...fileList, newFile];
+      // setFileList(updatedList);
+      ;
+  }
+}
+const fileRemove = (file) => {
+  const updatedList = [...fileList];
+  const updatedPictures=[...post.pictures]
+  updatedList.splice(fileList.indexOf(file), 1);
+  setFileList(updatedList);
+  updatedPictures.splice(post.pictures.indexOf(file), 1);
+  setPost({
+    ...post,
+    pictures:updatedList
+  })
+  ;
+}
+
+//-----------------------------------------------------//
+  //                  Date                   //
+
+
+  const [fecha, setFecha] = useState([{ date: "", start : "", end:""}])
+
+  let handleChanges = (i, e) => {
+    let newFechas = [...fecha];
+    newFechas[i][e.target.name] = e.target.value;
+    setFecha(newFechas);
+    setPost({
+      ...post,
+      dates: [...post.dates, newFechas]}
+     )
+  }
+    
+  let addFormFields = () => {
+    setFecha([...fecha, { date: "", start : "", end:""}])
+    setPost({
+      ...post,
+      dates:{ date: "", start : "", end:""}
+    })
+  }
+
+  let removeFormFields = (i) => {
+      let newFechas = [...fecha];
+      newFechas.splice(i, 1);
+      setFecha(newFechas)
+      setPost({
+        ...post,
+        dates : newFechas
+      })
+  }
+
+
+
+
+
 
   //-----------------------------------------------------//
   //                  SCROLL_SNAP                     //
@@ -160,12 +333,20 @@ const EventCreateForm = () => {
               <input
                 className={styles.input}
                 type="text"
+                maxlength="75"
                 placeholder="Nombre del evento"
                 name="title"
                 value={post.title}
                 onChange={(e) => handleChange(e)}
               />
-              <p className={styles.subInput}>Máximo 75 caracteres</p>
+                  {errors.title && (
+                        <p className={styles.errors}>{errors.name}</p>
+                    )}
+                    {post.title.length === 75  ?
+                    <p className={styles.error}>Máximo 75 caracteres</p>
+                      : <p className={styles.subInput}>Máximo 75 caracteres</p>
+                      }
+              
             </div>
           </div>
 
@@ -214,7 +395,7 @@ const EventCreateForm = () => {
                         className={styles.checkBox}
                         type="checkbox"
                         name="categories"
-                        value={post.categories}
+                        value={categorie.name}
                         onChange={(e) => handleCategories(e)}
                       />
                       {categorie.name}
@@ -245,6 +426,9 @@ const EventCreateForm = () => {
                   />
                 </div>
               </div>
+              {errors.categories && (
+                        <p className={styles.errors}>{errors.categories}</p>
+                    )}
             </div>
           </div>
 
@@ -290,12 +474,24 @@ const EventCreateForm = () => {
                 <input
                   className={styles.input3}
                   type="text"
+                  maxlength="100"
                   placeholder="descripción breve del evento"
                   name="shortDescription"
                   value={post.shortDescription}
                   onChange={(e) => handleChange(e)}
                 />
-                <p className={styles.subTitle}>Máximo xx de caracteres</p>
+                 {errors.shortDescription && (
+                        <p className={styles.errorS}>{errors.shortDescription}</p>
+                    )}
+                
+                {post.shortDescription.length===100?
+                <p className={styles.error}>Máximo: 100 de caracteres</p>
+                : <p className={styles.subTitle}>Máximo: 100 de caracteres</p>
+                }
+                {post.shortDescription.length>0 ?
+                <p className={styles.subTitle}>Usetd va escribiendo: {post.shortDescription.length}/100 caracteres</p>
+                : ''
+                }
               </div>
 
               {/* longDescription */}
@@ -309,12 +505,23 @@ const EventCreateForm = () => {
                 <input
                   className={styles.input3}
                   type="text"
+                  minlength="75"
                   placeholder="descripción detallada del evento"
                   name="longDescription"
                   value={post.longDescription}
                   onChange={(e) => handleChange(e)}
                 />
-                <p className={styles.subTitle}>Minimo 75 palabras</p>
+                {errors.longDescription && (
+                        <p className={styles.errorS}>{errors.longDescription}</p>
+                    )}
+                 {post.longDescription.length<75 && post.longDescription.length>0 ?
+                <p className={styles.error}>Minimo 75 palabras</p>
+                : <p className={styles.subTitle}>Minimo 75 palabras</p>
+                }
+                {post.longDescription.length>0 ?
+                <p className={styles.subTitle}>Usetd va escribiendo: {post.longDescription.length} caracteres</p>
+                : ''
+                }
               </div>
             </div>
           </div>
@@ -356,31 +563,56 @@ const EventCreateForm = () => {
               </p>
               <p className={styles.subTitle4}>Fotos del Evento</p>
 
-              <div>
-                <Swiper
-                  slidesPerView={1}
-                  navigation
-                  spaceBetween={0}
-                  modules={[Navigation]}
-                  className={styles.mySwipper}
-                >
-                  {post.pictures.length ? (
-                    post.pictures.map((picture, index) => {
-                      return (
-                        <SwiperSlide>
-                          <picture />
-                        </SwiperSlide>
-                      );
-                    })
-                  ) : (
-                    <input
-                      className={styles.inputPicture}
-                      type="text"
-                      placeholder="Arrastra los archivos aquí o haz clic en Agregar archivos"
-                    />
-                  )}
-                </Swiper>
+              <div
+                ref={wrapperRef}
+                  className={styles.dropFileIput}
+                  onDragEnter={onDragEnter}
+                  onDragLeave={onDragLeave}
+                  onDrop={onDrop}
+                > 
+                <div>
+                <ImageIcon sx={{ fontSize: '50px', color: 'grey' }} />
+                </div>
+                <p>Fotos: Jpg, png, Max.100kb </p> 
+                <p>Videos: .MP4 Max 100kb</p>      
+                <p>"Arrastra los archivos aquí o haz click para agregar archivos"</p>
+                <input 
+                  type="file" 
+                  value="" 
+                  name="pictures"
+                  onChange={onFileDrop}
+                />
               </div>
+
+              {
+                fileList.length > 0 ? (
+                  <div className={styles.dropFilePreview}>
+                    <p>
+                      Ready to upload
+                    </p>
+                    <Swiper
+                      slidesPerView={1}
+                      navigation
+                      spaceBetween={0}
+                      modules={[Navigation]}
+                      className={styles.mySwipper}
+                    >
+                    {
+                        fileList.map((item, index) => (
+                            <div key={index} className={styles.mySwiper}>
+                              <SwiperSlide>
+                                <img className={styles.mySwiperImg} src={item} alt=''/>                                
+                                <button className={styles.mySwiperBtnDel} onClick={() => fileRemove(item)}>x</button>
+                              </SwiperSlide>
+                            </div>
+                        ))
+                    }
+                    </Swiper>
+                  </div>
+                ) : null
+              }
+
+              
 
               <label className={styles.subInput}>
                 <input className={styles.checkBox4} type="checkbox" />
@@ -607,9 +839,16 @@ const EventCreateForm = () => {
                         className={styles.subInfoInput}
                         type="txt"
                         placeholder="10"
+                        name="cupos"
+                        value={post.cupos}
+                        onChange={(e) => handleChange(e)}
                       />
                     </label>
+                    
                   </div>
+                  {errors.cupos && (
+                        <p className={styles.error}>{errors.cupos}</p>
+                    )}
 
                   <div className={styles.containerSubInfo}>
                     <label className={styles.subInfoTitle}>
@@ -624,6 +863,9 @@ const EventCreateForm = () => {
                           value={post.price}
                           onChange={(e) => handlePrice(e)}
                         />
+                           {errors.price && (
+                        <p className={styles.error}>{errors.price}</p>
+                    )}
                       </div>
                     </label>
                     {post.price === '' ? <p>$21.990</p> : <p>ee</p>}
@@ -647,7 +889,11 @@ const EventCreateForm = () => {
                     <p className={styles.subInfotxt}>
                       Después de nuestra comisión + IVA
                     </p>
-                    <button className={styles.btn6}>Ver Más</button>
+                    <Link to={`/user/profile`}>
+                      <button className={styles.btn6}
+                      >Ver Más</button>
+                    </Link>
+                 
                   </div>
 
                   <div className={styles.containerSubInfo}>
@@ -665,90 +911,85 @@ const EventCreateForm = () => {
                     <p className={styles.subInfotxt}>
                       Esto sería lo que ganarías si se venden todos tus cupos
                     </p>
+                    <Link to={`/user/profile`}>
+                      <button className={styles.btn6}
+                      >Ver Más</button>
+                    </Link>
                   </div>
                 </div>
               </div>
 
               <hr className={styles.hr}></hr>
 
-              {/* time and date*/}
 
-              <div className={styles.contTimeAndDate}>
-                {/* date*/}
+               {/* fechas*/}
 
-                <div className={styles.contDate}>
-                  <label htmlFor="date">Fecha</label>
+                <div>
+                      
+                  {fecha.map((element, index) => (
+                    <div  className={styles.contTimeAndDate} key={index}>
+                      <div className={styles.contDate}>
+                        <label>Fechas</label>
+                        <div className={styles.contInputDate}>             
+                            <input type="text" id="date" value={dateFormatted} />
 
-                  <div className={styles.contInputDate}>
-                    <input type="text" id="date" value={dateFormatted} />
+                            <div className={styles.containerDate}>
+                              <input
+                                type="checkbox"
+                                defaultChecked={false}
+                                name="date"
+                                value={element.date || ""}
+                                onChange={e => handleChanges(index, e)}
+                                id="checkCalendar"
+                              />
+                              <label htmlFor="checkCalendar" className={styles.label}>
+                                <img src={calendar} alt="n" />
+                              </label>
 
-                    <div className={styles.containerDate}>
-                      <input
-                        type="checkbox"
-                        defaultChecked={false}
-                        name="date"
-                        value={post.date}
-                        onChange={(e) => handleCheck(e)}
-                        id="checkCalendar"
-                      />
-                      <label htmlFor="checkCalendar" className={styles.label}>
-                        <img src={calendar} alt="n" />
-                      </label>
-
-                      <div className={styles.calendar}>
-                        <Calendar
-                          color={'#D53E27'}
-                          locale={locales['es']}
-                          date={date}
-                          onChange={(item) => handleFormatDate(item)}
-                        />
+                              <div className={styles.calendar}>
+                                <Calendar
+                                  color={'#D53E27'}
+                                  locale={locales['es']}
+                                  date={date}
+                                  onChange={(item) => handleFormatDate(item)}
+                                />
+                              </div>
+                            </div>                          
+                        </div>
                       </div>
+                      <div className={styles.contStart}>
+                      
+
+                        <label>Comienza</label>
+                        <input type="time" name="start" value={element.start || ""} onChange={e => handleChanges(index, e)} />
+
+                      </div>
+                      <div className={styles.contStart}>
+
+
+                      <label>End</label>
+                      <input type="time" name="end" value={element.end || ""} onChange={e => handleChanges(index, e)} />
+
+                      </div>
+                      {
+                        index ? 
+                          <button lassName={styles.addDelete}  type="button"  onClick={() => removeFormFields(index)}>
+                            <img className={styles.basquet} src={basquet} alt="n" />
+                          </button> 
+                        : null
+                      }
                     </div>
-                  </div>
+                  ))}
+
                 </div>
 
-                {/* start*/}
+          <hr className={styles.hr}></hr> 
 
-                <div className={styles.contStart}>
-                  <label>Comienza</label>
-                  <input type="time" />
-                </div>
+          <div  >
+              <button className={styles.addDate}  type="button" onClick={() => addFormFields()}> + Crear Nueva Fecha</button>
+          </div>
 
-                {/* end*/}
-
-                <div className={styles.contStart}>
-                  <label>Termina</label>
-                  <input type="time" />
-                </div>
-
-                {/* basquet*/}
-
-                <div>
-                  <img className={styles.basquet} src={basquet} alt="n" />
-                </div>
-              </div>
-
-              {/* Code*/}
-
-              <div className={styles.containerBono}>
-                <div>
-                  <input className={styles.checkDescuento} type="checkbox" />
-                  <label className={styles.subTitle}>
-                    Brindar códigos de descuento
-                  </label>
-                  <img className={styles.infoIcon} src={infoIcon} alt="n" />
-                </div>
-                <div>
-                  <button className={styles.btnbono}>Mostrar</button>
-                  <button className={styles.btnbono}>Ocultar</button>
-                </div>
-              </div>
-
-              <hr className={styles.hr}></hr>
-
-              <div>
-                <button className={styles.newdate}> + Crear Nueva Fecha</button>
-              </div>
+   
 
               <div>
                 <p className={styles.acceptText}>
