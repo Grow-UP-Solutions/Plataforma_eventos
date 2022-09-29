@@ -1,10 +1,9 @@
 import React from 'react';
-
 import styles from './CardProduct.module.css';
-
 import { iconArrowLeft, iconArrowRight } from '../../assets/imgs';
 
 const CardProduct = ({ event }) => {
+  
   return (
     <div className={styles.cartProduct}>
       <div className={styles.containerProductDetails}>
@@ -17,12 +16,12 @@ const CardProduct = ({ event }) => {
             <button className={styles.productDateBtn}>
               <img src={iconArrowLeft} alt="icon-left" />
             </button>
-            <span>{event.date[0].replace('/', ' de ')}</span>
+            <span>{event.dates[0].date.replace('/', ' de ')}</span>
             <button className={styles.productDateBtn}>
               <img src={iconArrowRight} alt="icon-left" />
             </button>
           </div>
-          <p className={styles.productTime}>{event.time}</p>
+          <p className={styles.productTime}>{event.dates[0].start} a {event.dates[0].end}</p>
           <p className={styles.productLocation}>
             {event.city} - {event.state}
           </p>

@@ -1,22 +1,20 @@
 import React, { useState } from 'react';
 import styles from './EventDate.module.css';
-
 import { Calendar } from 'react-date-range';
 import * as locales from 'react-date-range/dist/locale';
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
-
 import { AiOutlineClose } from 'react-icons/ai';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { iconArrowLeft, iconArrowRight } from '../../assets/imgs';
-
 import { formatDate } from '../../utils/formatDate';
 import { Link } from 'react-router-dom';
+
 const EventDate = ({ event }) => {
+
   const [getNewDate, setGetNewDate] = useState(false);
   const [date, setDate] = useState(null);
   const [dateFormatted, setDateFormatted] = useState('');
-
   const [numberBuyCupos, setNumberBuyCupos] = useState(0);
 
   const handleNumberBuyCupos = (num) => {
@@ -89,7 +87,7 @@ const EventDate = ({ event }) => {
         </table>
       </div>
 
-      <Link to={'/cart'}>
+      <Link to={`/cart/${event._id}`}>
         <button className={styles.button}>Comprar</button>
       </Link>
       <p className={styles.parrafo}>

@@ -1,18 +1,23 @@
 .container{
-    margin-top: 9rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%; 
+  margin: 0 auto;
+  margin-top: 9rem;
+  max-width: 1420px;
 }
 
 .containercard{
-    width: 80%;
-    display: grid;
-    grid-template-columns: 1fr 1fr  1fr 1fr 1fr;
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
+  gap: 2rem;
+  align-content: flex-start;
 }
 
 .card{
-    margin-bottom: 3rem;
-    text-align: left;
+  margin-bottom: 3rem;
+  text-align: left;
+}
+
+.container_pagination {
+  margin-top: 5rem;
 }
