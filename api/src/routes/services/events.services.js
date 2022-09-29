@@ -1,10 +1,12 @@
 import { OneCategoryDb } from "../../models/util/functionDB/CategoryDb.js";
-import { oneUserDb } from "../../models/util/functionDB/UserDb.js";
+import { oneUserDb, validateEmailUserDb } from "../../models/util/functionDB/UserDb.js";
 import {
   AllEventsDb,
   createOneEventDb,
+  oneEventDb,
   updateOneEventDb,
 } from "../../models/util/functionDB/EventesDb.js";
+import Events from "../../models/db/Events.js";
 
 export async function getAllEvents() {
   try {
@@ -16,9 +18,10 @@ export async function getAllEvents() {
 }
 export async function createEvents(event) {
   try {
-    const { organizer, category } = event;
+    const { emailOganizer, category } = event;
 
-    const users = await oneUserDb(organizer);
+    const users = await validateEmailUserDb(emailOganizer);
+    const {}= users
     const temp = category.map(async (e) => {
       let temp = await OneCategoryDb(e);
       return temp;
@@ -37,6 +40,15 @@ export async function createEvents(event) {
     throw new Error(`FALLO CREATE EVENTS SERVICES, ${error}`);
   }
 }
+
+export async function createOpinionsEvents(id, opinions){
+  const event = await oneEventDb(id);
+  event.push(opinions)
+  
+  return await event.save()
+  
+}
+
 
 export async function eventsUpdate(id, newEvent) {
   try {

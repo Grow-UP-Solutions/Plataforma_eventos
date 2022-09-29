@@ -14,6 +14,8 @@ const EventSchema = new Schema({
   ],
   cupos: Number,
   price: String,
+  state:String,
+  city:String,
   year: Number,
   rating: Number,
   enLinea: Boolean,
@@ -31,6 +33,7 @@ const EventSchema = new Schema({
   ],
   opinions: [
     {
+      user:String,
       title: String,
       email: String,
       time: {

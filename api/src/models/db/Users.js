@@ -8,6 +8,12 @@ const UserSchema = new Schema({
   phone: Number,
   documentNº: Number,
   city: String,
+  frontDocument: String,
+  backDocument: String,
+  userpicture: {
+    type:String,
+    default:null
+  },
   email: String,
   picture: String,
   password: String,
