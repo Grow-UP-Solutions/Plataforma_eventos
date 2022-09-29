@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import OpinionsEvent from "./OpinionsEvent.js";
+
 
 const EventSchema = new Schema({
   name: String,
@@ -14,8 +14,8 @@ const EventSchema = new Schema({
   ],
   cupos: Number,
   price: String,
-  state:String,
-  city:String,
+  state: String,
+  city: String,
   year: Number,
   rating: Number,
   enLinea: Boolean,
@@ -33,7 +33,10 @@ const EventSchema = new Schema({
   ],
   opinions: [
     {
-      user:String,
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: "Users",
+      },
       title: String,
       email: String,
       time: {
@@ -42,9 +45,17 @@ const EventSchema = new Schema({
       },
       rating: Number,
       opinion: String,
-      picture: String,
+      picture: {
+        type: String,
+        default: null,
+      },
     },
   ],
 });
 
 export default model("Events", EventSchema);
+
+
+
+
+      

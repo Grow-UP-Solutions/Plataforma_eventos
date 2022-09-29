@@ -2,32 +2,23 @@ import "../../../DB.js";
 import Users from "../../db/Users.js";
 import bcrypt from "bcryptjs";
 
-
 /** basic user database operations */
 
 export async function allUserDb() {
   return await Users.find()
     .populate({ path: "myEventsCreated" })
     .populate({ path: "myFavourites" })
-    .populate({ path: "myEventsBooked" })
-    .populate({ path: "myOpinions" })
-    .populate({ path: "opinionsOrg" });
+    .populate({ path: "myEventsBooked" });
 }
 export async function validateEmailUserDb(email) {
   try {
-    return await Users.findOne({ email: email })
-      .populate({ path: "myEventsCreated" })
-      .populate({ path: "myFavourites" })
-      .populate({ path: "myEventsBooked" })
-      .populate({ path: "myOpinions" })
-      .populate({ path: "opinionsOrg" });
+    return await Users.findOne({ email: email });
   } catch (error) {
     throw new Error("Ha fallado validate email user db");
   }
 }
 export async function oneUserDb(id) {
   try {
-    
     return await Users.findById({ _id: id })
       .populate({ path: "myEventsCreated" })
       .populate({ path: "myFavourites" })

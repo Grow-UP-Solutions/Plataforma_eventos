@@ -1,8 +1,12 @@
 import { OneCategoryDb } from "../../models/util/functionDB/CategoryDb.js";
-import { oneUserDb, validateEmailUserDb } from "../../models/util/functionDB/UserDb.js";
+import {
+  oneUserDb,
+  validateEmailUserDb,
+} from "../../models/util/functionDB/UserDb.js";
 import {
   AllEventsDb,
   createOneEventDb,
+  generateEventComment,
   oneEventDb,
   updateOneEventDb,
 } from "../../models/util/functionDB/EventesDb.js";
@@ -21,7 +25,7 @@ export async function createEvents(event) {
     const { emailOganizer, category } = event;
 
     const users = await validateEmailUserDb(emailOganizer);
-    const {}= users
+    const {} = users;
     const temp = category.map(async (e) => {
       let temp = await OneCategoryDb(e);
       return temp;
@@ -30,7 +34,7 @@ export async function createEvents(event) {
     event.category = categories.map((e) => e._id);
     event.organizer = users._id;
     const events = await createOneEventDb(event);
-    
+
     users.myEventsCreated.push(events._id);
     await users.save();
 
@@ -41,14 +45,18 @@ export async function createEvents(event) {
   }
 }
 
-export async function createOpinionsEvents(id, opinions){
-  const event = await oneEventDb(id);
-  event.push(opinions)
-  
-  return await event.save()
-  
+export async function createOpinionsEvents(id, opinions) {
+  try {
+    
+    const opinionCreat = await generateEventComment(id, opinions);
+    return opinionCreat;
+    
+  } catch (error) {
+   
+    throw new Error('Fallo el servicio en opiniones',error)
+    
+  }
 }
-
 
 export async function eventsUpdate(id, newEvent) {
   try {

@@ -1,6 +1,5 @@
 import { Schema, model } from "mongoose";
-import OpinionsEvent from "./OpinionsEvent.js";
-import OpinionsOrganizer from "./OpinionsOrganizer.js";
+
 
 const UserSchema = new Schema({
   name: String,
@@ -11,8 +10,8 @@ const UserSchema = new Schema({
   frontDocument: String,
   backDocument: String,
   userpicture: {
-    type:String,
-    default:null
+    type: String,
+    default: null,
   },
   email: String,
   picture: String,
@@ -57,18 +56,13 @@ const UserSchema = new Schema({
       ref: "Events",
     },
   ],
-  myOpinions: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: OpinionsEvent,
-    },
-  ],
+ 
   opinionsOrg: [
     {
-      // user: {
-      //   type: Schema.Types.ObjectId,
-      //   ref: 'Users',
-      // },
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: "Users",
+      },
       email: String,
       time: {
         type: Date,
