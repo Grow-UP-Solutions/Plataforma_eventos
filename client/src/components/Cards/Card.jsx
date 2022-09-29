@@ -3,14 +3,13 @@ import styles from './Card.module.css';
 import add from '../../assets/imgs/add.svg';
 import { Link } from 'react-router-dom';
 import { Rating } from '@mui/material';
-
 import { iconAdd } from '../../assets/imgs';
 import { useContext } from 'react';
 import { UIContext } from '../../context/ui';
 
 const Card = ({ event }) => {
-  const { toggleScreenLogin } = useContext(UIContext);
 
+  const { toggleScreenLogin } = useContext(UIContext);
   const currentYear = new Date().getFullYear();
 
   return (
@@ -28,11 +27,11 @@ const Card = ({ event }) => {
             {event.dates.map((date, index) =>
               date.cupos > 0 ? (
                 date.year === currentYear ? (
-                  <option key={index} value={date.id}>
+                  <option key={index} value={date._id}>
                     {date.date.slice(0, 8)}
                   </option>
                 ) : (
-                  <option key={index} value={date.id}>
+                  <option key={index} value={date._id}>
                     {date.date}
                   </option>
                 )
@@ -52,8 +51,8 @@ const Card = ({ event }) => {
         )}
 
         <div className={styles.cardAddFav}>
-          <input type="checkbox" id={event.id} />
-          <label htmlFor={event.id}>
+          <input type="checkbox" id={event._id} />
+          <label htmlFor={event._id}>
             <img src={iconAdd} alt="iconAdd" />
           </label>
 
