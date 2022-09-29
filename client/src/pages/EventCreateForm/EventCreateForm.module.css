@@ -81,6 +81,20 @@
     linear-gradient(#d6d6d6, #d6d6d6) center/2px 100% no-repeat;
   background-position: 33% 0, 67% 0;
 }
+.containerChecks2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin-bottom: 4rem;
+  margin-top: 2rem;
+  background: linear-gradient(#d6d6d6, #d6d6d6) center/2px 100% no-repeat,
+    linear-gradient(#d6d6d6, #d6d6d6) center/2px 100% no-repeat;
+  background-position: 33% 0, 67% 0;
+}
+
+.containerChecks2 .checkBox{
+ display: none;
+}
+
 
 .checks {
   align-items: center;
@@ -136,7 +150,8 @@
   margin-bottom: 8rem;
 }
 
-.input3 {
+.textareaShort {
+  padding: 12px 20px;
   height: 15rem;
   border: 1px solid var(--color-grey-4);
   border-radius: 10px;
@@ -145,11 +160,35 @@
   width: 100%;
   margin-top: 1rem;
   margin-bottom: 1rem;
+  font-size: 1.7rem;
+  resize: none;
 }
 
-.input::placeholder {
-  top: 1rem;
+.textareaShort::placeholder {
+  margin-top: 2rem;
+  color: #707070;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.textareaLong {
+  padding: 12px 20px;
+  height: 15rem;
+  border: 1px solid var(--color-grey-4);
+  border-radius: 10px;
+  background-color: white;
   color: var(--color-grey-2);
+  width: 100%;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-size: 1.7rem;
+}
+
+.textareaLong::placeholder {
+  margin-top: 2rem;
+  color: #707070;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
 }
 
 /*SECTION 4: Pictures */
@@ -164,8 +203,8 @@
 }
 
 .dropFileIput {
-  position: relative;
-  width: 100%;
+  text-align: center;
+  width: 30rem;
   height: 20rem;
   border: 2px dashed var(--color-grey-4);
   border-radius: 10px;
@@ -173,12 +212,11 @@
   justify-content: center;
   color: var(--color-grey-2);
   background-color: var(--input-bg);
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
  }
 
  .dropFileIput input {
   opacity: 0;
-  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -235,12 +273,14 @@
 } */
 
 .mySwiperImg{
-  width: 100%;
-  max-height: 25rem;
+  width: 80rem;
+  height: 48rem;
   border: 2px solid var(--color-grey-4);
   border-radius: 10px;
 
 }
+
+
 
 .mySwiperBtnDel{
   background-color: rgb(255, 255, 255);
@@ -273,6 +313,7 @@
   height: 2rem;
   width: 2rem;
   border-radius: 10px;
+  cursor: pointer;
 }
 
 /*SECTION 5 */
@@ -672,11 +713,11 @@
   padding: 8px 30px;
   cursor: pointer;
   background-color: #d6d6d6;
-  color: black;
+  color: #707070;
   border: none;
 }
 
-.submitBtn {
+.viewBtn:hover {
   font-size: 1.6rem;
   border-radius: 18px;
   text-align: center;
@@ -685,7 +726,10 @@
   background-color: #d53e27;
   color: white;
   border: none;
+  font-weight: bolder;
 }
+
+
 
 .cancelBtn {
   font-size: 1.6rem;
@@ -854,10 +898,12 @@
 }
 
 /*ERRORES*/
-.error {
+.errors {
   font-family: sans-serif;
   color: #ba150a;
   font-size: 14px;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 
 .subTitleError {
