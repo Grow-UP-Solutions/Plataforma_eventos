@@ -24,8 +24,10 @@ import styles from './EventCreateForm.module.css';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Preview from './Preview';
-import { ConstructionOutlined } from '@mui/icons-material';
-import { getColombia } from '../../redux/actions';
+import { ConstructionOutlined, ContactMailOutlined } from '@mui/icons-material';
+import { getColombia , postEvent } from '../../redux/actions';
+import swal from 'sweetalert'
+import { useNavigate } from 'react-router-dom';
 
 const EventCreateForm = () => {
 
@@ -73,6 +75,13 @@ departamentosFilter.forEach((e) => {
   }
 });
 
+const capitales = ['Medellín','Tunja','Montería','Quibdó','Pasto' ,'Bucaramanga','Villavicencio' ,'Barranquilla','Cartagena de Indias','Manizales','Florencia','Popayán' ,'Valledupar' ,'Bogotá','Neiva','Riohacha' ,'Santa Marta','Armenia','Pereira' ,'Sincelejo','Ibagué','Arauca','Yopal','Mocoa' ,'Leticia','Inírida','Mitú', 'Puerto Carreño', 'San José del Guaviare','San Andrés','Bogota','Cúcuta','Santiago de Cali']
+
+
+
+const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, capital: capitales[indice]}))
+
+
 
 
   //--------------------------------------------------//
@@ -82,6 +91,7 @@ departamentosFilter.forEach((e) => {
 
 
   const [post, setPost] = useState({
+    idOrganizer:'632cbed4f208f44f5333af48',
     title: '',
     categories: [],
     otherCategorie: [],
@@ -97,7 +107,8 @@ departamentosFilter.forEach((e) => {
     specialRequires: '',
     cupos:'',
     price: '',
-    dates:[{ date: "", start : "", end:""}]
+    dates:[{ date: "", start : "", end:""}],
+    isPublic:true
   });
 
   const [errors, setErrors] = useState({
@@ -115,7 +126,8 @@ departamentosFilter.forEach((e) => {
     specialRequires: '',
     cupos:'',
     price: '',
-    dates:[{ date: "", start : "", end:""}]
+    dates:[{ date: "", start : "", end:""}],
+    isPublic:true
   
   })
 
@@ -127,62 +139,61 @@ departamentosFilter.forEach((e) => {
 
   function validate(post) {
      let errors = {}
-    // let nameRegex = /^[a-zA-Z0-9 _]*$/g
-    // let titleRegex = /^[a-zA-Z _]*$/g
+   
     if (!post.title) {
       errors.title = 'Ingresar titulo (!)'
     }
 
-    if (post.title.length > 75) {
-      errors.title = 'Alcanzaste el limite de characteres'
-    }
+    // if (post.title.length > 75) {
+    //   errors.title = 'Alcanzaste el limite de characteres'
+    // }
 
-    if (post.title.match(/(^|\W)ayer($|\W)/)){
-      errors.title = 'Palabra ofensiva'
-    }
+    // if (post.title.match(/(^|\W)ayer($|\W)/)){
+    //   errors.title = 'Palabra ofensiva'
+    // }
 
-    if (!post.categories) {
-      errors.categories = 'Ingresar al menos 3 categorias (!)'
-    }
+    // if (!post.categories) {
+    //   errors.categories = 'Ingresar al menos 3 categorias (!)'
+    // }
 
 
-    if (post.categories.length > 2) {
-      errors.categories = 'Solo podes seleccionar 3 categorias'
-    }
+    // if (post.categories.length > 2) {
+    //   errors.categories = 'Solo podes seleccionar 3 categorias'
+    // }
 
-    if (!post.otherCategorie) {
-      errors.otherCategorie = 'Campo obligatorio(!)'
-    }
+    // if (!post.otherCategorie) {
+    //   errors.otherCategorie = 'Campo obligatorio(!)'
+    // }
 
-    if (!post.shortDescription) {
-      errors.shortDescription = 'Campo obligatorio(!)'
-    }
+    // if (!post.shortDescription) {
+    //   errors.shortDescription = 'Campo obligatorio(!)'
+    // }
 
   
-    if (!post.longDescription) {
-      errors.longDescription = 'Campo obligatorio(!)'
-    }
+    // if (!post.longDescription) {
+    //   errors.longDescription = 'Campo obligatorio(!)'
+    // }
 
-    if (!post.pictures) {
-      errors.pictures = 'Campo obligatorio(!)'
-    }
+    // if (!post.pictures) {
+    //   errors.pictures = 'Campo obligatorio(!)'
+    // }
 
-    if (!post.cupos) {
-      errors.cupos = 'Campo obligatorio(!)'
-    }
+    // if (!post.cupos) {
+    //   errors.cupos = 'Campo obligatorio(!)'
+    // }
 
-    if (post.cupos && !post.cupos.match(/^[0-9]*$/g)) {
-      errors.cupos = 'Debe ser un numero'
-    }
+    // if (post.cupos && !post.cupos.match(/^[0-9]*$/g)) {
+    //   errors.cupos = 'Debe ser un numero'
+    // }
 
-    if (!post.price) {
-      errors.price = 'Campo obligatorio(!)'
-    }
+    // if (!post.price) {
+    //   errors.price = 'Campo obligatorio(!)'
+    // }
 
 
-    if (post.price && !post.price.match(/([1-9][0-9]{,2}(,[0-9]{3})*|[0-9]+)(\.[0-9]{1,9})?$/g)) {
-      errors.price = 'Debe ser un numero'
-    }
+    // if (post.price && !post.price.match(/([1-9][0-9]{,2}(,[0-9]{3})*|[0-9]+)(\.[0-9]{1,9})?$/g)) {
+    //   errors.price = 'Debe ser un numero'
+    // }
 
     return errors
   }
@@ -272,7 +283,7 @@ const onFileDrop = (e) => {
          ) 
          setPost({
           ...post,
-          pictures: [...post.pictures, e.target.result]}
+          pictures: [...post.pictures, {cover:false, picture: e.target.result}]}
          )
          }
       // const updatedList = [...fileList, newFile];
@@ -294,9 +305,60 @@ const fileRemove = (file) => {
 }
 
 
-const handlePinctureFront = () => {
-
+const handlePinctureFront = (e) => {
+  console.log('value',e.target.value)
+  let chosen = post.pictures.filter(p=>p.picture===e.target.value)
+  console.log('chosen',chosen)
+   chosen.cover=true
+  setPost({
+    ...post,
+    pictures:[...post.pictures,chosen]
+  })
+ 
 }
+
+
+// const [fotosElegidas, setFotosElegidas] = useState([])
+// const [cambiado, setCambiado] = useState(false)
+
+// function handlePinctureFront(e) {
+//   var picChosen = e.target.value
+//   if (!e.target.checked) {
+//     let seleccion = fotosElegidas.filter((categorie) => categorie.name !== picChosen)
+//     setFotosElegidas(seleccion)
+//     setPost({
+//       ...post,
+//       pictures:seleccion
+//     })
+//   } else {
+//     let picToChange = post.pictures.find((picture) => picture.picture === picChosen)
+//     setFotosElegidas([...fotosElegidas, picToChange])
+//     setPost({
+//       ...post,
+//       pictures:[...post.categories, picToChange]
+//     })
+//   }
+// }
+
+// function handleCategories(e) {
+//   var categorieName = e.target.value
+//   if (!e.target.checked) {
+//     let seleccion = seleccionados.filter((categorie) => categorie.name !== categorieName)
+//     setSeleccionados(seleccion)
+//     setPost({
+//       ...post,
+//       categories:seleccion
+//     })
+//   } else {
+//     let categorieCheck = categories.find((categorie) => categorie.name === categorieName)
+//     setSeleccionados([...seleccionados, categorieCheck])
+//     setPost({
+//       ...post,
+//       categories:[...post.categories, categorieCheck]
+//     })
+//   }
+// }
+
 
 
   
@@ -321,54 +383,98 @@ const handlePinctureFront = () => {
   //--------------------------------------------------//
   //               POST  PRICE            //
 
-  function handlePrice(e) {
+  
+
+  
+  const costoDeManejo = 1672.27
+  const IVA = 0.19
+  const comision = 0.16
+
+  const a = costoDeManejo * IVA
+
+
+  const [precioAlPublico,setPrecioAlPublico] = useState()
+
+
+  const [gananciaPorCupo,setGananciaPorCupo] = useState()
+
+  const [gananciaPorEvento,setGananciaPorEvento] = useState()
+
+
+  function handleCupos(e) {
     setPost({
       ...post,
-      [e.target.name]: e.target.value,
-    });
+      cupos: e.target.value,
+    })
   }
+
+
+  function handlePrice(e) {
+   
+    setPost({
+      ...post,
+      price: e.target.value,
+    });
+    const precioPorCupo = parseFloat(e.target.value) + parseFloat(costoDeManejo) + parseFloat(a)
+    setPrecioAlPublico(
+      precioPorCupo
+    )
+    const gananciaCupo = parseFloat(e.target.value)-(((parseFloat(e.target.value)*parseFloat(comision))+((parseFloat(e.target.value)*parseFloat(comision)*parseFloat(IVA)))))
+    setGananciaPorCupo(
+      gananciaCupo
+    )
+    const ganaciaEvento = parseFloat(gananciaCupo) * parseInt(post.cupos)
+    setGananciaPorEvento(
+      ganaciaEvento
+    )
+  }
+
+
 
   //--------------------------------------------------//
   //               POST  DATE        //
 
-  function handleDate(e) {
-    setPost({
-      ...post,
-      dates: { ...post.dates, [e.target.name]: e.target.value },
-    })
-  }
-
-  const [fecha, setFecha] = useState([{ date: "", start : "", end:""}])
 
   let handleChanges = (i, e) => {
-    let newFechas = [...fecha];
-    newFechas[i][e.target.name] = e.target.value;
-    setFecha(newFechas);
-    
+    let newFechas = [...post.dates];
+    newFechas[i][e.target.name] = e.target.value; 
+    setPost({
+      ...post,
+      dates:newFechas 
+    })
   }
     
   let addFormFields = () => {
-    setFecha([...fecha, { date: "", start : "", end:""}])
+    setPost({
+      ...post,
+      dates:[...post.dates, { date: "", start : "", end:""}]
+    })
     
   }
 
   let removeFormFields = (i) => {
-      let newFechas = [...fecha];
+    let newFechas = [...post.dates];
       newFechas.splice(i, 1);
-      setFecha(newFechas)
+      setPost({
+        ...post,
+        dates:newFechas 
+      })
       
   }
 
   //--------------------------------------------------//
   //                  CALENDAR                 //
 
-  const [date, setDate] = useState(null);
-  const [dateFormatted, setDateFormatted] = useState('');
+  // const [date, setDate] = useState(null);
+  // const [dateFormatted, setDateFormatted] = useState('');
 
-  const handleFormatDate = (date) => {
-    setDate(date);
-    setDateFormatted(formatDate(date));
-  };
+  // const handleFormatDate = (i,date) => {
+  //   setDate(date);
+  //   setDateFormatted(formatDate(date))
+  //   let newFechas = [...fecha];
+  //   newFechas[i].date = date;
+  //   setFecha(newFechas);
+  // };
 
 
 
@@ -389,32 +495,134 @@ const handlePinctureFront = () => {
     setScrollY(scrollY + px);
   };
 
+  //--------------------------------------------------//
+  //                 SAVE           //
+
+  const navigate = useNavigate()
+
+
+  function hanldeClick(e){
+    e.preventDefault()
+    setPost({
+      ...post,
+      isPublic:false
+    })
+
+    console.log('postGuardar',post)
+    
+    swal({
+      title: "Tu evento será guardado",
+      buttons: ["Cerrar", "Guardar"],
+      dangerMode: true,
+    })
+    .then((guardar) => {
+      if (guardar) {
+        dispatch(postEvent(post))
+        swal("Tu evento ha sido guardado ", {
+          icon: "success",
+        });
+        setPost({
+          title: '',
+          categories: [],
+          otherCategorie: [],
+          shortDescription: '',
+          longDescription: '',
+          pictures: [],
+          online: '',
+          link: '',
+          departamento: '',
+          municipio: '',
+          direccion: '',
+          barrio: '',
+          specialRequires: '',
+          cupos:'',
+          price: '',
+          dates:[{ date: "", start : "", end:""}],
+          isPublic:true
+     })
+        navigate("/user/profile" )
+      } 
+    }
+    )
+  }
+
+    //--------------------------------------------------//
+  //                CANCEL          //
+
+
+
+  function handleDelete(e){
+    console.log('guardar')
+    e.preventDefault()
+    
+    swal({
+      title: "Esta acción borrara todo la información ingresada o modificada en esta sesión",
+      buttons: ["Cerrar", "Continuar"],
+      dangerMode: true,
+    })
+    .then((continuar) => {
+      if (continuar) {
+        navigate("/user/profile" )
+      } 
+    }
+   )
+  }
+
+
 
   
   //--------------------------------------------------//
   //                  SUBMIT              //
 
+  const [failedSubmit, setFailedSubmit] = useState(false)
+  
+  const id= '632cbed4f208f44f5333af48'
+
   function handleSubmit(e) {
+    console.log('submit')
     e.preventDefault()
-      // dispatch(postEvent(post))
-      console.log('soy Bonton Publicar evento:', post)
-      // Alert('¡Evento creado!', 'success')
-      // setPost({
-      //   title: '',
-      //   categories: [],
-      //   otherCategories: [],
-      //   shortDescription: '',
-      //   longDescription: '',
-      //   pictures: [],
-      //   online: '',
-      //   link: '',
-      //   departamento: '',
-      //   direccion: '',
-      //   barrio: '',
-      //   specialRequires: '',
-      //   price: '',
-      // })
-    
+    if (Object.values(errors).length > 0) {
+      setFailedSubmit(true)
+      return swal({
+        title: "Completa los campos faltantes",
+        icon: "warning",
+        button: "Completar",
+        dangerMode: true,
+      });
+    } else {
+      swal({
+        title: "Deseas publicar este evento? ",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((publicar) => {
+        if (publicar) {
+          dispatch(postEvent(post,id))
+          swal("Tu evento ha sido publicado. Recibirás un correo con los detalles. ", {
+            icon: "success",
+          });
+          setPost({
+            title: '',
+            categories: [],
+            otherCategorie: [],
+            shortDescription: '',
+            longDescription: '',
+            pictures: [],
+            online: '',
+            link: '',
+            departamento: '',
+            municipio: '',
+            direccion: '',
+            barrio: '',
+            specialRequires: '',
+            cupos:'',
+            price: '',
+            dates:[{ date: "", start : "", end:""}],
+            isPublic:true
+       })
+        } 
+      });
+    } 
   }
 
   
@@ -465,7 +673,19 @@ const handlePinctureFront = () => {
                 et iusto odio dignissim qui blandit praesent luptatum zzril
                 delenit augue duis dolaore te feugait nulla facilisi.
               </p>
-              <input
+              {failedSubmit?(
+                  // <p className={styles.errors}>{errors.title}</p>
+                  <input
+                  className={styles.errors}
+                  type="text"
+                  maxlength="75"
+                  placeholder="Nombre del evento"
+                  name="title"
+                  value={post.title}
+                  onChange={(e) => handleChange(e)}
+                  required
+                />
+                ):   <input
                 className={styles.input}
                 type="text"
                 maxlength="75"
@@ -473,11 +693,21 @@ const handlePinctureFront = () => {
                 name="title"
                 value={post.title}
                 onChange={(e) => handleChange(e)}
-              />
+              />}
+               {/* <input
+                className= {`${failedSubmit ? styles.errors : styles.input}`}
+                type="text"
+                maxlength="75"
+                placeholder="Nombre del evento"
+                name="title"
+                value={post.title}
+                onChange={(e) => handleChange(e)}
+              /> 
+               */}
 
-                {errors.title && (
-                        <p className={styles.errors}>{errors.title}</p>
-                    )}
+                {/* {errors.title && failedSubmit?(
+                    <p className={styles.errors}>{errors.title}</p>
+                ):''} */}
 
               {post.title.length === 75  ?
               <p className={styles.errors}>Máximo 75 caracteres</p>
@@ -627,6 +857,18 @@ const handlePinctureFront = () => {
                   diam nonummy nibh, Lorem ipsum dolor sit amet, consectetuer
                   adipiscing elit, sed diam nonummy nibh.{' '}
                 </p>
+                {failedSubmit?
+                <textarea
+                  className={styles.errorsDescription}
+                  type="text"
+                  maxlength="100"
+                  placeholder="descripción breve del evento"
+                  name="shortDescription"
+                  value={post.shortDescription}
+                  onChange={(e) => handleChange(e)}
+                  required
+                />
+                :
                 <textarea
                   className={styles.textareaShort}
                   type="text"
@@ -636,9 +878,7 @@ const handlePinctureFront = () => {
                   value={post.shortDescription}
                   onChange={(e) => handleChange(e)}
                 />
-                 {errors.shortDescription && (
-                        <p className={styles.errors}>{errors.shortDescription}</p>
-                    )}
+                }
                 
                 {post.shortDescription.length===100?
                 <p className={styles.errors}>Máximo: 100 de caracteres</p>
@@ -658,6 +898,19 @@ const handlePinctureFront = () => {
                   diam nonummy nibh, Lorem ipsum dolor sit amet, consectetuer
                   adipiscing elit, sed diam nonummy nibh.{' '}
                 </p>
+                {failedSubmit?
+                <textarea
+                className={styles.errorsDescription}
+                type="text"
+                minlength="75"
+                placeholder="descripción detallada del evento"
+                name="longDescription"
+                value={post.longDescription}
+                onChange={(e) => handleChange(e)}
+                required
+                />
+                
+                :
                 <textarea
                   className={styles.textareaLong}
                   type="text"
@@ -667,12 +920,10 @@ const handlePinctureFront = () => {
                   value={post.longDescription}
                   onChange={(e) => handleChange(e)}
                 />
-                {errors.longDescription && (
-                        <p className={styles.errors}>{errors.longDescription}</p>
-                    )}
+                }
 
                 {post.longDescription.length<75 ?
-                <p className={styles.errors}>Minimo 75 caracteres</p>
+                <p className={styles.errorsText}>Minimo 75 caracteres</p>
                 : <p className={styles.subTitle}>Minimo 75 caracteres</p>
                 }
                 {post.longDescription.length>0 ?
@@ -720,7 +971,31 @@ const handlePinctureFront = () => {
               </p>
               <p className={styles.subTitle4}>Fotos del Evento</p>
 
-              <div
+             
+              {failedSubmit?
+                <div
+                ref={wrapperRef}
+                  className={styles.errorsPicture}
+                  onDragEnter={onDragEnter}
+                  onDragLeave={onDragLeave}
+                  onDrop={onDrop}
+                > 
+                <div>
+                <ImageIcon sx={{ fontSize: '50px', color: 'grey' }} />
+                </div>
+                <p>Fotos: Jpg, png, Max.100kb </p> 
+                <p>Videos: .MP4 Max 100kb</p>      
+                <p>"Arrastra los archivos aquí o haz click para agregar archivos"</p>
+                <input 
+                  type="file" 
+                  value="" 
+                  name="pictures"
+                  onChange={onFileDrop}
+                />
+                </div>
+                
+                :
+                <div
                 ref={wrapperRef}
                   className={styles.dropFileIput}
                   onDragEnter={onDragEnter}
@@ -739,7 +1014,9 @@ const handlePinctureFront = () => {
                   name="pictures"
                   onChange={onFileDrop}
                 />
-              </div>
+                    </div>
+              }
+          
 
               {
                 fileList.length > 0 ? (
@@ -755,17 +1032,20 @@ const handlePinctureFront = () => {
                       className={styles.mySwipper}
                     >
                     {
-                        fileList.map((item, index) => (
+                        post.pictures.map((item, index) => (
                             <div key={index} className={styles.mySwiper}>
                               <SwiperSlide>
-                                <img className={styles.mySwiperImg} src={item} alt=''/>                                
+                                <img className={styles.mySwiperImg} src={item.picture} alt=''/>                                
                                 <button className={styles.mySwiperBtnDel} onClick={() => fileRemove(item)}>x</button>
                                 <label className={styles.subInput}>
                                   <input 
                                     className={styles.checkBox4} 
                                     type="checkbox" 
-                                    onChange={handlePinctureFront}
-                                  />
+                                    name='cover'
+                                    value={item.picture}
+                                    onChange={(e)=>handlePinctureFront(e)}
+                                    defaultChecked={false}
+                                  />                 
                                   Quiero que esta sea la portada
                                 </label>
                               </SwiperSlide>
@@ -832,6 +1112,19 @@ const handlePinctureFront = () => {
               {/* CheckBoxOnLine*/}
 
               <div className={styles.containerOnLine}>
+                {failedSubmit?
+                <input
+                className={styles.errorsCheckBox}
+                type="checkbox"
+                defaultChecked={false}
+                name="online"
+                value={post.online}
+                onChange={(e) => handleCheck(e)}
+                id="check"
+              />
+                
+                
+                :
                 <input
                   className={styles.checkBox4}
                   type="checkbox"
@@ -841,10 +1134,25 @@ const handlePinctureFront = () => {
                   onChange={(e) => handleCheck(e)}
                   id="check"
                 />
+                }
                 <label> Este es un evento en linea</label>
 
                 {/*Online*/}
 
+                
+                
+                {failedSubmit?
+                <div className={styles.errorsOnline}>
+                  <input
+                  type="text"
+                  placeholder="Colocar el enlace del evento"
+                  name="link"
+                  value={post.link}
+                  onChange={(e) => handleChange(e)}
+                />
+                   </div>
+                
+                :
                 <div className={styles.online}>
                   <input
                     type="text"
@@ -853,13 +1161,28 @@ const handlePinctureFront = () => {
                     value={post.link}
                     onChange={(e) => handleChange(e)}
                   />
-                </div>
+                 </div>
+                }
+             
 
                 {/*notOnline*/}
 
                 <div className={styles.notOnline}>
                   {/* Dpto */}
                   <div className={styles.containerDirection}>
+                    {failedSubmit?
+                    <input
+                    className={styles.errors}
+                    list="dptos"
+                    id="myDep"
+                    name="departamento"
+                    placeholder="Departamento"
+                    value={post.departamento}
+                    onChange={(e) => handleChange(e)}
+                    required
+                  />
+                    
+                    :
                     <input
                       className={styles.select}
                       list="dptos"
@@ -869,54 +1192,98 @@ const handlePinctureFront = () => {
                       value={post.departamento}
                       onChange={(e) => handleChange(e)}
                     />
+                    }
                     <datalist id="dptos">
-                      {departamentos &&
-                        departamentos.map((departamento) => (
+                      {nuevoArrayDepartamentos &&
+                        nuevoArrayDepartamentos.map((departamento) => (
                           <option value={departamento.departamento}>
                             {departamento.departamento}
                           </option>
                         ))}
                     </datalist>
 
+                  
+                   
+                  
+
                     {/* Municipio*/}
 
-                    <input
-                      className={styles.select}
-                      list="municipio"
-                      id="myMuni"
-                      name="municipio"
-                      placeholder={post.departamento}
-                      value={post.municipio}
-                      onChange={(e) => handleChange(e)}
-                    />
-                    <datalist id="municipio">
-                      {departamentos &&
-                        departamentos.map((departamento) => (
-                          <div>
-                          {departamento.departamento === post.departamento ?
-                          <div>
-                            {departamento.municipio.map((m)=>
-                            <option >
-                              {m}
-                            </option>
-                            )
-                            }
-                          </div>
-                          
-
-                          :
-                          ''
-
+                    {nuevoArrayDepartamentos &&
+                      nuevoArrayDepartamentos.map((departamento)=>(
+                        <div>
+                          {departamento.departamento === post.departamento &&
+                           <div>
+                            {failedSubmit?
+                             <div  className={styles.errorsDpto}>
+                             <input
+                             list="municipio"
+                             id="myMuni"
+                             name="municipio"
+                             placeholder={departamento.capital}
+                             value={post.municipio}
+                             onChange={(e) => handleChange(e)}
+                             required
+                           />
+                           <datalist id="municipio">
+                           <option>
+                            {departamento.capital}
+                           </option>   
+                         {departamento.municipio.map((m)=>                                
+                             <option >
+                               {m}
+                             </option>                              
+                          )
+                         }
+                       </datalist>
+                       </div>
+                            :
+                            <div  className={styles.Muni}>
+                            <input
+                              list="municipio"
+                              id="myMuni"
+                              name="municipio"
+                              placeholder={departamento.capital}
+                              value={post.municipio}
+                              onChange={(e) => handleChange(e)}
+                            />
+                            <datalist id="municipio">
+                            <option>
+                             {departamento.capital}
+                            </option>   
+                          {departamento.municipio.map((m)=>                                
+                              <option >
+                                {m}
+                              </option>                              
+                           )
+                          }
+                        </datalist>
+                        </div>
+                          }                           
+                                                     
+                            </div>
                           }
                         </div>
+                      )
+                      )
 
-                        ))}
-                    </datalist>
-
+                    }
+                   
                   </div>
 
                   {/* Direccion*/}
 
+                  {failedSubmit?
+                   <input
+                   className={styles.errors}
+                   type="text"
+                   placeholder="Dirección del evento"
+                   name="direccion"
+                   value={post.direccion}
+                   onChange={(e) => handleChange(e)}
+                   required
+                 />
+                  
+                  :
                   <input
                     className={styles.input5}
                     type="text"
@@ -925,6 +1292,19 @@ const handlePinctureFront = () => {
                     value={post.direccion}
                     onChange={(e) => handleChange(e)}
                   />
+                  }
+                  {failedSubmit?
+                   <input
+                   className={styles.errors}
+                   type="text"
+                   placeholder="Barrio"
+                   name="barrio"
+                   value={post.barrio}
+                   onChange={(e) => handleChange(e)}
+                   required
+                 />
+                  
+                  :
                   <input
                     className={styles.input5}
                     type="text"
@@ -933,6 +1313,7 @@ const handlePinctureFront = () => {
                     value={post.barrio}
                     onChange={(e) => handleChange(e)}
                   />
+                 }
 
                   {/* Map*/}
 
@@ -1027,26 +1408,53 @@ const handlePinctureFront = () => {
                   <div className={styles.containerSubInfo}>
                     <label className={styles.subInfoTitle}>
                       Máximo número de participantes
+                      {failedSubmit?
+                       <input
+                       id='cupos'
+                       className={styles.errrosCupoPrice}
+                       type="txt"
+                       placeholder="10"
+                       name="cupos"
+                       value={post.cupos}
+                       onChange={(e) => handleCupos(e)}
+                       required
+                     />
+                      :
                       <input
+                        id='cupos'
                         className={styles.subInfoInput}
                         type="txt"
                         placeholder="10"
                         name="cupos"
                         value={post.cupos}
-                        onChange={(e) => handleChange(e)}
+                        onChange={(e) => handleCupos(e)}
                       />
+                     }
                     </label>
+                    {errors.cupos && (
+                      <p className={styles.errors}>{errors.cupos}</p>
+                    )}
                     
                   </div>
-                  {errors.cupos && (
-                        <p className={styles.error}>{errors.cupos}</p>
-                    )}
+                 
 
                   <div className={styles.containerSubInfo}>
                     <label className={styles.subInfoTitle}>
                       Precio por cupo
                       <div className={styles.labelS}>
                         <p>$</p>
+                        {failedSubmit?
+                         <input
+                         className={styles.errrosCupoPrice}
+                         type="txt"
+                         placeholder="20.00"
+                         name="price"
+                         value={post.price}
+                         onChange={(e) => handlePrice(e)}
+                         required
+                       />
+                        
+                        :
                         <input
                           className={styles.subInfoInput}
                           type="txt"
@@ -1055,15 +1463,16 @@ const handlePinctureFront = () => {
                           value={post.price}
                           onChange={(e) => handlePrice(e)}
                         />
-                           {errors.price && (
-                        <p className={styles.error}>{errors.price}</p>
-                    )}
+                      }
                       </div>
                     </label>
-                    {post.price === '' ? <p>$21.990</p> : <p>ee</p>}
+                    {post.price === '' ? <p>$21.990</p> : <p>{precioAlPublico}</p>}
                     <p className={styles.subInfotxt}>
                       Precio al público incluyendo costo de manejo e IVA
                     </p>
+                    {errors.price && (
+                        <p className={styles.errors}>{errors.price}</p>
+                         )}
                   </div>
 
                   <div className={styles.containerSubInfo}>
@@ -1072,9 +1481,10 @@ const handlePinctureFront = () => {
                       <div className={styles.labelS}>
                         <p>$</p>
                         <input
+                         id='gananciaPorCupo'
                           className={styles.subInfoInput}
                           type="txt"
-                          placeholder="16.099"
+                          placeholder={gananciaPorCupo}
                         />
                       </div>
                     </label>
@@ -1094,9 +1504,10 @@ const handlePinctureFront = () => {
                       <div className={styles.labelS}>
                         <p>$</p>
                         <input
+                        id='gananciaPorEvento'
                           className={styles.subInfoInput}
                           type="txt"
-                          placeholder="160.901"
+                          placeholder={{gananciaPorCupo}}
                         />
                       </div>
                     </label>
@@ -1111,6 +1522,9 @@ const handlePinctureFront = () => {
                 </div>
               </div>
 
+              
+
+
               <hr className={styles.hr}></hr>
 
 
@@ -1118,11 +1532,11 @@ const handlePinctureFront = () => {
 
                 <div>
                       
-                  {fecha.map((element, index) => (
+                  {post.dates.map((element, index) => (
                     <div  className={styles.contTimeAndDate} key={index}>
                       <div className={styles.contDate}>
                         <label>Fechas</label>
-                        <div className={styles.contInputDate}>             
+                        {/* <div className={styles.contInputDate}>             
                             <input 
                               type="text" 
                               id="date" 
@@ -1133,7 +1547,7 @@ const handlePinctureFront = () => {
                                 type="checkbox"
                                 defaultChecked={false}
                                 name="date"
-                                value={element.date || ""}
+                                value={element.dadateFormatted || ""}
                                 onChange={e => handleChanges(index, e)}
                                 id="checkCalendar"
                               />
@@ -1146,24 +1560,80 @@ const handlePinctureFront = () => {
                                   color={'#D53E27'}
                                   locale={locales['es']}
                                   date={date}
-                                  onChange={(item) => handleFormatDate(item)}
+                                  name='date'
+                                  onChange={(item) => handleFormatDate(index,item)}
                                 />
                               </div>
                             </div>                          
-                        </div>
+                        </div> */}
+
+                        
+                          <label>Fecha</label>
+                          {failedSubmit?
+                          <input 
+                          classname={styles.errors}
+                          type="date" 
+                          name="date" 
+                          value={element.date || ""} 
+                          onChange={e => handleChanges(index, e)} 
+                          required
+                          />
+                          
+                          :
+                          <input 
+                          type="date" 
+                          name="date" 
+                          value={element.date || ""} 
+                          onChange={e => handleChanges(index, e)} 
+                          />
+                          }
+
                       </div>
                       <div className={styles.contStart}>
                       
 
                         <label>Comienza</label>
-                        <input type="time" name="start" value={element.start || ""} onChange={e => handleChanges(index, e)} />
+                        {failedSubmit?
+                        <input 
+                        classname={styles.errors}
+                        type="time" 
+                        name="start" 
+                        value={element.start || ""} 
+                        onChange={e => handleChanges(index, e)} 
+                        required
+                        />
+                        :
+                        <input 
+                        type="time" 
+                        name="start" 
+                        value={element.start || ""} 
+                        onChange={e => handleChanges(index, e)} 
+                        />
+                        }
 
                       </div>
                       <div className={styles.contStart}>
 
 
                       <label>End</label>
-                      <input type="time" name="end" value={element.end || ""} onChange={e => handleChanges(index, e)} />
+                      {failedSubmit?
+                       <input 
+                       classname={styles.errors}
+                       type="time" 
+                       name="end" 
+                       value={element.end || ""} 
+                       onChange={e => handleChanges(index, e)} 
+                       required
+                       />
+                      
+                      :
+                      <input 
+                      type="time" 
+                      name="end" 
+                      value={element.end || ""} 
+                      onChange={e => handleChanges(index, e)} 
+                      />
+                      }
 
                       </div>
                       {
@@ -1194,22 +1664,30 @@ const handlePinctureFront = () => {
                 </p>
 
                 <div className={styles.btnContainer}>
+                  <div>
                   <button className={styles.viewBtn}>
                     Vista Previa
                   </button>
+                  </div>
+
+                  <div>
 
                   <button className={styles.viewBtn} type="submit">
                     {' '}
                     Publicar Evento
                   </button>
+                  </div>
 
-                  <button className={styles.viewBtn} type="submit">
-                    Guardar y Publiar Luego
+                  <div>
+                  <button className={styles.viewBtn} onClick={(e) => hanldeClick(e)} >
+                    Guardar y Publicar Luego
                   </button>
+                  </div>
+
                 </div>
                 <p>Debes llenar todos los campos para poder continuar.</p>
 
-                <button className={styles.cancelBtn} type="submit">
+                <button className={styles.cancelBtn} onClick={(e) => handleDelete(e)}>
                   Cancelar
                 </button>
               </div>

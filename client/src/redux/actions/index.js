@@ -15,6 +15,20 @@ export function getEvents() {
   }
 }
 
+export function postEvent(payload) {
+
+  return async function (dispatch) {
+    console.log('payload,',payload)
+
+    const json = await axios.post('https://plataformaeventos-production-6111.up.railway.app/events/create',payload);
+    
+    return dispatch({
+      type: 'POST_EVENT',
+    
+    });
+  }
+}
+
 
 
 export function getColombia() {
