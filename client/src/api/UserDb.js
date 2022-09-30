@@ -3,7 +3,7 @@ import axios from "axios";
 const users = [
   {
     name: "Jean Pierre",
-    direction: "Medellin - Colombia",
+    direction: "Medellin - Colombia",    
     phone: 33333333,
     documentNº: 33333333,
     city: "Medellin",
