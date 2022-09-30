@@ -83,9 +83,9 @@ export async function createOneUserDb(user) {
 
 export async function generateUserComment(id, opinion) {
   try {
-    const { email } = opinion;
+    const { idUser } = opinion;
     console.log(id);
-    const user = await validateEmailUserDb(email);
+    const user = await oneUserDb(idUser);
     const organizer = await oneUserDb(id);
     opinion.user = user._id;
     organizer.opinionsOrg.push(opinion);

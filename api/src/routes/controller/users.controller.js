@@ -67,6 +67,7 @@ router.post("/commentOrganizer/:id", async (req, res) => {
     const opinionCreat = await createOrganizerComment(id, opinion);
     return res.status(200).json(opinionCreat);
   } catch (error) {
+    console.log(error)
     return res.status(400).json(error.message);
   }
 });
@@ -76,6 +77,7 @@ router.get("/opinionsUser/:id", async (req, res) => {
     const allComment = await getAllCommentUser(id);
     return res.status(200).json(allComment);
   } catch (error) {
+    
     return res.status(400).json(error);
   }
 });
