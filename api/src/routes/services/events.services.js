@@ -23,7 +23,7 @@ export async function getAllEvents() {
 export async function createEvents(event) {
   try {
     const { idOganizer, category } = event;
-
+    console.log(idOganizer)
     const organizer = await oneUserDb(idOganizer);
     
     const temp = category.map(async (e) => {
@@ -35,8 +35,8 @@ export async function createEvents(event) {
     event.organizer = organizer._id;
     const events = await createOneEventDb(event);
 
-    users.myEventsCreated.push(events._id);
-    await users.save();
+    organizer.myEventsCreated.push(events._id);
+    await organizer.save();
 
     return events;
   } catch (error) {
