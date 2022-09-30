@@ -1,5 +1,5 @@
-import { Router } from 'express';
-import '../../DB.js';
+import { Router } from "express";
+import "../../DB.js";
 import {
   getAllUsers,
   createUsers,
@@ -7,16 +7,18 @@ import {
   userDelete,
   getUser,
   login,
-} from '../services/users.services.js';
+  createOrganizerComment,
+  getAllCommentUser,
+} from "../services/users.services.js";
 
-import { check } from 'express-validator';
-import validateFields from '../../models/util/middlewares/validate-fields.js';
-import { generateJWT } from '../../models/util/helpers/jwt.js';
-import { validateJWT } from '../../models/util/middlewares/validate-jwt.js';
+import { check } from "express-validator";
+import validateFields from "../../models/util/middlewares/validate-fields.js";
+import { generateJWT } from "../../models/util/helpers/jwt.js";
+import { validateJWT } from "../../models/util/middlewares/validate-jwt.js";
 
 const router = Router();
 
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const allUsers = await getAllUsers();
     return res.status(200).json(allUsers);
@@ -24,7 +26,7 @@ router.get('/', async (req, res) => {
     return res.status(400).json({ ERROR_USER: error });
   }
 });
-router.get('/:id', async (req, res) => {
+router.get("/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -35,10 +37,10 @@ router.get('/:id', async (req, res) => {
   }
 });
 router.post(
-  '/create',
+  "/create",
   [
-    check('email', 'El email es obligatorio').isEmail(),
-    check('password', 'El password es obligatorio').isStrongPassword(),
+    check("email", "El email es obligatorio").isEmail(),
+    check("password", "El password es obligatorio").isStrongPassword(),
     validateFields,
   ],
   async (req, res) => {
@@ -57,7 +59,29 @@ router.post(
     }
   }
 );
-router.put('/update/:id', async (req, res) => {
+
+router.post("/commentOrganizer/:id", async (req, res) => {
+  try {
+    const opinion = req.body;
+    const { id } = req.params;
+    const opinionCreat = await createOrganizerComment(id, opinion);
+    return res.status(200).json(opinionCreat);
+  } catch (error) {
+    console.log(error)
+    return res.status(400).json(error.message);
+  }
+});
+router.get("/opinionsUser/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const allComment = await getAllCommentUser(id);
+    return res.status(200).json(allComment);
+  } catch (error) {
+    
+    return res.status(400).json(error);
+  }
+});
+router.put("/update/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const newUser = req.body;
@@ -67,14 +91,14 @@ router.put('/update/:id', async (req, res) => {
     return res.status(400).json({ ERROR_USER_UPDATE: error });
   }
 });
-router.delete('/delete/:id', async (req, res) => {
+router.delete("/delete/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
     const deleteUser = await userDelete(id);
     return res.status(200).json({
       user: deleteUser,
-      msg: 'El usuario ha sido eliminado con exito',
+      msg: "El usuario ha sido eliminado con exito",
     });
   } catch (error) {
     return res.status(400).json({ FALLO_USER_DELETE: error });
@@ -84,10 +108,10 @@ router.delete('/delete/:id', async (req, res) => {
 /* AUTH */
 
 router.post(
-  '/login',
+  "/login",
   [
-    check('email', 'El email es obligatorio').isEmail(),
-    check('password', 'El password es obligatorio').isStrongPassword(),
+    check("email", "El email es obligatorio").isEmail(),
+    check("password", "El password es obligatorio").isStrongPassword(),
     validateFields,
   ],
   async (req, res) => {
@@ -97,7 +121,7 @@ router.post(
       const user = await login(email, password);
 
       if (!user) {
-        throw new Error('Correo o contraseña invalida');
+        throw new Error("Correo o contraseña invalida");
       }
 
       const token = await generateJWT(user._id, user.name);
@@ -115,7 +139,7 @@ router.post(
   }
 );
 
-router.get('/renew', validateJWT, async (req, res) => {
+router.get("/renew", validateJWT, async (req, res) => {
   const uid = req.uid;
   const name = req.name;
 
