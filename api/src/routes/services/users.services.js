@@ -50,8 +50,10 @@ try {
 }
 export async function getAllCommentUser(id) {
   const allEvents = await AllEventsDb()
+  const allUser = await allUserDb()
+  const allCommentUser = allUser.map(e=> e.opinionsOrg).flat().filter(e=> e.user == id) 
   const allCommnt = allEvents.map(e=> e.opinions).flat().filter(e => e.user == id)
-  return allCommnt
+  return allCommnt.concat(allCommentUser)
   
 }
 export async function userUpdate(id, newUser) {

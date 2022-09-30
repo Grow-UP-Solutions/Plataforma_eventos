@@ -64,6 +64,7 @@ const UserSchema = new Schema({
         ref: "Users",
       },
       email: String,
+      title:String,
       time: {
         type: Date,
         default: Date.now(),
