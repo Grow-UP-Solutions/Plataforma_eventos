@@ -56,8 +56,8 @@ export async function generateEventComment(id, opinions) {
     const { title, opinion, idUser, rating } = opinions;
    
     const user = await oneUserDb(idUser);
-
     const event = await oneEventDb(id);
+  
     event.opinions.push({
       title,
       opinion,
@@ -65,12 +65,11 @@ export async function generateEventComment(id, opinions) {
       rating,
     });
     await event.save();
-    const allComent = event.opinions.filter((e) => e.user === user._id);
-    user.myOpinions.push(allComent[0]._id);
-    user.save();
+   
     
-    return event;
+    return event.opinions;
   } catch (error) {
+    console.log('DB',error)
     throw new Error("Fallo el gurdado de la opinion en DB", error);
   }
 }
