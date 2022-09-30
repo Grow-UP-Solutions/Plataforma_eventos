@@ -70,7 +70,7 @@ export async function generateEventComment(id, opinions) {
     const allComent = event.opinions.filter((e) => e.user === user._id);
     user.myOpinions.push(allComent[0]._id);
     user.save();
-    console.log(user.myOpinions)
+    
     return event;
   } catch (error) {
     throw new Error("Fallo el gurdado de la opinion en DB", error);

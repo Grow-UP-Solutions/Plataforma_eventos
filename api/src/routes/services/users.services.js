@@ -5,9 +5,11 @@ import {
   deleteOneUserDb,
   createOneUserDb,
   validateEmailUserDb,
+  generateUserComment,
 } from '../../models/util/functionDB/UserDb.js';
 
 import bcrypt from 'bcryptjs';
+import { AllEventsDb } from '../../models/util/functionDB/EventesDb.js';
 
 export async function getAllUsers() {
   const allUsers = allUserDb();
@@ -35,6 +37,22 @@ export async function createUsers(user) {
   } catch (error) {
     throw new Error(error.message);
   }
+}
+export async function createOrganizerComment(id,opinion){
+  
+try {
+  const generateComment = await generateUserComment(id, opinion)
+  return generateComment
+} catch (error) {
+  throw new Error(error.message)
+  
+}
+}
+export async function getAllCommentUser(id) {
+  const allEvents = await AllEventsDb()
+  const allCommnt = allEvents.map(e=> e.opinions).flat().filter(e => e.user == id)
+  return allCommnt
+  
 }
 export async function userUpdate(id, newUser) {
   const newUsers = updateOneUserDb(id, newUser);
