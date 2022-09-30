@@ -1,6 +1,6 @@
 import "../../../DB.js";
 import Events from "../../db/Events.js";
-import { validateEmailUserDb } from "./UserDb.js";
+import { oneUserDb, validateEmailUserDb } from "./UserDb.js";
 /**basic user database operations  */
 export async function AllEventsDb() {
   try {
@@ -53,11 +53,9 @@ export async function createOneEventDb(event) {
 /**generar opinion en evento */
 export async function generateEventComment(id, opinions) {
   try {
-    const { title, opinion, email, rating } = opinions;
-    if (!email) {
-      return { msg: "debes ingresar un email" };
-    }
-    const user = await validateEmailUserDb(email);
+    const { title, opinion, idUser, rating } = opinions;
+   
+    const user = await oneUserDb(idUser);
 
     const event = await oneEventDb(id);
     event.opinions.push({
