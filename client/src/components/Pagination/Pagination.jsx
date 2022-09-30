@@ -1,7 +1,7 @@
 import React from 'react';
 import style from './Pagination.module.css';
 
-const Pagination = ({ billsPerPage, state, paginado }) => {
+const Pagination = ({ billsPerPage, state, paginado, page }) => {
 
   const pageNumbers = [];
 
@@ -20,7 +20,7 @@ const Pagination = ({ billsPerPage, state, paginado }) => {
           return (
             <li key={num} className={style.page}>
               <a 
-                className={style.number} 
+                className={num === page ? style.number_sel : style.number_nav} 
                 onClick={() => handleClick(num)}
               >
                 {num} 
