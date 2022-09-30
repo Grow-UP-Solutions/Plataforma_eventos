@@ -1,6 +1,7 @@
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import React, { useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Calendar } from 'react-date-range';
 import * as locales from 'react-date-range/dist/locale';
 import { Navigation } from 'swiper';
@@ -22,18 +23,75 @@ import { formatDate } from '../../utils/formatDate';
 import styles from './EventCreateForm.module.css';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import Preview from './Preview';
+import { ConstructionOutlined } from '@mui/icons-material';
+import { getColombia } from '../../redux/actions';
 
 const EventCreateForm = () => {
+
+
+  const dispatch = useDispatch()
+
+
+
+  //--------------------------------------------------//
+  //               DEPARTAMENTOS              //
+
+  useEffect(() => {
+    dispatch(getColombia())
+  },[])
+
+  const departamentosAll = useSelector(state=>state.departamentos)
+ 				
+  const departamentosFilter = departamentosAll.map(departamento=>{
+    return{
+      departamento:departamento.departamento,
+      municipio:departamento.municipio
+    }
+  } )
+
+  const departamentos = [];
+
+const elementExist = (departamentosFilter, value) => {
+  let i = 0;
+  while (i < departamentosFilter.length) {
+    if (departamentosFilter[i].departamento == value) return i;
+    i++;
+  }
+  return false;
+}
+
+departamentosFilter.forEach((e) => {
+  let i = elementExist(departamentos, e.departamento);
+  if (i === false) {
+    departamentos.push({
+      "departamento": e.departamento,
+      "municipio": [e.municipio]
+    });
+  } else {
+    departamentos[i].municipio.push(e.municipio);
+  }
+});
+
+
+
+  //--------------------------------------------------//
+  //               POST Y ERROR            //
+
+  
+
+
   const [post, setPost] = useState({
     title: '',
     categories: [],
-    otherCategories: [],
+    otherCategorie: [],
     shortDescription: '',
     longDescription: '',
     pictures: [],
     online: '',
     link: '',
     departamento: '',
+    municipio: '',
     direccion: '',
     barrio: '',
     specialRequires: '',
@@ -44,11 +102,20 @@ const EventCreateForm = () => {
 
   const [errors, setErrors] = useState({
     title: '',
-    categories:'',
+    categories: '',
+    otherCategorie: '',
     shortDescription: '',
     longDescription: '',
+    pictures: '',
+    online: '',
+    link: '',
+    departamento: '',
+    direccion: '',
+    barrio: '',
+    specialRequires: '',
     cupos:'',
-    price:''
+    price: '',
+    dates:[{ date: "", start : "", end:""}]
   
   })
 
@@ -56,10 +123,12 @@ const EventCreateForm = () => {
     setErrors(validate(post))
   }, [post])
 
+ 
+
   function validate(post) {
-    let errors = {}
-    let nameRegex = /^[a-zA-Z0-9 _]*$/g
-    let titleRegex = /^[a-zA-Z _]*$/g
+     let errors = {}
+    // let nameRegex = /^[a-zA-Z0-9 _]*$/g
+    // let titleRegex = /^[a-zA-Z _]*$/g
     if (!post.title) {
       errors.title = 'Ingresar titulo (!)'
     }
@@ -68,28 +137,59 @@ const EventCreateForm = () => {
       errors.title = 'Alcanzaste el limite de characteres'
     }
 
-
-    if (post.categories.length > 3) {
-      errors.title = 'Alcanzaste el limite de characteres'
+    if (post.title.match(/(^|\W)ayer($|\W)/)){
+      errors.title = 'Palabra ofensiva'
     }
 
-    if (post.longDescription.length < 75) {
-      errors.title = 'Alcanzaste el limite de characteres'
+    if (!post.categories) {
+      errors.categories = 'Ingresar al menos 3 categorias (!)'
+    }
+
+
+    if (post.categories.length > 2) {
+      errors.categories = 'Solo podes seleccionar 3 categorias'
+    }
+
+    if (!post.otherCategorie) {
+      errors.otherCategorie = 'Campo obligatorio(!)'
+    }
+
+    if (!post.shortDescription) {
+      errors.shortDescription = 'Campo obligatorio(!)'
+    }
+
+  
+    if (!post.longDescription) {
+      errors.longDescription = 'Campo obligatorio(!)'
+    }
+
+    if (!post.pictures) {
+      errors.pictures = 'Campo obligatorio(!)'
+    }
+
+    if (!post.cupos) {
+      errors.cupos = 'Campo obligatorio(!)'
     }
 
     if (post.cupos && !post.cupos.match(/^[0-9]*$/g)) {
       errors.cupos = 'Debe ser un numero'
     }
 
-    
+    if (!post.price) {
+      errors.price = 'Campo obligatorio(!)'
+    }
+
 
     if (post.price && !post.price.match(/([1-9][0-9]{,2}(,[0-9]{3})*|[0-9]+)(\.[0-9]{1,9})?$/g)) {
       errors.price = 'Debe ser un numero'
     }
 
-    
     return errors
   }
+
+  //--------------------------------------------------//
+  //               POST - TITLE,DESCRIPTION ...       //
+
 
   function handleChange(e) {
     setPost({
@@ -98,77 +198,57 @@ const EventCreateForm = () => {
     });
   }
 
+
+  //--------------------------------------------------//
+  //               POST - CATEGORIA                   //
+
+ 
+  
+  const [seleccionados, setSeleccionados] = useState([])
+  const [changed, setChanged] = useState(false)
+
+
   function handleCategories(e) {
-    if (!post.categories.includes(e.target.value))
-    setPost({
-      ...post,
-      [e.target.name]: [...post.categories, e.target.value],
-    });
-  }
-
-  function handleOtherCategories(e) {
-    setPost({
-      ...post,
-      [e.target.name]: [...post.categories, e.target.value],
-    });
-  }
-
-  function handleCheck(e) {
-    if (e.target.checked) {
+    var categorieName = e.target.value
+    if (!e.target.checked) {
+      let seleccion = seleccionados.filter((categorie) => categorie.name !== categorieName)
+      setSeleccionados(seleccion)
       setPost({
         ...post,
-        [e.target.name]: true,
-      });
+        categories:seleccion
+      })
     } else {
+      let categorieCheck = categories.find((categorie) => categorie.name === categorieName)
+      setSeleccionados([...seleccionados, categorieCheck])
       setPost({
         ...post,
-        [e.target.name]: false,
-      });
+        categories:[...post.categories, categorieCheck]
+      })
     }
   }
 
-  function handlePrice(e) {
+  useEffect(() => {
+    var checkeds = document.getElementsByClassName('checkbox')
+    for (let i = 0; i < checkeds.length; i++) {
+      checkeds[i].checked = false
+    }
+    setSeleccionados([])
     setPost({
       ...post,
-      [e.target.name]: e.target.value,
+      categories:[]
+    })
+  }, [changed])
+
+
+  function handleOtherCategorie(e) {
+    setPost({
+      ...post,
+      otherCategorie:  e.target.value,
     });
   }
 
-  function handleDate(e) {
-    setPost({
-      ...post,
-      dates: { ...post.dates, [e.target.name]: e.target.value },
-    })
-  }
-
-  // const [failedSubmit, setFailedSubmit] = useState(false)
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    if (Object.values(errors).length > 0) alert("Please fill in all the fields")
-    else {
-        // dispatch(postRecipe(post))
-        alert('¡Recipe Created!')
-        setPost({
-          title: '',
-          categories: [],
-          otherCategories: [],
-          shortDescription: '',
-          longDescription: '',
-          pictures: [],
-          online: '',
-          link: '',
-          departamento: '',
-          direccion: '',
-          barrio: '',
-          specialRequires: '',
-          price: '',
-        })
-    }
-};
-
-//--------------------------------------------------//
-  //                 DROP DRAG IMAGES                //
+  //--------------------------------------------------//
+  //                POST - DROP DRAG IMAGES                //
 
   
 const wrapperRef = useRef(null);
@@ -213,9 +293,50 @@ const fileRemove = (file) => {
   ;
 }
 
-//-----------------------------------------------------//
-  //                  Date                   //
 
+const handlePinctureFront = () => {
+
+}
+
+
+  
+  //--------------------------------------------------//
+  //               POST  UBICACION                //
+
+  function handleCheck(e) {
+    if (e.target.checked) {
+      setPost({
+        ...post,
+        [e.target.name]: true,
+      });
+    } else {
+      setPost({
+        ...post,
+        [e.target.name]: false,
+      });
+    }
+  }
+
+    
+  //--------------------------------------------------//
+  //               POST  PRICE            //
+
+  function handlePrice(e) {
+    setPost({
+      ...post,
+      [e.target.name]: e.target.value,
+    });
+  }
+
+  //--------------------------------------------------//
+  //               POST  DATE        //
+
+  function handleDate(e) {
+    setPost({
+      ...post,
+      dates: { ...post.dates, [e.target.name]: e.target.value },
+    })
+  }
 
   const [fecha, setFecha] = useState([{ date: "", start : "", end:""}])
 
@@ -223,32 +344,31 @@ const fileRemove = (file) => {
     let newFechas = [...fecha];
     newFechas[i][e.target.name] = e.target.value;
     setFecha(newFechas);
-    setPost({
-      ...post,
-      dates: [...post.dates, newFechas]}
-     )
+    
   }
     
   let addFormFields = () => {
     setFecha([...fecha, { date: "", start : "", end:""}])
-    setPost({
-      ...post,
-      dates:{ date: "", start : "", end:""}
-    })
+    
   }
 
   let removeFormFields = (i) => {
       let newFechas = [...fecha];
       newFechas.splice(i, 1);
       setFecha(newFechas)
-      setPost({
-        ...post,
-        dates : newFechas
-      })
+      
   }
 
+  //--------------------------------------------------//
+  //                  CALENDAR                 //
 
+  const [date, setDate] = useState(null);
+  const [dateFormatted, setDateFormatted] = useState('');
 
+  const handleFormatDate = (date) => {
+    setDate(date);
+    setDateFormatted(formatDate(date));
+  };
 
 
 
@@ -269,24 +389,39 @@ const fileRemove = (file) => {
     setScrollY(scrollY + px);
   };
 
+
+  
   //--------------------------------------------------//
-  //                  AUTOCOMPLETADO                  //
+  //                  SUBMIT              //
 
-  //--------------------------------------------------//
-  //                  CALENDAR                 //
+  function handleSubmit(e) {
+    e.preventDefault()
+      // dispatch(postEvent(post))
+      console.log('soy Bonton Publicar evento:', post)
+      // Alert('¡Evento creado!', 'success')
+      // setPost({
+      //   title: '',
+      //   categories: [],
+      //   otherCategories: [],
+      //   shortDescription: '',
+      //   longDescription: '',
+      //   pictures: [],
+      //   online: '',
+      //   link: '',
+      //   departamento: '',
+      //   direccion: '',
+      //   barrio: '',
+      //   specialRequires: '',
+      //   price: '',
+      // })
+    
+  }
 
-  const [date, setDate] = useState(null);
-  const [dateFormatted, setDateFormatted] = useState('');
-
-  const handleFormatDate = (date) => {
-    setDate(date);
-    setDateFormatted(formatDate(date));
-  };
-
+  
   return (
     <div className={styles.container}>
       <div ref={ref} className={styles.containerForm}>
-        <form>
+        <form onSubmit={(e) => handleSubmit(e)}>
           {/* SECTION 1: Nombre del Evento */}
 
           <div className={styles.section}>
@@ -339,13 +474,15 @@ const fileRemove = (file) => {
                 value={post.title}
                 onChange={(e) => handleChange(e)}
               />
-                  {errors.title && (
-                        <p className={styles.errors}>{errors.name}</p>
+
+                {errors.title && (
+                        <p className={styles.errors}>{errors.title}</p>
                     )}
-                    {post.title.length === 75  ?
-                    <p className={styles.error}>Máximo 75 caracteres</p>
-                      : <p className={styles.subInput}>Máximo 75 caracteres</p>
-                      }
+
+              {post.title.length === 75  ?
+              <p className={styles.errors}>Máximo 75 caracteres</p>
+                : <p className={styles.subInput}>Máximo 75 caracteres</p>
+                }
               
             </div>
           </div>
@@ -387,22 +524,35 @@ const fileRemove = (file) => {
                 diam nonummy nibh, Lorem ipsum dolor sit amet, consectetuer
                 adipiscing elit, sed diam nonummy nibh.{' '}
               </p>
-              <div className={styles.containerChecks}>
-                {categories.map((categorie) => (
+              <div className={styles.containerChecks}> 
+             
+                {/* {post.categories.length<4 ?
+                 <div className={styles.containerChecks}>  </div>
+                   :<div className={styles.containerChecks2}>  </div>
+                }
+               */}
+
+                {categories.map ((categorie) => (
                   <div className={styles.checks}>
                     <label className={styles.labelsChecks}>
+
                       <input
                         className={styles.checkBox}
                         type="checkbox"
-                        name="categories"
                         value={categorie.name}
                         onChange={(e) => handleCategories(e)}
+                        defaultChecked={false}
                       />
                       {categorie.name}
                     </label>
                   </div>
                 ))}
+                
               </div>
+
+              {/* otra categoria*/}
+                
+              
               <div className={styles.checkOther}>
                 <input
                   className={styles.checkBox}
@@ -411,24 +561,30 @@ const fileRemove = (file) => {
                   name="categories"
                   value={post.categories}
                 />
-                <label className={styles.labelsChecks}>Otros</label>
+                <label className={styles.labelsChecks}>Otro</label>
 
                 <div className={styles.otherCategorie}>
                   <label className={styles.subTitle}>
-                    Si escogiste ‘otros’, especifica :{' '}
+                    Si escogiste ‘otro’, especifica :{' '}
                   </label>
                   <input
                     className={styles.input2}
                     type="text"
-                    name="otherCategories"
-                    values={post.otherCategories}
-                    onChange={(e) => handleOtherCategories(e)}
-                  />
+                    name="otherCategorie"
+                    values={post.otherCategorie}
+                    onChange={(e) => handleOtherCategorie(e)}
+                  /> 
                 </div>
+                {errors.otherCategorie && (
+                        <p className={styles.errors}>{errors.otherCategorie}</p>
+                    )}
               </div>
+
               {errors.categories && (
                         <p className={styles.errors}>{errors.categories}</p>
                     )}
+
+              
             </div>
           </div>
 
@@ -471,8 +627,8 @@ const fileRemove = (file) => {
                   diam nonummy nibh, Lorem ipsum dolor sit amet, consectetuer
                   adipiscing elit, sed diam nonummy nibh.{' '}
                 </p>
-                <input
-                  className={styles.input3}
+                <textarea
+                  className={styles.textareaShort}
                   type="text"
                   maxlength="100"
                   placeholder="descripción breve del evento"
@@ -481,11 +637,11 @@ const fileRemove = (file) => {
                   onChange={(e) => handleChange(e)}
                 />
                  {errors.shortDescription && (
-                        <p className={styles.errorS}>{errors.shortDescription}</p>
+                        <p className={styles.errors}>{errors.shortDescription}</p>
                     )}
                 
                 {post.shortDescription.length===100?
-                <p className={styles.error}>Máximo: 100 de caracteres</p>
+                <p className={styles.errors}>Máximo: 100 de caracteres</p>
                 : <p className={styles.subTitle}>Máximo: 100 de caracteres</p>
                 }
                 {post.shortDescription.length>0 ?
@@ -502,8 +658,8 @@ const fileRemove = (file) => {
                   diam nonummy nibh, Lorem ipsum dolor sit amet, consectetuer
                   adipiscing elit, sed diam nonummy nibh.{' '}
                 </p>
-                <input
-                  className={styles.input3}
+                <textarea
+                  className={styles.textareaLong}
                   type="text"
                   minlength="75"
                   placeholder="descripción detallada del evento"
@@ -512,11 +668,12 @@ const fileRemove = (file) => {
                   onChange={(e) => handleChange(e)}
                 />
                 {errors.longDescription && (
-                        <p className={styles.errorS}>{errors.longDescription}</p>
+                        <p className={styles.errors}>{errors.longDescription}</p>
                     )}
-                 {post.longDescription.length<75 && post.longDescription.length>0 ?
-                <p className={styles.error}>Minimo 75 palabras</p>
-                : <p className={styles.subTitle}>Minimo 75 palabras</p>
+
+                {post.longDescription.length<75 ?
+                <p className={styles.errors}>Minimo 75 caracteres</p>
+                : <p className={styles.subTitle}>Minimo 75 caracteres</p>
                 }
                 {post.longDescription.length>0 ?
                 <p className={styles.subTitle}>Usetd va escribiendo: {post.longDescription.length} caracteres</p>
@@ -603,6 +760,14 @@ const fileRemove = (file) => {
                               <SwiperSlide>
                                 <img className={styles.mySwiperImg} src={item} alt=''/>                                
                                 <button className={styles.mySwiperBtnDel} onClick={() => fileRemove(item)}>x</button>
+                                <label className={styles.subInput}>
+                                  <input 
+                                    className={styles.checkBox4} 
+                                    type="checkbox" 
+                                    onChange={handlePinctureFront}
+                                  />
+                                  Quiero que esta sea la portada
+                                </label>
                               </SwiperSlide>
                             </div>
                         ))
@@ -614,10 +779,13 @@ const fileRemove = (file) => {
 
               
 
-              <label className={styles.subInput}>
-                <input className={styles.checkBox4} type="checkbox" />
-                Quiero que esta sea la portada
-              </label>
+            
+
+              {
+                errors.pictures && (
+                <p className={styles.errors}>{errors.pictures}</p>
+              )}
+
             </div>
           </div>
 
@@ -690,7 +858,7 @@ const fileRemove = (file) => {
                 {/*notOnline*/}
 
                 <div className={styles.notOnline}>
-                  {/* Dpto - Municipio*/}
+                  {/* Dpto */}
                   <div className={styles.containerDirection}>
                     <input
                       className={styles.select}
@@ -702,25 +870,49 @@ const fileRemove = (file) => {
                       onChange={(e) => handleChange(e)}
                     />
                     <datalist id="dptos">
-                      {dptos &&
-                        dptos.map((departamento) => (
-                          <option key={departamento} value={departamento}>
-                            {departamento}
+                      {departamentos &&
+                        departamentos.map((departamento) => (
+                          <option value={departamento.departamento}>
+                            {departamento.departamento}
                           </option>
                         ))}
                     </datalist>
 
-                    <select className={styles.select} defaultValue="default">
-                      <option value="default" disabled>
-                        {post.departamento}
-                      </option>
-                      {dptos &&
-                        dptos.map((departamento) => (
-                          <option key={departamento} value={departamento}>
-                            {departamento}
-                          </option>
+                    {/* Municipio*/}
+
+                    <input
+                      className={styles.select}
+                      list="municipio"
+                      id="myMuni"
+                      name="municipio"
+                      placeholder={post.departamento}
+                      value={post.municipio}
+                      onChange={(e) => handleChange(e)}
+                    />
+                    <datalist id="municipio">
+                      {departamentos &&
+                        departamentos.map((departamento) => (
+                          <div>
+                          {departamento.departamento === post.departamento ?
+                          <div>
+                            {departamento.municipio.map((m)=>
+                            <option >
+                              {m}
+                            </option>
+                            )
+                            }
+                          </div>
+                          
+
+                          :
+                          ''
+
+                          }
+                        </div>
+
                         ))}
-                    </select>
+                    </datalist>
+
                   </div>
 
                   {/* Direccion*/}
@@ -931,7 +1123,10 @@ const fileRemove = (file) => {
                       <div className={styles.contDate}>
                         <label>Fechas</label>
                         <div className={styles.contInputDate}>             
-                            <input type="text" id="date" value={dateFormatted} />
+                            <input 
+                              type="text" 
+                              id="date" 
+                              value={dateFormatted} />
 
                             <div className={styles.containerDate}>
                               <input
@@ -999,14 +1194,16 @@ const fileRemove = (file) => {
                 </p>
 
                 <div className={styles.btnContainer}>
-                  <button className={styles.viewBtn}>Vista Previa</button>
+                  <button className={styles.viewBtn}>
+                    Vista Previa
+                  </button>
 
-                  <button className={styles.submitBtn} type="submit">
+                  <button className={styles.viewBtn} type="submit">
                     {' '}
                     Publicar Evento
                   </button>
 
-                  <button className={styles.submitBtn} type="submit">
+                  <button className={styles.viewBtn} type="submit">
                     Guardar y Publiar Luego
                   </button>
                 </div>

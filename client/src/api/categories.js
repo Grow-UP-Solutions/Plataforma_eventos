@@ -122,12 +122,7 @@ const categories = [
       'https://www.eluniverso.com/resizer/HLjRRVfWIasDJkOTjCmWfrIQWYs=/1000x668/smart/filters:quality(70)/cloudfront-us-east-1.images.arcpublishing.com/eluniverso/25XNG2HZRZDHBENVPMLVPUE5BQ.jpg',
     description: 'Duis autem vel eum iriure',
   },
-  {
-    name: 'Otros',
-    img:
-      'https://images.ecestaticos.com/mlIWEBknOj0Df0EFxTFMFswKQLk=/0x57:2190x1294/1338x752/filters:fill(white):format(jpg)/f.elconfidencial.com%2Foriginal%2F431%2Fa60%2F475%2F431a60475180300f5c4f25fbf4101e25.jpg',
-    description: 'Duis autem vel eum iriure',
-  },
+  
 ];
 
 /* function createCategorys() {

@@ -1,6 +1,7 @@
 
 const initialState = {
   events: [],
+  departamentos:[],
 };
 
 function rootReducer(state = initialState, action) {
@@ -10,6 +11,12 @@ function rootReducer(state = initialState, action) {
       return {
         ...state,
         events: action.payload,
+      }
+
+    case 'GET_COLOMBIA':
+      return {
+        ...state,
+        departamentos: action.payload,
       }
 
     default:
