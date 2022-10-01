@@ -6,17 +6,20 @@ import EventComments from '../../components/EventDetails/EventComments';
 import EventSideBar from '../../components/EventDetails/EventSideBar';
 import style from './EventDetails.module.css';
 import { animateScroll as scroll } from 'react-scroll';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getEvents } from '../../redux/actions';
 
 const EventDetails = () => {
 
   const id = useParams().id;
+  const dispatch = useDispatch();
   const allEvents = useSelector((state) => state.events);
   const eventDetails = allEvents.filter((event) => event._id === id)[0];
   
   useEffect(() => {
+    dispatch(getEvents);
     scroll.scrollToTop();
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className={`${style.container} container`}>
