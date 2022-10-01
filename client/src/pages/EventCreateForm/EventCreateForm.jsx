@@ -24,7 +24,7 @@ import styles from './EventCreateForm.module.css';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Preview from './Preview';
-import { ConstructionOutlined, ContactMailOutlined } from '@mui/icons-material';
+import { ConstructionOutlined, ContactMailOutlined, EmergencyRecordingSharp } from '@mui/icons-material';
 import { getColombia , postEvent } from '../../redux/actions';
 import swal from 'sweetalert'
 import { useNavigate } from 'react-router-dom';
@@ -84,6 +84,8 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
 
 
 
+
+
   //--------------------------------------------------//
   //               POST Y ERROR            //
 
@@ -118,7 +120,6 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
     shortDescription: '',
     longDescription: '',
     pictures: '',
-    online: '',
     link: '',
     departamento: '',
     direccion: '',
@@ -126,7 +127,7 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
     specialRequires: '',
     cupos:'',
     price: '',
-    dates:[{ date: "", start : "", end:""}],
+    dates:'',
     isPublic:true
   
   })
@@ -139,62 +140,188 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
 
   function validate(post) {
      let errors = {}
-   
+                
+     let letras =  /^[a-zA-Z]*$/g
+     let offensiveWord= /\b(perro|gato)\b/i
+     let mail = (/[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}/igm)
+     let webSite =(/\b(http|https|www)\b/i)
+     let numeroYdecimales = /^\d*\.?\d*$/
+     let numero = /^[0-9]*$/g
+     let notNumber = /^(?=.*\d).+$/g
+     
     if (!post.title) {
-      errors.title = 'Ingresar titulo (!)'
+      errors.title = true
     }
 
-    // if (post.title.length > 75) {
-    //   errors.title = 'Alcanzaste el limite de characteres'
-    // }
+    if (post.title.match(mail)) {
+      errors.title = 'No puedes ingresar un email o link a redes sociales'
+    }
 
-    // if (post.title.match(/(^|\W)ayer($|\W)/)){
-    //   errors.title = 'Palabra ofensiva'
-    // }
+    if (post.title.match(webSite)) {
+      errors.title = 'No puedes ingresar un dominio o pagina web'
+    }
 
-    // if (!post.categories) {
-    //   errors.categories = 'Ingresar al menos 3 categorias (!)'
-    // }
+    if (post.title.match(offensiveWord)) {
+      errors.title = 'Palabra ofensiva'
+    }
 
+    if (post.title.match (notNumber)) {
+      errors.title = 'No puedes ingresar un numero'
+    }
 
-    // if (post.categories.length > 2) {
-    //   errors.categories = 'Solo podes seleccionar 3 categorias'
-    // }
+    if (!post.categories[0]) {
+      errors.categories = true
+    }
+
+    if (post.categories.length > 3) {
+      errors.categories = 'Solo podes seleccionar 3 categorias'
+    }
 
     // if (!post.otherCategorie) {
     //   errors.otherCategorie = 'Campo obligatorio(!)'
     // }
+     
+    if (!post.shortDescription) {
+      errors.shortDescription = true
+    }
 
-    // if (!post.shortDescription) {
-    //   errors.shortDescription = 'Campo obligatorio(!)'
-    // }
+    if (post.shortDescription.match(mail)) {
+      errors.shortDescription = 'No puedes ingresar un email o link a redes sociales'
+    }
 
-  
-    // if (!post.longDescription) {
-    //   errors.longDescription = 'Campo obligatorio(!)'
-    // }
+    if (post.shortDescription.match(webSite)) {
+      errors.shortDescription = 'No puedes ingresar un dominio o pagina web'
+    }
 
-    // if (!post.pictures) {
-    //   errors.pictures = 'Campo obligatorio(!)'
-    // }
+    if (post.shortDescription.match(offensiveWord)) {
+      errors.shortDescription = 'Palabra ofensiva'
+    }
 
-    // if (!post.cupos) {
-    //   errors.cupos = 'Campo obligatorio(!)'
-    // }
-
-    // if (post.cupos && !post.cupos.match(/^[0-9]*$/g)) {
-    //   errors.cupos = 'Debe ser un numero'
-    // }
-
-    // if (!post.price) {
-    //   errors.price = 'Campo obligatorio(!)'
-    // }
+    if (post.shortDescription.match (notNumber)) {
+      errors.shortDescription = 'No puedes ingresar un numero'
+    }
 
 
-    // if (post.price && !post.price.match(/([1-9][0-9]{,2}(,[0-9]{3})*|[0-9]+)(\.[0-9]{1,9})?$/g)) {
-    //   errors.price = 'Debe ser un numero'
-    // }
+    if (!post.longDescription) {
+      errors.longDescription = true
+    }
 
+    if (post.longDescription.match(mail)) {
+      errors.longDescription = 'No puedes ingresar un email o link a redes sociales'
+    }
+
+    if (post.longDescription.match(webSite)) {
+      errors.longDescription = 'No puedes ingresar un dominio o pagina web'
+    }
+
+    if (post.longDescription.match(offensiveWord)) {
+      errors.longDescription = 'Palabra ofensiva'
+    }
+
+    if (post.shortDescription.match (notNumber)) {
+      errors.shortDescription = 'No puedes ingresar un numero'
+    }
+
+    if (!post.pictures[0]) {
+      errors.pictures = 'Debe ingresar al menos una imagen'
+    }
+
+    let repetidas= post.pictures.filter(picture=>picture.cover===true)
+
+    if (repetidas.length>1) {
+      errors.pictures = 'Solo puede elegir una portada'
+    }
+
+
+
+    if (post.online) {
+
+      if (!post.link) {
+        errors.link = true
+      }
+
+      if (post.link.match(offensiveWord)) {
+        errors.link = 'Palabra ofensiva'
+      }
+
+    } else {
+
+    if (!post.departamento) {
+      errors.departamento = true
+    }
+
+    if (!post.municipio) {
+      errors.municipio = true
+    }
+
+    if (!post.direccion) {
+      errors.direccion = true
+    }
+
+    if (post.direccion.match(mail)) {
+      errors.direccion = 'No puedes ingresar un email o link a redes sociales'
+    }
+
+    if (post.direccion.match(webSite)) {
+      errors.direccion = 'No puedes ingresar un dominio o pagina web'
+    }
+
+    if (post.direccion.match(offensiveWord)) {
+      errors.direccion = 'Palabra ofensiva'
+    }
+
+    if (!post.barrio) {
+      errors.barrio = true
+    }
+
+    if (post.barrio.match(mail)) {
+      errors.barrio = 'No puedes ingresar un email o link a redes sociales'
+    }
+
+    if (post.barrio.match(webSite)) {
+      errors.barrio = 'No puedes ingresar un dominio o pagina web'
+    }
+
+    if (post.barrio.match(offensiveWord)) {
+      errors.barrio = 'Palabra ofensiva'
+    }
+  }
+
+    if (post.specialRequires.match(mail)) {
+      errors.specialRequires = 'No puedes ingresar un email o link a redes sociales'
+    }
+
+    if (post.specialRequires.match(webSite)) {
+      errors.specialRequires = 'No puedes ingresar un dominio o pagina web'
+    }
+
+    if (post.specialRequires.match(offensiveWord)) {
+      errors.specialRequires = 'Palabra ofensiva'
+    }
+
+    if (!post.cupos) {
+      errors.cupos = true
+    }
+
+    if (!post.cupos.match(numero)) {
+      errors.cupos = 'Debe ser un numero'
+    }
+
+    if (!post.price) {
+      errors.price = true
+    }
+
+    if (!post.price.match(numeroYdecimales)) {
+      errors.price = 'Debe ser un numero'
+    }
+
+    for (var i=0; i<post.dates.length;i++ ){
+      if (!post.dates[i].date ||!post.dates[i].start ||!post.dates[i].end ) {
+        errors.dates = true
+      }
+
+    }
+    
     return errors
   }
 
@@ -264,7 +391,6 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
   
 const wrapperRef = useRef(null);
 
-const [fileList, setFileList] = useState([]);
 
 const onDragEnter = () => wrapperRef.current.classList.add('dragover');
 
@@ -279,89 +405,49 @@ const onFileDrop = (e) => {
       reader.readAsDataURL(e.target.files[0])
       reader.onload = (e)=>{
           e.preventDefault();
-          setFileList([...fileList,e.target.result]
-         ) 
          setPost({
           ...post,
           pictures: [...post.pictures, {cover:false, picture: e.target.result}]}
          )
          }
-      // const updatedList = [...fileList, newFile];
-      // setFileList(updatedList);
       ;
   }
 }
-const fileRemove = (file) => {
-  const updatedList = [...fileList];
+const fileRemove = (item) => {
   const updatedPictures=[...post.pictures]
-  updatedList.splice(fileList.indexOf(file), 1);
-  setFileList(updatedList);
-  updatedPictures.splice(post.pictures.indexOf(file), 1);
+  updatedPictures.splice(post.pictures.indexOf(item), 1);
   setPost({
     ...post,
-    pictures:updatedList
+    pictures:updatedPictures
   })
   ;
 }
 
+function handleCover(e){
+  
+const todas = [...post.pictures]
 
-const handlePinctureFront = (e) => {
-  console.log('value',e.target.value)
-  let chosen = post.pictures.filter(p=>p.picture===e.target.value)
-  console.log('chosen',chosen)
-   chosen.cover=true
+if(e.target.checked){
+todas.map((foto)=>{
+    if(foto.picture===e.target.value){
+      foto.cover = true}
+  })
   setPost({
     ...post,
-    pictures:[...post.pictures,chosen]
+    pictures:todas
   })
- 
+}else{
+  todas.map((foto)=>{
+    if(foto.picture===e.target.value){
+      foto.cover = false}
+  })
+  setPost({
+    ...post,
+    pictures:todas
+  })
+}
 }
 
-
-// const [fotosElegidas, setFotosElegidas] = useState([])
-// const [cambiado, setCambiado] = useState(false)
-
-// function handlePinctureFront(e) {
-//   var picChosen = e.target.value
-//   if (!e.target.checked) {
-//     let seleccion = fotosElegidas.filter((categorie) => categorie.name !== picChosen)
-//     setFotosElegidas(seleccion)
-//     setPost({
-//       ...post,
-//       pictures:seleccion
-//     })
-//   } else {
-//     let picToChange = post.pictures.find((picture) => picture.picture === picChosen)
-//     setFotosElegidas([...fotosElegidas, picToChange])
-//     setPost({
-//       ...post,
-//       pictures:[...post.categories, picToChange]
-//     })
-//   }
-// }
-
-// function handleCategories(e) {
-//   var categorieName = e.target.value
-//   if (!e.target.checked) {
-//     let seleccion = seleccionados.filter((categorie) => categorie.name !== categorieName)
-//     setSeleccionados(seleccion)
-//     setPost({
-//       ...post,
-//       categories:seleccion
-//     })
-//   } else {
-//     let categorieCheck = categories.find((categorie) => categorie.name === categorieName)
-//     setSeleccionados([...seleccionados, categorieCheck])
-//     setPost({
-//       ...post,
-//       categories:[...post.categories, categorieCheck]
-//     })
-//   }
-// }
-
-
-
-  
   //--------------------------------------------------//
   //               POST  UBICACION                //
 
@@ -370,14 +456,30 @@ const handlePinctureFront = (e) => {
       setPost({
         ...post,
         [e.target.name]: true,
+        departamento:'',
+        municipio:'',
+        barrio:'',
+        direccion:''
       });
     } else {
       setPost({
         ...post,
         [e.target.name]: false,
+        link:''
       });
     }
   }
+
+
+  function handleLink(e) {
+    setPost({
+      ...post,
+      link: e.target.value,
+    });
+  }
+
+
+
 
     
   //--------------------------------------------------//
@@ -673,10 +775,9 @@ const handlePinctureFront = (e) => {
                 et iusto odio dignissim qui blandit praesent luptatum zzril
                 delenit augue duis dolaore te feugait nulla facilisi.
               </p>
-              {failedSubmit?(
-                  // <p className={styles.errors}>{errors.title}</p>
+              {failedSubmit && errors.title?(               
                   <input
-                  className={styles.errors}
+                  className={styles.input}
                   type="text"
                   maxlength="75"
                   placeholder="Nombre del evento"
@@ -685,6 +786,7 @@ const handlePinctureFront = (e) => {
                   onChange={(e) => handleChange(e)}
                   required
                 />
+               
                 ):   <input
                 className={styles.input}
                 type="text"
@@ -694,26 +796,15 @@ const handlePinctureFront = (e) => {
                 value={post.title}
                 onChange={(e) => handleChange(e)}
               />}
-               {/* <input
-                className= {`${failedSubmit ? styles.errors : styles.input}`}
-                type="text"
-                maxlength="75"
-                placeholder="Nombre del evento"
-                name="title"
-                value={post.title}
-                onChange={(e) => handleChange(e)}
-              /> 
-               */}
-
-                {/* {errors.title && failedSubmit?(
-                    <p className={styles.errors}>{errors.title}</p>
-                ):''} */}
-
+        
               {post.title.length === 75  ?
               <p className={styles.errors}>Máximo 75 caracteres</p>
                 : <p className={styles.subInput}>Máximo 75 caracteres</p>
-                }
-              
+                }  
+              {errors.title? 
+                <p className={styles.errors}>{errors.title}</p>
+               : null}    
+
             </div>
           </div>
 
@@ -765,7 +856,6 @@ const handlePinctureFront = (e) => {
                 {categories.map ((categorie) => (
                   <div className={styles.checks}>
                     <label className={styles.labelsChecks}>
-
                       <input
                         className={styles.checkBox}
                         type="checkbox"
@@ -810,9 +900,14 @@ const handlePinctureFront = (e) => {
                     )}
               </div>
 
-              {errors.categories && (
-                        <p className={styles.errors}>{errors.categories}</p>
-                    )}
+              {errors.categories &&
+              <p className={styles.errors}>{errors.categories}</p>
+              }
+
+              {failedSubmit && errors.categories && errors.categories<3?
+              <p className={styles.errors}>Debes seleccionar al menos una categoría</p>
+              :''
+              }
 
               
             </div>
@@ -857,9 +952,9 @@ const handlePinctureFront = (e) => {
                   diam nonummy nibh, Lorem ipsum dolor sit amet, consectetuer
                   adipiscing elit, sed diam nonummy nibh.{' '}
                 </p>
-                {failedSubmit?
+                {failedSubmit && errors.shortDescription?
                 <textarea
-                  className={styles.errorsDescription}
+                  className={styles.textareaShort}
                   type="text"
                   maxlength="100"
                   placeholder="descripción breve del evento"
@@ -888,6 +983,9 @@ const handlePinctureFront = (e) => {
                 <p className={styles.subTitle}>Usetd va escribiendo: {post.shortDescription.length}/100 caracteres</p>
                 : ''
                 }
+                {errors.shortDescription?
+                <p className={styles.errors}>{errors.shortDescription}</p>
+                : null}    
               </div>
 
               {/* longDescription */}
@@ -898,9 +996,9 @@ const handlePinctureFront = (e) => {
                   diam nonummy nibh, Lorem ipsum dolor sit amet, consectetuer
                   adipiscing elit, sed diam nonummy nibh.{' '}
                 </p>
-                {failedSubmit?
+                {failedSubmit && errors.longDescription ?
                 <textarea
-                className={styles.errorsDescription}
+                className={styles.textareaLong}
                 type="text"
                 minlength="75"
                 placeholder="descripción detallada del evento"
@@ -922,14 +1020,17 @@ const handlePinctureFront = (e) => {
                 />
                 }
 
-                {post.longDescription.length<75 ?
-                <p className={styles.errorsText}>Minimo 75 caracteres</p>
+                {post.longDescription.length<75 && post.longDescription.length>0  ?
+                <p className={styles.errors}>Minimo 75 caracteres</p>
                 : <p className={styles.subTitle}>Minimo 75 caracteres</p>
                 }
                 {post.longDescription.length>0 ?
                 <p className={styles.subTitle}>Usetd va escribiendo: {post.longDescription.length} caracteres</p>
                 : ''
                 }
+                {errors.longDescription ? 
+                <p className={styles.errors}>{errors.longDescription}</p>
+                 : null}    
               </div>
             </div>
           </div>
@@ -972,54 +1073,57 @@ const handlePinctureFront = (e) => {
               <p className={styles.subTitle4}>Fotos del Evento</p>
 
              
-              {failedSubmit?
+              {failedSubmit && errors.pictures ?
                 <div
-                ref={wrapperRef}
-                  className={styles.errorsPicture}
-                  onDragEnter={onDragEnter}
-                  onDragLeave={onDragLeave}
-                  onDrop={onDrop}
-                > 
-                <div>
-                <ImageIcon sx={{ fontSize: '50px', color: 'grey' }} />
-                </div>
-                <p>Fotos: Jpg, png, Max.100kb </p> 
-                <p>Videos: .MP4 Max 100kb</p>      
-                <p>"Arrastra los archivos aquí o haz click para agregar archivos"</p>
-                <input 
-                  type="file" 
-                  value="" 
-                  name="pictures"
-                  onChange={onFileDrop}
-                />
-                </div>
-                
+                  ref={wrapperRef}
+                    className={styles.errorsPicture}
+                    onDragEnter={onDragEnter}
+                    onDragLeave={onDragLeave}
+                    onDrop={onDrop}
+                  > 
+                  <div>
+                  <ImageIcon sx={{ fontSize: '50px', color: 'grey' }} />
+                  </div>
+                  <p>Fotos: Jpg, png, Max.100kb </p> 
+                  <p>Videos: .MP4 Max 100kb</p>      
+                  <p>"Arrastra los archivos aquí o haz click para agregar archivos"</p>
+                  <input 
+                    type="file" 
+                    value="" 
+                    name="pictures"
+                    onChange={onFileDrop}
+                  />
+                  {errors.pictures?
+                   <p className={styles.errors}>{errors.pictures}</p>
+                   : null
+                  }
+                </div>              
                 :
                 <div
-                ref={wrapperRef}
-                  className={styles.dropFileIput}
-                  onDragEnter={onDragEnter}
-                  onDragLeave={onDragLeave}
-                  onDrop={onDrop}
-                > 
-                <div>
-                <ImageIcon sx={{ fontSize: '50px', color: 'grey' }} />
+                  ref={wrapperRef}
+                    className={styles.dropFileIput}
+                    onDragEnter={onDragEnter}
+                    onDragLeave={onDragLeave}
+                    onDrop={onDrop}
+                  > 
+                  <div>
+                  <ImageIcon sx={{ fontSize: '50px', color: 'grey' }} />
+                  </div>
+                  <p>Fotos: Jpg, png, Max.100kb </p> 
+                  <p>Videos: .MP4 Max 100kb</p>      
+                  <p>"Arrastra los archivos aquí o haz click para agregar archivos"</p>
+                  <input 
+                    type="file" 
+                    value="" 
+                    name="pictures"
+                    onChange={onFileDrop}
+                  />
                 </div>
-                <p>Fotos: Jpg, png, Max.100kb </p> 
-                <p>Videos: .MP4 Max 100kb</p>      
-                <p>"Arrastra los archivos aquí o haz click para agregar archivos"</p>
-                <input 
-                  type="file" 
-                  value="" 
-                  name="pictures"
-                  onChange={onFileDrop}
-                />
-                    </div>
               }
           
 
               {
-                fileList.length > 0 ? (
+                 post.pictures.length > 0 ? (
                   <div className={styles.dropFilePreview}>
                     <p>
                       Ready to upload
@@ -1043,7 +1147,7 @@ const handlePinctureFront = (e) => {
                                     type="checkbox" 
                                     name='cover'
                                     value={item.picture}
-                                    onChange={(e)=>handlePinctureFront(e)}
+                                    onChange={e=>handleCover(e)}                              
                                     defaultChecked={false}
                                   />                 
                                   Quiero que esta sea la portada
@@ -1053,19 +1157,14 @@ const handlePinctureFront = (e) => {
                         ))
                     }
                     </Swiper>
+                    {errors.pictures?
+                    <p className={styles.errors}>{errors.pictures}</p>
+                    : null
+                  }
                   </div>
                 ) : null
               }
-
-              
-
-            
-
-              {
-                errors.pictures && (
-                <p className={styles.errors}>{errors.pictures}</p>
-              )}
-
+     
             </div>
           </div>
 
@@ -1112,19 +1211,7 @@ const handlePinctureFront = (e) => {
               {/* CheckBoxOnLine*/}
 
               <div className={styles.containerOnLine}>
-                {failedSubmit?
-                <input
-                className={styles.errorsCheckBox}
-                type="checkbox"
-                defaultChecked={false}
-                name="online"
-                value={post.online}
-                onChange={(e) => handleCheck(e)}
-                id="check"
-              />
-                
-                
-                :
+               
                 <input
                   className={styles.checkBox4}
                   type="checkbox"
@@ -1134,21 +1221,21 @@ const handlePinctureFront = (e) => {
                   onChange={(e) => handleCheck(e)}
                   id="check"
                 />
-                }
                 <label> Este es un evento en linea</label>
 
                 {/*Online*/}
 
                 
                 
-                {failedSubmit?
-                <div className={styles.errorsOnline}>
+                {failedSubmit && errors.link?
+                <div className={styles.online}>
                   <input
                   type="text"
                   placeholder="Colocar el enlace del evento"
                   name="link"
                   value={post.link}
-                  onChange={(e) => handleChange(e)}
+                  onChange={(e) => handleLink(e)}
+                  required
                 />
                    </div>
                 
@@ -1163,6 +1250,10 @@ const handlePinctureFront = (e) => {
                   />
                  </div>
                 }
+                {errors.link?
+                  <p className={styles.errors}>{errors.link}</p>
+                  : null
+                }
              
 
                 {/*notOnline*/}
@@ -1170,9 +1261,9 @@ const handlePinctureFront = (e) => {
                 <div className={styles.notOnline}>
                   {/* Dpto */}
                   <div className={styles.containerDirection}>
-                    {failedSubmit?
+                    {failedSubmit && errors.departamento?
                     <input
-                    className={styles.errors}
+                    className={styles.select}
                     list="dptos"
                     id="myDep"
                     name="departamento"
@@ -1213,29 +1304,28 @@ const handlePinctureFront = (e) => {
                         <div>
                           {departamento.departamento === post.departamento &&
                            <div>
-                            {failedSubmit?
-                             <div  className={styles.errorsDpto}>
-                             <input
-                             list="municipio"
-                             id="myMuni"
-                             name="municipio"
-                             placeholder={departamento.capital}
-                             value={post.municipio}
-                             onChange={(e) => handleChange(e)}
-                             required
-                           />
-                           <datalist id="municipio">
-                           <option>
-                            {departamento.capital}
-                           </option>   
-                         {departamento.municipio.map((m)=>                                
-                             <option >
-                               {m}
-                             </option>                              
-                          )
-                         }
-                       </datalist>
-                       </div>
+                            {failedSubmit && errors.municipio ?
+                             <div  className={styles.Muni}>
+                                    <input
+                                    list="municipio"
+                                    id="myMuni"
+                                    name="municipio"
+                                    placeholder={departamento.capital}
+                                    value={post.municipio}
+                                    onChange={(e) => handleChange(e)}
+                                    required
+                                    />
+                                  <datalist id="municipio">
+                                    <option>
+                                      {departamento.capital}
+                                    </option>   
+                                    {departamento.municipio.map((m)=>                                
+                                      <option >
+                                        {m}
+                                      </option>                              
+                                      )}
+                                  </datalist>
+                             </div>
                             :
                             <div  className={styles.Muni}>
                             <input
@@ -1272,17 +1362,18 @@ const handlePinctureFront = (e) => {
 
                   {/* Direccion*/}
 
-                  {failedSubmit?
+                  {failedSubmit && errors.direccion?
+                  <div className={styles.direccionError}>
                    <input
-                   className={styles.errors}
+                   className={styles.input5}
                    type="text"
                    placeholder="Dirección del evento"
                    name="direccion"
                    value={post.direccion}
                    onChange={(e) => handleChange(e)}
                    required
-                 />
-                  
+                  />
+                  </div>                                   
                   :
                   <input
                     className={styles.input5}
@@ -1293,9 +1384,16 @@ const handlePinctureFront = (e) => {
                     onChange={(e) => handleChange(e)}
                   />
                   }
-                  {failedSubmit?
+                  {errors.direccion? 
+                  <p className={styles.errors}>{errors.direccion}</p>
+                  : null}  
+
+                  {/* Barrio*/}
+
+                  {failedSubmit && errors.barrio?
+                  <div className={styles.barrio}>
                    <input
-                   className={styles.errors}
+                   className={styles.input5}
                    type="text"
                    placeholder="Barrio"
                    name="barrio"
@@ -1303,7 +1401,7 @@ const handlePinctureFront = (e) => {
                    onChange={(e) => handleChange(e)}
                    required
                  />
-                  
+                 </div>                
                   :
                   <input
                     className={styles.input5}
@@ -1314,6 +1412,9 @@ const handlePinctureFront = (e) => {
                     onChange={(e) => handleChange(e)}
                   />
                  }
+                  {errors.barrio? 
+                  <p className={styles.errors}>{errors.barrio}</p>
+                  : null}  
 
                   {/* Map*/}
 
@@ -1360,6 +1461,9 @@ const handlePinctureFront = (e) => {
                   onChange={(e) => handleChange(e)}
                 />
               </div>
+              {errors.specialRequires? 
+              <p className={styles.errors}>{errors.specialRequires}</p>
+              : null}  
             </div>
           </div>
 
@@ -1408,10 +1512,10 @@ const handlePinctureFront = (e) => {
                   <div className={styles.containerSubInfo}>
                     <label className={styles.subInfoTitle}>
                       Máximo número de participantes
-                      {failedSubmit?
+                      {failedSubmit && errors.cupos?
                        <input
                        id='cupos'
-                       className={styles.errrosCupoPrice}
+                       className={styles.subInfoInput}
                        type="txt"
                        placeholder="10"
                        name="cupos"
@@ -1443,9 +1547,9 @@ const handlePinctureFront = (e) => {
                       Precio por cupo
                       <div className={styles.labelS}>
                         <p>$</p>
-                        {failedSubmit?
+                        {failedSubmit && errors.price?
                          <input
-                         className={styles.errrosCupoPrice}
+                         className={styles.subInfoInput}
                          type="txt"
                          placeholder="20.00"
                          name="price"
@@ -1466,13 +1570,17 @@ const handlePinctureFront = (e) => {
                       }
                       </div>
                     </label>
+
                     {post.price === '' ? <p>$21.990</p> : <p>{precioAlPublico}</p>}
+
                     <p className={styles.subInfotxt}>
                       Precio al público incluyendo costo de manejo e IVA
                     </p>
+
                     {errors.price && (
-                        <p className={styles.errors}>{errors.price}</p>
-                         )}
+                    <p className={styles.errors}>{errors.price}</p>
+                    )}
+
                   </div>
 
                   <div className={styles.containerSubInfo}>
@@ -1567,75 +1675,69 @@ const handlePinctureFront = (e) => {
                             </div>                          
                         </div> */}
 
-                        
-                          <label>Fecha</label>
-                          {failedSubmit?
+                      
+                        <label>Fecha</label>
+                          {failedSubmit && errors.dates ?
+                            <input 
+                            classname={styles.errors}
+                            type="date" 
+                            name="date" 
+                            value={element.date || ""} 
+                            onChange={e => handleChanges(index, e)} 
+                            required
+                            />
+                          
+                          :
+                            <input 
+                            type="date" 
+                            name="date" 
+                            value={element.date || ""} 
+                            onChange={e => handleChanges(index, e)} 
+                            />
+                            }
+
+                      </div>
+
+                      <div className={styles.contStart}>                
+                        <label>Comienza</label>
+                        {failedSubmit && errors.dates?
                           <input 
-                          classname={styles.errors}
-                          type="date" 
-                          name="date" 
-                          value={element.date || ""} 
+                          type="time" 
+                          name="start" 
+                          value={element.start || ""} 
                           onChange={e => handleChanges(index, e)} 
                           required
                           />
-                          
                           :
                           <input 
-                          type="date" 
-                          name="date" 
-                          value={element.date || ""} 
+                          type="time" 
+                          name="start" 
+                          value={element.start || ""} 
                           onChange={e => handleChanges(index, e)} 
                           />
-                          }
-
+                        }
                       </div>
-                      <div className={styles.contStart}>
-                      
 
-                        <label>Comienza</label>
-                        {failedSubmit?
+                      <div className={styles.contStart}>
+                       <label>End</label>
+                      {failedSubmit && errors.dates?
                         <input 
-                        classname={styles.errors}
                         type="time" 
-                        name="start" 
-                        value={element.start || ""} 
+                        name="end" 
+                        value={element.end || ""} 
                         onChange={e => handleChanges(index, e)} 
                         required
-                        />
+                        />                      
                         :
                         <input 
                         type="time" 
-                        name="start" 
-                        value={element.start || ""} 
+                        name="end" 
+                        value={element.end || ""} 
                         onChange={e => handleChanges(index, e)} 
                         />
-                        }
-
+                      }                 
                       </div>
-                      <div className={styles.contStart}>
 
-
-                      <label>End</label>
-                      {failedSubmit?
-                       <input 
-                       classname={styles.errors}
-                       type="time" 
-                       name="end" 
-                       value={element.end || ""} 
-                       onChange={e => handleChanges(index, e)} 
-                       required
-                       />
-                      
-                      :
-                      <input 
-                      type="time" 
-                      name="end" 
-                      value={element.end || ""} 
-                      onChange={e => handleChanges(index, e)} 
-                      />
-                      }
-
-                      </div>
                       {
                         index ? 
                           <button lassName={styles.addDelete}  type="button"  onClick={() => removeFormFields(index)}>
