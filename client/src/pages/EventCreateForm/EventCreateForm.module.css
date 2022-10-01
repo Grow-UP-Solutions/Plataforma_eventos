@@ -209,15 +209,15 @@ input:valid {
 
 .subTitle4 {
   color: #707070;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   font-size: 1.2rem;
   font-weight: bold;
 }
 
 .dropFileIput {
   text-align: center;
-  width: 30rem;
-  height: 20rem;
+  width: 50rem;
+  height: 30rem;
   border: 2px dashed var(--color-grey-4);
   border-radius: 10px;
   align-items: center;
@@ -225,6 +225,8 @@ input:valid {
   color: var(--color-grey-2);
   background-color: var(--input-bg);
   margin-bottom: 2rem;
+  margin-left: 4rem;
+  cursor: pointer;
  }
 
  .dropFileIput input {
@@ -234,6 +236,7 @@ input:valid {
   width: 100%;
   height: 100%;
   cursor: pointer;
+  
 }
 
 .dropFileIput input::placeholder {
@@ -936,83 +939,49 @@ input:valid {
 }
 
 /*ERRORES*/
-/* .errors {
+
+
+.errors{
   font-family: sans-serif;
   color: #ba150a;
   font-size: 14px;
   margin-top: 2rem;
   margin-bottom: 2rem;
-} */
+}
 
-.errors{
-  height: 6rem;
-  border: 1px solid red;
-  border-radius: 10px;
+
+/*Seccion 1*/
+.container1 input:required {
+  border: 3px solid red;
   background-color: white;
-  color: var(--color-grey-2);
-  width: 100%;
-  margin-top: 3rem;
-  margin-bottom: 1rem;
+  box-shadow: none;
 }
 
-.subTitleError {
-  font-family: sans-serif;
-  color: #ba150a;
-  font-size: 14px;
+.container1 input:required:invalid {
+  border-color: #c00000;
 }
 
-.errorsDescription{
-  padding: 12px 20px;
-  height: 15rem;
-  border: 1px solid red;
-  border-radius: 10px;
+/*Seccion 3*/
+
+
+.containerDescription textarea:required {
+  border: 3px solid red;
   background-color: white;
-  color: var(--color-grey-2);
-  width: 100%;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  font-size: 1.7rem;
-  resize: none;
+  box-shadow: none;
 }
 
-.errorsDescription::placeholder {
-  margin-top: 2rem;
-  color: #707070;
-  margin-bottom: 1.5rem;
-  font-size: 1.5rem;
+.containerDescription textarea:required {
+  border-color: #c00000;
 }
 
-.eerorsText{
-  color: red;
-  margin-bottom: 1.5rem;
-  font-size: 1.3rem;
-}
 
-/* .textareaLong {
-  padding: 12px 20px;
-  height: 15rem;
-  border: 1px solid var(--color-grey-4);
-  border-radius: 10px;
-  background-color: white;
-  color: var(--color-grey-2);
-  width: 100%;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  font-size: 1.7rem;
-}
 
-.textareaLong::placeholder {
-  margin-top: 2rem;
-  color: #707070;
-  margin-bottom: 1.5rem;
-  font-size: 1.5rem;
-} */
-
+/*Seccion 4*/
 
 .errorsPicture {
   text-align: center;
-  width: 30rem;
-  height: 20rem;
+  width: 50rem;
+  height: 30rem;
   border: 2px dashed red;
   border-radius: 10px;
   align-items: center;
@@ -1058,74 +1027,114 @@ input:valid {
 }
 
 .errorsPicture p{
-  color: #707070;
+  color: red;
   margin-bottom: 1rem;
   font-size: 1.2rem;
   font-weight: bold;
-
-}
-
-.errorsCheckBox{
-  accent-color: #d53e27;
-  margin-right: 1rem;
-  height: 2rem;
-  width: 2rem;
-  border-radius: 10px;
-  cursor: pointer;
-  box-shadow: 3px red;
-
 }
 
 
-.errorsOnline {
-  display: none;
-  margin-top: 1rem;
-}
-
-.errorsOnline input {
-  border: 1px solid red;
-  border-radius: 10px;
-  background-color: rgb(167, 25, 25);
-  color: var(--color-grey-2);
-  width: 60%;
-  margin-top: 1rem;
-}
 
 
-.errorsDpto{
-  height: 4rem;
-  border: 1px solid red;
-  border-radius: 10px;
+/*Seccion 5*/
+
+.online input:required{
+  border: 3px solid red;
   background-color: white;
-  color: var(--color-grey-2);
-  width: 100%;
-  margin-right: 1rem;
-
+  box-shadow: none;
 }
 
-.errorsDpto input{
-  height: 4rem;
-  border: 1px solid red;
-  border-radius: 10px;
+.online input:required {
+  border-color: #c00000;
+}
+
+
+.containerDirection input:required{
+  border: 3px solid red;
   background-color: white;
-  color: var(--color-grey-2);
-  width: 100%;
-  margin-right: 1rem;
-
+  box-shadow: none;
 }
 
-.errrosCupoPrice{
-  height: 5rem;
-border: 1px solid red;
-border-radius: 10px;
-background-color: white;
-color: var(--color-grey-2);
-width: 11rem;
-margin-bottom: 1rem;
-text-align: center;
-
-
+.containerDirection input:required {
+  border-color: #c00000;
 }
+
+.Muni input:required{
+  border: 3px solid red;
+  background-color: white;
+  box-shadow: none;
+}
+
+.Muni input:required {
+  border-color: #c00000;
+}
+
+.direccionError input:required{
+  border: 3px solid red;
+  background-color: white;
+  box-shadow: none;
+}
+
+.direccionError input:required {
+  border-color: #c00000;
+}
+
+.barrio input:required{
+  border: 3px solid red;
+  background-color: white;
+  box-shadow: none;
+}
+
+.barrio input:required {
+  border-color: #c00000;
+}
+
+
+
+/*Seccion 6*/
+
+.containerSubInfo input:required{
+  border: 3px solid red;
+  background-color: white;
+  box-shadow: none;
+}
+
+.containerSubInfo input:required {
+  border-color: #c00000;
+}
+
+
+
+.contDate input:required{
+  border: 3px solid red;
+  background-color: white;
+  box-shadow: none;
+}
+
+.contDate input:required {
+  border-color: #c00000;
+}
+
+
+.contStart input:required{
+  border: 3px solid red;
+  background-color: white;
+  box-shadow: none;
+}
+
+.contStart input:required {
+  border-color: #c00000;
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
