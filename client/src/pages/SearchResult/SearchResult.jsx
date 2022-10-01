@@ -43,6 +43,7 @@ const SearchResult = () => {
           billsPerPage={CardPerPage}
           state={result.length}
           paginado={paginado}
+          page={currentPage}
         />
       </div>
       

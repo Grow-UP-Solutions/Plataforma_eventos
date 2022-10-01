@@ -28,6 +28,7 @@ const NextEvent = ({ nextEvent }) => {
           billsPerPage={CardPerPage}
           state={nextEvent.myEventsCreated.length}
           paginado={paginado}
+          page={currentPage}
         />
       </div>
 
