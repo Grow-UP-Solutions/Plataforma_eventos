@@ -2,6 +2,38 @@ import axios from "axios";
 
 const evente = [
   {
+    title: "Hiking with my dog in the nature and make friends!!",
+    categories: ["", "", ""] /*(maximo 3)*/,
+    otherCategories: ["", "", ""],
+    shortDescription: "",
+    detailedDescreption: "",
+    pcitures: [],
+    online: boolean,
+    link: "",
+    departamento: "",
+    municipio: "",
+    address: "",
+    barrio: "",
+    mapLocation: "",
+    especialRequeriments: "",
+    cupos: number,
+    price: number,
+    dates: [
+      {
+        date: "Enero 19 / 2022",
+        start: "12.00",
+        end: "14.00",
+      },
+    ],
+    organizer: {
+      /*toda la info del organizador*/
+    },
+    rating: number,
+    opinions: [{}, {}, {}],
+    solds: number,
+    participants: number,
+  },
+  {
     name: "Hiking with my dog in the nature and make friends!!",
     nick: "Bring your camera",
     description:
@@ -30,7 +62,7 @@ const evente = [
     ],
     participants: 33,
     organizer: "Jean Pierre",
-    emailOganizer:'sssssssss@gmail.com',
+    emailOganizer: "sssssssss@gmail.com",
 
     category: ["Mascotas"],
   },
@@ -39,7 +71,7 @@ const evente = [
     nick: "Bring your instruments!",
     description:
       "Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem",
-      emailOganizer:'sssssssss@gmail.com',
+    emailOganizer: "sssssssss@gmail.com",
     dates: [
       {
         date: "Enero 19 / 2022",
@@ -69,7 +101,7 @@ const evente = [
     nick: "Bring your camera",
     description:
       "Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem",
-      emailOganizer:'sssssssss@gmail.com',
+    emailOganizer: "sssssssss@gmail.com",
     dates: [
       {
         date: "Enero 19 / 2022",
@@ -98,7 +130,7 @@ const evente = [
   {
     name: "Lets cook!",
     nick: "Bring your camera",
-    emailOganizer:'sssssssss@gmail.com',
+    emailOganizer: "sssssssss@gmail.com",
     description:
       "Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem",
     dates: [
@@ -128,7 +160,7 @@ const evente = [
   {
     name: "French lessons",
     nick: "Bring your camera",
-    emailOganizer:'sssssssss@gmail.com',
+    emailOganizer: "sssssssss@gmail.com",
     description:
       "Lorem ipsum dolor sit amet, consec Lorem ipsum dolor sit amet, consec consec Lorem",
     dates: [
@@ -161,7 +193,7 @@ const evente = [
     category: ["Idiomas"],
   },
   {
-    emailOganizer:'sssssssss@gmail.com',
+    emailOganizer: "sssssssss@gmail.com",
     name: "Hiking with my dog in the nature and make friends!!",
     nick: "Bring your camera",
     description:
@@ -191,7 +223,7 @@ const evente = [
     category: ["Mascotas"],
   },
   {
-    emailOganizer:'sssssssss@gmail.com',
+    emailOganizer: "sssssssss@gmail.com",
     name: "Music",
     nick: "Bring your instruments!",
     description:
@@ -219,7 +251,7 @@ const evente = [
     category: ["Artes"],
   },
   {
-    emailOganizer:'sssssssss@gmail.com',
+    emailOganizer: "sssssssss@gmail.com",
     name: "Futbol",
     nick: "Bring your camera",
     description:
@@ -249,7 +281,7 @@ const evente = [
     category: ["Deportes"],
   },
   {
-    emailOganizer:'sssssssss@gmail.com',
+    emailOganizer: "sssssssss@gmail.com",
     name: "Lets cook!",
     nick: "Bring your camera",
     description:
@@ -286,7 +318,7 @@ const evente = [
     category: ["Comidas y Bebidas"],
   },
   {
-    emailOganizer:'sssssssss@gmail.com',
+    emailOganizer: "sssssssss@gmail.com",
     name: "French lessons",
     nick: "Bring your camera",
     description:
@@ -332,7 +364,7 @@ const evente = [
     category: ["Idiomas"],
   },
   {
-    emailOganizer:'sssssssss@gmail.com',
+    emailOganizer: "sssssssss@gmail.com",
     name: "Hiking with my dog in the nature and make friends!!",
     nick: "Bring your camera",
     description:
@@ -363,7 +395,7 @@ const evente = [
     category: ["Mascotas"],
   },
   {
-    emailOganizer:'sssssssss@gmail.com',
+    emailOganizer: "sssssssss@gmail.com",
     name: "Music",
     nick: "Bring your instruments!",
     description:
@@ -394,7 +426,7 @@ const evente = [
     category: ["Artes"],
   },
   {
-    emailOganizer:'sssssssss@gmail.com',
+    emailOganizer: "sssssssss@gmail.com",
     name: "Futbol",
     nick: "Bring your camera",
     description:
@@ -425,7 +457,7 @@ const evente = [
     category: ["Deportes"],
   },
   {
-    emailOganizer:'sssssssss@gmail.com',
+    emailOganizer: "sssssssss@gmail.com",
     name: "Lets cook!",
     nick: "Bring your camera",
     description:
@@ -455,7 +487,7 @@ const evente = [
     category: ["Comidas y Bebidas"],
   },
   {
-    emailOganizer:'sssssssss@gmail.com',
+    emailOganizer: "sssssssss@gmail.com",
     name: "French lessons",
     nick: "Bring your camera",
     description:
@@ -485,7 +517,7 @@ const evente = [
     category: ["Idiomas"],
   },
   {
-    emailOganizer:'sssssssss@gmail.com',
+    emailOganizer: "sssssssss@gmail.com",
     name: "Hiking with my dog in the nature and make friends!!",
     nick: "Bring your camera",
     description:
@@ -516,7 +548,7 @@ const evente = [
     category: ["Mascotas"],
   },
   {
-    emailOganizer:'sssssssss@gmail.com',
+    emailOganizer: "sssssssss@gmail.com",
     name: "Music",
     nick: "Bring your instruments!",
     description:
@@ -546,7 +578,7 @@ const evente = [
     category: ["Artes"],
   },
   {
-    emailOganizer:'sssssssss@gmail.com',
+    emailOganizer: "sssssssss@gmail.com",
     name: "Futbol",
     nick: "Bring your camera",
     description:
@@ -588,7 +620,7 @@ const evente = [
     category: ["Deportes"],
   },
   {
-    emailOganizer:'sssssssss@gmail.com',
+    emailOganizer: "sssssssss@gmail.com",
     name: "Lets cook!",
     nick: "Bring your camera",
     description:
@@ -623,7 +655,7 @@ const evente = [
     category: ["Comidas y Bebidas"],
   },
   {
-    emailOganizer:'sssssssss@gmail.com',
+    emailOganizer: "sssssssss@gmail.com",
     name: "French lessons",
     nick: "Bring your camera",
     description:
@@ -676,7 +708,7 @@ const evente = [
     category: ["Idiomas"],
   },
   {
-    emailOganizer:'sssssssss@gmail.com',
+    emailOganizer: "sssssssss@gmail.com",
     name: "Hiking with my dog in the nature and make friends!!",
     nick: "Bring your camera",
     description:
@@ -706,7 +738,7 @@ const evente = [
     category: ["Mascotas"],
   },
   {
-    emailOganizer:'sssssssss@gmail.com',
+    emailOganizer: "sssssssss@gmail.com",
     name: "French lessons",
     nick: "Bring your camera",
     description:
@@ -762,7 +794,7 @@ const evente = [
     category: ["Idiomas"],
   },
   {
-    emailOganizer:'sssssssss@gmail.com',
+    emailOganizer: "sssssssss@gmail.com",
     name: "French lessons",
     nick: "Bring your camera",
     description:
@@ -820,7 +852,7 @@ const evente = [
     category: ["Idiomas"],
   },
   {
-    emailOganizer:'sssssssss@gmail.com',
+    emailOganizer: "sssssssss@gmail.com",
     name: "Hiking with my dog in the nature and make friends!!",
     nick: "Bring your camera",
     description:
