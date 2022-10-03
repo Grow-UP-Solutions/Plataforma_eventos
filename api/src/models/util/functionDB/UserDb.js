@@ -34,7 +34,7 @@ export async function validateEmailUserDb(email) {
 }
 export async function oneUserDb(id) {
   try {
-    
+    console.log('DB id',id)
     return await Users.findById({ _id: id })
       .populate({ path: "myEventsCreated" })
       .populate({ path: "myFavourites" })
