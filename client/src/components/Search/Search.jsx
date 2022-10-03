@@ -21,8 +21,12 @@ const Search = ({ location = 'home' }) => {
     if (e.charCode === 13) {
       e.preventDefault();
       console.log('allEve', allEvents);
-      const title = allEvents.filter((event) =>
-        event.name.toLowerCase().includes(input.toLowerCase())
+      const title = allEvents.filter((event) => {
+        console.log('event:', event)
+        return event.name.toLowerCase().includes(input.toLowerCase())
+      }
+        
+       
       );
       console.log('gas', title);
       setResult(title);
