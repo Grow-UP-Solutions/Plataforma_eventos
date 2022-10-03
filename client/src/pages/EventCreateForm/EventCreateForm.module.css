@@ -1,5 +1,4 @@
 .container {
-  margin-top: 6rem;
   width: 100%;
   height: 100%;
 }
@@ -12,7 +11,6 @@
   line-height: 2rem;
   overflow: auto;
   margin: auto;
-
   scroll-snap-type: y mandatory;
   scrollbar-width: none;
   scrollbar-color: #6969dd #e0e0e0;
@@ -62,6 +60,20 @@
   padding: 2px;
   color: var(--color-grey-2);
 }
+
+input:invalid {
+  border: 2px dashed red;
+  box-shadow: 0 0 5px 1px red;
+}
+
+input:invalid:required {
+  background-image: red;
+}
+
+input:valid {
+  border: 2px solid black;
+}
+
 
 .subInput {
   color: #878787;
@@ -197,15 +209,15 @@
 
 .subTitle4 {
   color: #707070;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   font-size: 1.2rem;
   font-weight: bold;
 }
 
 .dropFileIput {
   text-align: center;
-  width: 30rem;
-  height: 20rem;
+  width: 50rem;
+  height: 30rem;
   border: 2px dashed var(--color-grey-4);
   border-radius: 10px;
   align-items: center;
@@ -213,6 +225,8 @@
   color: var(--color-grey-2);
   background-color: var(--input-bg);
   margin-bottom: 2rem;
+  margin-left: 4rem;
+  cursor: pointer;
  }
 
  .dropFileIput input {
@@ -222,6 +236,7 @@
   width: 100%;
   height: 100%;
   cursor: pointer;
+  
 }
 
 .dropFileIput input::placeholder {
@@ -368,9 +383,10 @@
 .containerDirection {
   display: flex;
   justify-content: center;
-  align-items: center;
   margin-bottom: 1rem;
 }
+
+
 
 .select {
   height: 4rem;
@@ -378,9 +394,34 @@
   border-radius: 10px;
   background-color: white;
   color: var(--color-grey-2);
-  width: 60%;
+  width: 50%;
   margin-right: 1rem;
 }
+
+.Muni{
+  height: 4rem;
+  border: 1px solid var(--color-grey-4);
+  border-radius: 10px;
+  background-color: white;
+  color: var(--color-grey-2);
+  width: 100%;
+  margin-right: 1rem;
+
+}
+
+.Muni input{
+  height: 4rem;
+  border: 1px solid var(--color-grey-4);
+  border-radius: 10px;
+  background-color: white;
+  color: var(--color-grey-2);
+  width: 100%;
+  margin-right: 1rem;
+
+}
+
+
+
 
 .input5 {
   height: 5rem;
@@ -898,7 +939,9 @@
 }
 
 /*ERRORES*/
-.errors {
+
+
+.errors{
   font-family: sans-serif;
   color: #ba150a;
   font-size: 14px;
@@ -906,11 +949,194 @@
   margin-bottom: 2rem;
 }
 
-.subTitleError {
-  font-family: sans-serif;
-  color: #ba150a;
-  font-size: 14px;
+
+/*Seccion 1*/
+.container1 input:required {
+  border: 3px solid red;
+  background-color: white;
+  box-shadow: none;
 }
+
+.container1 input:required:invalid {
+  border-color: #c00000;
+}
+
+/*Seccion 3*/
+
+
+.containerDescription textarea:required {
+  border: 3px solid red;
+  background-color: white;
+  box-shadow: none;
+}
+
+.containerDescription textarea:required {
+  border-color: #c00000;
+}
+
+
+
+/*Seccion 4*/
+
+.errorsPicture {
+  text-align: center;
+  width: 50rem;
+  height: 30rem;
+  border: 2px dashed red;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-grey-2);
+  background-color: var(--input-bg);
+  margin-bottom: 2rem;
+ }
+
+ .errorsPicture input {
+  opacity: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.errorsPicture input::placeholder {
+  color: var(--color-grey-2);
+}
+
+.errorsPicture p{
+  color: var(--color-grey-2);
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.errorsPicture div{
+  color: var(--color-grey-2);
+  text-align: center;
+  margin-top: 1rem;
+}
+  
+.errorsPicture:hover,
+.errorsPicture.dragover {
+  opacity: 0.6;
+}
+
+.errorsPicture{
+  margin-top: 1rem;
+
+}
+
+.errorsPicture p{
+  color: red;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+
+
+
+/*Seccion 5*/
+
+.online input:required{
+  border: 3px solid red;
+  background-color: white;
+  box-shadow: none;
+}
+
+.online input:required {
+  border-color: #c00000;
+}
+
+
+.containerDirection input:required{
+  border: 3px solid red;
+  background-color: white;
+  box-shadow: none;
+}
+
+.containerDirection input:required {
+  border-color: #c00000;
+}
+
+.Muni input:required{
+  border: 3px solid red;
+  background-color: white;
+  box-shadow: none;
+}
+
+.Muni input:required {
+  border-color: #c00000;
+}
+
+.direccionError input:required{
+  border: 3px solid red;
+  background-color: white;
+  box-shadow: none;
+}
+
+.direccionError input:required {
+  border-color: #c00000;
+}
+
+.barrio input:required{
+  border: 3px solid red;
+  background-color: white;
+  box-shadow: none;
+}
+
+.barrio input:required {
+  border-color: #c00000;
+}
+
+
+
+/*Seccion 6*/
+
+.containerSubInfo input:required{
+  border: 3px solid red;
+  background-color: white;
+  box-shadow: none;
+}
+
+.containerSubInfo input:required {
+  border-color: #c00000;
+}
+
+
+
+.contDate input:required{
+  border: 3px solid red;
+  background-color: white;
+  box-shadow: none;
+}
+
+.contDate input:required {
+  border-color: #c00000;
+}
+
+
+.contStart input:required{
+  border: 3px solid red;
+  background-color: white;
+  box-shadow: none;
+}
+
+.contStart input:required {
+  border-color: #c00000;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
