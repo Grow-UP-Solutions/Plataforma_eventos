@@ -41,6 +41,7 @@ export async function oneUserDb(id) {
       .populate({ path: "myEventsBooked" })
       .populate({ path: "opinionsOrg" });
   } catch (error) {
+    console.log("error db",error)
     throw new Error("Ha fallado validate id user db", error);
   }
 }
