@@ -25,8 +25,8 @@ const EventSchema = new Schema({
   barrio: String,
 
   specialRequires: String,
-  cupos: Number,
-  price: Number,
+  cupos: String,
+  price: String,
   dates: [
     {
       date: String,
