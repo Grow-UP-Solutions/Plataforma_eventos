@@ -11,16 +11,21 @@ const EventSchema = new Schema({
   otherCategorie: [String],
   shortDescription: String,
   longDescription: String,
-  pictures: [String],
+  pictures: [
+    {
+      picture: String,
+      isCover: Boolean,
+    },
+  ],
   online: String,
   link: String,
   departamento: String,
   municipio: String,
   direccion: String,
   barrio: String,
-  
+
   specialRequires: String,
-  cupos: Number,
+  cupos: String,
   price: String,
   dates: [
     {
@@ -29,10 +34,20 @@ const EventSchema = new Schema({
       end: String,
     },
   ],
+  notificaciones: [
+    {
+      image: String,
+      description: String,
+      user: String,
+      date: {
+        type: Date,
+        default: Date.now(),
+      },
+    },
+  ],
 
   isPublic: {
     type: Boolean,
-    default: false,
   },
 
   rating: {
@@ -40,7 +55,6 @@ const EventSchema = new Schema({
     default: 0,
   },
 
- 
   organizer: {
     type: Schema.Types.ObjectId,
     ref: "Users",

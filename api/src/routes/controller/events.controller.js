@@ -18,6 +18,7 @@ router.get("/", async (req, res) => {
 
 router.post("/create", async (req, res) => {
   try {
+    
     const event = req.body;
 
     const eventCreat = await createEvents(event);

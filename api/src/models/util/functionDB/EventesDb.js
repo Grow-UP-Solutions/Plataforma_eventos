@@ -1,6 +1,6 @@
 import "../../../DB.js";
 import Events from "../../db/Events.js";
-import { oneUserDb, validateEmailUserDb } from "./UserDb.js";
+import { oneUserDb} from "./UserDb.js";
 /**basic user database operations  */
 export async function AllEventsDb() {
   try {

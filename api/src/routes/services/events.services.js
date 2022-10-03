@@ -1,7 +1,7 @@
 import { OneCategoryDb } from "../../models/util/functionDB/CategoryDb.js";
 import {
   oneUserDb,
-  validateEmailUserDb,
+  
 } from "../../models/util/functionDB/UserDb.js";
 import {
   AllEventsDb,
@@ -10,7 +10,7 @@ import {
   oneEventDb,
   updateOneEventDb,
 } from "../../models/util/functionDB/EventesDb.js";
-import Events from "../../models/db/Events.js";
+
 
 export async function getAllEvents() {
   try {
