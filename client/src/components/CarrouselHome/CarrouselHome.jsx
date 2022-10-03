@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Autoplay, Navigation, Pagination } from 'swiper';
 import 'swiper/modules/navigation/navigation.min.css';
 import 'swiper/modules/pagination/pagination.min.css';
@@ -9,6 +9,7 @@ import Search from '../Search/Search';
 import style from './CarrouselHome.module.css';
 
 const CarrouselHome = () => {
+
   const images = [
     {
       id: 1,
