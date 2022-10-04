@@ -1,16 +1,20 @@
 import React, { useContext, useState } from 'react';
 import styles from './Register.module.css';
-import { Link } from 'react-router-dom';
 
+import { AuthContext } from '../../context/auth';
+
+import { Link, useNavigate } from 'react-router-dom';
 import { IconFacebook, IconGoogle } from '../../assets/Icons';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { MdOutlineClose } from 'react-icons/md';
 
 import useValidateForm from '../../hooks/useValidateForm';
 import { UIContext } from '../../context/ui';
-import axios from 'axios';
+import eventsApi from '../../axios/eventsApi';
 
 const Register = () => {
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
   const { toggleScreenLogin } = useContext(UIContext);
 
   const [formData, setFormData] = useState({
@@ -51,7 +55,7 @@ const Register = () => {
     message: '',
   });
 
-  const [succesRegister, setSuccesRegister] = useState(false);
+  const [succesData, setSuccesData] = useState(false);
 
   const onRegister = async (e) => {
     e.preventDefault();
@@ -74,17 +78,15 @@ const Register = () => {
     };
 
     try {
-      const result = await axios.post(
-        'https://plataformaeventos-production-6111.up.railway.app/users/create',
-        userData
-      );
-
       setMessageError({
         error: false,
         message: '',
       });
 
-      setSuccesRegister(true);
+      const userRegister = await eventsApi.post('/users/create', userData);
+
+      localStorage.setItem('user', JSON.stringify(userRegister.data));
+      setSuccesData(true);
     } catch (error) {
       setMessageError({
         error: true,
@@ -93,15 +95,77 @@ const Register = () => {
     }
   };
 
+  const navigateVerificate = () => {
+    setSuccesData(false);
+
+    navigate('/verificarmail');
+  };
+
+  const registerWithProvider = async (provider) => {
+    const popup = window.open(
+      `http://localhost:3001/users/login/${provider}`,
+      'targetWindow',
+      `toolbar=no, location=no, status=no,menubar=no, scrollbars=yes, resizable=yes,width=620, height=700`
+    );
+
+    window.addEventListener('message', async (event) => {
+      if (event.origin === 'http://localhost:3001') {
+        if (event.data) {
+          let user = {};
+
+          if (provider === 'facebook') {
+            const { name, email, id } = event.data._json;
+
+            user = {
+              email,
+              name,
+              password: id + 'aA@',
+            };
+          }
+
+          if (provider === 'google') {
+            const { sub, name, email } = event.data._json;
+
+            user = {
+              email,
+              name,
+              password: sub + 'aA@',
+            };
+          }
+
+          try {
+            const userRegister = await eventsApi.post('/users/create', user);
+            localStorage.setItem('user', JSON.stringify(userRegister.data));
+            localStorage.setItem('token', userRegister.data.token);
+            login(userRegister.data);
+            navigate('/');
+          } catch (error) {
+            setMessageError({
+              error: true,
+              message: error.response.data.message,
+            });
+          }
+          popup.close();
+        }
+      }
+    });
+  };
+
   return (
     <div className={`${styles.pageRegister} container`}>
       <h1 className={styles.title}>Registrate</h1>
       <div className={styles.loginProviders}>
-        <button className={styles.providerFacebook}>
+        <button
+          onClick={() => registerWithProvider('facebook')}
+          className={styles.providerFacebook}
+        >
           <IconFacebook />
           <span>Ingresa con Facebook</span>
         </button>
-        <button className={styles.providerGoogle}>
+        <button
+          onClick={() => registerWithProvider('google')}
+          className={styles.providerGoogle}
+        >
           <IconGoogle />
           <span>Ingresa con Google</span>
         </button>
@@ -290,11 +354,11 @@ const Register = () => {
         <button onClick={toggleScreenLogin}>Entrar</button>
       </div>
 
-      {succesRegister && (
+      {succesData && (
         <div className={styles.overlay}>
           <div className={styles.boxContent}>
             <MdOutlineClose
-              onClick={() => setSuccesRegister(false)}
+              onClick={() => setSuccesData(false)}
               className={styles.iconOverlay}
             />
             <div className={styles.containerInfoOverlay}>
@@ -305,7 +369,7 @@ const Register = () => {
                 ver la lista de no deseados y agréganos a tu lista de contactos.
               </p>
               <button
-                onClick={() => setSuccesRegister(false)}
+                onClick={() => navigateVerificate()}
                 className={styles.btnOverlay}
               >
                 Listo

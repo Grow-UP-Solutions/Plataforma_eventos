@@ -1,12 +1,12 @@
-import "../../../DB.js";
-import Users from "../../db/Users.js";
-import bcrypt from "bcryptjs";
+import '../../../DB.js';
+import Users from '../../db/Users.js';
+import bcrypt from 'bcryptjs';
 
 /** basic user database operations */
 
 export async function allUserDb() {
   try {
-    const id = "633642857b1fdf0b1331ca48";
+    const id = '633642857b1fdf0b1331ca48';
     const prueba = await Users.find();
     const prueba2 = prueba
       .map((e) => {
@@ -18,9 +18,9 @@ export async function allUserDb() {
       });
 
     return await Users.find()
-      .populate({ path: "myEventsCreated" })
-      .populate({ path: "myFavourites" })
-      .populate({ path: "myEventsBooked" });
+      .populate({ path: 'myEventsCreated' })
+      .populate({ path: 'myFavourites' })
+      .populate({ path: 'myEventsBooked' });
   } catch (error) {
     console.log(error);
   }
@@ -29,44 +29,43 @@ export async function validateEmailUserDb(email) {
   try {
     return await Users.findOne({ email: email });
   } catch (error) {
-    throw new Error("Ha fallado validate email user db");
+    throw new Error('Ha fallado validate email user db');
   }
 }
 export async function oneUserDb(id) {
   try {
-    const idOrganizer = id
-    if(!idOrganizer){
-      return {msg: "Se rerquiere el id del organizador"}
-    } 
-    
-    return await Users.findById( {_id: idOrganizer} )
-      .populate({ path: "myEventsCreated" })
-      .populate({ path: "myFavourites" })
-      .populate({ path: "myEventsBooked" })
-      .populate({ path: "opinionsOrg" });
+    const idOrganizer = id;
+    if (!idOrganizer) {
+      return { msg: 'Se rerquiere el id del organizador' };
+    }
+
+    return await Users.findById({ _id: idOrganizer })
+      .populate({ path: 'myEventsCreated' })
+      .populate({ path: 'myFavourites' })
+      .populate({ path: 'myEventsBooked' })
+      .populate({ path: 'opinionsOrg' });
   } catch (error) {
-    
-    throw new Error("Ha fallado validate id user db", error);
+    throw new Error('Ha fallado validate id user db', error);
   }
 }
 export async function updateOneUserDb(id, newUser) {
   return await Users.findByIdAndUpdate({ _id: id }, newUser, {
     new: 1,
   })
-    .populate({ path: "myEventsCreated" })
-    .populate({ path: "myFavourites" })
-    .populate({ path: "myEventsBooked" })
-    .populate({ path: "myOpinions" })
-    .populate({ path: "opinionsOrg" });
+    .populate({ path: 'myEventsCreated' })
+    .populate({ path: 'myFavourites' })
+    .populate({ path: 'myEventsBooked' })
+    .populate({ path: 'myOpinions' })
+    .populate({ path: 'opinionsOrg' });
 }
 export async function deleteOneUserDb(id) {
   try {
     return await Users.findByIdAndDelete({ _id: id })
-      .populate({ path: "myEventsCreated" })
-      .populate({ path: "myFavourites" })
-      .populate({ path: "myEventsBooked" });
+      .populate({ path: 'myEventsCreated' })
+      .populate({ path: 'myFavourites' })
+      .populate({ path: 'myEventsBooked' });
   } catch (error) {
-    throw new Error("Error en delete user DB", error);
+    throw new Error('Error en delete user DB', error);
   }
 }
 /**Creating user in Database */
@@ -77,10 +76,19 @@ export async function createOneUserDb(user) {
     const salt = bcrypt.genSaltSync();
 
     userCreated.password = bcrypt.hashSync(user.password, salt);
+
+    let code = '';
+
+    for (let x = 0; x < 6; x++) {
+      code = code + Math.trunc(Math.random() * 10);
+    }
+
+    userCreated.code = code;
+
     await userCreated.save();
     return userCreated;
   } catch (error) {
-    throw new Error("Fallo create user DB", error);
+    throw new Error('Fallo create user DB', error);
   }
 }
 
@@ -96,6 +104,6 @@ export async function generateUserComment(id, opinion) {
     organizer.opinionsOrg.push(opinion);
     return await organizer.save();
   } catch (error) {
-    throw new Error("Fallo comment Db", error);
+    throw new Error('Fallo comment Db', error);
   }
 }

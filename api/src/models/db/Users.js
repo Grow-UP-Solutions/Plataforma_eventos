@@ -1,5 +1,4 @@
-import { Schema, model } from "mongoose";
-
+import { Schema, model } from 'mongoose';
 
 const UserSchema = new Schema({
   name: String,
@@ -16,6 +15,11 @@ const UserSchema = new Schema({
   email: String,
   picture: String,
   password: String,
+  canReceiveInformation: {
+    type: Boolean,
+    default: true,
+  },
+  code: String,
   isBlocked: {
     type: Boolean,
     default: false,
@@ -41,30 +45,30 @@ const UserSchema = new Schema({
   myEventsCreated: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Events",
+      ref: 'Events',
     },
   ],
   myFavourites: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Events",
+      ref: 'Events',
     },
   ],
   myEventsBooked: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Events",
+      ref: 'Events',
     },
   ],
- 
+
   opinionsOrg: [
     {
       user: {
         type: Schema.Types.ObjectId,
-        ref: "Users",
+        ref: 'Users',
       },
       email: String,
-      title:String,
+      title: String,
       time: {
         type: Date,
         default: Date.now(),
@@ -79,4 +83,4 @@ const UserSchema = new Schema({
   ],
 });
 
-export default model("Users", UserSchema);
+export default model('Users', UserSchema);
