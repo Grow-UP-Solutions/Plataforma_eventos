@@ -54,17 +54,68 @@ const Login = () => {
     }
   };
 
+  const loginWithProvider = async (provider) => {
+    const popup = window.open(
+      `http://localhost:3001/users/login/${provider}`,
+      'targetWindow',
+      `toolbar=no, location=no, status=no,menubar=no, scrollbars=yes, resizable=yes,width=620, height=700`
+    );
+
+    window.addEventListener('message', async (event) => {
+      if (event.origin === 'http://localhost:3001') {
+        if (event.data) {
+          let user = {};
+
+          if (provider === 'facebook') {
+            const { email, id } = event.data._json;
+
+            user = {
+              email,
+              password: id + 'aA@',
+            };
+          }
+
+          if (provider === 'google') {
+            const { sub, email } = event.data._json;
+
+            user = {
+              email,
+              password: sub + 'aA@',
+            };
+          }
+
+          try {
+            const userLog = await eventsApi.post('/users/login', user);
+            localStorage.setItem('user', JSON.stringify(userLog.data));
+            localStorage.setItem('token', userLog.data.token);
+            login(userLog.data);
+            toggleScreenLogin();
+          } catch (error) {
+            setErrorLogin(true);
+          }
+          popup.close();
+        }
+      }
+    });
+  };
+
   return (
     <div className={styles.containerLogin}>
       <div className={styles.contentBox}>
         <CgClose onClick={toggleScreenLogin} className={styles.closeIcon} />
         <h1 className={styles.title}>Ingresa</h1>
         <div className={styles.loginProviders}>
-          <button className={styles.providerFacebook}>
+          <button
+            onClick={() => loginWithProvider('facebook')}
+            className={styles.providerFacebook}
+          >
             <IconFacebook />
             <span>Ingresa con Facebook</span>
           </button>
-          <button className={styles.providerGoogle}>
+          <button
+            onClick={() => loginWithProvider('google')}
+            className={styles.providerGoogle}
+          >
             <IconGoogle />
             <span>Ingresa con Google</span>
           </button>
