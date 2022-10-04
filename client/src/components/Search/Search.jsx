@@ -20,9 +20,10 @@ const Search = ({ location = 'home' }) => {
   const handleKeyPress = (e) => {
     if (e.charCode === 13) {
       e.preventDefault();
-      const title = allEvents.filter((e) =>
-      e.name.toLowerCase().includes(input.toLowerCase())
-      );
+      const title = allEvents.filter((event) => {
+        const response = event.name === input;
+        return response;
+      });
       setResult(title);
       navigate('/search/');
       setInput('');
@@ -31,8 +32,8 @@ const Search = ({ location = 'home' }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const title = allEvents.filter((e) =>
-    e.name.toLowerCase().includes(input.toLowerCase())
+    const title = allEvents.filter((event) =>
+      event.name === input
     );
     setResult(title);
     navigate('/search/');
