@@ -38,23 +38,26 @@ export async function createUsers(user) {
     throw new Error(error.message);
   }
 }
-export async function createOrganizerComment(id,opinion){
-  
-try {
-  const generateComment = await generateUserComment(id, opinion)
-  return generateComment
-} catch (error) {
-  throw new Error(error.message)
-  
-}
+export async function createOrganizerComment(id, opinion) {
+  try {
+    const generateComment = await generateUserComment(id, opinion);
+    return generateComment;
+  } catch (error) {
+    throw new Error(error.message);
+  }
 }
 export async function getAllCommentUser(id) {
-  const allEvents = await AllEventsDb()
-  const allUser = await allUserDb()
-  const allCommentUser = allUser.map(e=> e.opinionsOrg).flat().filter(e=> e.user == id) 
-  const allCommnt = allEvents.map(e=> e.opinions).flat().filter(e => e.user == id)
-  return allCommnt.concat(allCommentUser)
-  
+  const allEvents = await AllEventsDb();
+  const allUser = await allUserDb();
+  const allCommentUser = allUser
+    .map((e) => e.opinionsOrg)
+    .flat()
+    .filter((e) => e.user == id);
+  const allCommnt = allEvents
+    .map((e) => e.opinions)
+    .flat()
+    .filter((e) => e.user == id);
+  return allCommnt.concat(allCommentUser);
 }
 export async function userUpdate(id, newUser) {
   const newUsers = updateOneUserDb(id, newUser);
@@ -73,18 +76,18 @@ export async function login(email, password) {
     const user = await validateEmailUserDb(email);
 
     if (!user) {
-      throw new Error('El usuario no está registrado');
+      throw new Error('Email no encontrado en sistema');
     }
 
     const validPassword = bcrypt.compareSync(password, user.password);
 
     if (!validPassword) {
-      throw new Error('El password es incorrecto');
+      throw new Error('Contraseña incorrecta');
     }
 
     return user;
   } catch (error) {
-    throw new Error('FALLO_SERVICIO_USERLOGIN');
+    throw new Error(error.message);
   }
 }
 
