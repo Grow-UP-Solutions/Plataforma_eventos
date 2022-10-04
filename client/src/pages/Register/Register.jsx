@@ -103,13 +103,16 @@ const Register = () => {
 
   const registerWithProvider = async (provider) => {
     const popup = window.open(
-      `http://localhost:3001/users/login/${provider}`,
+      `https://plataformaeventos-production-6111.up.railway.app/users/login/${provider}`,
       'targetWindow',
       `toolbar=no, location=no, status=no,menubar=no, scrollbars=yes, resizable=yes,width=620, height=700`
     );
 
     window.addEventListener('message', async (event) => {
-      if (event.origin === 'http://localhost:3001') {
+      if (
+        event.origin ===
+        'https://plataformaeventos-production-6111.up.railway.app'
+      ) {
         if (event.data) {
           let user = {};
 
