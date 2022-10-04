@@ -9,10 +9,10 @@ export async function AllCategoyDb() {
 
 export async function OneCategoryDb(name) {
   try {
-    console.log(name)
+   
     return await Category.findOne({ name: name });
   } catch (error) {
-    console.log(error)
+    throw new Error("Error en ONECATEGORY DB")
   }
 }
 
