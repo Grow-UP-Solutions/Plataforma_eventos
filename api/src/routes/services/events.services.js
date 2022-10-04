@@ -29,10 +29,10 @@ export async function createEvents(event) {
       let temp = await OneCategoryDb(e);
       return temp;
     });
-    console.log('organaizer TEMP service',temp)
+    
     const category = await Promise.all(temp);
-    console.log('organaizer CATEGORY service',category)
-    event.categories = category.map((e) => e._id);
+    
+    event.category = category.map((e) => e._id);
     event.organizer = organizer._id;
     const events = await createOneEventDb(event);
 
