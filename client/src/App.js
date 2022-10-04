@@ -20,6 +20,7 @@ import {
   CategoriesResult,
   User,
   Message,
+  Verification,
 } from './pages';
 import { Footer, Login, Navbar } from './components';
 import { Data } from './context/state/stateProvider';
@@ -29,12 +30,17 @@ import Bills from './components/Finance/Bills';
 import { UIContext } from './context/ui';
 import { useDispatch } from 'react-redux';
 import { getEvents } from './redux/actions';
+import { AuthContext } from './context/auth';
 
 function App() {
-
   const [navBar, setNavBar] = useState(false);
   const dispatch = useDispatch();
   const { isMenuLoginOpen, getCategories } = useContext(UIContext);
+  const { checkAuthToken, logged } = useContext(AuthContext);
+
+  useEffect(() => {
+    checkAuthToken();
+  }, []);
 
   useEffect(() => {
     dispatch(getEvents());
@@ -67,6 +73,7 @@ function App() {
           <Route path="/user/message" element={<Message />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/bills" element={<Bills />} />
+          <Route path="/verificarmail" element={<Verification />} />
         </Routes>
         <div className="container">
           <Footer />

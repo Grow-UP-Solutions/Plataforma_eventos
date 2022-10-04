@@ -67,3 +67,9 @@ export async function login(email, password) {
     throw new Error('FALLO_SERVICIO_USERLOGIN');
   }
 }
+
+export async function confirmEmail(code) {
+  try {
+    const user = await getUser();
+  } catch (error) {}
+}

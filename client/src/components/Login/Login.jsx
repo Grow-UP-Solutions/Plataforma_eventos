@@ -1,14 +1,14 @@
 import React, { useContext, useState } from 'react';
 import styles from './Login.module.css';
 
-import { UIContext } from '../../context/ui';
 import { AuthContext } from '../../context/auth/';
+import { UIContext } from '../../context/ui';
 
-import { IconFacebook, IconGoogle } from '../../assets/Icons';
 import { CgClose } from 'react-icons/cg';
+import { IconFacebook, IconGoogle } from '../../assets/Icons';
 
+import eventsApi from '../../axios/eventsApi';
 import useValidateForm from '../../hooks/useValidateForm';
-import axios from 'axios';
 
 const Login = () => {
   const { login } = useContext(AuthContext);
@@ -41,18 +41,15 @@ const Login = () => {
     };
 
     let result;
+
     try {
-      result = await axios.post(
-        'https://plataformaeventos-production-6111.up.railway.app/users/login',
-        user
-      );
+      result = await eventsApi.post('/users/login', user);
 
       localStorage.setItem('token', result.data.token);
 
       login(result.data);
       toggleScreenLogin();
     } catch (error) {
-      console.log(error);
       setErrorLogin(true);
     }
   };
@@ -101,7 +98,7 @@ const Login = () => {
           </div>
           {errorLogin && (
             <div className={styles.messageError}>
-              <p>Correo o contraseña incorrectos</p>
+              <p>Correo o contraseña invalidas</p>
             </div>
           )}
           <div className={styles.optionLogin}>

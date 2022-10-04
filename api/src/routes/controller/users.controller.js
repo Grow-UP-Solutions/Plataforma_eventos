@@ -9,10 +9,13 @@ import {
   login,
 } from '../services/users.services.js';
 
+import passport from 'passport';
+
 import { check } from 'express-validator';
 import validateFields from '../../models/util/middlewares/validate-fields.js';
 import { generateJWT } from '../../models/util/helpers/jwt.js';
 import { validateJWT } from '../../models/util/middlewares/validate-jwt.js';
+import { sendVerifyMail } from '../../models/util/mailer/confirmEmail.js';
 
 const router = Router();
 
@@ -24,6 +27,7 @@ router.get('/', async (req, res) => {
     return res.status(400).json({ ERROR_USER: error });
   }
 });
+
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
 
@@ -49,7 +53,10 @@ router.post(
       const token = await generateJWT(userCreate._id, userCreate.name);
 
       return res.json({
-        ...userCreate,
+        uid: userCreate._id,
+        name: userCreate.name,
+        email: userCreate.email,
+        organizer: userCreate.isOrganizer,
         token,
       });
     } catch (error) {
@@ -115,17 +122,125 @@ router.post(
   }
 );
 
-router.get('/renew', validateJWT, async (req, res) => {
+router.get('/login/renew', validateJWT, async (req, res) => {
   const uid = req.uid;
   const name = req.name;
 
+  const user = await getUser(uid);
   const token = await generateJWT(uid, name);
 
   res.status(201).json({
-    uid,
-    name,
+    uid: user._id,
+    name: user.name,
+    email: user.email,
+    organizer: user.isOrganizer,
     token,
   });
 });
+
+router.post('/confirmEmail', async (req, res) => {
+  const { code, uid } = req.body;
+
+  try {
+    const user = await getUser(uid);
+
+    if (code === user.code) {
+      return res.status(201).json({
+        success: true,
+        message: 'Código correcto',
+      });
+    } else {
+      throw new Error('Código incorrecto');
+    }
+  } catch (error) {
+    return res.status(404).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+router.post('/sendEmailForConfirm', async (req, res) => {
+  const { uid } = req.body;
+  const { email, code } = await getUser(uid);
+
+  console.log(email, code);
+
+  const response = await sendVerifyMail(email, code);
+
+  res.status(201).json({
+    message: response.msg,
+  });
+});
+
+/* PROVIDERS  */
+
+/* FACEBOOK */
+
+router.get(
+  '/login/facebook',
+  passport.authenticate('auth-facebook', {
+    prompt: 'select_account',
+    session: false,
+    scope: ['public_profile', 'email'],
+  })
+);
+
+router.get(
+  '/login/facebook/callback',
+  passport.authenticate('auth-facebook', {
+    failureRedirect: '/login/facebook',
+    session: false,
+  }),
+  (req, res) => {
+    const userString = JSON.stringify(req.user);
+    res.send(
+      `<!DOCTYPE html> 
+      
+    <html lang="en">
+    <body>
+    </body>
+    <script>
+    window.opener.postMessage(${userString}, 'http://localhost:3000')
+    </script>
+    </html>
+    `
+    );
+  }
+);
+
+/* GOOGLE */
+
+router.get(
+  '/login/google',
+  passport.authenticate('google', {
+    prompt: 'select_account',
+    session: false,
+    scope: ['email', 'profile'],
+  })
+);
+
+router.get(
+  '/login/google/callback',
+  passport.authenticate('google', {
+    failureRedirect: '/login/google',
+    session: false,
+  }),
+  (req, res) => {
+    const userString = JSON.stringify(req.user);
+    res.send(
+      `<!DOCTYPE html> 
+      
+    <html lang="en">
+    <body>
+    </body>
+    <script>
+    window.opener.postMessage(${userString}, 'http://localhost:3000')
+    </script>
+    </html>
+    `
+    );
+  }
+);
 
 export default router;

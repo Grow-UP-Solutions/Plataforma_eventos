@@ -1,4 +1,5 @@
 import React, { useReducer } from 'react';
+import eventsApi from '../../axios/eventsApi';
 import { AuthContext, authReducer } from './index';
 
 const Auth_INITIAL_STATE = {
@@ -18,6 +19,29 @@ export const AuthProvider = ({ children }) => {
     dispatch({ type: 'Auth - Logout' });
   };
 
+  const checkAuthToken = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) return logout();
+
+    try {
+      const { data } = await eventsApi.get('/users/login/renew');
+
+      console.log(data);
+
+      const user = {
+        uid: data.uid,
+        name: data.name,
+        email: data.email,
+        organizer: data.organizer,
+      };
+
+      localStorage.setItem('token', data.token);
+      login(user);
+    } catch (error) {
+      logout();
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -26,6 +50,7 @@ export const AuthProvider = ({ children }) => {
         //Methods
         login,
         logout,
+        checkAuthToken,
       }}
     >
       {children}
