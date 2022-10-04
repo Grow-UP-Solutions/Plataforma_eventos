@@ -8,8 +8,12 @@ export async function AllCategoyDb() {
 }
 
 export async function OneCategoryDb(name) {
-  
-  return await Category.findOne({ name: name });
+  try {
+    console.log(name)
+    return await Category.findOne({ name: name });
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 export async function updateOneCategoryDb(id, newCategory) {
@@ -26,3 +30,7 @@ export async function createCategoryDb(category) {
   const categoryCreated = new Category(category);
   return await categoryCreated.save();
 }
+
+
+const prueba= await OneCategoryDb('Al Aire Libre')
+console.log(prueba)
