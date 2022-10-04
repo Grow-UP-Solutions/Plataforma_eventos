@@ -109,7 +109,7 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
     specialRequires: '',
     cupos:'',
     price:'',
-    dates:[{ date: "", start : "", end:""}],
+    dates:[{ date: "", start : "", end:"" , year:0}],
     isPublic:true
   });
 
@@ -547,12 +547,13 @@ todas.map((foto)=>{
       ...post,
       dates:newFechas 
     })
+   
   }
     
   let addFormFields = () => {
     setPost({
       ...post,
-      dates:[...post.dates, { date: "", start : "", end:""}]
+      dates:[...post.dates, { date: "", start : "", end:"" , year:0}]
     })
     
   }
@@ -652,7 +653,7 @@ todas.map((foto)=>{
           specialRequires: '',
           cupos:'',
           price: '',
-          dates:[{ date: "", start : "", end:""}],
+          dates:[{ date: "", start : "", end:"" , year:0}],
           isPublic:true
      })
         navigate("/user/profile" )
@@ -694,7 +695,6 @@ todas.map((foto)=>{
   const id= '632cbed4f208f44f5333af48'
 
   function handleSubmit(e) {
-    console.log('submit')
     e.preventDefault()
     if (Object.values(errors).length > 0) {
       setFailedSubmit(true)
