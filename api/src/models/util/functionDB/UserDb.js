@@ -38,14 +38,13 @@ export async function oneUserDb(id) {
     if (!idOrganizer) {
       return { msg: 'Se rerquiere el id del organizador' };
     }
-    console.log('DB id', idOrganizer);
+
     return await Users.findById({ _id: idOrganizer })
       .populate({ path: 'myEventsCreated' })
       .populate({ path: 'myFavourites' })
       .populate({ path: 'myEventsBooked' })
       .populate({ path: 'opinionsOrg' });
   } catch (error) {
-    console.log('error db', error);
     throw new Error('Ha fallado validate id user db', error);
   }
 }

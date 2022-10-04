@@ -14,7 +14,7 @@ const EventSchema = new Schema({
   pictures: [
     {
       picture: String,
-      isCover: Boolean,
+      cover: Boolean,
     },
   ],
   online: String,
