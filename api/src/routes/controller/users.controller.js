@@ -136,10 +136,6 @@ router.post(
     try {
       const user = await login(email, password);
 
-      if (!user) {
-        throw new Error('Correo o contraseña invalida');
-      }
-
       const token = await generateJWT(user._id, user.name);
 
       res.status(200).json({
@@ -150,7 +146,7 @@ router.post(
         token,
       });
     } catch (error) {
-      return res.status(400).json({ FALLO_USER_LOGIN: error });
+      return res.status(400).json({ message: error.message });
     }
   }
 );
