@@ -1,9 +1,9 @@
 import { createTransport } from 'nodemailer';
-import dotenv from "dotenv";
-dotenv.config()
- const { EMAIL, PASSWORD } = process.env;
+import dotenv from 'dotenv';
+dotenv.config();
+const { EMAIL, PASSWORD } = process.env;
 
- export const enviar_mail_contact = async (name, email,tlf,msg) => {
+export const enviar_mail_contact = async (name, email, tlf, msg) => {
   const transporter = createTransport({
     service: 'gmail',
     secure: true,
@@ -11,7 +11,7 @@ dotenv.config()
       user: EMAIL,
       pass: PASSWORD,
     },
-  })
+  });
 
   let mail_options = {
     from: 'Lo quiero hacer',
@@ -28,12 +28,11 @@ dotenv.config()
             </td>
         </tr>
     </table>`,
-  }
+  };
   try {
-    const response = await transporter.sendMail(mail_options)
-    return {msg:('SE ENVIO CON EXITO', response.response)}
+    const response = await transporter.sendMail(mail_options);
+    return { msg: ('SE ENVIO CON EXITO', response.response) };
   } catch (error) {
-    return {msg:('FALLO EL ENVIO DE EMAIL', error)}
+    return { msg: ('FALLO EL ENVIO DE EMAIL', error) };
   }
-}
-
+};

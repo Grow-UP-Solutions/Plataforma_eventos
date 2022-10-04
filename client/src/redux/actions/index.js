@@ -20,7 +20,7 @@ export function postEvent(payload) {
   return async function (dispatch) {
     console.log('payload,',payload)
 
-    const json = await axios.post('https://plataformaeventos-production-6111.up.railway.app/events/create',payload);
+    const json = await axios.post('http://localhost:3001/events/create',payload);
     
     return dispatch({
       type: 'POST_EVENT',

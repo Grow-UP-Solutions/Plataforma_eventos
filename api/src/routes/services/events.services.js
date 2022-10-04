@@ -22,16 +22,17 @@ export async function getAllEvents() {
 }
 export async function createEvents(event) {
   try {
-    const { idOganizer, category } = event;
+    const { idOrganizer, categories } = event;
+    const organizer = await oneUserDb(idOrganizer);
     
-    const organizer = await oneUserDb(idOganizer);
-    
-    const temp = category.map(async (e) => {
+    const temp = categories.map(async (e) => {
       let temp = await OneCategoryDb(e);
       return temp;
     });
-    const categories = await Promise.all(temp);
-    event.category = categories.map((e) => e._id);
+    
+    const category = await Promise.all(temp);
+    
+    event.category = category.map((e) => e._id);
     event.organizer = organizer._id;
     const events = await createOneEventDb(event);
 
