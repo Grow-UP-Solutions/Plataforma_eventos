@@ -8,3 +8,4 @@ export { default as IconWarning } from './IconWarning';
 export { default as IconShield } from './IconShield';
 export { default as IconFacebook } from './IconFacebook';
 export { default as IconGoogle } from './IconGoogle';
+export { default as IconChangePassword } from './IconChangePassword';

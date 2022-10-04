@@ -7,12 +7,19 @@ import { UIContext } from '../../context/ui';
 import { CgClose } from 'react-icons/cg';
 import { IconFacebook, IconGoogle } from '../../assets/Icons';
 
+import { useNavigate } from 'react-router-dom';
 import eventsApi from '../../axios/eventsApi';
 import useValidateForm from '../../hooks/useValidateForm';
 
 const Login = () => {
+  const navigate = useNavigate();
   const { login } = useContext(AuthContext);
   const { toggleScreenLogin } = useContext(UIContext);
+
+  const [modalChangePassword, setModalChangePassword] = useState({
+    attemps: 0,
+  });
+
   const [saveSession, setSaveSession] = useState(false);
   const [formData, setFormData] = useState({
     mail: '',
@@ -28,7 +35,10 @@ const Login = () => {
     TODO: LOGIN
   */
 
-  const [errorLogin, setErrorLogin] = useState(false);
+  const [errorLogin, setErrorLogin] = useState({
+    result: false,
+    message: '',
+  });
 
   const onLogin = async (e) => {
     e.preventDefault();
@@ -50,22 +60,26 @@ const Login = () => {
       login(result.data);
       toggleScreenLogin();
     } catch (error) {
-      setErrorLogin(true);
+      setErrorLogin({
+        result: true,
+        message: error.response.data.message,
+      });
+
+      setModalChangePassword({
+        attemps: modalChangePassword.attemps + 1,
+      });
     }
   };
 
   const loginWithProvider = async (provider) => {
     const popup = window.open(
-      `https://plataformaeventos-production-6111.up.railway.app/users/login/${provider}`,
+      `${process.env.REACT_APP_API_URL}/users/login/${provider}`,
       'targetWindow',
       `toolbar=no, location=no, status=no,menubar=no, scrollbars=yes, resizable=yes,width=620, height=700`
     );
 
     window.addEventListener('message', async (event) => {
-      if (
-        event.origin ===
-        'https://plataformaeventos-production-6111.up.railway.app'
-      ) {
+      if (event.origin === `${process.env.REACT_APP_API_URL}`) {
         if (event.data) {
           let user = {};
 
@@ -100,6 +114,11 @@ const Login = () => {
         }
       }
     });
+  };
+
+  const navigateToRegister = () => {
+    toggleScreenLogin();
+    navigate('/registrate');
   };
 
   return (
@@ -150,9 +169,9 @@ const Login = () => {
               id="password"
             />
           </div>
-          {errorLogin && (
+          {errorLogin.result && (
             <div className={styles.messageError}>
-              <p>Correo o contraseña invalidas</p>
+              <p>{errorLogin.message}</p>
             </div>
           )}
           <div className={styles.optionLogin}>
@@ -176,8 +195,18 @@ const Login = () => {
 
         <div className={styles.containerOptionLogin}>
           <p>¿No tienes cuenta?</p>
-          <button>Crear cuenta</button>
+          <button onClick={navigateToRegister}>Crear cuenta</button>
         </div>
+
+        {modalChangePassword.attemps >= 3 && (
+          <div className={styles.containerModalChangePassword}>
+            <p>
+              Has intentado entrar muchas veces con contraseña incorrecta. Para
+              tu seguridad cambia tu clave.
+            </p>
+            <button>Cambiar clave</button>
+          </div>
+        )}
       </div>
     </div>
   );

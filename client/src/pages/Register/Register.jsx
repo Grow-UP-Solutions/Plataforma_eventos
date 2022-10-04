@@ -103,16 +103,13 @@ const Register = () => {
 
   const registerWithProvider = async (provider) => {
     const popup = window.open(
-      `https://plataformaeventos-production-6111.up.railway.app/users/login/${provider}`,
+      `${process.env.REACT_APP_API_URL}/users/login/${provider}`,
       'targetWindow',
       `toolbar=no, location=no, status=no,menubar=no, scrollbars=yes, resizable=yes,width=620, height=700`
     );
 
     window.addEventListener('message', async (event) => {
-      if (
-        event.origin ===
-        'https://plataformaeventos-production-6111.up.railway.app'
-      ) {
+      if (event.origin === `${process.env.REACT_APP_API_URL}`) {
         if (event.data) {
           let user = {};
 

@@ -3,7 +3,7 @@ import axios from "axios";
 const evente = [
   {
     title: 'Red Bull Batalla',
-    categories: ['Arte'],  /*(maximo 3)*/
+    categories: ['Artes'],  /*(maximo 3)*/
     otherCategorie: ['Other'],
     shortDescription: 'Red Bull Batalla la competencia de freestyle más importante de habla hispana tiene todo listo para su gran definición colombiana: la final, que volverá a contar con la presencia de público.',
     longDescription: 'Quien gane la final colombiana de Red Bull Batalla logrará el pase a la definición internacional, que se hará en México.',
@@ -43,7 +43,7 @@ const evente = [
   },
   {
     title: 'Tango Fin del Mundo',
-    categories: ['Arte'],  /*(maximo 3)*/
+    categories: ['Artes'],  /*(maximo 3)*/
     otherCategorie: ['Other'],
     shortDescription: 'Exclusive holiday package combining Buenos Aires and Ushuaia! 9 Days in vibrant Buenos Aires learning with the best maestros and assisted by professional dancers during the classes.',
     longDescription: '',
@@ -188,7 +188,7 @@ const evente = [
   },
   {
     title: 'Red Bull Batalla',
-    categories: ['Arte'],  /*(maximo 3)*/
+    categories: ['Artes'],  /*(maximo 3)*/
     otherCategorie: ['Other'],
     shortDescription: 'Red Bull Batalla la competencia de freestyle más importante de habla hispana tiene todo listo para su gran definición colombiana: la final, que volverá a contar con la presencia de público.',
     longDescription: 'Quien gane la final colombiana de Red Bull Batalla logrará el pase a la definición internacional, que se hará en México.',
@@ -228,7 +228,7 @@ const evente = [
   },
   {
     title: 'Tango Fin del Mundo',
-    categories: ['Arte'],  /*(maximo 3)*/
+    categories: ['Artes'],  /*(maximo 3)*/
     otherCategorie: ['Other'],
     shortDescription: 'Exclusive holiday package combining Buenos Aires and Ushuaia! 9 Days in vibrant Buenos Aires learning with the best maestros and assisted by professional dancers during the classes.',
     longDescription: '',
@@ -373,7 +373,7 @@ const evente = [
   },
   {
     title: 'Red Bull Batalla',
-    categories: ['Arte'],  /*(maximo 3)*/
+    categories: ['Artes'],  /*(maximo 3)*/
     otherCategorie: ['Other'],
     shortDescription: 'Red Bull Batalla la competencia de freestyle más importante de habla hispana tiene todo listo para su gran definición colombiana: la final, que volverá a contar con la presencia de público.',
     longDescription: 'Quien gane la final colombiana de Red Bull Batalla logrará el pase a la definición internacional, que se hará en México.',
@@ -413,7 +413,7 @@ const evente = [
   },
   {
     title: 'Tango Fin del Mundo',
-    categories: ['Arte'],  /*(maximo 3)*/
+    categories: ['Artes'],  /*(maximo 3)*/
     otherCategorie: ['Other'],
     shortDescription: 'Exclusive holiday package combining Buenos Aires and Ushuaia! 9 Days in vibrant Buenos Aires learning with the best maestros and assisted by professional dancers during the classes.',
     longDescription: '',
@@ -558,7 +558,7 @@ const evente = [
   },
   {
     title: 'Red Bull Batalla',
-    categories: ['Arte'],  /*(maximo 3)*/
+    categories: ['Artes'],  /*(maximo 3)*/
     otherCategorie: ['Other'],
     shortDescription: 'Red Bull Batalla la competencia de freestyle más importante de habla hispana tiene todo listo para su gran definición colombiana: la final, que volverá a contar con la presencia de público.',
     longDescription: 'Quien gane la final colombiana de Red Bull Batalla logrará el pase a la definición internacional, que se hará en México.',
@@ -598,7 +598,7 @@ const evente = [
   },
   {
     title: 'Tango Fin del Mundo',
-    categories: ['Arte'],  /*(maximo 3)*/
+    categories: ['Artes'],  /*(maximo 3)*/
     otherCategorie: ['Other'],
     shortDescription: 'Exclusive holiday package combining Buenos Aires and Ushuaia! 9 Days in vibrant Buenos Aires learning with the best maestros and assisted by professional dancers during the classes.',
     longDescription: '',
