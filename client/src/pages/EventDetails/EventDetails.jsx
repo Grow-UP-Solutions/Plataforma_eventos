@@ -10,27 +10,30 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getEvents } from '../../redux/actions';
 
 const EventDetails = () => {
-
-  const id = useParams().id;
-  const dispatch = useDispatch();
-  const allEvents = useSelector((state) => state.events);
-  const eventDetails = allEvents.filter((event) => event._id === id)[0];
   
+  const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getEvents);
     scroll.scrollToTop();
   }, [dispatch]);
 
+  const id = useParams().id;
+  
+  // const allEvents = useSelector((state) => state.events);
+  // const eventDetails = allEvents.filter((event) => event._id === id)[0];
+  
+  
+
   return (
     <div className={`${style.container} container`}>
       <div className={style.item1}>
-        <EventInfo event={eventDetails} />
-        <EventLocation event={eventDetails} />
-        <EventComments event={eventDetails} />
+        <EventInfo id={id} />
+        <EventLocation id={id} />
+        <EventComments id={id} />
       </div>
 
       <div className={style.item2}>
-        <EventSideBar event={eventDetails} />
+        <EventSideBar id={id} />
       </div>
     </div>
   );

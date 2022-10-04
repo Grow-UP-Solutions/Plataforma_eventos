@@ -2,9 +2,18 @@ import React from 'react';
 import styles from './EventOrganizer.module.css';
 import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
 import { Link } from 'react-router-dom';
+import { useSelector } from "react-redux";
 
-const EventOrganizer = ({ event }) => {
+const EventOrganizer = ({ id }) => {
+
+  console.log('id:',id)
+
+  const allEvents = useSelector((state) => state.events);
+  const eventDetails = allEvents.filter((event) => event._id === id)[0];
+ 
   return (
+    <div>
+      {eventDetails?
     <div className={styles.container}>
       <div className={styles.containerTop}>
         <p className={styles.title}>Organizador</p>
@@ -16,25 +25,28 @@ const EventOrganizer = ({ event }) => {
       <div className={styles.orgCont}>
       <Link
           className={styles.link}
-          to={`/organizerDetails/${event.organizer._id}`}
+          to={`/organizerDetails/${eventDetails.organizer._id}`}
         >
-        <img className={styles.orgImg} src={event.organizer.picture} alt="N" />
+        <img className={styles.orgImg} src={eventDetails.organizer.picture} alt="N" />
         </Link>
 
         <div className={styles.orgSubCont}>
-          <p className={styles.orgName}>{event.organizer.name}</p>
+          <p className={styles.orgName}>{eventDetails.organizer.name}</p>
           <p className={styles.orgMembership}>
-            Miembro desde {event.organizer.membership}
+            Miembro desde {eventDetails.organizer.membership}
           </p>
         </div>
       </div>
       <p className={styles.orgDescription}>
-        {event.organizer.descriptionOrganizer}
+        {eventDetails.organizer.descriptionOrganizer}
       </p>
       <button className={styles.button2}>
-        Otros eventos organizados por {event.organizer.name}
+        Otros eventos organizados por {eventDetails.organizer.name}
       </button>
     </div>
+      :''}
+
+      </div>
   );
 };
 

@@ -17,18 +17,32 @@ import { Swiper, SwiperSlide } from 'swiper/react/swiper-react';
 import 'swiper/swiper.min.css';
 import { formatDate } from '../../utils/formatDate';
 import style from './EventInfo.module.css';
+import { useSelector } from 'react-redux';
 
-const EventInfo = ({ event }) => {
+const EventInfo = ({ id }) => {
+
+ 
+  const allEvents = useSelector((state) => state.events);
+  const eventDetails = allEvents.filter((event) => event._id === id)[0];
+ 
+
+
   const [getDanger, setGetDanger] = useState(false);
   const [check, setCheck] = useState(null);
   const [checked, setChecked] = useState('');
+  
 
   const handleFormatDate = (check) => {
     setCheck(check);
     setChecked(formatDate(check));
   };
 
+ 
+
   return (
+    <div>
+      {eventDetails?
+  
     <div className={style.container}>
       <Swiper
         slidesPerView={1}
@@ -39,16 +53,16 @@ const EventInfo = ({ event }) => {
         modules={[Pagination, Navigation]}
         className={style.mySwipper}
       >
-        {event.pictures.length > 1 ? (
-          event.pictures.map((picture) => (
+        {eventDetails.pictures.length > 1 ? (
+          eventDetails.pictures.map((picture) => (
             <SwiperSlide>
-              <img className={style.img} src={picture} alt="Not Found ):" />
+              <img className={style.img} src={picture.picture} alt="Not Found ):" />
             </SwiperSlide>
           ))
         ) : (
           <img
             className={style.img}
-            src={event.pictures[0]}
+            src={eventDetails.pictures[0].picture}
             alt="Not Found ):"
           />
         )}
@@ -103,19 +117,19 @@ const EventInfo = ({ event }) => {
       </div>
 
       <div className={style.title}>
-        <p>{event.name}</p>
+        <p>{eventDetails.title}</p>
 
         <div className={style.container_rating}>
           <Rating
             className={style.rating}
             name="read-only"
-            value={event.rating}
+            value={eventDetails.rating}
             readOnly
             sx={{ fontSize: 25 }}
           />
         </div>
 
-        <p className={style.numberRating}>({event.rating})</p>
+        <p className={style.numberRating}>({eventDetails.rating})</p>
       </div>
 
       <div className={style.container_opinions}>
@@ -126,7 +140,7 @@ const EventInfo = ({ event }) => {
         <DescriptionOutlinedIcon fontSize="large" /> Descripcion Del Evento
       </p>
 
-      <p className={style.description}>{event.description}</p>
+      <p className={style.description}>{eventDetails.longDescription}</p>
 
       <div className={style.container_plus}>
         <p>Ver más</p>
@@ -233,6 +247,11 @@ const EventInfo = ({ event }) => {
         </div>
       )}
     </div>
+
+      :''}
+
+    </div>
+
   );
 };
 
