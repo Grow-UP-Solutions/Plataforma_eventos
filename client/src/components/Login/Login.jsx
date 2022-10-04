@@ -1,14 +1,14 @@
 import React, { useContext, useState } from 'react';
 import styles from './Login.module.css';
 
-import { UIContext } from '../../context/ui';
 import { AuthContext } from '../../context/auth/';
+import { UIContext } from '../../context/ui';
 
-import { IconFacebook, IconGoogle } from '../../assets/Icons';
 import { CgClose } from 'react-icons/cg';
+import { IconFacebook, IconGoogle } from '../../assets/Icons';
 
+import eventsApi from '../../axios/eventsApi';
 import useValidateForm from '../../hooks/useValidateForm';
-import axios from 'axios';
 
 const Login = () => {
   const { login } = useContext(AuthContext);
@@ -41,20 +41,65 @@ const Login = () => {
     };
 
     let result;
+
     try {
-      result = await axios.post(
-        'https://plataformaeventos-production-6111.up.railway.app/users/login',
-        user
-      );
+      result = await eventsApi.post('/users/login', user);
 
       localStorage.setItem('token', result.data.token);
 
       login(result.data);
       toggleScreenLogin();
     } catch (error) {
-      console.log(error);
       setErrorLogin(true);
     }
+  };
+
+  const loginWithProvider = async (provider) => {
+    const popup = window.open(
+      `https://plataformaeventos-production-6111.up.railway.app/users/login/${provider}`,
+      'targetWindow',
+      `toolbar=no, location=no, status=no,menubar=no, scrollbars=yes, resizable=yes,width=620, height=700`
+    );
+
+    window.addEventListener('message', async (event) => {
+      if (
+        event.origin ===
+        'https://plataformaeventos-production-6111.up.railway.app'
+      ) {
+        if (event.data) {
+          let user = {};
+
+          if (provider === 'facebook') {
+            const { email, id } = event.data._json;
+
+            user = {
+              email,
+              password: id + 'aA@',
+            };
+          }
+
+          if (provider === 'google') {
+            const { sub, email } = event.data._json;
+
+            user = {
+              email,
+              password: sub + 'aA@',
+            };
+          }
+
+          try {
+            const userLog = await eventsApi.post('/users/login', user);
+            localStorage.setItem('user', JSON.stringify(userLog.data));
+            localStorage.setItem('token', userLog.data.token);
+            login(userLog.data);
+            toggleScreenLogin();
+          } catch (error) {
+            setErrorLogin(true);
+          }
+          popup.close();
+        }
+      }
+    });
   };
 
   return (
@@ -63,11 +108,17 @@ const Login = () => {
         <CgClose onClick={toggleScreenLogin} className={styles.closeIcon} />
         <h1 className={styles.title}>Ingresa</h1>
         <div className={styles.loginProviders}>
-          <button className={styles.providerFacebook}>
+          <button
+            onClick={() => loginWithProvider('facebook')}
+            className={styles.providerFacebook}
+          >
             <IconFacebook />
             <span>Ingresa con Facebook</span>
           </button>
-          <button className={styles.providerGoogle}>
+          <button
+            onClick={() => loginWithProvider('google')}
+            className={styles.providerGoogle}
+          >
             <IconGoogle />
             <span>Ingresa con Google</span>
           </button>
@@ -101,7 +152,7 @@ const Login = () => {
           </div>
           {errorLogin && (
             <div className={styles.messageError}>
-              <p>Correo o contraseña incorrectos</p>
+              <p>Correo o contraseña invalidas</p>
             </div>
           )}
           <div className={styles.optionLogin}>
