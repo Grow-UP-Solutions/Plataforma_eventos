@@ -9,6 +9,7 @@ import {
   login,
   createOrganizerComment,
   getAllCommentUser,
+  sendMessageUser,
 } from '../services/users.services.js';
 
 import passport from 'passport';
@@ -77,6 +78,16 @@ router.post('/commentOrganizer/:id', async (req, res) => {
     return res.status(400).json(error.message);
   }
 });
+router.post('/message/:id', async (req,res) =>{
+  try {
+    const {id}= req.params
+    const msg = req.body
+    const senMenssage= await sendMessageUser(id, msg)
+    return res.status(200).json(senMenssage)
+  } catch (error) {
+    console.log(error)
+  }
+})
 router.get('/opinionsUser/:id', async (req, res) => {
   try {
     const { id } = req.params;
