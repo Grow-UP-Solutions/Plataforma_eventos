@@ -21,6 +21,7 @@ import {
   User,
   Message,
   Verification,
+  ChangePassword,
 } from './pages';
 import { Footer, Login, Navbar } from './components';
 import { Data } from './context/state/stateProvider';
@@ -36,7 +37,9 @@ function App() {
   const [navBar, setNavBar] = useState(false);
   const dispatch = useDispatch();
   const { isMenuLoginOpen, getCategories } = useContext(UIContext);
-  const { checkAuthToken, logged } = useContext(AuthContext);
+  const { checkAuthToken } = useContext(AuthContext);
+
+  const { user, logged } = useContext(AuthContext);
 
   useEffect(() => {
     checkAuthToken();
@@ -60,7 +63,6 @@ function App() {
           <Route path="/eventdetails/:id" element={<EventDetails />} />
           <Route path="/cart/:id" element={<Cart />} />
           <Route path="/search" element={<SearchResult />} />
-          <Route path="/ingresa" element={<Ingresa />} />
           <Route path="/registrate" element={<Register />} />
           <Route path="/organiza-un-evento" element={<EventCreate />} />
           <Route path="/oganiza-un-evento-form" element={<EventCreateForm />} />
@@ -74,6 +76,7 @@ function App() {
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/bills" element={<Bills />} />
           <Route path="/verificarmail" element={<Verification />} />
+          <Route path="/cambiarContrasenia" element={<ChangePassword />} />
         </Routes>
         <div className="container">
           <Footer />
