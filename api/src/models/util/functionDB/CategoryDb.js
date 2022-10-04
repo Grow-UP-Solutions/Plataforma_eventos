@@ -31,6 +31,3 @@ export async function createCategoryDb(category) {
   return await categoryCreated.save();
 }
 
-
-const prueba= await OneCategoryDb('Al Aire Libre')
-console.log(prueba)

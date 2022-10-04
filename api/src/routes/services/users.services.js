@@ -6,6 +6,7 @@ import {
   createOneUserDb,
   validateEmailUserDb,
   generateUserComment,
+  sendMessageDB,
 } from '../../models/util/functionDB/UserDb.js';
 
 import bcrypt from 'bcryptjs';
@@ -66,6 +67,16 @@ export async function userDelete(id) {
   if (!deleteUser) 'Usuario no encontardo';
 
   return deleteUser;
+}
+export async function sendMessageUser(idSend,message) {
+  try {
+    const {idGet, msg}= message
+    const sendMessage = await sendMessageDB(idSend,idGet,msg)
+    return sendMessage
+    
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 export async function login(email, password) {

@@ -5,24 +5,14 @@ import bcrypt from 'bcryptjs';
 /** basic user database operations */
 
 export async function allUserDb() {
-  try {
-    const id = '633642857b1fdf0b1331ca48';
-    const prueba = await Users.find();
-    const prueba2 = prueba
-      .map((e) => {
-        return e.opinionsOrg;
-      })
-      .flat()
-      .filter((e) => {
-        return e._id == id;
-      });
+  try {    
 
     return await Users.find()
       .populate({ path: 'myEventsCreated' })
       .populate({ path: 'myFavourites' })
       .populate({ path: 'myEventsBooked' });
   } catch (error) {
-    console.log(error);
+    throw new Error( "Error con findAllUser DB");
   }
 }
 export async function validateEmailUserDb(email) {
@@ -97,13 +87,37 @@ export async function createOneUserDb(user) {
 export async function generateUserComment(id, opinion) {
   try {
     const { idUser } = opinion;
-    console.log(id);
+    
     const user = await oneUserDb(idUser);
+
     const organizer = await oneUserDb(id);
+
     opinion.user = user._id;
+
     organizer.opinionsOrg.push(opinion);
     return await organizer.save();
   } catch (error) {
     throw new Error('Fallo comment Db', error);
+  }
+}
+
+export async function sendMessageDB(idSend,idGet, msg){
+  try {
+    const userSend = await oneUserDb(idSend)
+    const { picture, name }= userSend
+    const userGet = await oneUserDb(idGet)
+    userGet.message.push({
+      msg,
+      user:{
+        name,
+        picture
+      }
+    })
+    await userGet.save()
+    console.log(userGet.message)
+    return {Respon: 'mensaje enviado con exito'}
+
+  } catch (error) {
+    throw new Error('Error en sendMessegeDB')
   }
 }
