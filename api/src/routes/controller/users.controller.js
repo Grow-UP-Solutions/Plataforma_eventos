@@ -7,6 +7,8 @@ import {
   userDelete,
   getUser,
   login,
+  createOrganizerComment,
+  getAllCommentUser,
 } from '../services/users.services.js';
 
 import passport from 'passport';
@@ -27,7 +29,6 @@ router.get('/', async (req, res) => {
     return res.status(400).json({ ERROR_USER: error });
   }
 });
-
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
 
@@ -64,6 +65,27 @@ router.post(
     }
   }
 );
+
+router.post('/commentOrganizer/:id', async (req, res) => {
+  try {
+    const opinion = req.body;
+    const { id } = req.params;
+    const opinionCreat = await createOrganizerComment(id, opinion);
+    return res.status(200).json(opinionCreat);
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json(error.message);
+  }
+});
+router.get('/opinionsUser/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const allComment = await getAllCommentUser(id);
+    return res.status(200).json(allComment);
+  } catch (error) {
+    return res.status(400).json(error);
+  }
+});
 router.put('/update/:id', async (req, res) => {
   try {
     const { id } = req.params;

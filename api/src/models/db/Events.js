@@ -1,10 +1,32 @@
 import { Schema, model } from "mongoose";
-import OpinionsEvent from "./OpinionsEvent.js";
 
 const EventSchema = new Schema({
-  name: String,
-  nick: String,
-  description: String,
+  title: String,
+  category: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Category",
+    },
+  ],
+  otherCategorie: [String],
+  shortDescription: String,
+  longDescription: String,
+  pictures: [
+    {
+      picture: String,
+      isCover: Boolean,
+    },
+  ],
+  online: String,
+  link: String,
+  departamento: String,
+  municipio: String,
+  direccion: String,
+  barrio: String,
+
+  specialRequires: String,
+  cupos: String,
+  price: String,
   dates: [
     {
       date: String,
@@ -12,25 +34,38 @@ const EventSchema = new Schema({
       end: String,
     },
   ],
-  cupos: Number,
-  price: String,
-  year: Number,
-  rating: Number,
-  enLinea: Boolean,
-  pictures: [String],
-  participants: Number,
+  notificaciones: [
+    {
+      image: String,
+      description: String,
+      user: String,
+      date: {
+        type: Date,
+        default: Date.now(),
+      },
+    },
+  ],
+
+  isPublic: {
+    type: Boolean,
+  },
+
+  rating: {
+    type: Number,
+    default: 0,
+  },
+
   organizer: {
     type: Schema.Types.ObjectId,
     ref: "Users",
   },
-  category: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Category",
-    },
-  ],
+
   opinions: [
     {
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: "Users",
+      },
       title: String,
       email: String,
       time: {
@@ -39,7 +74,10 @@ const EventSchema = new Schema({
       },
       rating: Number,
       opinion: String,
-      picture: String,
+      picture: {
+        type: String,
+        default: null,
+      },
     },
   ],
 });

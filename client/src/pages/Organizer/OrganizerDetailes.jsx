@@ -15,20 +15,27 @@ const OrganizerDetails = () => {
 
   const id = useParams().id;
   const [component, setComponent] = useState('');
+  const [nextEvent, setNextEvent] = useState({});
   const events = useSelector((state) => state.events);
   const userDetail = events.filter((e) => e.organizer._id === id)[0];
-  console.log('userdetail:', userDetail);
 
   useEffect(() => {
+    obtenerDatos();
     scroll.scrollToTop();
   }, []);
+
+  const obtenerDatos = async() => {
+    const data = await fetch('https://plataformaeventos-production-6111.up.railway.app/users/' + id);
+    const json = await data.json();
+    setNextEvent(json);
+  }
 
   const handleInput = (e) => {
     const name = e.target.name;
     if (name === 'AboutOrganizer')
       setComponent(<AboutOrganizer userDetail={userDetail.organizer} />);
     if (name === 'NextEvents')
-      setComponent(<NextEvents userDetail={userDetail.organizer} />);
+      setComponent(<NextEvents nextEvent={nextEvent} />);
     if (name === 'Opinions') setComponent(<Opinions userDetail={userDetail.organizer} />);
   };
 

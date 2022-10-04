@@ -29,7 +29,7 @@ const events = [
     ],
     participants: 33,
     organizer: {
-      id: 1,
+        id: 1,
         name: 'Jean Pierre',
         picture: 'https://i.insider.com/54e79e766bb3f76a6db7118f?width=600&format=jpeg',
         isSuperAdmin: true,

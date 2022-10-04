@@ -1,5 +1,4 @@
 .container {
-  margin-top: 6rem;
   width: 100%;
   height: 100%;
 }
@@ -12,7 +11,6 @@
   line-height: 2rem;
   overflow: auto;
   margin: auto;
-
   scroll-snap-type: y mandatory;
   scrollbar-width: none;
   scrollbar-color: #6969dd #e0e0e0;
@@ -63,6 +61,20 @@
   color: var(--color-grey-2);
 }
 
+input:invalid {
+  border: 2px dashed red;
+  box-shadow: 0 0 5px 1px red;
+}
+
+input:invalid:required {
+  background-image: red;
+}
+
+input:valid {
+  border: 2px solid black;
+}
+
+
 .subInput {
   color: #878787;
   font-size: 1rem;
@@ -81,6 +93,20 @@
     linear-gradient(#d6d6d6, #d6d6d6) center/2px 100% no-repeat;
   background-position: 33% 0, 67% 0;
 }
+.containerChecks2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin-bottom: 4rem;
+  margin-top: 2rem;
+  background: linear-gradient(#d6d6d6, #d6d6d6) center/2px 100% no-repeat,
+    linear-gradient(#d6d6d6, #d6d6d6) center/2px 100% no-repeat;
+  background-position: 33% 0, 67% 0;
+}
+
+.containerChecks2 .checkBox{
+ display: none;
+}
+
 
 .checks {
   align-items: center;
@@ -136,7 +162,8 @@
   margin-bottom: 8rem;
 }
 
-.input3 {
+.textareaShort {
+  padding: 12px 20px;
   height: 15rem;
   border: 1px solid var(--color-grey-4);
   border-radius: 10px;
@@ -145,35 +172,155 @@
   width: 100%;
   margin-top: 1rem;
   margin-bottom: 1rem;
+  font-size: 1.7rem;
+  resize: none;
 }
 
-.input::placeholder {
-  top: 1rem;
-  color: var(--color-grey-2);
-}
-
-/*SECTION 4: Pictures */
-
-.container4 {
-  margin-bottom: 10rem;
-}
-
-.subTitle4 {
+.textareaShort::placeholder {
+  margin-top: 2rem;
   color: #707070;
-  margin-bottom: 1rem;
-  font-size: 1.2rem;
-  font-weight: bold;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
 }
 
-.inputPicture {
+.textareaLong {
+  padding: 12px 20px;
   height: 15rem;
   border: 1px solid var(--color-grey-4);
   border-radius: 10px;
   background-color: white;
   color: var(--color-grey-2);
   width: 100%;
+  margin-top: 1rem;
   margin-bottom: 1rem;
+  font-size: 1.7rem;
 }
+
+.textareaLong::placeholder {
+  margin-top: 2rem;
+  color: #707070;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+/*SECTION 4: Pictures */
+
+
+
+.subTitle4 {
+  color: #707070;
+  margin-bottom: 2rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.dropFileIput {
+  text-align: center;
+  width: 50rem;
+  height: 30rem;
+  border: 2px dashed var(--color-grey-4);
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-grey-2);
+  background-color: var(--input-bg);
+  margin-bottom: 2rem;
+  margin-left: 4rem;
+  cursor: pointer;
+ }
+
+ .dropFileIput input {
+  opacity: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  
+}
+
+.dropFileIput input::placeholder {
+  color: var(--color-grey-2);
+}
+
+.dropFileIput p{
+  color: var(--color-grey-2);
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.dropFileIput div{
+  color: var(--color-grey-2);
+  text-align: center;
+  margin-top: 1rem;
+}
+  
+.dropFileIput:hover,
+.dropFileIput.dragover {
+  opacity: 0.6;
+}
+
+.dropFilePreview{
+  margin-top: 1rem;
+
+}
+
+.dropFilePreview p{
+  color: #707070;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+
+}
+
+/* .mySwiper{
+  position: relative;
+  width: 100%;
+  max-height: 10rem;
+  border: 2px solid var(--color-grey-4);
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-grey-2);
+  background-color: var(--input-bg);
+  margin-bottom: 1rem;
+
+} */
+
+.mySwiperImg{
+  width: 80rem;
+  height: 48rem;
+  border: 2px solid var(--color-grey-4);
+  border-radius: 10px;
+
+}
+
+
+
+.mySwiperBtnDel{
+  background-color: rgb(255, 255, 255);
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 10%;
+  left:90%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color:#d53e27;
+  border:none
+}
+
+.mySwiperBtnDel:hover{
+  color:white;
+  background-color: #d53e27;
+
+}
+
+
 
 .checkBox4 {
   accent-color: #d53e27;
@@ -181,6 +328,7 @@
   height: 2rem;
   width: 2rem;
   border-radius: 10px;
+  cursor: pointer;
 }
 
 /*SECTION 5 */
@@ -235,9 +383,10 @@
 .containerDirection {
   display: flex;
   justify-content: center;
-  align-items: center;
   margin-bottom: 1rem;
 }
+
+
 
 .select {
   height: 4rem;
@@ -245,9 +394,34 @@
   border-radius: 10px;
   background-color: white;
   color: var(--color-grey-2);
-  width: 60%;
+  width: 50%;
   margin-right: 1rem;
 }
+
+.Muni{
+  height: 4rem;
+  border: 1px solid var(--color-grey-4);
+  border-radius: 10px;
+  background-color: white;
+  color: var(--color-grey-2);
+  width: 100%;
+  margin-right: 1rem;
+
+}
+
+.Muni input{
+  height: 4rem;
+  border: 1px solid var(--color-grey-4);
+  border-radius: 10px;
+  background-color: white;
+  color: var(--color-grey-2);
+  width: 100%;
+  margin-right: 1rem;
+
+}
+
+
+
 
 .input5 {
   height: 5rem;
@@ -517,7 +691,19 @@
 
 /*Nueva Fecha*/
 
-.newdate {
+
+
+.checkOtherDate {
+  margin-bottom: 2rem;
+  margin-left: 1rem;
+  text-align: center;
+}
+
+.checkOtherDate input {
+  display: none;
+}
+
+.checkOtherDate label {
   background-color: white;
   border: none;
   color: red;
@@ -528,6 +714,15 @@
   width: 100%;
   margin-bottom: 7rem;
   cursor: pointer;
+}
+
+
+.newDate {
+  display: none;
+}
+
+.checkOtherDate input:checked ~ .newDate {
+  display: block;
 }
 
 /*TERMS N CONDITIONS*/
@@ -559,11 +754,11 @@
   padding: 8px 30px;
   cursor: pointer;
   background-color: #d6d6d6;
-  color: black;
+  color: #707070;
   border: none;
 }
 
-.submitBtn {
+.viewBtn:hover {
   font-size: 1.6rem;
   border-radius: 18px;
   text-align: center;
@@ -572,7 +767,10 @@
   background-color: #d53e27;
   color: white;
   border: none;
+  font-weight: bolder;
 }
+
+
 
 .cancelBtn {
   font-size: 1.6rem;
@@ -739,3 +937,232 @@
   background-color: DodgerBlue !important;
   color: #ffffff;
 }
+
+/*ERRORES*/
+
+
+.errors{
+  font-family: sans-serif;
+  color: #ba150a;
+  font-size: 14px;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+
+/*Seccion 1*/
+.container1 input:required {
+  border: 3px solid red;
+  background-color: white;
+  box-shadow: none;
+}
+
+.container1 input:required:invalid {
+  border-color: #c00000;
+}
+
+/*Seccion 3*/
+
+
+.containerDescription textarea:required {
+  border: 3px solid red;
+  background-color: white;
+  box-shadow: none;
+}
+
+.containerDescription textarea:required {
+  border-color: #c00000;
+}
+
+
+
+/*Seccion 4*/
+
+.errorsPicture {
+  text-align: center;
+  width: 50rem;
+  height: 30rem;
+  border: 2px dashed red;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-grey-2);
+  background-color: var(--input-bg);
+  margin-bottom: 2rem;
+ }
+
+ .errorsPicture input {
+  opacity: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.errorsPicture input::placeholder {
+  color: var(--color-grey-2);
+}
+
+.errorsPicture p{
+  color: var(--color-grey-2);
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.errorsPicture div{
+  color: var(--color-grey-2);
+  text-align: center;
+  margin-top: 1rem;
+}
+  
+.errorsPicture:hover,
+.errorsPicture.dragover {
+  opacity: 0.6;
+}
+
+.errorsPicture{
+  margin-top: 1rem;
+
+}
+
+.errorsPicture p{
+  color: red;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+
+
+
+/*Seccion 5*/
+
+.online input:required{
+  border: 3px solid red;
+  background-color: white;
+  box-shadow: none;
+}
+
+.online input:required {
+  border-color: #c00000;
+}
+
+
+.containerDirection input:required{
+  border: 3px solid red;
+  background-color: white;
+  box-shadow: none;
+}
+
+.containerDirection input:required {
+  border-color: #c00000;
+}
+
+.Muni input:required{
+  border: 3px solid red;
+  background-color: white;
+  box-shadow: none;
+}
+
+.Muni input:required {
+  border-color: #c00000;
+}
+
+.direccionError input:required{
+  border: 3px solid red;
+  background-color: white;
+  box-shadow: none;
+}
+
+.direccionError input:required {
+  border-color: #c00000;
+}
+
+.barrio input:required{
+  border: 3px solid red;
+  background-color: white;
+  box-shadow: none;
+}
+
+.barrio input:required {
+  border-color: #c00000;
+}
+
+
+
+/*Seccion 6*/
+
+.containerSubInfo input:required{
+  border: 3px solid red;
+  background-color: white;
+  box-shadow: none;
+}
+
+.containerSubInfo input:required {
+  border-color: #c00000;
+}
+
+
+
+.contDate input:required{
+  border: 3px solid red;
+  background-color: white;
+  box-shadow: none;
+}
+
+.contDate input:required {
+  border-color: #c00000;
+}
+
+
+.contStart input:required{
+  border: 3px solid red;
+  background-color: white;
+  box-shadow: none;
+}
+
+.contStart input:required {
+  border-color: #c00000;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.containerDatess input{
+  margin-bottom: 2rem;
+
+}
+
+.addDate{
+  background-color: transparent;
+  color:red;
+  cursor:pointer;
+  margin-bottom: 2rem;
+  border:none;
+  text-align: center;
+}
+
+.delete{
+  background-color: transparent;
+  color:red;
+  cursor:pointer;
+  margin-bottom: 2rem;
+  border:none;
+  text-align: center;
+  margin-left: 2rem;
+}
+
+

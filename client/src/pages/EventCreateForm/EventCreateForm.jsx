@@ -1,6 +1,7 @@
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import React, { useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Calendar } from 'react-date-range';
 import * as locales from 'react-date-range/dist/locale';
 import { Navigation } from 'swiper';
@@ -16,26 +17,317 @@ import calendar from '../../assets/imgs/calendar.svg';
 import iconEditar from '../../assets/imgs/iconEditar.svg';
 import iconExclamacion2 from '../../assets/imgs/iconExclamacion2.svg';
 import infoIcon from '../../assets/imgs/infoIcon.svg';
+import ImageIcon from '@mui/icons-material/Image';
 import mapa from '../../assets/imgs/mapa2.png';
 import { formatDate } from '../../utils/formatDate';
 import styles from './EventCreateForm.module.css';
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import Preview from './Preview';
+import { ConstructionOutlined, ContactMailOutlined, EmergencyRecordingSharp } from '@mui/icons-material';
+import { getColombia , postEvent } from '../../redux/actions';
+import swal from 'sweetalert'
+import { useNavigate } from 'react-router-dom';
 
 const EventCreateForm = () => {
+
+
+  const dispatch = useDispatch()
+
+
+
+  //--------------------------------------------------//
+  //               DEPARTAMENTOS              //
+
+  useEffect(() => {
+    dispatch(getColombia())
+  },[])
+
+  const departamentosAll = useSelector(state=>state.departamentos)
+ 				
+  const departamentosFilter = departamentosAll.map(departamento=>{
+    return{
+      departamento:departamento.departamento,
+      municipio:departamento.municipio
+    }
+  } )
+
+  const departamentos = [];
+
+const elementExist = (departamentosFilter, value) => {
+  let i = 0;
+  while (i < departamentosFilter.length) {
+    if (departamentosFilter[i].departamento == value) return i;
+    i++;
+  }
+  return false;
+}
+
+departamentosFilter.forEach((e) => {
+  let i = elementExist(departamentos, e.departamento);
+  if (i === false) {
+    departamentos.push({
+      "departamento": e.departamento,
+      "municipio": [e.municipio]
+    });
+  } else {
+    departamentos[i].municipio.push(e.municipio);
+  }
+});
+
+const capitales = ['Medellín','Tunja','Montería','Quibdó','Pasto' ,'Bucaramanga','Villavicencio' ,'Barranquilla','Cartagena de Indias','Manizales','Florencia','Popayán' ,'Valledupar' ,'Bogotá','Neiva','Riohacha' ,'Santa Marta','Armenia','Pereira' ,'Sincelejo','Ibagué','Arauca','Yopal','Mocoa' ,'Leticia','Inírida','Mitú', 'Puerto Carreño', 'San José del Guaviare','San Andrés','Bogota','Cúcuta','Santiago de Cali']
+
+
+
+const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, capital: capitales[indice]}))
+
+
+
+
+
+
+  //--------------------------------------------------//
+  //               POST Y ERROR            //
+
+  
+
+
   const [post, setPost] = useState({
+    idOrganizer:'632cbed4f208f44f5333af48',
     title: '',
     categories: [],
-    otherCategories: [],
+    otherCategorie: [],
     shortDescription: '',
     longDescription: '',
     pictures: [],
     online: '',
     link: '',
     departamento: '',
+    municipio: '',
     direccion: '',
     barrio: '',
     specialRequires: '',
+    cupos:'',
     price: '',
+    dates:[{ date: "", start : "", end:""}],
+    isPublic:true
   });
+
+  const [errors, setErrors] = useState({
+    title: '',
+    categories: '',
+    otherCategorie: '',
+    shortDescription: '',
+    longDescription: '',
+    pictures: '',
+    link: '',
+    departamento: '',
+    direccion: '',
+    barrio: '',
+    specialRequires: '',
+    cupos:'',
+    price: '',
+    dates:'',
+    isPublic:true
+  
+  })
+
+  useEffect(() => {
+    setErrors(validate(post))
+  }, [post])
+
+ 
+
+  function validate(post) {
+     let errors = {}
+                
+     let letras =  /^[a-zA-Z]*$/g
+     let offensiveWord= /\b(perro|gato)\b/i
+     let mail = (/[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}/igm)
+     let webSite =(/\b(http|https|www)\b/i)
+     let numeroYdecimales = /^\d*\.?\d*$/
+     let numero = /^[0-9]*$/g
+     let notNumber = /^(?=.*\d).+$/g
+     
+    if (!post.title) {
+      errors.title = true
+    }
+
+    if (post.title.match(mail)) {
+      errors.title = 'No puedes ingresar un email o link a redes sociales'
+    }
+
+    if (post.title.match(webSite)) {
+      errors.title = 'No puedes ingresar un dominio o pagina web'
+    }
+
+    if (post.title.match(offensiveWord)) {
+      errors.title = 'Palabra ofensiva'
+    }
+
+    if (post.title.match (notNumber)) {
+      errors.title = 'No puedes ingresar un numero'
+    }
+
+    if (!post.categories[0]) {
+      errors.categories = true
+    }
+
+    if (post.categories.length > 3) {
+      errors.categories = 'Solo podes seleccionar 3 categorias'
+    }
+
+    // if (!post.otherCategorie) {
+    //   errors.otherCategorie = 'Campo obligatorio(!)'
+    // }
+     
+    if (!post.shortDescription) {
+      errors.shortDescription = true
+    }
+
+    if (post.shortDescription.match(mail)) {
+      errors.shortDescription = 'No puedes ingresar un email o link a redes sociales'
+    }
+
+    if (post.shortDescription.match(webSite)) {
+      errors.shortDescription = 'No puedes ingresar un dominio o pagina web'
+    }
+
+    if (post.shortDescription.match(offensiveWord)) {
+      errors.shortDescription = 'Palabra ofensiva'
+    }
+
+    if (post.shortDescription.match (notNumber)) {
+      errors.shortDescription = 'No puedes ingresar un numero'
+    }
+
+
+    if (!post.longDescription) {
+      errors.longDescription = true
+    }
+
+    if (post.longDescription.match(mail)) {
+      errors.longDescription = 'No puedes ingresar un email o link a redes sociales'
+    }
+
+    if (post.longDescription.match(webSite)) {
+      errors.longDescription = 'No puedes ingresar un dominio o pagina web'
+    }
+
+    if (post.longDescription.match(offensiveWord)) {
+      errors.longDescription = 'Palabra ofensiva'
+    }
+
+    if (post.shortDescription.match (notNumber)) {
+      errors.shortDescription = 'No puedes ingresar un numero'
+    }
+
+    if (!post.pictures[0]) {
+      errors.pictures = 'Debe ingresar al menos una imagen'
+    }
+
+    let repetidas= post.pictures.filter(picture=>picture.cover===true)
+
+    if (repetidas.length>1) {
+      errors.pictures = 'Solo puede elegir una portada'
+    }
+
+
+
+    if (post.online) {
+
+      if (!post.link) {
+        errors.link = true
+      }
+
+      if (post.link.match(offensiveWord)) {
+        errors.link = 'Palabra ofensiva'
+      }
+
+    } else {
+
+    if (!post.departamento) {
+      errors.departamento = true
+    }
+
+    if (!post.municipio) {
+      errors.municipio = true
+    }
+
+    if (!post.direccion) {
+      errors.direccion = true
+    }
+
+    if (post.direccion.match(mail)) {
+      errors.direccion = 'No puedes ingresar un email o link a redes sociales'
+    }
+
+    if (post.direccion.match(webSite)) {
+      errors.direccion = 'No puedes ingresar un dominio o pagina web'
+    }
+
+    if (post.direccion.match(offensiveWord)) {
+      errors.direccion = 'Palabra ofensiva'
+    }
+
+    if (!post.barrio) {
+      errors.barrio = true
+    }
+
+    if (post.barrio.match(mail)) {
+      errors.barrio = 'No puedes ingresar un email o link a redes sociales'
+    }
+
+    if (post.barrio.match(webSite)) {
+      errors.barrio = 'No puedes ingresar un dominio o pagina web'
+    }
+
+    if (post.barrio.match(offensiveWord)) {
+      errors.barrio = 'Palabra ofensiva'
+    }
+  }
+
+    if (post.specialRequires.match(mail)) {
+      errors.specialRequires = 'No puedes ingresar un email o link a redes sociales'
+    }
+
+    if (post.specialRequires.match(webSite)) {
+      errors.specialRequires = 'No puedes ingresar un dominio o pagina web'
+    }
+
+    if (post.specialRequires.match(offensiveWord)) {
+      errors.specialRequires = 'Palabra ofensiva'
+    }
+
+    if (!post.cupos) {
+      errors.cupos = true
+    }
+
+    if (!post.cupos.match(numero)) {
+      errors.cupos = 'Debe ser un numero'
+    }
+
+    if (!post.price) {
+      errors.price = true
+    }
+
+    if (!post.price.match(numeroYdecimales)) {
+      errors.price = 'Debe ser un numero'
+    }
+
+    for (var i=0; i<post.dates.length;i++ ){
+      if (!post.dates[i].date ||!post.dates[i].start ||!post.dates[i].end ) {
+        errors.dates = true
+      }
+
+    }
+    
+    return errors
+  }
+
+  //--------------------------------------------------//
+  //               POST - TITLE,DESCRIPTION ...       //
+
 
   function handleChange(e) {
     setPost({
@@ -44,40 +336,249 @@ const EventCreateForm = () => {
     });
   }
 
+
+  //--------------------------------------------------//
+  //               POST - CATEGORIA                   //
+
+ 
+  
+  const [seleccionados, setSeleccionados] = useState([])
+  const [changed, setChanged] = useState(false)
+
+
   function handleCategories(e) {
+    var categorieName = e.target.value
+    if (!e.target.checked) {
+      let seleccion = seleccionados.filter((categorie) => categorie.name !== categorieName)
+      setSeleccionados(seleccion)
+      setPost({
+        ...post,
+        categories:seleccion
+      })
+    } else {
+      let categorieCheck = categories.find((categorie) => categorie.name === categorieName)
+      setSeleccionados([...seleccionados, categorieCheck])
+      setPost({
+        ...post,
+        categories:[...post.categories, categorieCheck]
+      })
+    }
+  }
+
+  useEffect(() => {
+    var checkeds = document.getElementsByClassName('checkbox')
+    for (let i = 0; i < checkeds.length; i++) {
+      checkeds[i].checked = false
+    }
+    setSeleccionados([])
     setPost({
       ...post,
-      [e.target.name]: [...post.categories, e.target.value],
+      categories:[]
+    })
+  }, [changed])
+
+
+  function handleOtherCategorie(e) {
+    setPost({
+      ...post,
+      otherCategorie:  e.target.value,
     });
   }
 
-  function handleOtherCategories(e) {
-    setPost({
-      ...post,
-      [e.target.name]: [...post.categories, e.target.value],
-    });
+  //--------------------------------------------------//
+  //                POST - DROP DRAG IMAGES                //
+
+  
+const wrapperRef = useRef(null);
+
+
+const onDragEnter = () => wrapperRef.current.classList.add('dragover');
+
+const onDragLeave = () => wrapperRef.current.classList.remove('dragover');
+
+const onDrop = () => wrapperRef.current.classList.remove('dragover');
+
+const onFileDrop = (e) => {
+  
+  if (e.target.files[0]) {
+      const reader = new FileReader()
+      reader.readAsDataURL(e.target.files[0])
+      reader.onload = (e)=>{
+          e.preventDefault();
+         setPost({
+          ...post,
+          pictures: [...post.pictures, {cover:false, picture: e.target.result}]}
+         )
+         }
+      ;
   }
+}
+const fileRemove = (item) => {
+  const updatedPictures=[...post.pictures]
+  updatedPictures.splice(post.pictures.indexOf(item), 1);
+  setPost({
+    ...post,
+    pictures:updatedPictures
+  })
+  ;
+}
+
+function handleCover(e){
+  
+const todas = [...post.pictures]
+
+if(e.target.checked){
+todas.map((foto)=>{
+    if(foto.picture===e.target.value){
+      foto.cover = true}
+  })
+  setPost({
+    ...post,
+    pictures:todas
+  })
+}else{
+  todas.map((foto)=>{
+    if(foto.picture===e.target.value){
+      foto.cover = false}
+  })
+  setPost({
+    ...post,
+    pictures:todas
+  })
+}
+}
+
+  //--------------------------------------------------//
+  //               POST  UBICACION                //
 
   function handleCheck(e) {
     if (e.target.checked) {
       setPost({
         ...post,
         [e.target.name]: true,
+        departamento:'',
+        municipio:'',
+        barrio:'',
+        direccion:''
       });
     } else {
       setPost({
         ...post,
         [e.target.name]: false,
+        link:''
       });
     }
   }
 
-  function handlePrice(e) {
+
+  function handleLink(e) {
     setPost({
       ...post,
-      [e.target.name]: e.target.value,
+      link: e.target.value,
     });
   }
+
+
+
+
+    
+  //--------------------------------------------------//
+  //               POST  PRICE            //
+
+  
+
+  
+  const costoDeManejo = 1672.27
+  const IVA = 0.19
+  const comision = 0.16
+
+  const a = costoDeManejo * IVA
+
+
+  const [precioAlPublico,setPrecioAlPublico] = useState()
+
+
+  const [gananciaPorCupo,setGananciaPorCupo] = useState()
+
+  const [gananciaPorEvento,setGananciaPorEvento] = useState()
+
+
+  function handleCupos(e) {
+    setPost({
+      ...post,
+      cupos: e.target.value,
+    })
+  }
+
+
+  function handlePrice(e) {
+   
+    setPost({
+      ...post,
+      price: e.target.value,
+    });
+    const precioPorCupo = parseFloat(e.target.value) + parseFloat(costoDeManejo) + parseFloat(a)
+    setPrecioAlPublico(
+      precioPorCupo
+    )
+    const gananciaCupo = parseFloat(e.target.value)-(((parseFloat(e.target.value)*parseFloat(comision))+((parseFloat(e.target.value)*parseFloat(comision)*parseFloat(IVA)))))
+    setGananciaPorCupo(
+      gananciaCupo
+    )
+    const ganaciaEvento = parseFloat(gananciaCupo) * parseInt(post.cupos)
+    setGananciaPorEvento(
+      ganaciaEvento
+    )
+  }
+
+
+
+  //--------------------------------------------------//
+  //               POST  DATE        //
+
+
+  let handleChanges = (i, e) => {
+    let newFechas = [...post.dates];
+    newFechas[i][e.target.name] = e.target.value; 
+    setPost({
+      ...post,
+      dates:newFechas 
+    })
+  }
+    
+  let addFormFields = () => {
+    setPost({
+      ...post,
+      dates:[...post.dates, { date: "", start : "", end:""}]
+    })
+    
+  }
+
+  let removeFormFields = (i) => {
+    let newFechas = [...post.dates];
+      newFechas.splice(i, 1);
+      setPost({
+        ...post,
+        dates:newFechas 
+      })
+      
+  }
+
+  //--------------------------------------------------//
+  //                  CALENDAR                 //
+
+  // const [date, setDate] = useState(null);
+  // const [dateFormatted, setDateFormatted] = useState('');
+
+  // const handleFormatDate = (i,date) => {
+  //   setDate(date);
+  //   setDateFormatted(formatDate(date))
+  //   let newFechas = [...fecha];
+  //   newFechas[i].date = date;
+  //   setFecha(newFechas);
+  // };
+
+
 
   //-----------------------------------------------------//
   //                  SCROLL_SNAP                     //
@@ -97,23 +598,140 @@ const EventCreateForm = () => {
   };
 
   //--------------------------------------------------//
-  //                  AUTOCOMPLETADO                  //
+  //                 SAVE           //
 
+  const navigate = useNavigate()
+
+
+  function hanldeClick(e){
+    e.preventDefault()
+    setPost({
+      ...post,
+      isPublic:false
+    })
+
+    console.log('postGuardar',post)
+    
+    swal({
+      title: "Tu evento será guardado",
+      buttons: ["Cerrar", "Guardar"],
+      dangerMode: true,
+    })
+    .then((guardar) => {
+      if (guardar) {
+        dispatch(postEvent(post))
+        swal("Tu evento ha sido guardado ", {
+          icon: "success",
+        });
+        setPost({
+          title: '',
+          categories: [],
+          otherCategorie: [],
+          shortDescription: '',
+          longDescription: '',
+          pictures: [],
+          online: '',
+          link: '',
+          departamento: '',
+          municipio: '',
+          direccion: '',
+          barrio: '',
+          specialRequires: '',
+          cupos:'',
+          price: '',
+          dates:[{ date: "", start : "", end:""}],
+          isPublic:true
+     })
+        navigate("/user/profile" )
+      } 
+    }
+    )
+  }
+
+    //--------------------------------------------------//
+  //                CANCEL          //
+
+
+
+  function handleDelete(e){
+    console.log('guardar')
+    e.preventDefault()
+    
+    swal({
+      title: "Esta acción borrara todo la información ingresada o modificada en esta sesión",
+      buttons: ["Cerrar", "Continuar"],
+      dangerMode: true,
+    })
+    .then((continuar) => {
+      if (continuar) {
+        navigate("/user/profile" )
+      } 
+    }
+   )
+  }
+
+
+
+  
   //--------------------------------------------------//
-  //                  CALENDAR                 //
+  //                  SUBMIT              //
 
-  const [date, setDate] = useState(null);
-  const [dateFormatted, setDateFormatted] = useState('');
+  const [failedSubmit, setFailedSubmit] = useState(false)
+  
+  const id= '632cbed4f208f44f5333af48'
 
-  const handleFormatDate = (date) => {
-    setDate(date);
-    setDateFormatted(formatDate(date));
-  };
+  function handleSubmit(e) {
+    console.log('submit')
+    e.preventDefault()
+    if (Object.values(errors).length > 0) {
+      setFailedSubmit(true)
+      return swal({
+        title: "Completa los campos faltantes",
+        icon: "warning",
+        button: "Completar",
+        dangerMode: true,
+      });
+    } else {
+      swal({
+        title: "Deseas publicar este evento? ",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((publicar) => {
+        if (publicar) {
+          dispatch(postEvent(post,id))
+          swal("Tu evento ha sido publicado. Recibirás un correo con los detalles. ", {
+            icon: "success",
+          });
+          setPost({
+            title: '',
+            categories: [],
+            otherCategorie: [],
+            shortDescription: '',
+            longDescription: '',
+            pictures: [],
+            online: '',
+            link: '',
+            departamento: '',
+            municipio: '',
+            direccion: '',
+            barrio: '',
+            specialRequires: '',
+            cupos:'',
+            price: '',
+            dates:[{ date: "", start : "", end:""}],
+            isPublic:true
+       })
+        } 
+      });
+    } 
+  }
 
+  
   return (
     <div className={styles.container}>
       <div ref={ref} className={styles.containerForm}>
-        <form>
+        <form onSubmit={(e) => handleSubmit(e)}>
           {/* SECTION 1: Nombre del Evento */}
 
           <div className={styles.section}>
@@ -157,15 +775,36 @@ const EventCreateForm = () => {
                 et iusto odio dignissim qui blandit praesent luptatum zzril
                 delenit augue duis dolaore te feugait nulla facilisi.
               </p>
-              <input
+              {failedSubmit && errors.title?(               
+                  <input
+                  className={styles.input}
+                  type="text"
+                  maxlength="75"
+                  placeholder="Nombre del evento"
+                  name="title"
+                  value={post.title}
+                  onChange={(e) => handleChange(e)}
+                  required
+                />
+               
+                ):   <input
                 className={styles.input}
                 type="text"
+                maxlength="75"
                 placeholder="Nombre del evento"
                 name="title"
                 value={post.title}
                 onChange={(e) => handleChange(e)}
-              />
-              <p className={styles.subInput}>Máximo 75 caracteres</p>
+              />}
+        
+              {post.title.length === 75  ?
+              <p className={styles.errors}>Máximo 75 caracteres</p>
+                : <p className={styles.subInput}>Máximo 75 caracteres</p>
+                }  
+              {errors.title? 
+                <p className={styles.errors}>{errors.title}</p>
+               : null}    
+
             </div>
           </div>
 
@@ -206,22 +845,34 @@ const EventCreateForm = () => {
                 diam nonummy nibh, Lorem ipsum dolor sit amet, consectetuer
                 adipiscing elit, sed diam nonummy nibh.{' '}
               </p>
-              <div className={styles.containerChecks}>
-                {categories.map((categorie) => (
+              <div className={styles.containerChecks}> 
+             
+                {/* {post.categories.length<4 ?
+                 <div className={styles.containerChecks}>  </div>
+                   :<div className={styles.containerChecks2}>  </div>
+                }
+               */}
+
+                {categories.map ((categorie) => (
                   <div className={styles.checks}>
                     <label className={styles.labelsChecks}>
                       <input
                         className={styles.checkBox}
                         type="checkbox"
-                        name="categories"
-                        value={post.categories}
+                        value={categorie.name}
                         onChange={(e) => handleCategories(e)}
+                        defaultChecked={false}
                       />
                       {categorie.name}
                     </label>
                   </div>
                 ))}
+                
               </div>
+
+              {/* otra categoria*/}
+                
+              
               <div className={styles.checkOther}>
                 <input
                   className={styles.checkBox}
@@ -230,21 +881,35 @@ const EventCreateForm = () => {
                   name="categories"
                   value={post.categories}
                 />
-                <label className={styles.labelsChecks}>Otros</label>
+                <label className={styles.labelsChecks}>Otro</label>
 
                 <div className={styles.otherCategorie}>
                   <label className={styles.subTitle}>
-                    Si escogiste ‘otros’, especifica :{' '}
+                    Si escogiste ‘otro’, especifica :{' '}
                   </label>
                   <input
                     className={styles.input2}
                     type="text"
-                    name="otherCategories"
-                    values={post.otherCategories}
-                    onChange={(e) => handleOtherCategories(e)}
-                  />
+                    name="otherCategorie"
+                    values={post.otherCategorie}
+                    onChange={(e) => handleOtherCategorie(e)}
+                  /> 
                 </div>
+                {errors.otherCategorie && (
+                        <p className={styles.errors}>{errors.otherCategorie}</p>
+                    )}
               </div>
+
+              {errors.categories &&
+              <p className={styles.errors}>{errors.categories}</p>
+              }
+
+              {failedSubmit && errors.categories && errors.categories<3?
+              <p className={styles.errors}>Debes seleccionar al menos una categoría</p>
+              :''
+              }
+
+              
             </div>
           </div>
 
@@ -287,15 +952,40 @@ const EventCreateForm = () => {
                   diam nonummy nibh, Lorem ipsum dolor sit amet, consectetuer
                   adipiscing elit, sed diam nonummy nibh.{' '}
                 </p>
-                <input
-                  className={styles.input3}
+                {failedSubmit && errors.shortDescription?
+                <textarea
+                  className={styles.textareaShort}
                   type="text"
+                  maxlength="100"
+                  placeholder="descripción breve del evento"
+                  name="shortDescription"
+                  value={post.shortDescription}
+                  onChange={(e) => handleChange(e)}
+                  required
+                />
+                :
+                <textarea
+                  className={styles.textareaShort}
+                  type="text"
+                  maxlength="100"
                   placeholder="descripción breve del evento"
                   name="shortDescription"
                   value={post.shortDescription}
                   onChange={(e) => handleChange(e)}
                 />
-                <p className={styles.subTitle}>Máximo xx de caracteres</p>
+                }
+                
+                {post.shortDescription.length===100?
+                <p className={styles.errors}>Máximo: 100 de caracteres</p>
+                : <p className={styles.subTitle}>Máximo: 100 de caracteres</p>
+                }
+                {post.shortDescription.length>0 ?
+                <p className={styles.subTitle}>Usetd va escribiendo: {post.shortDescription.length}/100 caracteres</p>
+                : ''
+                }
+                {errors.shortDescription?
+                <p className={styles.errors}>{errors.shortDescription}</p>
+                : null}    
               </div>
 
               {/* longDescription */}
@@ -306,15 +996,41 @@ const EventCreateForm = () => {
                   diam nonummy nibh, Lorem ipsum dolor sit amet, consectetuer
                   adipiscing elit, sed diam nonummy nibh.{' '}
                 </p>
-                <input
-                  className={styles.input3}
+                {failedSubmit && errors.longDescription ?
+                <textarea
+                className={styles.textareaLong}
+                type="text"
+                minlength="75"
+                placeholder="descripción detallada del evento"
+                name="longDescription"
+                value={post.longDescription}
+                onChange={(e) => handleChange(e)}
+                required
+                />
+                
+                :
+                <textarea
+                  className={styles.textareaLong}
                   type="text"
+                  minlength="75"
                   placeholder="descripción detallada del evento"
                   name="longDescription"
                   value={post.longDescription}
                   onChange={(e) => handleChange(e)}
                 />
-                <p className={styles.subTitle}>Minimo 75 palabras</p>
+                }
+
+                {post.longDescription.length<75 && post.longDescription.length>0  ?
+                <p className={styles.errors}>Minimo 75 caracteres</p>
+                : <p className={styles.subTitle}>Minimo 75 caracteres</p>
+                }
+                {post.longDescription.length>0 ?
+                <p className={styles.subTitle}>Usetd va escribiendo: {post.longDescription.length} caracteres</p>
+                : ''
+                }
+                {errors.longDescription ? 
+                <p className={styles.errors}>{errors.longDescription}</p>
+                 : null}    
               </div>
             </div>
           </div>
@@ -356,36 +1072,99 @@ const EventCreateForm = () => {
               </p>
               <p className={styles.subTitle4}>Fotos del Evento</p>
 
-              <div>
-                <Swiper
-                  slidesPerView={1}
-                  navigation
-                  spaceBetween={0}
-                  modules={[Navigation]}
-                  className={styles.mySwipper}
-                >
-                  {post.pictures.length ? (
-                    post.pictures.map((picture, index) => {
-                      return (
-                        <SwiperSlide>
-                          <picture />
-                        </SwiperSlide>
-                      );
-                    })
-                  ) : (
-                    <input
-                      className={styles.inputPicture}
-                      type="text"
-                      placeholder="Arrastra los archivos aquí o haz clic en Agregar archivos"
-                    />
-                  )}
-                </Swiper>
-              </div>
+             
+              {failedSubmit && errors.pictures ?
+                <div
+                  ref={wrapperRef}
+                    className={styles.errorsPicture}
+                    onDragEnter={onDragEnter}
+                    onDragLeave={onDragLeave}
+                    onDrop={onDrop}
+                  > 
+                  <div>
+                  <ImageIcon sx={{ fontSize: '50px', color: 'grey' }} />
+                  </div>
+                  <p>Fotos: Jpg, png, Max.100kb </p> 
+                  <p>Videos: .MP4 Max 100kb</p>      
+                  <p>"Arrastra los archivos aquí o haz click para agregar archivos"</p>
+                  <input 
+                    type="file" 
+                    value="" 
+                    name="pictures"
+                    onChange={onFileDrop}
+                  />
+                  {errors.pictures?
+                   <p className={styles.errors}>{errors.pictures}</p>
+                   : null
+                  }
+                </div>              
+                :
+                <div
+                  ref={wrapperRef}
+                    className={styles.dropFileIput}
+                    onDragEnter={onDragEnter}
+                    onDragLeave={onDragLeave}
+                    onDrop={onDrop}
+                  > 
+                  <div>
+                  <ImageIcon sx={{ fontSize: '50px', color: 'grey' }} />
+                  </div>
+                  <p>Fotos: Jpg, png, Max.100kb </p> 
+                  <p>Videos: .MP4 Max 100kb</p>      
+                  <p>"Arrastra los archivos aquí o haz click para agregar archivos"</p>
+                  <input 
+                    type="file" 
+                    value="" 
+                    name="pictures"
+                    onChange={onFileDrop}
+                  />
+                </div>
+              }
+          
 
-              <label className={styles.subInput}>
-                <input className={styles.checkBox4} type="checkbox" />
-                Quiero que esta sea la portada
-              </label>
+              {
+                 post.pictures.length > 0 ? (
+                  <div className={styles.dropFilePreview}>
+                    <p>
+                      Ready to upload
+                    </p>
+                    <Swiper
+                      slidesPerView={1}
+                      navigation
+                      spaceBetween={0}
+                      modules={[Navigation]}
+                      className={styles.mySwipper}
+                    >
+                    {
+                        post.pictures.map((item, index) => (
+                            <div key={index} className={styles.mySwiper}>
+                              <SwiperSlide>
+                                <img className={styles.mySwiperImg} src={item.picture} alt=''/>                                
+                                <button className={styles.mySwiperBtnDel} onClick={() => fileRemove(item)}>x</button>
+                                <label className={styles.subInput}>
+                                  <input 
+                                    className={styles.checkBox4} 
+                                    type="checkbox" 
+                                    name='cover'
+                                    value={item.picture}
+                                    onChange={e=>handleCover(e)}                              
+                                    defaultChecked={false}
+                                  />                 
+                                  Quiero que esta sea la portada
+                                </label>
+                              </SwiperSlide>
+                            </div>
+                        ))
+                    }
+                    </Swiper>
+                    {errors.pictures?
+                    <p className={styles.errors}>{errors.pictures}</p>
+                    : null
+                  }
+                  </div>
+                ) : null
+              }
+     
             </div>
           </div>
 
@@ -432,6 +1211,7 @@ const EventCreateForm = () => {
               {/* CheckBoxOnLine*/}
 
               <div className={styles.containerOnLine}>
+               
                 <input
                   className={styles.checkBox4}
                   type="checkbox"
@@ -445,6 +1225,21 @@ const EventCreateForm = () => {
 
                 {/*Online*/}
 
+                
+                
+                {failedSubmit && errors.link?
+                <div className={styles.online}>
+                  <input
+                  type="text"
+                  placeholder="Colocar el enlace del evento"
+                  name="link"
+                  value={post.link}
+                  onChange={(e) => handleLink(e)}
+                  required
+                />
+                   </div>
+                
+                :
                 <div className={styles.online}>
                   <input
                     type="text"
@@ -453,13 +1248,32 @@ const EventCreateForm = () => {
                     value={post.link}
                     onChange={(e) => handleChange(e)}
                   />
-                </div>
+                 </div>
+                }
+                {errors.link?
+                  <p className={styles.errors}>{errors.link}</p>
+                  : null
+                }
+             
 
                 {/*notOnline*/}
 
                 <div className={styles.notOnline}>
-                  {/* Dpto - Municipio*/}
+                  {/* Dpto */}
                   <div className={styles.containerDirection}>
+                    {failedSubmit && errors.departamento?
+                    <input
+                    className={styles.select}
+                    list="dptos"
+                    id="myDep"
+                    name="departamento"
+                    placeholder="Departamento"
+                    value={post.departamento}
+                    onChange={(e) => handleChange(e)}
+                    required
+                  />
+                    
+                    :
                     <input
                       className={styles.select}
                       list="dptos"
@@ -469,30 +1283,98 @@ const EventCreateForm = () => {
                       value={post.departamento}
                       onChange={(e) => handleChange(e)}
                     />
+                    }
                     <datalist id="dptos">
-                      {dptos &&
-                        dptos.map((departamento) => (
-                          <option key={departamento} value={departamento}>
-                            {departamento}
+                      {nuevoArrayDepartamentos &&
+                        nuevoArrayDepartamentos.map((departamento) => (
+                          <option value={departamento.departamento}>
+                            {departamento.departamento}
                           </option>
                         ))}
                     </datalist>
 
-                    <select className={styles.select} defaultValue="default">
-                      <option value="default" disabled>
-                        {post.departamento}
-                      </option>
-                      {dptos &&
-                        dptos.map((departamento) => (
-                          <option key={departamento} value={departamento}>
-                            {departamento}
-                          </option>
-                        ))}
-                    </select>
+                  
+                   
+                  
+
+                    {/* Municipio*/}
+
+                    {nuevoArrayDepartamentos &&
+                      nuevoArrayDepartamentos.map((departamento)=>(
+                        <div>
+                          {departamento.departamento === post.departamento &&
+                           <div>
+                            {failedSubmit && errors.municipio ?
+                             <div  className={styles.Muni}>
+                                    <input
+                                    list="municipio"
+                                    id="myMuni"
+                                    name="municipio"
+                                    placeholder={departamento.capital}
+                                    value={post.municipio}
+                                    onChange={(e) => handleChange(e)}
+                                    required
+                                    />
+                                  <datalist id="municipio">
+                                    <option>
+                                      {departamento.capital}
+                                    </option>   
+                                    {departamento.municipio.map((m)=>                                
+                                      <option >
+                                        {m}
+                                      </option>                              
+                                      )}
+                                  </datalist>
+                             </div>
+                            :
+                            <div  className={styles.Muni}>
+                            <input
+                              list="municipio"
+                              id="myMuni"
+                              name="municipio"
+                              placeholder={departamento.capital}
+                              value={post.municipio}
+                              onChange={(e) => handleChange(e)}
+                            />
+                            <datalist id="municipio">
+                            <option>
+                             {departamento.capital}
+                            </option>   
+                          {departamento.municipio.map((m)=>                                
+                              <option >
+                                {m}
+                              </option>                              
+                           )
+                          }
+                        </datalist>
+                        </div>
+                          }                           
+                                                     
+                            </div>
+                          }
+                        </div>
+                      )
+                      )
+
+                    }
+                   
                   </div>
 
                   {/* Direccion*/}
 
+                  {failedSubmit && errors.direccion?
+                  <div className={styles.direccionError}>
+                   <input
+                   className={styles.input5}
+                   type="text"
+                   placeholder="Dirección del evento"
+                   name="direccion"
+                   value={post.direccion}
+                   onChange={(e) => handleChange(e)}
+                   required
+                  />
+                  </div>                                   
+                  :
                   <input
                     className={styles.input5}
                     type="text"
@@ -501,6 +1383,26 @@ const EventCreateForm = () => {
                     value={post.direccion}
                     onChange={(e) => handleChange(e)}
                   />
+                  }
+                  {errors.direccion? 
+                  <p className={styles.errors}>{errors.direccion}</p>
+                  : null}  
+
+                  {/* Barrio*/}
+
+                  {failedSubmit && errors.barrio?
+                  <div className={styles.barrio}>
+                   <input
+                   className={styles.input5}
+                   type="text"
+                   placeholder="Barrio"
+                   name="barrio"
+                   value={post.barrio}
+                   onChange={(e) => handleChange(e)}
+                   required
+                 />
+                 </div>                
+                  :
                   <input
                     className={styles.input5}
                     type="text"
@@ -509,6 +1411,10 @@ const EventCreateForm = () => {
                     value={post.barrio}
                     onChange={(e) => handleChange(e)}
                   />
+                 }
+                  {errors.barrio? 
+                  <p className={styles.errors}>{errors.barrio}</p>
+                  : null}  
 
                   {/* Map*/}
 
@@ -555,6 +1461,9 @@ const EventCreateForm = () => {
                   onChange={(e) => handleChange(e)}
                 />
               </div>
+              {errors.specialRequires? 
+              <p className={styles.errors}>{errors.specialRequires}</p>
+              : null}  
             </div>
           </div>
 
@@ -603,19 +1512,53 @@ const EventCreateForm = () => {
                   <div className={styles.containerSubInfo}>
                     <label className={styles.subInfoTitle}>
                       Máximo número de participantes
+                      {failedSubmit && errors.cupos?
+                       <input
+                       id='cupos'
+                       className={styles.subInfoInput}
+                       type="txt"
+                       placeholder="10"
+                       name="cupos"
+                       value={post.cupos}
+                       onChange={(e) => handleCupos(e)}
+                       required
+                     />
+                      :
                       <input
+                        id='cupos'
                         className={styles.subInfoInput}
                         type="txt"
                         placeholder="10"
+                        name="cupos"
+                        value={post.cupos}
+                        onChange={(e) => handleCupos(e)}
                       />
+                     }
                     </label>
+                    {errors.cupos && (
+                      <p className={styles.errors}>{errors.cupos}</p>
+                    )}
+                    
                   </div>
+                 
 
                   <div className={styles.containerSubInfo}>
                     <label className={styles.subInfoTitle}>
                       Precio por cupo
                       <div className={styles.labelS}>
                         <p>$</p>
+                        {failedSubmit && errors.price?
+                         <input
+                         className={styles.subInfoInput}
+                         type="txt"
+                         placeholder="20.00"
+                         name="price"
+                         value={post.price}
+                         onChange={(e) => handlePrice(e)}
+                         required
+                       />
+                        
+                        :
                         <input
                           className={styles.subInfoInput}
                           type="txt"
@@ -624,12 +1567,20 @@ const EventCreateForm = () => {
                           value={post.price}
                           onChange={(e) => handlePrice(e)}
                         />
+                      }
                       </div>
                     </label>
-                    {post.price === '' ? <p>$21.990</p> : <p>ee</p>}
+
+                    {post.price === '' ? <p>$21.990</p> : <p>{precioAlPublico}</p>}
+
                     <p className={styles.subInfotxt}>
                       Precio al público incluyendo costo de manejo e IVA
                     </p>
+
+                    {errors.price && (
+                    <p className={styles.errors}>{errors.price}</p>
+                    )}
+
                   </div>
 
                   <div className={styles.containerSubInfo}>
@@ -638,16 +1589,21 @@ const EventCreateForm = () => {
                       <div className={styles.labelS}>
                         <p>$</p>
                         <input
+                         id='gananciaPorCupo'
                           className={styles.subInfoInput}
                           type="txt"
-                          placeholder="16.099"
+                          placeholder={gananciaPorCupo}
                         />
                       </div>
                     </label>
                     <p className={styles.subInfotxt}>
                       Después de nuestra comisión + IVA
                     </p>
-                    <button className={styles.btn6}>Ver Más</button>
+                    <Link to={`/user/profile`}>
+                      <button className={styles.btn6}
+                      >Ver Más</button>
+                    </Link>
+                 
                   </div>
 
                   <div className={styles.containerSubInfo}>
@@ -656,99 +1612,151 @@ const EventCreateForm = () => {
                       <div className={styles.labelS}>
                         <p>$</p>
                         <input
+                        id='gananciaPorEvento'
                           className={styles.subInfoInput}
                           type="txt"
-                          placeholder="160.901"
+                          placeholder={{gananciaPorCupo}}
                         />
                       </div>
                     </label>
                     <p className={styles.subInfotxt}>
                       Esto sería lo que ganarías si se venden todos tus cupos
                     </p>
+                    <Link to={`/user/profile`}>
+                      <button className={styles.btn6}
+                      >Ver Más</button>
+                    </Link>
                   </div>
                 </div>
               </div>
 
+              
+
+
               <hr className={styles.hr}></hr>
 
-              {/* time and date*/}
 
-              <div className={styles.contTimeAndDate}>
-                {/* date*/}
+               {/* fechas*/}
 
-                <div className={styles.contDate}>
-                  <label htmlFor="date">Fecha</label>
+                <div>
+                      
+                  {post.dates.map((element, index) => (
+                    <div  className={styles.contTimeAndDate} key={index}>
+                      <div className={styles.contDate}>
+                        <label>Fechas</label>
+                        {/* <div className={styles.contInputDate}>             
+                            <input 
+                              type="text" 
+                              id="date" 
+                              value={dateFormatted} />
 
-                  <div className={styles.contInputDate}>
-                    <input type="text" id="date" value={dateFormatted} />
+                            <div className={styles.containerDate}>
+                              <input
+                                type="checkbox"
+                                defaultChecked={false}
+                                name="date"
+                                value={element.dadateFormatted || ""}
+                                onChange={e => handleChanges(index, e)}
+                                id="checkCalendar"
+                              />
+                              <label htmlFor="checkCalendar" className={styles.label}>
+                                <img src={calendar} alt="n" />
+                              </label>
 
-                    <div className={styles.containerDate}>
-                      <input
-                        type="checkbox"
-                        defaultChecked={false}
-                        name="date"
-                        value={post.date}
-                        onChange={(e) => handleCheck(e)}
-                        id="checkCalendar"
-                      />
-                      <label htmlFor="checkCalendar" className={styles.label}>
-                        <img src={calendar} alt="n" />
-                      </label>
+                              <div className={styles.calendar}>
+                                <Calendar
+                                  color={'#D53E27'}
+                                  locale={locales['es']}
+                                  date={date}
+                                  name='date'
+                                  onChange={(item) => handleFormatDate(index,item)}
+                                />
+                              </div>
+                            </div>                          
+                        </div> */}
 
-                      <div className={styles.calendar}>
-                        <Calendar
-                          color={'#D53E27'}
-                          locale={locales['es']}
-                          date={date}
-                          onChange={(item) => handleFormatDate(item)}
-                        />
+                      
+                        <label>Fecha</label>
+                          {failedSubmit && errors.dates ?
+                            <input 
+                            classname={styles.errors}
+                            type="date" 
+                            name="date" 
+                            value={element.date || ""} 
+                            onChange={e => handleChanges(index, e)} 
+                            required
+                            />
+                          
+                          :
+                            <input 
+                            type="date" 
+                            name="date" 
+                            value={element.date || ""} 
+                            onChange={e => handleChanges(index, e)} 
+                            />
+                            }
+
                       </div>
+
+                      <div className={styles.contStart}>                
+                        <label>Comienza</label>
+                        {failedSubmit && errors.dates?
+                          <input 
+                          type="time" 
+                          name="start" 
+                          value={element.start || ""} 
+                          onChange={e => handleChanges(index, e)} 
+                          required
+                          />
+                          :
+                          <input 
+                          type="time" 
+                          name="start" 
+                          value={element.start || ""} 
+                          onChange={e => handleChanges(index, e)} 
+                          />
+                        }
+                      </div>
+
+                      <div className={styles.contStart}>
+                       <label>End</label>
+                      {failedSubmit && errors.dates?
+                        <input 
+                        type="time" 
+                        name="end" 
+                        value={element.end || ""} 
+                        onChange={e => handleChanges(index, e)} 
+                        required
+                        />                      
+                        :
+                        <input 
+                        type="time" 
+                        name="end" 
+                        value={element.end || ""} 
+                        onChange={e => handleChanges(index, e)} 
+                        />
+                      }                 
+                      </div>
+
+                      {
+                        index ? 
+                          <button lassName={styles.addDelete}  type="button"  onClick={() => removeFormFields(index)}>
+                            <img className={styles.basquet} src={basquet} alt="n" />
+                          </button> 
+                        : null
+                      }
                     </div>
-                  </div>
+                  ))}
+
                 </div>
 
-                {/* start*/}
+          <hr className={styles.hr}></hr> 
 
-                <div className={styles.contStart}>
-                  <label>Comienza</label>
-                  <input type="time" />
-                </div>
+          <div  >
+              <button className={styles.addDate}  type="button" onClick={() => addFormFields()}> + Crear Nueva Fecha</button>
+          </div>
 
-                {/* end*/}
-
-                <div className={styles.contStart}>
-                  <label>Termina</label>
-                  <input type="time" />
-                </div>
-
-                {/* basquet*/}
-
-                <div>
-                  <img className={styles.basquet} src={basquet} alt="n" />
-                </div>
-              </div>
-
-              {/* Code*/}
-
-              <div className={styles.containerBono}>
-                <div>
-                  <input className={styles.checkDescuento} type="checkbox" />
-                  <label className={styles.subTitle}>
-                    Brindar códigos de descuento
-                  </label>
-                  <img className={styles.infoIcon} src={infoIcon} alt="n" />
-                </div>
-                <div>
-                  <button className={styles.btnbono}>Mostrar</button>
-                  <button className={styles.btnbono}>Ocultar</button>
-                </div>
-              </div>
-
-              <hr className={styles.hr}></hr>
-
-              <div>
-                <button className={styles.newdate}> + Crear Nueva Fecha</button>
-              </div>
+   
 
               <div>
                 <p className={styles.acceptText}>
@@ -758,20 +1766,30 @@ const EventCreateForm = () => {
                 </p>
 
                 <div className={styles.btnContainer}>
-                  <button className={styles.viewBtn}>Vista Previa</button>
+                  <div>
+                  <button className={styles.viewBtn}>
+                    Vista Previa
+                  </button>
+                  </div>
 
-                  <button className={styles.submitBtn} type="submit">
+                  <div>
+
+                  <button className={styles.viewBtn} type="submit">
                     {' '}
                     Publicar Evento
                   </button>
+                  </div>
 
-                  <button className={styles.submitBtn} type="submit">
-                    Guardar y Publiar Luego
+                  <div>
+                  <button className={styles.viewBtn} onClick={(e) => hanldeClick(e)} >
+                    Guardar y Publicar Luego
                   </button>
+                  </div>
+
                 </div>
                 <p>Debes llenar todos los campos para poder continuar.</p>
 
-                <button className={styles.cancelBtn} type="submit">
+                <button className={styles.cancelBtn} onClick={(e) => handleDelete(e)}>
                   Cancelar
                 </button>
               </div>
