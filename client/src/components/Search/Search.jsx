@@ -20,15 +20,10 @@ const Search = ({ location = 'home' }) => {
   const handleKeyPress = (e) => {
     if (e.charCode === 13) {
       e.preventDefault();
-      console.log('allEve', allEvents);
       const title = allEvents.filter((event) => {
-        console.log('event:', event)
-        return event.name.toLowerCase().includes(input.toLowerCase())
-      }
-        
-       
-      );
-      console.log('gas', title);
+        const response = event.name === input;
+        return response;
+      });
       setResult(title);
       navigate('/search/');
       setInput('');
@@ -38,7 +33,7 @@ const Search = ({ location = 'home' }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const title = allEvents.filter((event) =>
-      event.name.toLowerCase().includes(input.toLowerCase())
+      event.name === input
     );
     setResult(title);
     navigate('/search/');
@@ -58,7 +53,6 @@ const Search = ({ location = 'home' }) => {
         placeholder="Buscar"
       />
       <button
-        type='submit'
         onClick={handleSubmit}
         className={`${
           location !== 'home' ? style.searchBtnNotHome : style.searchBtnHome
