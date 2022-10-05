@@ -12,7 +12,7 @@ router.get("/", async (req, res) => {
 
   } catch (error) {
 
-    return res.status(400).json({ ERROR_EVENTS: error });
+    return res.status(500).json({ ERROR_EVENTS: error.message });
   }
 });
 
@@ -25,7 +25,7 @@ router.post("/create", async (req, res) => {
 
     return res.status(200).json(eventCreat);
   } catch (error) {
-    return res.status(400).json({ ERROR_EVENT_CREATE: error });
+    return res.status(500).json({ ERROR_EVENT_CREATE: error.message });
   }
 });
 
@@ -36,7 +36,7 @@ router.post('/opinionsGenerate/:id', async (req,res) => {
     const createOpinions = await createOpinionsEvents(id,comments)
     return res.status(200).json(createOpinions)
   } catch (error) {
-    res.status(400).json(error.message)
+    res.status(500).json(error.message)
     
   }
 })
@@ -52,7 +52,7 @@ router.put("/:id", async (req, res) => {
     return res.json(newEvente);
 
   } catch (error) {
-    return res.json({ FALLO_UPDATE: error });
+    return res.status(500).json({ FALLO_UPDATE: error.message });
   }
 });
 

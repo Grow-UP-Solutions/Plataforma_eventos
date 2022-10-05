@@ -12,7 +12,7 @@ export async function OneCategoryDb(name) {
    
     return await Category.findOne({ name: name });
   } catch (error) {
-    throw new Error("Error en ONECATEGORY DB")
+    return ({message:error.message})
   }
 }
 
