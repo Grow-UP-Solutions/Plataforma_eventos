@@ -5,6 +5,7 @@ import bcrypt from 'bcryptjs';
 /** basic user database operations */
 
 export async function allUserDb() {
+  
   try {    
 
     return await Users.find()
@@ -12,22 +13,22 @@ export async function allUserDb() {
       .populate({ path: 'myFavourites' })
       .populate({ path: 'myEventsBooked' });
   } catch (error) {
-    throw new Error( "Error con findAllUser DB");
+    return ({message:error.message})
   }
 }
 export async function validateEmailUserDb(email) {
   try {
     return await Users.findOne({ email: email });
   } catch (error) {
-    throw new Error('Ha fallado validate email user db');
+    return ({message:error.message})
   }
 }
 export async function oneUserDb(id) {
+  const idOrganizer = id;
+  if (!idOrganizer) {
+    return { msg: 'Se rerquiere el id del organizador' };
+  }
   try {
-    const idOrganizer = id;
-    if (!idOrganizer) {
-      return { msg: 'Se rerquiere el id del organizador' };
-    }
 
     return await Users.findById({ _id: idOrganizer })
       .populate({ path: 'myEventsCreated' })
@@ -35,11 +36,12 @@ export async function oneUserDb(id) {
       .populate({ path: 'myEventsBooked' })
       .populate({ path: 'opinionsOrg' });
   } catch (error) {
-    throw new Error('Ha fallado validate id user db', error);
+    return ({message:error.message})
   }
 }
 export async function updateOneUserDb(id, newUser) {
-  return await Users.findByIdAndUpdate({ _id: id }, newUser, {
+  try {
+    return await Users.findByIdAndUpdate({ _id: id }, newUser, {
     new: 1,
   })
     .populate({ path: 'myEventsCreated' })
@@ -47,6 +49,10 @@ export async function updateOneUserDb(id, newUser) {
     .populate({ path: 'myEventsBooked' })
     .populate({ path: 'myOpinions' })
     .populate({ path: 'opinionsOrg' });
+  } catch (error) {
+    return ({message:error.message})
+  }
+  
 }
 export async function deleteOneUserDb(id) {
   try {
@@ -55,7 +61,7 @@ export async function deleteOneUserDb(id) {
       .populate({ path: 'myFavourites' })
       .populate({ path: 'myEventsBooked' });
   } catch (error) {
-    throw new Error('Error en delete user DB', error);
+    return ({message:error.message})
   }
 }
 /**Creating user in Database */
@@ -78,7 +84,7 @@ export async function createOneUserDb(user) {
     await userCreated.save();
     return userCreated;
   } catch (error) {
-    throw new Error('Fallo create user DB', error);
+    return ({message:error.message})
   }
 }
 
@@ -97,7 +103,7 @@ export async function generateUserComment(id, opinion) {
     organizer.opinionsOrg.push(opinion);
     return await organizer.save();
   } catch (error) {
-    throw new Error('Fallo comment Db', error);
+    return ({message:error.message})
   }
 }
 
@@ -118,6 +124,6 @@ export async function sendMessageDB(idSend,idGet, msg){
     return {Respon: 'mensaje enviado con exito'}
 
   } catch (error) {
-    throw new Error('Error en sendMessegeDB')
+     return ({message:error.message})
   }
 }

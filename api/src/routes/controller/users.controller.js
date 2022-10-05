@@ -1,5 +1,5 @@
-import { Router } from 'express';
-import '../../DB.js';
+import { Router } from "express";
+import "../../DB.js";
 import {
   getAllUsers,
   createUsers,
@@ -10,135 +10,148 @@ import {
   createOrganizerComment,
   getAllCommentUser,
   sendMessageUser,
-} from '../services/users.services.js';
+} from "../services/users.services.js";
 
-import passport from 'passport';
+import passport from "passport";
 
-import { check } from 'express-validator';
-import validateFields from '../../models/util/middlewares/validate-fields.js';
-import { generateJWT } from '../../models/util/helpers/jwt.js';
-import { validateJWT } from '../../models/util/middlewares/validate-jwt.js';
-import { sendVerifyMail } from '../../models/util/mailer/confirmEmail.js';
+import { check } from "express-validator";
+import validateFields from "../../models/util/middlewares/validate-fields.js";
+import { generateJWT } from "../../models/util/helpers/jwt.js";
+import { validateJWT } from "../../models/util/middlewares/validate-jwt.js";
+import { sendVerifyMail } from "../../models/util/mailer/confirmEmail.js";
 
 const router = Router();
-/**////////////////Rutas GET////////////// */
-router.get('/', async (req, res) => {
+/**/ ///////////////Rutas GET////////////// */
+router.get("/", async (req, res) => {
   try {
     const allUsers = await getAllUsers();
     return res.status(200).json(allUsers);
   } catch (error) {
-    return res.status(400).json({ ERROR_USER: error });
+    return res.status(500).json({ ERROR_USER: error.message });
   }
 });
-router.get('/:id', async (req, res) => {
+router.get("/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
     const user = await getUser(id);
     return res.status(200).json(user);
   } catch (error) {
-    return res.status(400).json({ ERROR_USER: error });
+    return res.status(400).json({ ERROR_USER: error.message });
   }
 });
-router.get('/opinionsUser/:id', async (req, res) => {
+router.get("/opinionsUser/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const allComment = await getAllCommentUser(id);
     return res.status(200).json(allComment);
   } catch (error) {
-    return res.status(400).json(error);
+    return res.status(500).json({ERROR_OPIONSUSER:error.message});
   }
 });
-router.get('/login/renew', validateJWT, async (req, res) => {
+router.get("/login/renew", validateJWT, async (req, res) => {
   const uid = req.uid;
   const name = req.name;
+  try {
+    
+    const user = await getUser(uid);
+    const token = await generateJWT(uid, name);
+  
+    res.status(201).json({
+      uid: user._id,
+      name: user.name,
+      email: user.email,
+      organizer: user.isOrganizer,
+      token,
+    });
+  } catch (error) {
+    return res.status(500).json({message:error.message})
+  }
 
-  const user = await getUser(uid);
-  const token = await generateJWT(uid, name);
-
-  res.status(201).json({
-    uid: user._id,
-    name: user.name,
-    email: user.email,
-    organizer: user.isOrganizer,
-    token,
-  });
 });
 /* FACEBOOK */
 
 router.get(
-  '/login/facebook',
-  passport.authenticate('auth-facebook', {
-    prompt: 'select_account',
+  "/login/facebook",
+  passport.authenticate("auth-facebook", {
+    prompt: "select_account",
     session: false,
-    scope: ['public_profile', 'email'],
+    scope: ["public_profile", "email"],
   })
 );
 
 router.get(
-  '/login/facebook/callback',
-  passport.authenticate('auth-facebook', {
-    failureRedirect: '/login/facebook',
+  "/login/facebook/callback",
+  passport.authenticate("auth-facebook", {
+    failureRedirect: "/login/facebook",
     session: false,
   }),
   (req, res) => {
-    const userString = JSON.stringify(req.user);
-    res.send(
-      `<!DOCTYPE html> 
+    try {
       
-    <html lang="en">
-    <body>
-    </body>
-    <script>
-    window.opener.postMessage(${userString}, 'http://localhost:3000')
-    </script>
-    </html>
-    `
-    );
+      const userString = JSON.stringify(req.user);
+      res.send(
+        `<!DOCTYPE html> 
+        
+      <html lang="en">
+      <body>
+      </body>
+      <script>
+      window.opener.postMessage(${userString}, 'http://localhost:3000')
+      </script>
+      </html>
+      `
+      );
+    } catch (error) {
+      return res.status(500).json({message:error.message})
+    }
   }
 );
 
 /* GOOGLE */
 
 router.get(
-  '/login/google',
-  passport.authenticate('google', {
-    prompt: 'select_account',
+  "/login/google",
+  passport.authenticate("google", {
+    prompt: "select_account",
     session: false,
-    scope: ['email', 'profile'],
+    scope: ["email", "profile"],
   })
 );
 
 router.get(
-  '/login/google/callback',
-  passport.authenticate('google', {
-    failureRedirect: '/login/google',
+  "/login/google/callback",
+  passport.authenticate("google", {
+    failureRedirect: "/login/google",
     session: false,
   }),
   (req, res) => {
-    const userString = JSON.stringify(req.user);
-    res.send(
-      `<!DOCTYPE html> 
-      
-    <html lang="en">
-    <body>
-    </body>
-    <script>
-    window.opener.postMessage(${userString}, 'http://localhost:3000')
-    </script>
-    </html>
-    `
-    );
+    try {
+      const userString = JSON.stringify(req.user);
+      res.send(
+        `<!DOCTYPE html> 
+        
+      <html lang="en">
+      <body>
+      </body>
+      <script>
+      window.opener.postMessage(${userString}, 'http://localhost:3000')
+      </script>
+      </html>
+      `
+      );
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
   }
 );
-/**///////////////Rutas POST/////////////// */
-
+/**/ //////////////Rutas POST/////////////// */
 
 router.post(
-  '/create',
+  "/create",
   [
-    check('email', 'El email es obligatorio').isEmail(),
-    check('password', 'El password es obligatorio').isStrongPassword(),
+    check("email", "El email es obligatorio").isEmail(),
+    check("password", "El password es obligatorio").isStrongPassword(),
     validateFields,
   ],
   async (req, res) => {
@@ -156,40 +169,39 @@ router.post(
         token,
       });
     } catch (error) {
-      return res.status(400).json({ message: error.message });
+      return res.status(500).json({ message: error.message });
     }
   }
 );
 
-router.post('/commentOrganizer/:id', async (req, res) => {
+router.post("/commentOrganizer/:id", async (req, res) => {
   try {
     const opinion = req.body;
     const { id } = req.params;
     const opinionCreat = await createOrganizerComment(id, opinion);
     return res.status(200).json(opinionCreat);
   } catch (error) {
-    console.log(error);
-    return res.status(400).json(error.message);
+    return res.status(500).json({ message: error.message });
   }
 });
-router.post('/message/:id', async (req,res) =>{
+router.post("/message/:id", async (req, res) => {
   try {
-    const {id}= req.params
-    const msg = req.body
-    const senMenssage= await sendMessageUser(id, msg)
-    return res.status(200).json(senMenssage)
+    const { id } = req.params;
+    const msg = req.body;
+    const senMenssage = await sendMessageUser(id, msg);
+    return res.status(200).json(senMenssage);
   } catch (error) {
-    console.log(error)
+    return res.status(500).json({ message: error.message });
   }
-})
+});
 
 /* AUTH */
 
 router.post(
-  '/login',
+  "/login",
   [
-    check('email', 'El email es obligatorio').isEmail(),
-    check('password', 'El password es obligatorio').isStrongPassword(),
+    check("email", "El email es obligatorio").isEmail(),
+    check("password", "El password es obligatorio").isStrongPassword(),
     validateFields,
   ],
   async (req, res) => {
@@ -208,12 +220,12 @@ router.post(
         token,
       });
     } catch (error) {
-      return res.status(400).json({ message: error.message });
+      return res.status(500).json({ message: error.message });
     }
   }
 );
 /* PROVIDERS  */
-router.post('/confirmEmail', async (req, res) => {
+router.post("/confirmEmail", async (req, res) => {
   const { code, uid } = req.body;
 
   try {
@@ -222,63 +234,58 @@ router.post('/confirmEmail', async (req, res) => {
     if (code === user.code) {
       return res.status(201).json({
         success: true,
-        message: 'Código correcto',
+        message: "Código correcto",
       });
     } else {
-      throw new Error('Código incorrecto');
+      throw new Error("Código incorrecto");
     }
   } catch (error) {
-    return res.status(404).json({
+    return res.status(500).json({
       success: false,
       message: error.message,
     });
   }
 });
 
-router.post('/sendEmailForConfirm', async (req, res) => {
+router.post("/sendEmailForConfirm", async (req, res) => {
   const { uid } = req.body;
   const { email, code } = await getUser(uid);
 
   console.log(email, code);
+  try {
+    const response = await sendVerifyMail(email, code);
 
-  const response = await sendVerifyMail(email, code);
-
-  res.status(201).json({
-    message: response.msg,
-  });
+    res.status(201).json({
+      message: response.msg,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
 });
-/**////////////Rutas PUT///////////////////////////////// */
-router.put('/update/:id', async (req, res) => {
+/**/ ///////////Rutas PUT///////////////////////////////// */
+router.put("/update/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const newUser = req.body;
     const usersUpdate = await userUpdate(id, newUser);
     return res.status(200).json(usersUpdate);
   } catch (error) {
-    return res.status(400).json({ ERROR_USER_UPDATE: error });
+    return res.status(500).json({ ERROR_USER_UPDATE: error.message });
   }
 });
-/**////////////////Rutas DELETE/////////////////////////// */
-router.delete('/delete/:id', async (req, res) => {
+/**/ ///////////////Rutas DELETE/////////////////////////// */
+router.delete("/delete/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
     const deleteUser = await userDelete(id);
     return res.status(200).json({
       user: deleteUser,
-      msg: 'El usuario ha sido eliminado con exito',
+      msg: "El usuario ha sido eliminado con exito",
     });
   } catch (error) {
-    return res.status(400).json({ FALLO_USER_DELETE: error });
+    return res.status(500).json({ FALLO_USER_DELETE: error.message });
   }
 });
-
-
-
-
-
-
-
-
 
 export default router;
