@@ -11,12 +11,19 @@ const Card = ({ event }) => {
 
   const { toggleScreenLogin } = useContext(UIContext);
   const currentYear = new Date().getFullYear();
+  const numCadena= currentYear + ''
+  const añoActual = numCadena.slice(2,4)
 
+  console.log(event)
+  
+
+
+  
   return (
     <div className={styles.card}>
       <img
         className={styles.cardImgEvent}
-        src={event.pictures[0]}
+        src={event.pictures[0].picture}
         alt="Not Found ):"
         width="200x"
         height="300"
@@ -25,13 +32,13 @@ const Card = ({ event }) => {
         {event.dates && event.dates.length > 1 ? (
           <select className={styles.cardDate}>
             {event.dates.map((date, index) =>
-              date.cupos > 0 ? (
-                date.year === currentYear ? (
-                  <option key={index} value={date._id}>
-                    {date.date.slice(0, 8)}
+              event.cupos > 0 ? (
+                date.date.slice(8,10) === añoActual ? (
+                  <option key={index} value={date.date}>
+                    {date.date.slice(0, 5)}
                   </option>
                 ) : (
-                  <option key={index} value={date._id}>
+                  <option key={index} value={date.date}>
                     {date.date}
                   </option>
                 )
@@ -40,11 +47,11 @@ const Card = ({ event }) => {
               )
             )}
           </select>
-        ) : event.dates[0].cupos === 0 ? (
+        ) : event.cupos === 0 ? (
           <p className={styles.cardCuposCurrent}>Cupos LLenos</p>
-        ) : event.dates[0].year === currentYear ? (
+        ) : event.dates[0].date.slice(8,10)=== añoActual ? (
           <p className={styles.cardDateCurrent}>
-            {event.dates[0].date.slice(0, 8)}
+            {event.dates[0].date.slice(0, 5)}
           </p>
         ) : (
           <p className={styles.cardDateCurrent}>{event.dates[0].date}</p>
@@ -85,40 +92,55 @@ const Card = ({ event }) => {
           <span>({event.rating})</span>
         </div>
 
-        <p className={styles.cardTitle} title={event.name}>
-          {event.name}
+        <p className={styles.cardTitle} title={event.title}>
+          {event.title}
         </p>
 
-        <p className={styles.cardNick}>{event.nick}</p>
-        <p className={styles.cardDescription}>{event.description}</p>
+        <p className={styles.cardNick}>Segundo Titulo</p>
+        <p className={styles.cardDescription}>{event.shortDescription.slice(0,70)}</p>
       </div>
       <hr className={styles.cardHr}></hr>
-      <div className={styles.cardOrgInfo}>
-        <Link
-          className={styles.link}
-          to={`/organizerDetails/${event.organizer._id}`}
-        >
-          <img
-            className={styles.cardOrgPicture}
-            src={event.organizer.picture}
-            alt="Not Found ):"
-            width="2px"
-            height="3px"
-          />
-        </Link>
-        <Link
-          className={styles.link}
-          to={`/organizerDetails/${event.organizer._id}`}
-        >
-          <p className={styles.cardOrgName}>{event.organizer.name}</p>
-        </Link>
-        <div className={styles.vLine}></div>
-        <p className={styles.cardPrice}>{event.price}</p>
-        <div className={styles.vLine}></div>
-        <Link className={styles.link} to={`/eventdetails/${event._id}`}>
-          <p className={styles.cardDetails}>Ver más</p>
-        </Link>
-      </div>
+      {event.organizer.picture && event.organizer.name?
+        <div>
+           <div className={styles.cardOrgInfo}>
+       
+            <Link
+              className={styles.link}
+              to={`/organizerDetails/${event.organizer._id}`}
+            >
+              <img
+                className={styles.cardOrgPicture}
+                src={event.organizer.picture}
+                alt="Not Found ):"
+                width="2px"
+                height="3px"
+              />
+            </Link>
+            <Link
+              className={styles.link}
+              to={`/organizerDetails/${event.organizer._id}`}
+            >
+            
+              <p className={styles.cardOrgName}>{event.organizer.name}</p>
+            </Link>
+            <div className={styles.vLine}></div>
+            <p className={styles.cardPrice}>${event.price}</p>
+            <div className={styles.vLine}></div>
+            <Link className={styles.link} to={`/eventdetails/${event._id}`}>
+              <p className={styles.cardDetails}>Ver más</p>
+            </Link>
+            </div>
+            </div>
+          :
+          <div className={styles.cardOrgInfo}>
+            <p className={styles.cardPrice}>${event.price}</p>
+            <div className={styles.vLine}></div>
+            <Link className={styles.link} to={`/eventdetails/${event._id}`}>
+              <p className={styles.cardDetails}>Ver más</p>
+            </Link>
+          </div>
+        }
+         
     </div>
   );
 };

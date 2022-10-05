@@ -108,8 +108,8 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
     barrio: '',
     specialRequires: '',
     cupos:'',
-    price: '',
-    dates:[{ date: "", start : "", end:""}],
+    price:'',
+    dates:[{ date: "", start : "", end:"" , year:0}],
     isPublic:true
   });
 
@@ -348,6 +348,7 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
 
   function handleCategories(e) {
     var categorieName = e.target.value
+    console.log('targetcat:',e.target.value)
     if (!e.target.checked) {
       let seleccion = seleccionados.filter((categorie) => categorie.name !== categorieName)
       setSeleccionados(seleccion)
@@ -357,10 +358,10 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
       })
     } else {
       let categorieCheck = categories.find((categorie) => categorie.name === categorieName)
-      setSeleccionados([...seleccionados, categorieCheck])
+      setSeleccionados([...seleccionados, categorieCheck.name])
       setPost({
         ...post,
-        categories:[...post.categories, categorieCheck]
+        categories:[...post.categories, categorieCheck.name]
       })
     }
   }
@@ -486,8 +487,6 @@ todas.map((foto)=>{
   //               POST  PRICE            //
 
   
-
-  
   const costoDeManejo = 1672.27
   const IVA = 0.19
   const comision = 0.16
@@ -497,13 +496,13 @@ todas.map((foto)=>{
 
   const [precioAlPublico,setPrecioAlPublico] = useState()
 
-
   const [gananciaPorCupo,setGananciaPorCupo] = useState()
 
   const [gananciaPorEvento,setGananciaPorEvento] = useState()
 
 
   function handleCupos(e) {
+
     setPost({
       ...post,
       cupos: e.target.value,
@@ -517,6 +516,7 @@ todas.map((foto)=>{
       ...post,
       price: e.target.value,
     });
+
     const precioPorCupo = parseFloat(e.target.value) + parseFloat(costoDeManejo) + parseFloat(a)
     setPrecioAlPublico(
       precioPorCupo
@@ -525,10 +525,13 @@ todas.map((foto)=>{
     setGananciaPorCupo(
       gananciaCupo
     )
-    const ganaciaEvento = parseFloat(gananciaCupo) * parseInt(post.cupos)
-    setGananciaPorEvento(
-      ganaciaEvento
-    )
+    
+    if(post.cupos && gananciaCupo ){
+      const ganaciaEvento = parseFloat(gananciaCupo) * parseInt(post.cupos)
+      setGananciaPorEvento(
+        ganaciaEvento
+      )
+    }
   }
 
 
@@ -544,12 +547,13 @@ todas.map((foto)=>{
       ...post,
       dates:newFechas 
     })
+   
   }
     
   let addFormFields = () => {
     setPost({
       ...post,
-      dates:[...post.dates, { date: "", start : "", end:""}]
+      dates:[...post.dates, { date: "", start : "", end:"" , year:0}]
     })
     
   }
@@ -611,6 +615,16 @@ todas.map((foto)=>{
     })
 
     console.log('postGuardar',post)
+    e.preventDefault()
+    if (Object.values(errors).length > 0) {
+      setFailedSubmit(true)
+      return swal({
+        title: "Completa los campos faltantes",
+        icon: "warning",
+        button: "Completar",
+        dangerMode: true,
+      });
+    }else{
     
     swal({
       title: "Tu evento será guardado",
@@ -639,14 +653,14 @@ todas.map((foto)=>{
           specialRequires: '',
           cupos:'',
           price: '',
-          dates:[{ date: "", start : "", end:""}],
+          dates:[{ date: "", start : "", end:"" , year:0}],
           isPublic:true
      })
         navigate("/user/profile" )
       } 
     }
     )
-  }
+  }}
 
     //--------------------------------------------------//
   //                CANCEL          //
@@ -681,7 +695,6 @@ todas.map((foto)=>{
   const id= '632cbed4f208f44f5333af48'
 
   function handleSubmit(e) {
-    console.log('submit')
     e.preventDefault()
     if (Object.values(errors).length > 0) {
       setFailedSubmit(true)
@@ -1516,7 +1529,7 @@ todas.map((foto)=>{
                        <input
                        id='cupos'
                        className={styles.subInfoInput}
-                       type="txt"
+                       type="number"
                        placeholder="10"
                        name="cupos"
                        value={post.cupos}
@@ -1527,7 +1540,7 @@ todas.map((foto)=>{
                       <input
                         id='cupos'
                         className={styles.subInfoInput}
-                        type="txt"
+                        type="number"
                         placeholder="10"
                         name="cupos"
                         value={post.cupos}
@@ -1550,7 +1563,7 @@ todas.map((foto)=>{
                         {failedSubmit && errors.price?
                          <input
                          className={styles.subInfoInput}
-                         type="txt"
+                         type='number'
                          placeholder="20.00"
                          name="price"
                          value={post.price}
@@ -1561,7 +1574,7 @@ todas.map((foto)=>{
                         :
                         <input
                           className={styles.subInfoInput}
-                          type="txt"
+                          type="number"
                           placeholder="20.00"
                           name="price"
                           value={post.price}
@@ -1599,7 +1612,7 @@ todas.map((foto)=>{
                     <p className={styles.subInfotxt}>
                       Después de nuestra comisión + IVA
                     </p>
-                    <Link to={`/user/profile`}>
+                    <Link to={`/user/profile`} target={"_blank"}>
                       <button className={styles.btn6}
                       >Ver Más</button>
                     </Link>
@@ -1615,20 +1628,22 @@ todas.map((foto)=>{
                         id='gananciaPorEvento'
                           className={styles.subInfoInput}
                           type="txt"
-                          placeholder={{gananciaPorCupo}}
+                          placeholder={gananciaPorEvento}
                         />
                       </div>
                     </label>
                     <p className={styles.subInfotxt}>
                       Esto sería lo que ganarías si se venden todos tus cupos
                     </p>
-                    <Link to={`/user/profile`}>
+                    <Link to={`/user/profile`} target="_blank" rel="noopener noreferrer">
                       <button className={styles.btn6}
                       >Ver Más</button>
                     </Link>
                   </div>
                 </div>
               </div>
+
+              
 
               
 
@@ -1643,7 +1658,7 @@ todas.map((foto)=>{
                   {post.dates.map((element, index) => (
                     <div  className={styles.contTimeAndDate} key={index}>
                       <div className={styles.contDate}>
-                        <label>Fechas</label>
+                        
                         {/* <div className={styles.contInputDate}>             
                             <input 
                               type="text" 

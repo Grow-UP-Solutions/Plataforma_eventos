@@ -10,14 +10,21 @@ import NextEvents from '../../components/Organizer/NextEvents.jsx';
 import Opinions from '../../components/Organizer/Opinions.jsx';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { getEvents } from '../../redux/actions';
+import { useDispatch } from 'react-redux';
+
+
 
 const OrganizerDetails = () => {
 
+ 
   const id = useParams().id;
   const [component, setComponent] = useState('');
   const [nextEvent, setNextEvent] = useState({});
-  const events = useSelector((state) => state.events);
-  const userDetail = events.filter((e) => e.organizer._id === id)[0];
+  const allEvents = useSelector((state) => state.events);
+  const userDetail = allEvents.filter((e) => e.organizer._id === id)[0];
+
+ 
 
   useEffect(() => {
     obtenerDatos();
@@ -30,6 +37,10 @@ const OrganizerDetails = () => {
     setNextEvent(json);
   }
 
+  
+
+  
+
   const handleInput = (e) => {
     const name = e.target.name;
     if (name === 'AboutOrganizer')
@@ -41,7 +52,9 @@ const OrganizerDetails = () => {
 
   return (
     <div className={`${styles.container} `}>
-      <div className={styles.top}></div>
+      {userDetail?
+      <div>
+     <div className={styles.top}></div>
       <img className={styles.img} src={userDetail.organizer.picture} alt="N" />
       <p className={styles.name}>{userDetail.organizer.name}</p>
       <Rating
@@ -78,7 +91,9 @@ const OrganizerDetails = () => {
       </div>
       <div>
         <div className={styles.containerSection}>{component}</div>
+      </div> 
       </div>
+    :''}
     </div>
   );
 };

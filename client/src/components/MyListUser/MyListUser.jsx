@@ -5,7 +5,7 @@ import users from '../../api/users';
 
 const MyListUser = () => {
 
-  const userDetail = users.filter((user) => user.name === 'Jean Pierre')[0];
+  const userDetail = users.filter((user) => user.name === 'Luis Chacon')[0];
 
 
   return (
