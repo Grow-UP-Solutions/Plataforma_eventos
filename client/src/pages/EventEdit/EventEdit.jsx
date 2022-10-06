@@ -20,17 +20,18 @@ import infoIcon from '../../assets/imgs/infoIcon.svg';
 import ImageIcon from '@mui/icons-material/Image';
 import mapa from '../../assets/imgs/mapa2.png';
 import { formatDate } from '../../utils/formatDate';
-import styles from './EventCreateForm.module.css';
+import styles from './EventEdit.module.css';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Preview from './Preview';
 import { ConstructionOutlined, ContactMailOutlined, EmergencyRecordingSharp } from '@mui/icons-material';
 import { getColombia , postEvent } from '../../redux/actions';
 import swal from 'sweetalert'
 import { useNavigate } from 'react-router-dom';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import { useParams } from 'react-router-dom';
+import { getEvents } from '../../redux/actions';
 
-const EventCreateForm = () => {
+const EventEdit = () => {
 
 
   const dispatch = useDispatch()
@@ -94,6 +95,17 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
   //--------------------------------------------------//
   //               POST Y ERROR            //
 
+  useEffect(() => {
+    dispatch(getEvents());
+  }, []);
+
+
+  const allEvents = useSelector((state) => state.events)
+  console.log('eventos:',allEvents)
+  console.log('evento:',allEvents[0])
+//   const id = useParams().id
+//   const bookId = allBooks.filter((book) => book._id === id)
+
   
 
 
@@ -112,23 +124,40 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
     direccion: '',
     barrio: '',
     specialRequires: '',
-    dates:[{ 
-      date: "", 
-      start : "", 
-      end:"" , 
-      year:0 ,  
-      cupos:'', 
-      price:'', 
-      sells: 0 , 
-      isPublic:true,
-      precioAlPublico:'',
-      gananciaCupo:'',
-      gananciaEvento:''
-     }],
-    isPublic:true
+    cupos:'',
+    price:'',
+    dates:[{ date: "", start : "", end:"" , year:0}],
+    isPublic:true,
+    sells:10,
+    revision: false
   });
 
-
+  
+  useEffect(() => {
+    if(allEvents.length>1){
+   
+    setPost({
+      ...post,
+      idOrganizer:'632cbed4f208f44f5333af48',
+      title: allEvents[0].title,
+      categories: allEvents[0].categories,
+      otherCategorie:  allEvents[0].otherCategorie,
+      shortDescription: allEvents[0].shortDescription,
+      longDescription:  allEvents[0].longDescription,
+      pictures:  allEvents[0].pictures,
+      online:  allEvents[0].online,
+      link:  allEvents[0].link,
+      departamento:  allEvents[0].departamento,
+      municipio:  allEvents[0].municipio,
+      direccion:  allEvents[0].direccion,
+      barrio: allEvents[0].barrio,
+      specialRequires: allEvents[0].specialRequires,
+      cupos: allEvents[0].cupos,
+      price: allEvents[0].price,
+      dates: allEvents[0].dates,
+      isPublic:allEvents[0].isPublic
+    })}
+  }, [allEvents])
 
   const [errors, setErrors] = useState({
     title: '',
@@ -142,6 +171,8 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
     direccion: '',
     barrio: '',
     specialRequires: '',
+    cupos:'',
+    price: '',
     dates:'',
     isPublic:true
   
@@ -184,13 +215,13 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
       errors.title = 'No puedes ingresar un numero'
     }
 
-    if (!post.categories[0]) {
-      errors.categories = true
-    }
+    // if (!post.categories[0]) {
+    //   errors.categories = true
+    // }
 
-    if (post.categories.length > 3) {
-      errors.categories = 'Solo podes seleccionar 3 categorias'
-    }
+    // if (post.categories.length > 3) {
+    //   errors.categories = 'Solo podes seleccionar 3 categorias'
+    // }
 
     // if (!post.otherCategorie) {
     //   errors.otherCategorie = 'Campo obligatorio(!)'
@@ -314,25 +345,56 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
       errors.specialRequires = 'Palabra ofensiva'
     }
 
+    if (!post.cupos) {
+      errors.cupos = true
+    }
 
-    for (var i=0; i<post.dates.length;i++ ){
-      if (!post.dates[i].cupos.match(numero) ) {
-        errors.dates= 'Debe ser un numero'
-      }
+    if (!post.cupos.match(numero)) {
+      errors.cupos = 'Debe ser un numero'
+    }
+
+
+    if( parseInt(post.cupos) < post.sells){
+        errors.cupos = 'x'
+        return swal({
+            title: `Ya se vendieron ${post.sells} cupos. El número no puede ser inferior a los cupos ya vendidos`,
+            icon: "warning",
+            button: "Cerrar",
+            dangerMode: true,
+          });
+    }
+
+    if (!post.price) {
+      errors.price = true
+    }
+
+    if (!post.price.match(numeroYdecimales)) {
+      errors.price = 'Debe ser un numero'
+    }
+
+    if(post.sells>0 && allEvents.length>0 && post.price<allEvents[0].price){
+        errors.cupos = 'x'
+        return swal({
+            title: `Ya se vendieron ${post.sells} cupos. El precio no puede ser inferior al de los cupos ya vendidos`,
+            icon: "warning",
+            button: "Cerrar",
+            dangerMode: true,
+          });
+
     }
 
     for (var i=0; i<post.dates.length;i++ ){
-      if (!post.dates[i].price.match(numeroYdecimales) ) {
-        errors.dates= 'Debe ser un numero'
-      }
-    }
-  
-
-    for (var i=0; i<post.dates.length;i++ ){
-      if (!post.dates[i].date ||!post.dates[i].start ||!post.dates[i].end || !post.dates[i].cupos ||!post.dates[i].price) {
+      if (!post.dates[i].date ||!post.dates[i].start ||!post.dates[i].end ) {
         errors.dates = true
       }
     }
+
+   
+
+
+
+   
+
     
     for (var i=0; i<post.dates.length;i++ ){
       if (post.dates[i].start > post.dates[i].end ) {
@@ -507,10 +569,14 @@ todas.map((foto)=>{
     });
   }
 
- 
-  //--------------------------------------------------//
-  //               POST  PRICE  && DATE        //
 
+
+
+    
+  //--------------------------------------------------//
+  //               POST  PRICE            //
+
+  
   const costoDeManejo = 1672.27
   const IVA = 0.19
   const comision = 0.16
@@ -518,34 +584,184 @@ todas.map((foto)=>{
   const a = costoDeManejo * IVA
 
 
+  const [precioAlPublico,setPrecioAlPublico] = useState()
+
+  const [gananciaPorCupo,setGananciaPorCupo] = useState()
+
+  const [gananciaPorEvento,setGananciaPorEvento] = useState()
+
+
+  function handleCupos(e) {
+
+    setPost({
+      ...post,
+      cupos: e.target.value,
+    })
+  }
+
+
+  function handlePrice(e) {
+   
+    setPost({
+      ...post,
+      price: e.target.value,
+    });
+
+    const precioPorCupo = parseFloat(e.target.value) + parseFloat(costoDeManejo) + parseFloat(a)
+    setPrecioAlPublico(
+      precioPorCupo
+    )
+    const gananciaCupo = parseFloat(e.target.value)-(((parseFloat(e.target.value)*parseFloat(comision))+((parseFloat(e.target.value)*parseFloat(comision)*parseFloat(IVA)))))
+    setGananciaPorCupo(
+      gananciaCupo
+    )
+    
+    if(post.cupos && gananciaCupo ){
+      const ganaciaEvento = parseFloat(gananciaCupo) * parseInt(post.cupos)
+      setGananciaPorEvento(
+        ganaciaEvento
+      )
+    }
+  }
+
+
+
+  //--------------------------------------------------//
+  //               POST  DATE        //
+
+  const [newDate, setNewDate] = useState(
+    {
+        dates:[{ date: "", start : "", end:"" , year:0}], 
+      }
+  )
+
+
   let handleChanges = (i, e ) => {
     let newFechas = [...post.dates];
     newFechas[i][e.target.name] = e.target.value;
-    console.log('newFechas:',newFechas)
-    newFechas[i].precioAlPublico=parseFloat(newFechas[i].price) + parseFloat(costoDeManejo) + parseFloat(a);
-    newFechas[i].gananciaCupo = parseFloat(newFechas[i].price)-(((parseFloat(newFechas[i].price)*parseFloat(comision))+((parseFloat(newFechas[i].price)*parseFloat(comision)*parseFloat(IVA)))))
-    newFechas[i].gananciaEvento = parseFloat(newFechas[i].gananciaCupo) * parseInt(newFechas[i].cupos)
-    setPost({
-      ...post,
+    setNewDate({
+      ...newDate,
       dates:newFechas 
-     })   
+    })
+     for(var j=0; j<allEvents[0].dates.length;j++ ){
+        for(var i=0; i<newDate.dates.length;i++ ){
+         if(post.sells>0 && newDate.dates[i].date !== allEvents[0].dates[j].date){
+            return swal({
+            title: `Texto &&&&&&&&&&, ver sección &&&& en Guía del Organizador. Si procedes, es importante que le informes de inmediato sobre este cambio a los Asistentes.`,
+            icon: "warning",
+            buttons: ["Cerrar", "Cambiar fecha/hora"],
+            dangerMode: true,
+          })
+          .then((cambiar) => {
+            if (cambiar) {
+              setPost({
+                ...post,
+             dates:newFechas 
+           })
+         }
+     })
+    }else if(post.sells>0 && 
+        newDate.dates[i].start !== allEvents[0].dates[j].start ||
+        newDate.dates[i].end !== allEvents[0].dates[j].end ){
+        return swal({
+            title: `Texto &&&&&&&&&&, ver sección &&&& en Guía del Organizador. Si procedes, es importante que le informes de inmediato sobre este cambio a los Asistentes.`,
+            icon: "warning",
+            buttons: ["Cerrar", "Cambiar hora"],
+            dangerMode: true,
+          })
+          .then((cambiar) => {
+            if (cambiar) {
+              setPost({
+                ...post,
+             dates:newFechas 
+           })
+         }
+     })
     }
+   }
+  }
+  }
 
-  
+ 
   let addFormFields = () => {
     setPost({
       ...post,
-      dates:[...post.dates, { date: "", start : "", end:"" , year:0, cupos:'', price:'',isPublic:true,sells:0 , precioAlPublico:'',gananciaCupo:'',gananciaEvento:''}]
+      dates:[...post.dates, { date: "", start : "", end:"" , year:0}]
     })
+    
   }
 
   let removeFormFields = (i) => {
     let newFechas = [...post.dates];
-      newFechas.splice(i, 1);
-      setPost({
-        ...post,
-        dates:newFechas 
-      })
+    newFechas.splice(i, 1);
+      if(allEvents[0].isPublic && post.sells===0){
+        return swal({
+            title: `Esta acción quitará esta fecha de publicados y ya no será visible para el público.
+            También se borrará en esta pagina los datos relacionados a esta fecha: hora, número de cupos, precio por cupo y códigos de descuento si alguno.
+            `,
+            icon: "warning",
+            buttons: ["Cancelar acción", "Continuar"],
+            dangerMode: true,
+          })
+          .then((Continuar) => {
+            if (Continuar) {
+          setPost({
+            ...post,
+            dates:newFechas 
+            })
+            }
+            })
+      } else if(allEvents[0].isPublic && post.sells>0){
+        return swal({
+            title: `Ya hay xx cupo(s) comprado(s) para esta fecha, si la quitas de publicados el dinero será devuelto a los compradores. Esta devolución genera unos costos los cuales deberas asumir. Ver sección &&&&&&&&&& en Términos y Condiciones. También se borrará en esta pagina los datos relacionados a esta fecha: hora, número de cupos, precio por cupo y códigos de descuento si alguno.
+            Deseas quitar esta fecha de publicados? 
+            `,
+            icon: "warning",
+            buttons: ["Cancelar acción", "Continuar"],
+            dangerMode: true,
+          })
+          .then((Continuar) => {
+            if (Continuar) {
+          setPost({
+            ...post,
+            dates:newFechas 
+            })
+            }
+            })
+      }else if(allEvents[0].isPublic===false){
+        return swal({
+            title: `Se borrara esta fecha y los datos relacionados a la misma: hora, número de cupos, precio por cupo y códigos de descuento si alguno.
+            `,
+            icon: "warning",
+            buttons: ["Cancelar acción", "Continuar"],
+            dangerMode: true,
+          })
+          .then((Continuar) => {
+            if (Continuar) {
+          setPost({
+            ...post,
+            dates:newFechas 
+            })
+            }
+            })
+      }else if(allEvents[0].isPublic===false && post.revision===false && post.sells>0){
+        return swal({
+            title: `Ya hay xx cupo(s) comprado(s) para esta fecha, si procedes el dinero será devuelto a los compradores. Texto &&&&&&&&&&, ver sección &&&& en Guía del Organizador. También se borrará en esta pagina los datos relacionados a esta fecha: hora, número de cupos, precio por cupo y códigos de descuento si alguno.
+            `,
+            icon: "warning",
+            buttons: ["Cerrar", "Continuar"],
+            dangerMode: true,
+          })
+          .then((Continuar) => {
+            if (Continuar) {
+          setPost({
+            ...post,
+            dates:newFechas 
+            })
+            }
+            })
+      }
+
       
   }
 
@@ -627,7 +843,6 @@ todas.map((foto)=>{
           icon: "success",
         });
         setPost({
-          idOrganizer:'632cbed4f208f44f5333af48',
           title: '',
           categories: [],
           otherCategorie: [],
@@ -641,19 +856,9 @@ todas.map((foto)=>{
           direccion: '',
           barrio: '',
           specialRequires: '',
-          dates:[{ 
-            date: "", 
-            start : "", 
-            end:"" , 
-            year:0 ,  
-            cupos:'', 
-            price:'', 
-            sells: 0 , 
-            isPublic:true,
-            precioAlPublico:'',
-            gananciaCupo:'',
-            gananciaEvento:''
-           }],
+          cupos:'',
+          price: '',
+          dates:[{ date: "", start : "", end:"" , year:0}],
           isPublic:true
      })
         navigate("/user/profile" )
@@ -717,7 +922,6 @@ todas.map((foto)=>{
             icon: "success",
           });
           setPost({
-            idOrganizer:'632cbed4f208f44f5333af48',
             title: '',
             categories: [],
             otherCategorie: [],
@@ -731,19 +935,9 @@ todas.map((foto)=>{
             direccion: '',
             barrio: '',
             specialRequires: '',
-            dates:[{ 
-              date: "", 
-              start : "", 
-              end:"" , 
-              year:0 ,  
-              cupos:'', 
-              price:'', 
-              sells: 0 , 
-              isPublic:true,
-              precioAlPublico:'',
-              gananciaCupo:'',
-              gananciaEvento:''
-             }],
+            cupos:'',
+            price: '',
+            dates:[{ date: "", start : "", end:""}],
             isPublic:true
        })
         } 
@@ -1533,7 +1727,7 @@ todas.map((foto)=>{
                 </p>
 
                 <div className={styles.containerInfo}>
-                  {/* <div className={styles.containerSubInfo}>
+                  <div className={styles.containerSubInfo}>
                     <label className={styles.subInfoTitle}>
                       Máximo número de participantes
                       {failedSubmit && errors.cupos?
@@ -1543,8 +1737,8 @@ todas.map((foto)=>{
                        type="number"
                        placeholder="10"
                        name="cupos"
-                       value={element.cupos || ""} 
-                       onChange={e => handleChanges(index, e)}
+                       value={post.cupos}
+                       onChange={(e) => handleCupos(e)}
                        required
                      />
                       :
@@ -1554,8 +1748,8 @@ todas.map((foto)=>{
                         type="number"
                         placeholder="10"
                         name="cupos"
-                        value={element.cupos || ""} 
-                        onChange={e => handleChanges(index, e)}
+                        value={post.cupos}
+                        onChange={(e) => handleCupos(e)}
                       />
                      }
                     </label>
@@ -1563,10 +1757,10 @@ todas.map((foto)=>{
                       <p className={styles.errors}>{errors.cupos}</p>
                     )}
                     
-                  </div> */}
+                  </div>
                  
 
-                  {/* <div className={styles.containerSubInfo}>
+                  <div className={styles.containerSubInfo}>
                     <label className={styles.subInfoTitle}>
                       Precio por cupo
                       <div className={styles.labelS}>
@@ -1577,8 +1771,8 @@ todas.map((foto)=>{
                          type='number'
                          placeholder="20.00"
                          name="price"
-                         value={element.price || ""} 
-                         onChange={e => handleChanges(index, e)}
+                         value={post.price}
+                         onChange={(e) => handlePrice(e)}
                          required
                        />
                         
@@ -1588,11 +1782,10 @@ todas.map((foto)=>{
                           type="number"
                           placeholder="20.00"
                           name="price"
-                          value={element.price || ""} 
-                          onChange={e => handleChanges(index, e)}
+                          value={post.price}
+                          onChange={(e) => handlePrice(e)}
                         />
                       }
-
                       </div>
                     </label>
 
@@ -1606,9 +1799,9 @@ todas.map((foto)=>{
                     <p className={styles.errors}>{errors.price}</p>
                     )}
 
-                  </div> */}
+                  </div>
 
-                  {/* <div className={styles.containerSubInfo}>
+                  <div className={styles.containerSubInfo}>
                     <label className={styles.subInfoTitle}>
                       Tu ganas por cupo
                       <div className={styles.labelS}>
@@ -1629,9 +1822,9 @@ todas.map((foto)=>{
                       >Ver Más</button>
                     </Link>
                  
-                  </div> */}
+                  </div>
 
-                  {/* <div className={styles.containerSubInfo}>
+                  <div className={styles.containerSubInfo}>
                     <label className={styles.subInfoTitle}>
                       Tu ganas por evento
                       <div className={styles.labelS}>
@@ -1651,7 +1844,7 @@ todas.map((foto)=>{
                       <button className={styles.btn6}
                       >Ver Más</button>
                     </Link>
-                  </div> */}
+                  </div>
                 </div>
               </div>
 
@@ -1668,121 +1861,8 @@ todas.map((foto)=>{
                 <div>
                       
                   {post.dates.map((element, index) => (
-                   <div>
-                   
-                   <div className={styles.containerInfo} key={index}>
-                      <div className={styles.containerSubInfo}>
-                          <label className={styles.subInfoTitle}>
-                            Máximo número de participantes
-                            {failedSubmit && errors.cupos?
-                            <input
-                            id='cupos'
-                            className={styles.subInfoInput}
-                            type="number"
-                            placeholder="10"
-                            name="cupos"
-                            value={element.cupos || ""} 
-                            onChange={e => handleChanges(index, e)}
-                            required
-                          />
-                            :
-                            <input
-                              id='cupos'
-                              className={styles.subInfoInput}
-                              type="number"
-                              placeholder="10"
-                              name="cupos"
-                              value={element.cupos || ""} 
-                              onChange={e => handleChanges(index, e)}
-                            />
-                          }
-                          </label>          
-                        </div>
-
-                      <div className={styles.containerSubInfo}>
-                          <label className={styles.subInfoTitle}>
-                            Precio por cupo
-                            <div className={styles.labelS}>
-                              <p>$</p>
-                              {failedSubmit && errors.price?
-                              <input
-                              className={styles.subInfoInput}
-                              type='number'
-                              placeholder="20.00"
-                              name="price"
-                              value={element.price || ""} 
-                              onChange={e => handleChanges(index, e)}
-                              required
-                            />
-                              
-                              :
-                              <input
-                                className={styles.subInfoInput}
-                                type="number"
-                                placeholder="20.00"
-                                name="price"
-                                value={element.price || ""} 
-                                onChange={e => handleChanges(index, e)}
-                              />
-                            }
-                            </div>
-                          </label>
-
-                          {element.price === '' ? <p>$21.990</p> : <p>{element.precioAlPublico}</p>}
-
-                          <p className={styles.subInfotxt}>
-                            Precio al público incluyendo costo de manejo e IVA
-                          </p>
-
-                        </div>
-
-                         <div className={styles.containerSubInfo}>
-                            <label className={styles.subInfoTitle}>
-                              Tu ganas por cupo
-                              <div className={styles.labelS}>
-                                <p>$</p>
-                                <input
-                                id='gananciaPorCupo'
-                                  className={styles.subInfoInput}
-                                  type="txt"
-                                  placeholder={element.gananciaCupo}
-                                />
-                              </div>
-                            </label>
-                            <p className={styles.subInfotxt}>
-                              Después de nuestra comisión + IVA
-                            </p>
-                            <Link to={`/user/profile`} target={"_blank"}>
-                              <button className={styles.btn6}
-                              >Ver Más</button>
-                            </Link>
-                        
-                          </div>
-
-                           <div className={styles.containerSubInfo}>
-                              <label className={styles.subInfoTitle}>
-                                Tu ganas por evento
-                                <div className={styles.labelS}>
-                                  <p>$</p>
-                                  <input
-                                  id='gananciaPorEvento'
-                                    className={styles.subInfoInput}
-                                    type="txt"
-                                    placeholder={element.gananciaEvento}
-                                  />
-                                </div>
-                              </label>
-                              <p className={styles.subInfotxt}>
-                                Esto sería lo que ganarías si se venden todos tus cupos
-                              </p>
-                              <Link to={`/user/profile`} target="_blank" rel="noopener noreferrer">
-                                <button className={styles.btn6}
-                                >Ver Más</button>
-                              </Link>
-                            </div> 
-
-                       </div>
-
+                    <div  className={styles.contTimeAndDate} key={index}>
+                      <div className={styles.contDate}>
                         
                         {/* <div className={styles.contInputDate}>             
                             <input 
@@ -1815,8 +1895,7 @@ todas.map((foto)=>{
                             </div>                          
                         </div> */}
 
-                      <div  className={styles.contTimeAndDate} key={index}>
-                        <div className={styles.contDate}>
+                      
                         <label>Fecha</label>
                           {failedSubmit && errors.dates ?
                             <input 
@@ -1893,7 +1972,6 @@ todas.map((foto)=>{
                         : null
                       }
                     </div>
-                   </div>
                   ))}
 
                 </div>
@@ -1984,6 +2062,5 @@ todas.map((foto)=>{
   );
 };
 
-export default EventCreateForm;
-
+export default EventEdit;
 
