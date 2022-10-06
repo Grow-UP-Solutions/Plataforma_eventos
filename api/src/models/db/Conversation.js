@@ -1,9 +1,12 @@
 import { Schema, model } from "mongoose";
 
+const conversationSchema = new Schema(
+  {
+    members: {
+      type: Array,
+    },
+  },
+  { timestamps: true }
+);
 
-
-const conversationSchema = new Schema({
-
-})
-
-export default model("Conversation", conversationSchema)
+export default model("Conversation", conversationSchema);
