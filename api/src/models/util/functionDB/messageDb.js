@@ -18,7 +18,7 @@ export async function createMessage(message) {
 
 export async function findMessage(conversationId) {
     try {
-        console.log(conversationId)
+        
         return await Message.find({
             conversationId: conversationId
         })
