@@ -1,0 +1,1111 @@
+.container {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .containerForm {
+    font-family: 'Raleway';
+    width: 75%;
+    height: 100vh;
+    letter-spacing: 1.2px;
+    line-height: 2rem;
+    overflow: auto;
+    margin: auto;
+    scroll-snap-type: y mandatory;
+    scrollbar-width: none;
+    scrollbar-color: #6969dd #e0e0e0;
+  }
+  
+  .section {
+    width: 100%;
+    height: 200rem;
+    scroll-snap-align: start;
+    display: flex;
+  }
+  
+  /*SECTION 1 */
+  
+  .container1 {
+    height: 90rem;
+    margin-bottom: 6rem;
+    width: 50%;
+    margin-top: 5rem;
+  }
+  
+  .title {
+    color: #1b3c6a;
+    font-size: 2.4rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+  }
+  
+  .subTitle {
+    color: #707070;
+    margin-bottom: 1.5rem;
+    font-size: 1.3rem;
+  }
+  
+  .input {
+    height: 6rem;
+    border: 1px solid var(--color-grey-4);
+    border-radius: 10px;
+    background-color: white;
+    color: var(--color-grey-2);
+    width: 100%;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+  }
+  
+  .input::placeholder {
+    padding: 2px;
+    color: var(--color-grey-2);
+  }
+  
+  .input:invalid {
+    border: 2px dashed red;
+    box-shadow: 0 0 5px 1px red;
+  }
+  
+  .input:invalid:required {
+    background-image: red;
+  }
+  
+  .input:valid {
+    border: 2px solid black;
+  }
+  
+  .subInput {
+    color: #878787;
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    margin-left: 0.5rem;
+  }
+  
+  /*SECTION 2 */
+  
+  .containerChecks {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin-bottom: 4rem;
+    margin-top: 2rem;
+    background: linear-gradient(#d6d6d6, #d6d6d6) center/2px 100% no-repeat,
+      linear-gradient(#d6d6d6, #d6d6d6) center/2px 100% no-repeat;
+    background-position: 33% 0, 67% 0;
+  }
+  .containerChecks2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin-bottom: 4rem;
+    margin-top: 2rem;
+    background: linear-gradient(#d6d6d6, #d6d6d6) center/2px 100% no-repeat,
+      linear-gradient(#d6d6d6, #d6d6d6) center/2px 100% no-repeat;
+    background-position: 33% 0, 67% 0;
+  }
+  
+  .containerChecks2 .checkBox {
+    display: none;
+  }
+  
+  .checks {
+    align-items: center;
+    margin-right: 2rem;
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .labelsChecks {
+    color: #707070;
+    margin-bottom: 2rem;
+    font-size: 1.3rem;
+  }
+  
+  .checkBox {
+    accent-color: #d53e27;
+    margin-right: 1rem;
+    height: 2rem;
+    width: 2rem;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  
+  .checkOther {
+    margin-top: -3rem;
+    margin-left: 1rem;
+  }
+  
+  .otherCategorie {
+    display: none;
+    margin-top: 1rem;
+  }
+  
+  .checkOther input:checked ~ .otherCategorie {
+    display: flex;
+  }
+  
+  .input2 {
+    height: 4rem;
+    border: 1px solid var(--color-grey-4);
+    border-radius: 10px;
+    background-color: white;
+    color: var(--color-grey-2);
+    width: 60%;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    margin-left: 2rem;
+  }
+  
+  /*SECTION 3: Description */
+  
+  .containerDescription {
+    margin-bottom: 8rem;
+  }
+  
+  .textareaShort {
+    padding: 12px 20px;
+    height: 15rem;
+    border: 1px solid var(--color-grey-4);
+    border-radius: 10px;
+    background-color: white;
+    color: var(--color-grey-2);
+    width: 100%;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-size: 1.7rem;
+    resize: none;
+  }
+  
+  .textareaShort::placeholder {
+    margin-top: 2rem;
+    color: #707070;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+  }
+  
+  .textareaLong {
+    padding: 12px 20px;
+    height: 15rem;
+    border: 1px solid var(--color-grey-4);
+    border-radius: 10px;
+    background-color: white;
+    color: var(--color-grey-2);
+    width: 100%;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-size: 1.7rem;
+  }
+  
+  .textareaLong::placeholder {
+    margin-top: 2rem;
+    color: #707070;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+  }
+  
+  /*SECTION 4: Pictures */
+  
+  .subTitle4 {
+    color: #707070;
+    margin-bottom: 2rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  .dropFileIput {
+    text-align: center;
+    width: 50rem;
+    height: 30rem;
+    border: 2px dashed var(--color-grey-4);
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-grey-2);
+    background-color: var(--input-bg);
+    margin-bottom: 2rem;
+    margin-left: 4rem;
+    cursor: pointer;
+  }
+  
+  .dropFileIput input {
+    opacity: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+  
+  .dropFileIput input::placeholder {
+    color: var(--color-grey-2);
+  }
+  
+  .dropFileIput p {
+    color: var(--color-grey-2);
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  .dropFileIput div {
+    color: var(--color-grey-2);
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  .dropFileIput:hover,
+  .dropFileIput.dragover {
+    opacity: 0.6;
+  }
+  
+  .dropFilePreview {
+    margin-top: 1rem;
+  }
+  
+  .dropFilePreview p {
+    color: #707070;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  /* .mySwiper{
+    position: relative;
+    width: 100%;
+    max-height: 10rem;
+    border: 2px solid var(--color-grey-4);
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-grey-2);
+    background-color: var(--input-bg);
+    margin-bottom: 1rem;
+  
+  } */
+  
+  .mySwiperImg {
+    width: 80rem;
+    height: 48rem;
+    border: 2px solid var(--color-grey-4);
+    border-radius: 10px;
+  }
+  
+  .mySwiperBtnDel {
+    background-color: rgb(255, 255, 255);
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 10%;
+    left: 90%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #d53e27;
+    border: none;
+  }
+  
+  .mySwiperBtnDel:hover {
+    color: white;
+    background-color: #d53e27;
+  }
+  
+  .checkBox4 {
+    accent-color: #d53e27;
+    margin-right: 1rem;
+    height: 2rem;
+    width: 2rem;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  
+  /*SECTION 5 */
+  
+  /*5:OnLine Question */
+  
+  .containerOnLine {
+    display: block;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  
+  .containerOnLine label {
+    color: #707070;
+    font-size: 1.3rem;
+  }
+  
+  /*5:Si En Linea */
+  
+  .online {
+    display: none;
+    margin-top: 1rem;
+  }
+  
+  .online input {
+    border: 1px solid var(--color-grey-4);
+    border-radius: 10px;
+    background-color: rgb(167, 25, 25);
+    color: var(--color-grey-2);
+    width: 60%;
+    margin-top: 1rem;
+  }
+  
+  .checkBox4:checked ~ .online {
+    display: block;
+  }
+  
+  /*5:notOnline */
+  
+  .notOnline {
+    display: block;
+    margin-top: 1rem;
+  }
+  
+  .checkBox4:checked ~ .notOnline {
+    display: none;
+  }
+  
+  /*5:Dpto - Municipio - Direccion - Barrio */
+  
+  .containerDirection {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+  
+  .select {
+    height: 4rem;
+    border: 1px solid var(--color-grey-4);
+    border-radius: 10px;
+    background-color: white;
+    color: var(--color-grey-2);
+    width: 50%;
+    margin-right: 1rem;
+  }
+  
+  .Muni {
+    height: 4rem;
+    border: 1px solid var(--color-grey-4);
+    border-radius: 10px;
+    background-color: white;
+    color: var(--color-grey-2);
+    width: 100%;
+    margin-right: 1rem;
+  }
+  
+  .Muni input {
+    height: 4rem;
+    border: 1px solid var(--color-grey-4);
+    border-radius: 10px;
+    background-color: white;
+    color: var(--color-grey-2);
+    width: 100%;
+    margin-right: 1rem;
+  }
+  
+  .input5 {
+    height: 5rem;
+    border: 1px solid var(--color-grey-4);
+    border-radius: 10px;
+    background-color: white;
+    color: var(--color-grey-2);
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  /*5:Map */
+  
+  .containerMap {
+    margin-bottom: 5rem;
+    margin-top: 1rem;
+  }
+  
+  .titleMap {
+    color: #585858;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  
+  .subtextMap {
+    color: #585858;
+    font-size: 1.5rem;
+    font-style: italic;
+    margin-bottom: 1rem;
+  }
+  
+  .incon {
+    height: 2rem;
+    width: 2rem;
+  }
+  
+  .btn {
+    background-color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  /*5:especialRequires*/
+  
+  .especialRequires {
+    margin-top: 1rem;
+  }
+  
+  .subtextEspecial {
+    color: red;
+    font-size: 1.6rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    margin-top: 2rem;
+  }
+  
+  /* color:#707070; */
+  
+  .especialDiv {
+    display: flex;
+  }
+  
+  .iconExclamacion2 {
+    height: 4rem;
+    width: 4rem;
+  }
+  
+  .especialRequires input {
+    height: 6rem;
+    border: 1px solid var(--color-grey-4);
+    border-radius: 10px;
+    background-color: white;
+    color: var(--color-grey-2);
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  /*SECTION 6: Prices and Dates */
+  
+  /*6: cupos and prices*/
+  
+  .containerInfo {
+    display: flex;
+    width: 100%;
+  }
+  
+  .containerSubInfo {
+    display: block;
+    width: 25%;
+    padding: 1rem;
+  }
+  
+  .subInfoTitle {
+    color: #585858;
+    font-size: 1.4rem;
+    font-weight: bold;
+    height: 2rem;
+  }
+  
+  .subInfoInput {
+    height: 5rem;
+    border: 1px solid var(--color-grey-4);
+    border-radius: 10px;
+    background-color: white;
+    color: var(--color-grey-2);
+    width: 11rem;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  
+  .labelS {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .subInfotxt {
+    color: #585858;
+    font-size: 1rem;
+    font-style: italic;
+    margin-bottom: 1rem;
+  }
+  
+  .btn6 {
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    color: red;
+    font-style: italic;
+    font-size: 1rem;
+  }
+  
+  .hr {
+    border: 0.1px solid rgb(219, 219, 219);
+    width: 100%;
+    margin: 1rem;
+  }
+  
+  /*DATE*/
+  
+  .contTimeAndDate {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 2rem;
+    margin-bottom: 6rem;
+  }
+  
+  .contDate {
+    display: block;
+  }
+  
+  .contDate label {
+    color: #585858;
+    font-size: 1.4rem;
+    font-weight: bold;
+    height: 2rem;
+  }
+  
+  .contInputDate {
+    display: flex;
+  }
+  
+  .contInputDate input {
+    font-size: 1.6rem;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    border: 1px solid var(--color-grey-4);
+    color: var(--color-grey-1);
+    margin-right: 2rem;
+  }
+  
+  .contInputDate input:focus {
+    outline: none;
+    border: 1px solid var(--color-grey-4);
+  }
+  
+  .containerDate {
+    display: block;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+    position: relative;
+  }
+  
+  .containerDate input {
+    display: none;
+  }
+  
+  .containerDate label {
+    height: 2rem;
+    width: 2rem;
+    cursor: pointer;
+  }
+  
+  .containerDate label img {
+    height: 2rem;
+    width: 2rem;
+    cursor: pointer;
+  }
+  
+  .calendar {
+  
+    margin-top: 1rem;
+  }
+  
+  .containerDate input:checked ~ .calendar {
+    display: block;
+  }
+  
+  /*TIME*/
+  .contStart {
+    display: block;
+    width: 25%;
+    margin-left: 2rem;
+  }
+  
+  .contStart label {
+    color: #585858;
+    font-size: 1.4rem;
+    font-weight: bold;
+    height: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .contStart input {
+    width: 14rem;
+  }
+  
+  .basquet {
+    height: 2.5rem;
+    width: 2.5rem;
+    cursor: pointer;
+  }
+  
+  /*BONO*/
+  
+  .containerBono {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 10rem;
+  }
+  
+  .checkDescuento {
+    accent-color: #29aa79;
+    margin-right: 1rem;
+    height: 2rem;
+    width: 2rem;
+  }
+  
+  .infoIcon {
+    height: 2rem;
+    width: 2rem;
+    margin-left: 4rem;
+  }
+  
+  .btnbono {
+    background-color: white;
+    border: none;
+    color: red;
+    font-size: 1.2rem;
+    margin-right: 4rem;
+    cursor: pointer;
+  }
+  
+  /*Nueva Fecha*/
+  
+  .checkOtherDate {
+    margin-bottom: 2rem;
+    margin-left: 1rem;
+    text-align: center;
+  }
+  
+  .checkOtherDate input {
+    display: none;
+  }
+  
+  .checkOtherDate label {
+    background-color: white;
+    border: none;
+    color: red;
+    font-size: 1.5rem;
+    margin-right: 4rem;
+    cursor: pointer;
+    text-align: end;
+    width: 100%;
+    margin-bottom: 7rem;
+    cursor: pointer;
+  }
+  
+  .newDate {
+    display: none;
+  }
+  
+  .checkOtherDate input:checked ~ .newDate {
+    display: block;
+  }
+  
+  /*TERMS N CONDITIONS*/
+  
+  .acceptText {
+    color: #707070;
+    margin-bottom: 2rem;
+    font-size: 1.3rem;
+    font-style: italic;
+    text-align: center;
+  }
+  
+  /*BUTTONS*/
+  
+  .btnContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4rem;
+    margin-bottom: 6rem;
+    width: 100%;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .viewBtn {
+    font-size: 1.6rem;
+    border-radius: 18px;
+    text-align: center;
+    padding: 8px 30px;
+    cursor: pointer;
+    background-color: #d6d6d6;
+    color: #707070;
+    border: none;
+  }
+  
+  .viewBtn:hover {
+    font-size: 1.6rem;
+    border-radius: 18px;
+    text-align: center;
+    padding: 8px 30px;
+    cursor: pointer;
+    background-color: #d53e27;
+    color: white;
+    border: none;
+    font-weight: bolder;
+  }
+  
+  .cancelBtn {
+    font-size: 1.6rem;
+    text-decoration: underline;
+    text-align: center;
+    padding: 8px 30px;
+    cursor: pointer;
+    background-color: white;
+    color: #d53e27;
+    border: none;
+    width: 100%;
+  }
+  
+  /*LINEA VERTICAL*/
+  
+  .containerVerticalLine {
+    align-items: center;
+    margin-top: -6rem;
+  }
+  
+  .containerLine {
+    margin-right: 20rem;
+    margin-left: 10rem;
+    height: 90rem;
+    margin-bottom: 6rem;
+  }
+  
+  /*LINEA VERTICAL ROJA*/
+  
+  .timeVerticalRed {
+    list-style-type: none;
+    border-left: 2px solid #d53e27;
+    padding: 2px;
+    height: 6%;
+  }
+  
+  .timeVerticalRed li {
+    height: 50px;
+    position: relative;
+  }
+  
+  .timeVerticalRed li b:before {
+    content: '';
+    position: absolute;
+    top: 4rem;
+    left: -2.8rem;
+    width: 5rem;
+    height: 5rem;
+    border: 2px solid #d53e27;
+    border-radius: 5rem;
+    background: #d53e27;
+  }
+  
+  .timeVerticalRed li span {
+    position: absolute;
+    color: #fff;
+    top: 5.4rem;
+    left: -1.1rem;
+    font-size: 3.5rem;
+    font-weight: bold;
+  }
+  
+  /*LINEA VERTICAL GRIS*/
+  
+  .timeVertical {
+    list-style-type: none;
+    border-left: 2px solid #d6d6d6;
+    padding: 2px;
+    height: 95rem;
+  }
+  
+  .timeVertical li {
+    height: 50px;
+    position: relative;
+  }
+  
+  .timeVertical li b:before {
+    content: '';
+    position: absolute;
+    top: 25rem;
+    left: -12px;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #d6d6d6;
+    border-radius: 10px;
+    background: #d6d6d6;
+  }
+  
+  .timeVertical li span {
+    position: absolute;
+    color: #fff;
+    top: 18px;
+    left: -6px;
+  }
+  
+  /*SECTIONS BUTTONS*/
+  
+  .containerBtnSection {
+    position: sticky;
+    bottom: 10rem;
+    height: 20rem;
+    width: 90%;
+  }
+  
+  .btnSectionMove {
+    display: block;
+    background-color: #d53e27;
+    border: none;
+    color: white;
+    border-radius: 50px;
+    cursor: pointer;
+    height: 5rem;
+    width: 5rem;
+    margin-bottom: 1rem;
+    margin-left: 150rem;
+  }
+  
+  /* //AUTOOO// */
+  
+  .autocomplete {
+    /*the container must be positioned relative:*/
+    position: relative;
+    display: inline-block;
+  }
+  .container input {
+    border: 1px solid transparent;
+    background-color: #f1f1f1;
+    padding: 10px;
+    font-size: 16px;
+  }
+  .container input[type='text'] {
+    background-color: #f1f1f1;
+    width: 100%;
+  }
+  
+  .container input[type='submit'] {
+    background-color: DodgerBlue;
+    color: #fff;
+  }
+  
+  .autocomplete-items {
+    position: absolute;
+    border: 1px solid #d4d4d4;
+    border-bottom: none;
+    border-top: none;
+    z-index: 99;
+    /*position the autocomplete items to be the same width as the container:*/
+    top: 100%;
+    left: 0;
+    right: 0;
+  }
+  .autocomplete-items div {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #fff;
+    border-bottom: 1px solid #d4d4d4;
+  }
+  .autocomplete-items div:hover {
+    /*when hovering an item:*/
+    background-color: #e9e9e9;
+  }
+  .autocomplete-active {
+    /*when navigating through the items using the arrow keys:*/
+    background-color: DodgerBlue !important;
+    color: #ffffff;
+  }
+  
+  /*ERRORES*/
+  
+  .errors {
+    font-family: sans-serif;
+    color: #ba150a;
+    font-size: 14px;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  /*Seccion 1*/
+  .container1 input:required {
+    border: 3px solid red;
+    background-color: white;
+    box-shadow: none;
+  }
+  
+  .container1 input:required:invalid {
+    border-color: #c00000;
+  }
+  
+  /*Seccion 3*/
+  
+  .containerDescription textarea:required {
+    border: 3px solid red;
+    background-color: white;
+    box-shadow: none;
+  }
+  
+  .containerDescription textarea:required {
+    border-color: #c00000;
+  }
+  
+  /*Seccion 4*/
+  
+  .errorsPicture {
+    text-align: center;
+    width: 50rem;
+    height: 30rem;
+    border: 2px dashed red;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-grey-2);
+    background-color: var(--input-bg);
+    margin-bottom: 2rem;
+  }
+  
+  .errorsPicture input {
+    opacity: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+  
+  .errorsPicture input::placeholder {
+    color: var(--color-grey-2);
+  }
+  
+  .errorsPicture p {
+    color: var(--color-grey-2);
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  .errorsPicture div {
+    color: var(--color-grey-2);
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  .errorsPicture:hover,
+  .errorsPicture.dragover {
+    opacity: 0.6;
+  }
+  
+  .errorsPicture {
+    margin-top: 1rem;
+  }
+  
+  .errorsPicture p {
+    color: red;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  /*Seccion 5*/
+  
+  .online input:required {
+    border: 3px solid red;
+    background-color: white;
+    box-shadow: none;
+  }
+  
+  .online input:required {
+    border-color: #c00000;
+  }
+  
+  .containerDirection input:required {
+    border: 3px solid red;
+    background-color: white;
+    box-shadow: none;
+  }
+  
+  .containerDirection input:required {
+    border-color: #c00000;
+  }
+  
+  .Muni input:required {
+    border: 3px solid red;
+    background-color: white;
+    box-shadow: none;
+  }
+  
+  .Muni input:required {
+    border-color: #c00000;
+  }
+  
+  .direccionError input:required {
+    border: 3px solid red;
+    background-color: white;
+    box-shadow: none;
+  }
+  
+  .direccionError input:required {
+    border-color: #c00000;
+  }
+  
+  .barrio input:required {
+    border: 3px solid red;
+    background-color: white;
+    box-shadow: none;
+  }
+  
+  .barrio input:required {
+    border-color: #c00000;
+  }
+  
+  /*Seccion 6*/
+  
+  .containerSubInfo input:required {
+    border: 3px solid red;
+    background-color: white;
+    box-shadow: none;
+  }
+  
+  .containerSubInfo input:required {
+    border-color: #c00000;
+  }
+  
+  .contDate input:required {
+    border: 3px solid red;
+    background-color: white;
+    box-shadow: none;
+  }
+  
+  .contDate input:required {
+    border-color: #c00000;
+  }
+  
+  .contStart input:required {
+    border: 3px solid red;
+    background-color: white;
+    box-shadow: none;
+  }
+  
+  .contStart input:required {
+    border-color: #c00000;
+  }
+  
+  .containerDatess input {
+    margin-bottom: 2rem;
+  }
+  
+  .addDate {
+    background-color: transparent;
+    color: red;
+    cursor: pointer;
+    margin-bottom: 2rem;
+    border: none;
+    text-align: center;
+  }
+  
+  .delete {
+    background-color: transparent;
+    color: red;
+    cursor: pointer;
+    margin-bottom: 2rem;
+    border: none;
+    text-align: center;
+    margin-left: 2rem;
+  }
+  
