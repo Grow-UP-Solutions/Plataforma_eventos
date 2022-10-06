@@ -1,9 +1,18 @@
 import { Schema, model } from "mongoose";
 
+const messageSchema = new Schema(
+  {
+    conversationId: {
+      type: String,
+    },
+    sender: {
+      type: String,
+    },
+    text: {
+      type: String,
+    },
+  },
+  { timestamps: true }
+);
 
-
-const messageSchema = new Schema({
-
-})
-
-export default model("Message", messageSchema)
+export default model("Message", messageSchema);
