@@ -23,6 +23,7 @@ import {
   Verification,
   ChangePassword,
 } from './pages';
+import EventEdit from './pages/EventEdit/EventEdit';
 import { Footer, Login, Navbar } from './components';
 import { Data } from './context/state/stateProvider';
 import PanelPrivacy from './pages/PanelPrivacy/PanelPrivacy';
@@ -32,6 +33,7 @@ import { UIContext } from './context/ui';
 import { useDispatch } from 'react-redux';
 import { getEvents } from './redux/actions';
 import { AuthContext } from './context/auth';
+import { Edit } from '@mui/icons-material';
 
 function App() {
   const [navBar, setNavBar] = useState(false);
@@ -77,6 +79,7 @@ function App() {
           <Route path="/bills" element={<Bills />} />
           <Route path="/verificarmail" element={<Verification />} />
           <Route path="/cambiarContrasenia" element={<ChangePassword />} />
+          <Route path="/edita-un-evento" element={<EventEdit />} />
         </Routes>
         <div className="container">
           <Footer />
