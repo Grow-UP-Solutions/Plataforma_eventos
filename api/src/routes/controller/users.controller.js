@@ -24,6 +24,10 @@ import { validateJWTPassword } from '../../models/util/middlewares/validate-jwt-
 import { sendVerifyMail } from '../../models/util/mailer/confirmEmail.js';
 import { changePasswordMail } from '../../models/util/mailer/changePassword.js';
 import { validateEmailUserDb } from '../../models/util/functionDB/UserDb.js';
+import {
+  createCodeVerifyMail,
+  getCodeVerifyEmail,
+} from '../../models/util/functionDB/CodeVerifyMailDb.js';
 
 const router = Router();
 /**/ ///////////////Rutas GET////////////// */
@@ -251,12 +255,12 @@ router.get('/login/renew', validateJWT, async (req, res) => {
 });
 
 router.post('/confirmEmail', async (req, res) => {
-  const { code, uid } = req.body;
+  const { code } = req.body;
 
   try {
-    const user = await getUser(uid);
+    const codedb = await getCodeVerifyEmail(code);
 
-    if (code === user.code) {
+    if (code === codedb.code) {
       return res.status(201).json({
         success: true,
         message: 'Código correcto',
@@ -273,11 +277,18 @@ router.post('/confirmEmail', async (req, res) => {
 });
 
 router.post('/sendEmailForConfirm', async (req, res) => {
-  const { uid } = req.body;
-  const { email, code } = await getUser(uid);
+  const { email } = req.body;
+
+  let code = '';
+
+  for (let x = 0; x < 6; x++) {
+    code = code + Math.trunc(Math.random() * 10);
+  }
+
+  const codeDb = await createCodeVerifyMail(code);
 
   try {
-    const response = await sendVerifyMail(email, code);
+    const response = await sendVerifyMail(email, codeDb.code);
 
     res.status(201).json({
       message: response.msg,
