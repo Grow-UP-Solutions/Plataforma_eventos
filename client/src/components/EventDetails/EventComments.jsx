@@ -1,16 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styles from './EventComments.module.css';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import foto from '../../assets/imgs/comments.png'
 import { Rating } from '@mui/material';
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { AuthContext } from '../../context/auth/AuthContext';
 
 const EventComments =  ({ id }) => {
-
-  const allEvents = useSelector((state) => state.events);
-  const eventDetails = allEvents.filter((event) => event._id === id)[0];
-
 
   const initialState = {
     idUser: '',
@@ -18,15 +15,18 @@ const EventComments =  ({ id }) => {
     title: '',
     opinion: '',
   }
- 
+  
   const [comments, setComments] = useState(initialState);
+  const { user } = useContext(AuthContext);
+  const allEvents = useSelector((state) => state.events);
+  const eventDetails = allEvents.filter((event) => event._id === id)[0];
 
   const handleChangeComments = (e) => {
     e.preventDefault();
     setComments({
-      idUser: '633201b25ffdf5ee2d2facb1',
+      idUser: user.uid,
       rating: eventDetails.rating,
-      title: 'Nombre',
+      title: user.name,
       opinion: e.target.value,
     })
   }
@@ -40,6 +40,10 @@ const EventComments =  ({ id }) => {
     setComments(initialState);
   }
 
+  const handleAlert = (e) => {
+    e.preventDefault();
+    alert('Debes estar registrado para poder enviar un comentario');
+  }
 
   return (
     <div>
@@ -107,7 +111,7 @@ const EventComments =  ({ id }) => {
       </div>
 
       <div className={styles.contBtn}>
-        <button className={styles.button} onClick={handlePostComments}>Enviar</button>
+        <button className={styles.button} onClick={user.uid ? handlePostComments : handleAlert}>Enviar</button>
       </div>
 
     </div>
