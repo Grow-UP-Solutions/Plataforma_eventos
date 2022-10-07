@@ -4,4 +4,4 @@ const CodeVerifySchema = new Schema({
   code: String,
 });
 
-export default model('CodeVerify', CodeVerifySchema);
+export const CodeVerify = model('CodeVerify', CodeVerifySchema);
