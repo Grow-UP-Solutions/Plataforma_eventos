@@ -2,6 +2,7 @@
 import React, { useContext, useState } from 'react';
 import styles from './Message.module.css';
 import { FiStar } from 'react-icons/fi';
+import { format } from "timeago.js";
 
 const Message = ({ message, own }) => {
 
@@ -12,7 +13,7 @@ const Message = ({ message, own }) => {
 
       <div className={styles.wrapperInfoMessage}>
         <FiStar className={styles.iconMessage}/>
-        <span className={styles.messageBottom}>{message.createdAt}</span>
+        <span className={styles.messageBottom}>{format(message.createdAt)}</span>
       </div>
     </div>
   );

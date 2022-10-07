@@ -2,12 +2,9 @@ import React, { useContext, useState } from 'react';
 import style from './Navbar.module.css';
 
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-
 import { UIContext } from '../../context/ui';
 import { AuthContext } from '../../context/auth';
-
 import Search from '../Search/Search';
-
 import { GrMail } from 'react-icons/gr';
 import { FaUserCircle } from 'react-icons/fa';
 import { IoNotifications, IoCaretDownSharp } from 'react-icons/io5';
