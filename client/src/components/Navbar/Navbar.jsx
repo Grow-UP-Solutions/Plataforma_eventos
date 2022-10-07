@@ -127,8 +127,8 @@ const Navbar = ({ upper }) => {
               </div>
 
               <div className={style.containerName}>
-                <p>{user.name.split(' ')[0]}</p>
-                <p>{user.name.split(' ')[1]}</p>
+                <p>{nombreApellido[0]}</p>
+                <p>{nombreApellido[1]}</p>
               </div>
               <div
                 style={{
