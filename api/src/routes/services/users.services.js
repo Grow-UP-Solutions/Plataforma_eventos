@@ -20,11 +20,11 @@ export async function getUser(id) {
   try {
     const user = oneUserDb(id);
     if (!user) {
-      msg: `El usuario no fue encontrado`;
+      throw new Error(`El usuario no fue encontrado`);
     }
     return user;
   } catch (error) {
-    return { message: error.message };
+    throw new Error(error.message);
   }
 }
 export async function createUsers(user) {
@@ -40,7 +40,7 @@ export async function createUsers(user) {
 
     return users;
   } catch (error) {
-    return { message: error.message };
+    throw new Error(error.message);
   }
 }
 export async function createOrganizerComment(id, opinion) {

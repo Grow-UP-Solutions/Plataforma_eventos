@@ -111,6 +111,7 @@ const Login = () => {
             localStorage.setItem('token', userLog.data.token);
             login(userLog.data);
             toggleScreenLogin();
+            navigate('/');
           } catch (error) {
             setErrorLogin(true);
           }
