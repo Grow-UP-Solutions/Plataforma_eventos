@@ -85,6 +85,8 @@ const Login = () => {
         if (event.data) {
           let user = {};
 
+          console.log(event.data_json);
+
           if (provider === 'facebook') {
             const { email, id } = event.data._json;
 
@@ -109,6 +111,7 @@ const Login = () => {
             localStorage.setItem('token', userLog.data.token);
             login(userLog.data);
             toggleScreenLogin();
+            navigate('/');
           } catch (error) {
             setErrorLogin(true);
           }

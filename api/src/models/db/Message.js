@@ -11,6 +11,14 @@ const messageSchema = new Schema(
     text: {
       type: String,
     },
+    read: {
+      type: Boolean,
+      default: false,
+    },
+    delete: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
