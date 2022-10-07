@@ -19,7 +19,7 @@ import {
   EventDetails,
   Faq,
   Home,
-  Message,
+  Messages,
   Organizer,
   Payment,
   Register,
@@ -28,20 +28,10 @@ import {
   Verification,
   WorkWithUs,
   WorkWithUsForm,
-  EventDetails,
-  CategoriesResult,
-  User,
-  Messages,
-  Verification,
-  ChangePassword,
 } from './pages';
 import EventEdit from './pages/EventEdit/EventEdit';
-import { Footer, Login, Navbar } from './components';
-import { Data } from './context/state/stateProvider';
 import PanelPrivacy from './pages/PanelPrivacy/PanelPrivacy';
 import { getEvents } from './redux/actions';
-import { AuthContext } from './context/auth';
-import { Edit } from '@mui/icons-material';
 
 function App() {
   const [navBar, setNavBar] = useState(false);
