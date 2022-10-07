@@ -1,0 +1,139 @@
+/* CHAT */
+
+.containerChat {
+  background-color: white;
+  height: 58.6rem;
+
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+  
+.chatHeader {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  color: var(--color-grey-2);
+  border-bottom: 1px solid var(--color-grey-4);
+  padding: 1.8rem;
+}
+
+.chatHeader img {
+  width: 3.7rem;
+  height: 3.7rem;
+  border-radius: 50%;
+}
+
+.containerChatMessage {
+  flex: 1;
+
+  padding: 2rem;
+}
+
+/* CHAT MESSAGE */
+
+.containerChatMessage {
+  display: flex;
+  flex-direction: column;
+  gap: 2.2rem;
+}
+
+.ownMessage,
+.otherMessage {
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.2);
+}
+
+.ownMessage {
+  align-self: flex-start;
+}
+
+.otherMessage {
+  align-self: flex-end;
+  background-color: var(--color-grey-6);
+}
+
+.containerChatMessage p {
+  font-size: 1.4rem;
+  color: var(--color-grey-1);
+  width: 27rem;
+
+  margin-bottom: 0.6rem;
+}
+
+.wrapperInfoMessage {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+
+  color: var(--color-grey-4);
+  font-style: italic;
+}
+
+.iconMessage {
+  width: 2.2rem;
+  height: 2.2rem;
+}
+
+/* TEXT AREA */
+
+.containerInputMessage {
+  padding: 2rem;
+}
+
+.containerInputMessage textarea {
+  width: 100%;
+  height: 12rem;
+  resize: none;
+  border-radius: 10px;
+  border: 1px solid var(--color-grey-4);
+  padding: 1rem 2rem;
+}
+
+.containerInputMessage textarea:focus {
+  outline: none;
+  border: 1px solid var(--color-orange);
+}
+
+.containerInputMessage textarea::placeholder {
+  font-style: italic;
+  font-size: 1.4rem;
+  font-family: inherit;
+}
+
+.wrapperBtnInputMessage {
+  display: flex;
+  justify-content: space-between;
+}
+
+.wrapperBtnInputMessage p {
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--color-grey-4);
+  width: 28rem;
+}
+
+.wrapperBtnInputMessage button {
+  font-size: 1.6rem;
+  font-weight: bold;
+
+  background-color: transparent;
+  border: none;
+  color: var(--color-orange);
+  cursor: pointer;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  transition: all 0.2s;
+}
+
+.wrapperBtnInputMessage button:hover {
+  background-color: var(--color-orange);
+  color: white;
+}
+
+
+
+
+
+

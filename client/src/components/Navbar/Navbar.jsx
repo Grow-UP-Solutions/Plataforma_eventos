@@ -2,29 +2,41 @@ import React, { useContext, useState } from 'react';
 import style from './Navbar.module.css';
 
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-
 import { UIContext } from '../../context/ui';
 import { AuthContext } from '../../context/auth';
-
 import Search from '../Search/Search';
-
 import { GrMail } from 'react-icons/gr';
 import { FaUserCircle } from 'react-icons/fa';
 import { IoNotifications, IoCaretDownSharp } from 'react-icons/io5';
 import logo from '../../assets/imgs/logoNav.svg';
+import notifications from '../../api/noti';
 
 const Navbar = ({ upper }) => {
   const { toggleScreenLogin } = useContext(UIContext);
   const { user, logged, logout } = useContext(AuthContext);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [openNotifications, setOpenNotifications] = useState(false);
+  const [openMessages, setOpenMessages] = useState(false);
   const navigate = useNavigate();
-
+  const allNotifications = notifications;
   const { pathname } = useLocation();
 
   const handleClick = (e) => {
     e.preventDefault();
     navigate('/');
-  };
+  };  
+
+  const handleClickMessage = (e) => {
+    e.preventDefault();
+    navigate('/user/message');
+    setOpenMessages(false);
+  }
+
+  const handleClickNotifications = (e) => {
+    e.preventDefault();
+    navigate('/user/notifications');
+    setOpenNotifications(false);
+  }  
 
   return (
     <div
@@ -60,15 +72,54 @@ const Navbar = ({ upper }) => {
           ) : (
             <>
               <div className={style.containerNotification}>
-                <div className={style.containerMessage}>
+                <div className={style.containerMessage} onClick={() => setOpenMessages(!openMessages)}>
                   <GrMail className={style.iconNav} />
-                  <div className={style.bage}>2</div>
+                  <div className={style.bage}>1</div>
                 </div>
                 <div className={style.divisorNotis} />
-                <div className={style.containerNotis}>
+                <div className={style.containerNotis} onClick={() => setOpenNotifications(!openNotifications)}>
                   <IoNotifications className={style.iconNav} />
-                  <div className={style.bage}>2</div>
+                  <div className={style.bage}>{allNotifications.length}</div>
                 </div>
+
+                {
+                  openMessages && (
+                    <div className={style.notifications}>
+                      <p className={style.link_noti}>Marcar todas como leidas</p>
+                      {
+                        allNotifications.map(e => (
+                          <div className={style.noty}>
+                            
+                            {e.title} {e.noti}
+                          
+                          </div>
+                          
+                        ))
+                      }
+                      <p className={style.link_notis} onClick={handleClickMessage}>Ver todos los mensajes</p>             
+                    </div>
+                  )
+                }
+
+                {
+                  openNotifications && (
+                    <div className={style.notifications}>
+                      <p className={style.link_noti}>Marcar todas como leidas</p>
+                      {
+                        allNotifications.map(e => (
+                          <div className={style.noty}>
+                            <IoNotifications className={style.iconNav} />
+                            {e.title} {e.noti}
+                          
+                          </div>
+                          
+                        ))
+                      }
+                      <p className={style.link_notis} onClick={handleClickNotifications}>Ver todas las notificaciones</p>
+                    </div>
+                  )
+                }
+
               </div>
 
               <div className={style.containerName}>
