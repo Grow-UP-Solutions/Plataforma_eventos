@@ -98,28 +98,7 @@ const UserSchema = new Schema({
       },
     },
   ],
-  message: [
-    {
-      msg: String,
-
-      date: {
-        type: Date,
-        default: Date.now(),
-      },
-      user: {
-        name: String,
-        picture: String,
-      },
-      read: {
-        type: Boolean,
-        default: false,
-      },
-      delete: {
-        type: Boolean,
-        default: false,
-      },
-    },
-  ],
+  
 });
 
 export default model('Users', UserSchema);

@@ -1,6 +1,7 @@
 import { Router } from "express";
+import { oneEventDb } from "../../models/util/functionDB/EventesDb.js";
 
-import { getAllEvents, createEvents, eventsUpdate, createOpinionsEvents } from "../services/events.services.js";
+import { getAllEvents, createEvents, eventsUpdate, createOpinionsEvents, getOneEvent } from "../services/events.services.js";
 
 const router = Router();
 
@@ -15,6 +16,15 @@ router.get("/", async (req, res) => {
     return res.status(500).json({ ERROR_EVENTS: error.message });
   }
 });
+router.get('/:id', async (req, res)=>{
+  const {id }=req.params
+  try {
+    const event = await getOneEvent(id)
+   res.status(200).json(event)
+  } catch (error) {
+    res.status(500).json(error.message)
+  }
+})
 
 router.post("/create", async (req, res) => {
   try {

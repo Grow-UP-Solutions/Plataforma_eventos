@@ -28,6 +28,17 @@ const EventSchema = new Schema({
 
   dates: [
     {
+      date: String, 
+      start : String, 
+      end:String , 
+      year:Number ,  
+      cupos:String, 
+      price:String, 
+      sells: Number , 
+      isPublic:Boolean,
+      precioAlPublico:String,
+      gananciaCupo:String,
+      gananciaEvento:String,
       date: String,
       start: String,
       end: String,
