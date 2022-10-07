@@ -1,5 +1,5 @@
-import "../../../DB.js";
-import Category from "../../db/Category.js";
+import '../../../DB.js';
+import Category from '../../db/Category.js';
 
 /** basic user database operations */
 
@@ -9,10 +9,9 @@ export async function AllCategoyDb() {
 
 export async function OneCategoryDb(name) {
   try {
-   
     return await Category.findOne({ name: name });
   } catch (error) {
-    return ({message:error.message})
+    return { message: error.message };
   }
 }
 
@@ -30,4 +29,3 @@ export async function createCategoryDb(category) {
   const categoryCreated = new Category(category);
   return await categoryCreated.save();
 }
-

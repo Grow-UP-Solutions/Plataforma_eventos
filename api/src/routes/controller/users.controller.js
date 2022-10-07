@@ -30,7 +30,7 @@ import { validateEmailUserDb } from '../../models/util/functionDB/UserDb.js';
   getCodeVerifyEmail,
 } from '../../models/util/functionDB/CodeEmailDb.js'; */
 
-/* import { CodeVerify } from '../../../src/models/db/CodeVerify.js'; */
+import Code from '../../models/db/Code.js';
 
 const router = Router();
 /**/ ///////////////Rutas GET////////////// */
@@ -42,6 +42,7 @@ router.get('/', async (req, res) => {
     return res.status(500).json({ ERROR_USER: error.message });
   }
 });
+
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
 
