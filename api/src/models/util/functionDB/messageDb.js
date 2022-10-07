@@ -27,3 +27,20 @@ export async function findMessage(conversationId) {
     }
     
 }
+export async function findOneMessage(id) {
+
+    console.log(id)
+    return await Message.findOne({_id:id})
+    
+}
+
+export async function findAndUpdateMessage(id, read){
+    try {
+        const newMessage = await findOneMessage(id)
+        newMessage.read = read
+        return await newMessage.save()
+    } catch (error) {
+        return {ERROR_UPDATEMESSAGE:error.message}
+    }
+
+}

@@ -20,6 +20,19 @@ export async function getAllEvents() {
     return ({message:error.message})
   }
 }
+export async function getOneEvent(id){
+  try {
+    const event= await oneEventDb(id)
+    if(!event){
+      throw new Error("El evento no existe id incorrecto")
+
+    }
+    return event
+  } catch (error) {
+    throw new(error.message)
+  }
+  
+}
 export async function createEvents(event) {
   try {
     const { idOrganizer, categories } = event;

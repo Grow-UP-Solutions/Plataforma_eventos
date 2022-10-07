@@ -1,31 +1,40 @@
 import { Router } from "express";
-import { createMessage, findMessage } from "../../models/util/functionDB/messageDb.js";
+import {
+  createMessage,
+  findMessage,
+} from "../../models/util/functionDB/messageDb.js";
+import { updateMessage } from "../services/message.service.js";
 
+const router = Router();
 
+router.get("/:conversationId", async (req, res) => {
+  const { conversationId } = req.params;
+  try {
+    const allMessage = await findMessage(conversationId);
+    res.status(200).json(allMessage);
+  } catch (error) {
+    return res.status(500).json(error.message);
+  }
+});
 
+router.post("/create", async (req, res) => {
+  const message = req.body;
+  try {
+    const newMessage = await createMessage(message);
+    res.status(200).json(newMessage);
+  } catch (error) {
+    return res.status(500).json(error.message);
+  }
+});
+router.put("/update/:id", async (req, res) => {
+  const { id } = req.params;
+  const { read } = req.body;
+  try {
+    const newMessage = await updateMessage(id, read);
+    res.status(200).json(newMessage);
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
+});
 
-const router = Router()
-
-router.get('/:conversationId', async (req,res)=>{
-    const{conversationId}= req.params
-    try {
-        const allMessage= await findMessage(conversationId)
-        res.status(200).json(allMessage)
-    } catch (error) {
-        return res.status(500).json(error.message)
-    }
-
-})
-
-router.post('/create', async (req, res)=>{
-    const message =req.body
-    try {
-        const newMessage= await createMessage(message)
-        res.status(200).json(newMessage)
-    } catch (error) {
-        return res.status(500).json(error.message)
-    }
-})
-
-
-export default router
+export default router;

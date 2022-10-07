@@ -37,7 +37,9 @@ const Navbar = ({ upper }) => {
     navigate('/user/notifications');
     setOpenNotifications(false);
   }  
-
+  
+console.log(user)
+  const nombreApellido= user.name.split(' ')
   return (
     <div
       id="navbar"
@@ -123,8 +125,8 @@ const Navbar = ({ upper }) => {
               </div>
 
               <div className={style.containerName}>
-                <p>{user.name.split(' ')[0]}</p>
-                <p>{user.name.split(' ')[1]}</p>
+                <p>{nombreApellido[0]}</p>
+                <p>{nombreApellido[1]}</p>
               </div>
               <div
                 style={{
