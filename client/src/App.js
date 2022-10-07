@@ -19,7 +19,7 @@ import {
   EventDetails,
   CategoriesResult,
   User,
-  Message,
+  Messages,
   Verification,
   ChangePassword,
 } from './pages';
@@ -74,8 +74,8 @@ function App() {
           <Route path="/workWithUs/form/:work" element={<WorkWithUsForm />} />
           <Route path="/user/profile" element={<User />} />
           <Route path="/privacy" element={<PanelPrivacy />} />
-          <Route path="/user/message" element={<Message />} />
-          <Route path="/notifications" element={<Notifications />} />
+          <Route path="/user/message" element={<Messages />} />
+          <Route path="/user/notifications" element={<Notifications />} />
           <Route path="/bills" element={<Bills />} />
           <Route path="/verificarmail" element={<Verification />} />
           <Route path="/cambiarContrasenia" element={<ChangePassword />} />

@@ -28,6 +28,10 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
 }
+
+
+
+
 .containerChats {
   display: flex;
   flex-direction: column;
@@ -144,13 +148,13 @@
   width: 1px;
   height: 3.2rem;
   background-color: var(--color-orange);
-}
+} 
 
 /* CHAT */
 
 .containerChat {
   background-color: white;
-  height: 75.6rem;
+  height: 58.6rem;
 
   display: flex;
   flex-direction: column;
@@ -175,7 +179,7 @@
   flex: 1;
 
   padding: 2rem;
-}
+} 
 
 /* CHAT MESSAGE */
 
@@ -221,12 +225,23 @@
 .iconMessage {
   width: 2.2rem;
   height: 2.2rem;
-}
+} 
+
+
+
 
 /* TEXT AREA */
 
+/* .containerDivMessage {
+  display: grid;
+  grid-template-rows: 80% 20%;
+  
+} */
+
 .containerInputMessage {
   padding: 2rem;
+  width: 100%;
+  background-color: white;
 }
 
 .containerInputMessage textarea {
