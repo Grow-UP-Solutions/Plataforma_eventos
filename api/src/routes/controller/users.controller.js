@@ -27,7 +27,7 @@ import { validateEmailUserDb } from '../../models/util/functionDB/UserDb.js';
 import {
   createCodeVerifyMail,
   getCodeVerifyEmail,
-} from '../../models/util/functionDB/CodeVerifyEmailDb.js';
+} from '../../models/util/functionDB/CodeEmailDb';
 
 const router = Router();
 /**/ ///////////////Rutas GET////////////// */
