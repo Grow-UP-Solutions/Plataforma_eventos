@@ -257,7 +257,7 @@ router.get('/login/renew', validateJWT, async (req, res) => {
   }
 });
 
-router.post('/confirmEmail', async (req, res) => {
+/* router.post('/confirmEmail', async (req, res) => {
   const { code } = req.body;
 
   try {
@@ -277,9 +277,9 @@ router.post('/confirmEmail', async (req, res) => {
       message: error.message,
     });
   }
-});
+}); */
 
-router.post('/sendEmailForConfirm', async (req, res) => {
+/* router.post('/sendEmailForConfirm', async (req, res) => {
   const { email } = req.body;
 
   let code = '';
@@ -300,7 +300,7 @@ router.post('/sendEmailForConfirm', async (req, res) => {
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
-});
+}); */
 
 /**/ ///////////Rutas PUT///////////////////////////////// */
 router.put('/update/:id', async (req, res) => {
