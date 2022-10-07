@@ -2,9 +2,8 @@ import React from "react";
 import EventDate from "./EventDate";
 import EventOrganizer from "./EventOrganizer";
 import styles from './EventSideBar.module.css';
-import { useSelector } from "react-redux";
 
-const EventSideBar = ({ id, conversation }) => {
+const EventSideBar = ({ id }) => {
 
   return (
     <div className={styles.container}>
@@ -25,7 +24,7 @@ const EventSideBar = ({ id, conversation }) => {
       <hr className={styles.cardHr}></hr>
 
       <div>
-        <EventOrganizer id={id} conversation={conversation}/> 
+        <EventOrganizer id={id} /> 
       </div>
     </div>
   );

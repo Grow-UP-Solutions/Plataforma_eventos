@@ -1,15 +1,27 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styles from './EventOrganizer.module.css';
 import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { AuthContext } from '../../context/auth/AuthContext';
 
-const EventOrganizer = ({ id, conversation }) => {
+const EventOrganizer = ({ id }) => {
 
+  const [conversation, setConversation] = useState({});
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const allEvents = useSelector((state) => state.events);
   const eventDetails = allEvents.filter((event) => event._id === id)[0];
+
+  useEffect(() => {
+    user ?
+    setConversation({
+      senderId: user.uid,
+      receiverId: eventDetails.organizer._id,
+    }) : 
+    setConversation({})
+  }, []);
 
   const handleClickMessages = (e) => {
     e.preventDefault();
