@@ -83,9 +83,7 @@ const Register = () => {
         message: '',
       });
 
-      const userRegister = await eventsApi.post('/users/create', userData);
-
-      localStorage.setItem('user', JSON.stringify(userRegister.data));
+      localStorage.setItem('user', JSON.stringify(userData));
       setSuccesData(true);
     } catch (error) {
       setMessageError({

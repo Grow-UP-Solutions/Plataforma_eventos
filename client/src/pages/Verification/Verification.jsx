@@ -35,20 +35,18 @@ const Verification = () => {
     if (!user) {
       return navigate('/');
     }
-    sendEmail(user.uid);
+    sendEmail(user.email);
     setUser(user);
   }, []);
 
-  useEffect(() => {
-    return () => {
-      const user = JSON.parse(localStorage.getItem('user'));
-    };
-  }, []);
-
-  const sendEmail = async (uid) => {
-    const result = await eventsApi.post('/users/sendEmailForConfirm', {
-      uid,
-    });
+  const sendEmail = async (email) => {
+    try {
+      const result = await eventsApi.post('/users/sendEmailForConfirm', {
+        email,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleOnChange = async (e) => {
@@ -60,7 +58,6 @@ const Verification = () => {
 
   const confirmAndLog = async () => {
     const userBody = {
-      uid: user.uid,
       code:
         code.input1 +
         code.input2 +
@@ -72,8 +69,14 @@ const Verification = () => {
 
     try {
       const result = await eventsApi.post('/users/confirmEmail', userBody);
-      localStorage.setItem('token', user.token);
-      login(user);
+
+      if (result.data.success) {
+        const userRegister = await eventsApi.post('/users/create', user);
+        localStorage.setItem('token', userRegister.data.token);
+        login(user);
+      } else {
+        throw new Error(result.data.message);
+      }
       localStorage.removeItem('user');
       navigate('/');
     } catch (error) {
@@ -147,7 +150,7 @@ const Verification = () => {
         </button>
         <div className={styles.divisor} />
         <button
-          onClick={() => sendEmail(user.uid)}
+          onClick={() => sendEmail(user.email)}
           className={styles.btnReSendCode}
         >
           Volver a enviar el código
