@@ -19,15 +19,13 @@ export async function getAllUsers() {
 export async function getUser(id) {
   try {
     const user = oneUserDb(id);
-  if (!user) {
-    msg: `El usuario no fue encontrado`;
-  }
-  return user;
+    if (!user) {
+      msg: `El usuario no fue encontrado`;
+    }
+    return user;
   } catch (error) {
-    return ({message:error.message})
+    return { message: error.message };
   }
-
-  
 }
 export async function createUsers(user) {
   const { email } = user;
@@ -42,7 +40,7 @@ export async function createUsers(user) {
 
     return users;
   } catch (error) {
-    return ({message:error.message})
+    return { message: error.message };
   }
 }
 export async function createOrganizerComment(id, opinion) {
@@ -50,7 +48,7 @@ export async function createOrganizerComment(id, opinion) {
     const generateComment = await generateUserComment(id, opinion);
     return generateComment;
   } catch (error) {
-    return ({message:error.message})
+    return { message: error.message };
   }
 }
 export async function getAllCommentUser(id) {
@@ -66,42 +64,37 @@ export async function getAllCommentUser(id) {
       .flat()
       .filter((e) => e.user == id);
     return allCommnt.concat(allCommentUser);
-    
   } catch (error) {
-    return ({message:error.message})
+    return { message: error.message };
   }
 }
 export async function userUpdate(id, newUser) {
   try {
-    
     const newUsers = updateOneUserDb(id, newUser);
-  
+
     return newUsers;
   } catch (error) {
-    return ({message:error.message})
+    return { message: error.message };
   }
 }
 export async function userDelete(id) {
   try {
     const deleteUser = await deleteOneUserDb(id);
     if (!deleteUser) 'Usuario no encontardo';
-  
+
     return deleteUser;
-    
   } catch (error) {
-    return ({message:error.message})
+    return { message: error.message };
   }
 }
 
-
-export async function sendMessageUser(idSend,message) {
+export async function sendMessageUser(idSend, message) {
   try {
-    const {idGet, msg}= message
-    const sendMessage = await sendMessageDB(idSend,idGet,msg)
-    return sendMessage
-    
+    const { idGet, msg } = message;
+    const sendMessage = await sendMessageDB(idSend, idGet, msg);
+    return sendMessage;
   } catch (error) {
-    return ({message:error.message})
+    return { message: error.message };
   }
 }
 
@@ -121,12 +114,6 @@ export async function login(email, password) {
 
     return user;
   } catch (error) {
-    return ({message:error.message})
+    return { message: error.message };
   }
-}
-
-export async function confirmEmail(code) {
-  try {
-    const user = await getUser();
-  } catch (error) {}
 }

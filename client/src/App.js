@@ -1,47 +1,47 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
 import { animateScroll as scroll } from 'react-scroll';
 import './App.css';
+import { Footer, Login, Navbar } from './components';
+import Bills from './components/Finance/Bills';
+import Notifications from './components/Notifications/Notifications';
+import { AuthContext } from './context/auth';
+import { Data } from './context/state/stateProvider';
+import { UIContext } from './context/ui';
 import {
   Cart,
+  CategoriesResult,
+  ChangePassword,
   Contacto,
-  Faq,
-  Home,
-  Ingresa,
   EventCreate,
   EventCreateForm,
+  EventDetails,
+  Faq,
+  Home,
+  Messages,
   Organizer,
   Payment,
   Register,
   SearchResult,
+  User,
+  Verification,
   WorkWithUs,
   WorkWithUsForm,
-  EventDetails,
-  CategoriesResult,
-  User,
-  Messages,
-  Verification,
-  ChangePassword,
 } from './pages';
 import EventEdit from './pages/EventEdit/EventEdit';
-import { Footer, Login, Navbar } from './components';
-import { Data } from './context/state/stateProvider';
 import PanelPrivacy from './pages/PanelPrivacy/PanelPrivacy';
-import Notifications from './components/Notifications/Notifications';
-import Bills from './components/Finance/Bills';
-import { UIContext } from './context/ui';
-import { useDispatch } from 'react-redux';
 import { getEvents } from './redux/actions';
-import { AuthContext } from './context/auth';
-import { Edit } from '@mui/icons-material';
 
 function App() {
   const [navBar, setNavBar] = useState(false);
   const dispatch = useDispatch();
   const { isMenuLoginOpen, getCategories } = useContext(UIContext);
-  const { checkAuthToken } = useContext(AuthContext);
+  const { checkAuthToken, checkUserLocalStorage } = useContext(AuthContext);
 
-  const { user, logged } = useContext(AuthContext);
+  /* useEffect(() => {
+    checkUserLocalStorage();
+  }, []); */
 
   useEffect(() => {
     checkAuthToken();
@@ -78,7 +78,10 @@ function App() {
           <Route path="/user/notifications" element={<Notifications />} />
           <Route path="/bills" element={<Bills />} />
           <Route path="/verificarmail" element={<Verification />} />
-          <Route path="/cambiarContrasenia" element={<ChangePassword />} />
+          <Route
+            path="/cambiarContrasenia/:token"
+            element={<ChangePassword />}
+          />
           <Route path="/edita-un-evento" element={<EventEdit />} />
         </Routes>
         <div className="container">
