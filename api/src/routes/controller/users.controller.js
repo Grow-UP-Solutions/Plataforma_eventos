@@ -30,7 +30,7 @@ import { validateEmailUserDb } from '../../models/util/functionDB/UserDb.js';
   getCodeVerifyEmail,
 } from '../../models/util/functionDB/CodeEmailDb.js'; */
 
-import Verify from '../../models/db/Verify.js';
+/* import Verify from '../../models/db/Verify.js'; */
 
 const router = Router();
 /**/ ///////////////Rutas GET////////////// */
