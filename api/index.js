@@ -3,13 +3,13 @@ import './src/DB.js';
 
 
 const PORT = process.env.PORT || 3001
-try {
-  app.listen(PORT, () => {
+app.listen(PORT, () => {
+    try {
     console.log(`%s listening at ${PORT}`); 
+  } catch (error) {
+    console.log(error.message    )
+  }
   });
-} catch (error) {
-  console.log(error.message    )
-}
 
 
 
