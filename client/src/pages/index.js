@@ -17,3 +17,4 @@ export { default as EventCreateForm } from './EventCreateForm/EventCreateForm';
 export { default as User } from './User/User';
 export { default as Messages } from './Messages/Messages';
 export { default as Verification } from './Verification/Verification';
+export { default as ChangePassword } from './ChangePassword/ChangePassword';

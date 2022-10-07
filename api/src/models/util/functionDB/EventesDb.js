@@ -10,7 +10,7 @@ export async function AllEventsDb() {
       .populate({ path: "opinions" })
       .exec();
   } catch (error) {
-    throw new Error("Fallo AllEvento DB");
+    return ({message:error.message})
   }
 }
 export async function oneEventDb(id) {
@@ -19,7 +19,7 @@ export async function oneEventDb(id) {
       .populate({ path: "organizer" })
       .populate({ path: "category" });
   } catch (error) {
-    throw new Error("Fallo oneEvento DB");
+    return ({message:error.message})
   }
 }
 export async function updateOneEventDb(id, newEvent) {
@@ -29,7 +29,7 @@ export async function updateOneEventDb(id, newEvent) {
       .populate({ path: "category" })
       .populate({ path: "opinions" });
   } catch (error) {
-    throw new Error("Fallo updateEvent DB");
+    return ({message:error.message})
   }
 }
 export async function deleteOneEventDb(id) {
@@ -45,8 +45,7 @@ export async function createOneEventDb(event) {
 
     return eventCreated;
   } catch (error) {
-    console.log(error);
-    throw new Error("Fallo el crear evento en DB");
+    return ({message:error.message})
   }
 }
 
@@ -69,7 +68,7 @@ export async function generateEventComment(id, opinions) {
     
     return event.opinions;
   } catch (error) {
-    console.log('DB',error)
-    throw new Error("Fallo el gurdado de la opinion en DB", error);
+    
+    return ({message:error.message})
   }
 }

@@ -29,17 +29,20 @@ const EventDetails = () => {
     }) : 
     setConversation({})
   }, [dispatch]);
+  
+  // const allEvents = useSelector((state) => state.events);
+  // const eventDetails = allEvents.filter((event) => event._id === id)[0];
 
   return (
     <div className={`${style.container} container`}>
       <div className={style.item1}>
-        <EventInfo event={eventDetails} />
-        <EventLocation event={eventDetails} />
-        <EventComments event={eventDetails} />
+        <EventInfo id={id} />
+        <EventLocation id={id} />
+        <EventComments id={id} />
       </div>
 
       <div className={style.item2}>
-        <EventSideBar event={eventDetails} conversation={conversation}/>
+        <EventSideBar id={id} conversation={conversation}/>
       </div>
     </div>
   );

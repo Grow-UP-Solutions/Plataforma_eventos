@@ -5,39 +5,30 @@ import bcrypt from 'bcryptjs';
 /** basic user database operations */
 
 export async function allUserDb() {
-  try {
-    const id = '633642857b1fdf0b1331ca48';
-    const prueba = await Users.find();
-    const prueba2 = prueba
-      .map((e) => {
-        return e.opinionsOrg;
-      })
-      .flat()
-      .filter((e) => {
-        return e._id == id;
-      });
+  
+  try {    
 
     return await Users.find()
       .populate({ path: 'myEventsCreated' })
       .populate({ path: 'myFavourites' })
       .populate({ path: 'myEventsBooked' });
   } catch (error) {
-    console.log(error);
+    return ({message:error.message})
   }
 }
 export async function validateEmailUserDb(email) {
   try {
     return await Users.findOne({ email: email });
   } catch (error) {
-    throw new Error('Ha fallado validate email user db');
+    return ({message:error.message})
   }
 }
 export async function oneUserDb(id) {
+  const idOrganizer = id;
+  if (!idOrganizer) {
+    return { msg: 'Se rerquiere el id del organizador' };
+  }
   try {
-    const idOrganizer = id;
-    if (!idOrganizer) {
-      return { msg: 'Se rerquiere el id del organizador' };
-    }
 
     return await Users.findById({ _id: idOrganizer })
       .populate({ path: 'myEventsCreated' })
@@ -45,11 +36,12 @@ export async function oneUserDb(id) {
       .populate({ path: 'myEventsBooked' })
       .populate({ path: 'opinionsOrg' });
   } catch (error) {
-    throw new Error('Ha fallado validate id user db', error);
+    return ({message:error.message})
   }
 }
 export async function updateOneUserDb(id, newUser) {
-  return await Users.findByIdAndUpdate({ _id: id }, newUser, {
+  try {
+    return await Users.findByIdAndUpdate({ _id: id }, newUser, {
     new: 1,
   })
     .populate({ path: 'myEventsCreated' })
@@ -57,6 +49,10 @@ export async function updateOneUserDb(id, newUser) {
     .populate({ path: 'myEventsBooked' })
     .populate({ path: 'myOpinions' })
     .populate({ path: 'opinionsOrg' });
+  } catch (error) {
+    return ({message:error.message})
+  }
+  
 }
 export async function deleteOneUserDb(id) {
   try {
@@ -65,7 +61,7 @@ export async function deleteOneUserDb(id) {
       .populate({ path: 'myFavourites' })
       .populate({ path: 'myEventsBooked' });
   } catch (error) {
-    throw new Error('Error en delete user DB', error);
+    return ({message:error.message})
   }
 }
 /**Creating user in Database */
@@ -88,7 +84,7 @@ export async function createOneUserDb(user) {
     await userCreated.save();
     return userCreated;
   } catch (error) {
-    throw new Error('Fallo create user DB', error);
+    return ({message:error.message})
   }
 }
 
@@ -97,13 +93,37 @@ export async function createOneUserDb(user) {
 export async function generateUserComment(id, opinion) {
   try {
     const { idUser } = opinion;
-    console.log(id);
+    
     const user = await oneUserDb(idUser);
+
     const organizer = await oneUserDb(id);
+
     opinion.user = user._id;
+
     organizer.opinionsOrg.push(opinion);
     return await organizer.save();
   } catch (error) {
-    throw new Error('Fallo comment Db', error);
+    return ({message:error.message})
+  }
+}
+
+export async function sendMessageDB(idSend,idGet, msg){
+  try {
+    const userSend = await oneUserDb(idSend)
+    const { picture, name }= userSend
+    const userGet = await oneUserDb(idGet)
+    userGet.message.push({
+      msg,
+      user:{
+        name,
+        picture
+      }
+    })
+    await userGet.save()
+    console.log(userGet.message)
+    return {Respon: 'mensaje enviado con exito'}
+
+  } catch (error) {
+     return ({message:error.message})
   }
 }

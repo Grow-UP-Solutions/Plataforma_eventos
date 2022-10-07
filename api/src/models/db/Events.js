@@ -25,13 +25,14 @@ const EventSchema = new Schema({
   barrio: String,
 
   specialRequires: String,
-  cupos: String,
-  price: String,
+
   dates: [
     {
       date: String,
       start: String,
       end: String,
+      cupos: String,
+      price: String,
     },
   ],
   notificaciones: [
