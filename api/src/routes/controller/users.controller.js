@@ -1,3 +1,4 @@
+import bcrypt from 'bcryptjs';
 import { Router } from 'express';
 import '../../DB.js';
 import {
@@ -16,8 +17,12 @@ import passport from 'passport';
 import { check } from 'express-validator';
 import validateFields from '../../models/util/middlewares/validate-fields.js';
 import { generateJWT } from '../../models/util/helpers/jwt.js';
+import { generateJWTPassword } from '../../models/util/helpers/jwtPassword.js';
 import { validateJWT } from '../../models/util/middlewares/validate-jwt.js';
+import { validateJWTPassword } from '../../models/util/middlewares/validate-jwt-password.js';
 import { sendVerifyMail } from '../../models/util/mailer/confirmEmail.js';
+import { changePasswordMail } from '../../models/util/mailer/changePassword.js';
+import { validateEmailUserDb } from '../../models/util/functionDB/UserDb.js';
 
 const router = Router();
 
@@ -144,16 +149,23 @@ router.get('/login/renew', validateJWT, async (req, res) => {
   const uid = req.uid;
   const name = req.name;
 
-  const user = await getUser(uid);
-  const token = await generateJWT(uid, name);
+  try {
+    const user = await getUser(uid);
 
-  res.status(201).json({
-    uid: user._id,
-    name: user.name,
-    email: user.email,
-    organizer: user.isOrganizer,
-    token,
-  });
+    const token = await generateJWT(uid, name);
+
+    res.status(201).json({
+      uid: user._id,
+      name: user.name,
+      email: user.email,
+      organizer: user.isOrganizer,
+      token,
+    });
+  } catch (error) {
+    res.status(400).json({
+      message: error.message,
+    });
+  }
 });
 
 router.post('/confirmEmail', async (req, res) => {
@@ -182,8 +194,6 @@ router.post('/sendEmailForConfirm', async (req, res) => {
   const { uid } = req.body;
   const { email, code } = await getUser(uid);
 
-  console.log(email, code);
-
   const response = await sendVerifyMail(email, code);
 
   res.status(201).json({
@@ -191,8 +201,56 @@ router.post('/sendEmailForConfirm', async (req, res) => {
   });
 });
 
-/* PROVIDERS  */
+/* CHANGE PASSWORD */
 
+router.post('/sendMailChangePassword', async (req, res) => {
+  const { email } = req.body;
+
+  const token = await generateJWTPassword(email);
+
+  const link = `http://localhost:3000/cambiarcontrasenia/${token}`;
+
+  const response = await changePasswordMail(email, link);
+
+  res.status(201).json({
+    message: response.msg,
+  });
+});
+
+router.get(
+  '/mail/validateTokenPassword',
+  validateJWTPassword,
+  async (req, res) => {
+    const email = req.email;
+    try {
+      res.json({ email });
+    } catch (error) {
+      res.status(400).json({
+        message: 'Error en la petición',
+      });
+    }
+  }
+);
+
+router.post('/changePassword', async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await validateEmailUserDb(email);
+    const salt = bcrypt.genSaltSync();
+    user.password = bcrypt.hashSync(password, salt);
+    await user.save();
+
+    res.status(201).json({
+      message: 'Cambio de contraseña exitoso',
+    });
+  } catch (error) {
+    res.status(400).json({
+      message: error.message,
+    });
+  }
+});
+
+/* PROVIDERS  */
 /* FACEBOOK */
 
 router.get(

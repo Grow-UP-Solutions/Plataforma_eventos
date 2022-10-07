@@ -90,9 +90,3 @@ export async function login(email, password) {
     throw new Error(error.message);
   }
 }
-
-export async function confirmEmail(code) {
-  try {
-    const user = await getUser();
-  } catch (error) {}
-}
