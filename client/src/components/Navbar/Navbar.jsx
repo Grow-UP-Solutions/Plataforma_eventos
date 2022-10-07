@@ -24,19 +24,21 @@ const Navbar = ({ upper }) => {
   const handleClick = (e) => {
     e.preventDefault();
     navigate('/');
-  };  
+  };
 
   const handleClickMessage = (e) => {
     e.preventDefault();
     navigate('/user/message');
     setOpenMessages(false);
-  }
+  };
 
   const handleClickNotifications = (e) => {
     e.preventDefault();
     navigate('/user/notifications');
     setOpenNotifications(false);
-  }  
+  };
+
+  console.log({ user });
 
   return (
     <div
@@ -72,54 +74,56 @@ const Navbar = ({ upper }) => {
           ) : (
             <>
               <div className={style.containerNotification}>
-                <div className={style.containerMessage} onClick={() => setOpenMessages(!openMessages)}>
+                <div
+                  className={style.containerMessage}
+                  onClick={() => setOpenMessages(!openMessages)}
+                >
                   <GrMail className={style.iconNav} />
                   <div className={style.bage}>1</div>
                 </div>
                 <div className={style.divisorNotis} />
-                <div className={style.containerNotis} onClick={() => setOpenNotifications(!openNotifications)}>
+                <div
+                  className={style.containerNotis}
+                  onClick={() => setOpenNotifications(!openNotifications)}
+                >
                   <IoNotifications className={style.iconNav} />
                   <div className={style.bage}>{allNotifications.length}</div>
                 </div>
 
-                {
-                  openMessages && (
-                    <div className={style.notifications}>
-                      <p className={style.link_noti}>Marcar todas como leidas</p>
-                      {
-                        allNotifications.map(e => (
-                          <div className={style.noty}>
-                            
-                            {e.title} {e.noti}
-                          
-                          </div>
-                          
-                        ))
-                      }
-                      <p className={style.link_notis} onClick={handleClickMessage}>Ver todos los mensajes</p>             
-                    </div>
-                  )
-                }
+                {openMessages && (
+                  <div className={style.notifications}>
+                    <p className={style.link_noti}>Marcar todas como leidas</p>
+                    {allNotifications.map((e) => (
+                      <div className={style.noty}>
+                        {e.title} {e.noti}
+                      </div>
+                    ))}
+                    <p
+                      className={style.link_notis}
+                      onClick={handleClickMessage}
+                    >
+                      Ver todos los mensajes
+                    </p>
+                  </div>
+                )}
 
-                {
-                  openNotifications && (
-                    <div className={style.notifications}>
-                      <p className={style.link_noti}>Marcar todas como leidas</p>
-                      {
-                        allNotifications.map(e => (
-                          <div className={style.noty}>
-                            <IoNotifications className={style.iconNav} />
-                            {e.title} {e.noti}
-                          
-                          </div>
-                          
-                        ))
-                      }
-                      <p className={style.link_notis} onClick={handleClickNotifications}>Ver todas las notificaciones</p>
-                    </div>
-                  )
-                }
-
+                {openNotifications && (
+                  <div className={style.notifications}>
+                    <p className={style.link_noti}>Marcar todas como leidas</p>
+                    {allNotifications.map((e) => (
+                      <div className={style.noty}>
+                        <IoNotifications className={style.iconNav} />
+                        {e.title} {e.noti}
+                      </div>
+                    ))}
+                    <p
+                      className={style.link_notis}
+                      onClick={handleClickNotifications}
+                    >
+                      Ver todas las notificaciones
+                    </p>
+                  </div>
+                )}
               </div>
 
               <div className={style.containerName}>

@@ -114,6 +114,6 @@ export async function login(email, password) {
 
     return user;
   } catch (error) {
-    return { message: error.message };
+    throw new Error(error.message);
   }
 }
