@@ -19,14 +19,26 @@ export const AuthProvider = ({ children }) => {
     dispatch({ type: 'Auth - Logout' });
   };
 
+  const checkUserLocalStorage = async () => {
+    const userLocalStorage = JSON.parse(localStorage.getItem('user'));
+
+    console.log(userLocalStorage);
+
+    if (userLocalStorage) {
+      await eventsApi.delete(`/users/delete/${userLocalStorage.uid}`);
+    } else {
+      return;
+    }
+
+    localStorage.removeItem('user');
+  };
+
   const checkAuthToken = async () => {
     const token = localStorage.getItem('token');
     if (!token) return logout();
 
     try {
       const { data } = await eventsApi.get('/users/login/renew');
-
-      console.log(data);
 
       const user = {
         uid: data.uid,
@@ -51,6 +63,7 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         checkAuthToken,
+        checkUserLocalStorage,
       }}
     >
       {children}

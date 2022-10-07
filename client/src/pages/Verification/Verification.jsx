@@ -31,11 +31,18 @@ const Verification = () => {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'));
+
     if (!user) {
       return navigate('/');
     }
     sendEmail(user.uid);
     setUser(user);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      const user = JSON.parse(localStorage.getItem('user'));
+    };
   }, []);
 
   const sendEmail = async (uid) => {
@@ -65,11 +72,8 @@ const Verification = () => {
 
     try {
       const result = await eventsApi.post('/users/confirmEmail', userBody);
-
       localStorage.setItem('token', user.token);
-
       login(user);
-
       navigate('/');
     } catch (error) {
       setErrorMessage({
