@@ -7,7 +7,7 @@ import { UIContext } from '../../context/ui';
 import { CgClose } from 'react-icons/cg';
 import { IconFacebook, IconGoogle } from '../../assets/Icons';
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import eventsApi from '../../axios/eventsApi';
 import useValidateForm from '../../hooks/useValidateForm';
 
@@ -65,9 +65,11 @@ const Login = () => {
         message: error.response.data.message,
       });
 
-      setModalChangePassword({
-        attemps: modalChangePassword.attemps + 1,
-      });
+      if (formData.mail && formData.password) {
+        setModalChangePassword({
+          attemps: modalChangePassword.attemps + 1,
+        });
+      }
     }
   };
 
@@ -82,6 +84,8 @@ const Login = () => {
       if (event.origin === `${process.env.REACT_APP_API_URL}`) {
         if (event.data) {
           let user = {};
+
+          console.log(event.data_json);
 
           if (provider === 'facebook') {
             const { email, id } = event.data._json;
@@ -107,6 +111,7 @@ const Login = () => {
             localStorage.setItem('token', userLog.data.token);
             login(userLog.data);
             toggleScreenLogin();
+            navigate('/');
           } catch (error) {
             setErrorLogin(true);
           }
@@ -119,6 +124,14 @@ const Login = () => {
   const navigateToRegister = () => {
     toggleScreenLogin();
     navigate('/registrate');
+  };
+
+  const navigateToChangePassword = async () => {
+    toggleScreenLogin();
+
+    const result = await eventsApi.post('/users/sendMailChangePassword', {
+      email: formData.mail,
+    });
   };
 
   return (
@@ -201,10 +214,11 @@ const Login = () => {
         {modalChangePassword.attemps >= 3 && (
           <div className={styles.containerModalChangePassword}>
             <p>
-              Has intentado entrar muchas veces con contraseña incorrecta. Para
-              tu seguridad cambia tu clave.
+              Has intentado entrar muchas veces con contraseña incorrecta. Por
+              tu seguridad enviaremos un correo para que puedas cambiar tu
+              clave.
             </p>
-            <button>Cambiar clave</button>
+            <button onClick={navigateToChangePassword}>Cambiar clave</button>
           </div>
         )}
       </div>

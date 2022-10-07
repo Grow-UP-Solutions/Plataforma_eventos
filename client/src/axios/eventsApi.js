@@ -10,6 +10,7 @@ eventsApi.interceptors.request.use((config) => {
   config.headers = {
     ...config.headers,
     'x-token': localStorage.getItem('token'),
+    'x-token-password': localStorage.getItem('token-pass'),
   };
 
   return config;

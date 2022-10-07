@@ -5,22 +5,20 @@ import bcrypt from 'bcryptjs';
 /** basic user database operations */
 
 export async function allUserDb() {
-  
-  try {    
-
+  try {
     return await Users.find()
       .populate({ path: 'myEventsCreated' })
       .populate({ path: 'myFavourites' })
       .populate({ path: 'myEventsBooked' });
   } catch (error) {
-    return ({message:error.message})
+    return { message: error.message };
   }
 }
 export async function validateEmailUserDb(email) {
   try {
     return await Users.findOne({ email: email });
   } catch (error) {
-    return ({message:error.message})
+    throw new Error(error.message);
   }
 }
 export async function oneUserDb(id) {
@@ -29,30 +27,28 @@ export async function oneUserDb(id) {
     return { msg: 'Se rerquiere el id del organizador' };
   }
   try {
-
     return await Users.findById({ _id: idOrganizer })
       .populate({ path: 'myEventsCreated' })
       .populate({ path: 'myFavourites' })
       .populate({ path: 'myEventsBooked' })
       .populate({ path: 'opinionsOrg' });
   } catch (error) {
-    return ({message:error.message})
+    return { message: error.message };
   }
 }
 export async function updateOneUserDb(id, newUser) {
   try {
     return await Users.findByIdAndUpdate({ _id: id }, newUser, {
-    new: 1,
-  })
-    .populate({ path: 'myEventsCreated' })
-    .populate({ path: 'myFavourites' })
-    .populate({ path: 'myEventsBooked' })
-    .populate({ path: 'myOpinions' })
-    .populate({ path: 'opinionsOrg' });
+      new: 1,
+    })
+      .populate({ path: 'myEventsCreated' })
+      .populate({ path: 'myFavourites' })
+      .populate({ path: 'myEventsBooked' })
+      .populate({ path: 'myOpinions' })
+      .populate({ path: 'opinionsOrg' });
   } catch (error) {
-    return ({message:error.message})
+    return { message: error.message };
   }
-  
 }
 export async function deleteOneUserDb(id) {
   try {
@@ -61,7 +57,7 @@ export async function deleteOneUserDb(id) {
       .populate({ path: 'myFavourites' })
       .populate({ path: 'myEventsBooked' });
   } catch (error) {
-    return ({message:error.message})
+    return { message: error.message };
   }
 }
 /**Creating user in Database */
@@ -84,7 +80,7 @@ export async function createOneUserDb(user) {
     await userCreated.save();
     return userCreated;
   } catch (error) {
-    return ({message:error.message})
+    return { message: error.message };
   }
 }
 
@@ -93,7 +89,7 @@ export async function createOneUserDb(user) {
 export async function generateUserComment(id, opinion) {
   try {
     const { idUser } = opinion;
-    
+
     const user = await oneUserDb(idUser);
 
     const organizer = await oneUserDb(id);
@@ -103,27 +99,26 @@ export async function generateUserComment(id, opinion) {
     organizer.opinionsOrg.push(opinion);
     return await organizer.save();
   } catch (error) {
-    return ({message:error.message})
+    return { message: error.message };
   }
 }
 
-export async function sendMessageDB(idSend,idGet, msg){
+export async function sendMessageDB(idSend, idGet, msg) {
   try {
-    const userSend = await oneUserDb(idSend)
-    const { picture, name }= userSend
-    const userGet = await oneUserDb(idGet)
+    const userSend = await oneUserDb(idSend);
+    const { picture, name } = userSend;
+    const userGet = await oneUserDb(idGet);
     userGet.message.push({
       msg,
-      user:{
+      user: {
         name,
-        picture
-      }
-    })
-    await userGet.save()
-    console.log(userGet.message)
-    return {Respon: 'mensaje enviado con exito'}
-
+        picture,
+      },
+    });
+    await userGet.save();
+    console.log(userGet.message);
+    return { Respon: 'mensaje enviado con exito' };
   } catch (error) {
-     return ({message:error.message})
+    return { message: error.message };
   }
 }
