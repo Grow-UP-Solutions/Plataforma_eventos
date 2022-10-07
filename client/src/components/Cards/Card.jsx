@@ -8,17 +8,11 @@ import { useContext } from 'react';
 import { UIContext } from '../../context/ui';
 
 const Card = ({ event }) => {
-
   const { toggleScreenLogin } = useContext(UIContext);
   const currentYear = new Date().getFullYear();
-  const numCadena= currentYear + ''
-  const añoActual = numCadena.slice(2,4)
+  const numCadena = currentYear + '';
+  const añoActual = numCadena.slice(2, 4);
 
-  console.log(event)
-  
-
-
-  
   return (
     <div className={styles.card}>
       <img
@@ -33,7 +27,7 @@ const Card = ({ event }) => {
           <select className={styles.cardDate}>
             {event.dates.map((date, index) =>
               event.cupos > 0 ? (
-                date.date.slice(8,10) === añoActual ? (
+                date.date.slice(8, 10) === añoActual ? (
                   <option key={index} value={date.date}>
                     {date.date.slice(0, 5)}
                   </option>
@@ -49,7 +43,7 @@ const Card = ({ event }) => {
           </select>
         ) : event.cupos === 0 ? (
           <p className={styles.cardCuposCurrent}>Cupos LLenos</p>
-        ) : event.dates[0].date.slice(8,10)=== añoActual ? (
+        ) : event.dates[0].date.slice(8, 10) === añoActual ? (
           <p className={styles.cardDateCurrent}>
             {event.dates[0].date.slice(0, 5)}
           </p>
@@ -97,13 +91,14 @@ const Card = ({ event }) => {
         </p>
 
         <p className={styles.cardNick}>Segundo Titulo</p>
-        <p className={styles.cardDescription}>{event.shortDescription.slice(0,70)}</p>
+        <p className={styles.cardDescription}>
+          {event.shortDescription.slice(0, 70)}
+        </p>
       </div>
       <hr className={styles.cardHr}></hr>
-      {event.organizer.picture && event.organizer.name?
+      {event.organizer.picture && event.organizer.name ? (
         <div>
-           <div className={styles.cardOrgInfo}>
-       
+          <div className={styles.cardOrgInfo}>
             <Link
               className={styles.link}
               to={`/organizerDetails/${event.organizer._id}`}
@@ -120,7 +115,6 @@ const Card = ({ event }) => {
               className={styles.link}
               to={`/organizerDetails/${event.organizer._id}`}
             >
-            
               <p className={styles.cardOrgName}>{event.organizer.name}</p>
             </Link>
             <div className={styles.vLine}></div>
@@ -129,18 +123,17 @@ const Card = ({ event }) => {
             <Link className={styles.link} to={`/eventdetails/${event._id}`}>
               <p className={styles.cardDetails}>Ver más</p>
             </Link>
-            </div>
-            </div>
-          :
-          <div className={styles.cardOrgInfo}>
-            <p className={styles.cardPrice}>${event.price}</p>
-            <div className={styles.vLine}></div>
-            <Link className={styles.link} to={`/eventdetails/${event._id}`}>
-              <p className={styles.cardDetails}>Ver más</p>
-            </Link>
           </div>
-        }
-         
+        </div>
+      ) : (
+        <div className={styles.cardOrgInfo}>
+          <p className={styles.cardPrice}>${event.price}</p>
+          <div className={styles.vLine}></div>
+          <Link className={styles.link} to={`/eventdetails/${event._id}`}>
+            <p className={styles.cardDetails}>Ver más</p>
+          </Link>
+        </div>
+      )}
     </div>
   );
 };

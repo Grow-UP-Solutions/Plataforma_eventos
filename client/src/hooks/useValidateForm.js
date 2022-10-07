@@ -12,7 +12,7 @@ const useValidateForm = (formData, setFormData) => {
   const handleChangeInputValue = (e) => {
     const id = e.target.id;
     const value = e.target.value;
-    const regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{12,20}$/;
+    const regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[().#?!@$%^&*-]).{12,20}$/;
     let checkValidate = false;
 
     if (id === 'canReceivedInformation') {

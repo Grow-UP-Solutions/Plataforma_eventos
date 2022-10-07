@@ -276,7 +276,6 @@ router.post('/sendEmailForConfirm', async (req, res) => {
   const { uid } = req.body;
   const { email, code } = await getUser(uid);
 
-  console.log(email, code);
   try {
     const response = await sendVerifyMail(email, code);
 

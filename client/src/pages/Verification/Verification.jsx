@@ -74,6 +74,7 @@ const Verification = () => {
       const result = await eventsApi.post('/users/confirmEmail', userBody);
       localStorage.setItem('token', user.token);
       login(user);
+      localStorage.removeItem('user');
       navigate('/');
     } catch (error) {
       setErrorMessage({
