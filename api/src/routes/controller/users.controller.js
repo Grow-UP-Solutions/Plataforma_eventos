@@ -24,10 +24,11 @@ import { validateJWTPassword } from '../../models/util/middlewares/validate-jwt-
 import { sendVerifyMail } from '../../models/util/mailer/confirmEmail.js';
 import { changePasswordMail } from '../../models/util/mailer/changePassword.js';
 import { validateEmailUserDb } from '../../models/util/functionDB/UserDb.js';
-import {
+
+/* import {
   createCodeVerifyMail,
   getCodeVerifyEmail,
-} from '../../models/util/functionDB/CodeEmailDb.js';
+} from '../../models/util/functionDB/CodeEmailDb.js'; */
 
 const router = Router();
 /**/ ///////////////Rutas GET////////////// */
@@ -254,7 +255,7 @@ router.get('/login/renew', validateJWT, async (req, res) => {
   }
 });
 
-router.post('/confirmEmail', async (req, res) => {
+/* router.post('/confirmEmail', async (req, res) => {
   const { code } = req.body;
 
   try {
@@ -274,9 +275,9 @@ router.post('/confirmEmail', async (req, res) => {
       message: error.message,
     });
   }
-});
+}); */
 
-router.post('/sendEmailForConfirm', async (req, res) => {
+/* router.post('/sendEmailForConfirm', async (req, res) => {
   const { email } = req.body;
 
   let code = '';
@@ -296,7 +297,7 @@ router.post('/sendEmailForConfirm', async (req, res) => {
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
-});
+}); */
 /**/ ///////////Rutas PUT///////////////////////////////// */
 router.put('/update/:id', async (req, res) => {
   try {
