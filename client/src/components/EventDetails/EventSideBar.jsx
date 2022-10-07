@@ -5,7 +5,7 @@ import styles from './EventSideBar.module.css';
 
 
 
-const EventSideBar = ({event}) => {
+const EventSideBar = ({event, conversation}) => {
 
    
     return (
@@ -23,7 +23,7 @@ const EventSideBar = ({event}) => {
         </div>
       <hr className={styles.cardHr}></hr>
         <div>
-         <EventOrganizer event={event}/> 
+         <EventOrganizer event={event} conversation={conversation}/> 
         </div>
       </div>
     );

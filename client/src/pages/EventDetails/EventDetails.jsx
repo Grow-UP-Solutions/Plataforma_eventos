@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import EventInfo from '../../components/EventDetails/EventInfo';
 import EventLocation from '../../components/EventDetails/EventLocation';
@@ -8,9 +8,12 @@ import style from './EventDetails.module.css';
 import { animateScroll as scroll } from 'react-scroll';
 import { useDispatch, useSelector } from 'react-redux';
 import { getEvents } from '../../redux/actions';
+import { AuthContext } from '../../context/auth/AuthContext';
 
 const EventDetails = () => {
 
+  const [conversation, setConversation] = useState({});
+  const { user } = useContext(AuthContext);
   const id = useParams().id;
   const dispatch = useDispatch();
   const allEvents = useSelector((state) => state.events);
@@ -19,6 +22,12 @@ const EventDetails = () => {
   useEffect(() => {
     dispatch(getEvents);
     scroll.scrollToTop();
+    user ?
+    setConversation({
+      senderId: user.uid,
+      receiverId: eventDetails.organizer._id,
+    }) : 
+    setConversation({})
   }, [dispatch]);
 
   return (
@@ -30,7 +39,7 @@ const EventDetails = () => {
       </div>
 
       <div className={style.item2}>
-        <EventSideBar event={eventDetails} />
+        <EventSideBar event={eventDetails} conversation={conversation}/>
       </div>
     </div>
   );

@@ -29,9 +29,9 @@ const EventComments =  ({ event }) => {
   const handlePostComments = (e) => {
     e.preventDefault();
     axios.post('https://plataformaeventos-production-6111.up.railway.app/events/opinionsGenerate/' + id, comments)
-      .then((response) => {
-        console.log('axios response', response.data);
-      });
+    .then((response) => {
+      console.log('axios response', response.data);
+    });
     setComments(initialState);
   }
 
