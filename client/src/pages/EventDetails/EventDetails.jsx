@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import EventInfo from '../../components/EventDetails/EventInfo';
 import EventLocation from '../../components/EventDetails/EventLocation';
@@ -13,8 +13,8 @@ const EventDetails = () => {
 
   const id = useParams().id;
   const dispatch = useDispatch();
-  const allEvents = useSelector((state) => state.events);
-  const eventDetails = allEvents.filter((event) => event._id === id)[0];
+  //const allEvents = useSelector((state) => state.events);
+  //const eventDetails = allEvents.filter((event) => event._id === id)[0];
   
   useEffect(() => {
     dispatch(getEvents);
@@ -24,13 +24,13 @@ const EventDetails = () => {
   return (
     <div className={`${style.container} container`}>
       <div className={style.item1}>
-        <EventInfo event={eventDetails} />
-        <EventLocation event={eventDetails} />
-        <EventComments event={eventDetails} />
+        <EventInfo id={id} />
+        <EventLocation id={id} />
+        <EventComments id={id} />
       </div>
 
       <div className={style.item2}>
-        <EventSideBar event={eventDetails} />
+        <EventSideBar id={id} />
       </div>
     </div>
   );

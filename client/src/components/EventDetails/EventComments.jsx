@@ -4,8 +4,13 @@ import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import foto from '../../assets/imgs/comments.png'
 import { Rating } from '@mui/material';
 import axios from "axios";
+import { useSelector } from "react-redux";
 
-const EventComments =  ({ event }) => {
+const EventComments =  ({ id }) => {
+
+  const allEvents = useSelector((state) => state.events);
+  const eventDetails = allEvents.filter((event) => event._id === id)[0];
+
 
   const initialState = {
     idUser: '',
@@ -13,14 +18,14 @@ const EventComments =  ({ event }) => {
     title: '',
     opinion: '',
   }
-  const id = event._id;
+ 
   const [comments, setComments] = useState(initialState);
 
   const handleChangeComments = (e) => {
     e.preventDefault();
     setComments({
       idUser: '633201b25ffdf5ee2d2facb1',
-      rating: event.rating,
+      rating: eventDetails.rating,
       title: 'Nombre',
       opinion: e.target.value,
     })
@@ -29,13 +34,17 @@ const EventComments =  ({ event }) => {
   const handlePostComments = (e) => {
     e.preventDefault();
     axios.post('https://plataformaeventos-production-6111.up.railway.app/events/opinionsGenerate/' + id, comments)
-      .then((response) => {
-        console.log('axios response', response.data);
-      });
+    .then((response) => {
+      console.log('axios response', response.data);
+    });
     setComments(initialState);
   }
 
+
   return (
+    <div>
+    {eventDetails?
+  
     <div className={styles.container} >
       <div className={styles.header}>
         <img  className={styles.img} src={foto} alt='N'/>
@@ -43,11 +52,11 @@ const EventComments =  ({ event }) => {
       </div>
 
       <div className={styles.subTitle}>
-        <p className={styles.ratNumber}>{event.opinions.length} opiniones - {event.rating}% Positivas </p>
+        <p className={styles.ratNumber}>{eventDetails.opinions.length} opiniones - {eventDetails.rating}% Positivas </p>
       </div>
 
-      {event.opinions.length > 0 ? 
-        event.opinions.map( opinion => 
+      {eventDetails.opinions.length > 0 ? 
+        eventDetails.opinions.map( opinion => 
           <div key={opinion._id} className={styles.comment}>
             <div className={styles.userComment}>
               <div>
@@ -60,7 +69,7 @@ const EventComments =  ({ event }) => {
                     <Rating
                       className={styles.rating}
                       name="read-only"
-                      value={event.rating}
+                      value={eventDetails.rating}
                       readOnly
                     />
                   </div>
@@ -102,6 +111,9 @@ const EventComments =  ({ event }) => {
       </div>
 
     </div>
+     :''}
+
+     </div>
   );
 };
   

@@ -2,10 +2,20 @@ import React from "react";
 import mapa from '../../assets/imgs/mapa2.png'
 import { IoLocationOutline } from 'react-icons/io5';
 import style from './EventLocation.module.css';
+import { useSelector } from "react-redux";
 
-const EventLocation =  ({event}) => {
+const EventLocation =  ({id}) => {
+
+   
+  const allEvents = useSelector((state) => state.events);
+  const eventDetails = allEvents.filter((event) => event._id === id)[0];
+
+ 
 
   return (
+    <div>
+      {eventDetails?
+    
     <div className={style.container}>
       <div className={style.container_location}>
         <IoLocationOutline className={style.icon}/>
@@ -15,11 +25,11 @@ const EventLocation =  ({event}) => {
       <br />
 
       {
-        event.enLinea === false ?
+        eventDetails.onLine === false ?
         <div>
           <div>
-            <span className={style.city}>{event.city} / </span>
-            <span className={style.state}>{event.state}</span>
+            <span className={style.city}>{eventDetails.municipio} / </span>
+            <span className={style.state}>{eventDetails.departamento}</span>
             <p className={style.texto}>La ubicación exacta se te enviará al adquirir tu entrada</p>
           </div>
             <div className={style.img}>
@@ -34,9 +44,12 @@ const EventLocation =  ({event}) => {
       }
 
       
-      <p className={style.description}>{event.description}</p>
+      <p className={style.description}>{eventDetails.shortDescription}</p>
 
       <div className={style.line}></div>
+    </div>
+    :''}
+
     </div>
   );
 };

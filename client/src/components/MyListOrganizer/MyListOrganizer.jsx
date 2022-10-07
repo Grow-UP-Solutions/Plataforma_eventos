@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card } from '../../components';
+import { Card } from '..';
 import styles from './MyListOrganizer.module.css';
 import users from '../../api/users';
 

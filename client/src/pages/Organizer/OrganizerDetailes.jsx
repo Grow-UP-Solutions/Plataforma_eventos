@@ -1,33 +1,62 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styles from './OrganizerDetails.module.css';
 import { Rating } from '@mui/material';
 import { animateScroll as scroll } from 'react-scroll';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { IoLocationOutline } from 'react-icons/io5';
 import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
 import AboutOrganizer from '../../components/Organizer/AboutOrganizer.jsx';
 import NextEvents from '../../components/Organizer/NextEvents.jsx';
 import Opinions from '../../components/Organizer/Opinions.jsx';
-import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import axios from "axios";
+import { AuthContext } from '../../context/auth/AuthContext';
+import { getEvents } from '../../redux/actions';
+import { useDispatch } from 'react-redux';
 
 const OrganizerDetails = () => {
 
   const id = useParams().id;
   const [component, setComponent] = useState('');
   const [nextEvent, setNextEvent] = useState({});
-  const events = useSelector((state) => state.events);
-  const userDetail = events.filter((e) => e.organizer._id === id)[0];
+  const [conversation, setConversation] = useState({});
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const allEvents = useSelector((state) => state.events);
+  const userDetail = allEvents.filter((e) => e.organizer._id === id)[0];
 
   useEffect(() => {
     obtenerDatos();
     scroll.scrollToTop();
   }, []);
 
+  useEffect(() => {
+    user ?
+    setConversation({
+      senderId: user.uid,
+      receiverId: userDetail,
+    }) : 
+    setConversation({})
+  }, []);
+
   const obtenerDatos = async() => {
     const data = await fetch('https://plataformaeventos-production-6111.up.railway.app/users/' + id);
     const json = await data.json();
     setNextEvent(json);
+  } 
+
+  const handleClickMessages = (e) => {
+    e.preventDefault();
+    axios.post('https://plataformaeventos-production-6111.up.railway.app/conversation/create', conversation)
+    .then((response) => {
+      console.log('axios response', response.data);
+    });
+    navigate('/user/message');
+  }
+
+  const handleAlert = (e) => {
+    e.preventDefault();
+    alert('Debes estar registrado para poder enviar mensajes');
   }
 
   const handleInput = (e) => {
@@ -41,7 +70,9 @@ const OrganizerDetails = () => {
 
   return (
     <div className={`${styles.container} `}>
-      <div className={styles.top}></div>
+      {userDetail?
+      <div>
+     <div className={styles.top}></div>
       <img className={styles.img} src={userDetail.organizer.picture} alt="N" />
       <p className={styles.name}>{userDetail.organizer.name}</p>
       <Rating
@@ -57,7 +88,9 @@ const OrganizerDetails = () => {
       <p className={styles.member}>Miembor desde {userDetail.organizer.membership}</p>
       <div className={styles.containerMess}>
         <LocalPostOfficeIcon sx={{ fontSize: '13px', color: '#d53e27' }} />
-        <button className={styles.message}>Enviar Mensaje</button>
+        <button className={styles.message} onClick={conversation.senderId ? handleClickMessages: handleAlert}>
+          Enviar Mensaje
+        </button>
       </div>
       <div className={styles.containerButtons}>
         <button
@@ -78,7 +111,9 @@ const OrganizerDetails = () => {
       </div>
       <div>
         <div className={styles.containerSection}>{component}</div>
+      </div> 
       </div>
+    :''}
     </div>
   );
 };

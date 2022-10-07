@@ -10,6 +10,7 @@ import {
   login,
   createOrganizerComment,
   getAllCommentUser,
+  sendMessageUser,
 } from '../services/users.services.js';
 
 import passport from 'passport';
@@ -25,13 +26,13 @@ import { changePasswordMail } from '../../models/util/mailer/changePassword.js';
 import { validateEmailUserDb } from '../../models/util/functionDB/UserDb.js';
 
 const router = Router();
-
+/**/ ///////////////Rutas GET////////////// */
 router.get('/', async (req, res) => {
   try {
     const allUsers = await getAllUsers();
     return res.status(200).json(allUsers);
   } catch (error) {
-    return res.status(400).json({ ERROR_USER: error });
+    return res.status(500).json({ ERROR_USER: error.message });
   }
 });
 router.get('/:id', async (req, res) => {
@@ -41,9 +42,113 @@ router.get('/:id', async (req, res) => {
     const user = await getUser(id);
     return res.status(200).json(user);
   } catch (error) {
-    return res.status(400).json({ ERROR_USER: error });
+    return res.status(400).json({ ERROR_USER: error.message });
   }
 });
+router.get('/opinionsUser/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const allComment = await getAllCommentUser(id);
+    return res.status(200).json(allComment);
+  } catch (error) {
+    return res.status(500).json({ ERROR_OPIONSUSER: error.message });
+  }
+});
+router.get('/login/renew', validateJWT, async (req, res) => {
+  const uid = req.uid;
+  const name = req.name;
+  try {
+    const user = await getUser(uid);
+    const token = await generateJWT(uid, name);
+
+    res.status(201).json({
+      uid: user._id,
+      name: user.name,
+      email: user.email,
+      organizer: user.isOrganizer,
+      token,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+});
+/* FACEBOOK */
+
+router.get(
+  '/login/facebook',
+  passport.authenticate('auth-facebook', {
+    prompt: 'select_account',
+    session: false,
+    scope: ['public_profile', 'email'],
+  })
+);
+
+router.get(
+  '/login/facebook/callback',
+  passport.authenticate('auth-facebook', {
+    failureRedirect: '/login/facebook',
+    session: false,
+  }),
+  (req, res) => {
+    try {
+      const userString = JSON.stringify(req.user);
+      res.send(
+        `<!DOCTYPE html> 
+        
+      <html lang="en">
+      <body>
+      </body>
+      <script>
+      window.opener.postMessage(${userString}, 'http://localhost:3000')
+      </script>
+      </html>
+      `
+      );
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  }
+);
+
+/* GOOGLE */
+
+router.get(
+  '/login/google',
+  passport.authenticate('google', {
+    prompt: 'select_account',
+    session: false,
+    scope: ['email', 'profile'],
+  })
+);
+
+router.get(
+  '/login/google/callback',
+  passport.authenticate('google', {
+    failureRedirect: '/login/google',
+    session: false,
+  }),
+  (req, res) => {
+    try {
+      const userString = JSON.stringify(req.user);
+      res.send(
+        `<!DOCTYPE html> 
+        
+      <html lang="en">
+      <body>
+      </body>
+      <script>
+      window.opener.postMessage(${userString}, 'http://localhost:3000')
+      </script>
+      </html>
+      `
+      );
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  }
+);
+/**/ //////////////Rutas POST/////////////// */
+
 router.post(
   '/create',
   [
@@ -66,7 +171,7 @@ router.post(
         token,
       });
     } catch (error) {
-      return res.status(400).json({ message: error.message });
+      return res.status(500).json({ message: error.message });
     }
   }
 );
@@ -78,40 +183,17 @@ router.post('/commentOrganizer/:id', async (req, res) => {
     const opinionCreat = await createOrganizerComment(id, opinion);
     return res.status(200).json(opinionCreat);
   } catch (error) {
-    console.log(error);
-    return res.status(400).json(error.message);
+    return res.status(500).json({ message: error.message });
   }
 });
-router.get('/opinionsUser/:id', async (req, res) => {
+router.post('/message/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const allComment = await getAllCommentUser(id);
-    return res.status(200).json(allComment);
+    const msg = req.body;
+    const senMenssage = await sendMessageUser(id, msg);
+    return res.status(200).json(senMenssage);
   } catch (error) {
-    return res.status(400).json(error);
-  }
-});
-router.put('/update/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const newUser = req.body;
-    const usersUpdate = await userUpdate(id, newUser);
-    return res.status(200).json(usersUpdate);
-  } catch (error) {
-    return res.status(400).json({ ERROR_USER_UPDATE: error });
-  }
-});
-router.delete('/delete/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const deleteUser = await userDelete(id);
-    return res.status(200).json({
-      user: deleteUser,
-      msg: 'El usuario ha sido eliminado con exito',
-    });
-  } catch (error) {
-    return res.status(400).json({ FALLO_USER_DELETE: error });
+    return res.status(500).json({ message: error.message });
   }
 });
 
@@ -140,7 +222,7 @@ router.post(
         token,
       });
     } catch (error) {
-      return res.status(400).json({ message: error.message });
+      return res.status(500).json({ message: error.message });
     }
   }
 );
@@ -183,7 +265,7 @@ router.post('/confirmEmail', async (req, res) => {
       throw new Error('Código incorrecto');
     }
   } catch (error) {
-    return res.status(404).json({
+    return res.status(500).json({
       success: false,
       message: error.message,
     });
@@ -194,11 +276,41 @@ router.post('/sendEmailForConfirm', async (req, res) => {
   const { uid } = req.body;
   const { email, code } = await getUser(uid);
 
-  const response = await sendVerifyMail(email, code);
+  console.log(email, code);
+  try {
+    const response = await sendVerifyMail(email, code);
 
-  res.status(201).json({
-    message: response.msg,
-  });
+    res.status(201).json({
+      message: response.msg,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+});
+/**/ ///////////Rutas PUT///////////////////////////////// */
+router.put('/update/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const newUser = req.body;
+    const usersUpdate = await userUpdate(id, newUser);
+    return res.status(200).json(usersUpdate);
+  } catch (error) {
+    return res.status(500).json({ ERROR_USER_UPDATE: error.message });
+  }
+});
+/**/ ///////////////Rutas DELETE/////////////////////////// */
+router.delete('/delete/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const deleteUser = await userDelete(id);
+    return res.status(200).json({
+      user: deleteUser,
+      msg: 'El usuario ha sido eliminado con exito',
+    });
+  } catch (error) {
+    return res.status(500).json({ FALLO_USER_DELETE: error.message });
+  }
 });
 
 /* CHANGE PASSWORD */

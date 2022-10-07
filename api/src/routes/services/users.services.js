@@ -6,6 +6,7 @@ import {
   createOneUserDb,
   validateEmailUserDb,
   generateUserComment,
+  sendMessageDB,
 } from '../../models/util/functionDB/UserDb.js';
 
 import bcrypt from 'bcryptjs';
@@ -16,11 +17,15 @@ export async function getAllUsers() {
   return allUsers;
 }
 export async function getUser(id) {
-  const user = oneUserDb(id);
-  if (!user) {
-    msg: `El usuario ${name} no fue encontrado`;
+  try {
+    const user = oneUserDb(id);
+    if (!user) {
+      msg: `El usuario no fue encontrado`;
+    }
+    return user;
+  } catch (error) {
+    return { message: error.message };
   }
-  return user;
 }
 export async function createUsers(user) {
   const { email } = user;
@@ -35,7 +40,7 @@ export async function createUsers(user) {
 
     return users;
   } catch (error) {
-    throw new Error(error.message);
+    return { message: error.message };
   }
 }
 export async function createOrganizerComment(id, opinion) {
@@ -43,32 +48,54 @@ export async function createOrganizerComment(id, opinion) {
     const generateComment = await generateUserComment(id, opinion);
     return generateComment;
   } catch (error) {
-    throw new Error(error.message);
+    return { message: error.message };
   }
 }
 export async function getAllCommentUser(id) {
-  const allEvents = await AllEventsDb();
-  const allUser = await allUserDb();
-  const allCommentUser = allUser
-    .map((e) => e.opinionsOrg)
-    .flat()
-    .filter((e) => e.user == id);
-  const allCommnt = allEvents
-    .map((e) => e.opinions)
-    .flat()
-    .filter((e) => e.user == id);
-  return allCommnt.concat(allCommentUser);
+  try {
+    const allEvents = await AllEventsDb();
+    const allUser = await allUserDb();
+    const allCommentUser = allUser
+      .map((e) => e.opinionsOrg)
+      .flat()
+      .filter((e) => e.user == id);
+    const allCommnt = allEvents
+      .map((e) => e.opinions)
+      .flat()
+      .filter((e) => e.user == id);
+    return allCommnt.concat(allCommentUser);
+  } catch (error) {
+    return { message: error.message };
+  }
 }
 export async function userUpdate(id, newUser) {
-  const newUsers = updateOneUserDb(id, newUser);
+  try {
+    const newUsers = updateOneUserDb(id, newUser);
 
-  return newUsers;
+    return newUsers;
+  } catch (error) {
+    return { message: error.message };
+  }
 }
 export async function userDelete(id) {
-  const deleteUser = deleteOneUserDb(id);
-  if (!deleteUser) 'Usuario no encontardo';
+  try {
+    const deleteUser = await deleteOneUserDb(id);
+    if (!deleteUser) 'Usuario no encontardo';
 
-  return deleteUser;
+    return deleteUser;
+  } catch (error) {
+    return { message: error.message };
+  }
+}
+
+export async function sendMessageUser(idSend, message) {
+  try {
+    const { idGet, msg } = message;
+    const sendMessage = await sendMessageDB(idSend, idGet, msg);
+    return sendMessage;
+  } catch (error) {
+    return { message: error.message };
+  }
 }
 
 export async function login(email, password) {
@@ -87,6 +114,6 @@ export async function login(email, password) {
 
     return user;
   } catch (error) {
-    throw new Error(error.message);
+    return { message: error.message };
   }
 }

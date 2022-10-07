@@ -9,8 +9,12 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { iconArrowLeft, iconArrowRight } from '../../assets/imgs';
 import { formatDate } from '../../utils/formatDate';
 import { Link } from 'react-router-dom';
+import { useSelector } from "react-redux";
 
-const EventDate = ({ event }) => {
+const EventDate = ({ id }) => {
+
+  const allEvents = useSelector((state) => state.events);
+  const eventDetails = allEvents.filter((event) => event._id === id)[0];
 
   const [getNewDate, setGetNewDate] = useState(false);
   const [date, setDate] = useState(null);
@@ -29,7 +33,10 @@ const EventDate = ({ event }) => {
     setDateFormatted(formatDate(date));
   };
 
+ 
   return (
+    <div>
+    {eventDetails?
     <div className={styles.container}>
       <div className={styles.containerTitle}>
         <CalendarMonthIcon
@@ -54,8 +61,8 @@ const EventDate = ({ event }) => {
             </tr>
           </thead>
           <tbody>
-            {event.dates.map((event) => (
-              <tr key={event.id}>
+            {eventDetails.dates.map((event) => (
+              <tr >
                 <td>
                   <input
                     type="checkbox"
@@ -65,9 +72,9 @@ const EventDate = ({ event }) => {
                   ></input>
                 </td>
                 <td>{event.date}</td>
-                <td>{event.time}</td>
-                <td>{event.price}</td>
-                <td>{event.cupos}</td>
+                <td>{event.start}-{event.end}</td>
+                <td>{eventDetails.price}</td>
+                <td>{eventDetails.cupos}</td>
                 <td className={styles.containerNumberBuyCupos}>
                   <button
                     onClick={() => handleNumberBuyCupos(numberBuyCupos - 1)}
@@ -87,7 +94,7 @@ const EventDate = ({ event }) => {
         </table>
       </div>
 
-      <Link to={`/cart/${event._id}`}>
+      <Link to={`/cart/${id}`}>
         <button className={styles.button}>Comprar</button>
       </Link>
       <p className={styles.parrafo}>
@@ -154,6 +161,9 @@ const EventDate = ({ event }) => {
           </div>
         </div>
       )}
+    </div>
+    :''}
+
     </div>
   );
 };

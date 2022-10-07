@@ -28,9 +28,20 @@ import {
   Verification,
   WorkWithUs,
   WorkWithUsForm,
+  EventDetails,
+  CategoriesResult,
+  User,
+  Messages,
+  Verification,
+  ChangePassword,
 } from './pages';
+import EventEdit from './pages/EventEdit/EventEdit';
+import { Footer, Login, Navbar } from './components';
+import { Data } from './context/state/stateProvider';
 import PanelPrivacy from './pages/PanelPrivacy/PanelPrivacy';
 import { getEvents } from './redux/actions';
+import { AuthContext } from './context/auth';
+import { Edit } from '@mui/icons-material';
 
 function App() {
   const [navBar, setNavBar] = useState(false);
@@ -73,14 +84,15 @@ function App() {
           <Route path="/workWithUs/form/:work" element={<WorkWithUsForm />} />
           <Route path="/user/profile" element={<User />} />
           <Route path="/privacy" element={<PanelPrivacy />} />
-          <Route path="/user/message" element={<Message />} />
-          <Route path="/notifications" element={<Notifications />} />
+          <Route path="/user/message" element={<Messages />} />
+          <Route path="/user/notifications" element={<Notifications />} />
           <Route path="/bills" element={<Bills />} />
           <Route path="/verificarmail" element={<Verification />} />
           <Route
             path="/cambiarContrasenia/:token"
             element={<ChangePassword />}
           />
+          <Route path="/edita-un-evento" element={<EventEdit />} />
         </Routes>
         <div className="container">
           <Footer />

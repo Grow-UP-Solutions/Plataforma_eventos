@@ -21,7 +21,7 @@ const Search = ({ location = 'home' }) => {
     if (e.charCode === 13) {
       e.preventDefault();
       const title = allEvents.filter((event) => {
-        const response = event.name === input;
+        const response = event.title.toLowerCase().includes(input.toLowerCase());
         return response;
       });
       setResult(title);
@@ -32,9 +32,10 @@ const Search = ({ location = 'home' }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const title = allEvents.filter((event) =>
-      event.name === input
-    );
+    const title = allEvents.filter((event) => {
+      const response = event.title.toLowerCase().includes(input.toLowerCase());
+      return response;
+    });
     setResult(title);
     navigate('/search/');
     setInput('');

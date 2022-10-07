@@ -12,6 +12,8 @@ const NextEvent = ({ nextEvent }) => {
   const currentCard = nextEvent.myEventsCreated.slice(indexOfFirstCard, indexOfLastCard);
   const paginado = (pageNumber) => setCurretPage(pageNumber);
 
+ 
+
   return (
     <div className={styles.container}>
 

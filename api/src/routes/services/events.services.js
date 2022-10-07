@@ -17,7 +17,7 @@ export async function getAllEvents() {
     const allEvents = AllEventsDb();
     return allEvents;
   } catch (error) {
-    throw new Error(`FALLO GET ALL EVENTS SERVICES, ${error}`);
+    return ({message:error.message})
   }
 }
 export async function createEvents(event) {
@@ -41,8 +41,7 @@ export async function createEvents(event) {
 
     return events;
   } catch (error) {
-    console.log(error);
-    throw new Error(`FALLO CREATE EVENTS SERVICES, ${error}`);
+    return ({message:error.message})
   }
 }
 
@@ -54,7 +53,7 @@ export async function createOpinionsEvents(id, opinions) {
     
   } catch (error) {
    
-    throw new Error('Fallo el servicio en opiniones',error)
+    return ({message:error.message})
     
   }
 }
@@ -64,6 +63,6 @@ export async function eventsUpdate(id, newEvent) {
     const newEvents = await updateOneEventDb(id, newEvent);
     return newEvents;
   } catch (error) {
-    return { FALLO_UPDATEEVENTE_SERVICE: error };
+    return ({message:error.message})
   }
 }
