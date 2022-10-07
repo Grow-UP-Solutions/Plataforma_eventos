@@ -1,7 +1,7 @@
 import {
   createCodeVerifyMail,
   deleteCodeVerifyMail,
-} from '../../models/util/functionDB/CodeVerifyMailDb';
+} from '../../models/util/functionDB/CodeVerifyMailDb.js';
 
 export async function createCode(id) {
   try {
