@@ -3,14 +3,13 @@ import mapa from '../../assets/imgs/mapa2.png'
 import { IoLocationOutline } from 'react-icons/io5';
 import style from './EventLocation.module.css';
 import { useSelector } from "react-redux";
+//import Maps from "../Maps/Maps";
 
 const EventLocation =  ({id}) => {
 
-   
   const allEvents = useSelector((state) => state.events);
   const eventDetails = allEvents.filter((event) => event._id === id)[0];
-
- 
+  //const mapURL = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${'AIzaSyBr-FUseqSbsY6EMqIGNnGmegD39R--nBA'}`;
 
   return (
     <div>
@@ -32,7 +31,18 @@ const EventLocation =  ({id}) => {
             <span className={style.state}>{eventDetails.departamento}</span>
             <p className={style.texto}>La ubicación exacta se te enviará al adquirir tu entrada</p>
           </div>
-            <div className={style.img}>
+
+          <div className={style.img}>
+
+              
+
+            {/* <Maps 
+              googleMapURL={mapURL}
+              containerElement={<div style={{height: '400px'}}/>}
+              mapElement={<div style={{height: '100%'}}/>}
+              loadingElement={<p>Cargando</p>} 
+            /> */}
+
             <img src={mapa} alt="imagen_mapa" />
           </div>
         </div>
