@@ -24,16 +24,14 @@ const Conversations = ({ conversation, id }) => {
   }, [id, conversation]);
 
   return (
-    
+    <div className={styles.listChats}>
 
-      <div className={styles.listChats}>
-
-        <div className={styles.itemChat}>
-          <img src={user.picture ? user.picture : avatar} 
-            alt="imageAvatar" 
-          />
-          <span >{user.name}</span>
-        </div>
+      <div className={styles.itemChat}>
+        <img src={user.picture ? user.picture : avatar} 
+          alt="imageAvatar" 
+        />
+        <span >{user.name}</span>
+      </div>
         
 
 

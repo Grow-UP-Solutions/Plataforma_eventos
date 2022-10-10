@@ -1,38 +1,51 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import { Rating } from '@mui/material';
 import styles from './Opinions.module.css';
 import axios from "axios";
+import { AuthContext } from '../../context/auth/AuthContext';
+import avatar from '../../assets/imgs/no-avatar.png';
+import { format } from "timeago.js";
 
 const Opinions = ({ userDetail }) => {
 
-  const initialState = {
-    idUser: '',
-    rating: '',
-    title: '',
-    opinion: '',
-  }
   const id = userDetail._id;
-  console.log('id:', id);
-  const [comments, setComments] = useState(initialState);
+  const [opinion, setOpinion] = useState([]);
+  const [newOpinion, setNewOpinion] = useState('');
+  const { user } = useContext(AuthContext);
 
-  const handleChangeComments = (e) => {
+  useEffect(() => {
+    const getAllComments = async() => {
+      try {
+        const res = await axios.get('https://plataformaeventos-production-6111.up.railway.app/users/' + id);
+        setOpinion(res.data.opinionsOrg);
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getAllComments();
+  }, [id]);
+
+  const handlePostComments = async (e) => {
     e.preventDefault();
-    setComments({
-      idUser: '632cbed4f208f44f5333af4c',
-      rating: '5',
-      title: 'Nombre',
-      opinion: e.target.value,
-    })
+    const data = {
+      idUser: user.uid,
+      rating: 5,
+      title: user.name,
+      opinion: newOpinion,
+    }
+    try {
+      const res = await axios.post('https://plataformaeventos-production-6111.up.railway.app/users/commentOrganizer/' + id, data);
+      setOpinion([...opinion, res.data]);
+      setNewOpinion('');
+    } catch (error) {
+      console.log(error)
+    }
   }
 
-  const handlePostComments = (e) => {
+  const handleAlert = (e) => {
     e.preventDefault();
-    axios.post('https://plataformaeventos-production-6111.up.railway.app/users/commentOrganizer/' + id, comments)
-      .then((response) => {
-        console.log('axios response', response.data);
-      });
-    setComments(initialState);
+    alert('Debes estar registrado para poder enviar un comentario');
   }
 
   return (
@@ -47,54 +60,64 @@ const Opinions = ({ userDetail }) => {
           </p>
         </div>
 
-        {userDetail.opinionsOrg.length > 0
-          ? userDetail.opinionsOrg.map((opinion) => (
-              <div className={styles.comment}>
-                <div className={styles.userComment}>
-                  <div>
-                    <img
-                      className={styles.picture}
-                      src={opinion.picture}
-                      alt="Not Found ):"
-                      width="20px"
-                      height="30px"
-                    />
-                  </div>
-                  <div className={styles.nameDan}>
-                    <div className={styles.infoComment}>
-                      <div className={styles.namRat}>
-                        <span className={styles.user}>{opinion.user}</span>
-                        <Rating
-                          className={styles.rating}
-                          name="read-only"
-                          value={userDetail.rating}
-                          readOnly
-                        />
+        {
+          opinion ? (
+            <>
+              <div>
+                {
+                  opinion.map((o) => (
+                    <div className={styles.comment}>
+                      <div className={styles.userComment}>
+                        <div>
+                          <img
+                            className={styles.picture}
+                            src={avatar}
+                            alt="Not Found ):"
+                            width="20px"
+                            height="30px"
+                          />
+                        </div>
+
+                        <div className={styles.nameDan}>
+                          <div className={styles.infoComment}>
+                            <div className={styles.namRat}>
+                              <span className={styles.user}>{o.title}</span>
+                              <Rating
+                                className={styles.rating}
+                                name="read-only"
+                                value={o.rating}
+                                readOnly
+                              />
+                            </div>
+                            <p className={styles.time}>{format(o.time)}</p>
+                            <p className={styles.opinion}>{o.opinion}</p>
+                          </div>
+
+                          <div
+                            className={styles.reportCom}
+                            data-hover="Reportar contenido inapropiado"
+                          >
+                            <ReportProblemIcon
+                              sx={{ fontSize: '40px', color: '#cbcbcb' }}
+                            />
+                          </div>
+                        </div>
                       </div>
-                      <p className={styles.time}>{opinion.time}</p>
-                      <p className={styles.opinion}>{opinion.opinion}</p>
                     </div>
-                    <div
-                      className={styles.reportCom}
-                      data-hover="Reportar contenido inapropiado"
-                    >
-                      <ReportProblemIcon
-                        sx={{ fontSize: '40px', color: '#cbcbcb' }}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <hr className={styles.hr}></hr>
+                  ))
+                }
               </div>
-            ))
-          : 'No hay comentarios'}
+
+            </>
+          ) : <p>No hay comentarios</p>
+        }
 
         <textarea
           className={styles.textarea}
           type="text"
           placeholder="Escribe un Comentario"
-          value={comments.opinion}
-          onChange={handleChangeComments}
+          value={newOpinion}
+          onChange={(e) => setNewOpinion(e.target.value)}
         />
 
         <div className={styles.contRate}>
@@ -109,7 +132,7 @@ const Opinions = ({ userDetail }) => {
         </div>
 
         <div className={styles.contBtn}>
-          <button className={styles.button} onClick={handlePostComments}>Enviar</button>
+          <button className={styles.button} onClick={user.uid ? handlePostComments : handleAlert}>Enviar</button>
         </div>
 
       </div>
