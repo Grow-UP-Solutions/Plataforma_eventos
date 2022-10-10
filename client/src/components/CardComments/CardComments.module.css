@@ -1,0 +1,107 @@
+
+.userComment{
+  display:flex;
+  margin-bottom: 3rem;
+  align-items: center;
+}
+
+.picture{
+  width: 5.5rem;
+  height: 5.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-right: 1.5rem;
+}
+
+.nameDan{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+
+.namRat{
+  display: flex;
+    
+}
+
+.user{ 
+  display: flex;
+  color:rgba(88,88,88,255);
+  font-weight: bold;
+  font-size: 1.5rem;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+  align-items: center;
+  margin-right: 2rem;
+}
+
+
+.cardRating {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  margin-left: 2rem;
+}
+  
+.cardRating span {
+  font-size: 1.2rem;
+}
+  
+.cardRating .rating {
+  font-size: 2rem;
+}
+
+.time{
+  color:#cbcbcb;
+  font-weight: bold;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+  align-items: center
+
+}
+
+.opinion{
+  color:#707070;
+  font-size: 1.25rem;
+  letter-spacing: 1.2px;
+  margin-bottom: 0.5rem;
+  line-height: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.reportCom {
+  position: relative;
+  font-size: 1.5rem;
+  color: rgba(134, 134, 134, 255);
+  cursor: pointer;
+}
+  
+.reportCom:before {
+  content: attr(data-hover);
+  visibility: hidden;
+  opacity: 0;
+  width: 250px;
+  height: 50px;
+  justify-content: center;
+  background-color: rgb(248, 248, 248);
+  color: grey;
+  text-align: center;
+  font-style: italic;
+  border-radius: 10px;
+  padding: 5px 0;
+  transition: opacity 1s ease-in-out;
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: 110%;
+  padding: 1rem;
+}
+  
+.reportCom:hover:before {
+  opacity: 1;
+  visibility: visible;
+}
