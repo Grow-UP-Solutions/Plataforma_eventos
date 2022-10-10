@@ -25,6 +25,13 @@ import { sendVerifyMail } from '../../models/util/mailer/confirmEmail.js';
 import { changePasswordMail } from '../../models/util/mailer/changePassword.js';
 import { validateEmailUserDb } from '../../models/util/functionDB/UserDb.js';
 
+/* import {
+  createCodeVerifyMail,
+  getCodeVerifyEmail,
+} from '../../models/util/functionDB/CodeEmailDb.js'; */
+
+/* import Verify from '../../models/db/Verify.js'; */
+
 const router = Router();
 /**/ ///////////////Rutas GET////////////// */
 router.get('/', async (req, res) => {
@@ -35,6 +42,7 @@ router.get('/', async (req, res) => {
     return res.status(500).json({ ERROR_USER: error.message });
   }
 });
+
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
 
@@ -250,13 +258,13 @@ router.get('/login/renew', validateJWT, async (req, res) => {
   }
 });
 
-router.post('/confirmEmail', async (req, res) => {
-  const { code, uid } = req.body;
+/* router.post('/confirmEmail', async (req, res) => {
+  const { code } = req.body;
 
   try {
-    const user = await getUser(uid);
+    const codedb = await CodeVerify.findOne({ code });
 
-    if (code === user.code) {
+    if (code === codedb.code) {
       return res.status(201).json({
         success: true,
         message: 'Código correcto',
@@ -270,14 +278,22 @@ router.post('/confirmEmail', async (req, res) => {
       message: error.message,
     });
   }
-});
+}); */
 
-router.post('/sendEmailForConfirm', async (req, res) => {
-  const { uid } = req.body;
-  const { email, code } = await getUser(uid);
+/* router.post('/sendEmailForConfirm', async (req, res) => {
+  const { email } = req.body;
+
+  let code = '';
+
+  for (let x = 0; x < 6; x++) {
+    code = code + Math.trunc(Math.random() * 10);
+  }
+
+  const codeDb = new CodeVerify({ code });
+  await codeDb.save();
 
   try {
-    const response = await sendVerifyMail(email, code);
+    const response = await sendVerifyMail(email, codeDb.code);
 
     res.status(201).json({
       message: response.msg,
@@ -285,7 +301,8 @@ router.post('/sendEmailForConfirm', async (req, res) => {
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
-});
+}); */
+
 /**/ ///////////Rutas PUT///////////////////////////////// */
 router.put('/update/:id', async (req, res) => {
   try {

@@ -69,14 +69,6 @@ export async function createOneUserDb(user) {
 
     userCreated.password = bcrypt.hashSync(user.password, salt);
 
-    let code = '';
-
-    for (let x = 0; x < 6; x++) {
-      code = code + Math.trunc(Math.random() * 10);
-    }
-
-    userCreated.code = code;
-
     await userCreated.save();
     return userCreated;
   } catch (error) {
