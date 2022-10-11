@@ -4,4 +4,4 @@ const pruebaSchema = new Schema({
   validacion: String,
 });
 
-module.exports = model('Brueba', pruebaSchema);
+module.exports = model('Prueba', pruebaSchema);
