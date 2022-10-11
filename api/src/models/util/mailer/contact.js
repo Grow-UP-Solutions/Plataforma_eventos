@@ -1,9 +1,9 @@
-import { createTransport } from 'nodemailer';
-import dotenv from 'dotenv';
-dotenv.config();
+const { createTransport } = require('nodemailer');
+require('dotenv').config();;
+
 const { EMAIL, PASSWORD } = process.env;
 
-export const enviar_mail_contact = async (name, email, tlf, msg) => {
+ const enviar_mail_contact = async (name, email, tlf, msg) => {
   const transporter = createTransport({
     service: 'gmail',
     secure: true,
@@ -36,3 +36,6 @@ export const enviar_mail_contact = async (name, email, tlf, msg) => {
     return { msg: ('FALLO EL ENVIO DE EMAIL', error) };
   }
 };
+module.exports={
+  enviar_mail_contact
+}

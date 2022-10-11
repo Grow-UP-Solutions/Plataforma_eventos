@@ -1,13 +1,14 @@
 //@ts-check
-import express from 'express';
-import bodyParser from 'body-parser';
-import morgan from 'morgan';
-import router from './routes/index.js';
-import cors from 'cors';
-import './DB.js';
-import passport from 'passport';
-import './models/util/middlewares/facebook-auth.js';
-import './models/util/middlewares/google-auth.js';
+const express =require('express')
+
+const bodyParser =require('body-parser') ;
+const morgan =require('morgan') ;
+const router =require('./routes/index.js') ;
+const cors =require('cors') ;
+require ('./DB.js');
+const passport =require('passport') ;
+require ('./models/util/middlewares/facebook-auth.js');
+require ('./models/util/middlewares/google-auth.js');
 
 const server = express();
 server.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
@@ -16,4 +17,4 @@ server.use(cors());
 server.use('/', router);
 server.use(morgan('dev'));
 server.use(passport.initialize());
-export default server;
+module.exports= server;

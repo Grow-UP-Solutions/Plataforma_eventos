@@ -1,13 +1,12 @@
-import {Schema,model}from 'mongoose'
+const { Schema, model } = require('mongoose');
 
+const cuponSchema = new Schema({
+  cupon: String,
+  limit: Number,
+  event: {
+    type: Schema.Types.ObjectId,
+    ref: 'Events',
+  },
+});
 
-const cuponSchema= new Schema({
-    cupon: String,
-    limit: Number,
-    event:{
-        type: Schema.Types.ObjectId,
-        ref: 'Events'
-    }
-})
-
-export default model('Cupon', cuponSchema)
+module.exports = model('Cupon', cuponSchema);

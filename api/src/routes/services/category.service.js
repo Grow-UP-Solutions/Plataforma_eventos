@@ -1,18 +1,18 @@
-import {
+const {
   AllCategoyDb,
   OneCategoryDb,
   updateOneCategoryDb,
-} from "../../models/util/functionDB/CategoryDb.js";
+} = require("../../models/util/functionDB/CategoryDb.js");
 
-export async function getAllCategory() {
+async function getAllCategory() {
   const category = AllCategoyDb();
   return category;
 }
-export async function getCategory(name) {
+async function getCategory(name) {
   const category = OneCategoryDb(name);
   return category;
 }
-export async function createCategory(category) {
+async function createCategory(category) {
   try {
     const { name } = category;
     const categoryDB = OneCategoryDb(name);
@@ -26,8 +26,15 @@ export async function createCategory(category) {
     console.log("FALLO CATEGORY", error);
   }
 }
-export async function categoryUpdate(id, newCategory) {
+async function categoryUpdate(id, newCategory) {
   const newCategorys = updateOneCategoryDb(id, newCategory);
 
   return newCategorys;
 }
+
+module.exports = {
+  getAllCategory,
+  getCategory,
+  createCategory,
+  categoryUpdate,
+};

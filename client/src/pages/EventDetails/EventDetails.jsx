@@ -1,21 +1,20 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { animateScroll as scroll } from 'react-scroll';
+import EventComments from '../../components/EventDetails/EventComments';
 import EventInfo from '../../components/EventDetails/EventInfo';
 import EventLocation from '../../components/EventDetails/EventLocation';
-import EventComments from '../../components/EventDetails/EventComments';
 import EventSideBar from '../../components/EventDetails/EventSideBar';
-import style from './EventDetails.module.css';
-import { animateScroll as scroll } from 'react-scroll';
-import { useDispatch, useSelector } from 'react-redux';
 import { getEvents } from '../../redux/actions';
+import style from './EventDetails.module.css';
 
 const EventDetails = () => {
-
   const id = useParams().id;
   const dispatch = useDispatch();
   //const allEvents = useSelector((state) => state.events);
   //const eventDetails = allEvents.filter((event) => event._id === id)[0];
-  
+
   useEffect(() => {
     dispatch(getEvents);
     scroll.scrollToTop();

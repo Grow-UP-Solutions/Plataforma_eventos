@@ -1,24 +1,24 @@
-import {
+const{
   AllOpinionsEvent,
   createOpinionsEventeDb,
   OneOpinionEvente,
-} from "../../models/util/functionDB/OpinionsEventDb.js";
-import { OneUserDb } from "../../models/util/functionDB/UserDb.js";
+} =require ("../../models/util/functionDB/OpinionsEventDb.js");
+const{ OneUserDb } =require ("../../models/util/functionDB/UserDb.js");
 
 
-export async function getOpiniosEvent() {
+ async function getOpiniosEvent() {
   const opinionsEvent = AllOpinionsEvent();
 
   return opinionsEvent;
 }
 
-export async function getOneOpinionsEvent(id) {
+ async function getOneOpinionsEvent(id) {
   const opinionsEvent = await OneOpinionEvente(id);
 
   return opinionsEvent;
 }
 
-export async function createOpiniosEvent(opinion){
+ async function createOpiniosEvent(opinion){
     const {email} = opinion
     
     const user = await OneUserDb(email)
@@ -29,4 +29,10 @@ export async function createOpiniosEvent(opinion){
    
     return  await newOpinion.save()
     
+}
+
+module.exports={
+  getOpiniosEvent,
+  getOneOpinionsEvent,
+  createOpiniosEvent
 }

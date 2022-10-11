@@ -1,23 +1,30 @@
-import "../../../DB.js";
+require('../../../DB.js');
 
-import OpinionsOrganizer from "../../db/OpinionsOrganizer.js";
+const OpinionsOrganizer = require('../../db/OpinionsOrganizer.js');
 
 /** basic user database operations */
 
-export async function allOpinionsOrgDb() {
+async function allOpinionsOrgDb() {
   return await OpinionsOrganizer.find();
 }
-export async function oneOpinionsOrgDb(params) {
+async function oneOpinionsOrgDb(params) {
   return (
-    (await OpinionsOrganizer.findOne({ name: params }).populate("user")) ||
-    (await OpinionsOrganizer.findById(params).populate("user"))
+    (await OpinionsOrganizer.findOne({ name: params }).populate('user')) ||
+    (await OpinionsOrganizer.findById(params).populate('user'))
   );
 }
-export async function updateOneOpinionsOrgDb(id, newOpinions) {
+async function updateOneOpinionsOrgDb(id, newOpinions) {
   return await OpinionsOrganizer.findByIdAndUpdate({ _id: id }, newOpinions, {
     new: 1,
-  }).populate("user");
+  }).populate('user');
 }
-export async function deleteOneOpinionsOrgDb(id) {
+async function deleteOneOpinionsOrgDb(id) {
   return await OpinionsOrganizer.findByIdAndDelete(id);
 }
+
+module.exports = {
+  allOpinionsOrgDb,
+  oneOpinionsOrgDb,
+  updateOneOpinionsOrgDb,
+  deleteOneOpinionsOrgDb,
+};

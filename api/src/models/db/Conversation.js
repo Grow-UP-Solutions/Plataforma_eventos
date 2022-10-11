@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+const { Schema, model } = require('mongoose');
 
 const conversationSchema = new Schema(
   {
@@ -9,4 +9,4 @@ const conversationSchema = new Schema(
   { timestamps: true }
 );
 
-export default model('Conversation', conversationSchema);
+module.exports = model('Conversation', conversationSchema);
