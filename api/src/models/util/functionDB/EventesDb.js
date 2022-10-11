@@ -2,7 +2,7 @@ require('../../../DB.js');
 const Events = require('../../db/Events.js');
 const { oneUserDb } = require('./UserDb.js');
 /**basic user database operations  */
-export async function AllEventsDb() {
+ async function AllEventsDb() {
   try {
     return await Events.find()
       .populate({ path: 'organizer' })
@@ -13,7 +13,7 @@ export async function AllEventsDb() {
     return { message: error.message };
   }
 }
-export async function oneEventDb(id) {
+ async function oneEventDb(id) {
   try {
     return await Events.findById(id)
       .populate({ path: 'organizer' })
@@ -22,7 +22,7 @@ export async function oneEventDb(id) {
     return { message: error.message };
   }
 }
-export async function updateOneEventDb(id, newEvent) {
+ async function updateOneEventDb(id, newEvent) {
   try {
     return await Events.findByIdAndUpdate({ _id: id }, newEvent, { new: 1 })
       .populate({ path: 'organizer' })
@@ -32,13 +32,13 @@ export async function updateOneEventDb(id, newEvent) {
     return { message: error.message };
   }
 }
-export async function deleteOneEventDb(id) {
+ async function deleteOneEventDb(id) {
   return await Events.findByIdAndDelete(id);
 }
 
 /**Creating event in Database */
 
-export async function createOneEventDb(event) {
+ async function createOneEventDb(event) {
   try {
     const eventCreated = new Events(event);
     await eventCreated.save();
@@ -50,7 +50,7 @@ export async function createOneEventDb(event) {
 }
 
 /**generar opinion en evento */
-export async function generateEventComment(id, opinions) {
+ async function generateEventComment(id, opinions) {
   try {
     const { title, opinion, idUser, rating } = opinions;
 
