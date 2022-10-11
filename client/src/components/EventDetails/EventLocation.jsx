@@ -1,16 +1,13 @@
-import React from "react";
-import mapa from '../../assets/imgs/mapa2.png'
+import React, { useEffect, useState } from "react";
 import { IoLocationOutline } from 'react-icons/io5';
 import style from './EventLocation.module.css';
 import { useSelector } from "react-redux";
+import Maps from "../Maps/Maps";
 
 const EventLocation =  ({id}) => {
 
-   
   const allEvents = useSelector((state) => state.events);
   const eventDetails = allEvents.filter((event) => event._id === id)[0];
-
- 
 
   return (
     <div>
@@ -25,16 +22,19 @@ const EventLocation =  ({id}) => {
       <br />
 
       {
-        eventDetails.onLine === false ?
+        eventDetails.online === 'false' ?
         <div>
+
           <div>
             <span className={style.city}>{eventDetails.municipio} / </span>
             <span className={style.state}>{eventDetails.departamento}</span>
             <p className={style.texto}>La ubicación exacta se te enviará al adquirir tu entrada</p>
           </div>
-            <div className={style.img}>
-            <img src={mapa} alt="imagen_mapa" />
+
+          <div className={style.img}>
+            <Maps id={id}/>
           </div>
+
         </div>
         :
         <div>
