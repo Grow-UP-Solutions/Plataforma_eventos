@@ -272,7 +272,10 @@ router.post('/confirmEmail', async (req, res) => {
   try {
     const codedb = await getCodeVerifyEmail(code);
 
-    if (code === codedb.code) {
+    console.log({ codedb });
+
+    if (code === codedb.validacion) {
+      await deleteCodeVerifyMail(code);
       return res.status(201).json({
         success: true,
         message: 'Código correcto',
@@ -297,11 +300,10 @@ router.post('/sendEmailForConfirm', async (req, res) => {
     code = code + Math.trunc(Math.random() * 10);
   }
 
-  const codeDb = createCodeVerifyMail(code);
-  await codeDb.save();
+  const codeDb = await createCodeVerifyMail(code);
 
   try {
-    const response = await sendVerifyMail(email, codeDb.code);
+    const response = await sendVerifyMail(email, codeDb.validacion);
 
     res.status(201).json({
       message: response.msg,
