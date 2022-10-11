@@ -1,5 +1,5 @@
-import { createTransport } from 'nodemailer';
-import dotenv from 'dotenv';
+const { createTransport } = require('nodemailer');
+const dotenv = require('dotenv');
 dotenv.config();
 const { EMAIL, PASSWORD } = process.env;
 

@@ -1,5 +1,5 @@
-const { Router } = require("express");
-const { oneEventDb } = require("../../models/util/functionDB/EventesDb.js");
+const { Router } = require('express');
+const { oneEventDb } = require('../../models/util/functionDB/EventesDb.js');
 
 const {
   getAllEvents,
@@ -7,11 +7,11 @@ const {
   eventsUpdate,
   createOpinionsEvents,
   getOneEvent,
-} = require("../services/events.services.js");
+} = require('../services/events.services.js');
 
 const router = Router();
 
-router.get("/", async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const allEvents = await getAllEvents();
 
@@ -20,7 +20,7 @@ router.get("/", async (req, res) => {
     return res.status(500).json({ ERROR_EVENTS: error.message });
   }
 });
-router.get("/:id", async (req, res) => {
+router.get('/:id', async (req, res) => {
   const { id } = req.params;
   try {
     const event = await getOneEvent(id);
@@ -30,7 +30,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/create", async (req, res) => {
+router.post('/create', async (req, res) => {
   try {
     const event = req.body;
 
@@ -42,7 +42,7 @@ router.post("/create", async (req, res) => {
   }
 });
 
-router.post("/opinionsGenerate/:id", async (req, res) => {
+router.post('/opinionsGenerate/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const comments = req.body;
@@ -53,7 +53,7 @@ router.post("/opinionsGenerate/:id", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -67,4 +67,4 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-module.exports= router;
+module.exports = router;

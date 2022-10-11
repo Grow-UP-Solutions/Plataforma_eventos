@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styles from './User.module.css';
+
+import { AuthContext } from '../../context/auth';
+
 import { Calendar } from 'react-date-range';
+
 import * as locales from 'react-date-range/dist/locale';
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
@@ -15,7 +19,6 @@ import {
   ReferralPlan,
   UserForm,
 } from '../../components';
-
 
 import {
   IconFinances,
@@ -33,18 +36,30 @@ import {
   IoIosArrowUp,
   IoIosArrowDown,
 } from 'react-icons/io';
+import { useEffect } from 'react';
+import eventsApi from '../../axios/eventsApi';
 
-const user = {
-  isUserComplete: true,
-  isOrganizer: true,
-};
-
-const User = () => {
+const UserPage = () => {
+  const { user } = useContext(AuthContext);
+  const [userData, setUserData] = useState({});
   const [date, setDate] = useState();
-
-  const [component, setComponent] = useState(<UserForm />);
-
+  const [component, setComponent] = useState();
   const [isOpenMenu, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    getUserData();
+  }, [user]);
+
+  useEffect(() => {}, [userData]);
+
+  const getUserData = async () => {
+    let userResult = {};
+    if (user.uid) {
+      userResult = await eventsApi.get(`/users/${user.uid}`);
+      setUserData(userResult.data);
+      setComponent(<UserForm userData={userResult.data} />);
+    }
+  };
 
   const handleInput = (e) => {
     const name = e.target.name;
@@ -53,7 +68,7 @@ const User = () => {
     if (name === 'Mi lista') setComponent(<MyListUser />);
     if (name === 'Pendientes por Asistir') setComponent(<ExpectToAttendUser />);
     if (name === 'Mis Eventos') setComponent(<MyEventsOrganizer />);
-    if (name === 'Perfil') setComponent(<UserForm />);
+    if (name === 'Perfil') setComponent(<UserForm userData={userData} />);
     if (name === 'Plan de Referidos') setComponent(<ReferralPlan />);
     if (name === 'Preferencias') setComponent(<PreferencesUser />);
   };
@@ -233,4 +248,4 @@ const User = () => {
   );
 };
 
-export default User;
+export default UserPage;

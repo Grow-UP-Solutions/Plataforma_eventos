@@ -1,7 +1,7 @@
-import bcrypt from 'bcryptjs';
-import { Router } from 'express';
-import '../../DB.js';
-import {
+const bcrypt = require('bcryptjs');
+const { Router } = require('express');
+require('../../DB.js');
+const {
   getAllUsers,
   createUsers,
   userUpdate,
@@ -11,28 +11,31 @@ import {
   createOrganizerComment,
   getAllCommentUser,
   sendMessageUser,
-} from '../services/users.services.js';
+} = require('../services/users.services.js');
 
-import passport from 'passport';
+const passport = require('passport');
 
-import { check } from 'express-validator';
-import validateFields from '../../models/util/middlewares/validate-fields.js';
-import { generateJWT } from '../../models/util/helpers/jwt.js';
-import { generateJWTPassword } from '../../models/util/helpers/jwtPassword.js';
-import { validateJWT } from '../../models/util/middlewares/validate-jwt.js';
-import { validateJWTPassword } from '../../models/util/middlewares/validate-jwt-password.js';
-import { sendVerifyMail } from '../../models/util/mailer/confirmEmail.js';
-import { changePasswordMail } from '../../models/util/mailer/changePassword.js';
-import { validateEmailUserDb } from '../../models/util/functionDB/UserDb.js';
-import Verify from '../../models/db/Verify.js';
+const { check } = require('express-validator');
+const validateFields = require('../../models/util/middlewares/validate-fields.js');
+const { generateJWT } = require('../../models/util/helpers/jwt.js');
+const {
+  generateJWTPassword,
+} = require('../../models/util/helpers/jwtPassword.js');
+const {
+  validateJWT,
+} = require('../../models/util/middlewares/validate-jwt.js');
+const {
+  validateJWTPassword,
+} = require('../../models/util/middlewares/validate-jwt-password.js');
+const { sendVerifyMail } = require('../../models/util/mailer/confirmEmail.js');
+const {
+  changePasswordMail,
+} = require('../../models/util/mailer/changePassword.js');
+const {
+  validateEmailUserDb,
+} = require('../../models/util/functionDB/UserDb.js');
 
-
-
-/* import {
-  createCodeVerifyMail,
-  getCodeVerifyEmail,
-} from '../../models/util/functionDB/CodeEmailDb.js'; */
-
+const Validacion = require('../../models/db/Validacion.js');
 
 const router = Router();
 /**/ ///////////////Rutas GET////////////// */
@@ -451,4 +454,4 @@ router.get(
   }
 );
 
-export default router;
+module.exports = router;

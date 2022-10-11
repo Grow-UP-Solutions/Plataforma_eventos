@@ -7,7 +7,7 @@ import { UIContext } from '../../context/ui';
 import { CgClose } from 'react-icons/cg';
 import { IconFacebook, IconGoogle } from '../../assets/Icons';
 
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import eventsApi from '../../axios/eventsApi';
 import useValidateForm from '../../hooks/useValidateForm';
 
@@ -50,10 +50,8 @@ const Login = () => {
       password: formData.password,
     };
 
-    let result;
-
     try {
-      result = await eventsApi.post('/users/login', user);
+      const result = await eventsApi.post('/users/login', user);
 
       localStorage.setItem('token', result.data.token);
 
@@ -129,7 +127,7 @@ const Login = () => {
   const navigateToChangePassword = async () => {
     toggleScreenLogin();
 
-    const result = await eventsApi.post('/users/sendMailChangePassword', {
+    await eventsApi.post('/users/sendMailChangePassword', {
       email: formData.mail,
     });
   };

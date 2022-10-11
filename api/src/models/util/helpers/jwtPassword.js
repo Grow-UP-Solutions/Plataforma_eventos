@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+const jwt = require('jsonwebtoken');
 
 const generateJWTPassword = (email) => {
   return new Promise((resolve, reject) => {
@@ -22,4 +22,4 @@ const generateJWTPassword = (email) => {
   });
 };
 
-export { generateJWTPassword };
+module.exports = { generateJWTPassword };
