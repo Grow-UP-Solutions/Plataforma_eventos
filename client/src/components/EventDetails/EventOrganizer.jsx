@@ -13,23 +13,29 @@ const EventOrganizer = ({ id }) => {
   const navigate = useNavigate();
   const allEvents = useSelector((state) => state.events);
   const eventDetails = allEvents.filter((event) => event._id === id)[0];
-
+  
   useEffect(() => {
-    user ?
-    setConversation({
-      senderId: user.uid,
-      receiverId: eventDetails.organizer._id,
-    }) : 
-    setConversation({})
+    const addUserId = async () => {
+      try {
+        const res = await axios.get('https://plataformaeventos-production-6111.up.railway.app/users/' + eventDetails.organizer._id);
+        setConversation({
+          senderId: user.uid,
+          receiverId: res.data._id,
+        })
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    addUserId();
   }, []);
 
   const handleClickMessages = (e) => {
     e.preventDefault();
     axios.post('https://plataformaeventos-production-6111.up.railway.app/conversation/create', conversation)
     .then((response) => {
-      console.log('axios response', response.data);
+      //console.log('axios response', response.data);
+      navigate('/user/message');
     });
-    navigate('/user/message');
   }
 
   const handleAlert = (e) => {

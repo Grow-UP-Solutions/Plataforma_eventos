@@ -1,9 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import style from './SearchResult.module.css';
-
 import { animateScroll as scroll } from 'react-scroll';
 import { stateContext } from '../../context/state/stateContext';
-
 import { Card } from '../../components';
 import Pagination from '../../components/Pagination/Pagination';
 

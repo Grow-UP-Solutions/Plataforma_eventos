@@ -1,5 +1,5 @@
 
-import React, { useContext, useState } from 'react';
+import React from 'react';
 import styles from './Message.module.css';
 import { FiStar } from 'react-icons/fi';
 import { format } from "timeago.js";

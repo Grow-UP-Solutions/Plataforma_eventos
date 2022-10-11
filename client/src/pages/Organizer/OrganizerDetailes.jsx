@@ -24,6 +24,7 @@ const OrganizerDetails = () => {
   const navigate = useNavigate();
   const allEvents = useSelector((state) => state.events);
   const userDetail = allEvents.filter((e) => e.organizer._id === id)[0];
+  //const myUserDetail = allEvents.filter((e) => e.organizer._id === user.uid)[0];
 
   useEffect(() => {
     obtenerDatos();

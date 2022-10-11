@@ -3,6 +3,7 @@ import styles from './Messages.module.css';
 import { FiMail, FiArchive, FiStar } from 'react-icons/fi';
 import axios from "axios";
 import { AuthContext } from '../../context/auth/AuthContext';
+import avatar from '../../assets/imgs/no-avatar.png';
 import Conversations from '../../components/Conversations/Conversations';
 import Message from '../../components/Message/Message';
 
@@ -10,11 +11,11 @@ const Messages = () => {
 
   const { user } = useContext(AuthContext);
   const id = user.uid;
-  console.log('id:', id);
   const [conversations, setConversations] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const [result, setResult] = useState({});
 
   useEffect(() => {
     const getConversations = async () => {
@@ -39,6 +40,18 @@ const Messages = () => {
     };
     getMessages();
   }, [currentChat]); 
+
+  useEffect(() => {
+    const myUser = async () => {
+      try {
+        const json = await axios.get("https://plataformaeventos-production-6111.up.railway.app/users/" + id);
+        setResult(json.data);
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    myUser();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -104,8 +117,8 @@ const Messages = () => {
           <div className={styles.containerChat}>
 
             <div className={styles.chatHeader}>
-              <img src={'https://i.pravatar.cc/150?img=65'} alt="user-photo" />
-              <span>Pepito Pérez</span>
+              <img src={result.picture ? result.picture : avatar} alt="user-photo" />
+              <span>{user.name}</span>
             </div>
 
             <div className={styles.containerChatMessage}>
