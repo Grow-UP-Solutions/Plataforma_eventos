@@ -24,7 +24,7 @@ import {
   Payment,
   Register,
   SearchResult,
-  User,
+  UserPage,
   Verification,
   WorkWithUs,
   WorkWithUsForm,
@@ -72,7 +72,7 @@ function App() {
           <Route path="/categories" element={<CategoriesResult />} />
           <Route path="/workWithUs" element={<WorkWithUs />} />
           <Route path="/workWithUs/form/:work" element={<WorkWithUsForm />} />
-          <Route path="/user/profile" element={<User />} />
+          <Route path="/user/profile" element={<UserPage />} />
           <Route path="/privacy" element={<PanelPrivacy />} />
           <Route path="/user/message" element={<Messages />} />
           <Route path="/user/notifications" element={<Notifications />} />

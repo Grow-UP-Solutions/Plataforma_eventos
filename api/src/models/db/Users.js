@@ -3,8 +3,9 @@ import { Schema, model } from 'mongoose';
 const UserSchema = new Schema({
   name: String,
   direction: String,
-  phone: Number,
-  documentNº: Number,
+  phone: String,
+  tel: String,
+  document: Number,
   city: String,
   frontDocument: String,
   backDocument: String,
@@ -98,7 +99,6 @@ const UserSchema = new Schema({
       },
     },
   ],
-  
 });
 
 export default model('Users', UserSchema);

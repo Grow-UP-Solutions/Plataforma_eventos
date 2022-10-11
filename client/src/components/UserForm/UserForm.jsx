@@ -10,19 +10,23 @@ import {
   BsPencilSquare,
 } from 'react-icons/bs';
 
-const UserForm = () => {
+const UserForm = ({ userData }) => {
   const [profileImg, setProfileImg] = useState(null);
 
+  console.log({ userData });
+
   const [formData, setFormData] = useState({
-    name: '',
-    lastName: '',
+    name: userData.name.split(' ')[0] || '',
+    lastName: userData.name.split(' ')[1] || '',
     nickname: '',
-    email: '',
-    address: '',
-    city: '',
-    tel: '',
-    phone: '',
-    password: '',
+    email: userData.email || '',
+    address: userData.direction || '',
+    city: userData.city || '',
+    tel: userData.tel || '',
+    phone: userData.phone || '',
+    password: userData.password || '',
+    dni: userData.document || '',
+    aboutMe: userData.descriptionOrganizer || '',
   });
 
   const handleProfileImg = (e) => {
@@ -75,12 +79,12 @@ const UserForm = () => {
           <div className={styles.formGroup}>
             <div className={styles.inputsContainer}>
               <label htmlFor="name">Nombre(s)</label>
-              <input type="text" id="name" />
+              <input value={formData.name} type="text" id="name" />
               <span>Como aparece en la cedula</span>
             </div>
             <div className={styles.inputsContainer}>
               <label htmlFor="lastname">Apellido(s)</label>
-              <input type="text" id="lastname" />
+              <input value={formData.lastName} type="text" id="lastname" />
               <span>Como aparece en la cedula</span>
             </div>
             <button>
@@ -104,7 +108,12 @@ const UserForm = () => {
           <div className={styles.formGroup}>
             <div className={styles.inputsContainer}>
               <label htmlFor="mail">Email:</label>
-              <input type="mail" id="mail" placeholder="email@ejemplo.com" />
+              <input
+                value={formData.email}
+                type="mail"
+                id="mail"
+                placeholder="email@ejemplo.com"
+              />
             </div>
             <button>
               <BsPencilSquare className={styles.iconEdit} />
@@ -114,7 +123,7 @@ const UserForm = () => {
           <div className={styles.formGroup}>
             <div className={styles.inputsContainer}>
               <label htmlFor="address">Dirección:</label>
-              <input type="text" id="address" />
+              <input value={formData.address} type="text" id="address" />
             </div>
             <button>
               <BsPencilSquare className={styles.iconEdit} />
@@ -124,7 +133,7 @@ const UserForm = () => {
           <div className={styles.formGroup}>
             <div className={styles.inputsContainer}>
               <label htmlFor="city">Ciudad:</label>
-              <input type="text" id="city" />
+              <input value={formData.city} type="text" id="city" />
             </div>
             <button>
               <BsPencilSquare className={styles.iconEdit} />
@@ -134,7 +143,7 @@ const UserForm = () => {
           <div className={styles.formGroup}>
             <div className={styles.inputsContainer}>
               <label htmlFor="tel">Télefono:</label>
-              <input type="tel" id="tel" />
+              <input value={formData.tel} type="tel" id="tel" />
             </div>
             <button>
               <BsPencilSquare className={styles.iconEdit} />
@@ -144,7 +153,7 @@ const UserForm = () => {
           <div className={styles.formGroup}>
             <div className={styles.inputsContainer}>
               <label htmlFor="phone">Celular:</label>
-              <input type="tel" id="phone" />
+              <input value={formData.phone} type="tel" id="phone" />
             </div>
             <button>
               <BsPencilSquare className={styles.iconEdit} />
@@ -154,7 +163,7 @@ const UserForm = () => {
           <div className={styles.formGroup}>
             <div className={styles.inputsContainer}>
               <label htmlFor="password">Contraseña</label>
-              <input type="password" id="password" />
+              <input value={formData.password} type="password" id="password" />
             </div>
             <button>
               <BsPencilSquare className={styles.iconEdit} />
@@ -164,7 +173,7 @@ const UserForm = () => {
           <div className={styles.formGroup}>
             <div className={styles.inputsContainer}>
               <label htmlFor="dni">Cédula:</label>
-              <input type="text" id="dni" />
+              <input value={formData.dni} type="text" id="dni" />
               <span>
                 El número y foto de tu cédula son requeridos para efectos de
                 seguridad y cumplimiento de la normativa tributaria.
@@ -248,7 +257,13 @@ const UserForm = () => {
             </button>
           </div>
           <div className={styles.containerAboutMeInput}>
-            <textarea name="aboutme" id="" cols="30" rows="10"></textarea>
+            <textarea
+              value={formData.aboutMe}
+              name="aboutme"
+              id=""
+              cols="30"
+              rows="10"
+            ></textarea>
             <BsInfoCircle className={styles.btnIconMoreInfo} />
           </div>
         </div>

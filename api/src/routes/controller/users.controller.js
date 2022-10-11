@@ -25,12 +25,7 @@ import { sendVerifyMail } from '../../models/util/mailer/confirmEmail.js';
 import { changePasswordMail } from '../../models/util/mailer/changePassword.js';
 import { validateEmailUserDb } from '../../models/util/functionDB/UserDb.js';
 
-/* import {
-  createCodeVerifyMail,
-  getCodeVerifyEmail,
-} from '../../models/util/functionDB/CodeEmailDb.js'; */
-
-/* import Verify from '../../models/db/Verify.js'; */
+import Verificar from '../../models/db/Verificar.js';
 
 const router = Router();
 /**/ ///////////////Rutas GET////////////// */
