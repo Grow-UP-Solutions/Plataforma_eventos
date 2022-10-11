@@ -13,12 +13,10 @@ import {
 const UserForm = ({ userData }) => {
   const [profileImg, setProfileImg] = useState(null);
 
-  console.log({ userData });
-
   const [formData, setFormData] = useState({
     name: userData.name.split(' ')[0] || '',
     lastName: userData.name.split(' ')[1] || '',
-    nickname: '',
+    nickname: userData.nickname || '',
     email: userData.email || '',
     address: userData.direction || '',
     city: userData.city || '',
@@ -29,9 +27,35 @@ const UserForm = ({ userData }) => {
     aboutMe: userData.descriptionOrganizer || '',
   });
 
+  const [canWriteInput, setCanWriteInput] = useState({
+    name: true,
+    lastName: true,
+    nickname: true,
+    email: true,
+    address: true,
+    city: true,
+    tel: true,
+    phone: true,
+    password: true,
+    dni: true,
+    aboutMe: true,
+  });
+
   const handleProfileImg = (e) => {
     setProfileImg(e.target.files[0]);
   };
+
+  const editFields = (e, inputName) => {
+    e.preventDefault();
+    setCanWriteInput({
+      ...canWriteInput,
+      [inputName]: false,
+    });
+    const input = document.querySelector('#nickname');
+    console.log({ input });
+  };
+
+  const handleInputChange = (e, inputName) => {};
 
   return (
     <div className={styles.containerUserForm}>
@@ -98,9 +122,15 @@ const UserForm = ({ userData }) => {
               <label htmlFor="nickname">
                 Nombre como quieres que salga en tu perfil:
               </label>
-              <input type="text" id="nickname" />
+              <input
+                value={formData.nickname}
+                name="nickname"
+                type="text"
+                id="nickname"
+                disabled={canWriteInput.nickname}
+              />
             </div>
-            <button>
+            <button onClick={(e) => editFields(e, 'nickname')}>
               <BsPencilSquare className={styles.iconEdit} />
               <span>Editar</span>
             </button>
