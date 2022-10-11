@@ -34,7 +34,7 @@ const {
 const {
   validateEmailUserDb,
 } = require('../../models/util/functionDB/UserDb.js');
-const PurebaDB = require('../../models/db/PurebaDB.js');
+const Verificacion = require('../../models/db/Verificacion.js');
 
 
 //const Validacion = require('../../models/db/Validacion.js');
@@ -43,7 +43,7 @@ const router = Router();
 /**/ ///////////////Rutas GET////////////// */
 router.get('/', async (req, res) => {
   try {
-     const algo = await PurebaDB.find()
+     const algo = await Verificacion.find()
      console.log(algo)
     const allUsers = await getAllUsers();
     return res.status(200).json(allUsers);
