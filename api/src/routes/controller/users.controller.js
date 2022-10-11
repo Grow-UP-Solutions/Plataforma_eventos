@@ -34,8 +34,11 @@ const {
 const {
   validateEmailUserDb,
 } = require('../../models/util/functionDB/UserDb.js');
-const Verificacion = require('../../models/db/Verificacion.js');
-
+const {
+  createCodeVerifyMail,
+  deleteCodeVerifyMail,
+  getCodeVerifyEmail,
+} = require('../../models/util/functionDB/CodeVerifyMailDb.js');
 
 //const Validacion = require('../../models/db/Validacion.js');
 
@@ -43,8 +46,8 @@ const router = Router();
 /**/ ///////////////Rutas GET////////////// */
 router.get('/', async (req, res) => {
   try {
-     const algo = await Verificacion.find()
-     console.log(algo)
+    const algo = await Verificacion.find();
+    console.log(algo);
     const allUsers = await getAllUsers();
     return res.status(200).json(allUsers);
   } catch (error) {
@@ -267,11 +270,11 @@ router.get('/login/renew', validateJWT, async (req, res) => {
   }
 });
 
-/* router.post('/confirmEmail', async (req, res) => {
+router.post('/confirmEmail', async (req, res) => {
   const { code } = req.body;
 
   try {
-    const codedb = await CodeVerify.findOne({ code });
+    const codedb = await getCodeVerifyEmail(code);
 
     if (code === codedb.code) {
       return res.status(201).json({
@@ -287,9 +290,9 @@ router.get('/login/renew', validateJWT, async (req, res) => {
       message: error.message,
     });
   }
-}); */
+});
 
-/* router.post('/sendEmailForConfirm', async (req, res) => {
+router.post('/sendEmailForConfirm', async (req, res) => {
   const { email } = req.body;
 
   let code = '';
@@ -298,7 +301,7 @@ router.get('/login/renew', validateJWT, async (req, res) => {
     code = code + Math.trunc(Math.random() * 10);
   }
 
-  const codeDb = new CodeVerify({ code });
+  const codeDb = createCodeVerifyMail(code);
   await codeDb.save();
 
   try {
@@ -310,7 +313,7 @@ router.get('/login/renew', validateJWT, async (req, res) => {
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
-}); */
+});
 
 /**/ ///////////Rutas PUT///////////////////////////////// */
 router.put('/update/:id', async (req, res) => {
