@@ -34,6 +34,7 @@ import PanelPrivacy from './pages/PanelPrivacy/PanelPrivacy';
 import { getEvents } from './redux/actions';
 
 function App() {
+
   const [navBar, setNavBar] = useState(false);
   const dispatch = useDispatch();
   const { isMenuLoginOpen, getCategories } = useContext(UIContext);

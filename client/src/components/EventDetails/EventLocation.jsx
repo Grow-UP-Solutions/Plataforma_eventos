@@ -1,15 +1,13 @@
-import React from "react";
-import mapa from '../../assets/imgs/mapa2.png'
+import React, { useEffect, useState } from "react";
 import { IoLocationOutline } from 'react-icons/io5';
 import style from './EventLocation.module.css';
 import { useSelector } from "react-redux";
-//import Maps from "../Maps/Maps";
+import Maps from "../Maps/Maps";
 
 const EventLocation =  ({id}) => {
 
   const allEvents = useSelector((state) => state.events);
   const eventDetails = allEvents.filter((event) => event._id === id)[0];
-  //const mapURL = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${'AIzaSyBr-FUseqSbsY6EMqIGNnGmegD39R--nBA'}`;
 
   return (
     <div>
@@ -24,8 +22,9 @@ const EventLocation =  ({id}) => {
       <br />
 
       {
-        eventDetails.onLine === false ?
+        eventDetails.online === 'false' ?
         <div>
+
           <div>
             <span className={style.city}>{eventDetails.municipio} / </span>
             <span className={style.state}>{eventDetails.departamento}</span>
@@ -33,18 +32,9 @@ const EventLocation =  ({id}) => {
           </div>
 
           <div className={style.img}>
-
-              
-
-            {/* <Maps 
-              googleMapURL={mapURL}
-              containerElement={<div style={{height: '400px'}}/>}
-              mapElement={<div style={{height: '100%'}}/>}
-              loadingElement={<p>Cargando</p>} 
-            /> */}
-
-            <img src={mapa} alt="imagen_mapa" />
+            <Maps id={id}/>
           </div>
+
         </div>
         :
         <div>

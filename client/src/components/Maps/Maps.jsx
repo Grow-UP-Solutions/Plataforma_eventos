@@ -1,15 +1,29 @@
 
-import React from 'react';
-import { GoogleMap, withScriptjs, withGoogleMap } from 'react-google-maps';
+import React, { useEffect, useState } from 'react';
+import dotenv from 'dotenv';
+import { useSelector } from 'react-redux';
 
-const Maps = (props) => {
+const Maps = ({id}) => {
+
+  dotenv.config();
+  const allEvents = useSelector((state) => state.events);
+  const eventDetails = allEvents.filter((event) => event._id === id)[0];
+  const municipio = eventDetails.municipio;
+  const departamento = eventDetails.departamento;
+  const location = `${municipio}, ${departamento}`;
+  const apiKey = 'AIzaSyBr-FUseqSbsY6EMqIGNnGmegD39R--nBA';
+  const zoom = '14';
+  const size = '400x300';
+  const url = `https://maps.googleapis.com/maps/api/staticmap?center=${location}&zoom=${zoom}&size=${size}&key=${apiKey}`;
 
   return (
-    <GoogleMap 
-      defaultZoom={12}
-      defaultCenter={{ lat: -34.397, lng: 150.644 }}
-    />    
+    <div>
+      <img 
+        src={url} 
+        alt="mapaStaticGoogleMaps" 
+      />
+    </div>
   );
 }
 
-export default withScriptjs(withGoogleMap(Maps));
+export default Maps;
