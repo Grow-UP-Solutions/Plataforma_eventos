@@ -34,9 +34,11 @@ const {
 const {
   validateEmailUserDb,
 } = require('../../models/util/functionDB/UserDb.js');
+const PurebaDB = require('../../models/db/PurebaDB.js');
+
 
 //const Validacion = require('../../models/db/Validacion.js');
-
+validate
 const router = Router();
 /**/ ///////////////Rutas GET////////////// */
 router.get('/', async (req, res) => {
