@@ -24,18 +24,22 @@ import { validateJWTPassword } from '../../models/util/middlewares/validate-jwt-
 import { sendVerifyMail } from '../../models/util/mailer/confirmEmail.js';
 import { changePasswordMail } from '../../models/util/mailer/changePassword.js';
 import { validateEmailUserDb } from '../../models/util/functionDB/UserDb.js';
+import Verify from '../../models/db/Verify.js';
+
+
 
 /* import {
   createCodeVerifyMail,
   getCodeVerifyEmail,
 } from '../../models/util/functionDB/CodeEmailDb.js'; */
 
-/* import Verify from '../../models/db/Verify.js'; */
 
 const router = Router();
 /**/ ///////////////Rutas GET////////////// */
 router.get('/', async (req, res) => {
   try {
+     const algo = await Verify.find()
+     console.log(algo)
     const allUsers = await getAllUsers();
     return res.status(200).json(allUsers);
   } catch (error) {
