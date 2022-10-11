@@ -38,12 +38,12 @@ const PurebaDB = require('../../models/db/PurebaDB.js');
 
 
 //const Validacion = require('../../models/db/Validacion.js');
-validate
+
 const router = Router();
 /**/ ///////////////Rutas GET////////////// */
 router.get('/', async (req, res) => {
   try {
-     const algo = await Verify.find()
+     const algo = await PurebaDB.find()
      console.log(algo)
     const allUsers = await getAllUsers();
     return res.status(200).json(allUsers);
