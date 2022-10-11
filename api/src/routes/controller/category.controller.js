@@ -1,9 +1,14 @@
-import { Router } from "express";
-import { getCategory, createCategory, categoryUpdate, getAllCategory } from "../services/category.service.js";
+const { Router } = require('express');
+const {
+  getCategory,
+  createCategory,
+  categoryUpdate,
+  getAllCategory,
+} = require('../services/category.service.js');
 
 const router = Router();
 
-router.get("/", async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const allCategory = await getAllCategory();
     return res.json(allCategory);
@@ -11,10 +16,10 @@ router.get("/", async (req, res) => {
     return res.status(400).json({ ERROR_CATEGORY: error });
   }
 });
-router.get("/category", async (req, res) => {
+router.get('/category', async (req, res) => {
   const { name } = req.query;
   try {
-    console.log(name)
+    console.log(name);
     const allCategory = await getCategory(name);
 
     return res.json(allCategory);
@@ -23,7 +28,7 @@ router.get("/category", async (req, res) => {
   }
 });
 
-router.post("/create", async (req, res) => {
+router.post('/create', async (req, res) => {
   try {
     const category = req.body;
     const categoryCreat = await createCategory(category);
@@ -32,7 +37,7 @@ router.post("/create", async (req, res) => {
     return res.status(400).json({ ERROR_CATEGORY_CREATE: error });
   }
 });
-router.put("/update/:id", async (req, res) => {
+router.put('/update/:id', async (req, res) => {
   try {
     const id = req.params;
     const newCategory = req.body;
@@ -42,4 +47,5 @@ router.put("/update/:id", async (req, res) => {
     return res.status(400).json({ ERROR_CATEGORY_UPDATE: error });
   }
 });
-export default router;
+
+module.exports = router;

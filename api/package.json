@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "./api/index.js",
-  "type": "module",
   "engines": {
     "node": "v16.16.0",
     "npm": "8.8.0"

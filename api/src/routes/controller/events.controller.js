@@ -1,34 +1,37 @@
-import { Router } from "express";
-import { oneEventDb } from "../../models/util/functionDB/EventesDb.js";
+const { Router } = require('express');
+const { oneEventDb } = require('../../models/util/functionDB/EventesDb.js');
 
-import { getAllEvents, createEvents, eventsUpdate, createOpinionsEvents, getOneEvent } from "../services/events.services.js";
+const {
+  getAllEvents,
+  createEvents,
+  eventsUpdate,
+  createOpinionsEvents,
+  getOneEvent,
+} = require('../services/events.services.js');
 
 const router = Router();
 
-router.get("/", async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const allEvents = await getAllEvents();
 
     return res.status(200).json(allEvents);
-
   } catch (error) {
-
     return res.status(500).json({ ERROR_EVENTS: error.message });
   }
 });
-router.get('/:id', async (req, res)=>{
-  const {id }=req.params
+router.get('/:id', async (req, res) => {
+  const { id } = req.params;
   try {
-    const event = await getOneEvent(id)
-   res.status(200).json(event)
+    const event = await getOneEvent(id);
+    res.status(200).json(event);
   } catch (error) {
-    res.status(500).json(error.message)
+    res.status(500).json(error.message);
   }
-})
+});
 
-router.post("/create", async (req, res) => {
+router.post('/create', async (req, res) => {
   try {
-    
     const event = req.body;
 
     const eventCreat = await createEvents(event);
@@ -39,31 +42,29 @@ router.post("/create", async (req, res) => {
   }
 });
 
-router.post('/opinionsGenerate/:id', async (req,res) => {
+router.post('/opinionsGenerate/:id', async (req, res) => {
   try {
-    const {id} = req.params
-    const comments = req.body
-    const createOpinions = await createOpinionsEvents(id,comments)
-    return res.status(200).json(createOpinions)
+    const { id } = req.params;
+    const comments = req.body;
+    const createOpinions = await createOpinionsEvents(id, comments);
+    return res.status(200).json(createOpinions);
   } catch (error) {
-    res.status(500).json(error.message)
-    
+    res.status(500).json(error.message);
   }
-})
+});
 
-router.put("/:id", async (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
-    const {id} = req.params;
-    
+    const { id } = req.params;
+
     const newEvent = req.body;
-   
+
     const newEvente = await eventsUpdate(id, newEvent);
 
     return res.json(newEvente);
-
   } catch (error) {
     return res.status(500).json({ FALLO_UPDATE: error.message });
   }
 });
 
-export default router;
+module.exports = router;

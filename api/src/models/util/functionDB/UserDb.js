@@ -1,10 +1,10 @@
-import '../../../DB.js';
-import Users from '../../db/Users.js';
-import bcrypt from 'bcryptjs';
+require('../../../DB.js');
+const Users = require('../../db/Users.js');
+const bcrypt = require('bcryptjs');
 
 /** basic user database operations */
 
-export async function allUserDb() {
+async function allUserDb() {
   try {
     return await Users.find()
       .populate({ path: 'myEventsCreated' })
@@ -14,14 +14,14 @@ export async function allUserDb() {
     return { message: error.message };
   }
 }
-export async function validateEmailUserDb(email) {
+async function validateEmailUserDb(email) {
   try {
     return await Users.findOne({ email: email });
   } catch (error) {
     throw new Error(error.message);
   }
 }
-export async function oneUserDb(id) {
+async function oneUserDb(id) {
   const idOrganizer = id;
   if (!idOrganizer) {
     return { msg: 'Se rerquiere el id del organizador' };
@@ -36,7 +36,7 @@ export async function oneUserDb(id) {
     return { message: error.message };
   }
 }
-export async function updateOneUserDb(id, newUser) {
+async function updateOneUserDb(id, newUser) {
   try {
     return await Users.findByIdAndUpdate({ _id: id }, newUser, {
       new: 1,
@@ -50,7 +50,7 @@ export async function updateOneUserDb(id, newUser) {
     return { message: error.message };
   }
 }
-export async function deleteOneUserDb(id) {
+async function deleteOneUserDb(id) {
   try {
     return await Users.findByIdAndDelete({ _id: id })
       .populate({ path: 'myEventsCreated' })
@@ -62,7 +62,7 @@ export async function deleteOneUserDb(id) {
 }
 /**Creating user in Database */
 
-export async function createOneUserDb(user) {
+async function createOneUserDb(user) {
   try {
     const userCreated = new Users(user);
     const salt = bcrypt.genSaltSync();
@@ -78,7 +78,7 @@ export async function createOneUserDb(user) {
 
 /**crear comentario usuario */
 
-export async function generateUserComment(id, opinion) {
+async function generateUserComment(id, opinion) {
   try {
     const { idUser } = opinion;
 
@@ -95,7 +95,7 @@ export async function generateUserComment(id, opinion) {
   }
 }
 
-export async function sendMessageDB(idSend, idGet, msg) {
+async function sendMessageDB(idSend, idGet, msg) {
   try {
     const userSend = await oneUserDb(idSend);
     const { picture, name } = userSend;
@@ -114,3 +114,14 @@ export async function sendMessageDB(idSend, idGet, msg) {
     return { message: error.message };
   }
 }
+
+module.exports = {
+  allUserDb,
+  createOneUserDb,
+  deleteOneUserDb,
+  generateUserComment,
+  sendMessageDB,
+  validateEmailUserDb,
+  oneUserDb,
+  updateOneUserDb,
+};

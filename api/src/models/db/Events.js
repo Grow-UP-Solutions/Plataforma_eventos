@@ -1,11 +1,11 @@
-import { Schema, model } from "mongoose";
+const { Schema, model } = require('mongoose');
 
 const EventSchema = new Schema({
   title: String,
   category: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Category",
+      ref: 'Category',
     },
   ],
   otherCategorie: [String],
@@ -28,17 +28,17 @@ const EventSchema = new Schema({
 
   dates: [
     {
-      date: String, 
-      start : String, 
-      end:String , 
-      year:Number ,  
-      cupos:String, 
-      price:String, 
-      sells: Number , 
-      isPublic:Boolean,
-      precioAlPublico:String,
-      gananciaCupo:String,
-      gananciaEvento:String,
+      date: String,
+      start: String,
+      end: String,
+      year: Number,
+      cupos: String,
+      price: String,
+      sells: Number,
+      isPublic: Boolean,
+      precioAlPublico: String,
+      gananciaCupo: String,
+      gananciaEvento: String,
       date: String,
       start: String,
       end: String,
@@ -69,14 +69,14 @@ const EventSchema = new Schema({
 
   organizer: {
     type: Schema.Types.ObjectId,
-    ref: "Users",
+    ref: 'Users',
   },
 
   opinions: [
     {
       user: {
         type: Schema.Types.ObjectId,
-        ref: "Users",
+        ref: 'Users',
       },
       title: String,
       email: String,
@@ -94,4 +94,4 @@ const EventSchema = new Schema({
   ],
 });
 
-export default model("Events", EventSchema);
+module.exports = model('Events', EventSchema);

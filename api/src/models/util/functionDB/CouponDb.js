@@ -1,10 +1,15 @@
-import "../../../DB.js";
-import Coupon from "../../db/Coupon.js";
+require('../../../DB.js');
+const Coupon = require('../../db/Coupon.js');
 
-export async function allCouponDb() {
+async function allCouponDb() {
   return await Coupon.find();
 }
 
-export async function oneCouponDb(id) {
+async function oneCouponDb(id) {
   return await Coupon.findById({ _id: id });
 }
+
+module.exports = {
+  allCouponDb,
+  oneCouponDb,
+};

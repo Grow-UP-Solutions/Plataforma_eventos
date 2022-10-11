@@ -1,7 +1,7 @@
-import { Schema, model } from 'mongoose';
+const { Schema, model } = require('mongoose');
 
 const ValidacionSchema = new Schema({
   validacion: String,
 });
 
-export default model('Validacion', ValidacionSchema);
+module.exports = model('Validacion', ValidacionSchema);
