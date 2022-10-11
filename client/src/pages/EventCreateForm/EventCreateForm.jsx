@@ -117,8 +117,8 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
       start : "", 
       end:"" , 
       year:0 ,  
-      cupos:'', 
-      price:'', 
+      cupos:0, 
+      price:0, 
       sells: 0 , 
       isPublic:true,
       precioAlPublico:'',
@@ -142,8 +142,9 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
     direccion: '',
     barrio: '',
     specialRequires: '',
+    cupos:'',
     dates:'',
-    isPublic:true
+    isPublic:''
   
   })
 
@@ -180,7 +181,7 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
       errors.title = 'Palabra ofensiva'
     }
 
-    if (post.title.match (notNumber)) {
+    if (post.title.match(notNumber)) {
       errors.title = 'No puedes ingresar un numero'
     }
 
@@ -314,29 +315,35 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
       errors.specialRequires = 'Palabra ofensiva'
     }
 
+    // for (var i=0; i<post.dates.length;i++ ){
+    //   if (!(post.dates[i].cupos).match(numero)) {
+    //     errors.dates = 'No podes'
+    //   }
+    // }
+
+
+    // for (var i=0; i<post.dates.length;i++ ){
+    //   if (!post.dates[i].price.match(numeroYdecimales) ) {
+    //     errors.dates= 'Debe ser un numero'
+    //   }
+    // }
 
     for (var i=0; i<post.dates.length;i++ ){
-      if (!post.dates[i].cupos.match(numero) ) {
-        errors.dates= 'Debe ser un numero'
-      }
-    }
-
-    for (var i=0; i<post.dates.length;i++ ){
-      if (!post.dates[i].price.match(numeroYdecimales) ) {
-        errors.dates= 'Debe ser un numero'
+      if (!post.dates[i].cupos) {
+        errors.cupos= true
       }
     }
   
 
     for (var i=0; i<post.dates.length;i++ ){
       if (!post.dates[i].date ||!post.dates[i].start ||!post.dates[i].end || !post.dates[i].cupos ||!post.dates[i].price) {
-        errors.dates = true
+        errors.dates= true
       }
     }
     
     for (var i=0; i<post.dates.length;i++ ){
       if (post.dates[i].start > post.dates[i].end ) {
-        errors.dates = 'Error'
+        errors.dates = 'No puede empezar despues que termina'
       }
     }
 
@@ -521,7 +528,6 @@ todas.map((foto)=>{
   let handleChanges = (i, e ) => {
     let newFechas = [...post.dates];
     newFechas[i][e.target.name] = e.target.value;
-    console.log('newFechas:',newFechas)
     newFechas[i].precioAlPublico=parseFloat(newFechas[i].price) + parseFloat(costoDeManejo) + parseFloat(a);
     newFechas[i].gananciaCupo = parseFloat(newFechas[i].price)-(((parseFloat(newFechas[i].price)*parseFloat(comision))+((parseFloat(newFechas[i].price)*parseFloat(comision)*parseFloat(IVA)))))
     newFechas[i].gananciaEvento = parseFloat(newFechas[i].gananciaCupo) * parseInt(newFechas[i].cupos)
@@ -1533,131 +1539,9 @@ todas.map((foto)=>{
                 </p>
 
                 <div className={styles.containerInfo}>
-                  {/* <div className={styles.containerSubInfo}>
-                    <label className={styles.subInfoTitle}>
-                      Máximo número de participantes
-                      {failedSubmit && errors.cupos?
-                       <input
-                       id='cupos'
-                       className={styles.subInfoInput}
-                       type="number"
-                       placeholder="10"
-                       name="cupos"
-                       value={element.cupos || ""} 
-                       onChange={e => handleChanges(index, e)}
-                       required
-                     />
-                      :
-                      <input
-                        id='cupos'
-                        className={styles.subInfoInput}
-                        type="number"
-                        placeholder="10"
-                        name="cupos"
-                        value={element.cupos || ""} 
-                        onChange={e => handleChanges(index, e)}
-                      />
-                     }
-                    </label>
-                    {errors.cupos && (
-                      <p className={styles.errors}>{errors.cupos}</p>
-                    )}
-                    
-                  </div> */}
-                 
-
-                  {/* <div className={styles.containerSubInfo}>
-                    <label className={styles.subInfoTitle}>
-                      Precio por cupo
-                      <div className={styles.labelS}>
-                        <p>$</p>
-                        {failedSubmit && errors.price?
-                         <input
-                         className={styles.subInfoInput}
-                         type='number'
-                         placeholder="20.00"
-                         name="price"
-                         value={element.price || ""} 
-                         onChange={e => handleChanges(index, e)}
-                         required
-                       />
-                        
-                        :
-                        <input
-                          className={styles.subInfoInput}
-                          type="number"
-                          placeholder="20.00"
-                          name="price"
-                          value={element.price || ""} 
-                          onChange={e => handleChanges(index, e)}
-                        />
-                      }
-
-                      </div>
-                    </label>
-
-                    {post.price === '' ? <p>$21.990</p> : <p>{precioAlPublico}</p>}
-
-                    <p className={styles.subInfotxt}>
-                      Precio al público incluyendo costo de manejo e IVA
-                    </p>
-
-                    {errors.price && (
-                    <p className={styles.errors}>{errors.price}</p>
-                    )}
-
-                  </div> */}
-
-                  {/* <div className={styles.containerSubInfo}>
-                    <label className={styles.subInfoTitle}>
-                      Tu ganas por cupo
-                      <div className={styles.labelS}>
-                        <p>$</p>
-                        <input
-                         id='gananciaPorCupo'
-                          className={styles.subInfoInput}
-                          type="txt"
-                          placeholder={gananciaPorCupo}
-                        />
-                      </div>
-                    </label>
-                    <p className={styles.subInfotxt}>
-                      Después de nuestra comisión + IVA
-                    </p>
-                    <Link to={`/user/profile`} target={"_blank"}>
-                      <button className={styles.btn6}
-                      >Ver Más</button>
-                    </Link>
-                 
-                  </div> */}
-
-                  {/* <div className={styles.containerSubInfo}>
-                    <label className={styles.subInfoTitle}>
-                      Tu ganas por evento
-                      <div className={styles.labelS}>
-                        <p>$</p>
-                        <input
-                        id='gananciaPorEvento'
-                          className={styles.subInfoInput}
-                          type="txt"
-                          placeholder={gananciaPorEvento}
-                        />
-                      </div>
-                    </label>
-                    <p className={styles.subInfotxt}>
-                      Esto sería lo que ganarías si se venden todos tus cupos
-                    </p>
-                    <Link to={`/user/profile`} target="_blank" rel="noopener noreferrer">
-                      <button className={styles.btn6}
-                      >Ver Más</button>
-                    </Link>
-                  </div> */}
+                    {/* cupos y price*/}
                 </div>
               </div>
-
-              
-
-              
 
 
               <hr className={styles.hr}></hr>
@@ -1677,7 +1561,7 @@ todas.map((foto)=>{
                             {failedSubmit && errors.cupos?
                             <input
                             id='cupos'
-                            className={styles.subInfoInput}
+                          
                             type="number"
                             placeholder="10"
                             name="cupos"
@@ -1704,9 +1588,9 @@ todas.map((foto)=>{
                             Precio por cupo
                             <div className={styles.labelS}>
                               <p>$</p>
-                              {failedSubmit && errors.price?
+                              {failedSubmit && errors.dates?
                               <input
-                              className={styles.subInfoInput}
+                             
                               type='number'
                               placeholder="20.00"
                               name="price"
@@ -1741,12 +1625,7 @@ todas.map((foto)=>{
                               Tu ganas por cupo
                               <div className={styles.labelS}>
                                 <p>$</p>
-                                <input
-                                id='gananciaPorCupo'
-                                  className={styles.subInfoInput}
-                                  type="txt"
-                                  placeholder={element.gananciaCupo}
-                                />
+                                <p className={styles.subInfoInput}>{element.gananciaCupo}</p>
                               </div>
                             </label>
                             <p className={styles.subInfotxt}>
@@ -1764,12 +1643,7 @@ todas.map((foto)=>{
                                 Tu ganas por evento
                                 <div className={styles.labelS}>
                                   <p>$</p>
-                                  <input
-                                  id='gananciaPorEvento'
-                                    className={styles.subInfoInput}
-                                    type="txt"
-                                    placeholder={element.gananciaEvento}
-                                  />
+                                 <p className={styles.subInfoInput}>{element.gananciaEvento}</p>
                                 </div>
                               </label>
                               <p className={styles.subInfotxt}>
@@ -1899,7 +1773,10 @@ todas.map((foto)=>{
                 </div>
                 {errors.dates && (
                 <p className={styles.errors}>{errors.dates}</p>
-                )}
+                )} 
+                {errors.cupos && (
+                  <p className={styles.errors}>{errors.cupos}</p>
+                  )}
 
           <hr className={styles.hr}></hr> 
 
