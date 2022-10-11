@@ -1,7 +1,9 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model } from "mongoose";
 
 const VerifySchema = new Schema({
-  code: String,
+  validate: {
+    type:String
+  }
 });
 
-export default model('Verify', VerifySchema);
+export default model("Verify", VerifySchema);
