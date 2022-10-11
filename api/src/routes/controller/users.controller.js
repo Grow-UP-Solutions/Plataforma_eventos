@@ -46,8 +46,6 @@ const router = Router();
 /**/ ///////////////Rutas GET////////////// */
 router.get('/', async (req, res) => {
   try {
-    const algo = await Verificacion.find();
-    console.log(algo);
     const allUsers = await getAllUsers();
     return res.status(200).json(allUsers);
   } catch (error) {
