@@ -1,10 +1,10 @@
-import { Router } from 'express';
-import eventsController from './controller/events.controller.js';
-import usersController from './controller/users.controller.js';
-import categoryController from './controller/category.controller.js';
-import contactContoller from '../routes/controller/contact.controller.js';
-import conversationContoller from '../routes/controller/conversation.controller.js';
-import messageContoller from '../routes/controller/message.controller.js';
+const { Router } = require ('express');
+const eventsController = require ('./controller/events.controller.js');
+const usersController = require ('./controller/users.controller.js');
+const categoryController = require ('./controller/category.controller.js');
+const contactContoller = require ('../routes/controller/contact.controller.js');
+const conversationContoller = require ('../routes/controller/conversation.controller.js');
+const messageContoller = require ('../routes/controller/message.controller.js');
 
 const router = Router();
 
@@ -15,4 +15,4 @@ router.use('/contact', contactContoller);
 router.use('/conversation', conversationContoller )
 router.use('/message', messageContoller )
 
-export default router;
+module.exports= router;

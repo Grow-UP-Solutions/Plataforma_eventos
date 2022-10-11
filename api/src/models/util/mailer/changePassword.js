@@ -1,9 +1,9 @@
-import { createTransport } from 'nodemailer';
-import dotenv from 'dotenv';
-dotenv.config();
+const { createTransport } = require('nodemailer');
+const dotenv = require('dotenv').config();
+
 const { EMAIL, PASSWORD } = process.env;
 
-export const changePasswordMail = async (email, link) => {
+ const changePasswordMail = async (email, link) => {
   const transporter = createTransport({
     service: 'gmail',
     secure: true,
@@ -118,3 +118,6 @@ export const changePasswordMail = async (email, link) => {
     return { msg: ('FALLO EL ENVIO DE EMAIL', error) };
   }
 };
+module.exports={
+  changePasswordMail
+}

@@ -1,18 +1,18 @@
-import { OneCategoryDb } from "../../models/util/functionDB/CategoryDb.js";
-import {
+const { OneCategoryDb } =require ("../../models/util/functionDB/CategoryDb.js");
+const {
   oneUserDb,
   
-} from "../../models/util/functionDB/UserDb.js";
-import {
+} =require ("../../models/util/functionDB/UserDb.js");
+const {
   AllEventsDb,
   createOneEventDb,
   generateEventComment,
   oneEventDb,
   updateOneEventDb,
-} from "../../models/util/functionDB/EventesDb.js";
+} =require ("../../models/util/functionDB/EventesDb.js");
 
 
-export async function getAllEvents() {
+ async function getAllEvents() {
   try {
     const allEvents = AllEventsDb();
     return allEvents;
@@ -20,7 +20,7 @@ export async function getAllEvents() {
     return ({message:error.message})
   }
 }
-export async function getOneEvent(id){
+ async function getOneEvent(id){
   try {
     const event= await oneEventDb(id)
     if(!event){
@@ -33,7 +33,7 @@ export async function getOneEvent(id){
   }
   
 }
-export async function createEvents(event) {
+ async function createEvents(event) {
   try {
     const { idOrganizer, categories } = event;
     const organizer = await oneUserDb(idOrganizer);
@@ -58,7 +58,7 @@ export async function createEvents(event) {
   }
 }
 
-export async function createOpinionsEvents(id, opinions) {
+ async function createOpinionsEvents(id, opinions) {
   try {
     
     const opinionCreat = await generateEventComment(id, opinions);
@@ -71,11 +71,18 @@ export async function createOpinionsEvents(id, opinions) {
   }
 }
 
-export async function eventsUpdate(id, newEvent) {
+ async function eventsUpdate(id, newEvent) {
   try {
     const newEvents = await updateOneEventDb(id, newEvent);
     return newEvents;
   } catch (error) {
     return ({message:error.message})
   }
+}
+module.exports={
+  getAllEvents,
+  getOneEvent,
+  createEvents,
+  createOpinionsEvents,
+  eventsUpdate
 }

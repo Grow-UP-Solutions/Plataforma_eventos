@@ -1,4 +1,4 @@
-import {
+const {
   allUserDb,
   oneUserDb,
   updateOneUserDb,
@@ -7,16 +7,16 @@ import {
   validateEmailUserDb,
   generateUserComment,
   sendMessageDB,
-} from '../../models/util/functionDB/UserDb.js';
+} =require( '../../models/util/functionDB/UserDb.js');
 
-import bcrypt from 'bcryptjs';
-import { AllEventsDb } from '../../models/util/functionDB/EventesDb.js';
+const bcrypt =require('bcryptjs') ;
+const { AllEventsDb } =require('../../models/util/functionDB/EventesDb.js') ;
 
-export async function getAllUsers() {
+ async function getAllUsers() {
   const allUsers = allUserDb();
   return allUsers;
 }
-export async function getUser(id) {
+ async function getUser(id) {
   try {
     const user = oneUserDb(id);
     if (!user) {
@@ -27,7 +27,7 @@ export async function getUser(id) {
     throw new Error(error.message);
   }
 }
-export async function createUsers(user) {
+ async function createUsers(user) {
   const { email } = user;
   try {
     const userDB = await validateEmailUserDb(email);
@@ -43,7 +43,7 @@ export async function createUsers(user) {
     throw new Error(error.message);
   }
 }
-export async function createOrganizerComment(id, opinion) {
+ async function createOrganizerComment(id, opinion) {
   try {
     const generateComment = await generateUserComment(id, opinion);
     return generateComment;
@@ -51,7 +51,7 @@ export async function createOrganizerComment(id, opinion) {
     return { message: error.message };
   }
 }
-export async function getAllCommentUser(id) {
+ async function getAllCommentUser(id) {
   try {
     const allEvents = await AllEventsDb();
     const allUser = await allUserDb();
@@ -68,7 +68,7 @@ export async function getAllCommentUser(id) {
     return { message: error.message };
   }
 }
-export async function userUpdate(id, newUser) {
+ async function userUpdate(id, newUser) {
   try {
     const newUsers = updateOneUserDb(id, newUser);
 
@@ -77,7 +77,7 @@ export async function userUpdate(id, newUser) {
     return { message: error.message };
   }
 }
-export async function userDelete(id) {
+ async function userDelete(id) {
   try {
     const deleteUser = await deleteOneUserDb(id);
     if (!deleteUser) 'Usuario no encontardo';
@@ -88,7 +88,7 @@ export async function userDelete(id) {
   }
 }
 
-export async function sendMessageUser(idSend, message) {
+ async function sendMessageUser(idSend, message) {
   try {
     const { idGet, msg } = message;
     const sendMessage = await sendMessageDB(idSend, idGet, msg);
@@ -98,7 +98,7 @@ export async function sendMessageUser(idSend, message) {
   }
 }
 
-export async function login(email, password) {
+ async function login(email, password) {
   try {
     const user = await validateEmailUserDb(email);
 
@@ -116,4 +116,16 @@ export async function login(email, password) {
   } catch (error) {
     throw new Error(error.message);
   }
+}
+
+module.exports={
+  getAllUsers,
+  getUser,
+  createUsers,
+  createOrganizerComment,
+  login,
+  sendMessageUser,
+  userDelete,
+  userUpdate,
+  getAllCommentUser,
 }

@@ -38,8 +38,6 @@ const Navbar = ({ upper }) => {
     setOpenNotifications(false);
   };
 
-  console.log({ user });
-
   return (
     <div
       id="navbar"

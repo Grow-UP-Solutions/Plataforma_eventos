@@ -1,8 +1,10 @@
 //@ts-check
-import dotenv from "dotenv";
-import mongoose from "mongoose";
-dotenv.config()
-const { MONGOOSE_URI, USERDB, PASSWORDDB } = process.env;
+require('dotenv').config()
+const mongoose= require('mongoose')
+// import dotenv from "dotenv";
+// import mongoose from "mongoose";
+// dotenv.config()
+const {  USERDB, PASSWORDDB } = process.env;
 
 
 const uri = `mongodb+srv://${USERDB}:${PASSWORDDB}@cluster0.mi7yxnu.mongodb.net/?retryWrites=true&w=majority&dbname=plataforma_eventos`;

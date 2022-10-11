@@ -1,7 +1,7 @@
-import bcrypt from 'bcryptjs';
-import { Router } from 'express';
-import '../../DB.js';
-import {
+const bcrypt = require('bcryptjs');
+const { Router } = require('express');
+require('../../DB.js');
+const {
   getAllUsers,
   createUsers,
   userUpdate,
@@ -11,26 +11,34 @@ import {
   createOrganizerComment,
   getAllCommentUser,
   sendMessageUser,
-} from '../services/users.services.js';
+} = require('../services/users.services.js');
 
-import passport from 'passport';
+const passport = require('passport');
 
-import { check } from 'express-validator';
-import validateFields from '../../models/util/middlewares/validate-fields.js';
-import { generateJWT } from '../../models/util/helpers/jwt.js';
-import { generateJWTPassword } from '../../models/util/helpers/jwtPassword.js';
-import { validateJWT } from '../../models/util/middlewares/validate-jwt.js';
-import { validateJWTPassword } from '../../models/util/middlewares/validate-jwt-password.js';
-import { sendVerifyMail } from '../../models/util/mailer/confirmEmail.js';
-import { changePasswordMail } from '../../models/util/mailer/changePassword.js';
-import { validateEmailUserDb } from '../../models/util/functionDB/UserDb.js';
-
-/* import {
+const { check } = require('express-validator');
+const validateFields = require('../../models/util/middlewares/validate-fields.js');
+const { generateJWT } = require('../../models/util/helpers/jwt.js');
+const {
+  generateJWTPassword,
+} = require('../../models/util/helpers/jwtPassword.js');
+const {
+  validateJWT,
+} = require('../../models/util/middlewares/validate-jwt.js');
+const {
+  validateJWTPassword,
+} = require('../../models/util/middlewares/validate-jwt-password.js');
+const { sendVerifyMail } = require('../../models/util/mailer/confirmEmail.js');
+const {
+  changePasswordMail,
+} = require('../../models/util/mailer/changePassword.js');
+const {
+  validateEmailUserDb,
+} = require('../../models/util/functionDB/UserDb.js');
+const {
   createCodeVerifyMail,
+  deleteCodeVerifyMail,
   getCodeVerifyEmail,
-} from '../../models/util/functionDB/CodeEmailDb.js'; */
-
-/* import Verify from '../../models/db/Verify.js'; */
+} = require('../../models/util/functionDB/CodeVerifyMailDb.js');
 
 const router = Router();
 /**/ ///////////////Rutas GET////////////// */
@@ -258,11 +266,11 @@ router.get('/login/renew', validateJWT, async (req, res) => {
   }
 });
 
-/* router.post('/confirmEmail', async (req, res) => {
+router.post('/confirmEmail', async (req, res) => {
   const { code } = req.body;
 
   try {
-    const codedb = await CodeVerify.findOne({ code });
+    const codedb = await getCodeVerifyEmail(code);
 
     if (code === codedb.code) {
       return res.status(201).json({
@@ -278,9 +286,9 @@ router.get('/login/renew', validateJWT, async (req, res) => {
       message: error.message,
     });
   }
-}); */
+});
 
-/* router.post('/sendEmailForConfirm', async (req, res) => {
+router.post('/sendEmailForConfirm', async (req, res) => {
   const { email } = req.body;
 
   let code = '';
@@ -289,7 +297,7 @@ router.get('/login/renew', validateJWT, async (req, res) => {
     code = code + Math.trunc(Math.random() * 10);
   }
 
-  const codeDb = new CodeVerify({ code });
+  const codeDb = createCodeVerifyMail(code);
   await codeDb.save();
 
   try {
@@ -301,7 +309,7 @@ router.get('/login/renew', validateJWT, async (req, res) => {
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
-}); */
+});
 
 /**/ ///////////Rutas PUT///////////////////////////////// */
 router.put('/update/:id', async (req, res) => {
@@ -447,4 +455,4 @@ router.get(
   }
 );
 
-export default router;
+module.exports = router;

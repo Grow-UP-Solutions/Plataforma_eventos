@@ -1,13 +1,13 @@
-import '../../../DB.js';
-import Category from '../../db/Category.js';
+require('../../../DB.js');
+const Category = require('../../db/Category.js');
 
 /** basic user database operations */
 
-export async function AllCategoyDb() {
+async function AllCategoyDb() {
   return await Category.find();
 }
 
-export async function OneCategoryDb(name) {
+async function OneCategoryDb(name) {
   try {
     return await Category.findOne({ name: name });
   } catch (error) {
@@ -15,17 +15,25 @@ export async function OneCategoryDb(name) {
   }
 }
 
-export async function updateOneCategoryDb(id, newCategory) {
+async function updateOneCategoryDb(id, newCategory) {
   return await Category.findByIdAndUpdate({ _id: id }, newCategory, {
     new: 1,
   });
 }
-export async function deleteOneCategoryDb(id) {
+async function deleteOneCategoryDb(id) {
   return await Category.findByIdAndDelete({ _id: id });
 }
 
 /**Creating Category in Database */
-export async function createCategoryDb(category) {
+async function createCategoryDb(category) {
   const categoryCreated = new Category(category);
   return await categoryCreated.save();
 }
+
+module.exports = {
+  AllCategoyDb,
+  OneCategoryDb,
+  updateOneCategoryDb,
+  deleteOneCategoryDb,
+  createCategoryDb,
+};

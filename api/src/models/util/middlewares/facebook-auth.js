@@ -1,9 +1,9 @@
-import passport from 'passport';
-import { Strategy as FacebookStrategy } from 'passport-facebook';
+const passport = require('passport');
+const { Strategy } = require('passport-facebook');
 
 passport.use(
   'auth-facebook',
-  new FacebookStrategy(
+  new Strategy(
     {
       clientID: process.env.FACEBOOK_CLIENT_ID,
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
