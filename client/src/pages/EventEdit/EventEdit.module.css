@@ -1056,11 +1056,18 @@
   
   /*Seccion 6*/
   
-  .containerSubInfo input:required {
-    border: 3px solid red;
-    background-color: white;
-    box-shadow: none;
-  }
+ 
+.containerSubInfo input:required {
+  border: 3px solid red;
+  background-color: white;
+  box-shadow: none;
+  height: 5rem;
+  border-radius: 10px;
+  width: 11rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
   
   .containerSubInfo input:required {
     border-color: #c00000;
