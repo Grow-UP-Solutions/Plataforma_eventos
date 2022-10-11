@@ -40,8 +40,6 @@ const {
   getCodeVerifyEmail,
 } = require('../../models/util/functionDB/CodeVerifyMailDb.js');
 
-//const Validacion = require('../../models/db/Validacion.js');
-
 const router = Router();
 /**/ ///////////////Rutas GET////////////// */
 router.get('/', async (req, res) => {
