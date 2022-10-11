@@ -17,4 +17,4 @@ server.use(cors());
 server.use('/', router);
 server.use(morgan('dev'));
 server.use(passport.initialize());
-export default server;
+module.exports= server;
