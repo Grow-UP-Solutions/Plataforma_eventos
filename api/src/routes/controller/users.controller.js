@@ -35,7 +35,7 @@ const {
   validateEmailUserDb,
 } = require('../../models/util/functionDB/UserDb.js');
 
-const Validacion = require('../../models/db/Validacion.js');
+//const Validacion = require('../../models/db/Validacion.js');
 
 const router = Router();
 /**/ ///////////////Rutas GET////////////// */
