@@ -222,7 +222,6 @@
   background-color: var(--input-bg);
   margin-bottom: 2rem;
   margin-left: 4rem;
-  cursor: pointer;
 }
 
 .dropFileIput input {
