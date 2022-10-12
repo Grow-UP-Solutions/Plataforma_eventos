@@ -10,7 +10,7 @@ const { oneUserDb } = require('./UserDb.js');
       .populate({ path: 'opinions' })
       .exec();
   } catch (error) {
-    return { message: error.message };
+    throw new Error(error.message);
   }
 }
  async function oneEventDb(id) {
@@ -19,7 +19,7 @@ const { oneUserDb } = require('./UserDb.js');
       .populate({ path: 'organizer' })
       .populate({ path: 'category' });
   } catch (error) {
-    return { message: error.message };
+    throw new Error(error.message);
   }
 }
  async function updateOneEventDb(id, newEvent) {
@@ -29,7 +29,7 @@ const { oneUserDb } = require('./UserDb.js');
       .populate({ path: 'category' })
       .populate({ path: 'opinions' });
   } catch (error) {
-    return { message: error.message };
+    throw new Error(error.message);
   }
 }
  async function deleteOneEventDb(id) {
@@ -45,29 +45,30 @@ const { oneUserDb } = require('./UserDb.js');
 
     return eventCreated;
   } catch (error) {
-    return { message: error.message };
+    throw new Error(error.message);
   }
 }
 
 /**generar opinion en evento */
  async function generateEventComment(id, opinions) {
   try {
-    const { title, opinion, idUser, rating } = opinions;
+    const {  opinion, idUser, rating } = opinions;
 
     const user = await oneUserDb(idUser);
     const event = await oneEventDb(id);
 
     event.opinions.push({
-      title,
+      title: user.name,
       opinion,
+      picture:user.picture,
       user: user._id,
       rating,
     });
     await event.save();
-
-    return event.opinions;
+    
+    return event.opinions[event.opinions.length - 1] ;
   } catch (error) {
-    return { message: error.message };
+    throw new Error(error.message);
   }
 }
 

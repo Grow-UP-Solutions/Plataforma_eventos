@@ -50,9 +50,10 @@ const OrganizerDetails = () => {
     e.preventDefault();
     axios.post('https://plataformaeventos-production-6111.up.railway.app/conversation/create', conversation)
     .then((response) => {
-      console.log('axios response', response.data);
+      navigate('/user/message');
+      
+      //console.log('axios response', response.data);
     });
-    navigate('/user/message');
   }
 
   const handleAlert = (e) => {
