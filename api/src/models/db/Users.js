@@ -80,12 +80,11 @@ const UserSchema = new Schema({
         type: String,
         default: null,
       },
-      opinions: String,
+      opinion: String,
     },
   ],
   notifications: [
-    {
-      subject: String,
+    {      
       msg: String,
       date: {
         type: Date,

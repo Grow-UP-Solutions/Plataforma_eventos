@@ -78,9 +78,9 @@ async function createOneUserDb(user) {
 
 /**crear comentario usuario */
 
-async function generateUserComment(id, opinion) {
+async function generateUserComment(id, opinions) {
   try {
-    const { idUser, opinions } = opinion;
+    const { idUser, opinion } = opinions;
 
     const user = await oneUserDb(idUser);
 
@@ -88,7 +88,7 @@ async function generateUserComment(id, opinion) {
     organizer.opinionsOrg.push({
       title : user.name,
       picture:user.picture,
-      opinions
+      opinion
     });
     await organizer.save()
 
@@ -118,11 +118,21 @@ async function sendMessageDB(idSend, idGet, msg) {
   }
 }
 /**enviar notificaciones  */
-async function sendNotificationUser(id, notifications) {
-  const user = await Users.findOne({ _id: id });
+async function sendNotificationDB(id, msg) {
+  try {
+    
+    const user = await Users.findOne({ _id: id });
+    user.notifications.push({msg})
+    return await user.save()
+
+  } catch (error) {
+    throw new Error(error.message);
+    
+  }
 }
 
 module.exports = {
+  sendNotificationDB,
   allUserDb,
   createOneUserDb,
   deleteOneUserDb,
