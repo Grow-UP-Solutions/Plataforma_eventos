@@ -84,8 +84,9 @@ const EventSchema = new Schema({
         type: String,
         default: null,
       },
-    },
-  ],
+    }
+    
+  ]
 },{ timestamps: true });
 
 module.exports = model('Events', EventSchema);
