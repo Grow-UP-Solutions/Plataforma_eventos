@@ -6,14 +6,22 @@ import { format } from "timeago.js";
 
 const Message = ({ message, own }) => {
 
+  const handleClickStar = (e) => {
+    e.preventDefault();
+    
+  }
+  
+
   return (
-    <div className={own ? styles.ownMessage : styles.otherMessage}>
+    <div className={styles.containerChatMessage}>
+      <div className={own ? styles.ownMessage : styles.otherMessage}>
 
-      <p className={styles.messageText}>{message.text}</p>
+        <p className={styles.messageText}>{message.text}</p>
 
-      <div className={styles.wrapperInfoMessage}>
-        <FiStar className={styles.iconMessage}/>
-        <span className={styles.messageBottom}>{format(message.createdAt)}</span>
+        <div className={styles.wrapperInfoMessage}>
+          <FiStar className={styles.iconMessage} onClick={handleClickStar}/>
+          <span className={styles.messageBottom}>{format(message.createdAt)}</span>
+        </div>
       </div>
     </div>
   );

@@ -60,6 +60,7 @@ const Opinions = ({ userDetail }) => {
     try {
       const res = await axios.post('https://plataformaeventos-production-6111.up.railway.app/users/commentOrganizer/' + id, data);
       setOpinion([...opinion, res.data]);
+      console.log('dataopin:', res.data);
       setNewOpinion('');
     } catch (error) {
       console.log(error)
