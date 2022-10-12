@@ -101,7 +101,7 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
     idOrganizer:'632cbed4f208f44f5333af48',
     title: '',
     categories: [],
-    otherCategorie: [],
+    otherCategorie: '',
     shortDescription: '',
     longDescription: '',
     pictures: [],
@@ -157,7 +157,7 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
   function validate(post) {
      let errors = {}
                 
-     let letras =  /^[a-zA-Z]*$/g
+     let letras =  (/^[a-zA-Z]*$/g)
      let offensiveWord= /\b(perro|gato)\b/i
      let mail = (/[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}/igm)
      let webSite =(/\b(http|https|www)\b/i)
@@ -193,9 +193,10 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
       errors.categories = 'Solo podes seleccionar 3 categorias'
     }
 
-    // if (!post.otherCategorie) {
-    //   errors.otherCategorie = 'Campo obligatorio(!)'
-    // }
+    if (!post.otherCategorie.match(letras)) {
+      errors.otherCategorie = 'Solo se puede agregar una palabra'
+    }
+
      
     if (!post.shortDescription) {
       errors.shortDescription = true
@@ -385,7 +386,9 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
     var categorieName = e.target.value
     console.log('targetcat:',e.target.value)
     if (!e.target.checked) {
-      let seleccion = seleccionados.filter((categorie) => categorie.name !== categorieName)
+      console.log('seleccionados:',seleccionados)
+      let seleccion = seleccionados.filter((categorie) => categorie !== e.target.value)
+      console.log('seleccion:',seleccion)
       setSeleccionados(seleccion)
       setPost({
         ...post,
@@ -393,6 +396,7 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
       })
     } else {
       let categorieCheck = categories.find((categorie) => categorie.name === categorieName)
+      console.log('categorieCheck:',categorieCheck)
       setSeleccionados([...seleccionados, categorieCheck.name])
       setPost({
         ...post,
@@ -876,12 +880,6 @@ todas.map((foto)=>{
                 adipiscing elit, sed diam nonummy nibh.{' '}
               </p>
               <div className={styles.containerChecks}> 
-             
-                {/* {post.categories.length<4 ?
-                 <div className={styles.containerChecks}>  </div>
-                   :<div className={styles.containerChecks2}>  </div>
-                }
-               */}
 
                 {categories.map ((categorie) => (
                   <div className={styles.checks}>
@@ -917,17 +915,30 @@ todas.map((foto)=>{
                   <label className={styles.subTitle}>
                     Si escogiste ‘otro’, especifica :{' '}
                   </label>
-                  <input
-                    className={styles.input2}
-                    type="text"
-                    name="otherCategorie"
-                    values={post.otherCategorie}
-                    onChange={(e) => handleOtherCategorie(e)}
-                  /> 
+                  {failedSubmit && errors.longDescription ?
+                
+                      <input
+                      className={styles.input2}
+                      type="text"
+                      name="otherCategorie"
+                      values={post.otherCategorie}
+                      onChange={(e) => handleOtherCategorie(e)}
+                      required
+                      />   
+                                    
+                      :
+                      <input
+                      className={styles.input2}
+                      type="text"
+                      name="otherCategorie"
+                      values={post.otherCategorie}
+                      onChange={(e) => handleOtherCategorie(e)}
+                      /> 
+                  }
+                  
+                     
                 </div>
-                {errors.otherCategorie && (
-                        <p className={styles.errors}>{errors.otherCategorie}</p>
-                    )}
+              
               </div>
 
               {errors.categories &&
@@ -938,6 +949,13 @@ todas.map((foto)=>{
               <p className={styles.errors}>Debes seleccionar al menos una categoría</p>
               :''
               }
+
+              {failedSubmit && errors.otherCategorie ?
+                <p className={styles.errors}>Solo puedes una ingresar una categoria</p>
+                :''
+                }
+
+            
 
               
             </div>
@@ -1144,6 +1162,7 @@ todas.map((foto)=>{
                   <p>"Arrastra los archivos aquí o haz click para agregar archivos"</p>
                   <input 
                     type="file" 
+                    placeholder='Arrastra los archivos aquí o haz click para agregar archivos'
                     value="" 
                     name="pictures"
                     onChange={onFileDrop}
