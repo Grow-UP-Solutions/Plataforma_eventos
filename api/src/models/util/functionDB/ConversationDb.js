@@ -22,15 +22,16 @@ async function createConversation(menbers) {
   const { senderId, receiverId } = menbers;
   try {
     const conversation = await Conversation.findOne({
-      senderId:senderId,
-      receiverId:receiverId
+      members: { $in: [senderId,receiverId ] },
     })
+    console.log(conversation)
     if (!conversation) {
        const newConversation = new Conversation({
       members: [senderId, receiverId],
     });
     return await newConversation.save();
     }
+    
     return conversation
    
   } catch (error) {

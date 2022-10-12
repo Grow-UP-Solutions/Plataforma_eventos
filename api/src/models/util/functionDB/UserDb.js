@@ -80,16 +80,18 @@ async function createOneUserDb(user) {
 
 async function generateUserComment(id, opinion) {
   try {
-    const { idUser } = opinion;
+    const { idUser, opinions } = opinion;
 
     const user = await oneUserDb(idUser);
 
-    const organizer = await oneUserDb(id);
-
-    opinion.user = user._id;
-
-    organizer.opinionsOrg.push(opinion);
+    const organizer = await oneUserDb(id);    
+    organizer.opinionsOrg.push({
+      title : user.name,
+      picture:user.picture,
+      opinions
+    });
     await organizer.save()
+
     return organizer.opinionsOrg[organizer.opinionsOrg.length - 1] ;
   } catch (error) {
     throw new Error(error.message);
