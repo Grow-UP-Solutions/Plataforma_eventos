@@ -15,6 +15,7 @@ const { AllEventsDb } = require("../../models/util/functionDB/EventesDb.js");
 const {
   EVENT,
   UPDATE_EVENT,
+  FAVORITOS,
 } = require("../../models/util/notifications/notifications.types.js");
 
 async function getAllUsers() {
@@ -112,6 +113,10 @@ async function sendNotificationsUser(notifications) {
     }
     if (type === UPDATE_EVENT) {
       msg = "Un evento a sido modificado";
+      return await sendNotificationDB(idUser, msg);
+    }
+    if (type === FAVORITOS) {
+      msg = "el evento a sido agregado a tu lista de eventos pendientes";
       return await sendNotificationDB(idUser, msg);
     }
   } catch (error) {

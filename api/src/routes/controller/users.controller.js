@@ -11,6 +11,7 @@ const {
   createOrganizerComment,
   getAllCommentUser,
   sendMessageUser,
+  sendNotificationsUser,
 } = require('../services/users.services.js');
 
 const passport = require('passport');
@@ -164,6 +165,17 @@ router.get(
   }
 );
 /**/ //////////////Rutas POST/////////////// */
+
+router.post('/notifications',async (req,res)=>{
+  const notificaciones = req.body
+  try {
+    const newNotification = await sendNotificationsUser(notificaciones)
+    return res.status(200).json(newNotification)
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+    
+  }
+})
 
 router.post(
   '/create',
