@@ -1,5 +1,5 @@
-require('../../../DB.js');
-const Conversation = require('../../db/Conversation.js');
+require("../../../DB.js");
+const Conversation = require("../../db/Conversation.js");
 
 async function findAllConversation() {
   try {
@@ -22,18 +22,17 @@ async function createConversation(menbers) {
   const { senderId, receiverId } = menbers;
   try {
     const conversation = await Conversation.findOne({
-      members: { $in: [senderId,receiverId ] },
-    })
-    console.log(conversation)
-    if (!conversation) {
-       const newConversation = new Conversation({
-      members: [senderId, receiverId],
+      members: { $in: [senderId, receiverId] },
     });
-    return await newConversation.save();
-    }
     
-    return conversation
-   
+    if (!conversation) {
+      const newConversation = new Conversation({
+        members: [senderId, receiverId],
+      });
+      return await newConversation.save();
+    }
+
+    return conversation;
   } catch (error) {
     throw new Error(error.message);
   }
