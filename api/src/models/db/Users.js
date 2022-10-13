@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model } = require("mongoose");
 
 const UserSchema = new Schema({
   name: String,
@@ -46,30 +46,28 @@ const UserSchema = new Schema({
   myEventsCreated: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'Events',
+      ref: "Events",
     },
   ],
   myFavourites: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'Events',
+      ref: "Events",
     },
   ],
   myEventsBooked: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'Events',
+      ref: "Events",
     },
   ],
 
   opinionsOrg: [
     {
-      user: {
-        type: Schema.Types.ObjectId,
-        ref: 'Users',
+      title: {
+        type: String,
       },
-      email: String,
-      title: String,
+
       time: {
         type: Date,
         default: Date.now(),
@@ -78,13 +76,15 @@ const UserSchema = new Schema({
         type: Number,
         default: 0,
       },
+      picture: {
+        type: String,
+        default: null,
+      },
       opinion: String,
-      organizer: String,
     },
   ],
   notifications: [
-    {
-      subject: String,
+    {      
       msg: String,
       date: {
         type: Date,
@@ -102,4 +102,4 @@ const UserSchema = new Schema({
   ],
 });
 
-module.exports = model('Users', UserSchema);
+module.exports = model("Users", UserSchema);
