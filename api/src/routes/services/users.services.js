@@ -17,6 +17,7 @@ const {
   UPDATE_EVENT,
   FAVORITOS,
 } = require("../../models/util/notifications/notifications.types.js");
+const validatonType = require("../../models/util/notifications/validatonType.js");
 
 async function getAllUsers() {
   const allUsers = allUserDb();
@@ -54,7 +55,7 @@ async function createOrganizerComment(id, opinion) {
     const generateComment = await generateUserComment(id, opinion);
     return generateComment;
   } catch (error) {
-    return { message: error.message };
+    throw new Error(error.message);
   }
 }
 async function getAllCommentUser(id) {
@@ -71,7 +72,7 @@ async function getAllCommentUser(id) {
       .filter((e) => e.user == id);
     return allCommnt.concat(allCommentUser);
   } catch (error) {
-    return { message: error.message };
+    throw new Error(error.message);
   }
 }
 async function userUpdate(id, newUser) {
@@ -80,7 +81,7 @@ async function userUpdate(id, newUser) {
 
     return newUsers;
   } catch (error) {
-    return { message: error.message };
+    throw new Error(error.message);
   }
 }
 async function userDelete(id) {
@@ -90,7 +91,7 @@ async function userDelete(id) {
 
     return deleteUser;
   } catch (error) {
-    return { message: error.message };
+    throw new Error(error.message);
   }
 }
 
@@ -100,27 +101,17 @@ async function sendMessageUser(idSend, message) {
     const sendMessage = await sendMessageDB(idSend, idGet, msg);
     return sendMessage;
   } catch (error) {
-    return { message: error.message };
+    throw new Error(error.message);
   }
 }
 async function sendNotificationsUser(notifications) {
   const { type, idUser } = notifications;
-  let msg;
+  const msg = validatonType(type);
   try {
-    if (type === EVENT) {
-      msg = "Acabas de organizar un vento";
-      return await sendNotificationDB(idUser, msg);
-    }
-    if (type === UPDATE_EVENT) {
-      msg = "Un evento a sido modificado";
-      return await sendNotificationDB(idUser, msg);
-    }
-    if (type === FAVORITOS) {
-      msg = "el evento a sido agregado a tu lista de eventos pendientes";
-      return await sendNotificationDB(idUser, msg);
-    }
+    const newNotification = await sendNotificationDB(idUser, msg);
+    return newNotification;
   } catch (error) {
-    return { message: error.message };
+    throw new Error(error.message);
   }
 }
 

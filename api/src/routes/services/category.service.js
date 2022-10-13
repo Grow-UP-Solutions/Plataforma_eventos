@@ -9,7 +9,7 @@ async function getAllCategory() {
   return category;
 }
 async function getCategory(name) {
-  const category = OneCategoryDb(name);
+  const category = await OneCategoryDb(name);
   return category;
 }
 async function createCategory(category) {
@@ -20,10 +20,10 @@ async function createCategory(category) {
       return "La categoria existe";
     }
     const categories = await createCategory(category);
-    console.log("SEcreo");
+   
     return categories;
   } catch (error) {
-    console.log("FALLO CATEGORY", error);
+    throw new Error(error.message);
   }
 }
 async function categoryUpdate(id, newCategory) {

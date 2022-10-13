@@ -131,6 +131,16 @@ async function sendNotificationDB(id, msg) {
     
   }
 }
+async function updateNotificationDB(id,read) {
+  try {
+    const user = await Users.findOne({_id:id})
+    
+    
+  } catch (error) {
+    throw new Error(error.message);
+  }
+  
+}
 
 module.exports = {
   sendNotificationDB,
