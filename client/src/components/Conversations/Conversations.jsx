@@ -5,7 +5,7 @@ import { BiBlock, BiPin } from 'react-icons/bi';
 import axios from "axios";
 import avatar from '../../assets/imgs/no-avatar.png';
 
-const Conversations = ({ conversation, id }) => {
+const Conversations = ({ conversation, id, currentChat }) => {
 
   const [user, setUser] = useState('hola');
 
@@ -86,16 +86,16 @@ const Conversations = ({ conversation, id }) => {
       
 
       {/* <div className={styles.buttonsChats}>
-        <div>
-          <p>Usuarios Bloqueados</p>
-        </div>
+            <div>
+              <p>Usuarios Bloqueados</p>
+            </div>
 
-        <div className={styles.buttonDivisor} />
+            <div className={styles.buttonDivisor} />
 
-        <div>
-          <p>Conversaciones archivadas</p>
-        </div>
-      </div> */}
+            <div>
+              <p>Conversaciones archivadas</p>
+            </div>
+          </div> */}
     </div>
   );
 }

@@ -2,8 +2,8 @@ import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import LaunchOutlinedIcon from '@mui/icons-material/LaunchOutlined';
 import WarningOutlinedIcon from '@mui/icons-material/WarningOutlined';
-import { Rating } from '@mui/material';
-import React, { useState } from 'react';
+import { Rating, useRadioGroup } from '@mui/material';
+import React, { useContext, useState } from 'react';
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { AiOutlineClose } from 'react-icons/ai';
@@ -18,27 +18,39 @@ import 'swiper/swiper.min.css';
 import { formatDate } from '../../utils/formatDate';
 import style from './EventInfo.module.css';
 import { useSelector } from 'react-redux';
+import axios from "axios";
+import { AuthContext } from '../../context/auth/AuthContext';
 
 const EventInfo = ({ id }) => {
 
- 
   const allEvents = useSelector((state) => state.events);
   const eventDetails = allEvents.filter((event) => event._id === id)[0];
- 
-
-
   const [getDanger, setGetDanger] = useState(false);
   const [check, setCheck] = useState(null);
   const [checked, setChecked] = useState('');
+  const { user } = useContext(AuthContext);
+  const [state, setState] = useState({});
   
-
   const handleFormatDate = (check) => {
     setCheck(check);
     setChecked(formatDate(check));
   };
 
- 
-
+  const handleClickFav = async (e) => {
+    e.preventDefault();
+    const fav = {
+      type: 'favoritos',
+      idUser: '633c3ee847a64650bafe13bc'
+    }
+    try {
+      const json = await axios.post('https://plataformaeventos-production-6111.up.railway.app/users/notifications', fav);
+      console.log('noti:', json.data);
+      setState(json.data);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  
   return (
     <div>
       {eventDetails?
@@ -68,7 +80,7 @@ const EventInfo = ({ id }) => {
         )}
       </Swiper>
 
-      <div className={style.container_icon_heart}>
+      <div className={style.container_icon_heart} onClick={handleClickFav}>
         <FavoriteIcon className={style.icon_heart} sx={{ fontSize: 25 }} />
       </div>
 
