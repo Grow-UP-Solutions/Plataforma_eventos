@@ -28,9 +28,14 @@ import { getColombia , postEvent } from '../../redux/actions';
 import swal from 'sweetalert'
 import { useNavigate } from 'react-router-dom';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import newEvent from '../../api/newEvent'
+import Swal from 'sweetalert2'
+
+
 
 const EventCreateForm = () => {
+
+  const Swal = require('sweetalert2')
+
 
 
   const dispatch = useDispatch()
@@ -38,7 +43,14 @@ const EventCreateForm = () => {
   const f = new Date();
   //Devuelve formato sólo de fecha pero en el formato regional actual ejemplo: 24/8/2019
 
-  console.log('newEvent:',newEvent)
+
+
+  const eventos = useSelector((state) => state.events)
+
+
+  const allEvents=[...eventos]
+  console.log('allEvents:',allEvents[0])
+
 
   
 
@@ -155,35 +167,36 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
       isPublic:true,
       precioAlPublico:'',
       gananciaCupo:'',
-      gananciaEvento:''
+      gananciaEvento:'',
+      revision:false
      }],
     isPublic:true
   });
 
   useEffect(() => {
-    if(newEvent){
-    console.log('ent')
+    if(allEvents[0]){
     setPost({
       ...post,
       idOrganizer:'632cbed4f208f44f5333af48',
-      title: newEvent.title,
+      title: allEvents[0].title,
       categories: [],
       otherCategorie: [],
-      shortDescription: newEvent.shortDescription,
-      longDescription:  newEvent.longDescription,
+      shortDescription: allEvents[0].shortDescription,
+      longDescription:  allEvents[0].longDescription,
       pictures: [],
-      online:  newEvent.online,
-      link:  newEvent.link,
-      departamento:  newEvent.departamento,
-      municipio:  newEvent.municipio,
-      direccion:  newEvent.direccion,
-      barrio:  newEvent.barrio,
-      specialRequires:  newEvent.specialRequires,
-      dates: newEvent.dates,
-      isPublic:true
+      online:  allEvents[0].online,
+      link:  allEvents[0].link,
+      departamento:  allEvents[0].departamento,
+      municipio:  allEvents[0].municipio,
+      direccion:  allEvents[0].direccion,
+      barrio:  allEvents[0].barrio,
+      specialRequires:  allEvents[0].specialRequires,
+      dates: allEvents[0].dates,
+      isPublic:true,
+      revision:false
     })
   }
-  },[newEvent])
+  },[allEvents[0]])
  
 
  
@@ -377,12 +390,15 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
       errors.specialRequires = 'Palabra ofensiva'
     }
 
-    // for (var i=0; i<post.dates.length;i++ ){
-    //   if (!(post.dates[i].cupos).match(numero)) {
-    //     errors.dates = 'No podes'
-    //   }
-    // }
+  //   if(allEvents.length>0){
+  //   for (var i=0; i<post.dates.length;i++ ){
+  //     if (!(post.dates[i].cupos).match(numero)) {
+  //       errors.dates = 'No podes'
+  //     }
+  //   }
+  // }
 
+  
 
     // for (var i=0; i<post.dates.length;i++ ){
     //   if (!post.dates[i].price.match(numeroYdecimales) ) {
@@ -390,28 +406,49 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
     //   }
     // }
 
+    if(allEvents.length>0){
     for (var i=0; i<post.dates.length;i++ ){
       if (!post.dates[i].cupos) {
         errors.cupos= true
       }
     }
+    }
 
-    // for (var i=0; i<post.dates.length;i++ ){
-    //   for(var j=0; j<event.dates.length;j++ ){
-    //   if (post.dates[i].sells>0 && post.dates[i].cupos<event.dates[j].sells) {
-    //     console.log('entre')
-    //     console.log('newEvent.dates[j].cupos:',event.dates[j].cupos)
-    //     console.log(' post.dates[i].cupos:', post.dates[i].cupos)
-    //     errors.cupos= `Ya se vendieron ${event.dates[j].sells}  cupos. El número no puede ser inferior a los cupos ya vendidos `
-    //     }else  if (post.dates[i].sells>0 && post.dates[i].price === event.dates[j].price) {
-    //       console.log('entre')
-    //       console.log('newEvent.dates[j].price:',event.dates[j].price)
-    //       console.log(' post.dates[i].price:', post.dates[i].price)
-    //       errors.price= `Ya se vendieron ${event.dates[j].sells}  cupos. El número no puede ser inferior al de los cupos ya vendidos `
-    //       }
-    //   }
-    // }
+    if(allEvents.length>0){
+      for (var i=0; i<post.dates.length;i++ ){
+        for(var j=0; j<allEvents[0].dates.length;j++ ){
+        if (post.dates[i]._id === allEvents[0].dates[j]._id && post.dates[i].sells>0  && post.dates[i].cupos < allEvents[0].dates[j].sells) {
+          console.log('entre')
+          console.log('allEvents[0].dates[j].cupos:',allEvents[0].dates[j].cupos)
+          console.log(' post.dates[i].cupos:', post.dates[i].cupos)
+          errors.cupos= true
+          return swal({
+            title: `Ya se vendieron ${allEvents[0].dates[j].sells}  cupos. El número no puede ser inferior a los cupos ya vendidos `,
+            icon: "warning",
+            dangerMode: true,
+          })
+          }
+          else  if (post.dates[i]._id === allEvents[0].dates[j]._id && post.dates[i].sells>0 && post.dates[i].price < allEvents[0].dates[j].price) {
+          console.log('entre')
+          console.log('allEvents[0].dates[j].price:',j, allEvents[0].dates[j].price,)       
+          console.log(' post.dates[i].price:', i , post.dates[i].price)
+          errors.price= true
+          return swal({
+            title: `Ya se vendieron ${allEvents[0].dates[j].sells}  cupos. El número no puede ser inferior al de los cupos ya vendidos `,
+            icon: "warning",
+            dangerMode: true,
+          })
+          }
+        }
+      }
+  
+    }
+    
+  
+  
 
+
+    
     for (var i=0; i<post.dates.length;i++ ){
       if (!post.dates[i].price) {
         errors.price= true
@@ -419,10 +456,10 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
     }
 
     // for (var i=0; i<post.dates.length;i++ ){
-    //   for(var j=0; j<newEvent.dates.length;j++ ){
-    //   if (post.dates[i].sells>0 && parseInt(post.dates[i].price) < newEvent.dates[j].price) {
+    //   for(var j=0; j<allEvents[0].dates.length;j++ ){
+    //   if (post.dates[i].sells>0 && parseInt(post.dates[i].price) < allEvents[0].dates[j].price) {
     //     console.log('entre')
-    //     errors.price= `Ya se vendieron ${newEvent.dates[j].sells}  cupos. El número no puede ser inferior al de los cupos ya vendidos `
+    //     errors.price= `Ya se vendieron ${allEvents[0].dates[j].sells}  cupos. El número no puede ser inferior al de los cupos ya vendidos `
     //     }
     //   }
     // }
@@ -620,16 +657,102 @@ todas.map((foto)=>{
   const a = costoDeManejo * IVA
 
 
-  let handleChanges = (i, e ) => {
+  let handleChanges = (i, e , id ) => {
     let newFechas = [...post.dates];
     newFechas[i][e.target.name] = e.target.value;
     newFechas[i].precioAlPublico=parseFloat(newFechas[i].price) + parseFloat(costoDeManejo) + parseFloat(a);
     newFechas[i].gananciaCupo = parseFloat(newFechas[i].price)-(((parseFloat(newFechas[i].price)*parseFloat(comision))+((parseFloat(newFechas[i].price)*parseFloat(comision)*parseFloat(IVA)))))
     newFechas[i].gananciaEvento = parseFloat(newFechas[i].gananciaCupo) * parseInt(newFechas[i].cupos)
-    setPost({
-      ...post,
-      dates:newFechas 
-     })   
+   
+      for (var i=0; i<post.dates.length;i++ ){
+        for(var j=0; j<allEvents[0].dates.length;j++ ){
+          if(post.dates[i]._id === id && allEvents[0].dates[j]._id===id && post.dates[i].sells>0 && post.dates[i].start !== allEvents[0].dates[j].start){
+            console.log('post.dates[i].sells:',i,post.dates[i].sells)
+            // console.log('allEvents[0].dates[j].sells:',j,allEvents[0].dates[j].sells)
+            console.log('post.dates[i].start:',i,post.dates[i].start)
+            console.log('allEvents[0].dates[j].start:',i,allEvents[0].dates[j].start)
+            return Swal.fire({
+              title: 'Texto &&&&&&&&&&, ver sección &&&& en Guía del Organizador. Si procedes, es importante que le informes de inmediato sobre este cambio a los Asistentes.',
+              showDenyButton: true,
+              showCancelButton: false,
+              confirmButtonText: 'Cambiar hora inicio',
+              denyButtonText: `Cerrar`,
+            })
+            .then((result)=>{        
+              if(result.isConfirmed){              
+                setPost({
+                  ...post,
+                  dates:newFechas
+                }) 
+              }else if(result.isDenied){
+                newFechas[i][e.target.name] = allEvents[0].dates[j].start 
+                setPost({
+                  ...post,
+                  dates:newFechas
+                }) 
+              }
+            })        
+          } else if(post.dates[i]._id === id && allEvents[0].dates[j]._id===id && post.dates[i].sells>0 && post.dates[i].end !== allEvents[0].dates[j].end){
+            return Swal.fire({
+              title: 'Texto &&&&&&&&&&, ver sección &&&& en Guía del Organizador. Si procedes, es importante que le informes de inmediato sobre este cambio a los Asistentes.',
+              showDenyButton: true,
+              showCancelButton: false,
+              confirmButtonText: 'Cambiar hora fin',
+              denyButtonText: `Cerrar`,
+            })
+            .then((result)=>{        
+              if(result.isConfirmed){              
+                setPost({
+                  ...post,
+                  dates:newFechas
+                }) 
+              }else if(result.isDenied){
+                newFechas[i][e.target.name] = allEvents[0].dates[j].end 
+                setPost({
+                  ...post,
+                  dates:newFechas
+                }) 
+              }
+            })        
+          } else if(post.dates[i]._id === id && allEvents[0].dates[j]._id===id && post.dates[i].sells>0 && post.dates[i].date !== allEvents[0].dates[j].date){
+            return Swal.fire({
+              title: 'Texto &&&&&&&&&&, ver sección &&&& en Guía del Organizador. Si procedes, es importante que le informes de inmediato sobre este cambio a los Asistentes.',
+              showDenyButton: true,
+              showCancelButton: false,
+              confirmButtonText: 'Cambiar fecha',
+              denyButtonText: `Cerrar`,
+            })
+            .then((result)=>{        
+              if(result.isConfirmed){              
+                setPost({
+                  ...post,
+                  dates:newFechas
+                }) 
+              }else if(result.isDenied){
+                newFechas[i][e.target.name] = allEvents[0].dates[j].date 
+                setPost({
+                  ...post,
+                  dates:newFechas
+                }) 
+              }
+            })        
+          }
+          
+          
+          
+          
+          
+          else{
+            setPost({
+              ...post,
+              dates:newFechas 
+            }) 
+          }  
+        }
+      }
+  
+   
+     
     }
 
   
@@ -640,13 +763,89 @@ todas.map((foto)=>{
     })
   }
 
-  let removeFormFields = (i) => {
+  let removeFormFields = (i , id) => {
     let newFechas = [...post.dates];
-      newFechas.splice(i, 1);
-      setPost({
-        ...post,
-        dates:newFechas 
-      })
+      newFechas.splice(i, 1)
+      for (var i=0; i<post.dates.length;i++ ){
+      for(var j=0; j<allEvents[0].dates.length;j++ ){
+        if(post.dates[i]._id === id &&  post.dates[i].isPublic === true && post.dates[i].length === 1){
+        return swal({
+          title: "Tu evento será quitado de publicados y ya no será visible para el público. Deseas que sea movido a sección ‘Por publicar’ o eliminarlo por completo. ",
+          icon: "warning",
+          buttons:['Cancelar acción','Eliminar' , 'Mover a ‘Por publicar’ '],
+          dangerMode: true,
+        })
+        .then((continuar)=>{
+          if(continuar){            
+            setPost({
+              ...post,
+              dates:newFechas 
+            })
+          }
+        })        
+      }else  if(post.dates[i]._id === id &&  post.dates[i].isPublic === true && post.dates[i].sells === 0){
+        return swal({
+          title: "Esta acción quitará esta fecha de publicados y ya no será visible para el público. También se borrará en esta pagina los datos relacionados a esta fecha: hora, número de cupos, precio por cupo y códigos de descuento si alguno.",
+          icon: "warning",
+          buttons:['Cancelar acción','Continuar'],
+          dangerMode: true,
+        })
+        .then((continuar)=>{  
+          if(continuar){                 
+            setPost({
+              ...post,
+              dates:newFechas 
+            })
+          }
+        })        
+      }else  if(post.dates[i]._id === id &&  post.dates[i].isPublic === true && post.dates[i].sells > 0){
+        return swal({
+          title: `Ya hay ${ post.dates[i].sells} cupo(s) comprado(s) para esta fecha, si la quitas de publicados el dinero será devuelto a los compradores. Esta devolución genera unos costos los cuales deberas asumir. Ver sección &&&&&&&&&& en Términos y Condiciones. También se borrará en esta pagina los datos relacionados a esta fecha: hora, número de cupos, precio por cupo y códigos de descuento si alguno. Deseas quitar esta fecha de publicados? `,
+          icon: "warning",
+          buttons:['Cancelar acción','Continuar'],
+          dangerMode: true,
+        })
+        .then((continuar)=>{  
+          if(continuar){                 
+            setPost({
+              ...post,
+              dates:newFechas 
+            })
+          }
+        })        
+      }else  if(post.dates[i]._id === id &&  post.dates[i].isPublic === false && post.dates[i].sells === 0){
+        return swal({
+          title: "Se borrara esta fecha y los datos relacionados a la misma: hora, número de cupos, precio por cupo y códigos de descuento si alguno.",
+          icon: "warning",
+          buttons:['Cancelar acción','Continuar'],
+          dangerMode: true,
+        })
+        .then((continuar)=>{  
+          if(continuar){                 
+            setPost({
+              ...post,
+              dates:newFechas 
+            })
+          }
+        })        
+      }else  if(post.dates[i]._id === id &&  post.dates[i].isPublic === false && post.dates[i].sells >0){
+        return swal({
+          title:`Ya hay ${ post.dates[i].sells} cupo(s) comprado(s) para esta fecha, si procedes el dinero será devuelto a los compradores. Texto &&&&&&&&&&, ver sección &&&& en Guía del Organizador. También se borrará en esta pagina los datos relacionados a esta fecha: hora, número de cupos, precio por cupo y códigos de descuento si alguno.`,
+          icon: "warning",
+          buttons:['Cancelar acción','Continuar'],
+          dangerMode: true,
+        })
+        .then((continuar)=>{  
+          if(continuar){                 
+            setPost({
+              ...post,
+              dates:newFechas 
+            })
+          }
+        })        
+      }
+    }
+  }
       
   }
 
@@ -691,81 +890,11 @@ todas.map((foto)=>{
     setScrollY(scrollY + px);
   };
 
-  //--------------------------------------------------//
-  //                 SAVE           //
-
-  const navigate = useNavigate()
-
-
-  function hanldeClick(e){
-    e.preventDefault()
-    setPost({
-      ...post,
-      isPublic:false
-    })
-
-    console.log('postGuardar',post)
-    e.preventDefault()
-    if (Object.values(errors).length > 0) {
-      setFailedSubmit(true)
-      return swal({
-        title: "Completa los campos faltantes",
-        icon: "warning",
-        button: "Completar",
-        dangerMode: true,
-      });
-    }else{
-    
-    swal({
-      title: "Tu evento será guardado",
-      buttons: ["Cerrar", "Guardar"],
-      dangerMode: true,
-    })
-    .then((guardar) => {
-      if (guardar) {
-        dispatch(postEvent(post))
-        swal("Tu evento ha sido guardado ", {
-          icon: "success",
-        });
-        setPost({
-          idOrganizer:'632cbed4f208f44f5333af48',
-          title: '',
-          categories: [],
-          otherCategorie: [],
-          shortDescription: '',
-          longDescription: '',
-          pictures: [],
-          online: '',
-          link: '',
-          departamento: '',
-          municipio: '',
-          direccion: '',
-          barrio: '',
-          specialRequires: '',
-          dates:[{ 
-            date: "", 
-            start : "", 
-            end:"" , 
-            year:0 ,  
-            cupos:'', 
-            price:'', 
-            sells: 0 , 
-            isPublic:true,
-            precioAlPublico:'',
-            gananciaCupo:'',
-            gananciaEvento:''
-           }],
-          isPublic:true
-     })
-        navigate("/user/profile" )
-      } 
-    }
-    )
-  }}
+ 
 
     //--------------------------------------------------//
   //                CANCEL          //
-
+  const navigate = useNavigate()
 
 
   function handleDelete(e){
@@ -797,6 +926,7 @@ todas.map((foto)=>{
 
   function handleSubmit(e) {
     e.preventDefault()
+    for(var i=0;i<post.dates.length;i++){
     if (Object.values(errors).length > 0) {
       setFailedSubmit(true)
       return swal({
@@ -805,16 +935,16 @@ todas.map((foto)=>{
         button: "Completar",
         dangerMode: true,
       });
-    } else {
+    } else if(post.dates[i].sells>0 && post.revision===false) {
       swal({
-        title: "Deseas publicar este evento? ",
+        title: "Si ya hay Asistentes al evento es importante que le informes de inmediato los cambios que consideres podrían afectar su participación ",
         buttons: true,
         dangerMode: true,
       })
       .then((publicar) => {
         if (publicar) {
           dispatch(postEvent(post,id))
-          swal("Tu evento ha sido publicado. Recibirás un correo con los detalles. ", {
+          swal("Tu evento ha sido publicado ", {
             icon: "success",
           });
           setPost({
@@ -849,8 +979,106 @@ todas.map((foto)=>{
        })
         } 
       });
-    } 
+    } else if(allEvents[0]===post.dates){
+      swal(
+       "No has hecho ninguna edición "    
+      )
+    }else if(post.revision === true){
+      swal({
+        title: "Este evento y sus fechas será publicado  ",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((publicar) => {
+        if (publicar) {
+          dispatch(postEvent(post,id))
+          swal("Tus cambios han sido notificados. La publicación esta en revisión. Un correo con una actualización te llegara pronto. ", {
+            icon: "success",
+          });
+          setPost({
+            idOrganizer:'632cbed4f208f44f5333af48',
+            title: '',
+            categories: [],
+            otherCategorie: [],
+            shortDescription: '',
+            longDescription: '',
+            pictures: [],
+            online: '',
+            link: '',
+            departamento: '',
+            municipio: '',
+            direccion: '',
+            barrio: '',
+            specialRequires: '',
+            dates:[{ 
+              date: "", 
+              start : "", 
+              end:"" , 
+              year:0 ,  
+              cupos:'', 
+              price:'', 
+              sells: 0 , 
+              isPublic:true,
+              precioAlPublico:'',
+              gananciaCupo:'',
+              gananciaEvento:''
+             }],
+            isPublic:true
+       })
+        } 
+      }) 
+
+    }else{
+      swal({
+        title: "Este evento y sus fechas será publicado  ",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((publicar) => {
+        if (publicar) {
+          dispatch(postEvent(post,id))
+          swal("Tu evento ha sido publicado ", {
+            icon: "success",
+          });
+          setPost({
+            idOrganizer:'632cbed4f208f44f5333af48',
+            title: '',
+            categories: [],
+            otherCategorie: [],
+            shortDescription: '',
+            longDescription: '',
+            pictures: [],
+            online: '',
+            link: '',
+            departamento: '',
+            municipio: '',
+            direccion: '',
+            barrio: '',
+            specialRequires: '',
+            dates:[{ 
+              date: "", 
+              start : "", 
+              end:"" , 
+              year:0 ,  
+              cupos:'', 
+              price:'', 
+              sells: 0 , 
+              isPublic:true,
+              precioAlPublico:'',
+              gananciaCupo:'',
+              gananciaEvento:''
+             }],
+            isPublic:true
+       })
+        } 
+      }) 
+
+    }
   }
+  }
+
+  
+
 
   
   return (
@@ -1660,7 +1888,7 @@ todas.map((foto)=>{
                             placeholder="10"
                             name="cupos"
                             value={element.cupos || ""} 
-                            onChange={e => handleChanges(index, e)}
+                            onChange={e => handleChanges(index, e , element._id)}
                             required
                           />
                             :
@@ -1671,7 +1899,7 @@ todas.map((foto)=>{
                               placeholder="10"
                               name="cupos"
                               value={element.cupos || ""} 
-                              onChange={e => handleChanges(index, e)}
+                              onChange={e => handleChanges(index, e , element._id)}
                             />
                           }
                           {errors.cupos? 
@@ -1692,7 +1920,7 @@ todas.map((foto)=>{
                               placeholder="20.00"
                               name="price"
                               value={element.price || ""} 
-                              onChange={e => handleChanges(index, e)}
+                              onChange={e => handleChanges(index, e , element._id)}
                               required
                             />
                               
@@ -1704,7 +1932,7 @@ todas.map((foto)=>{
                                 placeholder="20.00"
                                 name="price"
                                 value={element.price || ""} 
-                                onChange={e => handleChanges(index, e)}
+                                onChange={e => handleChanges(index, e , element._id)}
                               />
                             }
                              {errors.price? 
@@ -1799,7 +2027,7 @@ todas.map((foto)=>{
                             type="date" 
                             name="date" 
                             value={element.date || ""} 
-                            onChange={e => handleChanges(index, e)} 
+                            onChange={e => handleChanges(index, e, element._id)} 
                             required
                             />
                           
@@ -1809,7 +2037,7 @@ todas.map((foto)=>{
                           type="date" 
                           name="date" 
                           value={element.date || ""} 
-                          onChange={e => handleChanges(index, e)} 
+                          onChange={e => handleChanges(index, e, element._id)} 
                         
                           />
                         
@@ -1827,7 +2055,7 @@ todas.map((foto)=>{
                           type="time" 
                           name="start" 
                           value={element.start || ""} 
-                          onChange={e => handleChanges(index, e)} 
+                          onChange={e => handleChanges(index, e, element._id)} 
                           required
                           />
                           :
@@ -1835,7 +2063,7 @@ todas.map((foto)=>{
                           type="time" 
                           name="start" 
                           value={element.start || ""} 
-                          onChange={e => handleChanges(index, e)} 
+                          onChange={e => handleChanges(index, e, element._id)} 
                           />
                         }
                       </div>
@@ -1847,7 +2075,7 @@ todas.map((foto)=>{
                         type="time" 
                         name="end" 
                         value={element.end || ""} 
-                        onChange={e => handleChanges(index, e)} 
+                        onChange={e => handleChanges(index, e, element._id)} 
                         required
                         />                      
                         :
@@ -1855,14 +2083,14 @@ todas.map((foto)=>{
                         type="time" 
                         name="end" 
                         value={element.end || ""} 
-                        onChange={e => handleChanges(index, e)} 
+                        onChange={e => handleChanges(index, e, element._id)} 
                         />
                       }                 
                       </div>
 
                       {
                         index ? 
-                          <button lassName={styles.addDelete}  type="button"  onClick={() => removeFormFields(index)}>
+                          <button lassName={styles.addDelete}  type="button"  onClick={() => removeFormFields(index, element._id)}>
                             <img className={styles.basquet} src={basquet} alt="n" />
                           </button> 
                         : null
@@ -1906,12 +2134,6 @@ todas.map((foto)=>{
                   <button className={styles.viewBtn} type="submit">
                     {' '}
                     Publicar Evento
-                  </button>
-                  </div>
-
-                  <div>
-                  <button className={styles.viewBtn} onClick={(e) => hanldeClick(e)} >
-                    Guardar y Publicar Luego
                   </button>
                   </div>
 
@@ -1960,6 +2182,7 @@ todas.map((foto)=>{
       </div>
     </div>
   );
+
 };
 
 export default EventCreateForm;
