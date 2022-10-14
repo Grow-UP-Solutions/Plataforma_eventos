@@ -30,6 +30,7 @@ import {
   WorkWithUsForm,
 } from './pages';
 import EventEdit from './pages/EventEdit/EventEdit';
+import EventEdit2 from './pages/EventEdit/EventEdit';
 import PanelPrivacy from './pages/PanelPrivacy/PanelPrivacy';
 import { getEvents } from './redux/actions';
 
@@ -84,7 +85,8 @@ function App() {
             path="/cambiarContrasenia/:token"
             element={<ChangePassword />}
           />
-          <Route path="/edita-un-evento" element={<EventEdit />} />
+          <Route path="/oganiza-un-evento-editar" element={<EventEdit />} />
+          <Route path="/oganiza-un-evento-editar2" element={<EventEdit2 />} />
         </Routes>
         <div className="container">
           <Footer />
