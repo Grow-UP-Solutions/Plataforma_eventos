@@ -1,6 +1,6 @@
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import React, { useRef, useState } from 'react';
+import React, { useContext,useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Calendar } from 'react-date-range';
 import * as locales from 'react-date-range/dist/locale';
@@ -46,6 +46,8 @@ import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
 import { AiOutlineClose } from 'react-icons/ai';
 import LaunchOutlinedIcon from '@mui/icons-material/LaunchOutlined';
 import WarningOutlinedIcon from '@mui/icons-material/WarningOutlined';
+import axios from "axios";
+import { AuthContext } from '../../context/auth/AuthContext';
 
 
 
@@ -56,10 +58,29 @@ const EventCreateForm = () => {
 
   const dispatch = useDispatch()
 
+ 
+  useEffect(() => {
+    const myUser = async () => {
+      try {
+        const json = await axios.get("https://plataformaeventos-production-6111.up.railway.app/users/" + id);
+        setResult(json.data);
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    myUser();
+  }, []);
+
+  const { user } = useContext(AuthContext);
+  const id = user.uid;
+  const [result, setResult] = useState({});
+  console.log('user:',user)
+  console.log('id:',id)
+  console.log('result:',result)
 
   
 
- const user = ''
+
 
   //--------------------------------------------------//
   //               DEPARTAMENTOS              //
@@ -115,74 +136,75 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
   //               POST Y ERROR            //
 
   
-  const [post, setPost] = useState({
-    idOrganizer:'632cbed4f208f44f5333af48',
-    title: '',
-    categories: [],
-    otherCategorie: '',
-    shortDescription: '',
-    longDescription: '',
-    pictures: [],
-    online: '',
-    link: '',
-    departamento: '',
-    municipio: '',
-    direccion: '',
-    barrio: '',
-    specialRequires: '',
-    dates:[{ 
-      date: "", 
-      start : "", 
-      end:"" , 
-      year:0 ,  
-      cupos:0, 
-      price:0, 
-      sells: 0 , 
-      isPublic:true,
-      precioAlPublico:'',
-      gananciaCupo:'',
-      gananciaEvento:'',
-      dateFormated:''
-     }],
-    isPublic:true
-  });
-
   // const [post, setPost] = useState({
-  //   idOrganizer:'632cbed4f208f44f5333af48',
-  //   title: 'Hola',
-  //   categories: ['Belleza'],
+  //   idOrganizer:'',
+  //   title: '',
+  //   categories: [],
   //   otherCategorie: '',
-  //   shortDescription: 'Alta',
-  //   longDescription: 'Torneo de playStation, donde el campeon actual defiende su titulo y bvuscara coronarse nuevamente. Torneo online desde cualquier parte del mundo podes jugar.',
-  //   pictures: [ {
-  //     cover: true,
-  //     picture: 'https://culturageek.com.ar/wp-content/uploads/2022/08/Playstation-Torneo-Mexico-Portada.jpg',
-  //   }],
-  //   online: 'false',
+  //   shortDescription: '',
+  //   longDescription: '',
+  //   pictures: [],
+  //   online: '',
   //   link: '',
-  //   departamento: 'Antioquia',
-  //   municipio: 'Medellin',
-  //   direccion: 'Aaa 21',
-  //   barrio: 'Aaaa',
+  //   departamento: '',
+  //   municipio: '',
+  //   direccion: '',
+  //   barrio: '',
   //   specialRequires: '',
-  //   dates:[
-  //     { 
-  //       date: '15/12/2022', 
-  //       start : '10:00', 
-  //       end:'11:00', 
-  //       year:0 ,  
-  //       cupos:32, 
-  //       price:10000, 
-  //       sells: 12, 
-  //       isPublic:true,
-  //       precioAlPublico:'',
-  //       gananciaCupo:'',
-  //       gananciaEvento:'',
-  //       dateFormated:'Octubre 30 de 2022'
-  //      }
-  //    ],
+  //   dates:[{ 
+  //     date: "", 
+  //     start : "", 
+  //     end:"" , 
+  //     year:0 ,  
+  //     cupos:0, 
+  //     price:0, 
+  //     sells: 0 , 
+  //     isPublic:true,
+  //     precioAlPublico:'',
+  //     gananciaCupo:'',
+  //     gananciaEvento:'',
+  //     dateFormated:''
+  //    }],
   //   isPublic:true
   // });
+
+  const [post, setPost] = useState({
+    idOrganizer:'632cbed4f208f44f5333af48',
+    title: 'Hola',
+    categories: ['Belleza'],
+    otherCategorie: '',
+    shortDescription: 'Alta',
+    longDescription: 'Torneo de playStation, donde el campeon actual defiende su titulo y bvuscara coronarse nuevamente. Torneo online desde cualquier parte del mundo podes jugar.',
+    pictures: [ {
+      cover: true,
+      picture: 'https://culturageek.com.ar/wp-content/uploads/2022/08/Playstation-Torneo-Mexico-Portada.jpg',
+    }],
+    online: 'false',
+    link: '',
+    departamento: 'Antioquia',
+    municipio: 'Medellin',
+    direccion: 'Aaa 21',
+    barrio: 'Aaaa',
+    specialRequires: '',
+    dates:[
+      { 
+        date: '15/12/2022', 
+        start : '10:00', 
+        end:'11:00', 
+        year:0 ,  
+        cupos:32, 
+        price:10000, 
+        sells: 12, 
+        isPublic:true,
+        precioAlPublico:'',
+        gananciaCupo:'',
+        gananciaEvento:'',
+        dateFormated:'Octubre 30 de 2022'
+       }
+     ],
+    isPublic:true,
+    revision:false
+  });
 
 
 
@@ -733,7 +755,8 @@ todas.map((foto)=>{
     e.preventDefault()
     setPost({
       ...post,
-      isPublic:false
+      isPublic:false,
+      idOrganizer:id
     })
     
 
@@ -787,7 +810,8 @@ todas.map((foto)=>{
             gananciaCupo:'',
             gananciaEvento:''
            }],
-          isPublic:true
+          isPublic:true,
+          revision:false
      })
          navigate("/user/profile" )
       } 
@@ -824,7 +848,7 @@ todas.map((foto)=>{
 
   const [failedSubmit, setFailedSubmit] = useState(false)
   
-  const id= '632cbed4f208f44f5333af48'
+
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -837,6 +861,10 @@ todas.map((foto)=>{
         dangerMode: true,
       });
     } else {
+      setPost({
+        ...post,
+        idOrganizer:id
+      })
       swal({
         title: "Deseas publicar este evento? ",
         buttons: true,
@@ -878,6 +906,7 @@ todas.map((foto)=>{
              }],
             isPublic:true
        })
+        navigate("/user/profile" )
         } 
       });
     } 
@@ -897,7 +926,7 @@ todas.map((foto)=>{
          <div>
           {/* SECTION 1: Nombre del Evento */}
 
-          <div className={styles.section}>
+          <div className={styles.section1}>
             {/* linea vertical */}
 
             <div className={styles.containerLine}>
@@ -973,7 +1002,7 @@ todas.map((foto)=>{
 
           {/* SECTION 2: Categorias */}
 
-          <div className={styles.section}>
+          <div className={styles.section2}>
             {/* linea vertical */}
 
             <div className={styles.containerLine}>
@@ -1092,7 +1121,7 @@ todas.map((foto)=>{
 
           {/* SECTION 3: Descripcion */}
 
-          <div className={styles.section}>
+          <div className={styles.section3}>
             {/* linea vertical */}
 
             <div className={styles.containerLine}>
@@ -1214,7 +1243,7 @@ todas.map((foto)=>{
 
           {/* SECTION 4: Pictures */}
 
-          <div className={styles.section}>
+          <div className={styles.section4}>
             {/* linea vertical */}
             <div className={styles.containerLine}>
               <ul className={styles.timeVerticalRed}>
@@ -1348,7 +1377,7 @@ todas.map((foto)=>{
 
           {/* SECTION 5: Ubicacion */}
 
-          <div className={styles.section}>
+          <div className={styles.section5}>
             {/* linea vertical */}
 
             <div className={styles.containerLine}>
@@ -1660,7 +1689,7 @@ todas.map((foto)=>{
 
           {/*SECTION 6 */}
 
-          <div className={styles.section}>
+          <div className={styles.section6}>
             {/* linea vertical */}
 
             <div className={styles.containerLine}>
@@ -2145,21 +2174,21 @@ todas.map((foto)=>{
                                     </div>
                                   </div>
                                   <div className={styles.orgContOrg}>
-                                    <Link
+                                    {/* <Link
                                       className={styles.linkOrg}
                                       >
                                       <img className={styles.orgImgOrg} src={user.picture} alt="N" />
-                                    </Link>
+                                    </Link> */}
 
                                     <div className={styles.orgSubContOrg}>
                                           <p className={styles.orgNameOrg}>{user.name}</p>
                                           <p className={styles.orgMembershipOrg}>
-                                            Miembro desde {user.membership}
+                                            Miembro desde *falta valor real*
                                           </p>
                                     </div>
                                   </div>
                                       <p className={styles.orgDescriptionOrg}>
-                                        {user.descriptionOrganizer}
+                                        *descipcion*
                                       </p>
                                       <button className={styles.button2Org}>
                                         Otros eventos organizados por {user.name}
@@ -2203,7 +2232,7 @@ todas.map((foto)=>{
       <div className={styles.containerBtnSection}>
         <button
           className={styles.btnSectionMove}
-          onClick={() => scrollSections(-2000)}
+          onClick={() => scrollSections(-1000)}
         >
           <KeyboardArrowUpIcon
             sx={{
@@ -2217,7 +2246,7 @@ todas.map((foto)=>{
         </button>
         <button
           className={styles.btnSectionMove}
-          onClick={() => scrollSections(2000)}
+          onClick={() => scrollSections(1000)}
         >
           <KeyboardArrowDownRoundedIcon
             sx={{

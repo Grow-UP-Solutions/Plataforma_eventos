@@ -1,6 +1,6 @@
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import React, { useContext,useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Calendar } from 'react-date-range';
 import * as locales from 'react-date-range/dist/locale';
@@ -20,7 +20,7 @@ import infoIcon from '../../assets/imgs/infoIcon.svg';
 import ImageIcon from '@mui/icons-material/Image';
 import mapa from '../../assets/imgs/mapa2.png';
 import { formatDate } from '../../utils/formatDate';
-import styles from './EventEdit.module.css';
+import styles from './EventEdit2.module.css';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ConstructionOutlined, ContactMailOutlined, EmergencyRecordingSharp } from '@mui/icons-material';
@@ -28,62 +28,29 @@ import { getColombia , postEvent } from '../../redux/actions';
 import swal from 'sweetalert'
 import { useNavigate } from 'react-router-dom';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import dotenv from 'dotenv';
-import {formatDateForm} from '../../utils/formatDateForm';
-import {Button ,Modal, ModalHeader,ModalBody,ModalFooter} from 'reactstrap'
-import 'bootstrap'
-import { Pagination } from 'swiper';
-import 'swiper/modules/navigation/navigation.min.css';
-import 'swiper/modules/pagination/pagination.min.css';
-import 'swiper/modules/scrollbar/scrollbar.min.css';
-import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-
-import { Rating } from '@mui/material';
-import { IoLocationOutline } from 'react-icons/io5';
-import { iconArrowLeft, iconArrowRight } from '../../assets/imgs';
-import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
-import { AiOutlineClose } from 'react-icons/ai';
-import LaunchOutlinedIcon from '@mui/icons-material/LaunchOutlined';
-import WarningOutlinedIcon from '@mui/icons-material/WarningOutlined';
-import axios from "axios";
-import { AuthContext } from '../../context/auth/AuthContext';
-
-
+import Swal from 'sweetalert2'
 
 
 
 const EventCreateForm = () => {
 
   const Swal = require('sweetalert2')
+
+
+
   const dispatch = useDispatch()
+
+
+
+
   const eventos = useSelector((state) => state.events)
+
+
   const allEvents=[...eventos]
   console.log('allEvents:',allEvents[0])
 
-  //--------------------------------------------------//
-  //               USUARIO              //
-  useEffect(() => {
-    const myUser = async () => {
-      try {
-        const json = await axios.get("https://plataformaeventos-production-6111.up.railway.app/users/" + id);
-        setResult(json.data);
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    myUser();
-  }, []);
 
-  const { user } = useContext(AuthContext);
-  const id = user.uid;
-  const [result, setResult] = useState({});
-  console.log('user:',user)
-  console.log('id:',id)
-  console.log('result:',result)
-
- 
-
+  
 
   //--------------------------------------------------//
   //               DEPARTAMENTOS              //
@@ -139,11 +106,44 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
   //               POST Y ERROR            //
 
   
+
+
+  // const [post, setPost] = useState({
+  //   idOrganizer:'632cbed4f208f44f5333af48',
+  //   title: '',
+  //   categories: [],
+  //   otherCategorie: [],
+  //   shortDescription: '',
+  //   longDescription: '',
+  //   pictures: [],
+  //   online: '',
+  //   link: '',
+  //   departamento: '',
+  //   municipio: '',
+  //   direccion: '',
+  //   barrio: '',
+  //   specialRequires: '',
+  //   dates:[{ 
+  //     date: "", 
+  //     start : "", 
+  //     end:"" , 
+  //     year:0 ,  
+  //     cupos:0, 
+  //     price:0, 
+  //     sells: 0 , 
+  //     isPublic:true,
+  //     precioAlPublico:'',
+  //     gananciaCupo:'',
+  //     gananciaEvento:''
+  //    }],
+  //   isPublic:true
+  // });
+
   const [post, setPost] = useState({
-    idOrganizer:'',
+    idOrganizer:'632cbed4f208f44f5333af48',
     title: '',
     categories: [],
-    otherCategorie: '',
+    otherCategorie: [],
     shortDescription: '',
     longDescription: '',
     pictures: [],
@@ -166,9 +166,8 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
       precioAlPublico:'',
       gananciaCupo:'',
       gananciaEvento:'',
-      dateFormated:'',
+      revision:false
      }],
-     revision:false,
     isPublic:true
   });
 
@@ -179,7 +178,7 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
       idOrganizer:'632cbed4f208f44f5333af48',
       title: allEvents[0].title,
       categories: [],
-      otherCategorie:'',
+      otherCategorie: [],
       shortDescription: allEvents[0].shortDescription,
       longDescription:  allEvents[0].longDescription,
       pictures: [],
@@ -196,8 +195,11 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
     })
   }
   },[allEvents[0]])
+ 
 
  
+
+
 
 
   const [errors, setErrors] = useState({
@@ -228,7 +230,7 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
   function validate(post) {
      let errors = {}
                 
-     let letras =  (/^[a-zA-Z]*$/g)
+     let letras =  /^[a-zA-Z]*$/g
      let offensiveWord= /\b(perro|gato)\b/i
      let mail = (/[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}/igm)
      let webSite =(/\b(http|https|www)\b/i)
@@ -264,10 +266,9 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
       errors.categories = 'Solo podes seleccionar 3 categorias'
     }
 
-    if (!post.otherCategorie.match(letras)) {
-      errors.otherCategorie = 'Solo se puede agregar una palabra'
-    }
-
+    // if (!post.otherCategorie) {
+    //   errors.otherCategorie = 'Campo obligatorio(!)'
+    // }
      
     if (!post.shortDescription) {
       errors.shortDescription = true
@@ -306,8 +307,8 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
       errors.longDescription = 'Palabra ofensiva'
     }
 
-    if (post.longDescription.match (notNumber)) {
-      errors.longDescription = 'No puedes ingresar un numero'
+    if (post.shortDescription.match (notNumber)) {
+      errors.shortDescription = 'No puedes ingresar un numero'
     }
 
     if (!post.pictures[0]) {
@@ -387,84 +388,104 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
       errors.specialRequires = 'Palabra ofensiva'
     }
 
+  //   if(allEvents.length>0){
+  //   for (var i=0; i<post.dates.length;i++ ){
+  //     if (!(post.dates[i].cupos).match(numero)) {
+  //       errors.dates = 'No podes'
+  //     }
+  //   }
+  // }
 
-    if(post.dates.length>0){
-      for (var i=0; i<post.dates.length;i++ ){
-        if (!post.dates[i].cupos) {
-          errors.cupos= true
-        }
+  
+
+    // for (var i=0; i<post.dates.length;i++ ){
+    //   if (!post.dates[i].price.match(numeroYdecimales) ) {
+    //     errors.dates= 'Debe ser un numero'
+    //   }
+    // }
+
+    if(allEvents.length>0){
+    for (var i=0; i<post.dates.length;i++ ){
+      if (!post.dates[i].cupos) {
+        errors.cupos= true
       }
     }
-
-    if(post.dates.length>0){
-      for (var i=0; i<post.dates.length;i++ ){
-        if (!post.dates[i].price) {
-          errors.price= true
-        }
-      }
     }
 
     if(allEvents.length>0){
-        for (var i=0; i<post.dates.length;i++ ){
-          for(var j=0; j<allEvents[0].dates.length;j++ ){
-          if (post.dates[i]._id === allEvents[0].dates[j]._id && post.dates[i].sells>0  && post.dates[i].cupos < allEvents[0].dates[j].sells) {
-            console.log('entre')
-            console.log('allEvents[0].dates[j].sells',allEvents[0].dates[j].sells)
-            console.log(' post.dates[i].cupos:', post.dates[i].cupos)
-            console.log(' post.dates[i]._id:', post.dates[i]._id)
-            console.log(' allEvents[0].dates[j]._id', allEvents[0].dates[j]._id)
-            console.log('post.dates[i].sells', post.dates[i].sells)
-            errors.cupos= true
-            return swal({
-              title: `Ya se vendieron ${allEvents[0].dates[j].sells}  cupos. El número no puede ser inferior a los cupos ya vendidos `,
-              icon: "warning",
-              dangerMode: true,
-            })
-            }
-            else  if (post.dates[i]._id === allEvents[0].dates[j]._id && post.dates[i].sells>0 && post.dates[i].price < allEvents[0].dates[j].price) {
-            console.log('entre')
-            console.log('allEvents[0].dates[j].price:',j, allEvents[0].dates[j].price,)       
-            console.log(' post.dates[i].price:', i , post.dates[i].price)
-            errors.price= true
-            return swal({
-              title: `Ya se vendieron ${allEvents[0].dates[j].sells}  cupos. El número no puede ser inferior al de los cupos ya vendidos `,
-              icon: "warning",
-              dangerMode: true,
-            })
-            }
+      for (var i=0; i<post.dates.length;i++ ){
+        for(var j=0; j<allEvents[0].dates.length;j++ ){
+        if (post.dates[i]._id === allEvents[0].dates[j]._id && post.dates[i].sells>0  && post.dates[i].cupos < allEvents[0].dates[j].sells) {
+          console.log('entre')
+          console.log('allEvents[0].dates[j].cupos:',allEvents[0].dates[j].cupos)
+          console.log(' post.dates[i].cupos:', post.dates[i].cupos)
+          errors.cupos= true
+          return swal({
+            title: `Ya se vendieron ${allEvents[0].dates[j].sells}  cupos. El número no puede ser inferior a los cupos ya vendidos `,
+            icon: "warning",
+            dangerMode: true,
+          })
+          }
+          else  if (post.dates[i]._id === allEvents[0].dates[j]._id && post.dates[i].sells>0 && post.dates[i].price < allEvents[0].dates[j].price) {
+          console.log('entre')
+          console.log('allEvents[0].dates[j].price:',j, allEvents[0].dates[j].price,)       
+          console.log(' post.dates[i].price:', i , post.dates[i].price)
+          errors.price= true
+          return swal({
+            title: `Ya se vendieron ${allEvents[0].dates[j].sells}  cupos. El número no puede ser inferior al de los cupos ya vendidos `,
+            icon: "warning",
+            dangerMode: true,
+          })
           }
         }
-    
       }
-      
+  
+    }
+    
+  
+  
+
+
+    
+    for (var i=0; i<post.dates.length;i++ ){
+      if (!post.dates[i].price) {
+        errors.price= true
+      }
+    }
+
+    // for (var i=0; i<post.dates.length;i++ ){
+    //   for(var j=0; j<allEvents[0].dates.length;j++ ){
+    //   if (post.dates[i].sells>0 && parseInt(post.dates[i].price) < allEvents[0].dates[j].price) {
+    //     console.log('entre')
+    //     errors.price= `Ya se vendieron ${allEvents[0].dates[j].sells}  cupos. El número no puede ser inferior al de los cupos ya vendidos `
+    //     }
+    //   }
+    // }
+
+    
+  
 
     for (var i=0; i<post.dates.length;i++ ){
-      if (!post.dates[i].date ||!post.dates[i].start ||!post.dates[i].end ) {
+      if (!post.dates[i].date ||!post.dates[i].start ||!post.dates[i].end) {
         errors.dates= true
       }
     }
     
     for (var i=0; i<post.dates.length;i++ ){
-      if (post.dates[i].start > post.dates[i].end && post.dates[i].end ) {
-        errors.dates = 'Error, hora de fin menor a hora de inicio'
+      if (post.dates[i].start > post.dates[i].end ) {
+        errors.dates = 'No puede empezar despues que termina'
       }
     }
 
     for (var i=0; i<post.dates.length;i++ ){
       for(var j=1; j<post.dates.length;j++ ){
-      if (  post.dates[i].start.length>0 && post.dates[j].start.length>0 && post.dates[i].end.length>0
-        && post.dates[j].end.length>0 && post.dates[i].date === post.dates[j].date && i !== j ){
-          if(post.dates[i].start === post.dates[j].start||
-            post.dates[i].end === post.dates[j].end ||
-            post.dates[i].start > post.dates[j].start && post.dates[i].start < post.dates[j].end ||
-            post.dates[i].end > post.dates[j].start && post.dates[i].end < post.dates[j].end||
-            post.dates[i].start < post.dates[j].start && post.dates[i].end > post.dates[j].end ||
-            post.dates[i].start > post.dates[j].start && post.dates[i].end < post.dates[j].end ){
-            errors.dates = 'Fechas cruzadas'
-          }         
-        }
-        }   
-    }
+      if (post.dates[i].date === post.dates[j].date && post.dates[j].start < post.dates[i].end &&
+        post.dates[j].start >post.dates[i].start || post.dates[j].end >post.dates[i].start &&
+        post.dates[j].end < post.dates[i].end || post.dates[j].start < post.dates[i].start &&
+        post.dates[j].end > post.dates[i].end
+         )
+      errors.dates = 'Fechas cruzadas'
+    }}
     
     return errors
   }
@@ -494,9 +515,7 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
     var categorieName = e.target.value
     console.log('targetcat:',e.target.value)
     if (!e.target.checked) {
-      console.log('seleccionados:',seleccionados)
-      let seleccion = seleccionados.filter((categorie) => categorie !== e.target.value)
-      console.log('seleccion:',seleccion)
+      let seleccion = seleccionados.filter((categorie) => categorie.name !== categorieName)
       setSeleccionados(seleccion)
       setPost({
         ...post,
@@ -504,7 +523,6 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
       })
     } else {
       let categorieCheck = categories.find((categorie) => categorie.name === categorieName)
-      console.log('categorieCheck:',categorieCheck)
       setSeleccionados([...seleccionados, categorieCheck.name])
       setPost({
         ...post,
@@ -626,14 +644,6 @@ todas.map((foto)=>{
     });
   }
 
-  dotenv.config();
-  const location = `${post.municipio}, ${post.departamento}`;
-  const apiKey = 'AIzaSyBr-FUseqSbsY6EMqIGNnGmegD39R--nBA';
-  const zoom = '14';
-  const size = '400x300';
-  const url = `https://maps.googleapis.com/maps/api/staticmap?center=${location}&zoom=${zoom}&size=${size}&key=${apiKey}`;
-
-
  
   //--------------------------------------------------//
   //               POST  PRICE  && DATE        //
@@ -644,7 +654,6 @@ todas.map((foto)=>{
 
   const a = costoDeManejo * IVA
 
-  
 
   let handleChanges = (i, e , id ) => {
     let newFechas = [...post.dates];
@@ -652,10 +661,7 @@ todas.map((foto)=>{
     newFechas[i].precioAlPublico=parseFloat(newFechas[i].price) + parseFloat(costoDeManejo) + parseFloat(a);
     newFechas[i].gananciaCupo = parseFloat(newFechas[i].price)-(((parseFloat(newFechas[i].price)*parseFloat(comision))+((parseFloat(newFechas[i].price)*parseFloat(comision)*parseFloat(IVA)))))
     newFechas[i].gananciaEvento = parseFloat(newFechas[i].gananciaCupo) * parseInt(newFechas[i].cupos)
-    if(e.target.name==='date'){
-        newFechas[i].dateFormated = formatDateForm(e.target.value)
-      }
-    
+   
       for (var i=0; i<post.dates.length;i++ ){
         for(var j=0; j<allEvents[0].dates.length;j++ ){
           if(post.dates[i]._id === id && allEvents[0].dates[j]._id===id && post.dates[i].sells>0 && post.dates[i].start !== allEvents[0].dates[j].start){
@@ -728,7 +734,13 @@ todas.map((foto)=>{
                 }) 
               }
             })        
-          }else{
+          }
+          
+          
+          
+          
+          
+          else{
             setPost({
               ...post,
               dates:newFechas 
@@ -736,6 +748,9 @@ todas.map((foto)=>{
           }  
         }
       }
+  
+   
+     
     }
 
   
@@ -828,21 +843,12 @@ todas.map((foto)=>{
         })        
       }
     }
-  }  
   }
- 
-  var fecha = new Date();
-  var anio = fecha.getFullYear();
-  var dia = fecha.getDate();
-  var _mes = fecha.getMonth();//viene con valores de 0 al 11
-  _mes = _mes + 1;//ahora lo tienes de 1 al 12
-  if (_mes < 10)//ahora le agregas un 0 para el formato date
-  { var mes = "0" + _mes;}
-  else
-  { var mes = ''+_mes;}
+      
+  }
 
-  const fechaMinima = anio+'-'+mes+'-'+dia;
   
+
   //-----------------------------------------------------//
   //                  SCROLL_SNAP                     //
 
@@ -860,17 +866,15 @@ todas.map((foto)=>{
     setScrollY(scrollY + px);
   };
 
-  //--------------------------------------------------//
-  //                VISTA PREVIA         //
+ 
 
-  const [getPreview, setGetPreview] = useState(false);
-
-
-
-//--------------------------------------------------//
+    //--------------------------------------------------//
   //                CANCEL          //
+  const navigate = useNavigate()
+
 
   function handleDelete(e){
+    console.log('guardar')
     e.preventDefault()
     
     swal({
@@ -886,12 +890,15 @@ todas.map((foto)=>{
    )
   }
 
+
+
+  
   //--------------------------------------------------//
   //                  SUBMIT              //
 
   const [failedSubmit, setFailedSubmit] = useState(false)
-  const navigate = useNavigate()
   
+  const id= '632cbed4f208f44f5333af48'
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -912,11 +919,6 @@ todas.map((foto)=>{
       })
       .then((publicar) => {
         if (publicar) {
-            setPost({
-                ...post,
-                idOrganizer:id
-              })     
-            
           dispatch(postEvent(post,id))
           swal("Tu evento ha sido publicado ", {
             icon: "success",
@@ -947,10 +949,8 @@ todas.map((foto)=>{
               isPublic:true,
               precioAlPublico:'',
               gananciaCupo:'',
-              gananciaEvento:'',
-              dateFormated:'',
+              gananciaEvento:''
              }],
-             revision:false,
             isPublic:true
        })
         } 
@@ -967,11 +967,6 @@ todas.map((foto)=>{
       })
       .then((publicar) => {
         if (publicar) {
-            setPost({
-                ...post,
-                idOrganizer:id
-              })     
-            
           dispatch(postEvent(post,id))
           swal("Tus cambios han sido notificados. La publicación esta en revisión. Un correo con una actualización te llegara pronto. ", {
             icon: "success",
@@ -1002,10 +997,8 @@ todas.map((foto)=>{
               isPublic:true,
               precioAlPublico:'',
               gananciaCupo:'',
-              gananciaEvento:'',
-              dateFormated:'',
+              gananciaEvento:''
              }],
-             revision:false,
             isPublic:true
        })
         } 
@@ -1019,11 +1012,6 @@ todas.map((foto)=>{
       })
       .then((publicar) => {
         if (publicar) {
-            setPost({
-                ...post,
-                idOrganizer:id
-              })     
-            
           dispatch(postEvent(post,id))
           swal("Tu evento ha sido publicado ", {
             icon: "success",
@@ -1054,28 +1042,28 @@ todas.map((foto)=>{
               isPublic:true,
               precioAlPublico:'',
               gananciaCupo:'',
-              gananciaEvento:'',
-              dateFormated:'',
+              gananciaEvento:''
              }],
-             revision:false,
             isPublic:true
        })
         } 
       }) 
+
     }
   }
   }
 
   
+
+
+  
   return (
-    <div>    
-    <div className={styles.container}>  
-      <div ref={ref} className={styles.containerForm}>   
+    <div className={styles.container}>
+      <div ref={ref} className={styles.containerForm}>
         <form onSubmit={(e) => handleSubmit(e)}>
-         <div>
           {/* SECTION 1: Nombre del Evento */}
 
-          <div className={styles.section1}>
+          <div className={styles.section}>
             {/* linea vertical */}
 
             <div className={styles.containerLine}>
@@ -1151,7 +1139,7 @@ todas.map((foto)=>{
 
           {/* SECTION 2: Categorias */}
 
-          <div className={styles.section2}>
+          <div className={styles.section}>
             {/* linea vertical */}
 
             <div className={styles.containerLine}>
@@ -1187,6 +1175,12 @@ todas.map((foto)=>{
                 adipiscing elit, sed diam nonummy nibh.{' '}
               </p>
               <div className={styles.containerChecks}> 
+             
+                {/* {post.categories.length<4 ?
+                 <div className={styles.containerChecks}>  </div>
+                   :<div className={styles.containerChecks2}>  </div>
+                }
+               */}
 
                 {categories.map ((categorie) => (
                   <div className={styles.checks}>
@@ -1222,30 +1216,17 @@ todas.map((foto)=>{
                   <label className={styles.subTitle}>
                     Si escogiste ‘otro’, especifica :{' '}
                   </label>
-                  {failedSubmit && errors.otherCategorie ?
-                
-                      <input
-                      className={styles.input2}
-                      type="text"
-                      name="otherCategorie"
-                      values={post.otherCategorie}
-                      onChange={(e) => handleOtherCategorie(e)}
-                      required
-                      />   
-                                    
-                      :
-                      <input
-                      className={styles.input2}
-                      type="text"
-                      name="otherCategorie"
-                      values={post.otherCategorie}
-                      onChange={(e) => handleOtherCategorie(e)}
-                      /> 
-                  }
-                  
-                     
+                  <input
+                    className={styles.input2}
+                    type="text"
+                    name="otherCategorie"
+                    values={post.otherCategorie}
+                    onChange={(e) => handleOtherCategorie(e)}
+                  /> 
                 </div>
-              
+                {errors.otherCategorie && (
+                        <p className={styles.errors}>{errors.otherCategorie}</p>
+                    )}
               </div>
 
               {errors.categories &&
@@ -1257,20 +1238,13 @@ todas.map((foto)=>{
               :''
               }
 
-              {failedSubmit && errors.otherCategorie ?
-                <p className={styles.errors}>Solo puedes una ingresar una categoria</p>
-                :''
-                }
-
-            
-
               
             </div>
           </div>
 
           {/* SECTION 3: Descripcion */}
 
-          <div className={styles.section3}>
+          <div className={styles.section}>
             {/* linea vertical */}
 
             <div className={styles.containerLine}>
@@ -1392,7 +1366,7 @@ todas.map((foto)=>{
 
           {/* SECTION 4: Pictures */}
 
-          <div className={styles.section4}>
+          <div className={styles.section}>
             {/* linea vertical */}
             <div className={styles.containerLine}>
               <ul className={styles.timeVerticalRed}>
@@ -1469,7 +1443,6 @@ todas.map((foto)=>{
                   <p>"Arrastra los archivos aquí o haz click para agregar archivos"</p>
                   <input 
                     type="file" 
-                    placeholder='Arrastra los archivos aquí o haz click para agregar archivos'
                     value="" 
                     name="pictures"
                     onChange={onFileDrop}
@@ -1526,7 +1499,7 @@ todas.map((foto)=>{
 
           {/* SECTION 5: Ubicacion */}
 
-          <div className={styles.section5}>
+          <div className={styles.section}>
             {/* linea vertical */}
 
             <div className={styles.containerLine}>
@@ -1648,6 +1621,11 @@ todas.map((foto)=>{
                           </option>
                         ))}
                     </datalist>
+
+                  
+                   
+                  
+
                     {/* Municipio*/}
 
                     {nuevoArrayDepartamentos &&
@@ -1771,20 +1749,7 @@ todas.map((foto)=>{
 
                   <div className={styles.containerMap}>
                     <p className={styles.titleMap}>Ubicación en el mapa</p>
-                    {post.municipio?
-                     <div>
-                     <img 
-                       src={url} 
-                       alt="mapaStaticGoogleMaps" 
-                     />
-                   </div>
-                    :
-                    <div>
-                    <img 
-                      src={mapa} 
-                      alt="mapaStaticGoogleMaps" 
-                    />
-                  </div>}
+                    <img src={mapa} alt="imagen_mapa" />
                     <p className={styles.subtextMap}>Texto google legal aqui</p>
 
                     {/* <img  className={styles.icon} src={iconEditar} alt='n' /> */}
@@ -1833,7 +1798,7 @@ todas.map((foto)=>{
 
           {/*SECTION 6 */}
 
-          <div className={styles.section6}>
+          <div className={styles.section}>
             {/* linea vertical */}
 
             <div className={styles.containerLine}>
@@ -1894,7 +1859,7 @@ todas.map((foto)=>{
                             Máximo número de participantes
                             {failedSubmit && errors.cupos?
                             <input
-                            id='cupos'   
+                            id='cupos'                    
                             type="number"
                             placeholder="10"
                             name="cupos"
@@ -1913,6 +1878,9 @@ todas.map((foto)=>{
                               onChange={e => handleChanges(index, e , element._id)}
                             />
                           }
+                          {errors.cupos? 
+                            <p className={styles.errors}>{errors.cupos}</p>
+                          : null}   
                           </label>          
                         </div>
 
@@ -1923,7 +1891,7 @@ todas.map((foto)=>{
                               <p>$</p>
                               {failedSubmit && errors.dates?
                               <input
-                             
+                              id='price'   
                               type='number'
                               placeholder="20.00"
                               name="price"
@@ -1935,6 +1903,7 @@ todas.map((foto)=>{
                               :
                               <input
                                 className={styles.subInfoInput}
+                                id='price'   
                                 type="number"
                                 placeholder="20.00"
                                 name="price"
@@ -1942,6 +1911,9 @@ todas.map((foto)=>{
                                 onChange={e => handleChanges(index, e , element._id)}
                               />
                             }
+                             {errors.price? 
+                            <p className={styles.errors}>{errors.price}</p>
+                             : null}   
                             </div>
                           </label>
 
@@ -1964,8 +1936,10 @@ todas.map((foto)=>{
                             <p className={styles.subInfotxt}>
                               Después de nuestra comisión + IVA
                             </p>
-                            <a className={styles.btn6} href="/user/profile" target="_blank">Ver mas</a>
-                           
+                            <Link to={`/user/profile`} target={"_blank"}>
+                              <button className={styles.btn6}
+                              >Ver Más</button>
+                            </Link>
                         
                           </div>
 
@@ -1980,11 +1954,46 @@ todas.map((foto)=>{
                               <p className={styles.subInfotxt}>
                                 Esto sería lo que ganarías si se venden todos tus cupos
                               </p>
-                              <a className={styles.btn6} href="/user/profile" target="_blank">Ver mas</a>
+                              <Link to={`/user/profile`} target="_blank" rel="noopener noreferrer">
+                                <button className={styles.btn6}
+                                >Ver Más</button>
+                              </Link>
                             </div> 
 
                        </div>
-                      
+
+                        
+                        {/* <div className={styles.contInputDate}>             
+                            <input 
+                              type="text" 
+                              id="date" 
+                              value={dateFormatted} />
+
+                            <div className={styles.containerDate}>
+                              <input
+                                type="checkbox"
+                                defaultChecked={false}
+                                name="date"
+                                value={element.dadateFormatted || ""}
+                                onChange={e => handleChanges(index, e)}
+                                id="checkCalendar"
+                              />
+                              <label htmlFor="checkCalendar" className={styles.label}>
+                                <img src={calendar} alt="n" />
+                              </label>
+
+                              <div className={styles.calendar}>
+                                <Calendar
+                                  color={'#D53E27'}
+                                  locale={locales['es']}
+                                  date={date}
+                                  name='date'
+                                  onChange={(item) => handleFormatDate(index,item)}
+                                />
+                              </div>
+                            </div>                          
+                        </div> */}
+
                       <div  className={styles.contTimeAndDate} key={index}>
                         <div className={styles.contDate}>
                         <label>Fecha</label>
@@ -1994,23 +2003,26 @@ todas.map((foto)=>{
                             type="date" 
                             name="date" 
                             value={element.date || ""} 
-                            onChange={e => handleChanges(index, e , element._id)}
-                            min={fechaMinima}
+                            onChange={e => handleChanges(index, e, element._id)} 
                             required
                             />
                           
                           :
                           <input 
-                          id="fecha"
+                         
                           type="date" 
                           name="date" 
                           value={element.date || ""} 
-                          onChange={e => handleChanges(index, e , element._id)}
-                          min={fechaMinima}                       
-                          />                     
+                          onChange={e => handleChanges(index, e, element._id)} 
+                        
+                          />
+                        
+                      
                           }
                           
                       </div>
+
+
 
                       <div className={styles.contStart}>                
                         <label>Comienza</label>
@@ -2019,7 +2031,7 @@ todas.map((foto)=>{
                           type="time" 
                           name="start" 
                           value={element.start || ""} 
-                          onChange={e => handleChanges(index, e , element._id)}
+                          onChange={e => handleChanges(index, e, element._id)} 
                           required
                           />
                           :
@@ -2027,8 +2039,7 @@ todas.map((foto)=>{
                           type="time" 
                           name="start" 
                           value={element.start || ""} 
-                          onChange={e => handleChanges(index, e , element._id)}
-                          step="900"
+                          onChange={e => handleChanges(index, e, element._id)} 
                           />
                         }
                       </div>
@@ -2040,7 +2051,7 @@ todas.map((foto)=>{
                         type="time" 
                         name="end" 
                         value={element.end || ""} 
-                        onChange={e => handleChanges(index, e , element._id)}
+                        onChange={e => handleChanges(index, e, element._id)} 
                         required
                         />                      
                         :
@@ -2048,20 +2059,19 @@ todas.map((foto)=>{
                         type="time" 
                         name="end" 
                         value={element.end || ""} 
-                        onChange={e => handleChanges(index, e , element._id)}
+                        onChange={e => handleChanges(index, e, element._id)} 
                         />
                       }                 
                       </div>
 
                       {
                         index ? 
-                          <button lassName={styles.addDelete}  type="button"  onClick={() => removeFormFields(index , element._id)}>
+                          <button lassName={styles.addDelete}  type="button"  onClick={() => removeFormFields(index, element._id)}>
                             <img className={styles.basquet} src={basquet} alt="n" />
                           </button> 
                         : null
                       }
                     </div>
-                    <hr className={styles.hr}></hr> 
                    </div>
                   ))}
 
@@ -2073,7 +2083,7 @@ todas.map((foto)=>{
                   <p className={styles.errors}>{errors.cupos}</p>
                   )}
 
-          
+          <hr className={styles.hr}></hr> 
 
           <div  >
               <button className={styles.addDate}  type="button" onClick={() => addFormFields()}> + Crear Nueva Fecha</button>
@@ -2089,229 +2099,19 @@ todas.map((foto)=>{
                 </p>
 
                 <div className={styles.btnContainer}>
-                  <div className={styles.btnVista}>
-
-                      <p onClick={() => setGetPreview(!getPreview)} className={styles.viewBtn}>
-                        Vista Previa
-                      </p>
-                      {getPreview &&(
-                      <div className={styles.modal}>
-                         <div className={styles.closeMenuGetPreview}>
-                                <button className={styles.viewBtn} onClick={() => setGetPreview(false)}>
-                                  Salir de Vista Previa
-                                </button>
-                            </div>  
-                        <div className={styles.modalContent }>                         
-                           <div className={styles.column1} >                         
-                             <div className={styles.containerInfoModal}>
-                                {post.pictures.length>0? 
-                                <Swiper
-                                    slidesPerView={1}
-                                    spaceBetween={40}
-                                    navigation
-                                    onSlideChange={() => console.log('slide change')}
-                                    onSwiper={(swiper) => console.log(swiper)}
-                                    modules={[Pagination, Navigation]}
-                                    className={styles.mySwipperInfo}
-                                  >
-                                    {                              
-                                        post.pictures.map((picture) =>(
-                                          <SwiperSlide>
-                                            <img className={styles.imgInfo} src={picture.picture} alt="Not Found ):" />
-                                          </SwiperSlide>
-                                        ))
-                                    }
-                                </Swiper>  
-                                :'No'}
-
-                                    <div className={styles.container_icon_heartInfo}>
-                                      <FavoriteIcon className={styles.icon_heartInfo} sx={{ fontSize: 25 }} />
-                                    </div>
-
-                                    <div className={styles.container_icon_shareInfo}>
-                                      <input type="checkbox" id="check" />
-                                      <label htmlFor="check" className={styles.labelInfo}>
-                                        <LaunchOutlinedIcon
-                                          className={styles.icon_shareInfo}
-                                          sx={{ fontSize: 25 }}
-                                        />
-                                      </label>
-                                    </div>
-                                               
-                                    <div className={styles.titleInfo}>
-                                      <p>{post.title}</p>
-
-                                      <div className={styles.container_ratingInfo}> 
-                                      <Rating
-                                          className={styles.ratingInfo}
-                                          name="read-only"
-                                          value={5}
-                                          readOnly
-                                          sx={{ fontSize: 25 }}
-                                      />
-                                      </div>
-                                      <p className={styles.numberRatingInfo}>({5})</p>
-                                    </div>
-                                    <div className={styles.container_opinionsInfo}>
-                                      <p className={styles.opinionsInfo}>Ver Opiniones</p>
-                                    </div>
-                                    <p className={styles.title_descriptionInfo}>
-                                      <DescriptionOutlinedIcon fontSize="large" /> Descripcion Del Evento
-                                    </p>
-                                    <p className={styles.descriptionInfo}>{post.longDescription}</p>
-                                    <div className={styles.container_plusInfo}>
-                                      <p>Ver más</p>
-                                    </div>
-                                    <hr className={styles.hr}></hr> 
-
-                                    <p className={styles.reportInfo}>
-                                      <WarningOutlinedIcon fontSize="medium" /> Reportar Contenido Inapropiado
-                                    </p>
-                             </div>
-                             <div className={styles.containerLoc}>
-                                <div className={styles.container_locationLoc}>
-                                    <IoLocationOutline className={styles.iconLoc}/>
-                                    <p>Ubicacion</p>
-                                  </div>
-                                {post.online === 'false' ?                             
-                                    <div>
-                                      <div>
-                                        <span className={styles.cityLoc}>{post.municipio} / </span>
-                                        <span className={styles.stateLoc}>{post.departamento}</span>
-                                        <p className={styles.textoLoc}>La ubicación exacta se te enviará al adquirir tu entrada</p>
-                                      </div>
-                                      <div className={styles.imgLoc}>
-                                        <div>
-                                          <img 
-                                            src={url} 
-                                            alt="mapaStaticGoogleMaps" 
-                                          /> 
-                                        </div>
-                                      </div>
-
-                                    </div>
-                                  :
-                                    <div>
-                                      <span className={styles.cityLoc}>En Linea</span>
-                                      <p className={styles.textoLoc}>El enlace para el evento se te enviara al momento de adquirir tu cupo</p>
-                                    </div>
-                                  } 
-                                  <p className={styles.descriptionLoc}>{post.shortDescription}</p>
-                                  <hr className={styles.hr}></hr> 
-                             </div>
-                          </div>
-                          <div className={styles.column2}>
-                                <div className={styles.eventDate}>                              
-                                    <div >
-                                      <div className={styles.containerTitleDate}>
-                                        <CalendarMonthIcon
-                                          sx={{
-                                            fontSize: '16px',
-                                            color: '#585858',
-                                            '& :hover': { color: '#ef5350' },
-                                          }}
-                                        />
-                                        <p className={styles.titleDate}>Próximas Fechas</p>
-                                      </div>
-                                      <div>
-                                        <table className={styles.tableDate}>
-                                          <thead>
-                                            <tr>
-                                              <th></th>
-                                              <th>Fecha</th>
-                                              <th>Hora</th>
-                                              <th>Precio</th>
-                                              <th>Cupos Dispopnibles</th>
-                                              <th>Cupos a Comprar</th>
-                                            </tr>
-                                          </thead>
-                                          <tbody>
-                                            {post.dates.map((date) => (
-                                              <tr >
-                                                <td>
-                                                  <input
-                                                    type="checkbox"
-                                                    class={styles.checkBox}
-                                                    value={date.id}
-                                                    defaultChecked={false}
-                                                  ></input>
-                                                </td>
-                                                <td>{date.date}</td>
-                                                <td>{date.start}-{date.end}</td>
-                                                <td>{date.price}</td>
-                                                <td>{date.cupos}</td>
-                                              </tr>
-                                            ))}
-                                          </tbody>
-                                        </table>
-                                      </div>                                 
-                                        <button className={styles.buttonDate}>Comprar</button>                                  
-                                      <p className={styles.parrafoDate}>
-                                        Nuevas fechas pueden ser solicitadas en cuyo caso un mínimo aplicaría de
-                                        cupos a ser adquiridos por el solicitante, será sujeto a aprobación de
-                                        fecha
-                                      </p>
-                                      <p >
-                                        Solicitar nuevas fechas
-                                      </p>   
-                                      <hr className={styles.hr}></hr>                                 
-                                    </div>
-                               </div>                      
-                                <div className={styles.container2Special}>
-                                  <p className={styles.c2titleSpecial}>Accesibilidad y requerimientos especiales</p>
-                                  <div className={styles.subcontainer2Special}>
-                                    <p className={styles.iconSpecial}>!</p>
-                                    <p className={styles.c2subtitleSpecial}>{post.specialRequires}</p>
-                                  </div>
-                                </div>
-                                <hr className={styles.hr}></hr>   
-                                {/* Orgna */}
-                                {user?
-                                <div className={styles.containerOrg}>
-                                  <div className={styles.containerTopOrg}>
-                                    <p className={styles.titleOrg}>Organizador</p>
-                                    <div className={styles.btnOrg}>
-                                      <LocalPostOfficeIcon sx={{ fontSize: '13px', color: '#d53e27' }} />
-                                      <button className={styles.buttonOrg}>
-                                        Enviar Mensaje
-                                      </button>
-                                    </div>
-                                  </div>
-                                  <div className={styles.orgContOrg}>
-                                    {/* <Link
-                                      className={styles.linkOrg}
-                                      >
-                                      <img className={styles.orgImgOrg} src={user.picture} alt="N" />
-                                    </Link> */}
-
-                                    <div className={styles.orgSubContOrg}>
-                                          <p className={styles.orgNameOrg}>{user.name}</p>
-                                          <p className={styles.orgMembershipOrg}>
-                                            Miembro desde *falta valor real*
-                                          </p>
-                                    </div>
-                                  </div>
-                                      <p className={styles.orgDescriptionOrg}>
-                                        *descipcion*
-                                      </p>
-                                      <button className={styles.button2Org}>
-                                        Otros eventos organizados por {user.name}
-                                      </button>
-                                </div>
-                                :'No hay usuario todavia'}                                
-                             </div>                                           
-                          </div>                                   
-                      </div>
-                      )}
-                  </div>
-    
                   <div>
-                    <button className={styles.viewBtn} type="submit">
-                      {' '}
-                      Publicar Evento
-                    </button>
+                  <button className={styles.viewBtn}>
+                    Vista Previa
+                  </button>
                   </div>
 
+                  <div>
+
+                  <button className={styles.viewBtn} type="submit">
+                    {' '}
+                    Publicar Evento
+                  </button>
+                  </div>
 
                 </div>
                 <p>Debes llenar todos los campos para poder continuar.</p>
@@ -2322,16 +2122,14 @@ todas.map((foto)=>{
               </div>
             </div>
           </div>
-        </div>
         </form>
       </div>
 
       {/*SECTIONS BUTTONS*/}
-      {getPreview === false ? 
       <div className={styles.containerBtnSection}>
         <button
           className={styles.btnSectionMove}
-          onClick={() => scrollSections(-1000)}
+          onClick={() => scrollSections(-2000)}
         >
           <KeyboardArrowUpIcon
             sx={{
@@ -2345,7 +2143,7 @@ todas.map((foto)=>{
         </button>
         <button
           className={styles.btnSectionMove}
-          onClick={() => scrollSections(1000)}
+          onClick={() => scrollSections(2000)}
         >
           <KeyboardArrowDownRoundedIcon
             sx={{
@@ -2358,11 +2156,9 @@ todas.map((foto)=>{
           />
         </button>
       </div>
-      :''}
-     
-    </div>
     </div>
   );
+
 };
 
 export default EventCreateForm;

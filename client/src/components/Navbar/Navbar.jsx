@@ -21,6 +21,8 @@ const Navbar = ({ upper }) => {
   const allNotifications = notifications;
   const { pathname } = useLocation();
 
+  console.log('logged',logged)
+
   const handleClick = (e) => {
     e.preventDefault();
     navigate('/');
@@ -57,11 +59,19 @@ const Navbar = ({ upper }) => {
         </div>
         <div className={style.container_div}>
           {logged && <a href="$">Mi lista</a>}
-          <Link to={`/organiza-un-evento`}>
-            <p className={`${logged ? style.buttonOrganizar : ''}`}>
+          {logged?
+          <Link to={`/oganiza-un-evento-form`}>
+            <p className={style.buttonOrganizar}>
               Organiza un evento
             </p>
           </Link>
+          :
+          <Link to={'/organiza-un-evento'}>
+          <p className={ style.buttonOrganizar}>
+            Organiza un evento
+          </p>
+          </Link>
+          }
           {!logged ? (
             <>
               <p onClick={toggleScreenLogin}>Ingresa</p>
