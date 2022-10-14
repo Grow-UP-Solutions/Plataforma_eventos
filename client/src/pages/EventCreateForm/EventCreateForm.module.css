@@ -1173,18 +1173,7 @@
   margin-left: 2rem;
 }
 
-/* .modal{
-  position:'absolute';
-  top: 50%;
-  left:50%;
-  transform: 'translate(-50%,-%50)'
 
-} */
-
-
-/* .btnVista .modal .closeModal:checked ~ .modal {
-  display: none;
-} */
 
 /* VISTA PREVIA */
 
@@ -1200,8 +1189,7 @@
 
 
 .modal {
-  display: none; 
-  position: fixed; 
+  position: absolute; 
   padding-top: 15rem; 
   left: 0;
   top: 0;
@@ -1209,33 +1197,43 @@
   height: 100%;
   overflow: auto;
   background-color: rgba(0,0,0,0.4); 
+  scrollbar-width: thin;          /* "auto" or "thin" */
+  scrollbar-color: var(--color-grey-6) #2b2a2a;   /* scroll thumb and track */
 }
+
 
 /* Modal Content */
 .modalContent {
+  position: absolute; 
   display:flex;
   background-color: #fefefe;
   padding: 10px;
   border: 1px solid #888;
-  width: 100%;
-  height: 130%;
+  
   margin-left: 5rem;
   
 }
 
 .column1{
- flex:65%;
- margin-left: 0;
+ flex:60%;
 }
 
 .column2{
-  flex:35%;
+  flex:40%;
   background-color: rgba(244,244,244,255);
-  display: inline-block;
+  display: block;
   padding: 3rem;
   width:100%;
   margin-left: 3rem;
   margin-right: 3rem;
+  
+}
+
+.containerInfoModal{
+  display: block;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
   
 }
 
@@ -1244,13 +1242,79 @@
 }
 
 .imgInfo {
-  width: 35rem;
-  height: 30rem;
+  width: 80%;
+  height: 44rem;
 }
 
+.container_icon_heartInfo {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  background-color: var(--color-orange);
+  border-radius: 60px;
+  position: relative;
+  bottom: 18px;
+  left: 20px;
+  z-index: 100;
+  box-shadow: 1px 6px 10px var(--color-grey-3);
+}
+
+.icon_heartInfo {
+  margin: auto;
+  color: var(--color-grey-6);
+  cursor: pointer;
+}
+
+.container_icon_shareInfo {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  background-color: var(--color-grey-6);
+  border-radius: 60px;
+  position: relative;
+  bottom: 58px;
+  left: 72px;
+  z-index: 100;
+  box-shadow: 1px 6px 10px var(--color-grey-3);
+}
+
+.container_icon_shareInfo input {
+  display: none;
+}
+
+.container_icon_shareInfo label {
+  display: inline-block;
+  padding: 1rem;
+  cursor: pointer;
+}
+
+.container_icon_shareInfo input:checked ~ .redes {
+  display: flex;
+  justify-content: center;
+  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.3);
+}
+
+.labelInfo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon_shareInfo {
+  color: var(--color-orange);
+  cursor: pointer;
+  position: relative;
+  bottom: 2px;
+  right: 2px;
+}
+
+
+
+
 .titleInfo {
+  display: flex;
   color: var(--color-blue);
-  font-size: 2rem;
+  font-size: 3.5rem;
   font-weight: bold;
 }
 
@@ -1265,17 +1329,47 @@
   font-weight: normal;
 }
 
+.container_opinionsInfo {
+  display: flex;
+  margin-top: 10px;
+  text-align: end;
+}
+
+.opinionsInfo {
+  color: var(--color-orange);
+  margin-left: auto;
+  border-bottom: 1px solid var(--color-orange);
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+
 .title_descriptionInfo {
-  font-size: 1.67rem;
+  font-size: 2rem;
   font-weight: bold;
   color: var(--color-grey-2);
   margin-top: 10px;
+  text-align: left;
 }
 
 .descriptionInfo {
   font-size: 1.4rem;
   color: var(--color-grey-3);
   margin-top: 10px;
+  text-align: left;
+}
+
+.container_plusInfo {
+  display: flex;
+  margin-top: 10px;
+}
+
+.container_plusInfo p {
+  color: var(--color-orange);
+  margin-left: auto;
+  border-bottom: 1px solid var(--color-orange);
+  cursor: pointer;
+  font-size: 1.5rem;
 }
 
 .line {
@@ -1283,28 +1377,73 @@
   margin-top: 10px;
 }
 
-.cityLoc, .stateLoc {
+.reportInfo {
+  font-size: 1.2;
+  color: var(--color-grey-3);
+  margin-top: 10px;
+  text-align: left;
+}
+
+.containerLoc{
+  display: block;
+  width: 84%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 3rem;
+  text-align: left;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.container_locationLoc {
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.container_locationLoc p {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--color-grey-2);
+}
+
+.iconLoc {
+  font-size: 25px;
+}
+
+
+.cityLoc {
   font-size: 1.6rem;
   color: var(--color-grey-2);
+  text-align: left;
+  margin-top: 1rem;
+}
+
+.stateLoc{
+  font-size: 1.6rem;
+  color: var(--color-grey-2);
+  text-align: left;
+  margin-top: 1rem;
 }
 
 .textoLoc {
   font-size: 1.4rem;
   color: var(--color-grey-2);
   margin-top: 10px;
+  text-align: left;
 }
 
 .imgLoc {
-  margin:auto;
-  margin-top: 2rem;
-  width:30rem;
-  height: 30rem;
+  width: 60rem;
+  height: 45rem;
+  text-align: center;
 }
 
 .descriptionLoc {
   font-size: 1.4rem;
   color: var(--color-grey-2);
- 
+  margin-top: 10px;
+  text-align: left;
 }
 
 .eventDate {
@@ -1312,6 +1451,7 @@
   align-items: center;
   justify-content: center;
   position: relative;
+  height: 50rem;
 }
 
 .containerTitleDate {
@@ -1379,8 +1519,8 @@
   letter-spacing: 1px;
   margin-top: 10px;
   justify-content: center;
-  margin-left: 30rem;
   margin-bottom: 3rem;
+  
 }
 
 .buttonDate:hover {
@@ -1399,12 +1539,13 @@
 
 
 .container2Special{
-  margin-top:0;
+  margin-top:2rem;
   margin-bottom: 3rem;
   display: inline-block;
   align-items: center;
   justify-content: center;
  }
+
 
  .c2titleSpecial{
   width: 100%;
@@ -1546,30 +1687,12 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* The Close Button */
-.close {
-  color: #aaaaaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
+.closeMenuGetPreview {
+  display: flex;
+  justify-content:center;
+  
 }
 
-.close:hover,
-.close:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
-}
+
+
+

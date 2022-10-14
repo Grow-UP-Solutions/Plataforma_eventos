@@ -38,10 +38,14 @@ import 'swiper/modules/pagination/pagination.min.css';
 import 'swiper/modules/scrollbar/scrollbar.min.css';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+
 import { Rating } from '@mui/material';
 import { IoLocationOutline } from 'react-icons/io5';
 import { iconArrowLeft, iconArrowRight } from '../../assets/imgs';
 import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
+import { AiOutlineClose } from 'react-icons/ai';
+import LaunchOutlinedIcon from '@mui/icons-material/LaunchOutlined';
+import WarningOutlinedIcon from '@mui/icons-material/WarningOutlined';
 
 
 
@@ -111,74 +115,74 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
   //               POST Y ERROR            //
 
   
-  // const [post, setPost] = useState({
-  //   idOrganizer:'632cbed4f208f44f5333af48',
-  //   title: '',
-  //   categories: [],
-  //   otherCategorie: '',
-  //   shortDescription: '',
-  //   longDescription: '',
-  //   pictures: [],
-  //   online: '',
-  //   link: '',
-  //   departamento: '',
-  //   municipio: '',
-  //   direccion: '',
-  //   barrio: '',
-  //   specialRequires: '',
-  //   dates:[{ 
-  //     date: "", 
-  //     start : "", 
-  //     end:"" , 
-  //     year:0 ,  
-  //     cupos:0, 
-  //     price:0, 
-  //     sells: 0 , 
-  //     isPublic:true,
-  //     precioAlPublico:'',
-  //     gananciaCupo:'',
-  //     gananciaEvento:'',
-  //     dateFormated:''
-  //    }],
-  //   isPublic:true
-  // });
-
   const [post, setPost] = useState({
     idOrganizer:'632cbed4f208f44f5333af48',
-    title: 'Hola',
-    categories: ['Belleza'],
+    title: '',
+    categories: [],
     otherCategorie: '',
-    shortDescription: 'Alta',
-    longDescription: 'Torneo de playStation, donde el campeon actual defiende su titulo y bvuscara coronarse nuevamente. Torneo online desde cualquier parte del mundo podes jugar.',
-    pictures: [ {
-      cover: true,
-      picture: 'https://culturageek.com.ar/wp-content/uploads/2022/08/Playstation-Torneo-Mexico-Portada.jpg',
-    }],
-    online: 'false',
+    shortDescription: '',
+    longDescription: '',
+    pictures: [],
+    online: '',
     link: '',
-    departamento: 'Antioquia',
-    municipio: 'Medellin',
-    direccion: 'Aaa 21',
-    barrio: 'Aaaa',
+    departamento: '',
+    municipio: '',
+    direccion: '',
+    barrio: '',
     specialRequires: '',
-    dates:[
-      { 
-        date: '15/12/2022', 
-        start : '10:00', 
-        end:'11:00', 
-        year:0 ,  
-        cupos:32, 
-        price:10000, 
-        sells: 12, 
-        isPublic:true,
-        precioAlPublico:'',
-        gananciaCupo:'',
-        gananciaEvento:'',
-        dateFormated:'Octubre 30 de 2022'
-       }
-     ],
+    dates:[{ 
+      date: "", 
+      start : "", 
+      end:"" , 
+      year:0 ,  
+      cupos:0, 
+      price:0, 
+      sells: 0 , 
+      isPublic:true,
+      precioAlPublico:'',
+      gananciaCupo:'',
+      gananciaEvento:'',
+      dateFormated:''
+     }],
     isPublic:true
   });
+
+  // const [post, setPost] = useState({
+  //   idOrganizer:'632cbed4f208f44f5333af48',
+  //   title: 'Hola',
+  //   categories: ['Belleza'],
+  //   otherCategorie: '',
+  //   shortDescription: 'Alta',
+  //   longDescription: 'Torneo de playStation, donde el campeon actual defiende su titulo y bvuscara coronarse nuevamente. Torneo online desde cualquier parte del mundo podes jugar.',
+  //   pictures: [ {
+  //     cover: true,
+  //     picture: 'https://culturageek.com.ar/wp-content/uploads/2022/08/Playstation-Torneo-Mexico-Portada.jpg',
+  //   }],
+  //   online: 'false',
+  //   link: '',
+  //   departamento: 'Antioquia',
+  //   municipio: 'Medellin',
+  //   direccion: 'Aaa 21',
+  //   barrio: 'Aaaa',
+  //   specialRequires: '',
+  //   dates:[
+  //     { 
+  //       date: '15/12/2022', 
+  //       start : '10:00', 
+  //       end:'11:00', 
+  //       year:0 ,  
+  //       cupos:32, 
+  //       price:10000, 
+  //       sells: 12, 
+  //       isPublic:true,
+  //       precioAlPublico:'',
+  //       gananciaCupo:'',
+  //       gananciaEvento:'',
+  //       dateFormated:'Octubre 30 de 2022'
+  //      }
+  //    ],
+  //   isPublic:true
+  // });
 
 
 
@@ -712,8 +716,12 @@ todas.map((foto)=>{
     setScrollY(scrollY + px);
   };
 
+  //--------------------------------------------------//
+  //                VISTA PREVIA         //
 
-  
+  const [getPreview, setGetPreview] = useState(false);
+
+
   //--------------------------------------------------//
   //                 SAVE           //
 
@@ -721,13 +729,14 @@ todas.map((foto)=>{
 
 
   function hanldeClick(e){
+    
     e.preventDefault()
     setPost({
       ...post,
       isPublic:false
     })
+    
 
-    console.log('postGuardar',post)
     e.preventDefault()
     if (Object.values(errors).length > 0) {
       setFailedSubmit(true)
@@ -780,7 +789,7 @@ todas.map((foto)=>{
            }],
           isPublic:true
      })
-        navigate("/user/profile" )
+         navigate("/user/profile" )
       } 
     }
     )
@@ -792,7 +801,6 @@ todas.map((foto)=>{
 
 
   function handleDelete(e){
-    console.log('guardar')
     e.preventDefault()
     
     swal({
@@ -1949,21 +1957,20 @@ todas.map((foto)=>{
 
                 <div className={styles.btnContainer}>
                   <div className={styles.btnVista}>
-                  {/* <input type="checkbox" id="check" />
-        <label htmlFor="check" className={style.label}>
-          <LaunchOutlinedIcon
-            className={style.icon_share}
-            sx={{ fontSize: 25 }}
-          />
-        </label> */}
-                      <input type="checkbox" id="check" />
-                      <label htmlFor="check"  className={styles.viewBtn}>Vista Previa</label>
-                      <span className={styles.close}>&times;</span>  
 
+                      <p onClick={() => setGetPreview(!getPreview)} className={styles.viewBtn}>
+                        Vista Previa
+                      </p>
+                      {getPreview &&(
                       <div className={styles.modal}>
-                        <div className={styles.modalContent }>
-                          <div className={styles.column1} >                         
-                             <div>
+                         <div className={styles.closeMenuGetPreview}>
+                                <button className={styles.viewBtn} onClick={() => setGetPreview(false)}>
+                                  Salir de Vista Previa
+                                </button>
+                            </div>  
+                        <div className={styles.modalContent }>                         
+                           <div className={styles.column1} >                         
+                             <div className={styles.containerInfoModal}>
                                 {post.pictures.length>0? 
                                 <Swiper
                                     slidesPerView={1}
@@ -1983,6 +1990,20 @@ todas.map((foto)=>{
                                     }
                                 </Swiper>  
                                 :'No'}
+
+                                    <div className={styles.container_icon_heartInfo}>
+                                      <FavoriteIcon className={styles.icon_heartInfo} sx={{ fontSize: 25 }} />
+                                    </div>
+
+                                    <div className={styles.container_icon_shareInfo}>
+                                      <input type="checkbox" id="check" />
+                                      <label htmlFor="check" className={styles.labelInfo}>
+                                        <LaunchOutlinedIcon
+                                          className={styles.icon_shareInfo}
+                                          sx={{ fontSize: 25 }}
+                                        />
+                                      </label>
+                                    </div>
                                                
                                     <div className={styles.titleInfo}>
                                       <p>{post.title}</p>
@@ -1998,15 +2019,29 @@ todas.map((foto)=>{
                                       </div>
                                       <p className={styles.numberRatingInfo}>({5})</p>
                                     </div>
+                                    <div className={styles.container_opinionsInfo}>
+                                      <p className={styles.opinionsInfo}>Ver Opiniones</p>
+                                    </div>
                                     <p className={styles.title_descriptionInfo}>
                                       <DescriptionOutlinedIcon fontSize="large" /> Descripcion Del Evento
                                     </p>
                                     <p className={styles.descriptionInfo}>{post.longDescription}</p>
+                                    <div className={styles.container_plusInfo}>
+                                      <p>Ver más</p>
+                                    </div>
                                     <hr className={styles.hr}></hr> 
+
+                                    <p className={styles.reportInfo}>
+                                      <WarningOutlinedIcon fontSize="medium" /> Reportar Contenido Inapropiado
+                                    </p>
                              </div>
-                             <div>
+                             <div className={styles.containerLoc}>
+                                <div className={styles.container_locationLoc}>
+                                    <IoLocationOutline className={styles.iconLoc}/>
+                                    <p>Ubicacion</p>
+                                  </div>
                                 {post.online === 'false' ?                             
-                                  <div>
+                                    <div>
                                       <div>
                                         <span className={styles.cityLoc}>{post.municipio} / </span>
                                         <span className={styles.stateLoc}>{post.departamento}</span>
@@ -2030,11 +2065,11 @@ todas.map((foto)=>{
                                   } 
                                   <p className={styles.descriptionLoc}>{post.shortDescription}</p>
                                   <hr className={styles.hr}></hr> 
-                            </div>
+                             </div>
                           </div>
                           <div className={styles.column2}>
                                 <div className={styles.eventDate}>                              
-                                    <div className={styles.container}>
+                                    <div >
                                       <div className={styles.containerTitleDate}>
                                         <CalendarMonthIcon
                                           sx={{
@@ -2096,6 +2131,7 @@ todas.map((foto)=>{
                                     <p className={styles.c2subtitleSpecial}>{post.specialRequires}</p>
                                   </div>
                                 </div>
+                                <hr className={styles.hr}></hr>   
                                 {/* Orgna */}
                                 {user?
                                 <div className={styles.containerOrg}>
@@ -2130,9 +2166,10 @@ todas.map((foto)=>{
                                       </button>
                                 </div>
                                 :'No hay usuario todavia'}                                
-                          </div>                                           
-                        </div>                
+                             </div>                                           
+                          </div>                                   
                       </div>
+                      )}
                   </div>
     
                   <div>
@@ -2162,6 +2199,7 @@ todas.map((foto)=>{
       </div>
 
       {/*SECTIONS BUTTONS*/}
+      {getPreview === false ? 
       <div className={styles.containerBtnSection}>
         <button
           className={styles.btnSectionMove}
@@ -2192,6 +2230,7 @@ todas.map((foto)=>{
           />
         </button>
       </div>
+      :''}
      
     </div>
     </div>
