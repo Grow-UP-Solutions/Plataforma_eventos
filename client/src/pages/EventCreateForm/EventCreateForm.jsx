@@ -23,23 +23,43 @@ import { formatDate } from '../../utils/formatDate';
 import styles from './EventCreateForm.module.css';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Preview from './Preview';
 import { ConstructionOutlined, ContactMailOutlined, EmergencyRecordingSharp } from '@mui/icons-material';
 import { getColombia , postEvent } from '../../redux/actions';
 import swal from 'sweetalert'
 import { useNavigate } from 'react-router-dom';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import dotenv from 'dotenv';
+import {formatDateForm} from '../../utils/formatDateForm';
+import {Button ,Modal, ModalHeader,ModalBody,ModalFooter} from 'reactstrap'
+import 'bootstrap'
+import { Pagination } from 'swiper';
+import 'swiper/modules/navigation/navigation.min.css';
+import 'swiper/modules/pagination/pagination.min.css';
+import 'swiper/modules/scrollbar/scrollbar.min.css';
+import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+
+import { Rating } from '@mui/material';
+import { IoLocationOutline } from 'react-icons/io5';
+import { iconArrowLeft, iconArrowRight } from '../../assets/imgs';
+import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
+import { AiOutlineClose } from 'react-icons/ai';
+import LaunchOutlinedIcon from '@mui/icons-material/LaunchOutlined';
+import WarningOutlinedIcon from '@mui/icons-material/WarningOutlined';
+
+
+
+
 
 const EventCreateForm = () => {
 
 
   const dispatch = useDispatch()
 
-  const f = new Date();
-  //Devuelve formato sólo de fecha pero en el formato regional actual ejemplo: 24/8/2019
-  console.log(f.toLocaleDateString());
 
- 
+  
+
+ const user = ''
 
   //--------------------------------------------------//
   //               DEPARTAMENTOS              //
@@ -95,8 +115,6 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
   //               POST Y ERROR            //
 
   
-
-
   const [post, setPost] = useState({
     idOrganizer:'632cbed4f208f44f5333af48',
     title: '',
@@ -123,10 +141,48 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
       isPublic:true,
       precioAlPublico:'',
       gananciaCupo:'',
-      gananciaEvento:''
+      gananciaEvento:'',
+      dateFormated:''
      }],
     isPublic:true
   });
+
+  // const [post, setPost] = useState({
+  //   idOrganizer:'632cbed4f208f44f5333af48',
+  //   title: 'Hola',
+  //   categories: ['Belleza'],
+  //   otherCategorie: '',
+  //   shortDescription: 'Alta',
+  //   longDescription: 'Torneo de playStation, donde el campeon actual defiende su titulo y bvuscara coronarse nuevamente. Torneo online desde cualquier parte del mundo podes jugar.',
+  //   pictures: [ {
+  //     cover: true,
+  //     picture: 'https://culturageek.com.ar/wp-content/uploads/2022/08/Playstation-Torneo-Mexico-Portada.jpg',
+  //   }],
+  //   online: 'false',
+  //   link: '',
+  //   departamento: 'Antioquia',
+  //   municipio: 'Medellin',
+  //   direccion: 'Aaa 21',
+  //   barrio: 'Aaaa',
+  //   specialRequires: '',
+  //   dates:[
+  //     { 
+  //       date: '15/12/2022', 
+  //       start : '10:00', 
+  //       end:'11:00', 
+  //       year:0 ,  
+  //       cupos:32, 
+  //       price:10000, 
+  //       sells: 12, 
+  //       isPublic:true,
+  //       precioAlPublico:'',
+  //       gananciaCupo:'',
+  //       gananciaEvento:'',
+  //       dateFormated:'Octubre 30 de 2022'
+  //      }
+  //    ],
+  //   isPublic:true
+  // });
 
 
 
@@ -143,6 +199,7 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
     barrio: '',
     specialRequires: '',
     cupos:'',
+    price:'',
     dates:'',
     isPublic:''
   
@@ -316,11 +373,25 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
       errors.specialRequires = 'Palabra ofensiva'
     }
 
-    // for (var i=0; i<post.dates.length;i++ ){
-    //   if (!(post.dates[i].cupos).match(numero)) {
-    //     errors.dates = 'No podes'
-    //   }
-    // }
+    if(post.dates.length>0){
+      for (var i=0; i<post.dates.length;i++ ){
+        if (!post.dates[i].cupos) {
+          errors.cupos= true
+        }
+      }
+
+    }
+
+    if(post.dates.length>0){
+      for (var i=0; i<post.dates.length;i++ ){
+        if (!post.dates[i].price) {
+          errors.price= true
+        }
+      }
+
+    }
+    
+    
 
 
     // for (var i=0; i<post.dates.length;i++ ){
@@ -329,34 +400,41 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
     //   }
     // }
 
-    for (var i=0; i<post.dates.length;i++ ){
-      if (!post.dates[i].cupos) {
-        errors.cupos= true
-      }
-    }
+  
   
 
     for (var i=0; i<post.dates.length;i++ ){
-      if (!post.dates[i].date ||!post.dates[i].start ||!post.dates[i].end || !post.dates[i].cupos ||!post.dates[i].price) {
+      if (!post.dates[i].date ||!post.dates[i].start ||!post.dates[i].end ) {
         errors.dates= true
       }
     }
     
     for (var i=0; i<post.dates.length;i++ ){
-      if (post.dates[i].start > post.dates[i].end ) {
-        errors.dates = 'No puede empezar despues que termina'
+      if (post.dates[i].start > post.dates[i].end && post.dates[i].end ) {
+        errors.dates = 'Error, hora de fin menor a hora de inicio'
       }
     }
 
     for (var i=0; i<post.dates.length;i++ ){
       for(var j=1; j<post.dates.length;j++ ){
-      if (post.dates[i].date === post.dates[j].date && post.dates[j].start < post.dates[i].end &&
-        post.dates[j].start >post.dates[i].start || post.dates[j].end >post.dates[i].start &&
-        post.dates[j].end < post.dates[i].end || post.dates[j].start < post.dates[i].start &&
-        post.dates[j].end > post.dates[i].end
-         )
-      errors.dates = 'Fechas cruzadas'
-    }}
+      if (  post.dates[i].start.length>0 && post.dates[j].start.length>0 && post.dates[i].end.length>0
+        && post.dates[j].end.length>0 && post.dates[i].date === post.dates[j].date && i !== j ){
+          if(post.dates[i].start === post.dates[j].start||
+            post.dates[i].end === post.dates[j].end ||
+            post.dates[i].start > post.dates[j].start && post.dates[i].start < post.dates[j].end ||
+            post.dates[i].end > post.dates[j].start && post.dates[i].end < post.dates[j].end||
+            post.dates[i].start < post.dates[j].start && post.dates[i].end > post.dates[j].end ||
+            post.dates[i].start > post.dates[j].start && post.dates[i].end < post.dates[j].end ){
+            errors.dates = 'Fechas cruzadas'
+          }
+    
+          
+             
+        }
+        }
+        
+      
+    }
     
     return errors
   }
@@ -518,6 +596,14 @@ todas.map((foto)=>{
     });
   }
 
+  dotenv.config();
+  const location = `${post.municipio}, ${post.departamento}`;
+  const apiKey = 'AIzaSyBr-FUseqSbsY6EMqIGNnGmegD39R--nBA';
+  const zoom = '14';
+  const size = '400x300';
+  const url = `https://maps.googleapis.com/maps/api/staticmap?center=${location}&zoom=${zoom}&size=${size}&key=${apiKey}`;
+
+
  
   //--------------------------------------------------//
   //               POST  PRICE  && DATE        //
@@ -531,10 +617,14 @@ todas.map((foto)=>{
 
   let handleChanges = (i, e ) => {
     let newFechas = [...post.dates];
+    
     newFechas[i][e.target.name] = e.target.value;
     newFechas[i].precioAlPublico=parseFloat(newFechas[i].price) + parseFloat(costoDeManejo) + parseFloat(a);
     newFechas[i].gananciaCupo = parseFloat(newFechas[i].price)-(((parseFloat(newFechas[i].price)*parseFloat(comision))+((parseFloat(newFechas[i].price)*parseFloat(comision)*parseFloat(IVA)))))
     newFechas[i].gananciaEvento = parseFloat(newFechas[i].gananciaCupo) * parseInt(newFechas[i].cupos)
+    if(e.target.name==='date'){
+      newFechas[i].dateFormated = formatDateForm(e.target.value)
+    }
     setPost({
       ...post,
       dates:newFechas 
@@ -552,12 +642,38 @@ todas.map((foto)=>{
   let removeFormFields = (i) => {
     let newFechas = [...post.dates];
       newFechas.splice(i, 1);
-      setPost({
-        ...post,
-        dates:newFechas 
+      return swal({
+        title: "Esta acción eliminara esta fecha.",
+        icon: "warning",
+        buttons:['Cancelar acción','Continuar'],
+        dangerMode: true,
+      })
+      .then((continuar)=>{  
+        if(continuar){                 
+          setPost({
+            ...post,
+            dates:newFechas 
+          })
+        }
       })
       
+      
   }
+ 
+  var fecha = new Date();
+  var anio = fecha.getFullYear();
+  var dia = fecha.getDate();
+  var _mes = fecha.getMonth();//viene con valores de 0 al 11
+  _mes = _mes + 1;//ahora lo tienes de 1 al 12
+  if (_mes < 10)//ahora le agregas un 0 para el formato date
+  { var mes = "0" + _mes;}
+  else
+  { var mes = ''+_mes;}
+
+  const fechaMinima = anio+'-'+mes+'-'+dia;
+  
+
+
 
   //--------------------------------------------------//
   //                  CALENDAR                 //
@@ -601,19 +717,26 @@ todas.map((foto)=>{
   };
 
   //--------------------------------------------------//
+  //                VISTA PREVIA         //
+
+  const [getPreview, setGetPreview] = useState(false);
+
+
+  //--------------------------------------------------//
   //                 SAVE           //
 
   const navigate = useNavigate()
 
 
   function hanldeClick(e){
+    
     e.preventDefault()
     setPost({
       ...post,
       isPublic:false
     })
+    
 
-    console.log('postGuardar',post)
     e.preventDefault()
     if (Object.values(errors).length > 0) {
       setFailedSubmit(true)
@@ -666,7 +789,7 @@ todas.map((foto)=>{
            }],
           isPublic:true
      })
-        navigate("/user/profile" )
+         navigate("/user/profile" )
       } 
     }
     )
@@ -678,7 +801,6 @@ todas.map((foto)=>{
 
 
   function handleDelete(e){
-    console.log('guardar')
     e.preventDefault()
     
     swal({
@@ -763,9 +885,16 @@ todas.map((foto)=>{
 
   
   return (
+    <div>
+      
     <div className={styles.container}>
+    
       <div ref={ref} className={styles.containerForm}>
+   
+        
+      
         <form onSubmit={(e) => handleSubmit(e)}>
+         <div>
           {/* SECTION 1: Nombre del Evento */}
 
           <div className={styles.section}>
@@ -915,7 +1044,7 @@ todas.map((foto)=>{
                   <label className={styles.subTitle}>
                     Si escogiste ‘otro’, especifica :{' '}
                   </label>
-                  {failedSubmit && errors.longDescription ?
+                  {failedSubmit && errors.otherCategorie ?
                 
                       <input
                       className={styles.input2}
@@ -1469,7 +1598,20 @@ todas.map((foto)=>{
 
                   <div className={styles.containerMap}>
                     <p className={styles.titleMap}>Ubicación en el mapa</p>
-                    <img src={mapa} alt="imagen_mapa" />
+                    {post.municipio?
+                     <div>
+                     <img 
+                       src={url} 
+                       alt="mapaStaticGoogleMaps" 
+                     />
+                   </div>
+                    :
+                    <div>
+                    <img 
+                      src={mapa} 
+                      alt="mapaStaticGoogleMaps" 
+                    />
+                  </div>}
                     <p className={styles.subtextMap}>Texto google legal aqui</p>
 
                     {/* <img  className={styles.icon} src={iconEditar} alt='n' /> */}
@@ -1579,8 +1721,7 @@ todas.map((foto)=>{
                             Máximo número de participantes
                             {failedSubmit && errors.cupos?
                             <input
-                            id='cupos'
-                          
+                            id='cupos'   
                             type="number"
                             placeholder="10"
                             name="cupos"
@@ -1650,10 +1791,11 @@ todas.map((foto)=>{
                             <p className={styles.subInfotxt}>
                               Después de nuestra comisión + IVA
                             </p>
-                            <Link to={`/user/profile`} target={"_blank"}>
+                            <a className={styles.btn6} href="/user/profile" target="_blank">Ver mas</a>
+                            {/* <Link to={`/user/profile`} target={"_blank"}>
                               <button className={styles.btn6}
                               >Ver Más</button>
-                            </Link>
+                            </Link> */}
                         
                           </div>
 
@@ -1668,15 +1810,12 @@ todas.map((foto)=>{
                               <p className={styles.subInfotxt}>
                                 Esto sería lo que ganarías si se venden todos tus cupos
                               </p>
-                              <Link to={`/user/profile`} target="_blank" rel="noopener noreferrer">
-                                <button className={styles.btn6}
-                                >Ver Más</button>
-                              </Link>
+                              <a className={styles.btn6} href="/user/profile" target="_blank">Ver mas</a>
                             </div> 
 
                        </div>
 
-                        
+                        {/*Calendar*/}
                         {/* <div className={styles.contInputDate}>             
                             <input 
                               type="text" 
@@ -1718,16 +1857,18 @@ todas.map((foto)=>{
                             name="date" 
                             value={element.date || ""} 
                             onChange={e => handleChanges(index, e)} 
+                            min={fechaMinima}
                             required
                             />
                           
                           :
                           <input 
-                         
+                          id="fecha"
                           type="date" 
                           name="date" 
                           value={element.date || ""} 
                           onChange={e => handleChanges(index, e)} 
+                          min={fechaMinima}
                         
                           />
                         
@@ -1754,6 +1895,7 @@ todas.map((foto)=>{
                           name="start" 
                           value={element.start || ""} 
                           onChange={e => handleChanges(index, e)} 
+                          step="900"
                           />
                         }
                       </div>
@@ -1786,6 +1928,7 @@ todas.map((foto)=>{
                         : null
                       }
                     </div>
+                    <hr className={styles.hr}></hr> 
                    </div>
                   ))}
 
@@ -1797,7 +1940,7 @@ todas.map((foto)=>{
                   <p className={styles.errors}>{errors.cupos}</p>
                   )}
 
-          <hr className={styles.hr}></hr> 
+          
 
           <div  >
               <button className={styles.addDate}  type="button" onClick={() => addFormFields()}> + Crear Nueva Fecha</button>
@@ -1813,24 +1956,233 @@ todas.map((foto)=>{
                 </p>
 
                 <div className={styles.btnContainer}>
+                  <div className={styles.btnVista}>
+
+                      <p onClick={() => setGetPreview(!getPreview)} className={styles.viewBtn}>
+                        Vista Previa
+                      </p>
+                      {getPreview &&(
+                      <div className={styles.modal}>
+                         <div className={styles.closeMenuGetPreview}>
+                                <button className={styles.viewBtn} onClick={() => setGetPreview(false)}>
+                                  Salir de Vista Previa
+                                </button>
+                            </div>  
+                        <div className={styles.modalContent }>                         
+                           <div className={styles.column1} >                         
+                             <div className={styles.containerInfoModal}>
+                                {post.pictures.length>0? 
+                                <Swiper
+                                    slidesPerView={1}
+                                    spaceBetween={40}
+                                    navigation
+                                    onSlideChange={() => console.log('slide change')}
+                                    onSwiper={(swiper) => console.log(swiper)}
+                                    modules={[Pagination, Navigation]}
+                                    className={styles.mySwipperInfo}
+                                  >
+                                    {                              
+                                        post.pictures.map((picture) =>(
+                                          <SwiperSlide>
+                                            <img className={styles.imgInfo} src={picture.picture} alt="Not Found ):" />
+                                          </SwiperSlide>
+                                        ))
+                                    }
+                                </Swiper>  
+                                :'No'}
+
+                                    <div className={styles.container_icon_heartInfo}>
+                                      <FavoriteIcon className={styles.icon_heartInfo} sx={{ fontSize: 25 }} />
+                                    </div>
+
+                                    <div className={styles.container_icon_shareInfo}>
+                                      <input type="checkbox" id="check" />
+                                      <label htmlFor="check" className={styles.labelInfo}>
+                                        <LaunchOutlinedIcon
+                                          className={styles.icon_shareInfo}
+                                          sx={{ fontSize: 25 }}
+                                        />
+                                      </label>
+                                    </div>
+                                               
+                                    <div className={styles.titleInfo}>
+                                      <p>{post.title}</p>
+
+                                      <div className={styles.container_ratingInfo}> 
+                                      <Rating
+                                          className={styles.ratingInfo}
+                                          name="read-only"
+                                          value={5}
+                                          readOnly
+                                          sx={{ fontSize: 25 }}
+                                      />
+                                      </div>
+                                      <p className={styles.numberRatingInfo}>({5})</p>
+                                    </div>
+                                    <div className={styles.container_opinionsInfo}>
+                                      <p className={styles.opinionsInfo}>Ver Opiniones</p>
+                                    </div>
+                                    <p className={styles.title_descriptionInfo}>
+                                      <DescriptionOutlinedIcon fontSize="large" /> Descripcion Del Evento
+                                    </p>
+                                    <p className={styles.descriptionInfo}>{post.longDescription}</p>
+                                    <div className={styles.container_plusInfo}>
+                                      <p>Ver más</p>
+                                    </div>
+                                    <hr className={styles.hr}></hr> 
+
+                                    <p className={styles.reportInfo}>
+                                      <WarningOutlinedIcon fontSize="medium" /> Reportar Contenido Inapropiado
+                                    </p>
+                             </div>
+                             <div className={styles.containerLoc}>
+                                <div className={styles.container_locationLoc}>
+                                    <IoLocationOutline className={styles.iconLoc}/>
+                                    <p>Ubicacion</p>
+                                  </div>
+                                {post.online === 'false' ?                             
+                                    <div>
+                                      <div>
+                                        <span className={styles.cityLoc}>{post.municipio} / </span>
+                                        <span className={styles.stateLoc}>{post.departamento}</span>
+                                        <p className={styles.textoLoc}>La ubicación exacta se te enviará al adquirir tu entrada</p>
+                                      </div>
+                                      <div className={styles.imgLoc}>
+                                        <div>
+                                          <img 
+                                            src={url} 
+                                            alt="mapaStaticGoogleMaps" 
+                                          /> 
+                                        </div>
+                                      </div>
+
+                                    </div>
+                                  :
+                                    <div>
+                                      <span className={styles.cityLoc}>En Linea</span>
+                                      <p className={styles.textoLoc}>El enlace para el evento se te enviara al momento de adquirir tu cupo</p>
+                                    </div>
+                                  } 
+                                  <p className={styles.descriptionLoc}>{post.shortDescription}</p>
+                                  <hr className={styles.hr}></hr> 
+                             </div>
+                          </div>
+                          <div className={styles.column2}>
+                                <div className={styles.eventDate}>                              
+                                    <div >
+                                      <div className={styles.containerTitleDate}>
+                                        <CalendarMonthIcon
+                                          sx={{
+                                            fontSize: '16px',
+                                            color: '#585858',
+                                            '& :hover': { color: '#ef5350' },
+                                          }}
+                                        />
+                                        <p className={styles.titleDate}>Próximas Fechas</p>
+                                      </div>
+                                      <div>
+                                        <table className={styles.tableDate}>
+                                          <thead>
+                                            <tr>
+                                              <th></th>
+                                              <th>Fecha</th>
+                                              <th>Hora</th>
+                                              <th>Precio</th>
+                                              <th>Cupos Dispopnibles</th>
+                                              <th>Cupos a Comprar</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            {post.dates.map((date) => (
+                                              <tr >
+                                                <td>
+                                                  <input
+                                                    type="checkbox"
+                                                    class={styles.checkBox}
+                                                    value={date.id}
+                                                    defaultChecked={false}
+                                                  ></input>
+                                                </td>
+                                                <td>{date.date}</td>
+                                                <td>{date.start}-{date.end}</td>
+                                                <td>{date.price}</td>
+                                                <td>{date.cupos}</td>
+                                              </tr>
+                                            ))}
+                                          </tbody>
+                                        </table>
+                                      </div>                                 
+                                        <button className={styles.buttonDate}>Comprar</button>                                  
+                                      <p className={styles.parrafoDate}>
+                                        Nuevas fechas pueden ser solicitadas en cuyo caso un mínimo aplicaría de
+                                        cupos a ser adquiridos por el solicitante, será sujeto a aprobación de
+                                        fecha
+                                      </p>
+                                      <p >
+                                        Solicitar nuevas fechas
+                                      </p>   
+                                      <hr className={styles.hr}></hr>                                 
+                                    </div>
+                               </div>                      
+                                <div className={styles.container2Special}>
+                                  <p className={styles.c2titleSpecial}>Accesibilidad y requerimientos especiales</p>
+                                  <div className={styles.subcontainer2Special}>
+                                    <p className={styles.iconSpecial}>!</p>
+                                    <p className={styles.c2subtitleSpecial}>{post.specialRequires}</p>
+                                  </div>
+                                </div>
+                                <hr className={styles.hr}></hr>   
+                                {/* Orgna */}
+                                {user?
+                                <div className={styles.containerOrg}>
+                                  <div className={styles.containerTopOrg}>
+                                    <p className={styles.titleOrg}>Organizador</p>
+                                    <div className={styles.btnOrg}>
+                                      <LocalPostOfficeIcon sx={{ fontSize: '13px', color: '#d53e27' }} />
+                                      <button className={styles.buttonOrg}>
+                                        Enviar Mensaje
+                                      </button>
+                                    </div>
+                                  </div>
+                                  <div className={styles.orgContOrg}>
+                                    <Link
+                                      className={styles.linkOrg}
+                                      >
+                                      <img className={styles.orgImgOrg} src={user.picture} alt="N" />
+                                    </Link>
+
+                                    <div className={styles.orgSubContOrg}>
+                                          <p className={styles.orgNameOrg}>{user.name}</p>
+                                          <p className={styles.orgMembershipOrg}>
+                                            Miembro desde {user.membership}
+                                          </p>
+                                    </div>
+                                  </div>
+                                      <p className={styles.orgDescriptionOrg}>
+                                        {user.descriptionOrganizer}
+                                      </p>
+                                      <button className={styles.button2Org}>
+                                        Otros eventos organizados por {user.name}
+                                      </button>
+                                </div>
+                                :'No hay usuario todavia'}                                
+                             </div>                                           
+                          </div>                                   
+                      </div>
+                      )}
+                  </div>
+    
                   <div>
-                  <button className={styles.viewBtn}>
-                    Vista Previa
-                  </button>
+                    <button className={styles.viewBtn} type="submit">
+                      {' '}
+                      Publicar Evento
+                    </button>
                   </div>
 
                   <div>
-
-                  <button className={styles.viewBtn} type="submit">
-                    {' '}
-                    Publicar Evento
-                  </button>
-                  </div>
-
-                  <div>
-                  <button className={styles.viewBtn} onClick={(e) => hanldeClick(e)} >
-                    Guardar y Publicar Luego
-                  </button>
+                    <button className={styles.viewBtn} onClick={(e) => hanldeClick(e)} >
+                      Guardar y Publicar Luego
+                    </button>
                   </div>
 
                 </div>
@@ -1842,10 +2194,12 @@ todas.map((foto)=>{
               </div>
             </div>
           </div>
+        </div>
         </form>
       </div>
 
       {/*SECTIONS BUTTONS*/}
+      {getPreview === false ? 
       <div className={styles.containerBtnSection}>
         <button
           className={styles.btnSectionMove}
@@ -1876,6 +2230,9 @@ todas.map((foto)=>{
           />
         </button>
       </div>
+      :''}
+     
+    </div>
     </div>
   );
 };
