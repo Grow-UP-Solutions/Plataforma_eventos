@@ -41,10 +41,7 @@ export const AuthProvider = ({ children }) => {
       const { data } = await eventsApi.get('/users/login/renew');
 
       const user = {
-        uid: data.uid,
-        name: data.name,
-        email: data.email,
-        organizer: data.organizer,
+        ...data,
       };
 
       localStorage.setItem('token', data.token);

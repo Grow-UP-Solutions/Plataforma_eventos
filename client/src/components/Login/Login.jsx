@@ -1,20 +1,20 @@
-import React, { useContext, useState } from 'react';
+import React, {useContext, useState} from 'react';
 import styles from './Login.module.css';
 
-import { AuthContext } from '../../context/auth/';
-import { UIContext } from '../../context/ui';
+import {AuthContext} from '../../context/auth/';
+import {UIContext} from '../../context/ui';
 
-import { CgClose } from 'react-icons/cg';
-import { IconFacebook, IconGoogle } from '../../assets/Icons';
+import {CgClose} from 'react-icons/cg';
+import {IconFacebook, IconGoogle} from '../../assets/Icons';
 
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import eventsApi from '../../axios/eventsApi';
 import useValidateForm from '../../hooks/useValidateForm';
 
 const Login = () => {
   const navigate = useNavigate();
-  const { login } = useContext(AuthContext);
-  const { toggleScreenLogin } = useContext(UIContext);
+  const {login} = useContext(AuthContext);
+  const {toggleScreenLogin} = useContext(UIContext);
 
   const [modalChangePassword, setModalChangePassword] = useState({
     attemps: 0,
@@ -86,7 +86,7 @@ const Login = () => {
           console.log(event.data_json);
 
           if (provider === 'facebook') {
-            const { email, id } = event.data._json;
+            const {email, id} = event.data._json;
 
             user = {
               email,
@@ -95,7 +95,7 @@ const Login = () => {
           }
 
           if (provider === 'google') {
-            const { sub, email } = event.data._json;
+            const {sub, email} = event.data._json;
 
             user = {
               email,
@@ -160,24 +160,24 @@ const Login = () => {
         </div>
         <form onSubmit={onLogin} className={styles.formContainer}>
           <div className={styles.formGroup}>
-            <label htmlFor="mail">Usuario</label>
+            <label htmlFor='mail'>Usuario</label>
             <input
               required
               onChange={handleChangeInputValue}
-              type="mail"
-              id="mail"
+              type='mail'
+              id='mail'
             />
             {errorsInputs.mail === false && (
               <span>Ingrese un correo válido</span>
             )}
           </div>
           <div className={styles.formGroup}>
-            <label htmlFor="password">Contraseña</label>
+            <label htmlFor='password'>Contraseña</label>
             <input
               required
               onChange={handleChangeInputValue}
-              type="password"
-              id="password"
+              type='password'
+              id='password'
             />
           </div>
           {errorLogin.result && (
@@ -190,7 +190,7 @@ const Login = () => {
               <input
                 checked={saveSession}
                 onChange={() => setSaveSession(!saveSession)}
-                type="checkbox"
+                type='checkbox'
               />
               <span>Recuérdame</span>
             </div>
