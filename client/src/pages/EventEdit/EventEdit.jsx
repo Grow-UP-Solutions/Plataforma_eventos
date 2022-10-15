@@ -1,14 +1,14 @@
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import React, { useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Calendar } from 'react-date-range';
+import React, {useRef, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {Calendar} from 'react-date-range';
 import * as locales from 'react-date-range/dist/locale';
-import { Navigation } from 'swiper';
+import {Navigation} from 'swiper';
 import 'swiper/modules/navigation/navigation.min.css';
 import 'swiper/modules/pagination/pagination.min.css';
 import 'swiper/modules/scrollbar/scrollbar.min.css';
-import { Swiper, SwiperSlide } from 'swiper/react/swiper-react';
+import {Swiper, SwiperSlide} from 'swiper/react/swiper-react';
 import 'swiper/swiper.min.css';
 import categories from '../../api/categories';
 import dptos from '../../api/dptos';
@@ -19,28 +19,33 @@ import iconExclamacion2 from '../../assets/imgs/iconExclamacion2.svg';
 import infoIcon from '../../assets/imgs/infoIcon.svg';
 import ImageIcon from '@mui/icons-material/Image';
 import mapa from '../../assets/imgs/mapa2.png';
-import { formatDate } from '../../utils/formatDate';
+import {formatDate} from '../../utils/formatDate';
 import styles from './EventEdit.module.css';
-import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import {useEffect} from 'react';
+import {Link} from 'react-router-dom';
 import {
   ConstructionOutlined,
   ContactMailOutlined,
   EmergencyRecordingSharp,
 } from '@mui/icons-material';
-import { getColombia, postEvent } from '../../redux/actions';
+import {getColombia, postEvent} from '../../redux/actions';
 import swal from 'sweetalert';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import newEvent from '../../api/newEvent';
+import Swal from 'sweetalert2';
 
 const EventCreateForm = () => {
+  const Swal = require('sweetalert2');
+
   const dispatch = useDispatch();
 
   const f = new Date();
   //Devuelve formato sólo de fecha pero en el formato regional actual ejemplo: 24/8/2019
 
-  console.log('newEvent:', newEvent);
+  const eventos = useSelector((state) => state.events);
+
+  const allEvents = [...eventos];
+  console.log('allEvents:', allEvents[0]);
 
   //--------------------------------------------------//
   //               DEPARTAMENTOS              //
@@ -184,35 +189,36 @@ const EventCreateForm = () => {
         precioAlPublico: '',
         gananciaCupo: '',
         gananciaEvento: '',
+        revision: false,
       },
     ],
     isPublic: true,
   });
 
   useEffect(() => {
-    if (newEvent) {
-      console.log('ent');
+    if (allEvents[0]) {
       setPost({
         ...post,
         idOrganizer: '632cbed4f208f44f5333af48',
-        title: newEvent.title,
+        title: allEvents[0].title,
         categories: [],
         otherCategorie: [],
-        shortDescription: newEvent.shortDescription,
-        longDescription: newEvent.longDescription,
+        shortDescription: allEvents[0].shortDescription,
+        longDescription: allEvents[0].longDescription,
         pictures: [],
-        online: newEvent.online,
-        link: newEvent.link,
-        departamento: newEvent.departamento,
-        municipio: newEvent.municipio,
-        direccion: newEvent.direccion,
-        barrio: newEvent.barrio,
-        specialRequires: newEvent.specialRequires,
-        dates: newEvent.dates,
+        online: allEvents[0].online,
+        link: allEvents[0].link,
+        departamento: allEvents[0].departamento,
+        municipio: allEvents[0].municipio,
+        direccion: allEvents[0].direccion,
+        barrio: allEvents[0].barrio,
+        specialRequires: allEvents[0].specialRequires,
+        dates: allEvents[0].dates,
         isPublic: true,
+        revision: false,
       });
     }
-  }, [newEvent]);
+  }, [allEvents[0]]);
 
   const [errors, setErrors] = useState({
     title: '',
@@ -395,9 +401,11 @@ const EventCreateForm = () => {
       errors.specialRequires = 'Palabra ofensiva';
     }
 
-    // for (var i=0; i<post.dates.length;i++ ){
-    //   if (!(post.dates[i].cupos).match(numero)) {
-    //     errors.dates = 'No podes'
+    //   if(allEvents.length>0){
+    //   for (var i=0; i<post.dates.length;i++ ){
+    //     if (!(post.dates[i].cupos).match(numero)) {
+    //       errors.dates = 'No podes'
+    //     }
     //   }
     // }
 
@@ -407,27 +415,56 @@ const EventCreateForm = () => {
     //   }
     // }
 
-    for (var i = 0; i < post.dates.length; i++) {
-      if (!post.dates[i].cupos) {
-        errors.cupos = true;
+    if (allEvents.length > 0) {
+      for (var i = 0; i < post.dates.length; i++) {
+        if (!post.dates[i].cupos) {
+          errors.cupos = true;
+        }
       }
     }
 
-    // for (var i=0; i<post.dates.length;i++ ){
-    //   for(var j=0; j<event.dates.length;j++ ){
-    //   if (post.dates[i].sells>0 && post.dates[i].cupos<event.dates[j].sells) {
-    //     console.log('entre')
-    //     console.log('newEvent.dates[j].cupos:',event.dates[j].cupos)
-    //     console.log(' post.dates[i].cupos:', post.dates[i].cupos)
-    //     errors.cupos= `Ya se vendieron ${event.dates[j].sells}  cupos. El número no puede ser inferior a los cupos ya vendidos `
-    //     }else  if (post.dates[i].sells>0 && post.dates[i].price === event.dates[j].price) {
-    //       console.log('entre')
-    //       console.log('newEvent.dates[j].price:',event.dates[j].price)
-    //       console.log(' post.dates[i].price:', post.dates[i].price)
-    //       errors.price= `Ya se vendieron ${event.dates[j].sells}  cupos. El número no puede ser inferior al de los cupos ya vendidos `
-    //       }
-    //   }
-    // }
+    if (allEvents.length > 0) {
+      for (var i = 0; i < post.dates.length; i++) {
+        for (var j = 0; j < allEvents[0].dates.length; j++) {
+          if (
+            post.dates[i]._id === allEvents[0].dates[j]._id &&
+            post.dates[i].sells > 0 &&
+            post.dates[i].cupos < allEvents[0].dates[j].sells
+          ) {
+            console.log('entre');
+            console.log(
+              'allEvents[0].dates[j].cupos:',
+              allEvents[0].dates[j].cupos
+            );
+            console.log(' post.dates[i].cupos:', post.dates[i].cupos);
+            errors.cupos = true;
+            return swal({
+              title: `Ya se vendieron ${allEvents[0].dates[j].sells}  cupos. El número no puede ser inferior a los cupos ya vendidos `,
+              icon: 'warning',
+              dangerMode: true,
+            });
+          } else if (
+            post.dates[i]._id === allEvents[0].dates[j]._id &&
+            post.dates[i].sells > 0 &&
+            post.dates[i].price < allEvents[0].dates[j].price
+          ) {
+            console.log('entre');
+            console.log(
+              'allEvents[0].dates[j].price:',
+              j,
+              allEvents[0].dates[j].price
+            );
+            console.log(' post.dates[i].price:', i, post.dates[i].price);
+            errors.price = true;
+            return swal({
+              title: `Ya se vendieron ${allEvents[0].dates[j].sells}  cupos. El número no puede ser inferior al de los cupos ya vendidos `,
+              icon: 'warning',
+              dangerMode: true,
+            });
+          }
+        }
+      }
+    }
 
     for (var i = 0; i < post.dates.length; i++) {
       if (!post.dates[i].price) {
@@ -436,10 +473,10 @@ const EventCreateForm = () => {
     }
 
     // for (var i=0; i<post.dates.length;i++ ){
-    //   for(var j=0; j<newEvent.dates.length;j++ ){
-    //   if (post.dates[i].sells>0 && parseInt(post.dates[i].price) < newEvent.dates[j].price) {
+    //   for(var j=0; j<allEvents[0].dates.length;j++ ){
+    //   if (post.dates[i].sells>0 && parseInt(post.dates[i].price) < allEvents[0].dates[j].price) {
     //     console.log('entre')
-    //     errors.price= `Ya se vendieron ${newEvent.dates[j].sells}  cupos. El número no puede ser inferior al de los cupos ya vendidos `
+    //     errors.price= `Ya se vendieron ${allEvents[0].dates[j].sells}  cupos. El número no puede ser inferior al de los cupos ya vendidos `
     //     }
     //   }
     // }
@@ -554,7 +591,7 @@ const EventCreateForm = () => {
           ...post,
           pictures: [
             ...post.pictures,
-            { cover: false, picture: e.target.result },
+            {cover: false, picture: e.target.result},
           ],
         });
       };
@@ -633,7 +670,7 @@ const EventCreateForm = () => {
 
   const a = costoDeManejo * IVA;
 
-  let handleChanges = (i, e) => {
+  let handleChanges = (i, e, id) => {
     let newFechas = [...post.dates];
     newFechas[i][e.target.name] = e.target.value;
     newFechas[i].precioAlPublico =
@@ -648,10 +685,106 @@ const EventCreateForm = () => {
           parseFloat(IVA));
     newFechas[i].gananciaEvento =
       parseFloat(newFechas[i].gananciaCupo) * parseInt(newFechas[i].cupos);
-    setPost({
-      ...post,
-      dates: newFechas,
-    });
+
+    for (var i = 0; i < post.dates.length; i++) {
+      for (var j = 0; j < allEvents[0].dates.length; j++) {
+        if (
+          post.dates[i]._id === id &&
+          allEvents[0].dates[j]._id === id &&
+          post.dates[i].sells > 0 &&
+          post.dates[i].start !== allEvents[0].dates[j].start
+        ) {
+          console.log('post.dates[i].sells:', i, post.dates[i].sells);
+          // console.log('allEvents[0].dates[j].sells:',j,allEvents[0].dates[j].sells)
+          console.log('post.dates[i].start:', i, post.dates[i].start);
+          console.log(
+            'allEvents[0].dates[j].start:',
+            i,
+            allEvents[0].dates[j].start
+          );
+          return Swal.fire({
+            title:
+              'Texto &&&&&&&&&&, ver sección &&&& en Guía del Organizador. Si procedes, es importante que le informes de inmediato sobre este cambio a los Asistentes.',
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: 'Cambiar hora inicio',
+            denyButtonText: `Cerrar`,
+          }).then((result) => {
+            if (result.isConfirmed) {
+              setPost({
+                ...post,
+                dates: newFechas,
+              });
+            } else if (result.isDenied) {
+              newFechas[i][e.target.name] = allEvents[0].dates[j].start;
+              setPost({
+                ...post,
+                dates: newFechas,
+              });
+            }
+          });
+        } else if (
+          post.dates[i]._id === id &&
+          allEvents[0].dates[j]._id === id &&
+          post.dates[i].sells > 0 &&
+          post.dates[i].end !== allEvents[0].dates[j].end
+        ) {
+          return Swal.fire({
+            title:
+              'Texto &&&&&&&&&&, ver sección &&&& en Guía del Organizador. Si procedes, es importante que le informes de inmediato sobre este cambio a los Asistentes.',
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: 'Cambiar hora fin',
+            denyButtonText: `Cerrar`,
+          }).then((result) => {
+            if (result.isConfirmed) {
+              setPost({
+                ...post,
+                dates: newFechas,
+              });
+            } else if (result.isDenied) {
+              newFechas[i][e.target.name] = allEvents[0].dates[j].end;
+              setPost({
+                ...post,
+                dates: newFechas,
+              });
+            }
+          });
+        } else if (
+          post.dates[i]._id === id &&
+          allEvents[0].dates[j]._id === id &&
+          post.dates[i].sells > 0 &&
+          post.dates[i].date !== allEvents[0].dates[j].date
+        ) {
+          return Swal.fire({
+            title:
+              'Texto &&&&&&&&&&, ver sección &&&& en Guía del Organizador. Si procedes, es importante que le informes de inmediato sobre este cambio a los Asistentes.',
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: 'Cambiar fecha',
+            denyButtonText: `Cerrar`,
+          }).then((result) => {
+            if (result.isConfirmed) {
+              setPost({
+                ...post,
+                dates: newFechas,
+              });
+            } else if (result.isDenied) {
+              newFechas[i][e.target.name] = allEvents[0].dates[j].date;
+              setPost({
+                ...post,
+                dates: newFechas,
+              });
+            }
+          });
+        } else {
+          setPost({
+            ...post,
+            dates: newFechas,
+          });
+        }
+      }
+    }
   };
 
   let addFormFields = () => {
@@ -676,13 +809,107 @@ const EventCreateForm = () => {
     });
   };
 
-  let removeFormFields = (i) => {
+  let removeFormFields = (i, id) => {
     let newFechas = [...post.dates];
     newFechas.splice(i, 1);
-    setPost({
-      ...post,
-      dates: newFechas,
-    });
+    for (var i = 0; i < post.dates.length; i++) {
+      for (var j = 0; j < allEvents[0].dates.length; j++) {
+        if (
+          post.dates[i]._id === id &&
+          post.dates[i].isPublic === true &&
+          post.dates[i].length === 1
+        ) {
+          return swal({
+            title:
+              'Tu evento será quitado de publicados y ya no será visible para el público. Deseas que sea movido a sección ‘Por publicar’ o eliminarlo por completo. ',
+            icon: 'warning',
+            buttons: ['Cancelar acción', 'Eliminar', 'Mover a ‘Por publicar’ '],
+            dangerMode: true,
+          }).then((continuar) => {
+            if (continuar) {
+              setPost({
+                ...post,
+                dates: newFechas,
+              });
+            }
+          });
+        } else if (
+          post.dates[i]._id === id &&
+          post.dates[i].isPublic === true &&
+          post.dates[i].sells === 0
+        ) {
+          return swal({
+            title:
+              'Esta acción quitará esta fecha de publicados y ya no será visible para el público. También se borrará en esta pagina los datos relacionados a esta fecha: hora, número de cupos, precio por cupo y códigos de descuento si alguno.',
+            icon: 'warning',
+            buttons: ['Cancelar acción', 'Continuar'],
+            dangerMode: true,
+          }).then((continuar) => {
+            if (continuar) {
+              setPost({
+                ...post,
+                dates: newFechas,
+              });
+            }
+          });
+        } else if (
+          post.dates[i]._id === id &&
+          post.dates[i].isPublic === true &&
+          post.dates[i].sells > 0
+        ) {
+          return swal({
+            title: `Ya hay ${post.dates[i].sells} cupo(s) comprado(s) para esta fecha, si la quitas de publicados el dinero será devuelto a los compradores. Esta devolución genera unos costos los cuales deberas asumir. Ver sección &&&&&&&&&& en Términos y Condiciones. También se borrará en esta pagina los datos relacionados a esta fecha: hora, número de cupos, precio por cupo y códigos de descuento si alguno. Deseas quitar esta fecha de publicados? `,
+            icon: 'warning',
+            buttons: ['Cancelar acción', 'Continuar'],
+            dangerMode: true,
+          }).then((continuar) => {
+            if (continuar) {
+              setPost({
+                ...post,
+                dates: newFechas,
+              });
+            }
+          });
+        } else if (
+          post.dates[i]._id === id &&
+          post.dates[i].isPublic === false &&
+          post.dates[i].sells === 0
+        ) {
+          return swal({
+            title:
+              'Se borrara esta fecha y los datos relacionados a la misma: hora, número de cupos, precio por cupo y códigos de descuento si alguno.',
+            icon: 'warning',
+            buttons: ['Cancelar acción', 'Continuar'],
+            dangerMode: true,
+          }).then((continuar) => {
+            if (continuar) {
+              setPost({
+                ...post,
+                dates: newFechas,
+              });
+            }
+          });
+        } else if (
+          post.dates[i]._id === id &&
+          post.dates[i].isPublic === false &&
+          post.dates[i].sells > 0
+        ) {
+          return swal({
+            title: `Ya hay ${post.dates[i].sells} cupo(s) comprado(s) para esta fecha, si procedes el dinero será devuelto a los compradores. Texto &&&&&&&&&&, ver sección &&&& en Guía del Organizador. También se borrará en esta pagina los datos relacionados a esta fecha: hora, número de cupos, precio por cupo y códigos de descuento si alguno.`,
+            icon: 'warning',
+            buttons: ['Cancelar acción', 'Continuar'],
+            dangerMode: true,
+          }).then((continuar) => {
+            if (continuar) {
+              setPost({
+                ...post,
+                dates: newFechas,
+              });
+            }
+          });
+        }
+      }
+    }
   };
 
   //--------------------------------------------------//
@@ -722,78 +949,8 @@ const EventCreateForm = () => {
   };
 
   //--------------------------------------------------//
-  //                 SAVE           //
-
-  const navigate = useNavigate();
-
-  function hanldeClick(e) {
-    e.preventDefault();
-    setPost({
-      ...post,
-      isPublic: false,
-    });
-
-    console.log('postGuardar', post);
-    e.preventDefault();
-    if (Object.values(errors).length > 0) {
-      setFailedSubmit(true);
-      return swal({
-        title: 'Completa los campos faltantes',
-        icon: 'warning',
-        button: 'Completar',
-        dangerMode: true,
-      });
-    } else {
-      swal({
-        title: 'Tu evento será guardado',
-        buttons: ['Cerrar', 'Guardar'],
-        dangerMode: true,
-      }).then((guardar) => {
-        if (guardar) {
-          dispatch(postEvent(post));
-          swal('Tu evento ha sido guardado ', {
-            icon: 'success',
-          });
-          setPost({
-            idOrganizer: '632cbed4f208f44f5333af48',
-            title: '',
-            categories: [],
-            otherCategorie: [],
-            shortDescription: '',
-            longDescription: '',
-            pictures: [],
-            online: '',
-            link: '',
-            departamento: '',
-            municipio: '',
-            direccion: '',
-            barrio: '',
-            specialRequires: '',
-            dates: [
-              {
-                date: '',
-                start: '',
-                end: '',
-                year: 0,
-                cupos: '',
-                price: '',
-                sells: 0,
-                isPublic: true,
-                precioAlPublico: '',
-                gananciaCupo: '',
-                gananciaEvento: '',
-              },
-            ],
-            isPublic: true,
-          });
-          navigate('/user/profile');
-        }
-      });
-    }
-  }
-
-  //--------------------------------------------------//
   //                CANCEL          //
+  const navigate = useNavigate();
 
   function handleDelete(e) {
     console.log('guardar');
@@ -820,62 +977,158 @@ const EventCreateForm = () => {
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (Object.values(errors).length > 0) {
-      setFailedSubmit(true);
-      return swal({
-        title: 'Completa los campos faltantes',
-        icon: 'warning',
-        button: 'Completar',
-        dangerMode: true,
-      });
-    } else {
-      swal({
-        title: 'Deseas publicar este evento? ',
-        buttons: true,
-        dangerMode: true,
-      }).then((publicar) => {
-        if (publicar) {
-          dispatch(postEvent(post, id));
-          swal(
-            'Tu evento ha sido publicado. Recibirás un correo con los detalles. ',
-            {
+    for (var i = 0; i < post.dates.length; i++) {
+      if (Object.values(errors).length > 0) {
+        setFailedSubmit(true);
+        return swal({
+          title: 'Completa los campos faltantes',
+          icon: 'warning',
+          button: 'Completar',
+          dangerMode: true,
+        });
+      } else if (post.dates[i].sells > 0 && post.revision === false) {
+        swal({
+          title:
+            'Si ya hay Asistentes al evento es importante que le informes de inmediato los cambios que consideres podrían afectar su participación ',
+          buttons: true,
+          dangerMode: true,
+        }).then((publicar) => {
+          if (publicar) {
+            dispatch(postEvent(post, id));
+            swal('Tu evento ha sido publicado ', {
               icon: 'success',
-            }
-          );
-          setPost({
-            idOrganizer: '632cbed4f208f44f5333af48',
-            title: '',
-            categories: [],
-            otherCategorie: [],
-            shortDescription: '',
-            longDescription: '',
-            pictures: [],
-            online: '',
-            link: '',
-            departamento: '',
-            municipio: '',
-            direccion: '',
-            barrio: '',
-            specialRequires: '',
-            dates: [
+            });
+            setPost({
+              idOrganizer: '632cbed4f208f44f5333af48',
+              title: '',
+              categories: [],
+              otherCategorie: [],
+              shortDescription: '',
+              longDescription: '',
+              pictures: [],
+              online: '',
+              link: '',
+              departamento: '',
+              municipio: '',
+              direccion: '',
+              barrio: '',
+              specialRequires: '',
+              dates: [
+                {
+                  date: '',
+                  start: '',
+                  end: '',
+                  year: 0,
+                  cupos: '',
+                  price: '',
+                  sells: 0,
+                  isPublic: true,
+                  precioAlPublico: '',
+                  gananciaCupo: '',
+                  gananciaEvento: '',
+                },
+              ],
+              isPublic: true,
+            });
+            navigate('/user/profile');
+          }
+        });
+      } else if (allEvents[0] === post.dates) {
+        swal('No has hecho ninguna edición ');
+      } else if (post.revision === true) {
+        swal({
+          title: 'Este evento y sus fechas será publicado  ',
+          buttons: true,
+          dangerMode: true,
+        }).then((publicar) => {
+          if (publicar) {
+            dispatch(postEvent(post, id));
+            swal(
+              'Tus cambios han sido notificados. La publicación esta en revisión. Un correo con una actualización te llegara pronto. ',
               {
-                date: '',
-                start: '',
-                end: '',
-                year: 0,
-                cupos: '',
-                price: '',
-                sells: 0,
-                isPublic: true,
-                precioAlPublico: '',
-                gananciaCupo: '',
-                gananciaEvento: '',
-              },
-            ],
-            isPublic: true,
-          });
-        }
-      });
+                icon: 'success',
+              }
+            );
+            setPost({
+              idOrganizer: '632cbed4f208f44f5333af48',
+              title: '',
+              categories: [],
+              otherCategorie: [],
+              shortDescription: '',
+              longDescription: '',
+              pictures: [],
+              online: '',
+              link: '',
+              departamento: '',
+              municipio: '',
+              direccion: '',
+              barrio: '',
+              specialRequires: '',
+              dates: [
+                {
+                  date: '',
+                  start: '',
+                  end: '',
+                  year: 0,
+                  cupos: '',
+                  price: '',
+                  sells: 0,
+                  isPublic: true,
+                  precioAlPublico: '',
+                  gananciaCupo: '',
+                  gananciaEvento: '',
+                },
+              ],
+              isPublic: true,
+            });
+          }
+        });
+      } else {
+        swal({
+          title: 'Este evento y sus fechas será publicado  ',
+          buttons: true,
+          dangerMode: true,
+        }).then((publicar) => {
+          if (publicar) {
+            dispatch(postEvent(post, id));
+            swal('Tu evento ha sido publicado ', {
+              icon: 'success',
+            });
+            setPost({
+              idOrganizer: '632cbed4f208f44f5333af48',
+              title: '',
+              categories: [],
+              otherCategorie: [],
+              shortDescription: '',
+              longDescription: '',
+              pictures: [],
+              online: '',
+              link: '',
+              departamento: '',
+              municipio: '',
+              direccion: '',
+              barrio: '',
+              specialRequires: '',
+              dates: [
+                {
+                  date: '',
+                  start: '',
+                  end: '',
+                  year: 0,
+                  cupos: '',
+                  price: '',
+                  sells: 0,
+                  isPublic: true,
+                  precioAlPublico: '',
+                  gananciaCupo: '',
+                  gananciaEvento: '',
+                },
+              ],
+              isPublic: true,
+            });
+          }
+        });
+      }
     }
   }
 
@@ -929,10 +1182,10 @@ const EventCreateForm = () => {
               {failedSubmit && errors.title ? (
                 <input
                   className={styles.input}
-                  type="text"
-                  maxlength="75"
-                  placeholder="Nombre del evento"
-                  name="title"
+                  type='text'
+                  maxlength='75'
+                  placeholder='Nombre del evento'
+                  name='title'
                   value={post.title}
                   onChange={(e) => handleChange(e)}
                   required
@@ -940,10 +1193,10 @@ const EventCreateForm = () => {
               ) : (
                 <input
                   className={styles.input}
-                  type="text"
-                  maxlength="75"
-                  placeholder="Nombre del evento"
-                  name="title"
+                  type='text'
+                  maxlength='75'
+                  placeholder='Nombre del evento'
+                  name='title'
                   value={post.title}
                   onChange={(e) => handleChange(e)}
                 />
@@ -1009,7 +1262,7 @@ const EventCreateForm = () => {
                     <label className={styles.labelsChecks}>
                       <input
                         className={styles.checkBox}
-                        type="checkbox"
+                        type='checkbox'
                         value={categorie.name}
                         onChange={(e) => handleCategories(e)}
                         defaultChecked={false}
@@ -1026,8 +1279,8 @@ const EventCreateForm = () => {
                 <input
                   className={styles.checkBox}
                   defaultChecked={false}
-                  type="checkbox"
-                  name="categories"
+                  type='checkbox'
+                  name='categories'
                   value={post.categories}
                 />
                 <label className={styles.labelsChecks}>Otro</label>
@@ -1038,8 +1291,8 @@ const EventCreateForm = () => {
                   </label>
                   <input
                     className={styles.input2}
-                    type="text"
-                    name="otherCategorie"
+                    type='text'
+                    name='otherCategorie'
                     values={post.otherCategorie}
                     onChange={(e) => handleOtherCategorie(e)}
                   />
@@ -1105,10 +1358,10 @@ const EventCreateForm = () => {
                 {failedSubmit && errors.shortDescription ? (
                   <textarea
                     className={styles.textareaShort}
-                    type="text"
-                    maxlength="100"
-                    placeholder="descripción breve del evento"
-                    name="shortDescription"
+                    type='text'
+                    maxlength='100'
+                    placeholder='descripción breve del evento'
+                    name='shortDescription'
                     value={post.shortDescription}
                     onChange={(e) => handleChange(e)}
                     required
@@ -1116,10 +1369,10 @@ const EventCreateForm = () => {
                 ) : (
                   <textarea
                     className={styles.textareaShort}
-                    type="text"
-                    maxlength="100"
-                    placeholder="descripción breve del evento"
-                    name="shortDescription"
+                    type='text'
+                    maxlength='100'
+                    placeholder='descripción breve del evento'
+                    name='shortDescription'
                     value={post.shortDescription}
                     onChange={(e) => handleChange(e)}
                   />
@@ -1154,10 +1407,10 @@ const EventCreateForm = () => {
                 {failedSubmit && errors.longDescription ? (
                   <textarea
                     className={styles.textareaLong}
-                    type="text"
-                    minlength="75"
-                    placeholder="descripción detallada del evento"
-                    name="longDescription"
+                    type='text'
+                    minlength='75'
+                    placeholder='descripción detallada del evento'
+                    name='longDescription'
                     value={post.longDescription}
                     onChange={(e) => handleChange(e)}
                     required
@@ -1165,10 +1418,10 @@ const EventCreateForm = () => {
                 ) : (
                   <textarea
                     className={styles.textareaLong}
-                    type="text"
-                    minlength="75"
-                    placeholder="descripción detallada del evento"
-                    name="longDescription"
+                    type='text'
+                    minlength='75'
+                    placeholder='descripción detallada del evento'
+                    name='longDescription'
                     value={post.longDescription}
                     onChange={(e) => handleChange(e)}
                   />
@@ -1241,7 +1494,7 @@ const EventCreateForm = () => {
                   onDrop={onDrop}
                 >
                   <div>
-                    <ImageIcon sx={{ fontSize: '50px', color: 'grey' }} />
+                    <ImageIcon sx={{fontSize: '50px', color: 'grey'}} />
                   </div>
                   <p>Fotos: Jpg, png, Max.100kb </p>
                   <p>Videos: .MP4 Max 100kb</p>
@@ -1250,9 +1503,9 @@ const EventCreateForm = () => {
                     archivos"
                   </p>
                   <input
-                    type="file"
-                    value=""
-                    name="pictures"
+                    type='file'
+                    value=''
+                    name='pictures'
                     onChange={onFileDrop}
                   />
                   {errors.pictures ? (
@@ -1268,7 +1521,7 @@ const EventCreateForm = () => {
                   onDrop={onDrop}
                 >
                   <div>
-                    <ImageIcon sx={{ fontSize: '50px', color: 'grey' }} />
+                    <ImageIcon sx={{fontSize: '50px', color: 'grey'}} />
                   </div>
                   <p>Fotos: Jpg, png, Max.100kb </p>
                   <p>Videos: .MP4 Max 100kb</p>
@@ -1277,9 +1530,9 @@ const EventCreateForm = () => {
                     archivos"
                   </p>
                   <input
-                    type="file"
-                    value=""
-                    name="pictures"
+                    type='file'
+                    value=''
+                    name='pictures'
                     onChange={onFileDrop}
                   />
                 </div>
@@ -1301,7 +1554,7 @@ const EventCreateForm = () => {
                           <img
                             className={styles.mySwiperImg}
                             src={item.picture}
-                            alt=""
+                            alt=''
                           />
                           <button
                             className={styles.mySwiperBtnDel}
@@ -1312,8 +1565,8 @@ const EventCreateForm = () => {
                           <label className={styles.subInput}>
                             <input
                               className={styles.checkBox4}
-                              type="checkbox"
-                              name="cover"
+                              type='checkbox'
+                              name='cover'
                               value={item.picture}
                               onChange={(e) => handleCover(e)}
                               defaultChecked={false}
@@ -1377,12 +1630,12 @@ const EventCreateForm = () => {
               <div className={styles.containerOnLine}>
                 <input
                   className={styles.checkBox4}
-                  type="checkbox"
+                  type='checkbox'
                   defaultChecked={false}
-                  name="online"
+                  name='online'
                   value={post.online}
                   onChange={(e) => handleCheck(e)}
-                  id="check"
+                  id='check'
                 />
                 <label> Este es un evento en linea</label>
 
@@ -1391,9 +1644,9 @@ const EventCreateForm = () => {
                 {failedSubmit && errors.link ? (
                   <div className={styles.online}>
                     <input
-                      type="text"
-                      placeholder="Colocar el enlace del evento"
-                      name="link"
+                      type='text'
+                      placeholder='Colocar el enlace del evento'
+                      name='link'
                       value={post.link}
                       onChange={(e) => handleLink(e)}
                       required
@@ -1402,9 +1655,9 @@ const EventCreateForm = () => {
                 ) : (
                   <div className={styles.online}>
                     <input
-                      type="text"
-                      placeholder="Colocar el enlace del evento"
-                      name="link"
+                      type='text'
+                      placeholder='Colocar el enlace del evento'
+                      name='link'
                       value={post.link}
                       onChange={(e) => handleChange(e)}
                     />
@@ -1422,10 +1675,10 @@ const EventCreateForm = () => {
                     {failedSubmit && errors.departamento ? (
                       <input
                         className={styles.select}
-                        list="dptos"
-                        id="myDep"
-                        name="departamento"
-                        placeholder="Departamento"
+                        list='dptos'
+                        id='myDep'
+                        name='departamento'
+                        placeholder='Departamento'
                         value={post.departamento}
                         onChange={(e) => handleChange(e)}
                         required
@@ -1433,15 +1686,15 @@ const EventCreateForm = () => {
                     ) : (
                       <input
                         className={styles.select}
-                        list="dptos"
-                        id="myDep"
-                        name="departamento"
-                        placeholder="Departamento"
+                        list='dptos'
+                        id='myDep'
+                        name='departamento'
+                        placeholder='Departamento'
                         value={post.departamento}
                         onChange={(e) => handleChange(e)}
                       />
                     )}
-                    <datalist id="dptos">
+                    <datalist id='dptos'>
                       {nuevoArrayDepartamentos &&
                         nuevoArrayDepartamentos.map((departamento) => (
                           <option value={departamento.departamento}>
@@ -1460,15 +1713,15 @@ const EventCreateForm = () => {
                               {failedSubmit && errors.municipio ? (
                                 <div className={styles.Muni}>
                                   <input
-                                    list="municipio"
-                                    id="myMuni"
-                                    name="municipio"
+                                    list='municipio'
+                                    id='myMuni'
+                                    name='municipio'
                                     placeholder={departamento.capital}
                                     value={post.municipio}
                                     onChange={(e) => handleChange(e)}
                                     required
                                   />
-                                  <datalist id="municipio">
+                                  <datalist id='municipio'>
                                     <option>{departamento.capital}</option>
                                     {departamento.municipio.map((m) => (
                                       <option>{m}</option>
@@ -1478,14 +1731,14 @@ const EventCreateForm = () => {
                               ) : (
                                 <div className={styles.Muni}>
                                   <input
-                                    list="municipio"
-                                    id="myMuni"
-                                    name="municipio"
+                                    list='municipio'
+                                    id='myMuni'
+                                    name='municipio'
                                     placeholder={departamento.capital}
                                     value={post.municipio}
                                     onChange={(e) => handleChange(e)}
                                   />
-                                  <datalist id="municipio">
+                                  <datalist id='municipio'>
                                     <option>{departamento.capital}</option>
                                     {departamento.municipio.map((m) => (
                                       <option>{m}</option>
@@ -1505,9 +1758,9 @@ const EventCreateForm = () => {
                     <div className={styles.direccionError}>
                       <input
                         className={styles.input5}
-                        type="text"
-                        placeholder="Dirección del evento"
-                        name="direccion"
+                        type='text'
+                        placeholder='Dirección del evento'
+                        name='direccion'
                         value={post.direccion}
                         onChange={(e) => handleChange(e)}
                         required
@@ -1516,9 +1769,9 @@ const EventCreateForm = () => {
                   ) : (
                     <input
                       className={styles.input5}
-                      type="text"
-                      placeholder="Dirección del evento"
-                      name="direccion"
+                      type='text'
+                      placeholder='Dirección del evento'
+                      name='direccion'
                       value={post.direccion}
                       onChange={(e) => handleChange(e)}
                     />
@@ -1533,9 +1786,9 @@ const EventCreateForm = () => {
                     <div className={styles.barrio}>
                       <input
                         className={styles.input5}
-                        type="text"
-                        placeholder="Barrio"
-                        name="barrio"
+                        type='text'
+                        placeholder='Barrio'
+                        name='barrio'
                         value={post.barrio}
                         onChange={(e) => handleChange(e)}
                         required
@@ -1544,9 +1797,9 @@ const EventCreateForm = () => {
                   ) : (
                     <input
                       className={styles.input5}
-                      type="text"
-                      placeholder="Barrio"
-                      name="barrio"
+                      type='text'
+                      placeholder='Barrio'
+                      name='barrio'
                       value={post.barrio}
                       onChange={(e) => handleChange(e)}
                     />
@@ -1559,12 +1812,12 @@ const EventCreateForm = () => {
 
                   <div className={styles.containerMap}>
                     <p className={styles.titleMap}>Ubicación en el mapa</p>
-                    <img src={mapa} alt="imagen_mapa" />
+                    <img src={mapa} alt='imagen_mapa' />
                     <p className={styles.subtextMap}>Texto google legal aqui</p>
 
                     {/* <img  className={styles.icon} src={iconEditar} alt='n' /> */}
                     <button className={styles.btn}>
-                      <img className={styles.icon} src={iconEditar} alt="n" />
+                      <img className={styles.icon} src={iconEditar} alt='n' />
                     </button>
                   </div>
                 </div>
@@ -1582,7 +1835,7 @@ const EventCreateForm = () => {
                     <img
                       className={styles.iconExclamacion2}
                       src={iconExclamacion2}
-                      alt="n"
+                      alt='n'
                     />
                   </span>
                   <span>
@@ -1594,8 +1847,8 @@ const EventCreateForm = () => {
                   </span>
                 </div>
                 <input
-                  type="text"
-                  name="specialRequires"
+                  type='text'
+                  name='specialRequires'
                   value={post.specialRequires}
                   onChange={(e) => handleChange(e)}
                 />
@@ -1663,23 +1916,27 @@ const EventCreateForm = () => {
                           Máximo número de participantes
                           {failedSubmit && errors.cupos ? (
                             <input
-                              id="cupos"
-                              type="number"
-                              placeholder="10"
-                              name="cupos"
+                              id='cupos'
+                              type='number'
+                              placeholder='10'
+                              name='cupos'
                               value={element.cupos || ''}
-                              onChange={(e) => handleChanges(index, e)}
+                              onChange={(e) =>
+                                handleChanges(index, e, element._id)
+                              }
                               required
                             />
                           ) : (
                             <input
-                              id="cupos"
+                              id='cupos'
                               className={styles.subInfoInput}
-                              type="number"
-                              placeholder="10"
-                              name="cupos"
+                              type='number'
+                              placeholder='10'
+                              name='cupos'
                               value={element.cupos || ''}
-                              onChange={(e) => handleChanges(index, e)}
+                              onChange={(e) =>
+                                handleChanges(index, e, element._id)
+                              }
                             />
                           )}
                           {errors.cupos ? (
@@ -1695,23 +1952,27 @@ const EventCreateForm = () => {
                             <p>$</p>
                             {failedSubmit && errors.dates ? (
                               <input
-                                id="price"
-                                type="number"
-                                placeholder="20.00"
-                                name="price"
+                                id='price'
+                                type='number'
+                                placeholder='20.00'
+                                name='price'
                                 value={element.price || ''}
-                                onChange={(e) => handleChanges(index, e)}
+                                onChange={(e) =>
+                                  handleChanges(index, e, element._id)
+                                }
                                 required
                               />
                             ) : (
                               <input
                                 className={styles.subInfoInput}
-                                id="price"
-                                type="number"
-                                placeholder="20.00"
-                                name="price"
+                                id='price'
+                                type='number'
+                                placeholder='20.00'
+                                name='price'
                                 value={element.price || ''}
-                                onChange={(e) => handleChanges(index, e)}
+                                onChange={(e) =>
+                                  handleChanges(index, e, element._id)
+                                }
                               />
                             )}
                             {errors.price ? (
@@ -1765,8 +2026,8 @@ const EventCreateForm = () => {
                         </p>
                         <Link
                           to={`/user/profile`}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                          target='_blank'
+                          rel='noopener noreferrer'
                         >
                           <button className={styles.btn6}>Ver Más</button>
                         </Link>
@@ -1810,18 +2071,22 @@ const EventCreateForm = () => {
                         {failedSubmit && errors.dates ? (
                           <input
                             classname={styles.errors}
-                            type="date"
-                            name="date"
+                            type='date'
+                            name='date'
                             value={element.date || ''}
-                            onChange={(e) => handleChanges(index, e)}
+                            onChange={(e) =>
+                              handleChanges(index, e, element._id)
+                            }
                             required
                           />
                         ) : (
                           <input
-                            type="date"
-                            name="date"
+                            type='date'
+                            name='date'
                             value={element.date || ''}
-                            onChange={(e) => handleChanges(index, e)}
+                            onChange={(e) =>
+                              handleChanges(index, e, element._id)
+                            }
                           />
                         )}
                       </div>
@@ -1830,18 +2095,22 @@ const EventCreateForm = () => {
                         <label>Comienza</label>
                         {failedSubmit && errors.dates ? (
                           <input
-                            type="time"
-                            name="start"
+                            type='time'
+                            name='start'
                             value={element.start || ''}
-                            onChange={(e) => handleChanges(index, e)}
+                            onChange={(e) =>
+                              handleChanges(index, e, element._id)
+                            }
                             required
                           />
                         ) : (
                           <input
-                            type="time"
-                            name="start"
+                            type='time'
+                            name='start'
                             value={element.start || ''}
-                            onChange={(e) => handleChanges(index, e)}
+                            onChange={(e) =>
+                              handleChanges(index, e, element._id)
+                            }
                           />
                         )}
                       </div>
@@ -1850,18 +2119,22 @@ const EventCreateForm = () => {
                         <label>End</label>
                         {failedSubmit && errors.dates ? (
                           <input
-                            type="time"
-                            name="end"
+                            type='time'
+                            name='end'
                             value={element.end || ''}
-                            onChange={(e) => handleChanges(index, e)}
+                            onChange={(e) =>
+                              handleChanges(index, e, element._id)
+                            }
                             required
                           />
                         ) : (
                           <input
-                            type="time"
-                            name="end"
+                            type='time'
+                            name='end'
                             value={element.end || ''}
-                            onChange={(e) => handleChanges(index, e)}
+                            onChange={(e) =>
+                              handleChanges(index, e, element._id)
+                            }
                           />
                         )}
                       </div>
@@ -1869,13 +2142,13 @@ const EventCreateForm = () => {
                       {index ? (
                         <button
                           lassName={styles.addDelete}
-                          type="button"
-                          onClick={() => removeFormFields(index)}
+                          type='button'
+                          onClick={() => removeFormFields(index, element._id)}
                         >
                           <img
                             className={styles.basquet}
                             src={basquet}
-                            alt="n"
+                            alt='n'
                           />
                         </button>
                       ) : null}
@@ -1891,7 +2164,7 @@ const EventCreateForm = () => {
               <div>
                 <button
                   className={styles.addDate}
-                  type="button"
+                  type='button'
                   onClick={() => addFormFields()}
                 >
                   {' '}
@@ -1912,18 +2185,9 @@ const EventCreateForm = () => {
                   </div>
 
                   <div>
-                    <button className={styles.viewBtn} type="submit">
+                    <button className={styles.viewBtn} type='submit'>
                       {' '}
                       Publicar Evento
-                    </button>
-                  </div>
-
-                  <div>
-                    <button
-                      className={styles.viewBtn}
-                      onClick={(e) => hanldeClick(e)}
-                    >
-                      Guardar y Publicar Luego
                     </button>
                   </div>
                 </div>

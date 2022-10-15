@@ -29,9 +29,6 @@
   grid-template-columns: repeat(2, 1fr);
 }
 
-
-
-
 .containerChats {
   display: flex;
   flex-direction: column;
@@ -40,8 +37,8 @@
 .containerOptions {
   display: flex;
   justify-content: space-around;
-
-  padding: 1rem 0;
+  height: 6rem;
+  padding: 1.8rem 0;
 }
 
 .containerOptions > div {
@@ -140,7 +137,6 @@
   justify-content: center;
   align-items: center;
   gap: 3.2rem;
-
   color: var(--color-orange);
 }
 
@@ -148,7 +144,7 @@
   width: 1px;
   height: 3.2rem;
   background-color: var(--color-orange);
-} 
+}
 
 /* CHAT */
 
@@ -167,6 +163,7 @@
   color: var(--color-grey-2);
   border-bottom: 1px solid var(--color-grey-4);
   padding: 1.8rem;
+  height: 6rem;
 }
 
 .chatHeader img {
@@ -225,9 +222,7 @@
 .iconMessage {
   width: 2.2rem;
   height: 2.2rem;
-} 
-
-
+}
 
 
 /* TEXT AREA */
@@ -242,6 +237,7 @@
   padding: 2rem;
   width: 100%;
   background-color: white;
+  
 }
 
 .containerInputMessage textarea {

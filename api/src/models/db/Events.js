@@ -70,12 +70,10 @@ const EventSchema = new Schema({
 
   opinions: [
     {
-      user: {
-        type: Schema.Types.ObjectId,
-        ref: 'Users',
-      },
-      title: String,
-      email: String,
+      title: {
+        type: String
+        
+      },     
       time: {
         type: Date,
         default: Date.now(),
@@ -86,8 +84,9 @@ const EventSchema = new Schema({
         type: String,
         default: null,
       },
-    },
-  ],
-});
+    }
+    
+  ]
+},{ timestamps: true });
 
 module.exports = model('Events', EventSchema);

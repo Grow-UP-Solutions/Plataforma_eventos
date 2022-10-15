@@ -64,6 +64,7 @@ const Messages = () => {
     try {
       const res = await axios.post("https://plataformaeventos-production-6111.up.railway.app/message/create", message);
       setMessages([...messages, res.data]);
+      console.log('datamesg:', res.data);
       setNewMessage("");
     } catch (err) {
       console.log(err);
@@ -104,13 +105,12 @@ const Messages = () => {
               {
                 conversations.map((c) => (
                   <div onClick={() => setCurrentChat(c)}>
-                    <Conversations conversation={c} id={id} />
+                    <Conversations conversation={c} id={id} currentChat={currentChat}/>
                   </div>
                 ))
               }
 
             </div>
-
 
           </div>
           
@@ -133,40 +133,66 @@ const Messages = () => {
                         </div>
                       ))
                     }
-                  </div>
-
-                  <div className={styles.containerInputMessage}>
-
-                    <textarea
-                      name="message"
-                      id="message"
-                      cols="30"
-                      rows="10"
-                      placeholder="Escribe un mensaje aquí"
-                      onChange={(e) => setNewMessage(e.target.value)}
-                      value={newMessage}
-                    ></textarea>
-
-                    <div className={styles.wrapperBtnInputMessage}>
-                      <p>
-                        No se permite el envío de números de teléfono, direcciones de
-                        correo electrónico, enlaces a sitios web o enlaces a redes
-                        sociales.
-                      </p>
-
-                      <button onClick={handleSubmit} >Enviar</button>
-                    </div>
-                  </div>     
-
-
-                </>) : (
+                  </div> 
+                </> ) : 
+                (
                   <span>
                     Inicia una conversación.
                   </span>
                 )
               }
+
+            </div>
+
+          </div>
+
+          <div className={styles.buttonsChats}>
+            <div>
+              <p>Usuarios Bloqueados</p>
+            </div>
+
+            <div className={styles.buttonDivisor} />
+
+            <div>
+              <p>Conversaciones archivadas</p>
             </div>
           </div>
+
+          <div className={styles.containerInputMessage}>
+
+            {
+              currentChat ?
+              <textarea
+                name="message"
+                id="message"
+                cols="30"
+                rows="10"
+                placeholder="Escribe un mensaje aquí"
+                onChange={(e) => setNewMessage(e.target.value)}
+                value={newMessage}
+              ></textarea> :
+              <textarea
+                disabled
+                name="message"
+                id="message"
+                cols="30"
+                rows="10"
+                placeholder="Escribe un mensaje aquí"
+              ></textarea>
+            }
+
+            <div className={styles.wrapperBtnInputMessage}>
+              <p>
+                No se permite el envío de números de teléfono, direcciones de
+                correo electrónico, enlaces a sitios web o enlaces a redes
+                sociales.
+              </p>
+
+              <button onClick={handleSubmit} >Enviar</button>
+            </div>
+
+          </div> 
+          
         </div>
       </div>
     </div>

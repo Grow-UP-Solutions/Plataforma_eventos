@@ -11,7 +11,7 @@ async function OneCategoryDb(name) {
   try {
     return await Category.findOne({ name: name });
   } catch (error) {
-    return { message: error.message };
+    throw new Error(error.message);
   }
 }
 

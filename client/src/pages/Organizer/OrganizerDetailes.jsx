@@ -20,11 +20,11 @@ const OrganizerDetails = () => {
   const [component, setComponent] = useState('');
   const [nextEvent, setNextEvent] = useState({});
   const [conversation, setConversation] = useState({});
-  const { user } = useContext(AuthContext);
+  const { user, logged } = useContext(AuthContext);
+  console.log('user:', user);
   const navigate = useNavigate();
   const allEvents = useSelector((state) => state.events);
   const userDetail = allEvents.filter((e) => e.organizer._id === id)[0];
-  //const myUserDetail = allEvents.filter((e) => e.organizer._id === user.uid)[0];
 
   useEffect(() => {
     obtenerDatos();
@@ -32,12 +32,10 @@ const OrganizerDetails = () => {
   }, []);
 
   useEffect(() => {
-    user ?
     setConversation({
       senderId: user.uid,
-      receiverId: userDetail,
-    }) : 
-    setConversation({})
+      receiverId: id,
+    })
   }, []);
 
   const obtenerDatos = async() => {
@@ -50,9 +48,8 @@ const OrganizerDetails = () => {
     e.preventDefault();
     axios.post('https://plataformaeventos-production-6111.up.railway.app/conversation/create', conversation)
     .then((response) => {
-      console.log('axios response', response.data);
+      navigate('/user/message');
     });
-    navigate('/user/message');
   }
 
   const handleAlert = (e) => {
@@ -89,7 +86,7 @@ const OrganizerDetails = () => {
       <p className={styles.member}>Miembor desde {userDetail.organizer.membership}</p>
       <div className={styles.containerMess}>
         <LocalPostOfficeIcon sx={{ fontSize: '13px', color: '#d53e27' }} />
-        <button className={styles.message} onClick={conversation.senderId ? handleClickMessages: handleAlert}>
+        <button className={styles.message} onClick={logged === true ? handleClickMessages: handleAlert}>
           Enviar Mensaje
         </button>
       </div>

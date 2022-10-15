@@ -1,17 +1,17 @@
-require('../../../DB.js');
-const Users = require('../../db/Users.js');
-const bcrypt = require('bcryptjs');
+require("../../../DB.js");
+const Users = require("../../db/Users.js");
+const bcrypt = require("bcryptjs");
 
 /** basic user database operations */
 
 async function allUserDb() {
   try {
     return await Users.find()
-      .populate({ path: 'myEventsCreated' })
-      .populate({ path: 'myFavourites' })
-      .populate({ path: 'myEventsBooked' });
+      .populate({ path: "myEventsCreated" })
+      .populate({ path: "myFavourites" })
+      .populate({ path: "myEventsBooked" });
   } catch (error) {
-    return { message: error.message };
+    throw new Error(error.message);
   }
 }
 async function validateEmailUserDb(email) {
@@ -24,16 +24,16 @@ async function validateEmailUserDb(email) {
 async function oneUserDb(id) {
   const idOrganizer = id;
   if (!idOrganizer) {
-    return { msg: 'Se rerquiere el id del organizador' };
+    return { msg: "Se rerquiere el id del organizador" };
   }
   try {
     return await Users.findById({ _id: idOrganizer })
-      .populate({ path: 'myEventsCreated' })
-      .populate({ path: 'myFavourites' })
-      .populate({ path: 'myEventsBooked' })
-      .populate({ path: 'opinionsOrg' });
+      .populate({ path: "myEventsCreated" })
+      .populate({ path: "myFavourites" })
+      .populate({ path: "myEventsBooked" })
+      .populate({ path: "opinionsOrg" });
   } catch (error) {
-    return { message: error.message };
+    throw new Error(error.message);
   }
 }
 async function updateOneUserDb(id, newUser) {
@@ -41,23 +41,23 @@ async function updateOneUserDb(id, newUser) {
     return await Users.findByIdAndUpdate({ _id: id }, newUser, {
       new: 1,
     })
-      .populate({ path: 'myEventsCreated' })
-      .populate({ path: 'myFavourites' })
-      .populate({ path: 'myEventsBooked' })
-      .populate({ path: 'myOpinions' })
-      .populate({ path: 'opinionsOrg' });
+      .populate({ path: "myEventsCreated" })
+      .populate({ path: "myFavourites" })
+      .populate({ path: "myEventsBooked" })
+      .populate({ path: "myOpinions" })
+      .populate({ path: "opinionsOrg" });
   } catch (error) {
-    return { message: error.message };
+    throw new Error(error.message);
   }
 }
 async function deleteOneUserDb(id) {
   try {
     return await Users.findByIdAndDelete({ _id: id })
-      .populate({ path: 'myEventsCreated' })
-      .populate({ path: 'myFavourites' })
-      .populate({ path: 'myEventsBooked' });
+      .populate({ path: "myEventsCreated" })
+      .populate({ path: "myFavourites" })
+      .populate({ path: "myEventsBooked" });
   } catch (error) {
-    return { message: error.message };
+    throw new Error(error.message);
   }
 }
 /**Creating user in Database */
@@ -72,29 +72,32 @@ async function createOneUserDb(user) {
     await userCreated.save();
     return userCreated;
   } catch (error) {
-    return { message: error.message };
+    throw new Error(error.message);
   }
 }
 
 /**crear comentario usuario */
 
-async function generateUserComment(id, opinion) {
+async function generateUserComment(id, opinions) {
   try {
-    const { idUser } = opinion;
+    const { idUser, opinion } = opinions;
 
     const user = await oneUserDb(idUser);
 
-    const organizer = await oneUserDb(id);
+    const organizer = await oneUserDb(id);    
+    organizer.opinionsOrg.push({
+      title : user.name,
+      picture:user.picture,
+      opinion
+    });
+    await organizer.save()
 
-    opinion.user = user._id;
-
-    organizer.opinionsOrg.push(opinion);
-    return await organizer.save();
+    return organizer.opinionsOrg[organizer.opinionsOrg.length - 1] ;
   } catch (error) {
-    return { message: error.message };
+    throw new Error(error.message);
   }
 }
-
+/** enviar mensaje desde la plataforma */
 async function sendMessageDB(idSend, idGet, msg) {
   try {
     const userSend = await oneUserDb(idSend);
@@ -109,13 +112,28 @@ async function sendMessageDB(idSend, idGet, msg) {
     });
     await userGet.save();
     console.log(userGet.message);
-    return { Respon: 'mensaje enviado con exito' };
+    return { Respon: "mensaje enviado con exito" };
   } catch (error) {
-    return { message: error.message };
+    throw new Error(error.message);
+  }
+}
+/**enviar notificaciones  */
+async function sendNotificationDB(id, msg) {
+  try {
+    
+    const user = await Users.findOne({ _id: id });
+    user.notifications.push({msg})
+    await user.save()
+    return user.notifications[user.notifications.length - 1]
+
+  } catch (error) {
+    throw new Error(error.message);
+    
   }
 }
 
 module.exports = {
+  sendNotificationDB,
   allUserDb,
   createOneUserDb,
   deleteOneUserDb,
