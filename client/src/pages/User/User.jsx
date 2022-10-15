@@ -50,8 +50,6 @@ const UserPage = () => {
     getUserData();
   }, [user]);
 
-  useEffect(() => {}, [userData]);
-
   const getUserData = async () => {
     let userResult = {};
     if (user.uid) {
@@ -77,7 +75,7 @@ const UserPage = () => {
     <div className={`${styles.pageUser} container`}>
       <div className={styles.sideMenu}>
         <ul className={styles.containerListOptionsMenu}>
-          {user.isOrganizer && (
+          {user.organizer && (
             <>
               <li className={styles.containerItemOptionMenu}>
                 <div className={styles.optionMenu}>
@@ -179,7 +177,7 @@ const UserPage = () => {
               </button>
               <IconUser className={styles.iconMenu} />
               <div className={styles.perfilStatus}>
-                {user.isUserComplete ? (
+                {user.isProfileCompleted ? (
                   <>
                     <IconShield />
                     <span>Completo</span>

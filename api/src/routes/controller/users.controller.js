@@ -1,4 +1,3 @@
-const bcrypt = require('bcryptjs');
 const { Router } = require('express');
 require('../../DB.js');
 const {
@@ -14,6 +13,7 @@ const {
 } = require('../services/users.services.js');
 
 const passport = require('passport');
+const bcrypt = require('bcryptjs');
 
 const { check } = require('express-validator');
 const validateFields = require('../../models/util/middlewares/validate-fields.js');
@@ -82,6 +82,8 @@ router.get('/login/renew', validateJWT, async (req, res) => {
       name: user.name,
       email: user.email,
       organizer: user.isOrganizer,
+      picture: user.userpicture,
+      isProfileCompleted: user.isProfileCompleted,
       token,
     });
   } catch (error) {
@@ -182,8 +184,11 @@ router.post(
       return res.json({
         uid: userCreate._id,
         name: userCreate.name,
+        nickname: userCreate.nickname,
         email: userCreate.email,
         organizer: userCreate.isOrganizer,
+        picture: user.userpicture,
+        isProfileCompleted: user.isProfileCompleted,
         token,
       });
     } catch (error) {
@@ -233,8 +238,11 @@ router.post(
       res.status(200).json({
         uid: user._id,
         name: user.name,
+        nickname: user.nickname,
         email: user.email,
         organizer: user.isOrganizer,
+        picture: user.userpicture,
+        isProfileCompleted: user.isProfileCompleted,
         token,
       });
     } catch (error) {
@@ -255,8 +263,10 @@ router.get('/login/renew', validateJWT, async (req, res) => {
     res.status(201).json({
       uid: user._id,
       name: user.name,
+      nickname: user.nickname,
       email: user.email,
       organizer: user.isOrganizer,
+      isProfileCompleted: user.isProfileCompleted,
       token,
     });
   } catch (error) {
@@ -315,15 +325,49 @@ router.post('/sendEmailForConfirm', async (req, res) => {
 
 /**/ ///////////Rutas PUT///////////////////////////////// */
 router.put('/update/:id', async (req, res) => {
+  const { id } = req.params;
+  let newUser = req.body;
+
   try {
-    const { id } = req.params;
-    const newUser = req.body;
+    if (newUser.password) {
+      const salt = bcrypt.genSaltSync();
+      const newPassword = bcrypt.hashSync(newUser.password, salt);
+      newUser.password = newPassword;
+    }
+
+    console.log(newUser);
+
     const usersUpdate = await userUpdate(id, newUser);
     return res.status(200).json(usersUpdate);
   } catch (error) {
     return res.status(500).json({ ERROR_USER_UPDATE: error.message });
   }
 });
+
+router.post('/isSamePassword/:id', async (req, res) => {
+  const { id } = req.params;
+  const { password } = req.body;
+
+  try {
+    const user = await getUser(id);
+
+    const validPassword = bcrypt.compareSync(password, user.password);
+
+    if (!validPassword) {
+      throw new Error('Contraseña invalida');
+    }
+    return res.status(200).json({
+      message: 'Si es correcto',
+      success: true,
+    });
+  } catch (error) {
+    res.status(404).json({
+      message: error.message,
+      success: false,
+    });
+  }
+});
+
 /**/ ///////////////Rutas DELETE/////////////////////////// */
 router.delete('/delete/:id', async (req, res) => {
   try {
