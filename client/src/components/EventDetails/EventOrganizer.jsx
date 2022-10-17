@@ -5,11 +5,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { AuthContext } from '../../context/auth/AuthContext';
+import { stateContext } from '../../context/state/stateContext';
 
 const EventOrganizer = ({ id }) => {
 
   const [conversation, setConversation] = useState({});
   const { user } = useContext(AuthContext);
+  const { setResult } = useContext(stateContext);
   const navigate = useNavigate();
   const allEvents = useSelector((state) => state.events);
   const eventDetails = allEvents.filter((event) => event._id === id)[0];
@@ -42,6 +44,17 @@ const EventOrganizer = ({ id }) => {
     e.preventDefault();
     alert('Debes estar registrado para poder enviar mensajes');
   }
+
+  const handleClickEventsOrganizer = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.get('https://plataformaeventos-production-6111.up.railway.app/users/' + eventDetails.organizer._id);
+      setResult(res.data.myEventsCreated);
+      navigate('/resulteventsorganizer/');
+    } catch (error) {
+      console.log(error)
+    }
+  };
  
   return (
     <div>
@@ -74,7 +87,7 @@ const EventOrganizer = ({ id }) => {
       <p className={styles.orgDescription}>
         {eventDetails.organizer.descriptionOrganizer}
       </p>
-      <button className={styles.button2}>
+      <button className={styles.button2} onClick={handleClickEventsOrganizer}>
         Otros eventos organizados por {eventDetails.organizer.name}
       </button>
     </div>

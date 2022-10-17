@@ -64,12 +64,15 @@ const Messages = () => {
     try {
       const res = await axios.post("https://plataformaeventos-production-6111.up.railway.app/message/create", message);
       setMessages([...messages, res.data]);
-      console.log('datamesg:', res.data);
       setNewMessage("");
     } catch (err) {
       console.log(err);
     }
-  };
+  };  
+
+  const handleClickConversation = (c) => {
+    setCurrentChat(c);
+  }
 
   return (
     <div className={`${styles.pageMessage} container`}>
@@ -103,9 +106,9 @@ const Messages = () => {
             <div className={styles.containerChats}>
 
               {
-                conversations.map((c) => (
-                  <div onClick={() => setCurrentChat(c)}>
-                    <Conversations conversation={c} id={id} currentChat={currentChat}/>
+                conversations.map((c, i) => (
+                  <div key={i} onClick={(c) => handleClickConversation(c)} >
+                    <Conversations conversation={c} id={id}/>
                   </div>
                 ))
               }
@@ -127,8 +130,8 @@ const Messages = () => {
                 <>
                   <div>
                     {
-                      messages.map((m) => (
-                        <div>
+                      messages.map((m, i) => (
+                        <div key={i}>
                           <Message message={m} own={m.sender === id} />
                         </div>
                       ))
@@ -187,8 +190,12 @@ const Messages = () => {
                 correo electrónico, enlaces a sitios web o enlaces a redes
                 sociales.
               </p>
-
-              <button onClick={handleSubmit} >Enviar</button>
+              {
+                currentChat ?
+                <button onClick={handleSubmit}>Enviar</button> :
+                <button disable >Enviar</button>
+              }
+              
             </div>
 
           </div> 

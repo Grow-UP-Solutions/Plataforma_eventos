@@ -8,11 +8,10 @@ import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
 import AboutOrganizer from '../../components/Organizer/AboutOrganizer.jsx';
 import NextEvents from '../../components/Organizer/NextEvents.jsx';
 import Opinions from '../../components/Organizer/Opinions.jsx';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import axios from "axios";
 import { AuthContext } from '../../context/auth/AuthContext';
 import { getEvents } from '../../redux/actions';
-import { useDispatch } from 'react-redux';
 
 const OrganizerDetails = () => {
 
@@ -21,12 +20,13 @@ const OrganizerDetails = () => {
   const [nextEvent, setNextEvent] = useState({});
   const [conversation, setConversation] = useState({});
   const { user, logged } = useContext(AuthContext);
-  console.log('user:', user);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const allEvents = useSelector((state) => state.events);
   const userDetail = allEvents.filter((e) => e.organizer._id === id)[0];
 
   useEffect(() => {
+    dispatch(getEvents);
     obtenerDatos();
     scroll.scrollToTop();
   }, []);
@@ -38,7 +38,7 @@ const OrganizerDetails = () => {
     })
   }, []);
 
-  const obtenerDatos = async() => {
+  const obtenerDatos = async () => {
     const data = await fetch('https://plataformaeventos-production-6111.up.railway.app/users/' + id);
     const json = await data.json();
     setNextEvent(json);

@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import style from './Notifications.module.css';
 import { HiBell } from 'react-icons/hi';
+import { stateContext } from '../../context/state/stateContext';
 
 const Notifications = () => {
+
+  const { result } = useContext(stateContext);
 
   return (
     <div className={style.container}>
@@ -13,14 +16,14 @@ const Notifications = () => {
       </div>
 
       <div className={style.container_notifications}>
-        <div className={style.notification}><HiBell className={style.icon}/><p>Pepito tambien asistira al evento Hiking with my dog</p></div>
-        <div className={style.notification}><HiBell className={style.icon}/><p>Pepito tambien asistira al evento Hiking with my dog</p></div>
-        <div className={style.notification}><HiBell className={style.icon}/><p>Pepito tambien asistira al evento Hiking with my dog</p></div>
-        <div className={style.notification}><HiBell className={style.icon}/><p>Pepito tambien asistira al evento Hiking with my dog</p></div>
-        <div className={style.notification}><HiBell className={style.icon}/><p>Pepito tambien asistira al evento Hiking with my dog</p></div>
-        <div className={style.notification}><HiBell className={style.icon}/><p>Pepito tambien asistira al evento Hiking with my dog</p></div>
-        <div className={style.notification}><HiBell className={style.icon}/><p>Pepito tambien asistira al evento Hiking with my dog</p></div>
-        <div className={style.notification}><HiBell className={style.icon}/><p>Pepito tambien asistira al evento Hiking with my dog</p></div>
+        {
+          result.notifications.map(noti => (
+            <div className={style.notification}>
+              <HiBell className={style.icon}/>
+              <p>{noti.msg}</p>
+            </div>
+          ))
+        }
       </div>
 
     </div>

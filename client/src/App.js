@@ -1,3 +1,4 @@
+
 import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
@@ -30,6 +31,7 @@ import {
   WorkWithUsForm,
 } from './pages';
 import EventEdit from './pages/EventEdit/EventEdit';
+import EventsOrganizerResult from './pages/EventsOrganizerResult/EventsOrganizerResult';
 import PanelPrivacy from './pages/PanelPrivacy/PanelPrivacy';
 import { getEvents } from './redux/actions';
 
@@ -79,6 +81,7 @@ function App() {
           <Route path="/user/notifications" element={<Notifications />} />
           <Route path="/bills" element={<Bills />} />
           <Route path="/verificarmail" element={<Verification />} />
+          <Route path="/resulteventsorganizer" element={<EventsOrganizerResult />} />
           <Route
             path="/cambiarContrasenia/:token"
             element={<ChangePassword />}

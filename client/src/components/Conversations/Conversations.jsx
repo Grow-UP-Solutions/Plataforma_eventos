@@ -2,10 +2,11 @@
 import React, { useEffect, useState } from 'react';
 import styles from './Conversations.module.css';
 import { BiBlock, BiPin } from 'react-icons/bi';
+import { FiMail, FiArchive } from 'react-icons/fi';
 import axios from "axios";
 import avatar from '../../assets/imgs/no-avatar.png';
 
-const Conversations = ({ conversation, id, currentChat }) => {
+const Conversations = ({ conversation, id }) => {
 
   const [user, setUser] = useState('hola');
 
@@ -31,71 +32,47 @@ const Conversations = ({ conversation, id, currentChat }) => {
           alt="imageAvatar" 
         />
         <span >{user.name}</span>
-      </div>
-        
 
+        <div className={styles.itemChatDivisor} />
 
-        {/* {
-          users.map((user) => (
-          <div className={styles.itemChat}>
-            <div className={styles.userChat}>
-              <img src={user.img} alt={user.name} />
-              <span>{user.name}</span>
-            </div>
+        <div className={styles.itemOptionsChat}>
 
-            <div className={styles.itemChatDivisor} />
+          <div className={styles.itemChatNumberMessage}>
+            1
+          </div>
 
-            <div className={styles.itemOptionsChat}>
-
-              <div className={styles.itemChatNumberMessage}>
-                1
-              </div>
-
-              <div className={styles.containerItemMenu}>
-                <FiMail className={styles.itemMenuIcon} />
-                <div className={styles.helperMenu}>
-                  <p>Marcar como leído</p>
-                </div>
-              </div>
-
-              <div className={styles.containerItemMenu}>
-                <FiArchive className={styles.itemMenuIcon} />
-                <div className={styles.helperMenu}>
-                  <p>Archivar conversación</p>
-                </div>
-              </div>
-
-              <div className={styles.containerItemMenu}>
-                <BiPin className={styles.itemMenuIcon} />
-                <div className={styles.helperMenu}>
-                  <p>Fijar conversacion</p>
-                </div>
-              </div>
-
-              <div className={styles.containerItemMenu}>
-                <BiBlock className={styles.itemMenuIcon} />
-                <div className={styles.helperMenu}>
-                  <p>Bloquear usuario</p>
-                </div>
-              </div>
-
+          <div className={styles.containerItemMenu}>
+            <FiMail className={styles.itemMenuIcon} />
+            <div className={styles.helperMenu}>
+              <p>Marcar como leído</p>
             </div>
           </div>
-          ))
-        } */}
-      
 
-      {/* <div className={styles.buttonsChats}>
-            <div>
-              <p>Usuarios Bloqueados</p>
+          <div className={styles.containerItemMenu}>
+            <FiArchive className={styles.itemMenuIcon} />
+            <div className={styles.helperMenu}>
+              <p>Archivar conversación</p>
             </div>
+          </div>
 
-            <div className={styles.buttonDivisor} />
-
-            <div>
-              <p>Conversaciones archivadas</p>
+          <div className={styles.containerItemMenu}>
+            <BiPin className={styles.itemMenuIcon} />
+            <div className={styles.helperMenu}>
+              <p>Fijar conversacion</p>
             </div>
-          </div> */}
+          </div>
+
+          <div className={styles.containerItemMenu}>
+            <BiBlock className={styles.itemMenuIcon} />
+            <div className={styles.helperMenu}>
+              <p>Bloquear usuario</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+              
     </div>
   );
 }
