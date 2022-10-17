@@ -33,7 +33,7 @@ const CardComments = ({ o }) => {
 
   return (
     <div className={styles.userComment}>
-      <div>
+      {/* <div>
         <img className={styles.picture} src={avatar} alt="Not Found ):" width="20px" height="30px"/>
       </div>
 
@@ -55,7 +55,7 @@ const CardComments = ({ o }) => {
         <div className={styles.reportCom} data-hover='Reportar contenido inapropiado'>
           <ReportProblemIcon sx={{ fontSize: '40px', color: '#cbcbcb'  }}/>
         </div>
-      </div>
+      </div> */}
     </div>           
   );
 }

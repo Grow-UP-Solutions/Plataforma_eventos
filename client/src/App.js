@@ -35,6 +35,7 @@ import EventsOrganizerResult from './pages/EventsOrganizerResult/EventsOrganizer
 import PanelPrivacy from './pages/PanelPrivacy/PanelPrivacy';
 import { getEvents } from './redux/actions';
 
+
 function App() {
 
   const [navBar, setNavBar] = useState(false);

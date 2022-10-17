@@ -5,9 +5,9 @@ import { UIContext } from '../../context/ui';
 import { AuthContext } from '../../context/auth';
 import { stateContext } from '../../context/state/stateContext';
 import Search from '../Search/Search';
-import { GrMail } from 'react-icons/gr';
-import { FaUserCircle } from 'react-icons/fa';
-import { IoNotifications, IoCaretDownSharp } from 'react-icons/io5';
+import {GrMail} from 'react-icons/gr';
+import {FaUserCircle} from 'react-icons/fa';
+import {IoNotifications, IoCaretDownSharp} from 'react-icons/io5';
 import logo from '../../assets/imgs/logoNav.svg';
 import axios from 'axios';
 
@@ -20,7 +20,8 @@ const Navbar = ({ upper }) => {
   const [openNotifications, setOpenNotifications] = useState(false);
   const [openMessages, setOpenMessages] = useState(false);
   const navigate = useNavigate();
-  const { pathname } = useLocation();
+  //const allNotifications = notifications;
+  const {pathname} = useLocation();
 
   useEffect(() => {
     getUserData();
@@ -53,15 +54,15 @@ const Navbar = ({ upper }) => {
 
   return (
     <div
-      id="navbar"
-      style={{ position: pathname === '/' ? 'fixed' : 'sticky' }}
+      id='navbar'
+      style={{position: pathname === '/' ? 'fixed' : 'sticky'}}
       className={`${style.container} ${
         pathname !== '/' || upper === false ? style.customizeNavBar : ''
       }`}
     >
       <div className={`${style.containerInfo} container`}>
         <div className={style.containerImgInput}>
-          <img src={logo} alt="LogoNav" onClick={handleClick} />
+          <img src={logo} alt='LogoNav' onClick={handleClick} />
           {pathname !== '/' || upper === false ? (
             <Search location={'not-home'} />
           ) : (
@@ -69,7 +70,7 @@ const Navbar = ({ upper }) => {
           )}
         </div>
         <div className={style.container_div}>
-          {logged && <a href="$">Mi lista</a>}
+          {logged && <a href='$'>Mi lista</a>}
           <Link to={`/organiza-un-evento`}>
             <p className={`${logged ? style.buttonOrganizar : ''}`}>
               Organiza un evento
@@ -151,11 +152,11 @@ const Navbar = ({ upper }) => {
                 onClick={() => setMenuOpen(!menuOpen)}
               >
                 <div className={style.containerImg}>
-                  {user.img ? (
+                  {user.picture ? (
                     <img
                       className={style.userImg}
-                      src={user.img}
-                      alt="img-user"
+                      src={user.picture}
+                      alt='img-user'
                     />
                   ) : (
                     <FaUserCircle className={style.userImg} />
@@ -164,12 +165,12 @@ const Navbar = ({ upper }) => {
                 <IoCaretDownSharp className={style.iconMenu} />
                 {menuOpen && (
                   <div className={style.containerProfileMenu}>
-                    <a href="#">Mis eventos</a>
-                    <Link to="/user/profile">
+                    <a href='#'>Mis eventos</a>
+                    <Link to='/user/profile'>
                       <a>Perfil</a>
                     </Link>
-                    <a href="#">Plan de referidos</a>
-                    <a href="#">Preferencias</a>
+                    <a href='#'>Plan de referidos</a>
+                    <a href='#'>Preferencias</a>
                     <hr />
                     <a
                       onClick={(e) => {

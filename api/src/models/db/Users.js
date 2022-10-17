@@ -1,15 +1,22 @@
 const { Schema, model } = require("mongoose");
 
 const UserSchema = new Schema({
+  firstName: String,
+  lastName: String,
   name: String,
   nickname: String,
   direction: String,
   phone: String,
   tel: String,
-  document: Number,
+  document: String,
   city: String,
   frontDocument: String,
   backDocument: String,
+  imageRent: String,
+  isProfileCompleted: {
+    type: Boolean,
+    default: false,
+  },
   userpicture: {
     type: String,
     default: null,

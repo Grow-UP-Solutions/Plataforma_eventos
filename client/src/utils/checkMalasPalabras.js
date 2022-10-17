@@ -1,0 +1,42 @@
+const malasPalabras = [
+  'nalgas',
+  'basura',
+  'trasero',
+  'poto',
+  'culo',
+  'teta',
+  'sexo',
+  'anal',
+  'vagina',
+  'pinga',
+  'pene',
+  'pichula',
+  'pene',
+  'poronga',
+  'penetreitor',
+  'pito',
+  'pingon',
+  'pelao',
+  'pelado',
+  'calvo',
+  'foco',
+  'perra',
+  'perro',
+  'loco',
+  'rubias19',
+  'xnxx',
+  'verhentai',
+  'xvideos',
+  'concha',
+  'imbecil',
+  'idiota',
+  'tarado',
+  'estupido',
+  'estúpido',
+  'mongolo',
+];
+
+export const checkMalasPalabras = (palabra) => {
+  const rgx = new RegExp(malasPalabras.join('|') + '|' + '/gi');
+  return rgx.test(palabra);
+};

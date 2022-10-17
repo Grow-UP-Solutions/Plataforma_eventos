@@ -1,5 +1,5 @@
 const passport = require('passport');
-const { Strategy } = require('passport-facebook');
+const {Strategy} = require('passport-facebook');
 
 passport.use(
   'auth-facebook',
@@ -16,3 +16,6 @@ passport.use(
     }
   )
 );
+
+/* http://localhost:3001 */
+/* https://plataformaeventos-production-6111.up.railway.app */
