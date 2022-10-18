@@ -146,14 +146,14 @@ async function updateNotificationDB(reading) {
 }
 async function deleteNotificationDB(newDelete) {
   try {
-    console.log(newDelete)
+    
     const { idNotifications, delet } = newDelete;
     const user = await Users.findOne({
       notifications: { $elemMatch: { _id: idNotifications } },
     });
     const notificationsDelete = user.notifications.find((e) => e._id == idNotifications);
     notificationsDelete.delete = delet;
-    console.log(notificationsDelete)
+    
     await user.save();
     return user.notifications;
   } catch (error) {
