@@ -95,7 +95,7 @@ const UserSchema = new Schema({
       msg: String,
       date: {
         type: Date,
-        default: Date.now(),
+        timestamps: true
       },
       read: {
         type: Boolean,
