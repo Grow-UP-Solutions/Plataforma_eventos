@@ -80,7 +80,7 @@ async function createOneUserDb(user) {
 
 async function generateUserComment(id, opinions) {
   try {
-    const { idUser, opinion } = opinions;
+    const { idUser, opinion, rating } = opinions;
 
     const user = await oneUserDb(idUser);
 
@@ -88,6 +88,7 @@ async function generateUserComment(id, opinions) {
     organizer.opinionsOrg.push({
       title: user.name,
       picture: user.picture,
+      rating,
       opinion,
     });
     await organizer.save();
