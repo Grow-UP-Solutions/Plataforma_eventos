@@ -17,7 +17,6 @@ const EventComments =  ({ id }) => {
   const allEvents = useSelector((state) => state.events);
   const eventDetails = allEvents.filter((event) => event._id === id)[0];
    
-
   useEffect(() => {
     const getAllComments = async() => {
       try {
@@ -31,10 +30,12 @@ const EventComments =  ({ id }) => {
   }, [id]);
 
   const calcRating = () => {
-    const ratings = eventDetails.opinions.map(e => e.rating);
+    if (eventDetails.opinions.length > 0) {
+      const ratings = eventDetails.opinions.map(e => e.rating);
     const suma = ratings.reduce((prev, current) => prev + current);
     const result = Math.ceil(suma / eventDetails.opinions.length);
     return result;
+    }
   }
 
   const handlePostComments = async (e) => {
@@ -60,10 +61,9 @@ const EventComments =  ({ id }) => {
     swal({
       title: 'Debes estar registrado para poder enviar un comentario',
       icon: 'warning',
-      button: 'Completar',
+      button: 'Cerrar',
       dangerMode: true,
     });
-    //alert('Debes estar registrado para poder enviar un comentario');
   }
 
   return (
@@ -79,7 +79,7 @@ const EventComments =  ({ id }) => {
 
           <div className={styles.subTitle}>
             <p className={styles.ratNumber}>
-              {eventDetails.opinions.length} opiniones - {calcRating()} % Positivas 
+              {eventDetails.opinions.length} opiniones - {calcRating() ? calcRating() : '0'} % Positivas 
             </p>
           </div>
 

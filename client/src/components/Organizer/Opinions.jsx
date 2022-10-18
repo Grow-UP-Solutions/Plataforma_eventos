@@ -6,6 +6,7 @@ import axios from "axios";
 import { AuthContext } from '../../context/auth/AuthContext';
 import avatar from '../../assets/imgs/no-avatar.png';
 import { format, register } from "timeago.js";
+import swal from 'sweetalert';
 
 const localeFunc = (number, index, total_sec) => {
   // number: the timeago / timein number;
@@ -70,7 +71,12 @@ const Opinions = ({ userDetail }) => {
 
   const handleAlert = (e) => {
     e.preventDefault();
-    alert('Debes estar registrado para poder enviar un comentario');
+    swal({
+      title: 'Debes estar registrado para poder enviar un comentario',
+      icon: 'warning',
+      button: 'Cerrar',
+      dangerMode: true,
+    });
   }
 
   return (
