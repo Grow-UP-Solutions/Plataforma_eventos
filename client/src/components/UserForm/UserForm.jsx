@@ -402,6 +402,13 @@ const UserForm = ({ userData }) => {
   };
 
   const cancelSendForm = () => {
+    setErrorMessagePhoto({
+      userpicture: '',
+      frontDocument: '',
+      backDocument: '',
+      imageRent: '',
+    });
+
     setFormData({
       firstName: userData.firstName || '',
       lastName: userData.lastName || '',
