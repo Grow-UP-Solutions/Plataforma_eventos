@@ -193,35 +193,35 @@ const Register = () => {
       <form onSubmit={onRegister} className={styles.formContainer}>
         <div className={styles.containerInputsForm}>
           <div className={styles.formGroup}>
-            <label htmlFor="name">Nombre(s)</label>
+            <label htmlFor='name'>Nombre(s)</label>
             <input
-              autoComplete="off"
-              type="text"
-              id="name"
+              autoComplete='off'
+              type='text'
+              id='name'
               onChange={handleChangeInputValue}
               required
             />
           </div>
           <div className={styles.formGroup}>
-            <label htmlFor="lastName">Apellido(s)</label>
+            <label htmlFor='lastName'>Apellido(s)</label>
             <input
-              autoComplete="off"
-              type="text"
-              id="lastName"
+              autoComplete='off'
+              type='text'
+              id='lastName'
               onChange={handleChangeInputValue}
               required
             />
           </div>
           <div className={styles.formGroup}>
-            <label htmlFor="mail">Email</label>
+            <label htmlFor='mail'>Email</label>
             <input
               style={{
                 border: errorsInputs.mail === false && '1px solid #C34A33',
               }}
-              type="email"
-              id="mail"
+              type='email'
+              id='mail'
               onChange={handleChangeInputValue}
-              autoComplete="off"
+              autoComplete='off'
               required
             />
             {errorsInputs.mail === false && (
@@ -229,7 +229,7 @@ const Register = () => {
             )}
           </div>
           <div className={styles.formGroup}>
-            <label htmlFor="password">Contraseña</label>
+            <label htmlFor='password'>Contraseña</label>
             <div className={styles.containerInputForPassword}>
               <input
                 style={{
@@ -237,11 +237,11 @@ const Register = () => {
                     errorsInputs.password === false && '1px solid #C34A33',
                 }}
                 type={isPasswordVisible.password ? 'text' : 'password'}
-                id="password"
-                placeholder="Entre 12 y 20 caracteres que idealmente incluya combinación de letras, números y caracteres especiales (* / - _ & @^)"
+                id='password'
+                placeholder='Entre 12 y 20 caracteres que idealmente incluya combinación de letras, números y caracteres especiales (* / - _ & @^)'
                 required
                 onChange={handleChangeInputValue}
-                autoComplete="off"
+                autoComplete='off'
               />
 
               {!isPasswordVisible.password ? (
@@ -263,7 +263,7 @@ const Register = () => {
             </div>
           </div>
           <div className={styles.formGroup}>
-            <label htmlFor="confirmPassword">Confirmar contraseña</label>
+            <label htmlFor='confirmPassword'>Confirmar contraseña</label>
             <div className={styles.containerInputForPassword}>
               <input
                 style={{
@@ -272,7 +272,7 @@ const Register = () => {
                     '1px solid #C34A33',
                 }}
                 type={isPasswordVisible.confirmPassword ? 'text' : 'password'}
-                id="confirmPassword"
+                id='confirmPassword'
                 required
                 onChange={handleChangeInputValue}
               />
@@ -296,16 +296,16 @@ const Register = () => {
             </div>
           </div>
           <div className={styles.formGroupReferred}>
-            <label htmlFor="codeReferred">¿Tienes un código de Referido?</label>
+            <label htmlFor='codeReferred'>¿Tienes un código de Referido?</label>
             <input
               style={{
                 border:
                   errorsInputs.codeReferred === false && '1px solid #C34A33',
               }}
-              id="codeReferred"
+              id='codeReferred'
               onChange={handleChangeInputValue}
               value={formData.codeReferred}
-              type="text"
+              type='text'
             />
             {errorsInputs.codeReferred === false && (
               <span className={styles.errorMessage}>
@@ -345,9 +345,9 @@ const Register = () => {
 
         <div className={styles.containerPromotionAndEmails}>
           <input
-            id="canReceivedInformation"
+            id='canReceivedInformation'
             checked={formData.canReceivedInformation}
-            type="checkbox"
+            type='checkbox'
             onChange={handleChangeInputValue}
           />
           <p>

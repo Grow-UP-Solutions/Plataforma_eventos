@@ -26,13 +26,27 @@ import {
 import { invalidWords } from '../../utils/invalidWord';
 
 const UserForm = ({ userData }) => {
+  /*  */
+
   const handleProfileImg = async (e) => {
+    setErrorMessagePhoto({
+      userpicture: '',
+    });
+
     setCanWriteInput({
       ...canWriteInput,
       userpicture: false,
     });
 
     const image = e.target.files[0];
+
+    console.log({ image });
+
+    if (image.size > 120000) {
+      return setErrorMessagePhoto({
+        userpicture: 'Por favor ingrese una imagén con tamaño menor a 100kb',
+      });
+    }
 
     const imageData = new FormData();
     imageData.append('file', image);
@@ -64,6 +78,13 @@ const UserForm = ({ userData }) => {
       setModalCancel(!modalCancel);
     }
   };
+
+  const [errorMessagePhoto, setErrorMessagePhoto] = useState({
+    userpicture: '',
+    frontDocument: '',
+    backDocument: '',
+    imageRent: '',
+  });
 
   const [uploadMessage, setUploadMessage] = useState({
     status: false,
@@ -306,6 +327,8 @@ const UserForm = ({ userData }) => {
   const updateUserData = async (e) => {
     e.preventDefault();
 
+    let errorsGeneral = { ...errorFields, ...errorMessagePhoto };
+
     let hasErrors = false;
     let hasChanges = false;
     let isProfileCompleted = true;
@@ -317,7 +340,7 @@ const UserForm = ({ userData }) => {
       }
     });
 
-    Object.values(errorFields).forEach((error) => {
+    Object.values(errorsGeneral).forEach((error) => {
       if (error) hasErrors = true;
     });
 
@@ -379,6 +402,13 @@ const UserForm = ({ userData }) => {
   };
 
   const cancelSendForm = () => {
+    setErrorMessagePhoto({
+      userpicture: '',
+      frontDocument: '',
+      backDocument: '',
+      imageRent: '',
+    });
+
     setFormData({
       firstName: userData.firstName || '',
       lastName: userData.lastName || '',
@@ -448,12 +478,23 @@ const UserForm = ({ userData }) => {
   };
 
   const handleImageBackDocument = async (e) => {
+    setErrorMessagePhoto({
+      ...errorMessagePhoto,
+      backDocument: '',
+    });
+
     setCanWriteInput({
       ...canWriteInput,
       backDocument: false,
     });
 
     const image = e.target.files[0];
+    if (image.size > 120000) {
+      return setErrorMessagePhoto({
+        ...errorMessagePhoto,
+        backDocument: 'Por favor ingrese una imagén con tamaño menor a 100kb',
+      });
+    }
 
     const imageData = new FormData();
     imageData.append('file', image);
@@ -475,12 +516,23 @@ const UserForm = ({ userData }) => {
   };
 
   const handleImageFrontDocument = async (e) => {
+    setErrorMessagePhoto({
+      ...errorMessagePhoto,
+      frontDocument: '',
+    });
     setCanWriteInput({
       ...canWriteInput,
       frontDocument: false,
     });
 
     const image = e.target.files[0];
+
+    if (image.size > 120000) {
+      return setErrorMessagePhoto({
+        ...errorMessagePhoto,
+        frontDocument: 'Por favor ingrese una imagén con tamaño menor a 100kb',
+      });
+    }
 
     const imageData = new FormData();
     imageData.append('file', image);
@@ -502,6 +554,11 @@ const UserForm = ({ userData }) => {
   };
 
   const handleImageRent = async (e) => {
+    setErrorMessagePhoto({
+      ...errorMessagePhoto,
+      imageRent: '',
+    });
+
     setCanWriteInput({
       ...canWriteInput,
       imageRent: false,
@@ -509,22 +566,11 @@ const UserForm = ({ userData }) => {
 
     const image = e.target.files[0];
 
-    const imageData = new FormData();
-    imageData.append('file', image);
-    imageData.append('upload_preset', 'j2xzagqg');
-
-    try {
-      const result = await axios.post(
-        'https://api.cloudinary.com/v1_1/dti4vifvz/image/upload',
-        imageData
-      );
-
-      setFormData({
-        ...formData,
-        imageRent: result.data.secure_url,
+    if (image.size > 120000) {
+      return setErrorMessagePhoto({
+        ...errorMessagePhoto,
+        imageRent: 'Por favor ingrese una imagén con tamaño menor a 100kb',
       });
-    } catch (error) {
-      console.log(error);
     }
   };
 
@@ -549,6 +595,11 @@ const UserForm = ({ userData }) => {
           <BsCardImage className={styles.btnAddPhotoIcon} />
           <span>Agregar Imagen</span>
         </button>
+        {errorMessagePhoto.userpicture && (
+          <span className={styles.errorMessage}>
+            {errorMessagePhoto.userpicture}
+          </span>
+        )}
       </div>
       {userData.isProfileCompleted && (
         <div className={styles.isUserIsProfileCompleted}>
@@ -989,10 +1040,22 @@ const UserForm = ({ userData }) => {
                 </>
               )}
               <p>Formatos: Jpg o png. Max. 100kb</p>
-              <button className={styles.btnAddPhotoFile}>
+
+              <button className={styles.btnAddPhoto}>
+                <input
+                  onChange={handleImageFrontDocument}
+                  type='file'
+                  className={styles.inputFile}
+                />
                 <BsCardImage className={styles.btnAddPhotoIcon} />
                 <span>Agregar Imagen</span>
               </button>
+
+              {errorMessagePhoto.frontDocument && (
+                <span className={styles.errorMessage}>
+                  {errorMessagePhoto.frontDocument}
+                </span>
+              )}
             </div>
             <div className={styles.photoBack}>
               <span>Imagen dorsal de la cédula:</span>
@@ -1018,10 +1081,21 @@ const UserForm = ({ userData }) => {
                 </>
               )}
               <p>Formatos: Jpg o png. Max. 100kb</p>
-              <button className={styles.btnAddPhotoFile}>
+
+              {errorMessagePhoto.backDocument && (
+                <span className={styles.errorMessage}>
+                  {errorMessagePhoto.backDocument}
+                </span>
+              )}
+
+              <button className={styles.btnAddPhoto}>
+                <input
+                  onChange={handleImageBackDocument}
+                  type='file'
+                  className={styles.inputFile}
+                />
                 <BsCardImage className={styles.btnAddPhotoIcon} />
                 <span>Agregar Imagen</span>
-                <input multiple type='file' className={styles.inputFile} />
               </button>
             </div>
           </div>
@@ -1062,10 +1136,21 @@ const UserForm = ({ userData }) => {
               </>
             )}
             <p>Formatos: Jpg o png. Max. 100kb</p>
-            <button className={styles.btnAddPhotoFile}>
+
+            {errorMessagePhoto.imageRent && (
+              <span className={styles.errorMessage}>
+                {errorMessagePhoto.imageRent}
+              </span>
+            )}
+
+            <button className={styles.btnAddPhoto}>
+              <input
+                onChange={handleImageRent}
+                type='file'
+                className={styles.inputFile}
+              />
               <BsCardImage className={styles.btnAddPhotoIcon} />
               <span>Agregar Imagen</span>
-              <input multiple type='file' className={styles.inputFile} />
             </button>
           </div>
         </div>

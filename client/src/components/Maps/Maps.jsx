@@ -11,7 +11,7 @@ const Maps = ({id}) => {
   const municipio = eventDetails.municipio;
   const departamento = eventDetails.departamento;
   const location = `${municipio}, ${departamento}`;
-  const apiKey = 'AIzaSyBr-FUseqSbsY6EMqIGNnGmegD39R--nBA';
+  const apiKey = process.env.REACT_APP_GOOGLEMAPS_API_KEY;
   const zoom = '14';
   const size = '400x300';
   const url = `https://maps.googleapis.com/maps/api/staticmap?center=${location}&zoom=${zoom}&size=${size}&key=${apiKey}`;
