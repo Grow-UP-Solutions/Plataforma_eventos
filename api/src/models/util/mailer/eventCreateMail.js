@@ -16,7 +16,7 @@ const { EMAIL, PASSWORD } = process.env;
   let mail_options = {
     from: 'Lo quiero hacer',
     to: EMAIL,
-    subject: `${name} quiere ser contactado`,
+    subject: `${name} tu evento ha sido publicado`,
     html: `<table border="0" cellpadding="0" cellspacing="0" width="600px" background-color="#2d3436" bgcolor="#2d3436">
         <tr height="200px">
             <td bgcolor="" width="600px">
