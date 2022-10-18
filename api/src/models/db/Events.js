@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose');
 
 const EventSchema = new Schema({
   title: String,
-  category: [
+  categories: [
     {
       type: Schema.Types.ObjectId,
       ref: 'Category',
@@ -40,6 +40,7 @@ const EventSchema = new Schema({
       gananciaCupo: String,
       gananciaEvento: String,
       date: String,
+      dateFormated:String
     },
   ],
   notificaciones: [

@@ -6,7 +6,7 @@ const { oneUserDb } = require('./UserDb.js');
   try {
     return await Events.find()
       .populate({ path: 'organizer' })
-      .populate({ path: 'category' })
+      .populate({ path: 'categories' })
       .populate({ path: 'opinions' })
       .exec();
   } catch (error) {
@@ -17,7 +17,7 @@ const { oneUserDb } = require('./UserDb.js');
   try {
     return await Events.findById(id)
       .populate({ path: 'organizer' })
-      .populate({ path: 'category' });
+      .populate({ path: 'categories' });
   } catch (error) {
     throw new Error(error.message);
   }
@@ -26,7 +26,7 @@ const { oneUserDb } = require('./UserDb.js');
   try {
     return await Events.findByIdAndUpdate({ _id: id }, newEvent, { new: 1 })
       .populate({ path: 'organizer' })
-      .populate({ path: 'category' })
+      .populate({ path: 'categories' })
       .populate({ path: 'opinions' });
   } catch (error) {
     throw new Error(error.message);

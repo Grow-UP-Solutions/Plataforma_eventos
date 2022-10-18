@@ -28,9 +28,10 @@ router.post('/create', async (req, res) => {
 });
 router.put('/update/:id', async (req, res) => {
   const { id } = req.params;
-  const { read } = req.body;
+  
+ 
   try {
-    const newMessage = await updateMessage(id, read);
+    const newMessage = await updateMessage(id);
     res.status(200).json(newMessage);
   } catch (error) {
     res.status(500).json(error.message);
