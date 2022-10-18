@@ -79,7 +79,7 @@ const EventComments =  ({ id }) => {
 
           <div className={styles.subTitle}>
             <p className={styles.ratNumber}>
-              {eventDetails.opinions.length} opiniones - {calcRating() ? calcRating() : '0'} % Positivas 
+              {eventDetails.opinions.length} opiniones - {calcRating() ? calcRating() : '0'} de 5 Positivas 
             </p>
           </div>
 

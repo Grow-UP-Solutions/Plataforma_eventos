@@ -65,14 +65,12 @@ const Messages = () => {
       const res = await axios.post("https://plataformaeventos-production-6111.up.railway.app/message/create", message);
       setMessages([...messages, res.data]);
       setNewMessage("");
+      console.log('res.data:', res.data);
+      console.log('message:', message);
     } catch (err) {
       console.log(err);
     }
   };  
-
-  const handleClickConversation = (c) => {
-    setCurrentChat(c);
-  }
 
   return (
     <div className={`${styles.pageMessage} container`}>
@@ -107,7 +105,7 @@ const Messages = () => {
 
               {
                 conversations.map((c, i) => (
-                  <div key={i} onClick={(c) => handleClickConversation(c)} >
+                  <div key={i} onClick={() => setCurrentChat(c)} >
                     <Conversations conversation={c} id={id}/>
                   </div>
                 ))
