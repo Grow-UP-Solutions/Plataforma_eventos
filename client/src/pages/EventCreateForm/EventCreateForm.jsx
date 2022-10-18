@@ -1,54 +1,34 @@
-import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import React, {useRef, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {Calendar} from 'react-date-range';
-import * as locales from 'react-date-range/dist/locale';
-import {Navigation} from 'swiper';
-import 'swiper/modules/navigation/navigation.min.css';
-import 'swiper/modules/pagination/pagination.min.css';
-import 'swiper/modules/scrollbar/scrollbar.min.css';
-import {Swiper, SwiperSlide} from 'swiper/react/swiper-react';
-import 'swiper/swiper.min.css';
-import categories from '../../api/categories';
-import dptos from '../../api/dptos';
-import basquet from '../../assets/imgs/basquet.svg';
-import calendar from '../../assets/imgs/calendar.svg';
-import iconEditar from '../../assets/imgs/iconEditar.svg';
-import iconExclamacion2 from '../../assets/imgs/iconExclamacion2.svg';
-import infoIcon from '../../assets/imgs/infoIcon.svg';
-import ImageIcon from '@mui/icons-material/Image';
-import mapa from '../../assets/imgs/mapa2.png';
-import {formatDate} from '../../utils/formatDate';
-import styles from './EventCreateForm.module.css';
-import {useEffect} from 'react';
-import {Link} from 'react-router-dom';
-import {
-  ConstructionOutlined,
-  ContactMailOutlined,
-  EmergencyRecordingSharp,
-} from '@mui/icons-material';
-import {getColombia, postEvent} from '../../redux/actions';
-import swal from 'sweetalert';
-import {useNavigate} from 'react-router-dom';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import dotenv from 'dotenv';
-import {formatDateForm} from '../../utils/formatDateForm';
-import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
-import {Pagination} from 'swiper';
-import 'swiper/modules/navigation/navigation.min.css';
-import 'swiper/modules/pagination/pagination.min.css';
-import 'swiper/modules/scrollbar/scrollbar.min.css';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import ImageIcon from '@mui/icons-material/Image';
+import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import dotenv from 'dotenv';
+import React, { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import swal from 'sweetalert';
+import { Navigation, Pagination } from 'swiper';
+import 'swiper/modules/navigation/navigation.min.css';
+import 'swiper/modules/pagination/pagination.min.css';
+import 'swiper/modules/scrollbar/scrollbar.min.css';
+import { Swiper, SwiperSlide } from 'swiper/react/swiper-react';
+import 'swiper/swiper.min.css';
+import categories from '../../api/categories';
+import basquet from '../../assets/imgs/basquet.svg';
+import iconEditar from '../../assets/imgs/iconEditar.svg';
+import iconExclamacion2 from '../../assets/imgs/iconExclamacion2.svg';
+import mapa from '../../assets/imgs/mapa2.png';
+import { getColombia, postEvent } from '../../redux/actions';
+import { formatDateForm } from '../../utils/formatDateForm';
+import styles from './EventCreateForm.module.css';
 
-import {Rating} from '@mui/material';
-import {IoLocationOutline} from 'react-icons/io5';
-import {iconArrowLeft, iconArrowRight} from '../../assets/imgs';
-import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
-import {AiOutlineClose} from 'react-icons/ai';
 import LaunchOutlinedIcon from '@mui/icons-material/LaunchOutlined';
+import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
 import WarningOutlinedIcon from '@mui/icons-material/WarningOutlined';
+import { Rating } from '@mui/material';
+import { IoLocationOutline } from 'react-icons/io5';
 
 const EventCreateForm = () => {
   const dispatch = useDispatch();
@@ -538,7 +518,7 @@ const EventCreateForm = () => {
           ...post,
           pictures: [
             ...post.pictures,
-            {cover: false, picture: e.target.result},
+            { cover: false, picture: e.target.result },
           ],
         });
       };
@@ -1279,7 +1259,7 @@ const EventCreateForm = () => {
                       onDrop={onDrop}
                     >
                       <div>
-                        <ImageIcon sx={{fontSize: '50px', color: 'grey'}} />
+                        <ImageIcon sx={{ fontSize: '50px', color: 'grey' }} />
                       </div>
                       <p>Fotos: Jpg, png, Max.100kb </p>
                       <p>Videos: .MP4 Max 100kb</p>
@@ -1306,7 +1286,7 @@ const EventCreateForm = () => {
                       onDrop={onDrop}
                     >
                       <div>
-                        <ImageIcon sx={{fontSize: '50px', color: 'grey'}} />
+                        <ImageIcon sx={{ fontSize: '50px', color: 'grey' }} />
                       </div>
                       <p>Fotos: Jpg, png, Max.100kb </p>
                       <p>Videos: .MP4 Max 100kb</p>
@@ -2023,7 +2003,7 @@ const EventCreateForm = () => {
                                   >
                                     <FavoriteIcon
                                       className={styles.icon_heartInfo}
-                                      sx={{fontSize: 25}}
+                                      sx={{ fontSize: 25 }}
                                     />
                                   </div>
 
@@ -2037,7 +2017,7 @@ const EventCreateForm = () => {
                                     >
                                       <LaunchOutlinedIcon
                                         className={styles.icon_shareInfo}
-                                        sx={{fontSize: 25}}
+                                        sx={{ fontSize: 25 }}
                                       />
                                     </label>
                                   </div>
@@ -2053,7 +2033,7 @@ const EventCreateForm = () => {
                                         name='read-only'
                                         value={5}
                                         readOnly
-                                        sx={{fontSize: 25}}
+                                        sx={{ fontSize: 25 }}
                                       />
                                     </div>
                                     <p className={styles.numberRatingInfo}>
@@ -2139,7 +2119,7 @@ const EventCreateForm = () => {
                                         sx={{
                                           fontSize: '16px',
                                           color: '#585858',
-                                          '& :hover': {color: '#ef5350'},
+                                          '& :hover': { color: '#ef5350' },
                                         }}
                                       />
                                       <p className={styles.titleDate}>

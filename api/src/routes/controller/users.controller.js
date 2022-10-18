@@ -168,16 +168,15 @@ router.get(
 );
 /**/ //////////////Rutas POST/////////////// */
 
-router.post('/notifications',async (req,res)=>{
-  const notificaciones = req.body
+router.post('/notifications', async (req, res) => {
+  const notificaciones = req.body;
   try {
-    const newNotification = await sendNotificationsUser(notificaciones)
-    return res.status(200).json(newNotification)
+    const newNotification = await sendNotificationsUser(notificaciones);
+    return res.status(200).json(newNotification);
   } catch (error) {
     return res.status(500).json({ message: error.message });
-    
   }
-})
+});
 
 router.post(
   '/create',
@@ -346,8 +345,6 @@ router.put('/update/:id', async (req, res) => {
       const newPassword = bcrypt.hashSync(newUser.password, salt);
       newUser.password = newPassword;
     }
-
-    console.log(newUser);
 
     const usersUpdate = await userUpdate(id, newUser);
     return res.status(200).json(usersUpdate);
