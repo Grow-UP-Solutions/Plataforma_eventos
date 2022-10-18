@@ -1,7 +1,7 @@
 const passport = require('passport');
-const {Strategy} = require('passport-google-oauth20');
+const { Strategy } = require('passport-google-oauth20');
 
-const {GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET} = process.env;
+const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } = process.env;
 
 passport.use(
   new Strategy(

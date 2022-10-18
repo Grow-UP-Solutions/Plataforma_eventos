@@ -34,6 +34,11 @@ const malasPalabras = [
   'estupido',
   'estúpido',
   'mongolo',
+  'puta',
+  'zorra',
+  'prostitua',
+  'malparido',
+  'mal parido',
 ];
 
 export const checkMalasPalabras = (palabra) => {

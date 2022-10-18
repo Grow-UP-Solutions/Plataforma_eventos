@@ -1,5 +1,5 @@
 const passport = require('passport');
-const {Strategy} = require('passport-facebook');
+const { Strategy } = require('passport-facebook');
 
 passport.use(
   'auth-facebook',
