@@ -84,15 +84,15 @@ async function generateUserComment(id, opinions) {
 
     const user = await oneUserDb(idUser);
 
-    const organizer = await oneUserDb(id);    
+    const organizer = await oneUserDb(id);
     organizer.opinionsOrg.push({
-      title : user.name,
-      picture:user.picture,
-      opinion
+      title: user.name,
+      picture: user.picture,
+      opinion,
     });
-    await organizer.save()
+    await organizer.save();
 
-    return organizer.opinionsOrg[organizer.opinionsOrg.length - 1] ;
+    return organizer.opinionsOrg[organizer.opinionsOrg.length - 1];
   } catch (error) {
     throw new Error(error.message);
   }
@@ -120,29 +120,51 @@ async function sendMessageDB(idSend, idGet, msg) {
 /**enviar notificaciones  */
 async function sendNotificationDB(id, msg) {
   try {
-    
     const user = await Users.findOne({ _id: id });
-    user.notifications.push({msg})
-    await user.save()
-    return user.notifications[user.notifications.length - 1]
-
+    user.notifications.push({ msg });
+    await user.save();
+    return user.notifications[user.notifications.length - 1];
   } catch (error) {
     throw new Error(error.message);
-    
   }
 }
-async function updateNotificationDB(id,read) {
+async function updateNotificationDB(reading) {
   try {
-    const user = await Users.findOne({_id:id})
-    
-    
+    const { idNotifications, read } = reading;
+    const user = await Users.findOne({
+      notifications: { $elemMatch: { _id: idNotifications } },
+    });
+    const newRead = user.notifications.find((e) => e._id == idNotifications);
+    newRead.read = read;
+    console.log(user.notifications.updatedAt)
+    await user.save();
+    return user.notifications;
   } catch (error) {
+    console.log("error", error.message);
     throw new Error(error.message);
   }
-  
+}
+async function deleteNotificationDB(newDelete) {
+  try {
+    console.log(newDelete)
+    const { idNotifications, delet } = newDelete;
+    const user = await Users.findOne({
+      notifications: { $elemMatch: { _id: idNotifications } },
+    });
+    const notificationsDelete = user.notifications.find((e) => e._id == idNotifications);
+    notificationsDelete.delete = delet;
+    console.log(notificationsDelete)
+    await user.save();
+    return user.notifications;
+  } catch (error) {
+    console.log("error", error.message);
+    throw new Error(error.message);
+  }
 }
 
 module.exports = {
+  deleteNotificationDB,
+  updateNotificationDB,
   sendNotificationDB,
   allUserDb,
   createOneUserDb,
