@@ -14,7 +14,6 @@ import styles from './OrganizerDetails.module.css';
 import swal from 'sweetalert';
 
 const OrganizerDetails = () => {
-
   const id = useParams().id;
   const { user, logged } = useContext(AuthContext);
   const navigate = useNavigate();
