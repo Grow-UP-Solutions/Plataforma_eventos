@@ -6,6 +6,7 @@ import axios from "axios";
 import { AuthContext } from '../../context/auth/AuthContext';
 import avatar from '../../assets/imgs/no-avatar.png';
 import { format, register } from "timeago.js";
+import swal from 'sweetalert';
 
 const localeFunc = (number, index, total_sec) => {
   // number: the timeago / timein number;
@@ -34,6 +35,7 @@ const Opinions = ({ userDetail }) => {
 
   const id = userDetail._id;
   const [opinion, setOpinion] = useState([]);
+  const [value, setValue] = useState(0);
   const [newOpinion, setNewOpinion] = useState('');
   const { user } = useContext(AuthContext);
 
@@ -53,7 +55,7 @@ const Opinions = ({ userDetail }) => {
     e.preventDefault();
     const data = {
       idUser: user.uid,
-      rating: 5,
+      rating: value,
       title: user.name,
       opinion: newOpinion,
     }
@@ -61,6 +63,7 @@ const Opinions = ({ userDetail }) => {
       const res = await axios.post('https://plataformaeventos-production-6111.up.railway.app/users/commentOrganizer/' + id, data);
       setOpinion([...opinion, res.data]);
       setNewOpinion('');
+      setValue(0);
     } catch (error) {
       console.log(error)
     }
@@ -68,7 +71,12 @@ const Opinions = ({ userDetail }) => {
 
   const handleAlert = (e) => {
     e.preventDefault();
-    alert('Debes estar registrado para poder enviar un comentario');
+    swal({
+      title: 'Debes estar registrado para poder enviar un comentario',
+      icon: 'warning',
+      button: 'Cerrar',
+      dangerMode: true,
+    });
   }
 
   return (
@@ -149,8 +157,10 @@ const Opinions = ({ userDetail }) => {
           <Rating
             className={styles.rating}
             name="half-rating"
-            defaultValue={0}
+            //defaultValue={0}
             precision={0.5}
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
           />
         </div>
 

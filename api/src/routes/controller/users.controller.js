@@ -33,7 +33,7 @@ const {
   changePasswordMail,
 } = require('../../models/util/mailer/changePassword.js');
 const {
-  validateEmailUserDb,
+  validateEmailUserDb, updateNotificationDB, deleteNotificationDB,
 } = require('../../models/util/functionDB/UserDb.js');
 const {
   createCodeVerifyMail,
@@ -177,6 +177,26 @@ router.post('/notifications', async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 });
+router.put('/notifications', async (req,res)=>{
+  const read = req.body
+  try {
+    const notificacionesRead = await updateNotificationDB(read)
+    return res.status(200).json(notificacionesRead)
+  } catch (error) {
+    res.status(500).json(error.Menssage)
+    
+  }
+})
+router.delete('/notifications', async (req,res)=>{
+  const newDelete = req.body
+  try {
+    const notificacionesDelete = await deleteNotificationDB(newDelete)
+    return res.status(200).json(notificacionesDelete)
+  } catch (error) {
+    res.status(500).json(error.Menssage)
+    
+  }
+})
 
 router.post(
   '/create',

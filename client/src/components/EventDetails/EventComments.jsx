@@ -6,15 +6,17 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { AuthContext } from '../../context/auth/AuthContext';
 import CardComments from "../CardComments/CardComments";
+import swal from 'sweetalert';
 
 const EventComments =  ({ id }) => {
 
   const [opinion, setOpinion] = useState([]);
   const [newOpinion, setNewOpinion] = useState('');
+  const [value, setValue] = useState(0);
   const { user } = useContext(AuthContext);
   const allEvents = useSelector((state) => state.events);
   const eventDetails = allEvents.filter((event) => event._id === id)[0];
-
+   
   useEffect(() => {
     const getAllComments = async() => {
       try {
@@ -27,11 +29,20 @@ const EventComments =  ({ id }) => {
     getAllComments();
   }, [id]);
 
+  const calcRating = () => {
+    if (eventDetails.opinions.length > 0) {
+      const ratings = eventDetails.opinions.map(e => e.rating);
+    const suma = ratings.reduce((prev, current) => prev + current);
+    const result = Math.ceil(suma / eventDetails.opinions.length);
+    return result;
+    }
+  }
+
   const handlePostComments = async (e) => {
     e.preventDefault();
     const data = {
       idUser: user.uid,
-      rating: 5,
+      rating: value,
       title: user.name,
       opinion: newOpinion,
     }
@@ -39,6 +50,7 @@ const EventComments =  ({ id }) => {
       const res = await axios.post('https://plataformaeventos-production-6111.up.railway.app/events/opinionsGenerate/' + id, data);
       setOpinion([...opinion, res.data]);
       setNewOpinion('');
+      setValue(0);
     } catch (error) {
       console.log(error)
     }
@@ -46,7 +58,12 @@ const EventComments =  ({ id }) => {
 
   const handleAlert = (e) => {
     e.preventDefault();
-    alert('Debes estar registrado para poder enviar un comentario');
+    swal({
+      title: 'Debes estar registrado para poder enviar un comentario',
+      icon: 'warning',
+      button: 'Cerrar',
+      dangerMode: true,
+    });
   }
 
   return (
@@ -61,7 +78,9 @@ const EventComments =  ({ id }) => {
           </div>
 
           <div className={styles.subTitle}>
-            <p className={styles.ratNumber}>{eventDetails.opinions.length} opiniones - {eventDetails.rating}% Positivas </p>
+            <p className={styles.ratNumber}>
+              {eventDetails.opinions.length} opiniones - {calcRating() ? calcRating() : '0'} de 5 Positivas 
+            </p>
           </div>
 
           {
@@ -96,9 +115,9 @@ const EventComments =  ({ id }) => {
             <Rating
               className={styles.rating}
               name="half-rating" 
-              defaultValue={0}
+              value={value}
               precision={0.5} 
-            
+              onChange={(e) => setValue(e.target.value)}
             />
           </div>
 
