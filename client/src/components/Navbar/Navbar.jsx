@@ -1,25 +1,39 @@
-import React, {useContext, useState} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import style from './Navbar.module.css';
-
-import {Link, useNavigate, useLocation} from 'react-router-dom';
-import {UIContext} from '../../context/ui';
-import {AuthContext} from '../../context/auth';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { UIContext } from '../../context/ui';
+import { AuthContext } from '../../context/auth';
+import { stateContext } from '../../context/state/stateContext';
 import Search from '../Search/Search';
 import {GrMail} from 'react-icons/gr';
 import {FaUserCircle} from 'react-icons/fa';
 import {IoNotifications, IoCaretDownSharp} from 'react-icons/io5';
 import logo from '../../assets/imgs/logoNav.svg';
-import notifications from '../../api/noti';
+import axios from 'axios';
 
-const Navbar = ({upper}) => {
-  const {toggleScreenLogin} = useContext(UIContext);
-  const {user, logged, logout} = useContext(AuthContext);
+const Navbar = ({ upper }) => {
+
+  const { toggleScreenLogin } = useContext(UIContext);
+  const { user, logged, logout } = useContext(AuthContext);
+  const { result, setResult } = useContext(stateContext);
   const [menuOpen, setMenuOpen] = useState(false);
   const [openNotifications, setOpenNotifications] = useState(false);
   const [openMessages, setOpenMessages] = useState(false);
   const navigate = useNavigate();
-  const allNotifications = notifications;
+  //const allNotifications = notifications;
   const {pathname} = useLocation();
+
+  useEffect(() => {
+    getUserData();
+  }, [user]);
+
+  const getUserData = async () => {
+    let userResult = {};
+    if (user.uid) {
+      userResult = await axios.get('https://plataformaeventos-production-6111.up.railway.app/users/' + user.uid);
+      setResult(userResult.data);
+    }
+  }
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -77,7 +91,7 @@ const Navbar = ({upper}) => {
                   onClick={() => setOpenMessages(!openMessages)}
                 >
                   <GrMail className={style.iconNav} />
-                  <div className={style.bage}>1</div>
+                  <div className={style.bage}>0</div>
                 </div>
                 <div className={style.divisorNotis} />
                 <div
@@ -85,15 +99,15 @@ const Navbar = ({upper}) => {
                   onClick={() => setOpenNotifications(!openNotifications)}
                 >
                   <IoNotifications className={style.iconNav} />
-                  <div className={style.bage}>{allNotifications.length}</div>
+                  <div className={style.bage}>0</div>
                 </div>
 
                 {openMessages && (
                   <div className={style.notifications}>
                     <p className={style.link_noti}>Marcar todas como leidas</p>
-                    {allNotifications.map((e) => (
+                    {result.notifications.map((e) => (
                       <div className={style.noty}>
-                        {e.title} {e.noti}
+                        {e.msg}
                       </div>
                     ))}
                     <p
@@ -108,10 +122,10 @@ const Navbar = ({upper}) => {
                 {openNotifications && (
                   <div className={style.notifications}>
                     <p className={style.link_noti}>Marcar todas como leidas</p>
-                    {allNotifications.map((e) => (
+                    {result.notifications.map((e) => (
                       <div className={style.noty}>
                         <IoNotifications className={style.iconNav} />
-                        {e.title} {e.noti}
+                        {e.msg}
                       </div>
                     ))}
                     <p

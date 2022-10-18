@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { animateScroll as scroll } from 'react-scroll';
 import { AuthContext } from '../../context/auth/AuthContext';
-
 import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
 import { Rating } from '@mui/material';
 import { IoLocationOutline } from 'react-icons/io5';
@@ -12,13 +11,13 @@ import AboutOrganizer from '../../components/Organizer/AboutOrganizer.jsx';
 import NextEvents from '../../components/Organizer/NextEvents.jsx';
 import Opinions from '../../components/Organizer/Opinions.jsx';
 import styles from './OrganizerDetails.module.css';
+import swal from 'sweetalert';
 
 const OrganizerDetails = () => {
-  const id = useParams().id;
 
+  const id = useParams().id;
   const { user, logged } = useContext(AuthContext);
   const navigate = useNavigate();
-
   const [component, setComponent] = useState('');
   const [nextEvent, setNextEvent] = useState({});
   const [conversation, setConversation] = useState({});
@@ -65,7 +64,12 @@ const OrganizerDetails = () => {
 
   const handleAlert = (e) => {
     e.preventDefault();
-    alert('Debes estar registrado para poder enviar mensajes');
+    swal({
+      title: 'Debes estar registrado para poder enviar un mensaje',
+      icon: 'warning',
+      button: 'Cerrar',
+      dangerMode: true,
+    });
   };
 
   const handleInput = (e) => {
