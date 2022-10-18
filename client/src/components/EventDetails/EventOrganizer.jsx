@@ -6,6 +6,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { AuthContext } from '../../context/auth/AuthContext';
 import { stateContext } from '../../context/state/stateContext';
+import swal from 'sweetalert';
 
 const EventOrganizer = ({ id }) => {
 
@@ -42,7 +43,12 @@ const EventOrganizer = ({ id }) => {
 
   const handleAlert = (e) => {
     e.preventDefault();
-    alert('Debes estar registrado para poder enviar mensajes');
+    swal({
+      title: 'Debes estar registrado para poder enviar un mensaje',
+      icon: 'warning',
+      button: 'Cerrar',
+      dangerMode: true,
+    });
   }
 
   const handleClickEventsOrganizer = async (e) => {

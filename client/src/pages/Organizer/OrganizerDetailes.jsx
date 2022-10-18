@@ -11,6 +11,7 @@ import AboutOrganizer from '../../components/Organizer/AboutOrganizer.jsx';
 import NextEvents from '../../components/Organizer/NextEvents.jsx';
 import Opinions from '../../components/Organizer/Opinions.jsx';
 import styles from './OrganizerDetails.module.css';
+import swal from 'sweetalert';
 
 const OrganizerDetails = () => {
 
@@ -63,7 +64,12 @@ const OrganizerDetails = () => {
 
   const handleAlert = (e) => {
     e.preventDefault();
-    alert('Debes estar registrado para poder enviar mensajes');
+    swal({
+      title: 'Debes estar registrado para poder enviar un mensaje',
+      icon: 'warning',
+      button: 'Cerrar',
+      dangerMode: true,
+    });
   };
 
   const handleInput = (e) => {
