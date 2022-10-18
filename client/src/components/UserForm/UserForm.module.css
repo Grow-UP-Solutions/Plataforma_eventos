@@ -8,6 +8,10 @@
 
 .containerPhotoProfile {
   margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .containerPhoto {
@@ -15,17 +19,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
-  position: relative;
-
   margin-bottom: 1.2rem;
 }
 
 .containerPhoto img {
-  width: 16rem;
-  height: 16rem;
-  border-radius: 50%;
-  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2);
+  border-radius: 100%;
+  width: 20rem;
+  height: 20rem;
 }
 
 .addPhoto {
@@ -59,11 +59,13 @@
 
 .btnAddPhotoIcon {
   color: var(--color-grey-4);
+  cursor: pointer;
 }
 
 .btnAddPhoto span {
   font-size: 1.4rem;
   color: var(--color-grey-4);
+  cursor: pointer;
 }
 
 .divisor {
@@ -134,9 +136,38 @@
 .formGroup {
   width: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 1.2rem;
   margin-bottom: 1.2rem;
+}
+
+.formGroupNames {
+  flex-direction: column;
+}
+
+.subFormGroup {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.formGroup button {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid var(--color-orange);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.formGroup button span {
+  color: var(--color-orange);
+}
+
+.formGroup button .iconEdit {
+  color: var(--color-orange);
 }
 
 .inputsContainer {
@@ -152,7 +183,8 @@
   margin-bottom: 0.6rem;
 }
 
-.inputsContainer input {
+.inputsContainer input,
+.inputsContainer .selectNickName {
   background-color: transparent;
   border: 1px solid var(--color-grey-4);
   font-size: 1.6rem;
@@ -175,26 +207,84 @@
   color: var(--color-grey-3);
 }
 
-.inputsContainer input:focus {
+.inputsContainer input:focus,
+.inputsContainer .selectNickName:focus {
   outline: none;
-  border: 1px solid var(--color-orange);
+  border: 1px solid var(--color-green);
 }
 
-.formGroup button {
-  background-color: transparent;
-  border: none;
-  border-bottom: 1px solid var(--color-orange);
+.containerInputForPassword {
+  position: relative;
+  height: 100%;
+}
+
+.formGroupPassword {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
+
+  margin: 1.2rem 4rem;
+}
+
+.formGroupPassword label {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: var(--color-grey-2);
+}
+
+.formGroupPassword input {
+  width: 52.6rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--color-grey-4);
+  border-radius: 5px;
+  font-size: 2rem;
+  font-family: inherit;
+  padding-right: 4rem;
+  color: var(--color-grey-2);
+}
+
+.formGroupPassword input:focus {
+  outline: none;
+  border: 1px solid var(--color-green);
+}
+
+.formGroupPassword input::placeholder {
+  font-size: 1.2rem;
+  font-style: italic;
+}
+
+.iconVisiblePassword {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  width: 2.2rem;
+  height: 2.2rem;
+  color: var(--color-grey-2);
   cursor: pointer;
 }
 
-.formGroup button span {
+.errorMessage {
+  display: inline-block;
   color: var(--color-orange);
+  font-size: 1.4rem;
+  font-style: italic;
+  left: 0;
 }
 
-.formGroup button .iconEdit {
-  color: var(--color-orange);
+.errorMessage a {
+  font-weight: bold;
+}
+
+.iconCheckPassword {
+  position: absolute;
+
+  right: -3rem;
+  top: 1rem;
+
+  font-size: 2.4rem;
+  color: var(--color-green);
 }
 
 /* UPLOAD IMAGES */
@@ -213,6 +303,16 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.frontDocument,
+.backDocument {
+  width: 30rem;
+  height: 15rem;
+  margin-bottom: 0.6rem;
+  border-radius: 10px;
 }
 
 .photoFront > span,
@@ -326,6 +426,13 @@
   font-style: italic;
 }
 
+.imageRent {
+  width: 30rem;
+  height: 15rem;
+  margin-bottom: 0.6rem;
+  border-radius: 10px;
+}
+
 .dragRent {
   width: 30rem;
   height: 15rem;
@@ -338,6 +445,7 @@
   position: relative;
   border: 1px solid var(--color-grey-4);
   border-radius: 10px;
+  margin-bottom: 1.2rem;
 }
 
 .dragRent span {
@@ -349,12 +457,15 @@
 .containerAboutMe {
   width: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-bottom: 5.2rem;
 }
 
 .containerAboutMe > div {
   width: 60%;
+  margin-bottom: 2rem;
 }
 
 .containerTitle {
@@ -376,6 +487,7 @@
 
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .containerAboutMeInput {
@@ -383,8 +495,6 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-
-  margin-bottom: 5.2rem;
 }
 
 .containerAboutMeInput textarea {
@@ -401,7 +511,7 @@
 
 .containerAboutMeInput textarea:focus {
   outline: none;
-  border: 1px solid var(--color-orange);
+  border: 1px solid var(--color-green);
 }
 
 .containerMainButton {
@@ -430,4 +540,70 @@
   border-bottom: 1px solid var(--color-orange);
   font-size: 1.6rem;
   color: var(--color-orange);
+}
+
+/* ERROR */
+
+.formGroup .errorMessageField {
+  font-weight: bold;
+  font-size: 1.6rem;
+  color: var(--color-orange);
+}
+
+.errorMessageFieldAboutMe {
+  width: 60%;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--color-orange);
+}
+
+.uploadFormDataMessage {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: var(--color-orange);
+}
+
+.overlayCancel {
+  position: fixed;
+  height: 100vh;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+
+  display: grid;
+  place-items: center;
+}
+
+.containerModalCancel {
+  background-color: white;
+
+  padding: 2rem 4rem;
+  border-radius: 10px;
+}
+
+.titleModalCancel {
+  font-size: 2.4rem;
+
+  margin-bottom: 2.4rem;
+}
+
+.containerButtonsCancel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.containerButtonsCancel button {
+  background-color: var(--color-orange);
+  border: none;
+  color: white;
+
+  padding: 1rem 4rem;
+  border-radius: 10px;
+
+  font-size: 1.6rem;
+  font-weight: bold;
+  cursor: pointer;
 }

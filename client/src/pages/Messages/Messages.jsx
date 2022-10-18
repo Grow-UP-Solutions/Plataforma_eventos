@@ -105,7 +105,7 @@ const Messages = () => {
               {
                 conversations.map((c) => (
                   <div onClick={() => setCurrentChat(c)}>
-                    <Conversations conversation={c} id={id} />
+                    <Conversations conversation={c} id={id} currentChat={currentChat}/>
                   </div>
                 ))
               }
@@ -144,6 +144,18 @@ const Messages = () => {
 
             </div>
 
+          </div>
+
+          <div className={styles.buttonsChats}>
+            <div>
+              <p>Usuarios Bloqueados</p>
+            </div>
+
+            <div className={styles.buttonDivisor} />
+
+            <div>
+              <p>Conversaciones archivadas</p>
+            </div>
           </div>
 
           <div className={styles.containerInputMessage}>

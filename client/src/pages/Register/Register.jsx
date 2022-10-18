@@ -73,6 +73,8 @@ const Register = () => {
 
     const userData = {
       name: `${formData.name} ${formData.lastName}`,
+      firstName: formData.name,
+      lastName: formData.lastName,
       email: formData.mail,
       password: formData.password,
     };
@@ -111,22 +113,34 @@ const Register = () => {
         if (event.data) {
           let user = {};
 
+          console.log(event.data);
+
           if (provider === 'facebook') {
             const { name, email, id } = event.data._json;
 
             user = {
               email,
               name,
+              firstName: name.split(' ')[0],
+              lastName: name.split(' ')[1],
               password: id + 'aA@',
             };
           }
 
           if (provider === 'google') {
-            const { sub, name, email } = event.data._json;
+            const {
+              sub,
+              name,
+              email,
+              family_name,
+              given_name,
+            } = event.data._json;
 
             user = {
               email,
               name,
+              firstName: given_name,
+              lastName: family_name,
               password: sub + 'aA@',
             };
           }

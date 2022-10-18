@@ -27,7 +27,7 @@ const EventComments =  ({ id }) => {
     getAllComments();
   }, [id]);
 
-  const handlePostComments =async (e) => {
+  const handlePostComments = async (e) => {
     e.preventDefault();
     const data = {
       idUser: user.uid,

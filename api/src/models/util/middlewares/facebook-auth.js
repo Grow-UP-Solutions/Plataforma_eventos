@@ -16,3 +16,6 @@ passport.use(
     }
   )
 );
+
+/* http://localhost:3001 */
+/* https://plataformaeventos-production-6111.up.railway.app */
