@@ -154,7 +154,7 @@ const Opinions = ({ userDetail }) => {
             //defaultValue={0}
             precision={0.5}
             value={value}
-            onChange={(event, newValue) => setValue(newValue)}
+            onChange={(e) => setValue(e.target.value)}
           />
         </div>
 

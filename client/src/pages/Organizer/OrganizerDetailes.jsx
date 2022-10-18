@@ -20,13 +20,13 @@ const OrganizerDetails = () => {
   const [nextEvent, setNextEvent] = useState({});
   const [conversation, setConversation] = useState({});
   const { user, logged } = useContext(AuthContext);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const allEvents = useSelector((state) => state.events);
+  console.log('allEvents:', allEvents);
   const userDetail = allEvents.filter((e) => e.organizer._id === id)[0];
+  console.log('userDetails:', userDetail);
 
   useEffect(() => {
-    dispatch(getEvents);
     obtenerDatos();
     scroll.scrollToTop();
   }, []);
