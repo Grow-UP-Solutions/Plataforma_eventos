@@ -120,7 +120,11 @@ router.get(
       <body>
       </body>
       <script>
-      window.opener.postMessage(${userString}, 'http://localhost:3000')
+      window.opener.postMessage(${userString}, ${
+          process.env.CLIENT_URL
+            ? "'" + process.env.CLIENT_URL + "'"
+            : 'http://localhost:3000'
+        })
       </script>
       </html>
       `
@@ -158,7 +162,11 @@ router.get(
       <body>
       </body>
       <script>
-      window.opener.postMessage(${userString}, 'http://localhost:3000')
+      window.opener.postMessage(${userString}, ${
+          process.env.CLIENT_URL
+            ? "'" + process.env.CLIENT_URL + "'"
+            : 'http://localhost:3000'
+        })
       </script>
       </html>
       `
