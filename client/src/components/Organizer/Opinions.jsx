@@ -64,6 +64,8 @@ const Opinions = ({ userDetail }) => {
       setOpinion([...opinion, res.data]);
       setNewOpinion('');
       setValue(0);
+      console.log('data:', data);
+      console.log('res.data:', res.data);
     } catch (error) {
       console.log(error)
     }
@@ -158,8 +160,8 @@ const Opinions = ({ userDetail }) => {
             className={styles.rating}
             name="half-rating"
             //defaultValue={0}
-            precision={0.5}
             value={value}
+            precision={0.5}
             onChange={(e) => setValue(e.target.value)}
           />
         </div>
