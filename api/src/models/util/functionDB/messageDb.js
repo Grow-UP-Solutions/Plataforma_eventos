@@ -1,5 +1,5 @@
-require('../../../DB.js');
-const Message = require('../../db/Message.js');
+require("../../../DB.js");
+const Message = require("../../db/Message.js");
 
 async function createMessage(message) {
   const newMessage = new Message(message);
@@ -21,15 +21,18 @@ async function findMessage(conversationId) {
   }
 }
 async function findOneMessage(id) {
-  
   return await Message.findOne({ _id: id });
 }
 
-async function findAndUpdateMessage(id, read) {
+async function findAndUpdateMessage(id) {
   try {
-    const newMessage = await findOneMessage(id);
-    newMessage.read = read;
-    return await newMessage.save();
+    const newMessage = await findMessage(id);
+    newMessage.forEach(async (e) => {
+      e.read = true
+      await e.save()
+   });
+
+    return newMessage;
   } catch (error) {
     throw new Error(error.message);
   }
