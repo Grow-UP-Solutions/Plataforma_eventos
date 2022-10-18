@@ -55,6 +55,7 @@
   cursor: pointer;
 
   position: relative;
+  margin-bottom: 1.2rem;
 }
 
 .btnAddPhotoIcon {
@@ -267,10 +268,12 @@
 
 .errorMessage {
   display: inline-block;
-  color: var(--color-orange);
-  font-size: 1.4rem;
+  color: var(--color-orange) !important;
+  font-size: 1.4rem !important;
+  font-weight: 400 !important;
   font-style: italic;
   left: 0;
+  margin-bottom: 1.2rem;
 }
 
 .errorMessage a {

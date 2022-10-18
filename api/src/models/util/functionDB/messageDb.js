@@ -7,7 +7,7 @@ async function createMessage(message) {
   try {
     return await newMessage.save();
   } catch (error) {
-    return { ERROR_CREATEMESSAGE: error.message };
+    throw new Error(error.message);
   }
 }
 
@@ -17,11 +17,11 @@ async function findMessage(conversationId) {
       conversationId: conversationId,
     });
   } catch (error) {
-    return { ERROR_FINDMESSAGE: error.message };
+    throw new Error(error.message);
   }
 }
 async function findOneMessage(id) {
-  console.log(id);
+  
   return await Message.findOne({ _id: id });
 }
 
@@ -31,7 +31,7 @@ async function findAndUpdateMessage(id, read) {
     newMessage.read = read;
     return await newMessage.save();
   } catch (error) {
-    return { ERROR_UPDATEMESSAGE: error.message };
+    throw new Error(error.message);
   }
 }
 
