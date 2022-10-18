@@ -240,6 +240,7 @@ router.post('/commentOrganizer/:id', async (req, res) => {
   try {
     const opinion = req.body;
     const { id } = req.params;
+    console.log(opinion)
     const opinionCreat = await createOrganizerComment(id, opinion);
     return res.status(200).json(opinionCreat);
   } catch (error) {
