@@ -20,6 +20,8 @@ import style from './EventInfo.module.css';
 import { useSelector } from 'react-redux';
 import axios from "axios";
 import { AuthContext } from '../../context/auth/AuthContext';
+import { stateContext } from '../../context/state/stateContext';
+import swal from 'sweetalert';
 
 const EventInfo = ({ id }) => {
 
@@ -29,7 +31,7 @@ const EventInfo = ({ id }) => {
   const [check, setCheck] = useState(null);
   const [checked, setChecked] = useState('');
   const { user } = useContext(AuthContext);
-  const [state, setState] = useState({});
+  const { notes, setNotes } = useContext(stateContext);
   
   const handleFormatDate = (check) => {
     setCheck(check);
@@ -40,15 +42,31 @@ const EventInfo = ({ id }) => {
     e.preventDefault();
     const fav = {
       type: 'favoritos',
-      idUser: '633c3ee847a64650bafe13bc'
+      idUser: user.uid
     }
     try {
       const json = await axios.post('https://plataformaeventos-production-6111.up.railway.app/users/notifications', fav);
       console.log('noti:', json.data);
-      setState(json.data);
-    } catch (error) {
+      setNotes([...notes, json.data]);
+      swal({
+        text: 'Evento agregado como favorito',
+        icon: 'success',
+        button: 'OK',
+      });
+    } 
+    catch (error) {
       console.log(error)
     }
+  }
+
+  const handleAlert = (e) => {
+    e.preventDefault();
+    swal({
+      title: 'Debes estar registrado para poder agregar un evento como Favorito',
+      icon: 'warning',
+      button: 'Cerrar',
+      dangerMode: true,
+    });
   }
   
   return (
@@ -80,7 +98,7 @@ const EventInfo = ({ id }) => {
         )}
       </Swiper>
 
-      <div className={style.container_icon_heart} onClick={handleClickFav}>
+      <div className={style.container_icon_heart} onClick={user.uid ? handleClickFav : handleAlert}>
         <FavoriteIcon className={style.icon_heart} sx={{ fontSize: 25 }} />
       </div>
 

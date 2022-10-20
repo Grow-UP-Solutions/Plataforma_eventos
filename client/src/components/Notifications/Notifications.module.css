@@ -29,10 +29,22 @@
 }
 
 .container_notifications {
-  margin-top: 3.5rem;
+  margin-top: 5.5rem;
 }
 
 .notification {
+  display: flex;
+  background-color: var(--color-grey-4);
+  border-bottom: 0.1px solid rgb(219, 219, 219);
+  width: 80.6rem;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1rem;
+  padding: 2rem;
+  cursor: pointer;
+}
+
+.notification_read {
   display: flex;
   border-bottom: 0.1px solid rgb(219, 219, 219);
   width: 80.6rem;
@@ -41,7 +53,7 @@
   padding: 2rem;
 }
 
-.notification p {
+.notification p, .notification_read p {
   font-family: 'Raleway', sans-serif;
   font-size: 1.4rem;
   color: var(--color-grey-2);
