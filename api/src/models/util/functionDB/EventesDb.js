@@ -4,6 +4,8 @@ const { oneUserDb } = require('./UserDb.js');
 /**basic user database operations  */
  async function AllEventsDb() {
   try {
+   
+    
     return await Events.find()
       .populate({ path: 'organizer' })
       .populate({ path: 'categories' })
@@ -41,6 +43,7 @@ const { oneUserDb } = require('./UserDb.js');
  async function createOneEventDb(event) {
   try {
     const eventCreated = new Events(event);
+    
     await eventCreated.save();
 
     return eventCreated;

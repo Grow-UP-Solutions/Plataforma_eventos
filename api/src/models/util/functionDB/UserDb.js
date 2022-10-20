@@ -137,7 +137,7 @@ async function updateNotificationDB(reading) {
     });
     const newRead = user.notifications.find((e) => e._id == idNotifications);
     newRead.read = read;
-    console.log(user.notifications.updatedAt)
+    
     await user.save();
     return user.notifications;
   } catch (error) {
