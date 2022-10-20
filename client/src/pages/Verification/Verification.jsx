@@ -73,7 +73,7 @@ const Verification = () => {
       if (result.data.success) {
         const userRegister = await eventsApi.post('/users/create', user);
         localStorage.setItem('token', userRegister.data.token);
-        login(user);
+        login({ ...userRegister.data });
       } else {
         throw new Error(result.data.message);
       }
@@ -97,46 +97,46 @@ const Verification = () => {
         <div className={styles.divisor} />
         <div className={styles.containerInputs}>
           <input
-            name="input1"
-            type="number"
-            pattern="[0-9]*"
+            name='input1'
+            type='number'
+            pattern='[0-9]*'
             value={code.input1}
             onChange={handleOnChange}
           />
           <input
-            name="input2"
+            name='input2'
             value={code.input2}
-            type="number"
-            pattern="[0-9]*"
+            type='number'
+            pattern='[0-9]*'
             onChange={handleOnChange}
           />
           <input
-            name="input3"
+            name='input3'
             value={code.input3}
-            type="number"
-            pattern="[0-9]*"
+            type='number'
+            pattern='[0-9]*'
             onChange={handleOnChange}
           />
           <AiOutlineMinus className={styles.iconMinus} />
           <input
-            name="input4"
+            name='input4'
             value={code.input4}
-            type="number"
-            pattern="[0-9]*"
+            type='number'
+            pattern='[0-9]*'
             onChange={handleOnChange}
           />
           <input
-            name="input5"
+            name='input5'
             value={code.input5}
-            type="number"
-            pattern="[0-9]*"
+            type='number'
+            pattern='[0-9]*'
             onChange={handleOnChange}
           />
           <input
-            name="input6"
+            name='input6'
             value={code.input6}
-            type="number"
-            pattern="[0-9]*"
+            type='number'
+            pattern='[0-9]*'
             onChange={handleOnChange}
           />
         </div>

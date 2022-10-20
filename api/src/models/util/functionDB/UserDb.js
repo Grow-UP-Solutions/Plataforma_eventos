@@ -80,7 +80,7 @@ async function createOneUserDb(user) {
 
 async function generateUserComment(id, opinions) {
   try {
-    const { idUser, opinion } = opinions;
+    const { idUser, opinion, rating } = opinions;
 
     const user = await oneUserDb(idUser);
 
@@ -88,6 +88,7 @@ async function generateUserComment(id, opinions) {
     organizer.opinionsOrg.push({
       title: user.name,
       picture: user.picture,
+      rating,
       opinion,
     });
     await organizer.save();
@@ -136,7 +137,7 @@ async function updateNotificationDB(reading) {
     });
     const newRead = user.notifications.find((e) => e._id == idNotifications);
     newRead.read = read;
-    console.log(user.notifications.updatedAt)
+    
     await user.save();
     return user.notifications;
   } catch (error) {
@@ -146,14 +147,14 @@ async function updateNotificationDB(reading) {
 }
 async function deleteNotificationDB(newDelete) {
   try {
-    console.log(newDelete)
+    
     const { idNotifications, delet } = newDelete;
     const user = await Users.findOne({
       notifications: { $elemMatch: { _id: idNotifications } },
     });
     const notificationsDelete = user.notifications.find((e) => e._id == idNotifications);
     notificationsDelete.delete = delet;
-    console.log(notificationsDelete)
+    
     await user.save();
     return user.notifications;
   } catch (error) {

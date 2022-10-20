@@ -81,7 +81,7 @@ const UserSchema = new Schema({
       },
       rating: {
         type: Number,
-        default: 0,
+        
       },
       picture: {
         type: String,

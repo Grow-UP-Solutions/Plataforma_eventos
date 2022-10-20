@@ -33,7 +33,7 @@ router.get('/:id', async (req, res) => {
 router.post('/create', async (req, res) => {
   try {
     const event = req.body;
-
+        
     const eventCreat = await createEvents(event);
 
     return res.status(200).json(eventCreat);
