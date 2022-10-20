@@ -15,12 +15,11 @@ const Navbar = ({ upper }) => {
 
   const { toggleScreenLogin } = useContext(UIContext);
   const { user, logged, logout } = useContext(AuthContext);
-  const { result, setResult } = useContext(stateContext);
+  const { notes, setNotes } = useContext(stateContext);
   const [menuOpen, setMenuOpen] = useState(false);
   const [openNotifications, setOpenNotifications] = useState(false);
   const [openMessages, setOpenMessages] = useState(false);
   const navigate = useNavigate();
-  //const allNotifications = notifications;
   const {pathname} = useLocation();
 
   useEffect(() => {
@@ -31,7 +30,7 @@ const Navbar = ({ upper }) => {
     let userResult = {};
     if (user.uid) {
       userResult = await axios.get('https://plataformaeventos-production-6111.up.railway.app/users/' + user.uid);
-      setResult(userResult.data);
+      setNotes(userResult.data.notifications.filter(e => e.read === false));
     }
   }
 
@@ -39,6 +38,18 @@ const Navbar = ({ upper }) => {
     e.preventDefault();
     navigate('/');
   };
+
+  const handleOpenMessages = (e) => {
+    e.preventDefault();
+    setOpenMessages(!openMessages);
+    setOpenNotifications(false);
+  }
+
+  const handleOpenNotifications = (e) => {
+    e.preventDefault();
+    setOpenNotifications(!openNotifications);
+    setOpenMessages(false);
+  }  
 
   const handleClickMessage = (e) => {
     e.preventDefault();
@@ -88,7 +99,7 @@ const Navbar = ({ upper }) => {
               <div className={style.containerNotification}>
                 <div
                   className={style.containerMessage}
-                  onClick={() => setOpenMessages(!openMessages)}
+                  onClick={handleOpenMessages}
                 >
                   <GrMail className={style.iconNav} />
                   <div className={style.bage}>0</div>
@@ -96,16 +107,16 @@ const Navbar = ({ upper }) => {
                 <div className={style.divisorNotis} />
                 <div
                   className={style.containerNotis}
-                  onClick={() => setOpenNotifications(!openNotifications)}
+                  onClick={handleOpenNotifications}
                 >
                   <IoNotifications className={style.iconNav} />
-                  <div className={style.bage}>0</div>
+                  <div className={style.bage}>{notes.length}</div>
                 </div>
 
                 {openMessages && (
                   <div className={style.notifications}>
                     <p className={style.link_noti}>Marcar todas como leidas</p>
-                    {result.notifications.map((e) => (
+                    {notes.map((e) => (
                       <div className={style.noty}>
                         {e.msg}
                       </div>
@@ -122,7 +133,7 @@ const Navbar = ({ upper }) => {
                 {openNotifications && (
                   <div className={style.notifications}>
                     <p className={style.link_noti}>Marcar todas como leidas</p>
-                    {result.notifications.map((e) => (
+                    {notes.map((e) => (
                       <div className={style.noty}>
                         <IoNotifications className={style.iconNav} />
                         {e.msg}

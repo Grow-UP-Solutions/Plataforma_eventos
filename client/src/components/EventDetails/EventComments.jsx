@@ -32,10 +32,11 @@ const EventComments =  ({ id }) => {
   const calcRating = () => {
     if (eventDetails.opinions.length > 0) {
       const ratings = eventDetails.opinions.map(e => e.rating);
-    const suma = ratings.reduce((prev, current) => prev + current);
-    const result = Math.ceil(suma / eventDetails.opinions.length);
-    return result;
+      const suma = ratings.reduce((prev, current) => prev + current);
+      const result = Math.ceil(suma / eventDetails.opinions.length);
+      return result;
     }
+    console.log('no hay opiniones de este organizador');
   }
 
   const handlePostComments = async (e) => {

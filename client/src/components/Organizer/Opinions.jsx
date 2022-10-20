@@ -1,35 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
-import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import { Rating } from '@mui/material';
 import styles from './Opinions.module.css';
 import axios from "axios";
 import { AuthContext } from '../../context/auth/AuthContext';
-import avatar from '../../assets/imgs/no-avatar.png';
-import { format, register } from "timeago.js";
 import swal from 'sweetalert';
-
-const localeFunc = (number, index, total_sec) => {
-  // number: the timeago / timein number;
-  // index: the index of array below;
-  // total_sec: total seconds between date to be formatted and today's date;
-  return [
-    ['justo ahora', 'en un rato'],
-    ['hace %s segundos', 'en %s segundos'],
-    ['hace 1 minuto', 'en 1 minuto'],
-    ['hace %s minutos', 'en %s minutos'],
-    ['hace 1 hora', 'en 1 hora'],
-    ['hace %s horas', 'en %s horas'],
-    ['hace 1 día', 'en 1 día'],
-    ['hace %s días', 'en %s días'],
-    ['hace 1 semana', 'en 1 semana'],
-    ['hace %s semanas', 'en %s semanas'],
-    ['hace 1 mes', 'en 1 mes'],
-    ['hace %s meses', 'en %s meses'],
-    ['hace 1 año', 'en 1 año'],
-    ['hace %s años', 'en %s años'],
-  ][index];
-};
-register('es_ES', localeFunc);
+import CardComments from '../CardComments/CardComments';
 
 const Opinions = ({ userDetail }) => {
 
@@ -50,6 +25,16 @@ const Opinions = ({ userDetail }) => {
     }
     getAllComments();
   }, [id]);
+
+  const calcRating = () => {
+    if (userDetail.opinionsOrg.length > 0) {
+      const ratings = userDetail.opinionsOrg.map(e => e.rating);
+      const suma = ratings.reduce((prev, current) => prev + current);
+      const result = Math.ceil(suma / userDetail.opinionsOrg.length);
+      return result;
+    }
+    console.log('no hay opiniones de este organizador');
+  }
 
   const handlePostComments = async (e) => {
     e.preventDefault();
@@ -89,7 +74,7 @@ const Opinions = ({ userDetail }) => {
         <div className={styles.subTitle}>
           <p className={styles.ratNumber}>
             {userDetail.opinionsOrg.length} opiniones -{' '}
-            {userDetail.opinionsOrg.rating}% Positivas{' '}
+            {calcRating() ? calcRating() : '0'} de 5 Positivas{' '}
           </p>
         </div>
 
@@ -99,48 +84,14 @@ const Opinions = ({ userDetail }) => {
               <div>
                 {
                   opinion.map((o) => (
-                    <div className={styles.comment}>
-                      <div className={styles.userComment}>
-                        <div>
-                          <img
-                            className={styles.picture}
-                            src={avatar}
-                            alt="Not Found ):"
-                            width="20px"
-                            height="30px"
-                          />
-                        </div>
+                    <div key={o._id} className={styles.comment}>
+                      <CardComments o={o}/>
 
-                        <div className={styles.nameDan}>
-                          <div className={styles.infoComment}>
-                            <div className={styles.namRat}>
-                              <span className={styles.user}>{o.title}</span>
-                              <Rating
-                                className={styles.rating}
-                                name="read-only"
-                                value={o.rating}
-                                readOnly
-                              />
-                            </div>
-                            <p className={styles.time}>{format(o.time, 'es_ES')}</p>
-                            <p className={styles.opinion}>{o.opinion}</p>
-                          </div>
-
-                          <div
-                            className={styles.reportCom}
-                            data-hover="Reportar contenido inapropiado"
-                          >
-                            <ReportProblemIcon
-                              sx={{ fontSize: '40px', color: '#cbcbcb' }}
-                            />
-                          </div>
-                        </div>
-                      </div>
+                      <hr className={styles.hr}></hr>
                     </div>
                   ))
                 }
               </div>
-
             </>
           ) : <p>No hay comentarios</p>
         }
@@ -159,7 +110,6 @@ const Opinions = ({ userDetail }) => {
           <Rating
             className={styles.rating}
             name="half-rating"
-            //defaultValue={0}
             value={value}
             precision={0.5}
             onChange={(e) => setValue(e.target.value)}

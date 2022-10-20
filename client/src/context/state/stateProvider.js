@@ -4,9 +4,10 @@ import { stateContext } from './stateContext';
 export const Data = ({children}) => {
 
   const [result, setResult] = useState('');
+  const [notes, setNotes] = useState([]);
   
   return (
-    <stateContext.Provider value={{ result, setResult }}>
+    <stateContext.Provider value={{ result, setResult, notes, setNotes }}>
       { children }
     </stateContext.Provider>
   );

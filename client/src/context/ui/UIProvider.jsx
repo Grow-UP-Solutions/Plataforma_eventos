@@ -4,6 +4,7 @@ import { UIContext, uiReducer } from '.';
 const UI_INITIAL_STATE = {
   isMenuLoginOpen: false,
   categories: [],
+  events: [],
 };
 
 export const UIProvider = ({ children }) => {
@@ -13,10 +14,16 @@ export const UIProvider = ({ children }) => {
     dispatch({ type: 'UI - Toggle Login' });
   };
 
-  const getCategories = async() => {
+  const getCategories = async () => {
     const data = await fetch('https://plataformaeventos-production-6111.up.railway.app/category');
     const json = await data.json();
     dispatch({ type: 'GET_CATEGORIES', payload: json });
+  }
+
+  const getAllEvents = async () => {
+    const data = await fetch('https://plataformaeventos-production-6111.up.railway.app/events');
+    const json = await data.json();
+    dispatch({ type: 'GET_ALL_EVENTS', payload: json });
   }
 
   return (
@@ -27,6 +34,7 @@ export const UIProvider = ({ children }) => {
         //Methods
         toggleScreenLogin,
         getCategories,
+        getAllEvents,
       }}
     >
       {children}
