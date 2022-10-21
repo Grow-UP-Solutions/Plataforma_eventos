@@ -16,7 +16,6 @@ const Messages = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [result, setResult] = useState({});
-  const [msgWithoutRead, setMsgWithoutRead] = useState(0);
 
   useEffect(() => {
     const getConversations = async () => {
@@ -66,8 +65,6 @@ const Messages = () => {
       const res = await axios.post("https://plataformaeventos-production-6111.up.railway.app/message/create", message);
       setMessages([...messages, res.data]);
       setNewMessage("");
-      console.log('res.data:', res.data);
-      console.log('message:', message);
     } catch (err) {
       console.log(err);
     }
@@ -75,21 +72,7 @@ const Messages = () => {
 
   const handleClickConversation = async (c) => {
     setCurrentChat(c);
-    try {
-      const res = await axios.put('https://plataformaeventos-production-6111.up.railway.app/message/update/' + c._id);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  const calcMessages = () => {
-    if (messages.length > 0) {
-      
-    }
-    else {
-      console.log('no hay mensajes, ni conversaciones');
-    }
-  }  
+  } 
 
   return (
     <div className={`${styles.pageMessage} container`}>
@@ -125,7 +108,7 @@ const Messages = () => {
               {
                 conversations.map((c, i) => (
                   <div key={i} onClick={() => handleClickConversation(c)}>
-                    <Conversations conversation={c} id={id}/>
+                    <Conversations conversation={c} id={id} />
                   </div>
                 ))
               }
