@@ -56,7 +56,7 @@ const UserSchema = new Schema({
       ref: "Events",
     },
   ],
-  myFavourites: [
+  myFavorites: [
     {
       type: Schema.Types.ObjectId,
       ref: "Events",

@@ -1,32 +1,32 @@
 require('../../../DB.js');
-const Category = require('../../db/Category.js');
+const Categories = require('../../db/Categories.js');
 
 /** basic user database operations */
 
 async function AllCategoyDb() {
-  return await Category.find();
+  return await Categories.find();
 }
 
 async function OneCategoryDb(name) {
   try {
-    return await Category.findOne({ name: name });
+    return await Categories.findOne({ name: name });
   } catch (error) {
     throw new Error(error.message);
   }
 }
 
 async function updateOneCategoryDb(id, newCategory) {
-  return await Category.findByIdAndUpdate({ _id: id }, newCategory, {
+  return await Categories.findByIdAndUpdate({ _id: id }, newCategory, {
     new: 1,
   });
 }
 async function deleteOneCategoryDb(id) {
-  return await Category.findByIdAndDelete({ _id: id });
+  return await Categories.findByIdAndDelete({ _id: id });
 }
 
-/**Creating Category in Database */
+/**Creating Categories in Database */
 async function createCategoryDb(category) {
-  const categoryCreated = new Category(category);
+  const categoryCreated = new Categories(category);
   return await categoryCreated.save();
 }
 
