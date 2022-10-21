@@ -1,11 +1,11 @@
 const { Schema, model } = require('mongoose');
-
+const categories = require('./Categories.js')
 const EventSchema = new Schema({
   title: String,
   categories: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'Category',
+      ref: categories,
     },
   ],
   otherCategorie: [String],

@@ -20,6 +20,15 @@ async function findMessage(conversationId) {
     throw new Error(error.message);
   }
 }
+async function findAllMessageUser(idUser) {
+  try {
+    return await Message.find({
+      conversationId: conversationId,
+    });
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
 async function findOneMessage(id) {
   return await Message.findOne({ _id: id });
 }
