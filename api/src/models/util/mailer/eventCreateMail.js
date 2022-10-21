@@ -3,7 +3,7 @@ require('dotenv').config();;
 
 const { EMAIL, PASSWORD } = process.env;
 
- const eventCreateMail = async (event) => {
+ const eventCreateMail = async (events, organizer) => {
   const transporter = createTransport({
     service: 'gmail',
     secure: true,
@@ -15,8 +15,8 @@ const { EMAIL, PASSWORD } = process.env;
  
   let mail_options = {
     from: 'Lo quiero hacer',
-    to: event.organizer.email,
-    subject: `${event.organizer.firstName} ${event.organizer.lastName} tu evento ha sido publicado`,
+    to: organizer.email,
+    subject: `${organizer.firstName} ${organizer.lastName} tu evento ha sido publicado`,
     html: `<html lang="en">
     <head>
       <meta charset="UTF-8" />

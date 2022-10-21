@@ -24,14 +24,14 @@ async function createConversation(menbers) {
     const conversation = await Conversation.findOne({
       members:  [senderId , receiverId] ,
     });
-    console.log('/*/**/*/',conversation)
+    
     if (!conversation) {
       const newConversation = new Conversation({
         members: [senderId, receiverId],
       });
       return await newConversation.save();
     }
-    console.log('/*/**/*/','existe')
+    
     return conversation;
   } catch (error) {
     throw new Error(error.message);
