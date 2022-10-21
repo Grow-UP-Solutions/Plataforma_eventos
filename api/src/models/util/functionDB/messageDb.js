@@ -1,9 +1,17 @@
 require("../../../DB.js");
+const Conversation = require("../../db/Conversation.js");
 const Message = require("../../db/Message.js");
 
-async function createMessage(message) {
-  const newMessage = new Message(message);
+async function allMessageDB() {
+  return await Message.find()
+  
+}
 
+
+async function createMessage(message) {
+  
+  const newMessage = new Message(message);
+  
   try {
     return await newMessage.save();
   } catch (error) {
@@ -20,7 +28,7 @@ async function findMessage(conversationId) {
     throw new Error(error.message);
   }
 }
-async function findAllMessageUser(idUser) {
+async function findAllMessageUser(conversationId) {
   try {
     return await Message.find({
       conversationId: conversationId,
@@ -46,8 +54,27 @@ async function findAndUpdateMessage(id) {
     throw new Error(error.message);
   }
 }
+async function allMessageReciverUserDB(idReciver) {
+  let messageUser = [];
+  const allConversation = await Conversation.find({});
+  const allMessage = await allMessageDB();
+  const conversationUser = allConversation.filter(
+     (e) => e.members[1] === idReciver
+  );
+
+  for (let i = 0; i <= conversationUser.length - 1; i++) {
+     for (let j = 0; j < allMessage.length; j++) {
+        if (allMessage[j].conversationId == conversationUser[i]._id) {
+           messageUser.push(allMessage[j]);
+        }
+     }
+  }
+  return messageUser;
+}
 
 module.exports = {
+  allMessageReciverUserDB,
+  allMessageDB,
   createMessage,
   findMessage,
   findOneMessage,

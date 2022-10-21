@@ -45,6 +45,7 @@ const {
   deleteCodeVerifyMail,
   getCodeVerifyEmail,
 } = require('../../models/util/functionDB/CodeVerifyMailDb.js');
+const { allMessageReciverUserDB } = require('../../models/util/functionDB/messageDb.js');
  
 
 const router = Router();
@@ -57,6 +58,18 @@ router.get('/', async (req, res) => {
     return res.status(500).json({ ERROR_USER: error.message });
   }
 });
+router.get('/:idUser/message', async (req,res)=>{
+  const {idUser} = req.params
+  console.log('/*/*/*/',idUser)
+  try {
+    const allConversation = await allMessageReciverUserDB(idUser)
+    return res.status(200).json(allConversation)
+  } catch (error) {
+    console.log(error.message)
+    return res.status(500).json(error.message);
+    
+  }
+})
 
 router.get('/:id', async (req, res) => {
   const { id } = req.params;

@@ -2,10 +2,20 @@ const { Router } = require('express');
 const {
   createMessage,
   findMessage,
+  allMessageDB
 } = require('../../models/util/functionDB/messageDb.js');
 const { updateMessage } = require('../services/message.service.js');
 
 const router = Router();
+router.get('/', async (req,res)=>{
+  try {
+    const allMessage = await allMessageDB()
+    return res.status(200).json(allMessage)
+  } catch (error) {
+    return res.status(500).json(error.message);
+    
+  }
+})
 
 router.get('/:conversationId', async (req, res) => {
   const { conversationId } = req.params;

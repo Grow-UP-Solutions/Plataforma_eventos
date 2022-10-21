@@ -11,6 +11,10 @@ const messageSchema = new Schema(
     text: {
       type: String,
     },
+    mensajeRecibido:[{
+      type:Schema.Types.ObjectId,
+      ref:'message'
+    }],
     read: {
       type: Boolean,
       default: false,

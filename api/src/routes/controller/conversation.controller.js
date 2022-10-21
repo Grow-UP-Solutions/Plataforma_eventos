@@ -3,12 +3,16 @@ const {
   createConversation,
   findAllConversation,
   findConversation,
+  allConversationDB,
 } = require('../../models/util/functionDB/ConversationDb.js');
 
 const router = Router();
 
+
+
 router.get('/:userId', async (req, res) => {
   const { userId } = req.params;
+  console.log(userId)
   try {
     const allConversation = await findConversation(userId);
     res.status(200).json(allConversation);
