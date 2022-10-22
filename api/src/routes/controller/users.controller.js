@@ -11,6 +11,7 @@ const {
   getAllCommentUser,
   sendMessageUser,
   sendNotificationsUser,
+  getUserByEmail,
 } = require('../services/users.services.js');
 
 const passport = require('passport');
@@ -19,19 +20,11 @@ const bcrypt = require('bcryptjs');
 const { check } = require('express-validator');
 const validateFields = require('../../models/util/middlewares/validate-fields.js');
 const { generateJWT } = require('../../models/util/helpers/jwt.js');
-const {
-  generateJWTPassword,
-} = require('../../models/util/helpers/jwtPassword.js');
-const {
-  validateJWT,
-} = require('../../models/util/middlewares/validate-jwt.js');
-const {
-  validateJWTPassword,
-} = require('../../models/util/middlewares/validate-jwt-password.js');
+const { generateJWTPassword } = require('../../models/util/helpers/jwtPassword.js');
+const { validateJWT } = require('../../models/util/middlewares/validate-jwt.js');
+const { validateJWTPassword } = require('../../models/util/middlewares/validate-jwt-password.js');
 const { sendVerifyMail } = require('../../models/util/mailer/confirmEmail.js');
-const {
-  changePasswordMail,
-} = require('../../models/util/mailer/changePassword.js');
+const { changePasswordMail } = require('../../models/util/mailer/changePassword.js');
 const {
   validateEmailUserDb,
   updateNotificationDB,
@@ -93,6 +86,19 @@ router.get('/login/renew', validateJWT, async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 });
+
+router.get('/existsEmail/:email', async (req, res) => {
+  const { email } = req.params;
+
+  try {
+    const isEmailExists = await getUserByEmail(email);
+
+    res.json({ isEmailExists });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
 /* FACEBOOK */
 
 router.get(
@@ -120,11 +126,9 @@ router.get(
       <body>
       </body>
       <script>
-      window.opener.postMessage(${userString}, ${
-          process.env.CLIENT_URL
-            ? "'" + process.env.CLIENT_URL + "'"
-            : 'http://localhost:3000'
-        })
+      window.opener.postMessage(${userString}, ${(process.env.NODE_ENV = 'production'
+          ? "'" + process.env.CLIENT_URL + "'"
+          : 'http://localhost:3000')})
       </script>
       </html>
       `
@@ -162,11 +166,9 @@ router.get(
       <body>
       </body>
       <script>
-      window.opener.postMessage(${userString}, ${
-          process.env.CLIENT_URL
-            ? "'" + process.env.CLIENT_URL + "'"
-            : 'http://localhost:3000'
-        })
+      window.opener.postMessage(${userString}, ${(process.env.NODE_ENV = 'production'
+          ? "'" + process.env.CLIENT_URL + "'"
+          : 'http://localhost:3000')})
       </script>
       </html>
       `
@@ -240,7 +242,7 @@ router.post('/commentOrganizer/:id', async (req, res) => {
   try {
     const opinion = req.body;
     const { id } = req.params;
-    console.log(opinion)
+    console.log(opinion);
     const opinionCreat = await createOrganizerComment(id, opinion);
     return res.status(200).json(opinionCreat);
   } catch (error) {
@@ -322,7 +324,7 @@ router.post('/confirmEmail', async (req, res) => {
   try {
     const codedb = await getCodeVerifyEmail(code);
 
-    console.log({ codedb });
+    if (!codedb) throw new Error('Código incorrecto');
 
     if (code === codedb.validacion) {
       await deleteCodeVerifyMail(code);
@@ -437,20 +439,16 @@ router.post('/sendMailChangePassword', async (req, res) => {
   });
 });
 
-router.get(
-  '/mail/validateTokenPassword',
-  validateJWTPassword,
-  async (req, res) => {
-    const email = req.email;
-    try {
-      res.json({ email });
-    } catch (error) {
-      res.status(400).json({
-        message: 'Error en la petición',
-      });
-    }
+router.get('/mail/validateTokenPassword', validateJWTPassword, async (req, res) => {
+  const email = req.email;
+  try {
+    res.json({ email });
+  } catch (error) {
+    res.status(400).json({
+      message: 'Error en la petición',
+    });
   }
-);
+});
 
 router.post('/changePassword', async (req, res) => {
   const { email, password } = req.body;
@@ -497,9 +495,7 @@ router.get(
     <body>
     </body>
     <script>
-    window.opener.postMessage(${userString}, '${
-        process.env.CLIENT_URL || 'http://localhost:3000'
-      }')
+    window.opener.postMessage(${userString}, '${process.env.CLIENT_URL || 'http://localhost:3000'}')
     </script>
     </html>
     `
@@ -533,9 +529,7 @@ router.get(
     <body>
     </body>
     <script>
-    window.opener.postMessage(${userString}, '${
-        process.env.CLIENT_URL || 'http://localhost:3000'
-      }')
+    window.opener.postMessage(${userString}, '${process.env.CLIENT_URL || 'http://localhost:3000'}')
     </script>
     </html>
     `
