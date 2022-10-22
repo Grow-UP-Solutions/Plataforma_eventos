@@ -9,10 +9,10 @@ import avatar from '../../assets/imgs/no-avatar.png';
 const Conversations = ({ conversation, id }) => {
 
   const [user, setUser] = useState('hola');
+  const [messages, setMessages] = useState([]);
 
   useEffect(() => {
     const friendId = conversation.members.find((m) => m !== id);
-
     const getUser = async () => {
       try {
         const res = await axios("https://plataformaeventos-production-6111.up.railway.app/users/" + friendId);
@@ -24,12 +24,30 @@ const Conversations = ({ conversation, id }) => {
     getUser();
   }, [id, conversation]);
 
-  return (
-    <div className={styles.listChats}>
+  useEffect(() => {
+    const getMessages = async () => {
+      const res = await axios.get('https://plataformaeventos-production-6111.up.railway.app/message/' + conversation._id);
+      const result = res.data.filter(e => e.read === false);
+      const final = result.filter(e => e.sender !== id);
+      setMessages(final);
+    }
+    getMessages();
+  }, [conversation]);
 
-      <div className={styles.itemChat}>
+  const hanldeClickMsg = async (e) => {
+    e.preventDefault();
+    const res = await axios.put('https://plataformaeventos-production-6111.up.railway.app/message/update/' + conversation._id);
+    const result = res.data.filter(e => e.read === false);
+    setMessages(result);
+  }
+
+  return (
+    <div className={styles.listChats} >
+
+      <div className={styles.itemChat} >
         <img src={user.picture ? user.picture : avatar} 
           alt="imageAvatar" 
+          onClick={hanldeClickMsg}
         />
         <span >{user.name}</span>
 
@@ -38,7 +56,9 @@ const Conversations = ({ conversation, id }) => {
         <div className={styles.itemOptionsChat}>
 
           <div className={styles.itemChatNumberMessage}>
-            1
+            {
+              messages.length
+            }
           </div>
 
           <div className={styles.containerItemMenu}>
@@ -70,9 +90,7 @@ const Conversations = ({ conversation, id }) => {
           </div>
 
         </div>
-
-      </div>
-              
+      </div>     
     </div>
   );
 }
