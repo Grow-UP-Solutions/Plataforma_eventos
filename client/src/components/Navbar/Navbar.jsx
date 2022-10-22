@@ -63,6 +63,12 @@ const Navbar = ({ upper }) => {
     setOpenNotifications(false);
   };
 
+  const handleClickAllReadNotifications = async (e) => {
+    e.preventDefault();
+    const res = await axios.put(`https://plataformaeventos-production-6111.up.railway.app/users/${user.uid}/notifications`);
+    setNotes(res.data.filter(e => e.read === false));
+  }
+  
   return (
     <div
       id='navbar'
@@ -132,7 +138,9 @@ const Navbar = ({ upper }) => {
 
                 {openNotifications && (
                   <div className={style.notifications}>
-                    <p className={style.link_noti}>Marcar todas como leidas</p>
+                    <p className={style.link_noti} onClick={handleClickAllReadNotifications}>
+                      Marcar todas como leidas
+                    </p>
                     {notes.map((e) => (
                       <div className={style.noty}>
                         <IoNotifications className={style.iconNav} />

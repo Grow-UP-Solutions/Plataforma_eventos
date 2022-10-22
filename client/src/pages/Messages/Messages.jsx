@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import styles from './Messages.module.css';
 import { FiMail, FiArchive, FiStar } from 'react-icons/fi';
 import axios from "axios";
@@ -6,6 +6,7 @@ import { AuthContext } from '../../context/auth/AuthContext';
 import avatar from '../../assets/imgs/no-avatar.png';
 import Conversations from '../../components/Conversations/Conversations';
 import Message from '../../components/Message/Message';
+import { animateScroll as scroll, Element, scroller } from 'react-scroll';
 
 const Messages = () => {
 
@@ -16,6 +17,7 @@ const Messages = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [result, setResult] = useState({});
+  const scrollRef = useRef();
 
   useEffect(() => {
     const getConversations = async () => {
@@ -53,10 +55,25 @@ const Messages = () => {
     myUser();
   }, []);
 
+  useEffect(() => {
+    scroll.scrollToTop();
+  }, []);
+
+  /* useEffect(() => {
+    if (messages.length > 0) {
+      scrollRef.current.scrollIntoView({ behavior: "smooth" });
+      scroller.scrollTo('input')
+    }
+    else {
+      console.log('ref:', scrollRef.current)
+    }
+  }, [messages]); */
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const message = {
       sender: id,
+      //resiver: currentChat.members[1], 
       text: newMessage,
       conversationId: currentChat._id,
     };
@@ -107,7 +124,7 @@ const Messages = () => {
 
               {
                 conversations.map((c, i) => (
-                  <div key={i} onClick={() => handleClickConversation(c)}>
+                  <div key={i} onClick={() => handleClickConversation(c)} className={currentChat && currentChat._id === c._id ? styles.active : ''}>
                     <Conversations conversation={c} id={id} />
                   </div>
                 ))
@@ -131,7 +148,7 @@ const Messages = () => {
                   <div>
                     {
                       messages.map((m, i) => (
-                        <div key={i}>
+                        <div key={i} ref={scrollRef}>
                           <Message message={m} own={m.sender === id} />
                         </div>
                       ))
@@ -184,19 +201,21 @@ const Messages = () => {
               ></textarea>
             }
 
-            <div className={styles.wrapperBtnInputMessage}>
-              <p>
-                No se permite el envío de números de teléfono, direcciones de
-                correo electrónico, enlaces a sitios web o enlaces a redes
-                sociales.
-              </p>
-              {
-                currentChat ?
-                <button onClick={handleSubmit}>Enviar</button> :
-                <button disable >Enviar</button>
-              }
-              
-            </div>
+            <Element name='input'>
+              <div className={styles.wrapperBtnInputMessage}>
+                <p>
+                  No se permite el envío de números de teléfono, direcciones de
+                  correo electrónico, enlaces a sitios web o enlaces a redes
+                  sociales.
+                </p>
+                {
+                  currentChat ?
+                  <button onClick={handleSubmit}>Enviar</button> :
+                  <button disable >Enviar</button>
+                }
+                
+              </div>
+            </Element>
 
           </div> 
           

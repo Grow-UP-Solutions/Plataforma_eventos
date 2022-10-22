@@ -28,7 +28,8 @@ const Conversations = ({ conversation, id }) => {
     const getMessages = async () => {
       const res = await axios.get('https://plataformaeventos-production-6111.up.railway.app/message/' + conversation._id);
       const result = res.data.filter(e => e.read === false);
-      setMessages(result);
+      const final = result.filter(e => e.sender !== id);
+      setMessages(final);
     }
     getMessages();
   }, [conversation]);

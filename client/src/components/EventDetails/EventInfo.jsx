@@ -22,6 +22,7 @@ import axios from "axios";
 import { AuthContext } from '../../context/auth/AuthContext';
 import { stateContext } from '../../context/state/stateContext';
 import swal from 'sweetalert';
+import { UIContext } from '../../context/ui';
 
 const EventInfo = ({ id }) => {
 
@@ -32,6 +33,7 @@ const EventInfo = ({ id }) => {
   const [checked, setChecked] = useState('');
   const { user } = useContext(AuthContext);
   const { notes, setNotes } = useContext(stateContext);
+  const { getEventsFavourites } = useContext(UIContext);
   
   const handleFormatDate = (check) => {
     setCheck(check);
@@ -44,9 +46,12 @@ const EventInfo = ({ id }) => {
       type: 'favoritos',
       idUser: user.uid
     }
+    const favorite = {
+      idEvent: id
+    }
     try {
       const json = await axios.post('https://plataformaeventos-production-6111.up.railway.app/users/notifications', fav);
-      console.log('noti:', json.data);
+      getEventsFavourites(user.uid, favorite);
       setNotes([...notes, json.data]);
       swal({
         text: 'Evento agregado como favorito',
