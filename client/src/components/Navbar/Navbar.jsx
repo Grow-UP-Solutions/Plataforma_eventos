@@ -5,14 +5,13 @@ import { UIContext } from '../../context/ui';
 import { AuthContext } from '../../context/auth';
 import { stateContext } from '../../context/state/stateContext';
 import Search from '../Search/Search';
-import {GrMail} from 'react-icons/gr';
-import {FaUserCircle} from 'react-icons/fa';
-import {IoNotifications, IoCaretDownSharp} from 'react-icons/io5';
+import { GrMail } from 'react-icons/gr';
+import { FaUserCircle } from 'react-icons/fa';
+import { IoNotifications, IoCaretDownSharp } from 'react-icons/io5';
 import logo from '../../assets/imgs/logoNav.svg';
 import axios from 'axios';
 
 const Navbar = ({ upper }) => {
-
   const { toggleScreenLogin } = useContext(UIContext);
   const { user, logged, logout } = useContext(AuthContext);
   const { notes, setNotes } = useContext(stateContext);
@@ -20,7 +19,7 @@ const Navbar = ({ upper }) => {
   const [openNotifications, setOpenNotifications] = useState(false);
   const [openMessages, setOpenMessages] = useState(false);
   const navigate = useNavigate();
-  const {pathname} = useLocation();
+  const { pathname } = useLocation();
 
   useEffect(() => {
     getUserData();
@@ -30,9 +29,9 @@ const Navbar = ({ upper }) => {
     let userResult = {};
     if (user.uid) {
       userResult = await axios.get('https://plataformaeventos-production-6111.up.railway.app/users/' + user.uid);
-      setNotes(userResult.data.notifications.filter(e => e.read === false));
+      setNotes(userResult.data.notifications.filter((e) => e.read === false));
     }
-  }
+  };
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -43,13 +42,13 @@ const Navbar = ({ upper }) => {
     e.preventDefault();
     setOpenMessages(!openMessages);
     setOpenNotifications(false);
-  }
+  };
 
   const handleOpenNotifications = (e) => {
     e.preventDefault();
     setOpenNotifications(!openNotifications);
     setOpenMessages(false);
-  }  
+  };
 
   const handleClickMessage = (e) => {
     e.preventDefault();
@@ -65,33 +64,27 @@ const Navbar = ({ upper }) => {
 
   const handleClickAllReadNotifications = async (e) => {
     e.preventDefault();
-    const res = await axios.put(`https://plataformaeventos-production-6111.up.railway.app/users/${user.uid}/notifications`);
-    setNotes(res.data.filter(e => e.read === false));
-  }
-  
+    const res = await axios.put(
+      `https://plataformaeventos-production-6111.up.railway.app/users/${user.uid}/notifications`
+    );
+    setNotes(res.data.filter((e) => e.read === false));
+  };
+
   return (
     <div
       id='navbar'
-      style={{position: pathname === '/' ? 'fixed' : 'sticky'}}
-      className={`${style.container} ${
-        pathname !== '/' || upper === false ? style.customizeNavBar : ''
-      }`}
+      style={{ position: pathname === '/' ? 'fixed' : 'sticky' }}
+      className={`${style.container} ${pathname !== '/' || upper === false ? style.customizeNavBar : ''}`}
     >
       <div className={`${style.containerInfo} container`}>
         <div className={style.containerImgInput}>
           <img src={logo} alt='LogoNav' onClick={handleClick} />
-          {pathname !== '/' || upper === false ? (
-            <Search location={'not-home'} />
-          ) : (
-            <></>
-          )}
+          {pathname !== '/' || upper === false ? <Search location={'not-home'} /> : <></>}
         </div>
         <div className={style.container_div}>
           {logged && <a href='$'>Mi lista</a>}
           <Link to={`/organiza-un-evento`}>
-            <p className={`${logged ? style.buttonOrganizar : ''}`}>
-              Organiza un evento
-            </p>
+            <p className={`${logged ? style.buttonOrganizar : ''}`}>Organiza un evento</p>
           </Link>
           {!logged ? (
             <>
@@ -103,18 +96,12 @@ const Navbar = ({ upper }) => {
           ) : (
             <>
               <div className={style.containerNotification}>
-                <div
-                  className={style.containerMessage}
-                  onClick={handleOpenMessages}
-                >
+                <div className={style.containerMessage} onClick={handleOpenMessages}>
                   <GrMail className={style.iconNav} />
                   <div className={style.bage}>0</div>
                 </div>
                 <div className={style.divisorNotis} />
-                <div
-                  className={style.containerNotis}
-                  onClick={handleOpenNotifications}
-                >
+                <div className={style.containerNotis} onClick={handleOpenNotifications}>
                   <IoNotifications className={style.iconNav} />
                   <div className={style.bage}>{notes.length}</div>
                 </div>
@@ -123,14 +110,9 @@ const Navbar = ({ upper }) => {
                   <div className={style.notifications}>
                     <p className={style.link_noti}>Marcar todas como leidas</p>
                     {notes.map((e) => (
-                      <div className={style.noty}>
-                        {e.msg}
-                      </div>
+                      <div className={style.noty}>{e.msg}</div>
                     ))}
-                    <p
-                      className={style.link_notis}
-                      onClick={handleClickMessage}
-                    >
+                    <p className={style.link_notis} onClick={handleClickMessage}>
                       Ver todos los mensajes
                     </p>
                   </div>
@@ -147,10 +129,7 @@ const Navbar = ({ upper }) => {
                         {e.msg}
                       </div>
                     ))}
-                    <p
-                      className={style.link_notis}
-                      onClick={handleClickNotifications}
-                    >
+                    <p className={style.link_notis} onClick={handleClickNotifications}>
                       Ver todas las notificaciones
                     </p>
                   </div>
@@ -158,8 +137,17 @@ const Navbar = ({ upper }) => {
               </div>
 
               <div className={style.containerName}>
-                <p>{user.name.split(' ')[0]}</p>
-                <p>{user.name.split(' ')[1]}</p>
+                {user.nickname ? (
+                  <>
+                    <p>{user.nickname.split(' ')[0]}</p>
+                    <p>{user.nickname.split(' ')[1]}</p>
+                  </>
+                ) : (
+                  <>
+                    <p>{user.name.split(' ')[0]}</p>
+                    <p>{user.name.split(' ')[1]}</p>
+                  </>
+                )}
               </div>
               <div
                 style={{
@@ -172,11 +160,7 @@ const Navbar = ({ upper }) => {
               >
                 <div className={style.containerImg}>
                   {user.picture ? (
-                    <img
-                      className={style.userImg}
-                      src={user.picture}
-                      alt='img-user'
-                    />
+                    <img className={style.userImg} src={user.picture} alt='img-user' />
                   ) : (
                     <FaUserCircle className={style.userImg} />
                   )}

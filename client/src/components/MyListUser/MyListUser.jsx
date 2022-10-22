@@ -1,34 +1,30 @@
 import React from 'react';
 import { Card } from '..';
 import styles from './MyListUser.module.css';
-import users from '../../api/users';
+import { Link } from 'react-router-dom';
 
-const MyListUser = () => {
-
-  const userDetail = users.filter((user) => user.name === 'Luis Chacon')[0];
-
-
+const MyListUser = ({ myFavorites }) => {
   return (
     <div className={styles.container}>
-
       <p className={styles.title}>Mi Lista</p>
 
       <div className={styles.containercard}>
-        {userDetail.myEventsBooked ? 
-           userDetail.myEventsBooked.map((event) => (
-          <div className={styles.card}>
-            <Card event={event} />
-          </div>
-        )): 
-        <div className={styles.containerSeeEvents}>
-          <hr className={styles.hr}></hr>
+        {myFavorites.length > 0 ? (
+          myFavorites.map((event) => (
+            <div className={styles.card}>
+              <Card event={event} />
+            </div>
+          ))
+        ) : (
+          <div className={styles.containerSeeEvents}>
+            <hr className={styles.hr}></hr>
             <p className={styles.text}>Aún no tienes eventos en “Mi lista”. ¡Prográmate con “LO QUE QUIERO HACER”!</p>
-            <button className={styles.btn}>Ver eventos</button>
-          <hr  className={styles.hr}></hr>
-        </div>
-       
-        
-        }
+            <button className={styles.btn}>
+              <Link to='/'>Ver eventos</Link>
+            </button>
+            <hr className={styles.hr}></hr>
+          </div>
+        )}
       </div>
     </div>
   );
