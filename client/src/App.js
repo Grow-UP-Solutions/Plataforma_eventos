@@ -28,6 +28,7 @@ import {
   Verification,
   WorkWithUs,
   WorkWithUsForm,
+  CheckSolicitudOrganizer,
 } from './pages';
 import EventEdit from './pages/EventEdit/EventEdit';
 import EventsOrganizerResult from './pages/EventsOrganizerResult/EventsOrganizerResult';
@@ -86,6 +87,7 @@ function App() {
           <Route path='/resulteventsorganizer' element={<EventsOrganizerResult />} />
           <Route path='/cambiarContrasenia/:token' element={<ChangePassword />} />
           <Route path='/edita-un-evento' element={<EventEdit />} />
+          <Route path='/admin/check-solicitud-organizador/:token' element={<CheckSolicitudOrganizer />} />
         </Routes>
         <div className='container'>
           <Footer />

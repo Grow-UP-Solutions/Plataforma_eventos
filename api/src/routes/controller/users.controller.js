@@ -69,26 +69,6 @@ router.get('/opinionsUser/:id', async (req, res) => {
     return res.status(500).json({ ERROR_OPIONSUSER: error.message });
   }
 });
-router.get('/login/renew', validateJWT, async (req, res) => {
-  const uid = req.uid;
-  const name = req.name;
-  try {
-    const user = await getUser(uid);
-    const token = await generateJWT(uid, name);
-
-    res.status(201).json({
-      uid: user._id,
-      name: user.name,
-      email: user.email,
-      organizer: user.isOrganizer,
-      picture: user.userpicture,
-      isProfileCompleted: user.isProfileCompleted,
-      token,
-    });
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
-  }
-});
 
 router.get('/existsEmail/:email', async (req, res) => {
   const { email } = req.params;
@@ -320,10 +300,8 @@ router.post(
 router.get('/login/renew', validateJWT, async (req, res) => {
   const uid = req.uid;
   const name = req.name;
-
   try {
     const user = await getUser(uid);
-
     const token = await generateJWT(uid, name);
 
     res.status(201).json({
@@ -332,13 +310,12 @@ router.get('/login/renew', validateJWT, async (req, res) => {
       nickname: user.nickname,
       email: user.email,
       organizer: user.isOrganizer,
+      picture: user.userpicture,
       isProfileCompleted: user.isProfileCompleted,
       token,
     });
   } catch (error) {
-    res.status(400).json({
-      message: error.message,
-    });
+    return res.status(500).json({ message: error.message });
   }
 });
 

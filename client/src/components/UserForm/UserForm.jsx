@@ -14,7 +14,7 @@ import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { checkMalasPalabras } from '../../utils/checkMalasPalabras';
 import { inputKeyDown, inputKeyUpPh, inputKeyUpTel } from '../../utils/inputOnlyNumbers';
 
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/auth';
 import { invalidWords } from '../../utils/invalidWord';
 import { isValidEmail } from '../../utils/validateEmail';
@@ -216,11 +216,11 @@ const UserForm = ({ userData }) => {
     });
   };
 
+  const txtName = useRef();
+
   useEffect(() => {
     txtName.current.focus();
   }, [canWriteInput]);
-
-  const txtName = useRef();
 
   const editFields = (e, inputName) => {
     e.preventDefault();
@@ -613,6 +613,8 @@ const UserForm = ({ userData }) => {
     setErrorChangeEmail('');
   };
 
+  const [modalSetOrganizer, setModalSetOrganizer] = useState(false);
+
   return (
     <div className={styles.containerUserForm}>
       <div className={styles.containerPhotoProfile}>
@@ -636,9 +638,10 @@ const UserForm = ({ userData }) => {
         <div className={styles.isUserIsProfileCompleted}>
           <span>¡Tu perfil esta completo! Y eres elegible para ser organizador</span>
           <div className={styles.containerBtnOrganizer}>
-            <button className={styles.btnApplyForOrganizer}>Aplicar para ser organizador</button>
+            <button onClick={() => setModalSetOrganizer(true)} className={styles.btnApplyForOrganizer}>
+              Aplicar para ser organizador
+            </button>
             <BsInfoCircle className={styles.btnIconMoreInfo} />
-
             <div className={styles.containerMoreInfo}>
               <p>Probando texto</p>
             </div>
@@ -703,8 +706,8 @@ const UserForm = ({ userData }) => {
                   >
                     {formData.firstName.split(' ').map((name) => {
                       return (
-                        <option key={name} value={`${name} ${formData.lastName.split(' ')[0]} `}>
-                          {`${name} ${formData.lastName.split(' ')[0]} `}
+                        <option key={name} value={`${name} ${formData.lastName.split(' ')[0]}`}>
+                          {`${name} ${formData.lastName.split(' ')[0]}`}
                         </option>
                       );
                     })}
@@ -1152,6 +1155,36 @@ const UserForm = ({ userData }) => {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Modal Convert to Organizer */}
+
+      {modalSetOrganizer && (
+        <>
+          <div className={styles.overlaySetOrganizer}>
+            <div className={styles.containerModalSetOrganizer}>
+              <h3>Esta aplicando para convertirte en organizador</h3>
+
+              <p>Esto te permitirá publicar eventos por medio de la plataforma</p>
+
+              <span>
+                Al proceder con ésta aplicación confirmas que has leído y aceptar la{' '}
+                <Link to={'/privacy'}>Politica de privacidad</Link>, la{' '}
+                <Link to={'/privacy'}>Politica de seguridad</Link> y los{' '}
+                <Link to={'/privacy'}>Términos y condiciones</Link>
+                de LO QUE QUIERO HACER S.A.S que aplican para un Organizador y las cuales son distintas a las que
+                aceptaste previamente al momento de crear tu cuenta.
+              </span>
+
+              <div className={styles.containerButtons}>
+                <button className={styles.btnSuccess}>Aceptar</button>
+                <button onClick={() => setModalSetOrganizer(false)} className={styles.btnCancelOrganizer}>
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          </div>
+        </>
       )}
     </div>
   );

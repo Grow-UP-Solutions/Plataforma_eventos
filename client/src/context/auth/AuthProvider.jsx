@@ -39,6 +39,8 @@ export const AuthProvider = ({ children }) => {
     try {
       const { data } = await eventsApi.get('/users/login/renew');
 
+      console.log({ data });
+
       const user = {
         ...data,
       };
