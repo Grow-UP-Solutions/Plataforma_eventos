@@ -12,6 +12,7 @@ const {
   sendMessageUser,
   sendNotificationsUser,
   getUserByEmail,
+  eventesFavorites,
 } = require('../services/users.services.js');
 
 const passport = require('passport');
@@ -29,6 +30,8 @@ const {
   validateEmailUserDb,
   updateNotificationDB,
   deleteNotificationDB,
+  findAllUpdateNotification,
+  updateMyFavorites,
 } = require('../../models/util/functionDB/UserDb.js');
 const {
   createCodeVerifyMail,
@@ -179,6 +182,16 @@ router.get(
   }
 );
 /**/ //////////////Rutas POST/////////////// */
+router.put('/:idUser/favorites', async (req, res) => {
+  const { idUser } = req.params;
+  const { idEvent } = req.body;
+  try {
+    const myFavorites = await eventesFavorites(idUser, idEvent);
+    return res.status(200).json(myFavorites);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+});
 
 router.post('/notifications', async (req, res) => {
   const notificaciones = req.body;
@@ -198,6 +211,17 @@ router.put('/notifications', async (req, res) => {
     res.status(500).json(error.Menssage);
   }
 });
+
+router.put('/:idUser/notifications', async (req, res) => {
+  const { idUser } = req.params;
+  try {
+    const notificacionesRead = await findAllUpdateNotification(idUser);
+    return res.status(200).json(notificacionesRead);
+  } catch (error) {
+    res.status(500).json(error.Menssage);
+  }
+});
+
 router.delete('/notifications', async (req, res) => {
   const newDelete = req.body;
   try {

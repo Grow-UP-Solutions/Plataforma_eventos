@@ -37,7 +37,7 @@ import { getEvents } from './redux/actions';
 function App() {
   const [navBar, setNavBar] = useState(false);
   const dispatch = useDispatch();
-  const { isMenuLoginOpen, getCategories } = useContext(UIContext);
+  const { isMenuLoginOpen, getCategories, getAllEvents } = useContext(UIContext);
   const { checkAuthToken, checkUserLocalStorage } = useContext(AuthContext);
 
   /* useEffect(() => {
@@ -49,9 +49,13 @@ function App() {
   }, []);
 
   useEffect(() => {
-    dispatch(getEvents());
     getCategories();
     scroll.scrollToTop();
+  }, []);
+
+  useEffect(() => {
+    dispatch(getEvents());
+    getAllEvents();
   }, []);
 
   return (

@@ -8,6 +8,7 @@ const {
   generateUserComment,
   sendMessageDB,
   sendNotificationDB,
+  updateMyFavorites,
 } = require('../../models/util/functionDB/UserDb.js');
 
 const bcrypt = require('bcryptjs');
@@ -100,6 +101,22 @@ async function sendMessageUser(idSend, message) {
     throw new Error(error.message);
   }
 }
+async function eventesFavorites(idUser, idEvent) {
+  try {
+    const user = await oneUserDb(idUser);
+    const eventeFavorite = user.myFavorites.find((e) => e._id == idEvent);
+
+    if (!eventeFavorite) {
+      const addFavorite = await updateMyFavorites(idUser, idEvent);
+      return addFavorite;
+    }
+    // {msg: "el evento existe en favoritos" , eventeFavorite}
+    return;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
 async function sendNotificationsUser(notifications) {
   const { type, idUser } = notifications;
   const msg = validatonType(type);
@@ -146,6 +163,7 @@ async function getUserByEmail(email) {
 }
 
 module.exports = {
+  eventesFavorites,
   sendNotificationsUser,
   getAllUsers,
   getUser,

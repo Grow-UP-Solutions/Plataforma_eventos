@@ -4,7 +4,7 @@ const {
   AllEventsDb,
   createOneEventDb,
   generateEventComment,
-  oneEventDb,
+  findOneEvent,
   updateOneEventDb,
 } = require("../../models/util/functionDB/EventesDb.js");
 
@@ -18,7 +18,7 @@ async function getAllEvents() {
 }
 async function getOneEvent(id) {
   try {
-    const event = await oneEventDb(id);
+    const event = await findOneEvent(id);
     if (!event) {
       throw new Error("El evento no existe id incorrecto");
     }
