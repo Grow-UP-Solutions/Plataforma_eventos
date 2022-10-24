@@ -110,8 +110,8 @@ async function eventesFavorites(idUser, idEvent) {
       const addFavorite = await updateMyFavorites(idUser, idEvent);
       return addFavorite;
     }
-    // {msg: "el evento existe en favoritos" , eventeFavorite}
-    return;
+     
+    return {msg: "el evento existe en favoritos" , eventeFavorite}
   } catch (error) {
     throw new Error(error.message);
   }

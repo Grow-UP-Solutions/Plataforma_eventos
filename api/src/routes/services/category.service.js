@@ -2,6 +2,7 @@ const {
   AllCategoyDb,
   OneCategoryDb,
   updateOneCategoryDb,
+  createCategoryDb,
 } = require("../../models/util/functionDB/CategoryDb.js");
 
 async function getAllCategory() {
@@ -17,9 +18,10 @@ async function createCategory(category) {
     const { name } = category;
     const categoryDB = OneCategoryDb(name);
     if (categoryDB) {
+      
       return "La categoria existe";
     }
-    const categories = await createCategory(category);
+    const categories = await createCategoryDb(category);
    
     return categories;
   } catch (error) {

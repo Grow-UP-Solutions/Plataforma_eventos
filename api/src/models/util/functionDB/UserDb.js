@@ -12,7 +12,8 @@ async function allUserDb() {
     return await Users.find()
       .populate({ path: 'myEventsCreated' })
       .populate({ path: 'myFavorites' })
-      .populate({ path: 'myEventsBooked' });
+      .populate({ path: 'myEventsBooked' })
+      .populate({ path: 'message' });
   } catch (error) {
     throw new Error(error.message);
   }
@@ -31,10 +32,11 @@ async function oneUserDb(id) {
   }
   try {
     return await Users.findById({ _id: idOrganizer })
-      .populate({ path: 'myEventsCreated' })
-      .populate({ path: 'myFavorites' })
-      .populate({ path: 'myEventsBooked' })
-      .populate({ path: 'opinionsOrg' });
+      // .populate({ path: "myEventsCreated" })
+      // .populate({ path: "myFavorites" })
+      // .populate({ path: "myEventsBooked" })
+      // .populate({ path: "opinionsOrg" })
+      .populate('message');
   } catch (error) {
     throw new Error(error.message);
   }
@@ -115,9 +117,10 @@ async function sendMessageDB(idSend, idGet, msg) {
       },
     });
     await userGet.save();
-    console.log(userGet.message);
+    console.log('*/*/*/*/*/*/*/*//*/', userGet.message);
     return { Respon: 'mensaje enviado con exito' };
   } catch (error) {
+    console.log('error', error.message);
     throw new Error(error.message);
   }
 }
@@ -152,12 +155,12 @@ async function updateMyFavorites(idUser, idEvent) {
   try {
     const user = await oneUserDb(idUser);
     const event = await Events.findById({ _id: idEvent });
-
-    user.myFavorites.push(event._id);
+    //user.myFavorites.push(event._id);
     await user.save();
+    console.log(user);
     return event;
   } catch (error) {
-    console.log(error.message);
+    console.log('FAVORITOS', error.message);
     throw new Error(error.message);
   }
 }

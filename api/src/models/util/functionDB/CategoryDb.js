@@ -27,6 +27,7 @@ async function deleteOneCategoryDb(id) {
 /**Creating Categories in Database */
 async function createCategoryDb(category) {
   const categoryCreated = new Categories(category);
+  console.log('categoria creadas')
   return await categoryCreated.save();
 }
 

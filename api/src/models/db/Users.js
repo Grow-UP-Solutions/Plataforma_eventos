@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const Message = require('./Message');
 
 const UserSchema = new Schema({
   firstName: String,
@@ -46,7 +47,7 @@ const UserSchema = new Schema({
   },
   isOrganizer: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   isLogged: {
     type: Boolean,
@@ -108,6 +109,12 @@ const UserSchema = new Schema({
         type: Boolean,
         default: false,
       },
+    },
+  ],
+  message: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: Message,
     },
   ],
 });
