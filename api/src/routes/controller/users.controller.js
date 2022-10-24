@@ -25,6 +25,7 @@ const { generateJWTPassword } = require('../../models/util/helpers/jwtPassword.j
 const { validateJWT } = require('../../models/util/middlewares/validate-jwt.js');
 const { validateJWTPassword } = require('../../models/util/middlewares/validate-jwt-password.js');
 const { sendVerifyMail } = require('../../models/util/mailer/confirmEmail.js');
+const { sendMailToOrganizer } = require('../../models/util/mailer/mailToConverOrganizer');
 const { changePasswordMail } = require('../../models/util/mailer/changePassword.js');
 const {
   validateEmailUserDb,
@@ -38,6 +39,7 @@ const {
   deleteCodeVerifyMail,
   getCodeVerifyEmail,
 } = require('../../models/util/functionDB/CodeVerifyMailDb.js');
+const { generateJWTOrganizer } = require('../../models/util/helpers/jwtOrganizer.js');
 
 const router = Router();
 /**/ ///////////////Rutas GET////////////// */
@@ -537,5 +539,27 @@ router.get(
     );
   }
 );
+
+/* SEND EMAIL FOR SET ORGANIZER */
+
+router.post('/requestToOrganizer/', async (req, res) => {
+  const { user } = req.body;
+  try {
+    const token = await generateJWTOrganizer(
+      user.name,
+      user.email,
+      user.document,
+      user.tel,
+      user.phone,
+      user.referenciaU,
+      user.referenciaZ
+    );
+    await sendMailToOrganizer(user.name, `http://localhost:3000/admin/check-solicitud-organizador/${token}`);
+
+    res.status(200).json({ success: true });
+  } catch (error) {
+    res.status(400).json({ success: false });
+  }
+});
 
 module.exports = router;

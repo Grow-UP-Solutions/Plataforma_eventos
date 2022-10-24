@@ -613,7 +613,10 @@ const UserForm = ({ userData }) => {
     setErrorChangeEmail('');
   };
 
+  /* CONVERT TO ORGANIZER */
   const [modalSetOrganizer, setModalSetOrganizer] = useState(false);
+
+  const sendEmailToOrganizer = async () => {};
 
   return (
     <div className={styles.containerUserForm}>
@@ -1177,7 +1180,9 @@ const UserForm = ({ userData }) => {
               </span>
 
               <div className={styles.containerButtons}>
-                <button className={styles.btnSuccess}>Aceptar</button>
+                <button onClick={sendEmailToOrganizer} className={styles.btnSuccess}>
+                  Aceptar
+                </button>
                 <button onClick={() => setModalSetOrganizer(false)} className={styles.btnCancelOrganizer}>
                   Cancelar
                 </button>
