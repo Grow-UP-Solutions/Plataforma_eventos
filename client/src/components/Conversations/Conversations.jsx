@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styles from './Conversations.module.css';
 import { BiBlock, BiPin } from 'react-icons/bi';
 import { FiMail, FiArchive } from 'react-icons/fi';
@@ -45,7 +45,7 @@ const Conversations = ({ conversation, id }) => {
     <div className={styles.listChats} >
 
       <div className={styles.itemChat} >
-        <img src={user.picture ? user.picture : avatar} 
+        <img src={user.userpicture ? user.userpicture : avatar} 
           alt="imageAvatar" 
           onClick={hanldeClickMsg}
         />

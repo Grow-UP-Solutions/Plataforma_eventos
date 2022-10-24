@@ -30,7 +30,7 @@ const Opinions = ({ userDetail }) => {
     if (userDetail.opinionsOrg.length > 0) {
       const ratings = userDetail.opinionsOrg.map(e => e.rating);
       const suma = ratings.reduce((prev, current) => prev + current);
-      const result = Math.ceil(suma / userDetail.opinionsOrg.length);
+      const result = (suma / userDetail.opinionsOrg.length).toFixed(1);     
       return result;
     }
     console.log('no hay opiniones de este organizador');

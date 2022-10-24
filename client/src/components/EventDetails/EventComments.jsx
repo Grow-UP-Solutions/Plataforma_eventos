@@ -33,7 +33,7 @@ const EventComments =  ({ id }) => {
     if (eventDetails.opinions.length > 0) {
       const ratings = eventDetails.opinions.map(e => e.rating);
       const suma = ratings.reduce((prev, current) => prev + current);
-      const result = Math.ceil(suma / eventDetails.opinions.length);
+      const result = (suma / eventDetails.opinions.length).toFixed(1);
       return result;
     }
     console.log('no hay opiniones de este organizador');

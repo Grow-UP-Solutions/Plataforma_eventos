@@ -6,7 +6,7 @@ import { AuthContext } from '../../context/auth/AuthContext';
 import avatar from '../../assets/imgs/no-avatar.png';
 import Conversations from '../../components/Conversations/Conversations';
 import Message from '../../components/Message/Message';
-import { animateScroll as scroll, Element, scroller } from 'react-scroll';
+import { animateScroll as scroll } from 'react-scroll';
 
 const Messages = () => {
 
@@ -53,7 +53,7 @@ const Messages = () => {
       }
     }
     myUser();
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     scroll.scrollToTop();
@@ -62,7 +62,6 @@ const Messages = () => {
   /* useEffect(() => {
     if (messages.length > 0) {
       scrollRef.current.scrollIntoView({ behavior: "smooth" });
-      scroller.scrollTo('input')
     }
     else {
       console.log('ref:', scrollRef.current)
@@ -137,7 +136,7 @@ const Messages = () => {
           <div className={styles.containerChat}>
 
             <div className={styles.chatHeader}>
-              <img src={result.picture ? result.picture : avatar} alt="user-photo" />
+              <img src={result.userpicture ? result.userpicture : avatar} alt="user-photo" />
               <span>{user.name}</span>
             </div>
 
@@ -201,22 +200,20 @@ const Messages = () => {
               ></textarea>
             }
 
-            <Element name='input'>
-              <div className={styles.wrapperBtnInputMessage}>
-                <p>
-                  No se permite el envío de números de teléfono, direcciones de
-                  correo electrónico, enlaces a sitios web o enlaces a redes
-                  sociales.
-                </p>
-                {
-                  currentChat ?
-                  <button onClick={handleSubmit}>Enviar</button> :
-                  <button disable >Enviar</button>
-                }
-                
-              </div>
-            </Element>
-
+            <div className={styles.wrapperBtnInputMessage}>
+              <p>
+                No se permite el envío de números de teléfono, direcciones de
+                correo electrónico, enlaces a sitios web o enlaces a redes
+                sociales.
+              </p>
+              {
+                currentChat ?
+                <button onClick={handleSubmit}>Enviar</button> :
+                <button disable >Enviar</button>
+              }
+              
+            </div>
+            
           </div> 
           
         </div>
