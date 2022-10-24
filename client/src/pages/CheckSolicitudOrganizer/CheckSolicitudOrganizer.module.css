@@ -1,0 +1,49 @@
+.page {
+  display: grid;
+  place-items: center;
+  height: 90vh;
+}
+
+.titlePage {
+  font-size: 4.8rem;
+  color: var(--color-blue);
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.table {
+  text-align: center;
+  font-size: 2.2rem;
+  padding: 4rem 0;
+  color: var(--color-grey-5);
+}
+
+.table th {
+  padding: 1rem 4rem;
+}
+
+.containerButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.containerButton button {
+  border: none;
+  border-radius: 20px;
+  color: white;
+  font-size: 1.4rem;
+  font-weight: bold;
+  padding: 1rem 4rem;
+  cursor: pointer;
+  box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.2);
+}
+
+.btnSuccess {
+  background-color: var(--color-orange);
+}
+
+.btnCancel {
+  background-color: var(--color-grey-5);
+}

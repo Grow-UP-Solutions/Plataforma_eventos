@@ -20,6 +20,11 @@ export const uiReducer = (state, action) => {
         events: action.payload,
       };
 
+    case 'GET_EVENTS_FAVOURITES':
+      return {
+        ...state,
+        eventsFavourites: action.payload,
+      };
 
     default:
     return state;

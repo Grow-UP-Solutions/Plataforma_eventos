@@ -28,8 +28,6 @@ const Notifications = () => {
       idNotifications: noti._id
     }
     const json = await axios.put('https://plataformaeventos-production-6111.up.railway.app/users/notifications', data);
-    console.log('data:', data);
-    console.log('json.data:', json.data);
     setState(json.data);
     setNotes(json.data.filter(e => e.read === false));
     swal({
@@ -39,12 +37,21 @@ const Notifications = () => {
     });
   }
 
+  const handleClickAllRead = async (e) => {
+    e.preventDefault();
+    const res = await axios.put(`https://plataformaeventos-production-6111.up.railway.app/users/${user.uid}/notifications`);
+    setState(res.data);
+    setNotes(res.data.filter(e => e.read === false));
+  }
+
   return (
     <div className={style.container}>
 
       <div className={style.container_title}>
         <h1 className={style.title}>Notificaciones</h1>
-        <button className={style.button}><p className={style.text}>Marcar todos como visto</p></button>
+        <button className={style.button} onClick={handleClickAllRead}>
+          <p className={style.text}>Marcar todos como visto</p>
+        </button>
       </div>
 
       <div className={style.container_notifications}>

@@ -11,7 +11,8 @@ const {
   getAllCommentUser,
   sendMessageUser,
   sendNotificationsUser,
-  eventesFavorites
+  getUserByEmail,
+  eventesFavorites,
 } = require('../services/users.services.js');
 
 const passport = require('passport');
@@ -20,19 +21,11 @@ const bcrypt = require('bcryptjs');
 const { check } = require('express-validator');
 const validateFields = require('../../models/util/middlewares/validate-fields.js');
 const { generateJWT } = require('../../models/util/helpers/jwt.js');
-const {
-  generateJWTPassword,
-} = require('../../models/util/helpers/jwtPassword.js');
-const {
-  validateJWT,
-} = require('../../models/util/middlewares/validate-jwt.js');
-const {
-  validateJWTPassword,
-} = require('../../models/util/middlewares/validate-jwt-password.js');
+const { generateJWTPassword } = require('../../models/util/helpers/jwtPassword.js');
+const { validateJWT } = require('../../models/util/middlewares/validate-jwt.js');
+const { validateJWTPassword } = require('../../models/util/middlewares/validate-jwt-password.js');
 const { sendVerifyMail } = require('../../models/util/mailer/confirmEmail.js');
-const {
-  changePasswordMail,
-} = require('../../models/util/mailer/changePassword.js');
+const { changePasswordMail } = require('../../models/util/mailer/changePassword.js');
 const {
   validateEmailUserDb,
   updateNotificationDB,
@@ -91,26 +84,19 @@ router.get('/opinionsUser/:id', async (req, res) => {
     return res.status(500).json({ ERROR_OPIONSUSER: error.message });
   }
 });
-router.get('/login/renew', validateJWT, async (req, res) => {
-  const uid = req.uid;
-  const name = req.name;
-  try {
-    const user = await getUser(uid);
-    const token = await generateJWT(uid, name);
 
-    res.status(201).json({
-      uid: user._id,
-      name: user.name,
-      email: user.email,
-      organizer: user.isOrganizer,
-      picture: user.userpicture,
-      isProfileCompleted: user.isProfileCompleted,
-      token,
-    });
+router.get('/existsEmail/:email', async (req, res) => {
+  const { email } = req.params;
+
+  try {
+    const isEmailExists = await getUserByEmail(email);
+
+    res.json({ isEmailExists });
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 });
+
 /* FACEBOOK */
 
 router.get(
@@ -138,11 +124,9 @@ router.get(
       <body>
       </body>
       <script>
-      window.opener.postMessage(${userString}, ${
-          process.env.CLIENT_URL
-            ? "'" + process.env.CLIENT_URL + "'"
-            : 'http://localhost:3000'
-        })
+      window.opener.postMessage(${userString}, ${(process.env.NODE_ENV = 'production'
+          ? "'" + process.env.CLIENT_URL + "'"
+          : 'http://localhost:3000')})
       </script>
       </html>
       `
@@ -180,11 +164,9 @@ router.get(
       <body>
       </body>
       <script>
-      window.opener.postMessage(${userString}, ${
-          process.env.CLIENT_URL
-            ? "'" + process.env.CLIENT_URL + "'"
-            : 'http://localhost:3000'
-        })
+      window.opener.postMessage(${userString}, ${(process.env.NODE_ENV = 'production'
+          ? "'" + process.env.CLIENT_URL + "'"
+          : 'http://localhost:3000')})
       </script>
       </html>
       `
@@ -195,16 +177,16 @@ router.get(
   }
 );
 /**/ //////////////Rutas POST/////////////// */
-router.put('/:idUser/favorites', async (req , res)=>{
-  const {idUser} = req.params
-  const {idEvent} = req.body
+router.put('/:idUser/favorites', async (req, res) => {
+  const { idUser } = req.params;
+  const { idEvent } = req.body;
   try {
-    const myFavorites = await eventesFavorites(idUser, idEvent)
-    return res.status(200).json(myFavorites)
+    const myFavorites = await eventesFavorites(idUser, idEvent);
+    return res.status(200).json(myFavorites);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
-})
+});
 
 router.post('/notifications', async (req, res) => {
   const notificaciones = req.body;
@@ -226,7 +208,7 @@ router.put('/notifications', async (req, res) => {
 });
 
 router.put('/:idUser/notifications', async (req, res) => {
-  const {idUser} = req.params;
+  const { idUser } = req.params;
   try {
     const notificacionesRead = await findAllUpdateNotification(idUser);
     return res.status(200).json(notificacionesRead);
@@ -234,7 +216,6 @@ router.put('/:idUser/notifications', async (req, res) => {
     res.status(500).json(error.Menssage);
   }
 });
-
 
 router.delete('/notifications', async (req, res) => {
   const newDelete = req.body;
@@ -280,7 +261,7 @@ router.post('/commentOrganizer/:id', async (req, res) => {
   try {
     const opinion = req.body;
     const { id } = req.params;
-    console.log(opinion)
+    console.log(opinion);
     const opinionCreat = await createOrganizerComment(id, opinion);
     return res.status(200).json(opinionCreat);
   } catch (error) {
@@ -334,10 +315,8 @@ router.post(
 router.get('/login/renew', validateJWT, async (req, res) => {
   const uid = req.uid;
   const name = req.name;
-
   try {
     const user = await getUser(uid);
-
     const token = await generateJWT(uid, name);
 
     res.status(201).json({
@@ -346,13 +325,12 @@ router.get('/login/renew', validateJWT, async (req, res) => {
       nickname: user.nickname,
       email: user.email,
       organizer: user.isOrganizer,
+      picture: user.userpicture,
       isProfileCompleted: user.isProfileCompleted,
       token,
     });
   } catch (error) {
-    res.status(400).json({
-      message: error.message,
-    });
+    return res.status(500).json({ message: error.message });
   }
 });
 
@@ -362,7 +340,7 @@ router.post('/confirmEmail', async (req, res) => {
   try {
     const codedb = await getCodeVerifyEmail(code);
 
-    console.log({ codedb });
+    if (!codedb) throw new Error('Código incorrecto');
 
     if (code === codedb.validacion) {
       await deleteCodeVerifyMail(code);
@@ -477,20 +455,16 @@ router.post('/sendMailChangePassword', async (req, res) => {
   });
 });
 
-router.get(
-  '/mail/validateTokenPassword',
-  validateJWTPassword,
-  async (req, res) => {
-    const email = req.email;
-    try {
-      res.json({ email });
-    } catch (error) {
-      res.status(400).json({
-        message: 'Error en la petición',
-      });
-    }
+router.get('/mail/validateTokenPassword', validateJWTPassword, async (req, res) => {
+  const email = req.email;
+  try {
+    res.json({ email });
+  } catch (error) {
+    res.status(400).json({
+      message: 'Error en la petición',
+    });
   }
-);
+});
 
 router.post('/changePassword', async (req, res) => {
   const { email, password } = req.body;
@@ -537,9 +511,7 @@ router.get(
     <body>
     </body>
     <script>
-    window.opener.postMessage(${userString}, '${
-        process.env.CLIENT_URL || 'http://localhost:3000'
-      }')
+    window.opener.postMessage(${userString}, '${process.env.CLIENT_URL || 'http://localhost:3000'}')
     </script>
     </html>
     `
@@ -573,9 +545,7 @@ router.get(
     <body>
     </body>
     <script>
-    window.opener.postMessage(${userString}, '${
-        process.env.CLIENT_URL || 'http://localhost:3000'
-      }')
+    window.opener.postMessage(${userString}, '${process.env.CLIENT_URL || 'http://localhost:3000'}')
     </script>
     </html>
     `
