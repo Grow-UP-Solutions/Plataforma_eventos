@@ -1,8 +1,11 @@
 import axios from 'axios';
 
 const eventsApi = axios.create({
-  baseURL: process.env.NODE_ENV === 'production' ? process.env.REACT_APP_API_URL : 'http://localhost:3001',
+  baseURL: 'http://localhost:3001/',
 });
+
+/* https://plataformaeventos-production-6111.up.railway.app */
+/* http://localhost:3001/ */
 
 // TODO: configurar interceptores
 
