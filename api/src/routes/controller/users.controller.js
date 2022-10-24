@@ -290,12 +290,16 @@ router.post(
     validateFields,
   ],
   async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, rememberMe } = req.body;
+
+    let time = '2h';
+
+    if (rememberMe) time = '365d';
 
     try {
       const user = await login(email, password);
 
-      const token = await generateJWT(user._id, user.name);
+      const token = await generateJWT(user._id, user.name, time);
 
       res.status(200).json({
         uid: user._id,
@@ -316,9 +320,10 @@ router.post(
 router.get('/login/renew', validateJWT, async (req, res) => {
   const uid = req.uid;
   const name = req.name;
+  const time = req.time;
   try {
     const user = await getUser(uid);
-    const token = await generateJWT(uid, name);
+    const token = await generateJWT(uid, name, time);
 
     res.status(201).json({
       uid: user._id,

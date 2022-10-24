@@ -83,9 +83,11 @@ const Navbar = ({ upper }) => {
         </div>
         <div className={style.container_div}>
           {logged && <a href='$'>Mi lista</a>}
-          <Link to={`/organiza-un-evento`}>
-            <p className={`${logged ? style.buttonOrganizar : ''}`}>Organiza un evento</p>
-          </Link>
+          {user.organizer && (
+            <Link to={`/organiza-un-evento`}>
+              <p className={`${logged ? style.buttonOrganizar : ''}`}>Organiza un evento</p>
+            </Link>
+          )}
           {!logged ? (
             <>
               <p onClick={toggleScreenLogin}>Ingresa</p>
@@ -179,6 +181,7 @@ const Navbar = ({ upper }) => {
                       onClick={(e) => {
                         e.preventDefault();
                         logout();
+                        navigate('/');
                       }}
                     >
                       Cerrar
