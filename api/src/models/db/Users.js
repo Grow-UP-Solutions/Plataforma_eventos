@@ -43,7 +43,7 @@ const UserSchema = new Schema({
   },
   isOrganizer: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   isLogged: {
     type: Boolean,
