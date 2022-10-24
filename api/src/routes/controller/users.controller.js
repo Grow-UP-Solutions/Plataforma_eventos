@@ -40,6 +40,7 @@ const {
   getCodeVerifyEmail,
 } = require('../../models/util/functionDB/CodeVerifyMailDb.js');
 const { generateJWTOrganizer } = require('../../models/util/helpers/jwtOrganizer.js');
+const { validateJWTOrganizer } = require('../../models/util/middlewares/validate-organizer.js');
 
 const router = Router();
 /**/ ///////////////Rutas GET////////////// */
@@ -544,6 +545,7 @@ router.get(
 
 router.post('/requestToOrganizer/', async (req, res) => {
   const { user } = req.body;
+  console.log({ user });
   try {
     const token = await generateJWTOrganizer(
       user.name,
@@ -554,11 +556,35 @@ router.post('/requestToOrganizer/', async (req, res) => {
       user.referenciaU,
       user.referenciaZ
     );
-    await sendMailToOrganizer(user.name, `http://localhost:3000/admin/check-solicitud-organizador/${token}`);
+    await sendMailToOrganizer(
+      user.name,
+      `http://localhost:3000/admin/check-solicitud-organizador/${token}`,
+      user.email
+    );
 
     res.status(200).json({ success: true });
   } catch (error) {
-    res.status(400).json({ success: false });
+    res.status(400).json(error.message);
+  }
+});
+
+router.get('/setOrganizer/', validateJWTOrganizer, async (req, res) => {
+  const { name, phone, document, tel, email, referenciaU, referenciaZ } = req.body;
+
+  try {
+    res.status(202).json({
+      name,
+      phone,
+      document,
+      tel,
+      email,
+      referenciaU,
+      referenciaZ,
+    });
+  } catch (error) {
+    res.status(404).json({
+      message: error.message,
+    });
   }
 });
 

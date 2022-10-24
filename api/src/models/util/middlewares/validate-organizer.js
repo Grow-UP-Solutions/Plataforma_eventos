@@ -1,7 +1,9 @@
 const jwt = require('jsonwebtoken');
 
 const validateJWTOrganizer = (req, res, next) => {
-  const token = req.header('x-token');
+  const token = req.header('x-token-organizer');
+
+  console.log({ token });
 
   if (!token) {
     return res.status(401).json({
@@ -11,10 +13,18 @@ const validateJWTOrganizer = (req, res, next) => {
   }
 
   try {
-    const { uid, name } = jwt.verify(token, process.env.SECRET_JWT_SEED_ORGANIZER);
+    const { name, phone, document, tel, email, referenciaU, referenciaZ } = jwt.verify(
+      token,
+      process.env.SECRET_JWT_SEED_ORGANIZER
+    );
 
-    req.uid = uid;
     req.name = name;
+    req.phone = phone;
+    req.document = document;
+    req.tel = tel;
+    req.email = email;
+    req.referenciaU = referenciaU;
+    req.referenciaZ = referenciaZ;
   } catch (error) {
     return res.status(401).json({
       ok: false,

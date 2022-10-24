@@ -3,7 +3,7 @@ require('dotenv').config();
 
 const { EMAIL, PASSWORD } = process.env;
 
-const sendMailToOrganizer = async (name, link) => {
+const sendMailToOrganizer = async (name, link, email) => {
   const transporter = createTransport({
     service: 'gmail',
     secure: true,
@@ -15,8 +15,8 @@ const sendMailToOrganizer = async (name, link) => {
 
   let mail_options = {
     from: 'Lo quiero hacer',
-    to: EMAIL,
-    subject: `Solicitud para ser Organizador, Usuario Ux`,
+    to: email,
+    subject: `Solicitud para ser Organizador, ${name}`,
     html: `<!DOCTYPE html>
     <html lang="en">
       <head>

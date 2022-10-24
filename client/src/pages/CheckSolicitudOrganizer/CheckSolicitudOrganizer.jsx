@@ -1,8 +1,22 @@
-import React from 'react';
-
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import eventsApi from '../../axios/eventsApi';
 import styles from './CheckSolicitudOrganizer.module.css';
 
 const CheckSolicitudOrganizer = () => {
+  const { token } = useParams();
+  const [userData, setUserData] = useState({});
+  localStorage.setItem('token-organizer', token);
+
+  useEffect(() => {
+    checkValidateTokenToOrganizer();
+  }, []);
+
+  const checkValidateTokenToOrganizer = async () => {
+    const result = await eventsApi.get('/users/setOrganizer');
+    console.log({ result });
+  };
+
   return (
     <div className={`${styles.page} container`}>
       <div>
