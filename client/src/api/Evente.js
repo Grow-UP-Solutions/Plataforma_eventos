@@ -31,7 +31,8 @@ const evente = [
       isPublic:true,
       precioAlPublico:'',
       gananciaCupo:'',
-      gananciaEvento:''
+      gananciaEvento:'',
+      dateFormated:'octubre 15 de 2022',
      },{ 
       date: '17/10/2022', 
       start : '12:00', 
@@ -161,7 +162,8 @@ const evente = [
       isPublic:true,
       precioAlPublico:'',
       gananciaCupo:'',
-      gananciaEvento:''
+      gananciaEvento:'',
+      dateFormated:'',
      }],
     idOrganizer: '632cbed4f208f44f5333af4a',
     isPublic: true,

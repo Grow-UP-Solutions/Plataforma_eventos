@@ -38,6 +38,8 @@ const {
   deleteCodeVerifyMail,
   getCodeVerifyEmail,
 } = require('../../models/util/functionDB/CodeVerifyMailDb.js');
+const { allMessageReciverUserDB } = require('../../models/util/functionDB/messageDb.js');
+ 
 
 const router = Router();
 /**/ ///////////////Rutas GET////////////// */
@@ -49,12 +51,25 @@ router.get('/', async (req, res) => {
     return res.status(500).json({ ERROR_USER: error.message });
   }
 });
+router.get('/:idUser/message', async (req,res)=>{
+  const {idUser} = req.params
+  
+  try {
+    const allConversation = await allMessageReciverUserDB(idUser)
+    return res.status(200).json(allConversation)
+  } catch (error) {
+    console.log(error.message)
+    return res.status(500).json(error.message);
+    
+  }
+})
 
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
 
   try {
     const user = await getUser(id);
+    
     return res.status(200).json(user);
   } catch (error) {
     return res.status(400).json({ ERROR_USER: error.message });
