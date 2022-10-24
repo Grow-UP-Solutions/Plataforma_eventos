@@ -98,6 +98,7 @@ const UserForm = ({ userData }) => {
     frontDocument: userData.frontDocument || '',
     backDocument: userData.backDocument || '',
     imageRent: userData.imageRent || '',
+    isDeclarant: userData.isDeclarant,
   });
 
   const [canWriteInput, setCanWriteInput] = useState({
@@ -559,6 +560,21 @@ const UserForm = ({ userData }) => {
         imageRent: 'Por favor ingrese una imagén con tamaño menor a 100kb',
       });
     }
+
+    const imageData = new FormData();
+    imageData.append('file', image);
+    imageData.append('upload_preset', 'j2xzagqg');
+
+    try {
+      const result = await axios.post('https://api.cloudinary.com/v1_1/dti4vifvz/image/upload', imageData);
+
+      setFormData({
+        ...formData,
+        imageRent: result.data.secure_url,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const [changeEmail, setChangeEmail] = useState({
@@ -613,7 +629,34 @@ const UserForm = ({ userData }) => {
     setErrorChangeEmail('');
   };
 
+  /* CONVERT TO ORGANIZER */
   const [modalSetOrganizer, setModalSetOrganizer] = useState(false);
+
+  const sendEmailToOrganizer = async () => {
+    const user = {
+      name: `${formData.firstName} ${formData.lastName}`,
+      email: formData.email,
+      document: formData.document,
+      tel: formData.tel,
+      phone: formData.phone,
+      referenciaU: 'U123',
+      referenciaZ: '',
+    };
+
+    try {
+      const result = await eventsApi.post('/users/requestToOrganizer', { user });
+      console.log({ result });
+    } catch (error) {
+      console.log({ error });
+    }
+  };
+
+  const [isDeclarantRent, setIsDeclarantRent] = useState(false);
+
+  const handleInputRadioButtonRent = async (e) => {
+    const option = e.target.id;
+    console.log({ option });
+  };
 
   return (
     <div className={styles.containerUserForm}>
@@ -1062,11 +1105,11 @@ const UserForm = ({ userData }) => {
         <p>¿Eres persona natural declarante del impuesto a la Renta?</p>
         <div className={styles.containerCheckBoxRent}>
           <div className={styles.checkbox}>
-            <input name='rent' type='radio' id='yes' />
+            <input onChange={handleInputRadioButtonRent} name='rent' type='radio' id='yes' />
             <label htmlFor='yes'>Sí</label>
           </div>
           <div className={styles.checkbox}>
-            <input name='rent' type='radio' id='no' />
+            <input onChange={handleInputRadioButtonRent} name='rent' type='radio' id='no' />
             <label htmlFor='no'>No</label>
           </div>
           <div className={styles.containerDrag}>
@@ -1077,7 +1120,7 @@ const UserForm = ({ userData }) => {
             ) : (
               <>
                 <div className={styles.dragRent}>
-                  <input onChange={handleImageRent} type='file' className={styles.inputFile} />
+                  <input disabled onChange={handleImageRent} type='file' className={styles.inputFile} />
                   <BsCamera className={styles.iconCameraFile} />
                   <span>Arrastra una imagen</span>
                 </div>
@@ -1088,7 +1131,7 @@ const UserForm = ({ userData }) => {
             {errorMessagePhoto.imageRent && <span className={styles.errorMessage}>{errorMessagePhoto.imageRent}</span>}
 
             <button className={styles.btnAddPhoto}>
-              <input onChange={handleImageRent} type='file' className={styles.inputFile} />
+              <input disabled onChange={handleImageRent} type='file' className={styles.inputFile} />
               <BsCardImage className={styles.btnAddPhotoIcon} />
               <span>Agregar Imagen</span>
             </button>
@@ -1177,7 +1220,9 @@ const UserForm = ({ userData }) => {
               </span>
 
               <div className={styles.containerButtons}>
-                <button className={styles.btnSuccess}>Aceptar</button>
+                <button onClick={sendEmailToOrganizer} className={styles.btnSuccess}>
+                  Aceptar
+                </button>
                 <button onClick={() => setModalSetOrganizer(false)} className={styles.btnCancelOrganizer}>
                   Cancelar
                 </button>

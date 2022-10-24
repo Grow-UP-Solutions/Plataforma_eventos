@@ -3,26 +3,22 @@ import axios from 'axios';
 const categories = [
   {
     name: 'Al Aire Libre',
-    img:
-      'https://static7.depositphotos.com/1009094/686/i/450/depositphotos_6869569-stock-photo-picnic.jpg',
+    img: 'https://static7.depositphotos.com/1009094/686/i/450/depositphotos_6869569-stock-photo-picnic.jpg',
     description: 'Duis autem vel eum iriure',
   },
   {
     name: 'Artes',
-    img:
-      'https://img.freepik.com/fotos-premium/pincel-manchado-pintura_23-2148002444.jpg?w=2000',
+    img: 'https://img.freepik.com/fotos-premium/pincel-manchado-pintura_23-2148002444.jpg?w=2000',
     description: 'Duis autem vel eum iriure',
   },
   {
     name: 'Autosuperacion',
-    img:
-      'https://wikipsicologia.com/wp-content/uploads/2020/04/cliff-2699812_640.jpg',
+    img: 'https://wikipsicologia.com/wp-content/uploads/2020/04/cliff-2699812_640.jpg',
     description: 'Duis autem vel eum iriure',
   },
   {
     name: 'Belleza',
-    img:
-      'https://www.aedn.es/wp-content/uploads/2018/01/4-webs-imprescindibles-de-salud-y-belleza.jpg',
+    img: 'https://www.aedn.es/wp-content/uploads/2018/01/4-webs-imprescindibles-de-salud-y-belleza.jpg',
     description: 'Duis autem vel eum iriure',
   },
   {
@@ -38,14 +34,12 @@ const categories = [
   },
   {
     name: 'Deportes',
-    img:
-      'https://thumbs.dreamstime.com/b/bal%C3%B3n-de-f%C3%BAtbol-en-red-de-la-meta-39573145.jpg',
+    img: 'https://thumbs.dreamstime.com/b/bal%C3%B3n-de-f%C3%BAtbol-en-red-de-la-meta-39573145.jpg',
     description: 'Duis autem vel eum iriure',
   },
   {
     name: 'Educacion(no formal)',
-    img:
-      'https://cloudfront-us-east-1.images.arcpublishing.com/infobae/UK7J6QLYXZE4FGLM6LOHNDFH24.jpg',
+    img: 'https://cloudfront-us-east-1.images.arcpublishing.com/infobae/UK7J6QLYXZE4FGLM6LOHNDFH24.jpg',
     description: 'Duis autem vel eum iriure',
   },
   {
@@ -94,14 +88,12 @@ const categories = [
   },
   {
     name: 'Salud',
-    img:
-      'https://www.nestle-centroamerica.com/sites/g/files/pydnoa521/files/Untitled%20design%20%2833%29.png',
+    img: 'https://www.nestle-centroamerica.com/sites/g/files/pydnoa521/files/Untitled%20design%20%2833%29.png',
     description: 'Duis autem vel eum iriure',
   },
   {
     name: 'Tecnologia',
-    img:
-      'https://juancarlosabaunza.com/wp-content/uploads/2020/06/trabajo-en-equipo.jpg',
+    img: 'https://juancarlosabaunza.com/wp-content/uploads/2020/06/trabajo-en-equipo.jpg',
     description: 'Duis autem vel eum iriure',
   },
   {
@@ -112,8 +104,7 @@ const categories = [
   },
   {
     name: '+18',
-    img:
-      'https://medac.es/sites/default/files/blog/destacadas/actividades-de%20riesgo.jpg',
+    img: 'https://medac.es/sites/default/files/blog/destacadas/actividades-de%20riesgo.jpg',
     description: 'Duis autem vel eum iriure',
   },
   {
@@ -122,16 +113,14 @@ const categories = [
       'https://www.eluniverso.com/resizer/HLjRRVfWIasDJkOTjCmWfrIQWYs=/1000x668/smart/filters:quality(70)/cloudfront-us-east-1.images.arcpublishing.com/eluniverso/25XNG2HZRZDHBENVPMLVPUE5BQ.jpg',
     description: 'Duis autem vel eum iriure',
   },
-  
 ];
 
- function createCategorys() {
+/* function createCategorys() {
   categories.forEach((e) => {
     axios.post('http://localhost:3001/category/create', e);
   });
   return 'ok';
-} 
-createCategorys()
-
+}
+createCategorys(); */
 
 export default categories;

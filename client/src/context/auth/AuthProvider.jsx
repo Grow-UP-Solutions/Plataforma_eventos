@@ -21,8 +21,6 @@ export const AuthProvider = ({ children }) => {
   const checkUserLocalStorage = async () => {
     const userLocalStorage = JSON.parse(localStorage.getItem('user'));
 
-    console.log(userLocalStorage);
-
     if (userLocalStorage) {
       await eventsApi.delete(`/users/delete/${userLocalStorage.uid}`);
     } else {
@@ -38,8 +36,6 @@ export const AuthProvider = ({ children }) => {
 
     try {
       const { data } = await eventsApi.get('/users/login/renew');
-
-      console.log({ data });
 
       const user = {
         ...data,

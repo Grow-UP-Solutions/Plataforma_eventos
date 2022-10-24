@@ -1,5 +1,5 @@
-const { Schema, model } = require("mongoose");
-const Message = require("./Message");
+const { Schema, model } = require('mongoose');
+const Message = require('./Message');
 
 const UserSchema = new Schema({
   firstName: String,
@@ -14,6 +14,10 @@ const UserSchema = new Schema({
   frontDocument: String,
   backDocument: String,
   imageRent: String,
+  isDeclarant: {
+    type: Boolean,
+    default: false,
+  },
   isProfileCompleted: {
     type: Boolean,
     default: false,
@@ -54,19 +58,19 @@ const UserSchema = new Schema({
   myEventsCreated: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Events",
+      ref: 'Events',
     },
   ],
   myFavorites: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Events",
+      ref: 'Events',
     },
   ],
   myEventsBooked: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Events",
+      ref: 'Events',
     },
   ],
 
@@ -82,7 +86,6 @@ const UserSchema = new Schema({
       },
       rating: {
         type: Number,
-        
       },
       picture: {
         type: String,
@@ -92,11 +95,11 @@ const UserSchema = new Schema({
     },
   ],
   notifications: [
-    {      
+    {
       msg: String,
       date: {
         type: Date,
-        timestamps: true
+        timestamps: true,
       },
       read: {
         type: Boolean,
@@ -108,10 +111,12 @@ const UserSchema = new Schema({
       },
     },
   ],
-  message:[{
-    type:Schema.Types.ObjectId,
-    ref: Message
-  }],
+  message: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: Message,
+    },
+  ],
 });
 
-module.exports = model("Users", UserSchema);
+module.exports = model('Users', UserSchema);
