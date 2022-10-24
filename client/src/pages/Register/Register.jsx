@@ -70,6 +70,7 @@ const Register = () => {
       lastName: formData.lastName,
       email: formData.mail,
       password: formData.password,
+      canReceivedInformation: formData.canReceivedInformation,
     };
 
     try {
@@ -91,7 +92,7 @@ const Register = () => {
   const navigateVerificate = () => {
     setSuccesData(false);
 
-    navigate('/verificarmail');
+    navigate('/verificarmail/register');
   };
 
   const registerWithProvider = async (provider) => {

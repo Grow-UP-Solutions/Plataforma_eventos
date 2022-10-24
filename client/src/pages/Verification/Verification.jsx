@@ -11,7 +11,6 @@ import { AuthContext } from '../../context/auth';
 
 const Verification = () => {
   const { path } = useParams();
-  console.log({ path });
   const { login } = useContext(AuthContext);
   const [user, setUser] = useState({});
   const [code, setCode] = useState({
