@@ -1381,11 +1381,11 @@ const evente = [
  
 ];
 
-function createEvents() {
-  evente.forEach((e) => {
-    axios.post("http://localhost:3001/events/create", e);
-  });
-  return "ok";
-}
+// function createEvents() {
+//   evente.forEach((e) => {
+//     axios.post("http://localhost:3001/events/create", e);
+//   });
+//   return "ok";
+// }
 
 createEvents();
