@@ -4,7 +4,7 @@ const {
   //findOneMessage,
 } = require("../../models/util/functionDB/messageDb.js");
 
-async function updateMessage(id, read) {
+async function updateMessage(id) {
   try {
     const message = await findMessage(id);
     
