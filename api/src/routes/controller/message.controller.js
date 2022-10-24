@@ -30,6 +30,7 @@ router.get('/:conversationId', async (req, res) => {
 router.post('/create', async (req, res) => {
   const message = req.body;
   try {
+    
     const newMessage = await createMessage(message);
     res.status(200).json(newMessage);
   } catch (error) {

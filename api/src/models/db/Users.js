@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+const Message = require("./Message");
 
 const UserSchema = new Schema({
   firstName: String,
@@ -107,6 +108,10 @@ const UserSchema = new Schema({
       },
     },
   ],
+  message:[{
+    type:Schema.Types.ObjectId,
+    ref: Message
+  }],
 });
 
 module.exports = model("Users", UserSchema);

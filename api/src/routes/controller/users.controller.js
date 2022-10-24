@@ -60,7 +60,7 @@ router.get('/', async (req, res) => {
 });
 router.get('/:idUser/message', async (req,res)=>{
   const {idUser} = req.params
-  console.log('/*/*/*/',idUser)
+  
   try {
     const allConversation = await allMessageReciverUserDB(idUser)
     return res.status(200).json(allConversation)
@@ -76,6 +76,7 @@ router.get('/:id', async (req, res) => {
 
   try {
     const user = await getUser(id);
+    
     return res.status(200).json(user);
   } catch (error) {
     return res.status(400).json({ ERROR_USER: error.message });
