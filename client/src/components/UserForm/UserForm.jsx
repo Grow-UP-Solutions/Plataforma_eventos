@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 
 import axios from 'axios';
 import styles from './UserForm.module.css';
@@ -6,28 +6,24 @@ import styles from './UserForm.module.css';
 import eventsApi from '../../axios/eventsApi';
 
 /* ICONS */
-import {
-  BsCamera,
-  BsCardImage,
-  BsInfoCircle,
-  BsPencilSquare,
-} from 'react-icons/bs';
+import { BsCamera, BsCardImage, BsInfoCircle, BsPencilSquare } from 'react-icons/bs';
 
 import { AiOutlineCheck } from 'react-icons/ai';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 
 import { checkMalasPalabras } from '../../utils/checkMalasPalabras';
-import {
-  inputKeyDown,
-  inputKeyUpTel,
-  inputKeyUpPh,
-} from '../../utils/inputOnlyNumbers';
+import { inputKeyDown, inputKeyUpPh, inputKeyUpTel } from '../../utils/inputOnlyNumbers';
 
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../context/auth';
 import { invalidWords } from '../../utils/invalidWord';
+import { isValidEmail } from '../../utils/validateEmail';
+import { useRef } from 'react';
+import { useEffect } from 'react';
 
 const UserForm = ({ userData }) => {
-  /*  */
-
+  const { logout } = useContext(AuthContext);
+  const navigate = useNavigate();
   const handleProfileImg = async (e) => {
     setErrorMessagePhoto({
       userpicture: '',
@@ -40,8 +36,6 @@ const UserForm = ({ userData }) => {
 
     const image = e.target.files[0];
 
-    console.log({ image });
-
     if (image.size > 120000) {
       return setErrorMessagePhoto({
         userpicture: 'Por favor ingrese una imagén con tamaño menor a 100kb',
@@ -53,10 +47,7 @@ const UserForm = ({ userData }) => {
     imageData.append('upload_preset', 'j2xzagqg');
 
     try {
-      const result = await axios.post(
-        'https://api.cloudinary.com/v1_1/dti4vifvz/image/upload',
-        imageData
-      );
+      const result = await axios.post('https://api.cloudinary.com/v1_1/dti4vifvz/image/upload', imageData);
 
       setFormData({
         ...formData,
@@ -160,10 +151,7 @@ const UserForm = ({ userData }) => {
     // TODO: currentPassword -> Comparar la contraseña.
     if (id === 'currentPassword') {
       try {
-        const result = await eventsApi.post(
-          `/users/isSamePassword/${userData._id}`,
-          { password: value }
-        );
+        const result = await eventsApi.post(`/users/isSamePassword/${userData._id}`, { password: value });
 
         console.log(result);
         checkValidate = result.data.success;
@@ -228,8 +216,18 @@ const UserForm = ({ userData }) => {
     });
   };
 
+  const txtName = useRef();
+
+  useEffect(() => {
+    txtName.current.focus();
+  }, [canWriteInput]);
+
   const editFields = (e, inputName) => {
     e.preventDefault();
+
+    if (inputName === 'name' || inputName === 'lastName') {
+    }
+
     setCanWriteInput({
       ...canWriteInput,
       [inputName]: false,
@@ -287,11 +285,7 @@ const UserForm = ({ userData }) => {
     }
 
     if (nameInput === 'document') {
-      if (
-        valueInput.length < 7 ||
-        valueInput.length > 10 ||
-        valueInput.length === 9
-      ) {
+      if (valueInput.length < 7 || valueInput.length > 10 || valueInput.length === 9) {
         setErrorFields({
           ...errorFields,
           document: 'Por favor ingrese una cédula correcta.',
@@ -377,11 +371,14 @@ const UserForm = ({ userData }) => {
         isProfileCompleted,
       };
 
-      if (
-        errorPassword.currentPassword &&
-        errorPassword.newPassword &&
-        errorPassword.confirmNewPassword
-      ) {
+      if (checkVerifyEmail) {
+        userFormDataCompleted = {
+          ...userFormDataCompleted,
+          email: changeEmail.email,
+        };
+      }
+
+      if (errorPassword.currentPassword && errorPassword.newPassword && errorPassword.confirmNewPassword) {
         userFormDataCompleted = {
           ...userFormDataCompleted,
           password: changePassword.newPassword,
@@ -389,14 +386,10 @@ const UserForm = ({ userData }) => {
       }
 
       try {
-        await eventsApi.put(
-          `/users/update/${userData._id}`,
-          userFormDataCompleted
-        );
+        await eventsApi.put(`/users/update/${userData._id}`, userFormDataCompleted);
       } catch (error) {
         console.log({ error });
       }
-
       window.location.reload();
     }
   };
@@ -501,10 +494,7 @@ const UserForm = ({ userData }) => {
     imageData.append('upload_preset', 'j2xzagqg');
 
     try {
-      const result = await axios.post(
-        'https://api.cloudinary.com/v1_1/dti4vifvz/image/upload',
-        imageData
-      );
+      const result = await axios.post('https://api.cloudinary.com/v1_1/dti4vifvz/image/upload', imageData);
 
       setFormData({
         ...formData,
@@ -539,10 +529,7 @@ const UserForm = ({ userData }) => {
     imageData.append('upload_preset', 'j2xzagqg');
 
     try {
-      const result = await axios.post(
-        'https://api.cloudinary.com/v1_1/dti4vifvz/image/upload',
-        imageData
-      );
+      const result = await axios.post('https://api.cloudinary.com/v1_1/dti4vifvz/image/upload', imageData);
 
       setFormData({
         ...formData,
@@ -574,6 +561,60 @@ const UserForm = ({ userData }) => {
     }
   };
 
+  const [changeEmail, setChangeEmail] = useState({
+    email: '',
+  });
+
+  const [errorChangeEmail, setErrorChangeEmail] = useState('');
+
+  const [checkVerifyEmail, setCheckVerifyEmail] = useState(false);
+
+  const handleOnChangeEmail = (e) => {
+    const value = e.target.value;
+
+    if (!isValidEmail(value)) return setErrorChangeEmail('Por favor ingrese un correo valido.');
+
+    setErrorChangeEmail('');
+    setChangeEmail({
+      email: value,
+    });
+  };
+
+  const verifyEmail = async (e) => {
+    e.preventDefault();
+    const email = changeEmail.email;
+
+    if (!email) return setErrorChangeEmail('Por favor ingrese un correo.');
+
+    const { isEmailExists } = await eventsApi.get(`/users/existsEmail/${email}`).then((result) => result.data);
+    if (isEmailExists) return setErrorChangeEmail('Este correo ya ha sido registrado.');
+
+    localStorage.setItem('user', JSON.stringify({ email }));
+
+    const popup = window.open(
+      `http://localhost:3000/verificarmail/profile`,
+      'targetWindow',
+      `toolbar=no, location=no, status=no,menubar=no, scrollbars=yes, resizable=yes,width=800, height=600`
+    );
+
+    window.addEventListener('message', async (event) => {
+      const isConfirmEmail = event.data.confirm;
+      if (isConfirmEmail) {
+        setCheckVerifyEmail(true);
+        popup.close();
+      }
+    });
+  };
+
+  const cancelChangeEmail = (e) => {
+    e.preventDefault();
+    setCheckVerifyEmail(false);
+    setChangeEmail({ email: '' });
+    setErrorChangeEmail('');
+  };
+
+  const [modalSetOrganizer, setModalSetOrganizer] = useState(false);
+
   return (
     <div className={styles.containerUserForm}>
       <div className={styles.containerPhotoProfile}>
@@ -587,31 +628,20 @@ const UserForm = ({ userData }) => {
           )}
         </div>
         <button className={styles.btnAddPhoto}>
-          <input
-            onChange={handleProfileImg}
-            type='file'
-            className={styles.inputFile}
-          />
+          <input onChange={handleProfileImg} type='file' className={styles.inputFile} />
           <BsCardImage className={styles.btnAddPhotoIcon} />
           <span>Agregar Imagen</span>
         </button>
-        {errorMessagePhoto.userpicture && (
-          <span className={styles.errorMessage}>
-            {errorMessagePhoto.userpicture}
-          </span>
-        )}
+        {errorMessagePhoto.userpicture && <span className={styles.errorMessage}>{errorMessagePhoto.userpicture}</span>}
       </div>
       {userData.isProfileCompleted && (
         <div className={styles.isUserIsProfileCompleted}>
-          <span>
-            ¡Tu perfil esta completo! Y eres elegible para ser organizador
-          </span>
+          <span>¡Tu perfil esta completo! Y eres elegible para ser organizador</span>
           <div className={styles.containerBtnOrganizer}>
-            <button className={styles.btnApplyForOrganizer}>
+            <button onClick={() => setModalSetOrganizer(true)} className={styles.btnApplyForOrganizer}>
               Aplicar para ser organizador
             </button>
             <BsInfoCircle className={styles.btnIconMoreInfo} />
-
             <div className={styles.containerMoreInfo}>
               <p>Probando texto</p>
             </div>
@@ -635,6 +665,7 @@ const UserForm = ({ userData }) => {
                   type='text'
                   id='firstName'
                   name='firstName'
+                  ref={txtName}
                 />
 
                 <span>Como aparece en la cedula</span>
@@ -656,20 +687,14 @@ const UserForm = ({ userData }) => {
                 <span>Editar</span>
               </button>
             </div>
-            {errorFields.firstName && (
-              <span className={styles.errorMessageField}>
-                {errorFields.firstName}
-              </span>
-            )}
+            {errorFields.firstName && <span className={styles.errorMessageField}>{errorFields.firstName}</span>}
           </div>
 
           {formData.firstName.split(' ').length > 1 && (
             <div className={styles.formGroup}>
               <div className={styles.subFormGroup}>
                 <div className={styles.inputsContainer}>
-                  <label htmlFor='nickname'>
-                    Nombre como quieres que salga en tu perfil:
-                  </label>
+                  <label htmlFor='nickname'>Nombre como quieres que salga en tu perfil:</label>
 
                   <select
                     className={styles.selectNickName}
@@ -681,11 +706,8 @@ const UserForm = ({ userData }) => {
                   >
                     {formData.firstName.split(' ').map((name) => {
                       return (
-                        <option
-                          key={name}
-                          value={`${name} ${formData.lastName.split(' ')[0]} `}
-                        >
-                          {`${name} ${formData.lastName.split(' ')[0]} `}
+                        <option key={name} value={`${name} ${formData.lastName.split(' ')[0]}`}>
+                          {`${name} ${formData.lastName.split(' ')[0]}`}
                         </option>
                       );
                     })}
@@ -696,35 +718,53 @@ const UserForm = ({ userData }) => {
                   <span>Editar</span>
                 </button>
               </div>
-              {errorFields.nickname && (
-                <span className={styles.errorMessageField}>
-                  {errorFields.nickname}
-                </span>
-              )}
+              {errorFields.nickname && <span className={styles.errorMessageField}>{errorFields.nickname}</span>}
             </div>
           )}
           <div className={styles.formGroup}>
             <div className={styles.subFormGroup}>
               <div className={styles.inputsContainer}>
                 <label htmlFor='mail'>Email:</label>
-                <input
-                  value={formData.email}
-                  type='mail'
-                  id='mail'
-                  placeholder='email@ejemplo.com'
-                />
+                <input disabled value={formData.email} type='mail' id='mail' placeholder='email@ejemplo.com' />
               </div>
-              <button>
+              <button onClick={(e) => editFields(e, 'email')}>
                 <BsPencilSquare className={styles.iconEdit} />
                 <span>Editar</span>
               </button>
             </div>
-            {errorFields.email && (
-              <span className={styles.errorMessageField}>
-                {errorFields.email}
-              </span>
-            )}
+            {errorFields.email && <span className={styles.errorMessageField}>{errorFields.email}</span>}
           </div>
+
+          {/* CHANGE EMAIL */}
+
+          {!canWriteInput.email && (
+            <>
+              <div className={styles.formGroupPassword}>
+                <label htmlFor='change-mail'>Nuevo email:</label>
+                <div className={styles.containerInputChangeEmail}>
+                  <input
+                    style={{
+                      border: errorChangeEmail && '1px solid #C34A33',
+                    }}
+                    type={'mail'}
+                    id='change-mail'
+                    required
+                    autoComplete='off'
+                    onChange={handleOnChangeEmail}
+                  />
+
+                  {errorChangeEmail && <span className={styles.errorMessageChangeEmail}>{errorChangeEmail}</span>}
+
+                  {checkVerifyEmail && <AiOutlineCheck className={styles.iconCheckPassword} />}
+                </div>
+                <div className={styles.containerButtonsChangeMail}>
+                  <button onClick={verifyEmail}>Verificar</button>
+                  <button onClick={cancelChangeEmail}>Cancelar</button>
+                </div>
+              </div>
+            </>
+          )}
+
           <div className={styles.formGroup}>
             <div className={styles.subFormGroup}>
               <div className={styles.inputsContainer}>
@@ -743,11 +783,7 @@ const UserForm = ({ userData }) => {
                 <span>Editar</span>
               </button>
             </div>
-            {errorFields.direction && (
-              <span className={styles.errorMessageField}>
-                {errorFields.direction}
-              </span>
-            )}
+            {errorFields.direction && <span className={styles.errorMessageField}>{errorFields.direction}</span>}
           </div>
           <div className={styles.formGroup}>
             <div className={styles.subFormGroup}>
@@ -767,11 +803,7 @@ const UserForm = ({ userData }) => {
                 <span>Editar</span>
               </button>
             </div>
-            {errorFields.city && (
-              <span className={styles.errorMessageField}>
-                {errorFields.city}
-              </span>
-            )}
+            {errorFields.city && <span className={styles.errorMessageField}>{errorFields.city}</span>}
           </div>
           <div className={styles.formGroup}>
             <div className={styles.subFormGroup}>
@@ -793,11 +825,7 @@ const UserForm = ({ userData }) => {
                 <span>Editar</span>
               </button>
             </div>
-            {errorFields.tel && (
-              <span className={styles.errorMessageField}>
-                {errorFields.tel}
-              </span>
-            )}
+            {errorFields.tel && <span className={styles.errorMessageField}>{errorFields.tel}</span>}
           </div>
           <div className={styles.formGroup}>
             <div className={styles.subFormGroup}>
@@ -819,11 +847,7 @@ const UserForm = ({ userData }) => {
                 <span>Editar</span>
               </button>
             </div>
-            {errorFields.phone && (
-              <span className={styles.errorMessageField}>
-                {errorFields.phone}
-              </span>
-            )}
+            {errorFields.phone && <span className={styles.errorMessageField}>{errorFields.phone}</span>}
           </div>
 
           {/* PASSWORD */}
@@ -832,12 +856,7 @@ const UserForm = ({ userData }) => {
             <div className={styles.subFormGroup}>
               <div className={styles.inputsContainer}>
                 <label htmlFor='password'>Contraseña</label>
-                <input
-                  disabled
-                  value={'*************'}
-                  type='password'
-                  id='password'
-                />
+                <input disabled value={'*************'} type='password' id='password' />
               </div>
               <button onClick={(e) => editFields(e, 'password')}>
                 <BsPencilSquare className={styles.iconEdit} />
@@ -853,13 +872,9 @@ const UserForm = ({ userData }) => {
                 <div className={styles.containerInputForPassword}>
                   <input
                     style={{
-                      border:
-                        errorPassword.currentPassword === false &&
-                        '1px solid #C34A33',
+                      border: errorPassword.currentPassword === false && '1px solid #C34A33',
                     }}
-                    type={
-                      isPasswordVisible.currentPassword ? 'text' : 'password'
-                    }
+                    type={isPasswordVisible.currentPassword ? 'text' : 'password'}
                     id='currentPassword'
                     required
                     onChange={handleChangeInputPassword}
@@ -868,29 +883,22 @@ const UserForm = ({ userData }) => {
 
                   {!isPasswordVisible.currentPassword ? (
                     <FiEye
-                      onClick={() =>
-                        handleChangeVisiblePassword('currentPassword')
-                      }
+                      onClick={() => handleChangeVisiblePassword('currentPassword')}
                       className={styles.iconVisiblePassword}
                     />
                   ) : (
                     <FiEyeOff
-                      onClick={() =>
-                        handleChangeVisiblePassword('currentPassword')
-                      }
+                      onClick={() => handleChangeVisiblePassword('currentPassword')}
                       className={styles.iconVisiblePassword}
                     />
                   )}
 
-                  {checkSuccessPassword.currentPassword && (
-                    <AiOutlineCheck className={styles.iconCheckPassword} />
-                  )}
+                  {checkSuccessPassword.currentPassword && <AiOutlineCheck className={styles.iconCheckPassword} />}
                 </div>
                 {errorPassword.currentPassword === false && (
                   <span className={styles.errorMessage}>
-                    Has ingresado una contraseña que no coincide con la
-                    registrada,intenta <br /> de nuevo o comunicate con nosotros{' '}
-                    <a href='#'>aquí.</a>
+                    Has ingresado una contraseña que no coincide con la registrada,intenta <br /> de nuevo o comunicate
+                    con nosotros <a href='#'>aquí.</a>
                   </span>
                 )}
               </div>
@@ -899,9 +907,7 @@ const UserForm = ({ userData }) => {
                 <div className={styles.containerInputForPassword}>
                   <input
                     style={{
-                      border:
-                        errorPassword.newPassword === false &&
-                        '1px solid #C34A33',
+                      border: errorPassword.newPassword === false && '1px solid #C34A33',
                     }}
                     type={isPasswordVisible.newPassword ? 'text' : 'password'}
                     id='newPassword'
@@ -921,31 +927,21 @@ const UserForm = ({ userData }) => {
                       className={styles.iconVisiblePassword}
                     />
                   )}
-                  {checkSuccessPassword.newPassword && (
-                    <AiOutlineCheck className={styles.iconCheckPassword} />
-                  )}
+                  {checkSuccessPassword.newPassword && <AiOutlineCheck className={styles.iconCheckPassword} />}
                 </div>
                 {errorPassword.newPassword === false && (
-                  <span className={styles.errorMessage}>
-                    El formato debe tener entre 12 y 20 caracteres.
-                  </span>
+                  <span className={styles.errorMessage}>El formato debe tener entre 12 y 20 caracteres.</span>
                 )}
               </div>
 
               <div className={styles.formGroupPassword}>
-                <label htmlFor='newConfirmPassword'>
-                  Repetir contraseña nueva:
-                </label>
+                <label htmlFor='newConfirmPassword'>Repetir contraseña nueva:</label>
                 <div className={styles.containerInputForPassword}>
                   <input
                     style={{
-                      border:
-                        errorPassword.confirmNewPassword === false &&
-                        '1px solid #C34A33',
+                      border: errorPassword.confirmNewPassword === false && '1px solid #C34A33',
                     }}
-                    type={
-                      isPasswordVisible.confirmNewPassword ? 'text' : 'password'
-                    }
+                    type={isPasswordVisible.confirmNewPassword ? 'text' : 'password'}
                     id='confirmNewPassword'
                     required
                     onChange={handleChangeInputPassword}
@@ -953,28 +949,20 @@ const UserForm = ({ userData }) => {
 
                   {!isPasswordVisible.confirmNewPassword ? (
                     <FiEye
-                      onClick={() =>
-                        handleChangeVisiblePassword('confirmNewPassword')
-                      }
+                      onClick={() => handleChangeVisiblePassword('confirmNewPassword')}
                       className={styles.iconVisiblePassword}
                     />
                   ) : (
                     <FiEyeOff
-                      onClick={() =>
-                        handleChangeVisiblePassword('confirmNewPassword')
-                      }
+                      onClick={() => handleChangeVisiblePassword('confirmNewPassword')}
                       className={styles.iconVisiblePassword}
                     />
                   )}
 
-                  {checkSuccessPassword.confirmNewPassword && (
-                    <AiOutlineCheck className={styles.iconCheckPassword} />
-                  )}
+                  {checkSuccessPassword.confirmNewPassword && <AiOutlineCheck className={styles.iconCheckPassword} />}
                 </div>
                 {errorPassword.confirmNewPassword === false && (
-                  <span className={styles.errorMessage}>
-                    Las contraseñas no coinciden
-                  </span>
+                  <span className={styles.errorMessage}>Las contraseñas no coinciden</span>
                 )}
               </div>
             </>
@@ -998,8 +986,8 @@ const UserForm = ({ userData }) => {
                   }}
                 />
                 <span>
-                  El número y foto de tu cédula son requeridos para efectos de
-                  seguridad y cumplimiento de la normativa tributaria.
+                  El número y foto de tu cédula son requeridos para efectos de seguridad y cumplimiento de la normativa
+                  tributaria.
                 </span>
               </div>
               <button onClick={(e) => editFields(e, 'document')}>
@@ -1007,11 +995,7 @@ const UserForm = ({ userData }) => {
                 <span>Editar</span>
               </button>
             </div>
-            {errorFields.document && (
-              <span className={styles.errorMessageField}>
-                {errorFields.document}
-              </span>
-            )}
+            {errorFields.document && <span className={styles.errorMessageField}>{errorFields.document}</span>}
           </div>
 
           {/* PHOTOS OF document */}
@@ -1020,20 +1004,12 @@ const UserForm = ({ userData }) => {
               <span>Imagen frontal de la cédula:</span>
               {formData.frontDocument ? (
                 <>
-                  <img
-                    className={styles.frontDocument}
-                    src={formData.frontDocument}
-                    alt='document'
-                  />
+                  <img className={styles.frontDocument} src={formData.frontDocument} alt='document' />
                 </>
               ) : (
                 <>
                   <div className={styles.dragDni}>
-                    <input
-                      onChange={handleImageFrontDocument}
-                      type='file'
-                      className={styles.inputFile}
-                    />
+                    <input onChange={handleImageFrontDocument} type='file' className={styles.inputFile} />
                     <BsCamera className={styles.iconCameraFile} />
                     <span>Arrastra una imagen</span>
                   </div>
@@ -1042,39 +1018,25 @@ const UserForm = ({ userData }) => {
               <p>Formatos: Jpg o png. Max. 100kb</p>
 
               <button className={styles.btnAddPhoto}>
-                <input
-                  onChange={handleImageFrontDocument}
-                  type='file'
-                  className={styles.inputFile}
-                />
+                <input onChange={handleImageFrontDocument} type='file' className={styles.inputFile} />
                 <BsCardImage className={styles.btnAddPhotoIcon} />
                 <span>Agregar Imagen</span>
               </button>
 
               {errorMessagePhoto.frontDocument && (
-                <span className={styles.errorMessage}>
-                  {errorMessagePhoto.frontDocument}
-                </span>
+                <span className={styles.errorMessage}>{errorMessagePhoto.frontDocument}</span>
               )}
             </div>
             <div className={styles.photoBack}>
               <span>Imagen dorsal de la cédula:</span>
               {formData.backDocument ? (
                 <>
-                  <img
-                    className={styles.backDocument}
-                    src={formData.backDocument}
-                    alt='document'
-                  />
+                  <img className={styles.backDocument} src={formData.backDocument} alt='document' />
                 </>
               ) : (
                 <>
                   <div className={styles.dragDni}>
-                    <input
-                      onChange={handleImageBackDocument}
-                      type='file'
-                      className={styles.inputFile}
-                    />
+                    <input onChange={handleImageBackDocument} type='file' className={styles.inputFile} />
                     <BsCamera className={styles.iconCameraFile} />
                     <span>Arrastra una imagen</span>
                   </div>
@@ -1083,17 +1045,11 @@ const UserForm = ({ userData }) => {
               <p>Formatos: Jpg o png. Max. 100kb</p>
 
               {errorMessagePhoto.backDocument && (
-                <span className={styles.errorMessage}>
-                  {errorMessagePhoto.backDocument}
-                </span>
+                <span className={styles.errorMessage}>{errorMessagePhoto.backDocument}</span>
               )}
 
               <button className={styles.btnAddPhoto}>
-                <input
-                  onChange={handleImageBackDocument}
-                  type='file'
-                  className={styles.inputFile}
-                />
+                <input onChange={handleImageBackDocument} type='file' className={styles.inputFile} />
                 <BsCardImage className={styles.btnAddPhotoIcon} />
                 <span>Agregar Imagen</span>
               </button>
@@ -1116,20 +1072,12 @@ const UserForm = ({ userData }) => {
           <div className={styles.containerDrag}>
             {formData.imageRent ? (
               <>
-                <img
-                  src={formData.imageRent}
-                  alt='rent'
-                  className={styles.imageRent}
-                />
+                <img src={formData.imageRent} alt='rent' className={styles.imageRent} />
               </>
             ) : (
               <>
                 <div className={styles.dragRent}>
-                  <input
-                    onChange={handleImageRent}
-                    type='file'
-                    className={styles.inputFile}
-                  />
+                  <input onChange={handleImageRent} type='file' className={styles.inputFile} />
                   <BsCamera className={styles.iconCameraFile} />
                   <span>Arrastra una imagen</span>
                 </div>
@@ -1137,18 +1085,10 @@ const UserForm = ({ userData }) => {
             )}
             <p>Formatos: Jpg o png. Max. 100kb</p>
 
-            {errorMessagePhoto.imageRent && (
-              <span className={styles.errorMessage}>
-                {errorMessagePhoto.imageRent}
-              </span>
-            )}
+            {errorMessagePhoto.imageRent && <span className={styles.errorMessage}>{errorMessagePhoto.imageRent}</span>}
 
             <button className={styles.btnAddPhoto}>
-              <input
-                onChange={handleImageRent}
-                type='file'
-                className={styles.inputFile}
-              />
+              <input onChange={handleImageRent} type='file' className={styles.inputFile} />
               <BsCardImage className={styles.btnAddPhotoIcon} />
               <span>Agregar Imagen</span>
             </button>
@@ -1179,9 +1119,7 @@ const UserForm = ({ userData }) => {
           </div>
         </div>
         {errorFields.descriptionOrganizer && (
-          <span className={styles.errorMessageFieldAboutMe}>
-            {errorFields.descriptionOrganizer}
-          </span>
+          <span className={styles.errorMessageFieldAboutMe}>{errorFields.descriptionOrganizer}</span>
         )}
       </div>
       <div className={styles.containerMainButton}>
@@ -1199,10 +1137,7 @@ const UserForm = ({ userData }) => {
         <button onClick={updateUserData} className={styles.btnSave}>
           Guardar
         </button>
-        <button
-          onClick={() => setModalCancel(true)}
-          className={styles.btnCancel}
-        >
+        <button onClick={() => setModalCancel(true)} className={styles.btnCancel}>
           Cancelar
         </button>
       </div>
@@ -1212,18 +1147,44 @@ const UserForm = ({ userData }) => {
       {modalCancel && (
         <div className={styles.overlayCancel}>
           <div className={styles.containerModalCancel}>
-            <p className={styles.titleModalCancel}>
-              Tus cambios no serán guardados
-            </p>
+            <p className={styles.titleModalCancel}>Tus cambios no serán guardados</p>
 
             <div className={styles.containerButtonsCancel}>
               <button onClick={() => handleModalCancel('close')}>Cerrar</button>
-              <button onClick={() => handleModalCancel('continue')}>
-                Continuar
-              </button>
+              <button onClick={() => handleModalCancel('continue')}>Continuar</button>
             </div>
           </div>
         </div>
+      )}
+
+      {/* Modal Convert to Organizer */}
+
+      {modalSetOrganizer && (
+        <>
+          <div className={styles.overlaySetOrganizer}>
+            <div className={styles.containerModalSetOrganizer}>
+              <h3>Esta aplicando para convertirte en organizador</h3>
+
+              <p>Esto te permitirá publicar eventos por medio de la plataforma</p>
+
+              <span>
+                Al proceder con ésta aplicación confirmas que has leído y aceptar la{' '}
+                <Link to={'/privacy'}>Politica de privacidad</Link>, la{' '}
+                <Link to={'/privacy'}>Politica de seguridad</Link> y los{' '}
+                <Link to={'/privacy'}>Términos y condiciones</Link>
+                de LO QUE QUIERO HACER S.A.S que aplican para un Organizador y las cuales son distintas a las que
+                aceptaste previamente al momento de crear tu cuenta.
+              </span>
+
+              <div className={styles.containerButtons}>
+                <button className={styles.btnSuccess}>Aceptar</button>
+                <button onClick={() => setModalSetOrganizer(false)} className={styles.btnCancelOrganizer}>
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          </div>
+        </>
       )}
     </div>
   );

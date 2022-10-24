@@ -9,16 +9,12 @@ const {
   sendMessageDB,
   sendNotificationDB,
   updateMyFavorites,
-} = require("../../models/util/functionDB/UserDb.js");
+} = require('../../models/util/functionDB/UserDb.js');
 
-const bcrypt = require("bcryptjs");
-const { AllEventsDb } = require("../../models/util/functionDB/EventesDb.js");
-const {
-  EVENT,
-  UPDATE_EVENT,
-  FAVORITOS,
-} = require("../../models/util/notifications/notifications.types.js");
-const validatonType = require("../../models/util/notifications/validatonType.js");
+const bcrypt = require('bcryptjs');
+const { AllEventsDb } = require('../../models/util/functionDB/EventesDb.js');
+const { EVENT, UPDATE_EVENT, FAVORITOS } = require('../../models/util/notifications/notifications.types.js');
+const validatonType = require('../../models/util/notifications/validatonType.js');
 
 async function getAllUsers() {
   const allUsers = allUserDb();
@@ -41,7 +37,7 @@ async function createUsers(user) {
     const userDB = await validateEmailUserDb(email);
 
     if (userDB) {
-      throw new Error("El email ya se encuentra registrado");
+      throw new Error('El email ya se encuentra registrado');
     }
 
     const users = await createOneUserDb(user);
@@ -88,7 +84,7 @@ async function userUpdate(id, newUser) {
 async function userDelete(id) {
   try {
     const deleteUser = await deleteOneUserDb(id);
-    if (!deleteUser) "Usuario no encontardo";
+    if (!deleteUser) 'Usuario no encontardo';
 
     return deleteUser;
   } catch (error) {
@@ -105,25 +101,21 @@ async function sendMessageUser(idSend, message) {
     throw new Error(error.message);
   }
 }
-async function eventesFavorites(idUser,idEvent) {
+async function eventesFavorites(idUser, idEvent) {
   try {
-    const user = await oneUserDb(idUser)
+    const user = await oneUserDb(idUser);
     const eventeFavorite = user.myFavorites.find((e) => e._id == idEvent);
-    
-    if(!eventeFavorite){
-      
-      const addFavorite = await updateMyFavorites(idUser,idEvent)
-      return addFavorite
+
+    if (!eventeFavorite) {
+      const addFavorite = await updateMyFavorites(idUser, idEvent);
+      return addFavorite;
     }
     // {msg: "el evento existe en favoritos" , eventeFavorite}
-    return 
+    return;
   } catch (error) {
     throw new Error(error.message);
-    
   }
-  
 }
-
 
 async function sendNotificationsUser(notifications) {
   const { type, idUser } = notifications;
@@ -141,16 +133,30 @@ async function login(email, password) {
     const user = await validateEmailUserDb(email);
 
     if (!user) {
-      throw new Error("Email no encontrado en sistema");
+      throw new Error('Email no encontrado en sistema');
     }
 
     const validPassword = bcrypt.compareSync(password, user.password);
 
     if (!validPassword) {
-      throw new Error("Contraseña incorrecta");
+      throw new Error('Contraseña incorrecta');
     }
 
     return user;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+async function getUserByEmail(email) {
+  try {
+    const user = await validateEmailUserDb(email);
+
+    if (user) {
+      return true;
+    } else {
+      return false;
+    }
   } catch (error) {
     throw new Error(error.message);
   }
@@ -168,4 +174,5 @@ module.exports = {
   userDelete,
   userUpdate,
   getAllCommentUser,
+  getUserByEmail,
 };
