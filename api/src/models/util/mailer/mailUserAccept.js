@@ -3,7 +3,7 @@ require('dotenv').config();
 
 const { EMAIL, PASSWORD } = process.env;
 
-const sendMailToOrganizer = async (name, link, email) => {
+const sendMailUserAccept = async (name, email) => {
   const transporter = createTransport({
     service: 'gmail',
     secure: true,
@@ -55,6 +55,7 @@ const sendMailToOrganizer = async (name, link, email) => {
     
           a {
             text-decoration: none;
+            color: inherit;
           }
     
           ol,
@@ -96,17 +97,9 @@ const sendMailToOrganizer = async (name, link, email) => {
             color: #d53e27;
           }
     
-          .btnSuccess {
-            display: block;
-            padding: 1rem 4rem;
-            border: none;
-            border-radius: 20px;
-            font-size: 1.4rem;
-            font-weight: bold;
-            box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            color: #ffffff;
-            background-color: #d53e27;
+          .message-approbed {
+            text-transform: uppercase;
+            color: #29aa79;
           }
         </style>
       </head>
@@ -115,8 +108,10 @@ const sendMailToOrganizer = async (name, link, email) => {
           <div class="container">
             <div class="top-bar"></div>
             <div class="container-info">
-              <h1>El usuario <span>${name}</span> quiere convertirse en organizador.</h1>
-              <a href="${link}" class="btnSuccess">Visualizar sus datos</a>
+              <h1>
+                <span>${name}</span> usted ha sido <span class="message-approbed">aprobado</span> para ser
+                organizador.
+              </h1>
             </div>
             <div class="bottom-bar"></div>
           </div>
@@ -133,5 +128,5 @@ const sendMailToOrganizer = async (name, link, email) => {
   }
 };
 module.exports = {
-  sendMailToOrganizer,
+  sendMailUserAccept,
 };

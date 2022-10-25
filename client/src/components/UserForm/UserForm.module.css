@@ -664,7 +664,7 @@
   padding: 2rem 4rem;
   background-color: white;
   width: 60%;
-
+  border-radius: 2rem;
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
@@ -758,4 +758,7 @@
   cursor: pointer;
   color: var(--color-orange);
   font-size: 1.6rem;
+}
+.proccessingOrganizer {
+  color: var(--color-blue);
 }

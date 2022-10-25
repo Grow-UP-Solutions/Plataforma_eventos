@@ -42,9 +42,33 @@ const {
 const { generateJWTOrganizer } = require('../../models/util/helpers/jwtOrganizer.js');
 const { validateJWTOrganizer } = require('../../models/util/middlewares/validate-organizer.js');
 const { allMessageReciverUserDB } = require('../../models/util/functionDB/messageDb.js');
+const { sendMailUserAccept } = require('../../models/util/mailer/mailUserAccept.js');
+const { sendMailUserRejected } = require('../../models/util/mailer/mailUserRejected.js');
 
 const router = Router();
 /**/ ///////////////Rutas GET////////////// */
+
+router.get('/checkValidateTokenOrganizer/', validateJWTOrganizer, async (req, res) => {
+  const { name, phone, document, tel, email, referenciaU, referenciaZ, id } = req;
+
+  try {
+    res.status(200).json({
+      name,
+      phone,
+      document,
+      tel,
+      email,
+      referenciaU,
+      referenciaZ,
+      id,
+    });
+  } catch (error) {
+    res.status(404).json({
+      message: error.message,
+    });
+  }
+});
+
 router.get('/', async (req, res) => {
   try {
     const allUsers = await getAllUsers();
@@ -125,9 +149,7 @@ router.get(
       <body>
       </body>
       <script>
-      window.opener.postMessage(${userString}, ${(process.env.NODE_ENV = 'production'
-          ? "'" + process.env.CLIENT_URL + "'"
-          : 'http://localhost:3000')})
+      window.opener.postMessage(${userString}, 'http://localhost:3000')
       </script>
       </html>
       `
@@ -165,9 +187,7 @@ router.get(
       <body>
       </body>
       <script>
-      window.opener.postMessage(${userString}, ${(process.env.NODE_ENV = 'production'
-          ? "'" + process.env.CLIENT_URL + "'"
-          : 'http://localhost:3000')})
+      window.opener.postMessage(${userString}, 'http://localhost:3000')
       </script>
       </html>
       `
@@ -178,6 +198,40 @@ router.get(
   }
 );
 /**/ //////////////Rutas POST/////////////// */
+
+router.post('/acceptOrRejectedOrganizer', async (req, res) => {
+  const { option, id } = req.body;
+  let message = '';
+  try {
+    const user = await getUser(id);
+    if (option === 'accept') {
+      user.isOrganizer = true;
+      user.isProccessingToOrganizer = false;
+      user.isRejected = false;
+      await sendMailUserAccept(user.name, user.email);
+      message = 'Aceptado';
+    } else if (option === 'reject') {
+      user.isRejected = true;
+      user.isOrganizer = false;
+      user.isProccessingToOrganizer = false;
+      await sendMailUserRejected(user.name, user.email);
+      message = 'Rechazado';
+    } else {
+      return res.status(400).json({ message: 'error' });
+    }
+    await user.save();
+
+    res.status(200).json({
+      message,
+      success: true,
+    });
+  } catch (error) {
+    res.status(404).json({
+      message: error.message,
+    });
+  }
+});
+
 router.put('/:idUser/favorites', async (req, res) => {
   const { idUser } = req.params;
   const { idEvent } = req.body;
@@ -239,8 +293,8 @@ router.post(
     try {
       const user = req.body;
       const userCreate = await createUsers(user);
-
-      const token = await generateJWT(userCreate._id, userCreate.name);
+      const time = '2h';
+      const token = await generateJWT(userCreate._id, userCreate.name, time);
 
       return res.json({
         uid: userCreate._id,
@@ -563,7 +617,6 @@ router.get(
 
 router.post('/requestToOrganizer/', async (req, res) => {
   const { user } = req.body;
-  console.log({ user });
   try {
     const token = await generateJWTOrganizer(
       user.name,
@@ -572,37 +625,22 @@ router.post('/requestToOrganizer/', async (req, res) => {
       user.tel,
       user.phone,
       user.referenciaU,
-      user.referenciaZ
+      user.referenciaZ,
+      user.id
     );
     await sendMailToOrganizer(
       user.name,
-      `http://localhost:3000/admin/check-solicitud-organizador/${token}`,
+      `${process.env.CLIENT_URL || 'http://localhost:3000'}/admin/check-solicitud-organizador/${token}`,
       user.email
     );
+
+    const userModel = await getUser(user.id);
+    userModel.isProccessingToOrganizer = true;
+    await userModel.save();
 
     res.status(200).json({ success: true });
   } catch (error) {
     res.status(400).json(error.message);
-  }
-});
-
-router.get('/setOrganizer/', validateJWTOrganizer, async (req, res) => {
-  const { name, phone, document, tel, email, referenciaU, referenciaZ } = req.body;
-
-  try {
-    res.status(202).json({
-      name,
-      phone,
-      document,
-      tel,
-      email,
-      referenciaU,
-      referenciaZ,
-    });
-  } catch (error) {
-    res.status(404).json({
-      message: error.message,
-    });
   }
 });
 

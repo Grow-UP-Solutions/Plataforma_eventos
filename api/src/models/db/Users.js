@@ -14,6 +14,8 @@ const UserSchema = new Schema({
   frontDocument: String,
   backDocument: String,
   imageRent: String,
+  referenceU: String,
+  referenceZ: String,
   isDeclarant: {
     type: Boolean,
     default: false,
@@ -45,9 +47,17 @@ const UserSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  isProccessingToOrganizer: {
+    type: Boolean,
+    default: false,
+  },
+  isRejected: {
+    type: Boolean,
+    default: false,
+  },
   isOrganizer: {
     type: Boolean,
-    default: true,
+    default: false,
   },
   isLogged: {
     type: Boolean,

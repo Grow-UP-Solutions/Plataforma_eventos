@@ -219,19 +219,15 @@ const UserForm = ({ userData }) => {
   };
 
   const txtName = useRef();
-  const selectNickname = useRef();
   const txtAddress = useRef();
   const txtCity = useRef();
   const txtTel = useRef();
   const txtPhone = useRef();
   const txtDocument = useRef();
+  const txtAreaDescription = useRef();
   useEffect(() => {
     txtName.current.focus();
   }, [canWriteInput.name]);
-
-  useEffect(() => {
-    selectNickname.current.focus();
-  }, [canWriteInput.nickname]);
 
   useEffect(() => {
     txtAddress.current.focus();
@@ -252,6 +248,10 @@ const UserForm = ({ userData }) => {
   useEffect(() => {
     txtDocument.current.focus();
   }, [canWriteInput.document]);
+
+  useEffect(() => {
+    txtAreaDescription.current.focus();
+  }, [canWriteInput.descriptionOrganizer]);
 
   const editFields = (e, inputName) => {
     e.preventDefault();
@@ -376,11 +376,9 @@ const UserForm = ({ userData }) => {
 
     for (let i = 0; i < Object.keys(formData).length; i++) {
       const key = Object.keys(formData)[i];
-
       if (typeof formData[key] === 'boolean') continue;
-
+      if (key === 'nickname') continue;
       if (key === 'imageRent') continue;
-
       if (!formData[key]) {
         isProfileCompleted = false;
         break;
@@ -683,9 +681,14 @@ const UserForm = ({ userData }) => {
 
   /* CONVERT TO ORGANIZER */
   const [modalSetOrganizer, setModalSetOrganizer] = useState(false);
+  const [isProccessingToOrganizer, setIsProccessingToOrganizer] = useState(userData.isProccessingToOrganizer);
 
   const sendEmailToOrganizer = async () => {
+    setIsProccessingToOrganizer(true);
+    setModalSetOrganizer(false);
+
     const user = {
+      id: userData._id,
       name: `${formData.firstName} ${formData.lastName}`,
       email: formData.email,
       document: formData.document,
@@ -697,7 +700,6 @@ const UserForm = ({ userData }) => {
 
     try {
       const result = await eventsApi.post('/users/requestToOrganizer', { user });
-      console.log({ result });
     } catch (error) {
       console.log({ error });
     }
@@ -741,39 +743,56 @@ const UserForm = ({ userData }) => {
         </button>
         {errorMessagePhoto.userpicture && <span className={styles.errorMessage}>{errorMessagePhoto.userpicture}</span>}
       </div>
-      {userData.isProfileCompleted && !userData.isOrganizer && (
-        <div className={styles.isUserIsProfileCompleted}>
-          <span>¡Tu perfil esta completo! Y eres elegible para ser organizador</span>
-          <div className={styles.containerBtnOrganizer}>
-            <button onClick={() => setModalSetOrganizer(true)} className={styles.btnApplyForOrganizer}>
-              Aplicar para ser organizador
-            </button>
-            <BsInfoCircle className={styles.btnIconMoreInfo} />
-            <div className={styles.containerMoreInfo}>
-              <p>Probando texto</p>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {userData.isOrganizer && (
+      {!userData.isReject && (
         <>
-          <div className={styles.organizerContainer}>
-            <p>El organizador es la persona que puede publicar eventos en "Lo que quiero hacer"</p>
-
-            <div className={styles.containerOrganizerApprobed}>
-              <AiOutlineCheck className={styles.iconOrganizerApprobed} />
-              <span>Organizador aprobado.</span>
-              <BsInfoCircle className={styles.iconOrganizerInfo} />
+          {userData.isReject && userData.isProfileCompleted && !userData.isOrganizer && !isProccessingToOrganizer && (
+            <div className={styles.isUserIsProfileCompleted}>
+              <span>¡Tu perfil esta completo! Y eres elegible para ser organizador</span>
+              <div className={styles.containerBtnOrganizer}>
+                <button onClick={() => setModalSetOrganizer(true)} className={styles.btnApplyForOrganizer}>
+                  Aplicar para ser organizador
+                </button>
+                <BsInfoCircle className={styles.btnIconMoreInfo} />
+                <div className={styles.containerMoreInfo}>
+                  <p>Probando texto</p>
+                </div>
+              </div>
             </div>
+          )}
 
-            <button className={styles.btnCreateEvent}>Organiza un evento</button>
-          </div>
+          {isProccessingToOrganizer && !userData.isOrganizer && (
+            <>
+              <div className={styles.organizerContainer}>
+                <p>El organizador es la persona que puede publicar eventos en "Lo que quiero hacer"</p>
+                <div className={styles.containerOrganizerApprobed}>
+                  <span className={styles.proccessingOrganizer}>
+                    Su solicitud para ser un organizador está en proceso.
+                  </span>
+                  <BsInfoCircle className={styles.iconOrganizerInfo} />
+                </div>
+              </div>
+            </>
+          )}
+
+          {userData.isOrganizer && (
+            <>
+              <div className={styles.organizerContainer}>
+                <p>El organizador es la persona que puede publicar eventos en "Lo que quiero hacer"</p>
+
+                <div className={styles.containerOrganizerApprobed}>
+                  <AiOutlineCheck className={styles.iconOrganizerApprobed} />
+                  <span>Organizador aprobado.</span>
+                  <BsInfoCircle className={styles.iconOrganizerInfo} />
+                </div>
+
+                <button className={styles.btnCreateEvent}>Organiza un evento</button>
+              </div>
+            </>
+          )}
         </>
       )}
 
       <div className={styles.divisor} />
-
       {/* FORM */}
       <div className={styles.containerForm}>
         <form>
@@ -826,7 +845,6 @@ const UserForm = ({ userData }) => {
                     onChange={handleInputChange}
                     disabled={canWriteInput.nickname}
                     defaultValue={formData.nickname}
-                    ref={selectNickname}
                   >
                     {formData.firstName.split(' ').map((name) => {
                       return (
@@ -1265,6 +1283,7 @@ const UserForm = ({ userData }) => {
               rows='10'
               onChange={handleInputChange}
               disabled={canWriteInput.descriptionOrganizer}
+              ref={txtAreaDescription}
             ></textarea>
             <BsInfoCircle className={styles.btnIconMoreInfo} />
           </div>
