@@ -3,7 +3,7 @@ import style from './Notifications.module.css';
 import { HiBell } from 'react-icons/hi';
 import { stateContext } from '../../context/state/stateContext';
 import { AuthContext } from '../../context/auth';
-import axios from 'axios';
+import eventsApi from '../../axios/eventsApi';
 import swal from 'sweetalert';
 
 const Notifications = () => {
@@ -18,7 +18,7 @@ const Notifications = () => {
 
   const getUserData = async () => {
     let userResult = {};
-    userResult = await axios.get('https://plataformaeventos-production-6111.up.railway.app/users/' + user.uid);
+    userResult = await eventsApi.get('/users/' + user.uid);
     setState(userResult.data.notifications);
   }
 
@@ -27,7 +27,7 @@ const Notifications = () => {
       read: true,
       idNotifications: noti._id
     }
-    const json = await axios.put('https://plataformaeventos-production-6111.up.railway.app/users/notifications', data);
+    const json = await eventsApi.put('/users/notifications', data);
     setState(json.data);
     setNotes(json.data.filter(e => e.read === false));
     swal({
@@ -39,7 +39,7 @@ const Notifications = () => {
 
   const handleClickAllRead = async (e) => {
     e.preventDefault();
-    const res = await axios.put(`https://plataformaeventos-production-6111.up.railway.app/users/${user.uid}/notifications`);
+    const res = await eventsApi.put(`/users/${user.uid}/notifications`);
     setState(res.data);
     setNotes(res.data.filter(e => e.read === false));
   }

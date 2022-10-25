@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import axios from 'axios';
+import eventsApi from '../../axios/eventsApi';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { animateScroll as scroll } from 'react-scroll';
@@ -14,6 +14,7 @@ import styles from './OrganizerDetails.module.css';
 import swal from 'sweetalert';
 
 const OrganizerDetails = () => {
+
   const id = useParams().id;
   const { user, logged } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -37,12 +38,10 @@ const OrganizerDetails = () => {
   }, []);
 
   const obtenerDatos = async () => {
-    const data = await fetch(
-      'https://plataformaeventos-production-6111.up.railway.app/users/' + id
+    const data = await eventsApi.get(
+      '/users/' + id
     );
-
-    const json = await data.json();
-    console.log({ json });
+    const json = data.data;
     setNextEvent(json);
     setUserDetail({
       organizer: json,
@@ -51,9 +50,9 @@ const OrganizerDetails = () => {
 
   const handleClickMessages = (e) => {
     e.preventDefault();
-    axios
+    eventsApi
       .post(
-        'https://plataformaeventos-production-6111.up.railway.app/conversation/create',
+        '/conversation/create',
         conversation
       )
       .then((response) => {
@@ -88,7 +87,7 @@ const OrganizerDetails = () => {
           <div className={styles.top}></div>
           <img
             className={styles.img}
-            src={userDetail.organizer.picture}
+            src={userDetail.organizer.userpicture}
             alt='N'
           />
           <p className={styles.name}>{userDetail.organizer.name}</p>

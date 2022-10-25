@@ -3,8 +3,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import styles from './Conversations.module.css';
 import { BiBlock, BiPin } from 'react-icons/bi';
 import { FiMail, FiArchive } from 'react-icons/fi';
-import axios from "axios";
 import avatar from '../../assets/imgs/no-avatar.png';
+import eventsApi from '../../axios/eventsApi';
 
 const Conversations = ({ conversation, id }) => {
 
@@ -15,7 +15,7 @@ const Conversations = ({ conversation, id }) => {
     const friendId = conversation.members.find((m) => m !== id);
     const getUser = async () => {
       try {
-        const res = await axios("https://plataformaeventos-production-6111.up.railway.app/users/" + friendId);
+        const res = await eventsApi.get("/users/" + friendId);
         setUser(res.data);
       } catch (err) {
         console.log(err);
@@ -26,7 +26,7 @@ const Conversations = ({ conversation, id }) => {
 
   useEffect(() => {
     const getMessages = async () => {
-      const res = await axios.get('https://plataformaeventos-production-6111.up.railway.app/message/' + conversation._id);
+      const res = await eventsApi.get('/message/' + conversation._id);
       const result = res.data.filter(e => e.read === false);
       const final = result.filter(e => e.sender !== id);
       setMessages(final);
@@ -36,7 +36,7 @@ const Conversations = ({ conversation, id }) => {
 
   const hanldeClickMsg = async (e) => {
     e.preventDefault();
-    const res = await axios.put('https://plataformaeventos-production-6111.up.railway.app/message/update/' + conversation._id);
+    const res = await eventsApi.put('/message/update/' + conversation._id);
     const result = res.data.filter(e => e.read === false);
     setMessages(result);
   }

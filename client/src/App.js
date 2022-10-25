@@ -36,8 +36,8 @@ import PanelPrivacy from './pages/PanelPrivacy/PanelPrivacy';
 import { getEvents } from './redux/actions';
 
 function App() {
+  
   const [navBar, setNavBar] = useState(false);
-  //const [state, setState] = useState([]);
   const dispatch = useDispatch();
   const { isMenuLoginOpen, getCategories, getAllEvents } = useContext(UIContext);
   const { checkAuthToken, checkUserLocalStorage } = useContext(AuthContext);
@@ -59,19 +59,6 @@ function App() {
     dispatch(getEvents());
     getAllEvents();
   }, []);
-
-  /* useEffect(() => {
-    getAllMessages();
-  }, [user]);
-
-  const getAllMessages = async () => {
-    let userResult = {};
-    if (user.uid) {
-      userResult = await axios.get('https://plataformaeventos-production-6111.up.railway.app/conversation/' + user.uid);
-      setState(userResult.data);
-
-    }
-  } */
 
   return (
     <div className='App'>

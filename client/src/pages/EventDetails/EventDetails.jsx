@@ -1,14 +1,12 @@
-//import React, { useEffect } from 'react';
+
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { animateScroll as scroll, scroller, Element } from 'react-scroll';
 import EventComments from '../../components/EventDetails/EventComments';
-//import EventInfo from '../../components/EventDetails/EventInfo';
 import EventLocation from '../../components/EventDetails/EventLocation';
 import EventSideBar from '../../components/EventDetails/EventSideBar';
 import { getEvents } from '../../redux/actions';
 import style from './EventDetails.module.css';
-
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import LaunchOutlinedIcon from '@mui/icons-material/LaunchOutlined';
@@ -27,9 +25,8 @@ import 'swiper/modules/scrollbar/scrollbar.min.css';
 import { Swiper, SwiperSlide } from 'swiper/react/swiper-react';
 import 'swiper/swiper.min.css';
 import { formatDate } from '../../utils/formatDate';
-//import style from './EventInfo.module.css';
 import { useSelector } from 'react-redux';
-import axios from "axios";
+import eventsApi from "../../axios/eventsApi";
 import { AuthContext } from '../../context/auth/AuthContext';
 import { stateContext } from '../../context/state/stateContext';
 import swal from 'sweetalert';
@@ -69,7 +66,7 @@ const EventDetails = () => {
       idEvent: id
     }
     try {
-      const json = await axios.post('https://plataformaeventos-production-6111.up.railway.app/users/notifications', fav);
+      const json = await eventsApi.post('/users/notifications', fav);
       getEventsFavourites(user.uid, favorite);
       setNotes([...notes, json.data]);
       swal({
@@ -323,7 +320,6 @@ const EventDetails = () => {
           </div> :''
         }
 
-        {/* <EventInfo id={id} /> */}
         <EventLocation id={id} />
 
         <Element name='comments'>
@@ -331,7 +327,7 @@ const EventDetails = () => {
             component ? component : ''
           }
         </Element>
-        {/* <EventComments id={id} /> */}
+      
       </div>
 
       <div className={style.item2}>

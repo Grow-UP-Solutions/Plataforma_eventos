@@ -1,6 +1,6 @@
 import React, { useReducer } from 'react';
 import { UIContext, uiReducer } from '.';
-import axios from "axios";
+import eventsApi from '../../axios/eventsApi';
 
 const UI_INITIAL_STATE = {
   isMenuLoginOpen: false,
@@ -17,19 +17,17 @@ export const UIProvider = ({ children }) => {
   };
 
   const getCategories = async () => {
-    const data = await fetch('https://plataformaeventos-production-6111.up.railway.app/category');
-    const json = await data.json();
-    dispatch({ type: 'GET_CATEGORIES', payload: json });
+    const res = await eventsApi.get('/category');
+    dispatch({ type: 'GET_CATEGORIES', payload: res.data });
   }
 
   const getAllEvents = async () => {
-    const data = await fetch('https://plataformaeventos-production-6111.up.railway.app/events');
-    const json = await data.json();
-    dispatch({ type: 'GET_ALL_EVENTS', payload: json });
+    const res = await eventsApi.get('/events');
+    dispatch({ type: 'GET_ALL_EVENTS', payload: res.data });
   }
 
   const getEventsFavourites = async (id, payload) => {
-    const res = await axios.put(`https://plataformaeventos-production-6111.up.railway.app/users/${id}/favorites`, payload);
+    const res = await eventsApi.put(`/users/${id}/favorites`, payload);
     const json = res.data;
     dispatch({ type: 'GET_EVENTS_FAVOURITES', payload: json });
   }

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import styles from './EventComments.module.css';
 import foto from '../../assets/imgs/comments.png'
 import { Rating } from '@mui/material';
-import axios from "axios";
+import eventsApi from "../../axios/eventsApi";
 import { useSelector } from "react-redux";
 import { AuthContext } from '../../context/auth/AuthContext';
 import CardComments from "../CardComments/CardComments";
@@ -20,7 +20,7 @@ const EventComments =  ({ id }) => {
   useEffect(() => {
     const getAllComments = async() => {
       try {
-        const res = await axios.get('https://plataformaeventos-production-6111.up.railway.app/events/' + id);
+        const res = await eventsApi.get('/events/' + id);
         setOpinion(res.data.opinions);
       } catch (error) {
         console.log(error)
@@ -48,7 +48,7 @@ const EventComments =  ({ id }) => {
       opinion: newOpinion,
     }
     try {
-      const res = await axios.post('https://plataformaeventos-production-6111.up.railway.app/events/opinionsGenerate/' + id, data);
+      const res = await eventsApi.post('/events/opinionsGenerate/' + id, data);
       setOpinion([...opinion, res.data]);
       setNewOpinion('');
       setValue(0);

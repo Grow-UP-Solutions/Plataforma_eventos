@@ -15,7 +15,6 @@ const EventDate = ({ id }) => {
 
   const allEvents = useSelector((state) => state.events);
   const eventDetails = allEvents.filter((event) => event._id === id)[0];
-
   const [getNewDate, setGetNewDate] = useState(false);
   const [date, setDate] = useState(null);
   const [dateFormatted, setDateFormatted] = useState('');
@@ -33,7 +32,6 @@ const EventDate = ({ id }) => {
     setDateFormatted(formatDate(date));
   };
 
- 
   return (
     <div>
     {eventDetails?

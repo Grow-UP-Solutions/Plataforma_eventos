@@ -1,12 +1,13 @@
 
 import axios from 'axios';
+import eventsApi from '../../axios/eventsApi';
 
 //EVENTS
 export function getEvents() {
 
   return async function (dispatch) {
 
-    const json = await axios.get('https://plataformaeventos-production-6111.up.railway.app/events');
+    const json = await eventsApi.get('/events');
 
     return dispatch({
       type: 'GET_EVENTS',
@@ -20,7 +21,7 @@ export function postEvent(payload) {
   return async function (dispatch) {
     console.log('payload,',payload)
 
-    const json = await axios.post('https://plataformaeventos-production-6111.up.railway.app/events/create',payload);
+    const json = await eventsApi.post('/events/create', payload);
     console.log('res:',json.data)
     
     return dispatch({
@@ -30,8 +31,6 @@ export function postEvent(payload) {
     });
   }
 }
-
-
 
 export function getColombia() {
 
