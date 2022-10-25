@@ -42,8 +42,8 @@ async function deleteOneEventDb(id) {
 async function createOneEventDb(event) {
    try {
       const eventCreated = new Events(event);
-
       await eventCreated.save();
+      //console.log("EVENTO CREADO", eventCreated)
 
       return eventCreated;
    } catch (error) {

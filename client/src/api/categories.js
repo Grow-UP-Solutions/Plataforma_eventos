@@ -115,12 +115,13 @@ const categories = [
   },
 ];
 
-/* function createCategorys() {
+ function createCategorys() {
   categories.forEach((e) => {
     axios.post('http://localhost:3001/category/create', e);
   });
   return 'ok';
-}
-createCategorys(); */
+} 
+createCategorys()
+
 
 export default categories;
