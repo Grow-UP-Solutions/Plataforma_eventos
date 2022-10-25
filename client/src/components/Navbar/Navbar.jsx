@@ -12,9 +12,10 @@ import logo from '../../assets/imgs/logoNav.svg';
 import eventsApi from '../../axios/eventsApi';
 
 const Navbar = ({ upper }) => {
+
   const { toggleScreenLogin } = useContext(UIContext);
   const { user, logged, logout } = useContext(AuthContext);
-  const { notes, setNotes } = useContext(stateContext);
+  const { notes, setNotes, msg, setMsg } = useContext(stateContext);
   const [menuOpen, setMenuOpen] = useState(false);
   const [openNotifications, setOpenNotifications] = useState(false);
   const [openMessages, setOpenMessages] = useState(false);
@@ -30,6 +31,7 @@ const Navbar = ({ upper }) => {
     if (user.uid) {
       userResult = await eventsApi.get('/users/' + user.uid);
       setNotes(userResult.data.notifications.filter((e) => e.read === false));
+      setMsg(userResult.data.message.filter((e) => e.read === false));
     }
   };
 
@@ -62,11 +64,15 @@ const Navbar = ({ upper }) => {
     setOpenNotifications(false);
   };
 
+  const handleClickAllReadMessages = async (e) => {
+    e.preventDefault();
+    const res = await eventsApi.put('/message/update/' + user.uid);
+    setMsg(res.data.filter((e) => e.read === false));
+  }
+
   const handleClickAllReadNotifications = async (e) => {
     e.preventDefault();
-    const res = await eventsApi.put(
-      `/users/${user.uid}/notifications`
-    );
+    const res = await eventsApi.put(`/users/${user.uid}/notifications`);
     setNotes(res.data.filter((e) => e.read === false));
   };
 
@@ -98,7 +104,7 @@ const Navbar = ({ upper }) => {
               <div className={style.containerNotification}>
                 <div className={style.containerMessage} onClick={handleOpenMessages}>
                   <GrMail className={style.iconNav} />
-                  <div className={style.bage}>0</div>
+                  <div className={style.bage}>{msg.length}</div>
                 </div>
                 <div className={style.divisorNotis} />
                 <div className={style.containerNotis} onClick={handleOpenNotifications}>
@@ -108,9 +114,11 @@ const Navbar = ({ upper }) => {
 
                 {openMessages && (
                   <div className={style.notifications}>
-                    <p className={style.link_noti}>Marcar todas como leidas</p>
-                    {notes.map((e) => (
-                      <div className={style.noty}>{e.msg}</div>
+                    <p className={style.link_noti} onClick={handleClickAllReadMessages}>
+                      Marcar todas como leidas
+                    </p>
+                    {msg.map((e) => (
+                      <div className={style.noty}>{e.text}</div>
                     ))}
                     <p className={style.link_notis} onClick={handleClickMessage}>
                       Ver todos los mensajes
