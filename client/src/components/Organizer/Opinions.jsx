@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Rating } from '@mui/material';
 import styles from './Opinions.module.css';
-import axios from "axios";
+import eventsApi from "../../axios/eventsApi";
 import { AuthContext } from '../../context/auth/AuthContext';
 import swal from 'sweetalert';
 import CardComments from '../CardComments/CardComments';
@@ -17,7 +17,7 @@ const Opinions = ({ userDetail }) => {
   useEffect(() => {
     const getAllComments = async() => {
       try {
-        const res = await axios.get('https://plataformaeventos-production-6111.up.railway.app/users/' + id);
+        const res = await eventsApi.get('/users/' + id);
         setOpinion(res.data.opinionsOrg);
       } catch (error) {
         console.log(error)
@@ -30,7 +30,7 @@ const Opinions = ({ userDetail }) => {
     if (userDetail.opinionsOrg.length > 0) {
       const ratings = userDetail.opinionsOrg.map(e => e.rating);
       const suma = ratings.reduce((prev, current) => prev + current);
-      const result = Math.ceil(suma / userDetail.opinionsOrg.length);
+      const result = (suma / userDetail.opinionsOrg.length).toFixed(1);     
       return result;
     }
     console.log('no hay opiniones de este organizador');
@@ -45,7 +45,7 @@ const Opinions = ({ userDetail }) => {
       opinion: newOpinion,
     }
     try {
-      const res = await axios.post('https://plataformaeventos-production-6111.up.railway.app/users/commentOrganizer/' + id, data);
+      const res = await eventsApi.post('/users/commentOrganizer/' + id, data);
       setOpinion([...opinion, res.data]);
       setNewOpinion('');
       setValue(0);

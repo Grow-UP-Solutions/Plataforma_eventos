@@ -16,15 +16,17 @@ async function getCategory(name) {
 async function createCategory(category) {
   try {
     const { name } = category;
-    const categoryDB = OneCategoryDb(name);
-    if (categoryDB) {
+    const categoryDB = await OneCategoryDb(name);
+    console.log(categoryDB)
+    if (!categoryDB) {
       
-      return "La categoria existe";
+      const categories = await createCategoryDb(category);
+      return categories;
     }
-    const categories = await createCategoryDb(category);
+    return "La categoria existe";
    
-    return categories;
   } catch (error) {
+    console.log(error.message)
     throw new Error(error.message);
   }
 }

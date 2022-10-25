@@ -36,18 +36,30 @@ async function createEvents(event) {
       let temp = await OneCategoryDb(e);
       return temp;
     });
-
+    
     const category = await Promise.all(temp);
+    
+   
+    //console.log('ORGANIZADOR', organizer)
+    if(organizer.isOrganizer){
 
-    event.category = category.map((e) => e._id);
-    event.organizer = organizer._id;
-    const events = await createOneEventDb(event);
+      
+      event.categories = category.map((e) =>{
+        
+        return e._id});
+        
+      event.organizer = organizer._id;
+      const events = await createOneEventDb(event);
+      
+      organizer.myEventsCreated.push(events._id);
+      await organizer.save();
+      return events;
+    }
+    
+    return {msg: "Aun no eres organizador contacta al administrador"}
 
-    organizer.myEventsCreated.push(events._id);
-    await organizer.save();
-
-    return events;
   } catch (error) {
+    console.log(error.message)
     throw new Error(error.message);
   }
 }

@@ -1,7 +1,7 @@
 
 const initialState = {
   events: [],
-  departamentos:[],
+  departamentos: [],
 };
 
 function rootReducer(state = initialState, action) {

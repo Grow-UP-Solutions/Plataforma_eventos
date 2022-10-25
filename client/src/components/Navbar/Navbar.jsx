@@ -9,7 +9,7 @@ import { GrMail } from 'react-icons/gr';
 import { FaUserCircle } from 'react-icons/fa';
 import { IoNotifications, IoCaretDownSharp } from 'react-icons/io5';
 import logo from '../../assets/imgs/logoNav.svg';
-import axios from 'axios';
+import eventsApi from '../../axios/eventsApi';
 
 const Navbar = ({ upper }) => {
   const { toggleScreenLogin } = useContext(UIContext);
@@ -28,7 +28,7 @@ const Navbar = ({ upper }) => {
   const getUserData = async () => {
     let userResult = {};
     if (user.uid) {
-      userResult = await axios.get('https://plataformaeventos-production-6111.up.railway.app/users/' + user.uid);
+      userResult = await eventsApi.get('/users/' + user.uid);
       setNotes(userResult.data.notifications.filter((e) => e.read === false));
     }
   };
@@ -64,8 +64,8 @@ const Navbar = ({ upper }) => {
 
   const handleClickAllReadNotifications = async (e) => {
     e.preventDefault();
-    const res = await axios.put(
-      `https://plataformaeventos-production-6111.up.railway.app/users/${user.uid}/notifications`
+    const res = await eventsApi.put(
+      `/users/${user.uid}/notifications`
     );
     setNotes(res.data.filter((e) => e.read === false));
   };

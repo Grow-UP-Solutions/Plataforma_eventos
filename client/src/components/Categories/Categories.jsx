@@ -16,7 +16,7 @@ const Categories = () => {
     e.preventDefault();
     const data = e.target.id
     const filtro = allEvents.filter((event) =>
-      event.category.find((e) => e.name === data)
+      event.categories.find((e) => e.name === data)
     );  
     setResult(filtro);
     navigate('/categories/');

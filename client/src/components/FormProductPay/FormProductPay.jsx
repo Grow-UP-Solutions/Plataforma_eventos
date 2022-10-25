@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import styles from './FormProductPay.module.css';
 import { iconPayU, iconAchPse } from '../../assets/imgs';
 import { Link } from 'react-router-dom';
+
 const FormProductPay = () => {
+  
   const [isPayAchpse, setIsPayAchpse] = useState(false);
 
   const handleChecked = (e) => {
