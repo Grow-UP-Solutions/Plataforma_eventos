@@ -25,6 +25,7 @@ const { generateJWTPassword } = require('../../models/util/helpers/jwtPassword.j
 const { validateJWT } = require('../../models/util/middlewares/validate-jwt.js');
 const { validateJWTPassword } = require('../../models/util/middlewares/validate-jwt-password.js');
 const { sendVerifyMail } = require('../../models/util/mailer/confirmEmail.js');
+const { sendMailToOrganizer } = require('../../models/util/mailer/mailToConverOrganizer');
 const { changePasswordMail } = require('../../models/util/mailer/changePassword.js');
 const {
   validateEmailUserDb,
@@ -38,8 +39,9 @@ const {
   deleteCodeVerifyMail,
   getCodeVerifyEmail,
 } = require('../../models/util/functionDB/CodeVerifyMailDb.js');
+const { generateJWTOrganizer } = require('../../models/util/helpers/jwtOrganizer.js');
+const { validateJWTOrganizer } = require('../../models/util/middlewares/validate-organizer.js');
 const { allMessageReciverUserDB } = require('../../models/util/functionDB/messageDb.js');
- 
 
 const router = Router();
 /**/ ///////////////Rutas GET////////////// */
@@ -51,25 +53,24 @@ router.get('/', async (req, res) => {
     return res.status(500).json({ ERROR_USER: error.message });
   }
 });
-router.get('/:idUser/message', async (req,res)=>{
-  const {idUser} = req.params
-  
+router.get('/:idUser/message', async (req, res) => {
+  const { idUser } = req.params;
+
   try {
-    const allConversation = await allMessageReciverUserDB(idUser)
-    return res.status(200).json(allConversation)
+    const allConversation = await allMessageReciverUserDB(idUser);
+    return res.status(200).json(allConversation);
   } catch (error) {
-    console.log(error.message)
+    console.log(error.message);
     return res.status(500).json(error.message);
-    
   }
-})
+});
 
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
 
   try {
     const user = await getUser(id);
-    
+
     return res.status(200).json(user);
   } catch (error) {
     return res.status(400).json({ ERROR_USER: error.message });
@@ -552,5 +553,52 @@ router.get(
     );
   }
 );
+
+/* SEND EMAIL FOR SET ORGANIZER */
+
+router.post('/requestToOrganizer/', async (req, res) => {
+  const { user } = req.body;
+  console.log({ user });
+  try {
+    const token = await generateJWTOrganizer(
+      user.name,
+      user.email,
+      user.document,
+      user.tel,
+      user.phone,
+      user.referenciaU,
+      user.referenciaZ
+    );
+    await sendMailToOrganizer(
+      user.name,
+      `http://localhost:3000/admin/check-solicitud-organizador/${token}`,
+      user.email
+    );
+
+    res.status(200).json({ success: true });
+  } catch (error) {
+    res.status(400).json(error.message);
+  }
+});
+
+router.get('/setOrganizer/', validateJWTOrganizer, async (req, res) => {
+  const { name, phone, document, tel, email, referenciaU, referenciaZ } = req.body;
+
+  try {
+    res.status(202).json({
+      name,
+      phone,
+      document,
+      tel,
+      email,
+      referenciaU,
+      referenciaZ,
+    });
+  } catch (error) {
+    res.status(404).json({
+      message: error.message,
+    });
+  }
+});
 
 module.exports = router;

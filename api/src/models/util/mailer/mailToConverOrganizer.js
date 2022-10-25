@@ -3,7 +3,7 @@ require('dotenv').config();
 
 const { EMAIL, PASSWORD } = process.env;
 
-const sendMailToOrganizer = async (name, email, tel, phone, document, description) => {
+const sendMailToOrganizer = async (name, link, email) => {
   const transporter = createTransport({
     service: 'gmail',
     secure: true,
@@ -15,8 +15,8 @@ const sendMailToOrganizer = async (name, email, tel, phone, document, descriptio
 
   let mail_options = {
     from: 'Lo quiero hacer',
-    to: EMAIL,
-    subject: `Solicitud para ser Organizador, Usuario Ux`,
+    to: email,
+    subject: `Solicitud para ser Organizador, ${name}`,
     html: `<!DOCTYPE html>
     <html lang="en">
       <head>
@@ -116,7 +116,7 @@ const sendMailToOrganizer = async (name, email, tel, phone, document, descriptio
             align-items: center;
           }
     
-          button {
+          a {
             padding: 1rem 4rem;
             border: none;
             border-radius: 20px;
@@ -134,25 +134,6 @@ const sendMailToOrganizer = async (name, email, tel, phone, document, descriptio
           .btnCancel {
             background-color: var(--color-grey-5);
           }
-    
-          .details-user {
-            text-align: left;
-          }
-    
-          .details-user ul {
-            display: flex;
-            flex-direction: column;
-            gap: 1.2rem;
-          }
-    
-          .details-user ul li {
-            font-size: 1.4rem;
-            color: var(--color-grey-1);
-          }
-    
-          .details-user ul li span {
-            font-weight: bold;
-          }
         </style>
       </head>
       <body>
@@ -160,24 +141,10 @@ const sendMailToOrganizer = async (name, email, tel, phone, document, descriptio
           <div class="container">
             <div class="top-bar"></div>
             <div class="container-info">
-              <h1>El usuario <span>Jean Pierre Huaman Gomez</span> quiere convertirse en organizador</h1>
-    
-              <div class="details-user">
-                <ul>
-                  <li><span>Correo:</span> jeanpipoxi@gmail.com</li>
-                  <li><span>Celular:</span> 935797308</li>
-                  <li><span>Télefono:</span> 33434341241</li>
-                  <li><span>Cedula:</span> 72710575</li>
-                  <li>
-                    <span>Descripción del usuario:</span> Hola, soy organizador de eventos, yo me dedico a publicitar
-                    eventos que tengan de temática videojuegos, deportes y salud mental jsjs.
-                  </li>
-                </ul>
-              </div>
+              <h1>El usuario <span>${name}</span> quiere convertirse en organizador.</h1>
     
               <div class="container-buttons">
-                <button class="btnSuccess">Aceptar</button>
-                <button class="btnCancel">Rechazar</button>
+                <a href="${link}" class="btnSuccess">Visualizar sus datos</a>
               </div>
             </div>
             <div class="bottom-bar"></div>
@@ -195,5 +162,5 @@ const sendMailToOrganizer = async (name, email, tel, phone, document, descriptio
   }
 };
 module.exports = {
-  confirmacionCompra,
+  sendMailToOrganizer,
 };
