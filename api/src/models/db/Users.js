@@ -14,6 +14,10 @@ const UserSchema = new Schema({
   frontDocument: String,
   backDocument: String,
   imageRent: String,
+  rating:{
+    type:Number,
+    default:0
+  },
   isDeclarant: {
     type: Boolean,
     default: false,

@@ -196,6 +196,19 @@ async function deleteNotificationDB(newDelete) {
    }
 }
 
+async function updateUserRating(idUser, rating) {
+  try {
+     const ratinUser = await oneUserDb(idUser);
+     if(ratinUser){
+        ratinUser.rating = rating
+        return await ratinUser.save()
+     }
+     return {msg: 'Evento no encontrado'}
+  } catch (error) {
+     throw new Error(error.message);
+  }
+}
+
 module.exports = {
    updateMyFavorites,
    findAllUpdateNotification,
@@ -210,4 +223,5 @@ module.exports = {
    validateEmailUserDb,
    oneUserDb,
    updateOneUserDb,
+   updateUserRating
 };
