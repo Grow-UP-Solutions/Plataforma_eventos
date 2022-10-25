@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import styles from './EventOrganizer.module.css';
 import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from "axios";
+import eventsApi from "../../axios/eventsApi";
 import { useSelector } from "react-redux";
 import { AuthContext } from '../../context/auth/AuthContext';
 import { stateContext } from '../../context/state/stateContext';
@@ -20,7 +20,7 @@ const EventOrganizer = ({ id }) => {
   useEffect(() => {
     const addUserId = async () => {
       try {
-        const res = await axios.get('https://plataformaeventos-production-6111.up.railway.app/users/' + eventDetails.organizer._id);
+        const res = await eventsApi.get('/users/' + eventDetails.organizer._id);
         setConversation({
           senderId: user.uid,
           receiverId: res.data._id,
@@ -34,7 +34,7 @@ const EventOrganizer = ({ id }) => {
 
   const handleClickMessages = (e) => {
     e.preventDefault();
-    axios.post('https://plataformaeventos-production-6111.up.railway.app/conversation/create', conversation)
+    eventsApi.post('/conversation/create', conversation)
     .then((response) => {
       //console.log('axios response', response.data);
       navigate('/user/message');
@@ -54,7 +54,7 @@ const EventOrganizer = ({ id }) => {
   const handleClickEventsOrganizer = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.get('https://plataformaeventos-production-6111.up.railway.app/users/' + eventDetails.organizer._id);
+      const res = await eventsApi.get('/users/' + eventDetails.organizer._id);
       setResult(res.data.myEventsCreated);
       navigate('/resulteventsorganizer/');
     } catch (error) {
@@ -80,7 +80,7 @@ const EventOrganizer = ({ id }) => {
           className={styles.link}
           to={`/organizerDetails/${eventDetails.organizer._id}`}
         >
-        <img className={styles.orgImg} src={eventDetails.organizer.picture} alt="N" />
+        <img className={styles.orgImg} src={eventDetails.organizer.userpicture} alt="N" />
         </Link>
 
         <div className={styles.orgSubCont}>

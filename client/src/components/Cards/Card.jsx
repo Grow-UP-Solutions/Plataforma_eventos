@@ -8,6 +8,7 @@ import { useContext } from 'react';
 import { UIContext } from '../../context/ui';
 
 const Card = ({ event }) => {
+  
   const { toggleScreenLogin } = useContext(UIContext);
   const currentYear = new Date().getFullYear();
   const numCadena = currentYear + '';
@@ -96,7 +97,7 @@ const Card = ({ event }) => {
         </p>
       </div>
       <hr className={styles.cardHr}></hr>
-      {event.organizer.picture && event.organizer.name ? (
+      {event.organizer.userpicture && event.organizer.name ? (
         <div>
           <div className={styles.cardOrgInfo}>
             <Link
@@ -105,7 +106,7 @@ const Card = ({ event }) => {
             >
               <img
                 className={styles.cardOrgPicture}
-                src={event.organizer.picture}
+                src={event.organizer.userpicture}
                 alt="Not Found ):"
                 width="2px"
                 height="3px"

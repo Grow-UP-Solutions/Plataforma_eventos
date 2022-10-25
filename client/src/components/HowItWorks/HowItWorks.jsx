@@ -1,7 +1,9 @@
 import React from 'react';
 import styles from './HowItWorks.module.css';
 import { iconHowIt1, iconHowIt2, iconHowIt3 } from '../../assets/imgs';
+
 const HowItWorks = () => {
+  
   return (
     <div className={styles.sectionHowItWorks}>
       <h2 className={styles.titleHowItWorks}>¿Cómo funciona?</h2>
