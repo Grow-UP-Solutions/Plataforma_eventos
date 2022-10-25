@@ -5,9 +5,11 @@ import { BiBlock, BiPin } from 'react-icons/bi';
 import { FiMail, FiArchive } from 'react-icons/fi';
 import avatar from '../../assets/imgs/no-avatar.png';
 import eventsApi from '../../axios/eventsApi';
+import { stateContext } from '../../context/state/stateContext';
 
 const Conversations = ({ conversation, id }) => {
 
+  const { setMsg } = useContext(stateContext);
   const [user, setUser] = useState('hola');
   const [messages, setMessages] = useState([]);
 
@@ -36,9 +38,13 @@ const Conversations = ({ conversation, id }) => {
 
   const hanldeClickMsg = async (e) => {
     e.preventDefault();
-    const res = await eventsApi.put('/message/update/' + conversation._id);
+    const data = {
+      conversationId: conversation._id
+    }
+    const res = await eventsApi.put('/message/update/' + id, data);
     const result = res.data.filter(e => e.read === false);
     setMessages(result);
+    setMsg(result);
   }
 
   return (
