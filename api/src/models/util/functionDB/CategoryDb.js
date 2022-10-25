@@ -9,8 +9,10 @@ async function AllCategoyDb() {
 
 async function OneCategoryDb(name) {
   try {
+    
     return await Categories.findOne({ name: name });
   } catch (error) {
+    
     throw new Error(error.message);
   }
 }
@@ -26,9 +28,14 @@ async function deleteOneCategoryDb(id) {
 
 /**Creating Categories in Database */
 async function createCategoryDb(category) {
-  const categoryCreated = new Categories(category);
-  console.log('categoria creadas')
-  return await categoryCreated.save();
+ try {
+   
+   const categoryCreated = new Categories(category);
+   console.log('categoria creadas')
+   return await categoryCreated.save();
+ } catch (error) {
+  console.log(error.message)
+ }
 }
 
 module.exports = {
