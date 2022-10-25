@@ -33,6 +33,7 @@ const {
   deleteNotificationDB,
   findAllUpdateNotification,
   updateMyFavorites,
+  updateUserRating,
 } = require('../../models/util/functionDB/UserDb.js');
 const {
   createCodeVerifyMail,
@@ -149,7 +150,7 @@ router.get(
       <body>
       </body>
       <script>
-      window.opener.postMessage(${userString}, 'http://localhost:3000')
+      window.opener.postMessage(${userString}, '${process.env.CLIENT_URL}')
       </script>
       </html>
       `
@@ -187,7 +188,7 @@ router.get(
       <body>
       </body>
       <script>
-      window.opener.postMessage(${userString}, 'http://localhost:3000')
+      window.opener.postMessage(${userString}, '${process.env.CLIENT_URL}')
       </script>
       </html>
       `
@@ -208,12 +209,14 @@ router.post('/acceptOrRejectedOrganizer', async (req, res) => {
       user.isOrganizer = true;
       user.isProccessingToOrganizer = false;
       user.isRejected = false;
+      user.referenceZ = user.referenceU.replace('U', 'Z');
       await sendMailUserAccept(user.name, user.email);
       message = 'Aceptado';
     } else if (option === 'reject') {
       user.isRejected = true;
       user.isOrganizer = false;
       user.isProccessingToOrganizer = false;
+      user.referenceZ = '';
       await sendMailUserRejected(user.name, user.email);
       message = 'Rechazado';
     } else {
@@ -269,6 +272,16 @@ router.put('/:idUser/notifications', async (req, res) => {
     return res.status(200).json(notificacionesRead);
   } catch (error) {
     res.status(500).json(error.Menssage);
+  }
+});
+router.put('/:idUser/rating', async (req, res) => {
+  const { idUser } = req.params;
+  const { rating } = req.body;
+  try {
+    const userRating = await updateUserRating(idUser, rating);
+    return res.status(200).json(userRating);
+  } catch (error) {
+    return res.status(500).json({ FALLO_UPDATE: error.message });
   }
 });
 

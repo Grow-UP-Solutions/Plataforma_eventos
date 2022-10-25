@@ -16,6 +16,10 @@ const UserSchema = new Schema({
   imageRent: String,
   referenceU: String,
   referenceZ: String,
+  rating: {
+    type: Number,
+    default: 0,
+  },
   isDeclarant: {
     type: Boolean,
     default: false,

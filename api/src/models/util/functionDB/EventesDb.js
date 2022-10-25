@@ -15,8 +15,8 @@ async function AllEventsDb() {
 }
 async function findOneEvent(id) {
    try {
-      return await Events.findById({_id:id})
-         .populate({ path: "opinions" })
+      return await Events.findById({ _id: id })
+
          .populate({ path: "organizer" })
          .populate({ path: "categories" });
    } catch (error) {
@@ -74,6 +74,19 @@ async function generateEventComment(id, opinions) {
    }
 }
 
+async function updateEventRating(idEvent, rating) {
+   try {
+      const ratinEvente = await findOneEvent(idEvent);
+      if(ratinEvente){
+         ratinEvente.rating = rating
+         return await ratinEvente.save()
+      }
+      return {msg: 'Evento no encontrado'}
+   } catch (error) {
+      throw new Error(error.message);
+   }
+}
+
 module.exports = {
    AllEventsDb,
    findOneEvent,
@@ -81,4 +94,5 @@ module.exports = {
    deleteOneEventDb,
    createOneEventDb,
    generateEventComment,
+   updateEventRating
 };

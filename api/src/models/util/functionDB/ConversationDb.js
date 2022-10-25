@@ -1,9 +1,6 @@
 require("../../../DB.js");
 const Conversation = require("../../db/Conversation.js");
 
-
-
-
 async function findAllConversation() {
    try {
       return await Conversation.find();
@@ -41,9 +38,23 @@ async function createConversation(menbers) {
    }
 }
 
+async function lockedConversation(idConversation) {
+   try {
+      const conversation = await Conversation.findById({ _id: idConversation });
+      if (conversation) {
+         conversation.locked = !conversation.locked;
+         await conversation.save()
+         return { msg: "conversacion bloqueda", conversation };
+      }
+      return {msg : 'La conversacion no existe'}
+   } catch (error) {
+      throw new Error(error.message);
+   }
+}
+
 module.exports = {
-   
    findAllConversation,
    findConversation,
    createConversation,
+   lockedConversation,
 };
