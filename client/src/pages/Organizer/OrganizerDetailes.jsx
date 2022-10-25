@@ -35,7 +35,7 @@ const OrganizerDetails = () => {
       senderId: user.uid,
       receiverId: id,
     });
-  }, []);
+  }, []);   
 
   const obtenerDatos = async () => {
     const data = await eventsApi.get(
