@@ -1,13 +1,12 @@
 import React from 'react';
-
 import styles from './ReferralPlan.module.css';
-
 import { FiLink2 } from 'react-icons/fi';
 import { IoMdAdd } from 'react-icons/io';
 import { TbTrash } from 'react-icons/tb';
-
 import { imgMoney } from '../../assets/imgs';
+
 const ReferralPlan = () => {
+  
   return (
     <div className={styles.containerReferralPlan}>
       <div className={styles.containerCurrentReferred}>

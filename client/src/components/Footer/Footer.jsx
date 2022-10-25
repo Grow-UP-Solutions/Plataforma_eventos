@@ -1,13 +1,12 @@
 import React from 'react';
 import styles from './Footer.module.css';
-
 import { ImFacebook, ImLinkedin2, ImTwitter, ImYoutube } from 'react-icons/im';
 import { logo } from '../../assets/imgs/';
-
 import { FaInstagram, FaTiktok } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
+  
   return (
     <div className={styles.footer}>
       <img src={logo} alt="logo-empresa" className={styles.footerImg} />

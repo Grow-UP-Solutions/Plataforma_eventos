@@ -1,7 +1,7 @@
 
 import React from 'react';
 import styles from './Message.module.css';
-import { FiStar } from 'react-icons/fi';
+import Rating from '@mui/material/Rating';
 import { format, register } from "timeago.js";
 
 const localeFunc = (number, index, total_sec) => {
@@ -31,7 +31,7 @@ const Message = ({ message, own }) => {
 
   const handleClickStar = (e) => {
     e.preventDefault();
-    styles={'color': 'black'}
+    
   }
   
   return (
@@ -41,7 +41,13 @@ const Message = ({ message, own }) => {
         <p className={styles.messageText}>{message.text}</p>
 
         <div className={styles.wrapperInfoMessage}>
-          <FiStar className={styles.iconMessage} onClick={handleClickStar}/>
+          <Rating 
+            name="customized-10" 
+            defaultValue={0} 
+            max={1} 
+            className={styles.iconMessage} 
+            onClick={handleClickStar}
+          />
           <span className={styles.messageBottom}>{format(message.createdAt, 'es_ES')}</span>
         </div>
       </div>

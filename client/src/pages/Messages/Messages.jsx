@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import styles from './Messages.module.css';
 import { FiMail, FiArchive, FiStar } from 'react-icons/fi';
-import axios from "axios";
+import eventsApi from "../../axios/eventsApi";
 import { AuthContext } from '../../context/auth/AuthContext';
 import avatar from '../../assets/imgs/no-avatar.png';
 import Conversations from '../../components/Conversations/Conversations';
 import Message from '../../components/Message/Message';
-import { animateScroll as scroll, Element, scroller } from 'react-scroll';
+import { animateScroll as scroll } from 'react-scroll';
 
 const Messages = () => {
 
@@ -22,7 +22,7 @@ const Messages = () => {
   useEffect(() => {
     const getConversations = async () => {
       try {
-        const res = await axios.get("https://plataformaeventos-production-6111.up.railway.app/conversation/" + id);
+        const res = await eventsApi.get("/conversation/" + id);
         setConversations(res.data);
       } catch (err) {
         console.log(err);
@@ -34,7 +34,7 @@ const Messages = () => {
   useEffect(() => {
     const getMessages = async () => {
       try {
-        const res = await axios.get("https://plataformaeventos-production-6111.up.railway.app/message/" + currentChat._id);
+        const res = await eventsApi.get("/message/" + currentChat._id);
         setMessages(res.data);
       } catch (err) {
         console.log(err);
@@ -46,14 +46,14 @@ const Messages = () => {
   useEffect(() => {
     const myUser = async () => {
       try {
-        const json = await axios.get("https://plataformaeventos-production-6111.up.railway.app/users/" + id);
+        const json = await eventsApi.get("/users/" + id);
         setResult(json.data);
       } catch (error) {
         console.log(error)
       }
     }
     myUser();
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     scroll.scrollToTop();
@@ -62,7 +62,6 @@ const Messages = () => {
   /* useEffect(() => {
     if (messages.length > 0) {
       scrollRef.current.scrollIntoView({ behavior: "smooth" });
-      scroller.scrollTo('input')
     }
     else {
       console.log('ref:', scrollRef.current)
@@ -73,13 +72,13 @@ const Messages = () => {
     e.preventDefault();
     const message = {
       sender: id,
-      //resiver: currentChat.members[1], 
+      resiver: currentChat.members[1], 
       text: newMessage,
       conversationId: currentChat._id,
     };
 
     try {
-      const res = await axios.post("https://plataformaeventos-production-6111.up.railway.app/message/create", message);
+      const res = await eventsApi.post("/message/create", message);
       setMessages([...messages, res.data]);
       setNewMessage("");
     } catch (err) {
@@ -137,7 +136,7 @@ const Messages = () => {
           <div className={styles.containerChat}>
 
             <div className={styles.chatHeader}>
-              <img src={result.picture ? result.picture : avatar} alt="user-photo" />
+              <img src={result.userpicture ? result.userpicture : avatar} alt="user-photo" />
               <span>{user.name}</span>
             </div>
 
@@ -201,22 +200,20 @@ const Messages = () => {
               ></textarea>
             }
 
-            <Element name='input'>
-              <div className={styles.wrapperBtnInputMessage}>
-                <p>
-                  No se permite el envío de números de teléfono, direcciones de
-                  correo electrónico, enlaces a sitios web o enlaces a redes
-                  sociales.
-                </p>
-                {
-                  currentChat ?
-                  <button onClick={handleSubmit}>Enviar</button> :
-                  <button disable >Enviar</button>
-                }
-                
-              </div>
-            </Element>
-
+            <div className={styles.wrapperBtnInputMessage}>
+              <p>
+                No se permite el envío de números de teléfono, direcciones de
+                correo electrónico, enlaces a sitios web o enlaces a redes
+                sociales.
+              </p>
+              {
+                currentChat ?
+                <button onClick={handleSubmit}>Enviar</button> :
+                <button disable >Enviar</button>
+              }
+              
+            </div>
+            
           </div> 
           
         </div>

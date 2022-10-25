@@ -7,7 +7,6 @@ const ExpectToAttendOrganizer = () => {
 
   const userDetail = users.filter((user) => user.name === 'Jean Pierre')[0];
 
-
   return (
     <div className={styles.container}>
 
