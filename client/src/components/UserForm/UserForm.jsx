@@ -116,6 +116,7 @@ const UserForm = ({ userData }) => {
     frontDocument: true,
     backDocument: true,
     imageRent: true,
+    isDeclarant: true,
   });
 
   const [changePassword, setChangePassword] = useState({
@@ -218,10 +219,39 @@ const UserForm = ({ userData }) => {
   };
 
   const txtName = useRef();
-
+  const txtAddress = useRef();
+  const txtCity = useRef();
+  const txtTel = useRef();
+  const txtPhone = useRef();
+  const txtDocument = useRef();
+  const txtAreaDescription = useRef();
   useEffect(() => {
     txtName.current.focus();
-  }, [canWriteInput]);
+  }, [canWriteInput.name]);
+
+  useEffect(() => {
+    txtAddress.current.focus();
+  }, [canWriteInput.direction]);
+
+  useEffect(() => {
+    txtCity.current.focus();
+  }, [canWriteInput.city]);
+
+  useEffect(() => {
+    txtTel.current.focus();
+  }, [canWriteInput.tel]);
+
+  useEffect(() => {
+    txtPhone.current.focus();
+  }, [canWriteInput.phone]);
+
+  useEffect(() => {
+    txtDocument.current.focus();
+  }, [canWriteInput.document]);
+
+  useEffect(() => {
+    txtAreaDescription.current.focus();
+  }, [canWriteInput.descriptionOrganizer]);
 
   const editFields = (e, inputName) => {
     e.preventDefault();
@@ -328,12 +358,32 @@ const UserForm = ({ userData }) => {
     let hasChanges = false;
     let isProfileCompleted = true;
 
-    Object.values(formData).forEach((field) => {
+    if (formData.isDeclarant && formData.imageRent === '') {
+      return setErrorMessagePhoto({
+        ...errorMessagePhoto,
+        imageRent: 'Si es declarante por favor ingresar imagen del documento.',
+      });
+    }
+    /* Object.values(formData).forEach((field) => {
+      if (typeof field === 'boolean') {
+      }
+
       if (!field) {
         isProfileCompleted = false;
         return;
       }
-    });
+    }); */
+
+    for (let i = 0; i < Object.keys(formData).length; i++) {
+      const key = Object.keys(formData)[i];
+      if (typeof formData[key] === 'boolean') continue;
+      if (key === 'nickname') continue;
+      if (key === 'imageRent') continue;
+      if (!formData[key]) {
+        isProfileCompleted = false;
+        break;
+      }
+    }
 
     Object.values(errorsGeneral).forEach((error) => {
       if (error) hasErrors = true;
@@ -631,9 +681,14 @@ const UserForm = ({ userData }) => {
 
   /* CONVERT TO ORGANIZER */
   const [modalSetOrganizer, setModalSetOrganizer] = useState(false);
+  const [isProccessingToOrganizer, setIsProccessingToOrganizer] = useState(userData.isProccessingToOrganizer);
 
   const sendEmailToOrganizer = async () => {
+    setIsProccessingToOrganizer(true);
+    setModalSetOrganizer(false);
+
     const user = {
+      id: userData._id,
       name: `${formData.firstName} ${formData.lastName}`,
       email: formData.email,
       document: formData.document,
@@ -645,17 +700,28 @@ const UserForm = ({ userData }) => {
 
     try {
       const result = await eventsApi.post('/users/requestToOrganizer', { user });
-      console.log({ result });
     } catch (error) {
       console.log({ error });
     }
   };
 
-  const [isDeclarantRent, setIsDeclarantRent] = useState(false);
-
   const handleInputRadioButtonRent = async (e) => {
     const option = e.target.id;
-    console.log({ option });
+
+    setErrorMessagePhoto({
+      ...errorMessagePhoto,
+      imageRent: '',
+    });
+
+    setCanWriteInput({
+      ...canWriteInput,
+      isDeclarant: false,
+    });
+
+    if (option === 'yes') setFormData({ ...formData, isDeclarant: true });
+    if (option === 'no') {
+      setFormData({ ...formData, isDeclarant: false, imageRent: '' });
+    }
   };
 
   return (
@@ -677,23 +743,56 @@ const UserForm = ({ userData }) => {
         </button>
         {errorMessagePhoto.userpicture && <span className={styles.errorMessage}>{errorMessagePhoto.userpicture}</span>}
       </div>
-      {userData.isProfileCompleted && (
-        <div className={styles.isUserIsProfileCompleted}>
-          <span>¡Tu perfil esta completo! Y eres elegible para ser organizador</span>
-          <div className={styles.containerBtnOrganizer}>
-            <button onClick={() => setModalSetOrganizer(true)} className={styles.btnApplyForOrganizer}>
-              Aplicar para ser organizador
-            </button>
-            <BsInfoCircle className={styles.btnIconMoreInfo} />
-            <div className={styles.containerMoreInfo}>
-              <p>Probando texto</p>
+      {!userData.isReject && (
+        <>
+          {userData.isReject && userData.isProfileCompleted && !userData.isOrganizer && !isProccessingToOrganizer && (
+            <div className={styles.isUserIsProfileCompleted}>
+              <span>¡Tu perfil esta completo! Y eres elegible para ser organizador</span>
+              <div className={styles.containerBtnOrganizer}>
+                <button onClick={() => setModalSetOrganizer(true)} className={styles.btnApplyForOrganizer}>
+                  Aplicar para ser organizador
+                </button>
+                <BsInfoCircle className={styles.btnIconMoreInfo} />
+                <div className={styles.containerMoreInfo}>
+                  <p>Probando texto</p>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          )}
+
+          {isProccessingToOrganizer && !userData.isOrganizer && (
+            <>
+              <div className={styles.organizerContainer}>
+                <p>El organizador es la persona que puede publicar eventos en "Lo que quiero hacer"</p>
+                <div className={styles.containerOrganizerApprobed}>
+                  <span className={styles.proccessingOrganizer}>
+                    Su solicitud para ser un organizador está en proceso.
+                  </span>
+                  <BsInfoCircle className={styles.iconOrganizerInfo} />
+                </div>
+              </div>
+            </>
+          )}
+
+          {userData.isOrganizer && (
+            <>
+              <div className={styles.organizerContainer}>
+                <p>El organizador es la persona que puede publicar eventos en "Lo que quiero hacer"</p>
+
+                <div className={styles.containerOrganizerApprobed}>
+                  <AiOutlineCheck className={styles.iconOrganizerApprobed} />
+                  <span>Organizador aprobado.</span>
+                  <BsInfoCircle className={styles.iconOrganizerInfo} />
+                </div>
+
+                <button className={styles.btnCreateEvent}>Organiza un evento</button>
+              </div>
+            </>
+          )}
+        </>
       )}
 
       <div className={styles.divisor} />
-
       {/* FORM */}
       <div className={styles.containerForm}>
         <form>
@@ -819,6 +918,7 @@ const UserForm = ({ userData }) => {
                   type='text'
                   id='direction'
                   name='direction'
+                  ref={txtAddress}
                 />
               </div>
               <button onClick={(e) => editFields(e, 'direction')}>
@@ -839,6 +939,7 @@ const UserForm = ({ userData }) => {
                   name='city'
                   type='text'
                   id='city'
+                  ref={txtCity}
                 />
               </div>
               <button onClick={(e) => editFields(e, 'city')}>
@@ -861,6 +962,7 @@ const UserForm = ({ userData }) => {
                   type='tel'
                   id='tel'
                   name='tel'
+                  ref={txtTel}
                 />
               </div>
               <button onClick={(e) => editFields(e, 'tel')}>
@@ -883,6 +985,7 @@ const UserForm = ({ userData }) => {
                   type='tel'
                   id='phone'
                   name='phone'
+                  ref={txtPhone}
                 />
               </div>
               <button onClick={(e) => editFields(e, 'phone')}>
@@ -1027,6 +1130,7 @@ const UserForm = ({ userData }) => {
                   style={{
                     border: errorFields.document ? '1px solid #d53e27' : '',
                   }}
+                  ref={txtDocument}
                 />
                 <span>
                   El número y foto de tu cédula son requeridos para efectos de seguridad y cumplimiento de la normativa
@@ -1105,22 +1209,39 @@ const UserForm = ({ userData }) => {
         <p>¿Eres persona natural declarante del impuesto a la Renta?</p>
         <div className={styles.containerCheckBoxRent}>
           <div className={styles.checkbox}>
-            <input onChange={handleInputRadioButtonRent} name='rent' type='radio' id='yes' />
+            <input
+              checked={formData.isDeclarant}
+              onChange={handleInputRadioButtonRent}
+              name='rent'
+              type='radio'
+              id='yes'
+            />
             <label htmlFor='yes'>Sí</label>
           </div>
           <div className={styles.checkbox}>
-            <input onChange={handleInputRadioButtonRent} name='rent' type='radio' id='no' />
+            <input
+              checked={!formData.isDeclarant}
+              onChange={handleInputRadioButtonRent}
+              name='rent'
+              type='radio'
+              id='no'
+            />
             <label htmlFor='no'>No</label>
           </div>
           <div className={styles.containerDrag}>
-            {formData.imageRent ? (
+            {formData.imageRent && formData.isDeclarant ? (
               <>
                 <img src={formData.imageRent} alt='rent' className={styles.imageRent} />
               </>
             ) : (
               <>
                 <div className={styles.dragRent}>
-                  <input disabled onChange={handleImageRent} type='file' className={styles.inputFile} />
+                  <input
+                    disabled={!formData.isDeclarant}
+                    onChange={handleImageRent}
+                    type='file'
+                    className={styles.inputFile}
+                  />
                   <BsCamera className={styles.iconCameraFile} />
                   <span>Arrastra una imagen</span>
                 </div>
@@ -1131,7 +1252,12 @@ const UserForm = ({ userData }) => {
             {errorMessagePhoto.imageRent && <span className={styles.errorMessage}>{errorMessagePhoto.imageRent}</span>}
 
             <button className={styles.btnAddPhoto}>
-              <input disabled onChange={handleImageRent} type='file' className={styles.inputFile} />
+              <input
+                disabled={!formData.isDeclarant}
+                onChange={handleImageRent}
+                type='file'
+                className={styles.inputFile}
+              />
               <BsCardImage className={styles.btnAddPhotoIcon} />
               <span>Agregar Imagen</span>
             </button>
@@ -1157,6 +1283,7 @@ const UserForm = ({ userData }) => {
               rows='10'
               onChange={handleInputChange}
               disabled={canWriteInput.descriptionOrganizer}
+              ref={txtAreaDescription}
             ></textarea>
             <BsInfoCircle className={styles.btnIconMoreInfo} />
           </div>

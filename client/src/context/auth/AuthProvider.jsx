@@ -4,6 +4,7 @@ import { AuthContext, authReducer } from './index';
 
 const Auth_INITIAL_STATE = {
   logged: false,
+  rememberMe: false,
   user: {},
 };
 
