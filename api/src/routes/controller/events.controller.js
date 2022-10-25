@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { oneEventDb } = require('../../models/util/functionDB/EventesDb.js');
+const { oneEventDb, updateEventRating } = require('../../models/util/functionDB/EventesDb.js');
 
 const {
   getAllEvents,
@@ -66,5 +66,17 @@ router.put('/:id', async (req, res) => {
     return res.status(500).json({ FALLO_UPDATE: error.message });
   }
 });
+
+router.put('/:idEvent/rating', async (req,res)=>{
+  const {idEvent}= req.params
+  const {rating} = req.body
+  try {
+    const eventRating = await updateEventRating(idEvent,rating)
+    return res.status(200).json(eventRating)    
+  } catch (error) {
+    return res.status(500).json({ FALLO_UPDATE: error.message });
+    
+  }
+})
 
 module.exports = router;

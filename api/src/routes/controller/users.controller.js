@@ -33,6 +33,7 @@ const {
   deleteNotificationDB,
   findAllUpdateNotification,
   updateMyFavorites,
+  updateUserRating,
 } = require('../../models/util/functionDB/UserDb.js');
 const {
   createCodeVerifyMail,
@@ -217,6 +218,17 @@ router.put('/:idUser/notifications', async (req, res) => {
     res.status(500).json(error.Menssage);
   }
 });
+router.put('/:idUser/rating', async (req,res)=>{
+  const {idUser}= req.params
+  const {rating} = req.body
+  try {
+    const userRating = await updateUserRating(idUser,rating)
+    return res.status(200).json(userRating)    
+  } catch (error) {
+    return res.status(500).json({ FALLO_UPDATE: error.message });
+    
+  }
+})
 
 router.delete('/notifications', async (req, res) => {
   const newDelete = req.body;
