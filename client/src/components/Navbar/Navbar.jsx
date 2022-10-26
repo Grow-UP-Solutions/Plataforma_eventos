@@ -14,7 +14,7 @@ import eventsApi from '../../axios/eventsApi';
 const Navbar = ({ upper }) => {
   const { toggleScreenLogin } = useContext(UIContext);
   const { user, logged, logout } = useContext(AuthContext);
-  const { notes, setNotes } = useContext(stateContext);
+  const { notes, setNotes, msg, setMsg } = useContext(stateContext);
   const [menuOpen, setMenuOpen] = useState(false);
   const [openNotifications, setOpenNotifications] = useState(false);
   const [openMessages, setOpenMessages] = useState(false);
@@ -30,6 +30,7 @@ const Navbar = ({ upper }) => {
     if (user.uid) {
       userResult = await eventsApi.get('/users/' + user.uid);
       setNotes(userResult.data.notifications.filter((e) => e.read === false));
+      setMsg(userResult.data.message.filter((e) => e.read === false));
     }
   };
 
@@ -62,11 +63,15 @@ const Navbar = ({ upper }) => {
     setOpenNotifications(false);
   };
 
+  const handleClickAllReadMessages = async (e) => {
+    e.preventDefault();
+    const res = await eventsApi.put('/message/update/' + user.uid);
+    setMsg(res.data.filter((e) => e.read === false));
+  };
+
   const handleClickAllReadNotifications = async (e) => {
     e.preventDefault();
-    const res = await eventsApi.put(
-      `/users/${user.uid}/notifications`
-    );
+    const res = await eventsApi.put(`/users/${user.uid}/notifications`);
     setNotes(res.data.filter((e) => e.read === false));
   };
 
@@ -82,10 +87,12 @@ const Navbar = ({ upper }) => {
           {pathname !== '/' || upper === false ? <Search location={'not-home'} /> : <></>}
         </div>
         <div className={style.container_div}>
-          {logged && <a href='$'>Mi lista</a>}
-          <Link to={`/organiza-un-evento`}>
-            <p className={`${logged ? style.buttonOrganizar : ''}`}>Organiza un evento</p>
-          </Link>
+          {logged && <Link to='/user/perfil/mi-lista'>Mi lista</Link>}
+          {user.organizer && (
+            <Link to={`/organiza-un-evento`}>
+              <p className={`${logged ? style.buttonOrganizar : ''}`}>Organiza un evento</p>
+            </Link>
+          )}
           {!logged ? (
             <>
               <p onClick={toggleScreenLogin}>Ingresa</p>
@@ -98,7 +105,7 @@ const Navbar = ({ upper }) => {
               <div className={style.containerNotification}>
                 <div className={style.containerMessage} onClick={handleOpenMessages}>
                   <GrMail className={style.iconNav} />
-                  <div className={style.bage}>0</div>
+                  <div className={style.bage}>{msg.length}</div>
                 </div>
                 <div className={style.divisorNotis} />
                 <div className={style.containerNotis} onClick={handleOpenNotifications}>
@@ -108,9 +115,11 @@ const Navbar = ({ upper }) => {
 
                 {openMessages && (
                   <div className={style.notifications}>
-                    <p className={style.link_noti}>Marcar todas como leidas</p>
-                    {notes.map((e) => (
-                      <div className={style.noty}>{e.msg}</div>
+                    <p className={style.link_noti} onClick={handleClickAllReadMessages}>
+                      Marcar todas como leidas
+                    </p>
+                    {msg.map((e) => (
+                      <div className={style.noty}>{e.text}</div>
                     ))}
                     <p className={style.link_notis} onClick={handleClickMessage}>
                       Ver todos los mensajes
@@ -168,17 +177,18 @@ const Navbar = ({ upper }) => {
                 <IoCaretDownSharp className={style.iconMenu} />
                 {menuOpen && (
                   <div className={style.containerProfileMenu}>
-                    <a href='#'>Mis eventos</a>
-                    <Link to='/user/profile'>
+                    <Link to='/user/perfil/mi-lista'>Mis eventos</Link>
+                    <Link to='/user/perfil/datos'>
                       <a>Perfil</a>
                     </Link>
-                    <a href='#'>Plan de referidos</a>
-                    <a href='#'>Preferencias</a>
+                    <Link to='/user/perfil/plan-de-referidos'>Plan de referidos</Link>
+                    <Link to='/user/perfil/preferencias'>Preferencias</Link>
                     <hr />
                     <a
                       onClick={(e) => {
                         e.preventDefault();
                         logout();
+                        navigate('/');
                       }}
                     >
                       Cerrar

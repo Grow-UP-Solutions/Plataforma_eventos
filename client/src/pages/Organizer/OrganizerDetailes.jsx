@@ -12,11 +12,13 @@ import NextEvents from '../../components/Organizer/NextEvents.jsx';
 import Opinions from '../../components/Organizer/Opinions.jsx';
 import styles from './OrganizerDetails.module.css';
 import swal from 'sweetalert';
+import { UIContext } from '../../context/ui';
 
 const OrganizerDetails = () => {
 
   const id = useParams().id;
   const { user, logged } = useContext(AuthContext);
+  const { getRatingOrganizer, ratingOrg } = useContext(UIContext);
   const navigate = useNavigate();
   const [component, setComponent] = useState('');
   const [nextEvent, setNextEvent] = useState({});
@@ -35,7 +37,16 @@ const OrganizerDetails = () => {
       senderId: user.uid,
       receiverId: id,
     });
-  }, []);
+  }, []);   
+
+  useEffect(() => {
+    if (userDetail.organizer) {
+      getRatingOrganizer(id, {rating: userDetail.organizer.rating});
+    }
+    else {
+      console.log('no hay eventDetails');
+    }
+  }, [userDetail]);
 
   const obtenerDatos = async () => {
     const data = await eventsApi.get(
@@ -94,8 +105,9 @@ const OrganizerDetails = () => {
           <Rating
             className={styles.rating}
             name='read-only'
-            value={userDetail.organizer.rating}
+            value={ratingOrg}
             readOnly
+            sx={{ fontSize: 18 }}
           />
           <div className={styles.containerDir}>
             <IoLocationOutline className={styles.icon} />
