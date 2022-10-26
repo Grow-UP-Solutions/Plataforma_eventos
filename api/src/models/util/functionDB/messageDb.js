@@ -46,7 +46,7 @@ async function findAndUpdateMessage(idUser, conversationId) {
             
             return e.conversationId == conversationId}
       );
-      console.log(messageConversation)
+      
       messageConversation.forEach(async (e) => {
          e.read = true;
          await e.save();
