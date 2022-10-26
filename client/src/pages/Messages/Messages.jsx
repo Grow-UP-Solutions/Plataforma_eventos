@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import styles from './Messages.module.css';
 import { FiMail, FiArchive, FiStar } from 'react-icons/fi';
-import eventsApi from "../../axios/eventsApi";
+import eventsApi from '../../axios/eventsApi';
 import { AuthContext } from '../../context/auth/AuthContext';
 import avatar from '../../assets/imgs/no-avatar.png';
 import Conversations from '../../components/Conversations/Conversations';
@@ -9,20 +9,19 @@ import Message from '../../components/Message/Message';
 import { animateScroll as scroll } from 'react-scroll';
 
 const Messages = () => {
-
   const { user } = useContext(AuthContext);
   const id = user.uid;
   const [conversations, setConversations] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState("");
+  const [newMessage, setNewMessage] = useState('');
   const [result, setResult] = useState({});
   const scrollRef = useRef();
 
   useEffect(() => {
     const getConversations = async () => {
       try {
-        const res = await eventsApi.get("/conversation/" + id);
+        const res = await eventsApi.get('/conversation/' + id);
         setConversations(res.data);
       } catch (err) {
         console.log(err);
@@ -34,24 +33,24 @@ const Messages = () => {
   useEffect(() => {
     const getMessages = async () => {
       try {
-        const res = await eventsApi.get("/message/" + currentChat._id);
+        const res = await eventsApi.get('/message/' + currentChat._id);
         setMessages(res.data);
       } catch (err) {
         console.log(err);
       }
     };
     getMessages();
-  }, [currentChat]); 
+  }, [currentChat]);
 
   useEffect(() => {
     const myUser = async () => {
       try {
-        const json = await eventsApi.get("/users/" + id);
+        const json = await eventsApi.get('/users/' + id);
         setResult(json.data);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
+    };
     myUser();
   }, [id]);
 
@@ -72,36 +71,33 @@ const Messages = () => {
     e.preventDefault();
     const message = {
       sender: id,
-      resiver: currentChat.members[1], 
+      resiver: currentChat.members[1],
       text: newMessage,
       conversationId: currentChat._id,
     };
 
     try {
-      const res = await eventsApi.post("/message/create", message);
+      const res = await eventsApi.post('/message/create', message);
       setMessages([...messages, res.data]);
-      setNewMessage("");
+      setNewMessage('');
     } catch (err) {
       console.log(err);
     }
-  };  
+  };
 
   const handleClickConversation = async (c) => {
     setCurrentChat(c);
-  } 
+  };
 
   return (
     <div className={`${styles.pageMessage} container`}>
       <div className={styles.containerMessage}>
-
         <div className={styles.containerTitle}>
           <h1 className={styles.title}>Mensajes</h1>
         </div>
 
         <div className={styles.gridContainer}>
-
           <div className={styles.containerChats}>
-            
             <div className={styles.containerOptions}>
               <div>
                 <FiMail />
@@ -120,49 +116,41 @@ const Messages = () => {
             </div>
 
             <div className={styles.containerChats}>
-
-              {
-                conversations.map((c, i) => (
-                  <div key={i} onClick={() => handleClickConversation(c)} className={currentChat && currentChat._id === c._id ? styles.active : ''}>
-                    <Conversations conversation={c} id={id} />
-                  </div>
-                ))
-              }
-
+              {conversations.map((c, i) => (
+                <div
+                  key={i}
+                  onClick={() => handleClickConversation(c)}
+                  className={currentChat && currentChat._id === c._id ? styles.active : ''}
+                >
+                  <Conversations conversation={c} id={id} />
+                </div>
+              ))}
             </div>
-
           </div>
-          
-          <div className={styles.containerChat}>
 
+          <div className={styles.containerChat}>
             <div className={styles.chatHeader}>
-              <img src={result.userpicture ? result.userpicture : avatar} alt="user-photo" />
+              <img src={result.userpicture ? result.userpicture : avatar} alt='user-photo' />
               <span>{user.name}</span>
             </div>
 
             <div className={styles.containerChatMessage}>
-              {
-                currentChat ? (
+              {currentChat ? (
                 <>
                   <div>
-                    {
-                      messages.map((m, i) => (
+                    {messages
+                      .map((m, i) => (
                         <div key={i} ref={scrollRef}>
                           <Message message={m} own={m.sender === id} />
                         </div>
                       ))
-                    }
-                  </div> 
-                </> ) : 
-                (
-                  <span>
-                    Inicia una conversación.
-                  </span>
-                )
-              }
-
+                      .reverse()}
+                  </div>
+                </>
+              ) : (
+                <span>Inicia una conversación.</span>
+              )}
             </div>
-
           </div>
 
           <div className={styles.buttonsChats}>
@@ -178,44 +166,35 @@ const Messages = () => {
           </div>
 
           <div className={styles.containerInputMessage}>
-
-            {
-              currentChat ?
+            {currentChat ? (
               <textarea
-                name="message"
-                id="message"
-                cols="30"
-                rows="10"
-                placeholder="Escribe un mensaje aquí"
+                name='message'
+                id='message'
+                cols='30'
+                rows='10'
+                placeholder='Escribe un mensaje aquí'
                 onChange={(e) => setNewMessage(e.target.value)}
                 value={newMessage}
-              ></textarea> :
+              ></textarea>
+            ) : (
               <textarea
                 disabled
-                name="message"
-                id="message"
-                cols="30"
-                rows="10"
-                placeholder="Escribe un mensaje aquí"
+                name='message'
+                id='message'
+                cols='30'
+                rows='10'
+                placeholder='Escribe un mensaje aquí'
               ></textarea>
-            }
+            )}
 
             <div className={styles.wrapperBtnInputMessage}>
               <p>
-                No se permite el envío de números de teléfono, direcciones de
-                correo electrónico, enlaces a sitios web o enlaces a redes
-                sociales.
+                No se permite el envío de números de teléfono, direcciones de correo electrónico, enlaces a sitios web o
+                enlaces a redes sociales.
               </p>
-              {
-                currentChat ?
-                <button onClick={handleSubmit}>Enviar</button> :
-                <button disable >Enviar</button>
-              }
-              
+              {currentChat ? <button onClick={handleSubmit}>Enviar</button> : <button disable>Enviar</button>}
             </div>
-            
-          </div> 
-          
+          </div>
         </div>
       </div>
     </div>

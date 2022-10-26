@@ -1,8 +1,7 @@
-
 import React from 'react';
 import styles from './Message.module.css';
 import Rating from '@mui/material/Rating';
-import { format, register } from "timeago.js";
+import { format, register } from 'timeago.js';
 
 const localeFunc = (number, index, total_sec) => {
   // number: the timeago / timein number;
@@ -28,24 +27,21 @@ const localeFunc = (number, index, total_sec) => {
 register('es_ES', localeFunc);
 
 const Message = ({ message, own }) => {
-
   const handleClickStar = (e) => {
     e.preventDefault();
-    
-  }
-  
+  };
+
   return (
     <div className={styles.containerChatMessage}>
       <div className={own ? styles.ownMessage : styles.otherMessage}>
-
         <p className={styles.messageText}>{message.text}</p>
 
         <div className={styles.wrapperInfoMessage}>
-          <Rating 
-            name="customized-10" 
-            defaultValue={0} 
-            max={1} 
-            className={styles.iconMessage} 
+          <Rating
+            name='customized-10'
+            defaultValue={0}
+            max={1}
+            className={styles.iconMessage}
             onClick={handleClickStar}
           />
           <span className={styles.messageBottom}>{format(message.createdAt, 'es_ES')}</span>
@@ -53,6 +49,6 @@ const Message = ({ message, own }) => {
       </div>
     </div>
   );
-}
+};
 
 export default Message;

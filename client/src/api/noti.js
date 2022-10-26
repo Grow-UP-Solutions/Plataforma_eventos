@@ -1,4 +1,3 @@
-
 const notifications = [
   {
     title: 'Evento Agregado:',
