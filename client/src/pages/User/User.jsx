@@ -34,37 +34,75 @@ import {
 import { IoIosArrowForward, IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 import { useEffect } from 'react';
 import eventsApi from '../../axios/eventsApi';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const UserPage = () => {
+  const { option } = useParams();
   const { user } = useContext(AuthContext);
   const [userData, setUserData] = useState({});
   const [date, setDate] = useState();
   const [component, setComponent] = useState();
   const [isOpenMenu, setIsMenuOpen] = useState(false);
-
+  const navigate = useNavigate();
   useEffect(() => {
     getUserData();
   }, [user]);
 
   const getUserData = async () => {
-    let userResult = {};
     if (user.uid) {
-      userResult = await eventsApi.get(`/users/${user.uid}`);
+      const userResult = await eventsApi.get(`/users/${user.uid}`);
       setUserData(userResult.data);
-      setComponent(<UserForm userData={userResult.data} />);
+
+      switch (option) {
+        case 'datos':
+          setComponent(<UserForm userData={userResult.data} />);
+          break;
+        case 'mi-lista':
+          setComponent(<MyListUser myFavorites={userResult.data.myFavorites} />);
+          break;
+        case 'plan-de-referidos':
+          setComponent(<ReferralPlan />);
+          break;
+        case 'preferencias':
+          setComponent(<PreferencesUser />);
+          break;
+        default:
+          setComponent(<UserForm userData={userResult.data} />);
+      }
     }
   };
 
+  useEffect(() => {
+    getUserData();
+  }, [option]);
+
   const handleInput = (e) => {
     const name = e.target.name;
+    /* ORGANIZER */
     if (name === 'Finance') setComponent(<Finance />);
     if (name === 'Guia Del Organizador') setComponent(<GoodPracticeOrg />);
-    if (name === 'Mi lista') setComponent(<MyListUser myFavorites={userData.myFavorites} />);
-    if (name === 'Pendientes por Asistir') setComponent(<ExpectToAttendUser />);
-    if (name === 'Mis Eventos') setComponent(<MyEventsOrganizer />);
-    if (name === 'Perfil') setComponent(<UserForm userData={userData} />);
-    if (name === 'Plan de Referidos') setComponent(<ReferralPlan />);
-    if (name === 'Preferencias') setComponent(<PreferencesUser />);
+
+    /* USER */
+    if (name === 'Mi lista') {
+      setComponent(<MyListUser myFavorites={userData.myFavorites} />);
+      navigate('/user/perfil/mi-lista');
+    }
+    if (name === 'Pendientes por Asistir')
+      setComponent(<ExpectToAttendUser myEvenstBooked={userData.myEvenstBooked} />);
+    if (name === 'Mis Eventos') setComponent(<MyEventsOrganizer myEventsCreated={userData.myEventsCreated} />);
+    if (name === 'Perfil') {
+      setComponent(<UserForm userData={userData} />);
+      navigate('/user/perfil/datos');
+    }
+
+    if (name === 'Plan de Referidos') {
+      setComponent(<ReferralPlan />);
+      navigate('/user/perfil/plan-de-referidos');
+    }
+    if (name === 'Preferencias') {
+      setComponent(<PreferencesUser />);
+      navigate('/user/perfil/preferencias');
+    }
   };
 
   return (
@@ -119,7 +157,7 @@ const UserPage = () => {
                   <IconEvents className={styles.iconMenu} />
                   <IoIosArrowForward className={styles.iconArrow} />
                 </li>
-                {user.isOrganizer && (
+                {user.organizer && (
                   <>
                     <li className={styles.optionMenu}>
                       <button className={styles.btn} name='Mis Eventos' onClick={handleInput}>
