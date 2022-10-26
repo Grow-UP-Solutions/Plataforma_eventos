@@ -47,3 +47,10 @@
 .btnCancel {
   background-color: var(--color-grey-5);
 }
+
+.messageResult {
+  text-align: center;
+  font-size: 2rem;
+  color: var(--color-blue);
+  margin-bottom: 2rem;
+}
