@@ -28,8 +28,7 @@ const categories = [
   },
   {
     name: 'Comidas y Bebidas',
-    img:
-      'https://www.zarla.com/images/zarla-food-and-drink-logos-2400x2400-20211105.jpg?crop=21:16,smart&width=420&dpr=2',
+    img: 'https://www.zarla.com/images/zarla-food-and-drink-logos-2400x2400-20211105.jpg?crop=21:16,smart&width=420&dpr=2',
     description: 'Duis autem vel eum iriure',
   },
   {
@@ -44,8 +43,7 @@ const categories = [
   },
   {
     name: 'Finanzas',
-    img:
-      'https://www.eleconomista.com.mx/__export/1589673125293/sites/eleconomista/img/2020/05/13/estrategias_-_ahorro.png_673822677.png',
+    img: 'https://www.eleconomista.com.mx/__export/1589673125293/sites/eleconomista/img/2020/05/13/estrategias_-_ahorro.png_673822677.png',
     description: 'Duis autem vel eum iriure',
   },
   {
@@ -65,14 +63,12 @@ const categories = [
   },
   {
     name: 'Manualidades',
-    img:
-      'https://diariolibre.blob.core.windows.net.optimalcdn.com/images/binrepository/manualidades_15557522_20210113175525.jpg',
+    img: 'https://diariolibre.blob.core.windows.net.optimalcdn.com/images/binrepository/manualidades_15557522_20210113175525.jpg',
     description: 'Duis autem vel eum iriure',
   },
   {
     name: 'Mascotas',
-    img:
-      'https://uploads-ssl.webflow.com/5c0923437b3820198bab7be0/5f50108002666e737c6e6817_Mascotas%20en%20condominios.jpg',
+    img: 'https://uploads-ssl.webflow.com/5c0923437b3820198bab7be0/5f50108002666e737c6e6817_Mascotas%20en%20condominios.jpg',
     description: 'Duis autem vel eum iriure',
   },
   {
@@ -82,8 +78,7 @@ const categories = [
   },
   {
     name: 'Para toda la familia',
-    img:
-      'https://images.hola.com/images/026b-12a6a9db88f0-e6f3f408ec05-1000/horizontal-1200/una-familia-feliz-en-casa-sonriendo-.jpg',
+    img: 'https://images.hola.com/images/026b-12a6a9db88f0-e6f3f408ec05-1000/horizontal-1200/una-familia-feliz-en-casa-sonriendo-.jpg',
     description: 'Duis autem vel eum iriure',
   },
   {
@@ -98,8 +93,7 @@ const categories = [
   },
   {
     name: 'Viajes',
-    img:
-      'https://www.bolsosvandi.com/server/Portal_0001611/img/blogposts/las-8-cosas-imprescindibles-para-viajar_10843.jpg',
+    img: 'https://www.bolsosvandi.com/server/Portal_0001611/img/blogposts/las-8-cosas-imprescindibles-para-viajar_10843.jpg',
     description: 'Duis autem vel eum iriure',
   },
   {
@@ -109,13 +103,12 @@ const categories = [
   },
   {
     name: 'Beneficiencia',
-    img:
-      'https://www.eluniverso.com/resizer/HLjRRVfWIasDJkOTjCmWfrIQWYs=/1000x668/smart/filters:quality(70)/cloudfront-us-east-1.images.arcpublishing.com/eluniverso/25XNG2HZRZDHBENVPMLVPUE5BQ.jpg',
+    img: 'https://www.eluniverso.com/resizer/HLjRRVfWIasDJkOTjCmWfrIQWYs=/1000x668/smart/filters:quality(70)/cloudfront-us-east-1.images.arcpublishing.com/eluniverso/25XNG2HZRZDHBENVPMLVPUE5BQ.jpg',
     description: 'Duis autem vel eum iriure',
   },
 ];
 
- function createCategorys() {
+/*  function createCategorys() {
   categories.forEach((e) => {
     axios.post('http://localhost:3001/category/create', e);
   });
@@ -125,3 +118,4 @@ createCategorys()
 
 
 export default categories;
+ */
