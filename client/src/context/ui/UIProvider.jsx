@@ -7,6 +7,8 @@ const UI_INITIAL_STATE = {
   categories: [],
   events: [],
   eventsFavourites: [],
+  ratingOrg: 0,
+  ratingEvent: 0,
 };
 
 export const UIProvider = ({ children }) => {
@@ -32,6 +34,18 @@ export const UIProvider = ({ children }) => {
     dispatch({ type: 'GET_EVENTS_FAVOURITES', payload: json });
   }
 
+  const getRatingOrganizer = async (id, payload) => {
+    const res = await eventsApi.put(`/users/${id}/rating`, payload);
+    const json = res.data;
+    dispatch({ type: 'GET_RATING_ORGANIZER', payload: json });
+  }
+
+  const getRatingEvent = async (id, payload) => {
+    const res = await eventsApi.put(`/events/${id}/rating`, payload);
+    const json = res.data;
+    dispatch({ type: 'GET_RATING_EVENT', payload: json });
+  }
+
   return (
     <UIContext.Provider
       value={{
@@ -42,6 +56,8 @@ export const UIProvider = ({ children }) => {
         getCategories,
         getAllEvents,
         getEventsFavourites,
+        getRatingOrganizer,
+        getRatingEvent,
       }}
     >
       {children}

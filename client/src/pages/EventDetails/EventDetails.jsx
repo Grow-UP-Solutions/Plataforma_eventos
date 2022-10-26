@@ -33,6 +33,7 @@ import swal from 'sweetalert';
 import { UIContext } from '../../context/ui';
 
 const EventDetails = () => {
+  
   const id = useParams().id;
   const dispatch = useDispatch();
   const allEvents = useSelector((state) => state.events);
@@ -44,12 +45,21 @@ const EventDetails = () => {
   const [description, setDescription] = useState(false);
   const { user } = useContext(AuthContext);
   const { notes, setNotes } = useContext(stateContext);
-  const { getEventsFavourites } = useContext(UIContext);
+  const { getEventsFavourites, getRatingEvent, ratingEvent } = useContext(UIContext);
 
   useEffect(() => {
     dispatch(getEvents);
     scroll.scrollToTop();
   }, [dispatch]);
+
+  useEffect(() => {
+    if (eventDetails) {
+      getRatingEvent(id, {rating: eventDetails.rating});
+    }
+    else {
+      console.log('no hay eventDetails');
+    }
+  }, [eventDetails]);
 
   const handleFormatDate = (check) => {
     setCheck(check);
@@ -188,13 +198,13 @@ const EventDetails = () => {
                 <Rating
                   className={style.rating}
                   name="read-only"
-                  value={eventDetails.rating}
+                  value={ratingEvent}
                   readOnly
                   sx={{ fontSize: 25 }}
                 />
               </div>
 
-              <p className={style.numberRating}>({eventDetails.rating})</p>
+              <p className={style.numberRating}>({ratingEvent})</p>
             </div>
 
             <div className={style.container_opinions}>
