@@ -12,7 +12,6 @@ import logo from '../../assets/imgs/logoNav.svg';
 import eventsApi from '../../axios/eventsApi';
 
 const Navbar = ({ upper }) => {
-
   const { toggleScreenLogin } = useContext(UIContext);
   const { user, logged, logout } = useContext(AuthContext);
   const { notes, setNotes, msg, setMsg } = useContext(stateContext);
@@ -68,7 +67,7 @@ const Navbar = ({ upper }) => {
     e.preventDefault();
     const res = await eventsApi.put('/message/update/' + user.uid);
     setMsg(res.data.filter((e) => e.read === false));
-  }
+  };
 
   const handleClickAllReadNotifications = async (e) => {
     e.preventDefault();
@@ -88,7 +87,7 @@ const Navbar = ({ upper }) => {
           {pathname !== '/' || upper === false ? <Search location={'not-home'} /> : <></>}
         </div>
         <div className={style.container_div}>
-          {logged && <a href='$'>Mi lista</a>}
+          {logged && <Link to='/user/perfil/mi-lista'>Mi lista</Link>}
           {user.organizer && (
             <Link to={`/organiza-un-evento`}>
               <p className={`${logged ? style.buttonOrganizar : ''}`}>Organiza un evento</p>
@@ -178,12 +177,12 @@ const Navbar = ({ upper }) => {
                 <IoCaretDownSharp className={style.iconMenu} />
                 {menuOpen && (
                   <div className={style.containerProfileMenu}>
-                    <a href='#'>Mis eventos</a>
-                    <Link to='/user/profile'>
+                    <Link to='/user/perfil/mi-lista'>Mis eventos</Link>
+                    <Link to='/user/perfil/datos'>
                       <a>Perfil</a>
                     </Link>
-                    <a href='#'>Plan de referidos</a>
-                    <a href='#'>Preferencias</a>
+                    <Link to='/user/perfil/plan-de-referidos'>Plan de referidos</Link>
+                    <Link to='/user/perfil/preferencias'>Preferencias</Link>
                     <hr />
                     <a
                       onClick={(e) => {

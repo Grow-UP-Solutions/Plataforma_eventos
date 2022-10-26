@@ -35,7 +35,6 @@ import PanelPrivacy from './pages/PanelPrivacy/PanelPrivacy';
 import { getEvents } from './redux/actions';
 
 function App() {
-  
   const [navBar, setNavBar] = useState(false);
   const dispatch = useDispatch();
   const { isMenuLoginOpen, getCategories, getAllEvents } = useContext(UIContext);
@@ -77,7 +76,7 @@ function App() {
         <Route path='/categories' element={<CategoriesResult />} />
         <Route path='/workWithUs' element={<WorkWithUs />} />
         <Route path='/workWithUs/form/:work' element={<WorkWithUsForm />} />
-        <Route path='/user/profile' element={<UserPage />} />
+        <Route path='/user/perfil/:option' element={<UserPage />} />
         <Route path='/privacy' element={<PanelPrivacy />} />
         <Route path='/user/message' element={<Messages />} />
         <Route path='/user/notifications' element={<Notifications />} />
