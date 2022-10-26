@@ -1,4 +1,4 @@
-import axios from 'axios';
+/* import axios from 'axios';
 
 export function createCategorys(category) {
   category.forEach((e) => {
@@ -6,3 +6,4 @@ export function createCategorys(category) {
   });
   return 'ok';
 }
+ */
