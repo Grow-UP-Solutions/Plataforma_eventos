@@ -5,35 +5,57 @@ import eventsApi from "../../axios/eventsApi";
 import { AuthContext } from '../../context/auth/AuthContext';
 import swal from 'sweetalert';
 import CardComments from '../CardComments/CardComments';
+import { UIContext } from '../../context/ui';
 
 const Opinions = ({ userDetail }) => {
 
   const id = userDetail._id;
   const [opinion, setOpinion] = useState([]);
+  const [number, setNumber] = useState(0);
   const [value, setValue] = useState(0);
   const [newOpinion, setNewOpinion] = useState('');
   const { user } = useContext(AuthContext);
+  const { getRatingOrganizer } = useContext(UIContext);
 
   useEffect(() => {
     const getAllComments = async() => {
       try {
         const res = await eventsApi.get('/users/' + id);
         setOpinion(res.data.opinionsOrg);
-      } catch (error) {
+        if (userDetail.opinionsOrg.length > 0) {
+          setNumber(calcRatingEffect());
+        }
+        else {
+          setNumber(0);
+        }
+      } 
+      catch (error) {
         console.log(error)
       }
     }
     getAllComments();
-  }, [id]);
+  }, [userDetail]);
 
-  const calcRating = () => {
-    if (userDetail.opinionsOrg.length > 0) {
-      const ratings = userDetail.opinionsOrg.map(e => e.rating);
-      const suma = ratings.reduce((prev, current) => prev + current);
-      const result = (suma / userDetail.opinionsOrg.length).toFixed(1);     
-      return result;
+  const calcRatingEffect = () => {
+    const ratings = userDetail.opinionsOrg.map(e => e.rating);
+    const suma = ratings.reduce((prev, current) => prev + current);
+    const result = (suma / userDetail.opinionsOrg.length).toFixed(1);     
+    return result;
+  }
+
+  const calcRating = (num) => {
+    if (opinion.length === 0) {
+      const resu = (num / 1).toFixed(1);    
+      return resu;
     }
-    console.log('no hay opiniones de este organizador');
+    else {
+      const ratings = opinion.map(e => e.rating);
+    const suma = ratings.reduce((prev, current) => prev + current);
+    const otherSuma = suma + num;
+    const total = opinion.length + 1;
+    const result = (otherSuma / total).toFixed(1);    
+    return result;
+    }
   }
 
   const handlePostComments = async (e) => {
@@ -49,9 +71,10 @@ const Opinions = ({ userDetail }) => {
       setOpinion([...opinion, res.data]);
       setNewOpinion('');
       setValue(0);
-      console.log('data:', data);
-      console.log('res.data:', res.data);
-    } catch (error) {
+      setNumber(calcRating(res.data.rating));
+      getRatingOrganizer(id, {rating: calcRating(res.data.rating)});
+    } 
+    catch (error) {
       console.log(error)
     }
   }
@@ -73,8 +96,8 @@ const Opinions = ({ userDetail }) => {
 
         <div className={styles.subTitle}>
           <p className={styles.ratNumber}>
-            {userDetail.opinionsOrg.length} opiniones -{' '}
-            {calcRating() ? calcRating() : '0'} de 5 Positivas{' '}
+            {opinion.length} opiniones -{' '}
+            {number} de 5 Positivas{' '}
           </p>
         </div>
 
