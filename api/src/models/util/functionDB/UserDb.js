@@ -154,9 +154,9 @@ async function updateMyFavorites(idUser, idEvent) {
    try {
       const user = await oneUserDb(idUser);
       const event = await Events.findById({ _id: idEvent });
-      //user.myFavorites.push(event._id);
+      user.myFavorites.push(event._id);
       await user.save();
-      console.log(user);
+      
       return event;
    } catch (error) {
       console.log("FAVORITOS", error.message);
