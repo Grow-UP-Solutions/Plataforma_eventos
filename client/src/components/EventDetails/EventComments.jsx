@@ -7,36 +7,58 @@ import { useSelector } from "react-redux";
 import { AuthContext } from '../../context/auth/AuthContext';
 import CardComments from "../CardComments/CardComments";
 import swal from 'sweetalert';
+import { UIContext } from "../../context/ui";
 
 const EventComments =  ({ id }) => {
 
   const [opinion, setOpinion] = useState([]);
   const [newOpinion, setNewOpinion] = useState('');
+  const [number, setNumber] = useState(0);
   const [value, setValue] = useState(0);
   const { user } = useContext(AuthContext);
   const allEvents = useSelector((state) => state.events);
   const eventDetails = allEvents.filter((event) => event._id === id)[0];
+  const { getRatingEvent } = useContext(UIContext);
    
   useEffect(() => {
     const getAllComments = async() => {
       try {
         const res = await eventsApi.get('/events/' + id);
         setOpinion(res.data.opinions);
-      } catch (error) {
+        if(eventDetails.opinions.length > 0) {
+          setNumber(calcRatingEffect());
+        }
+        else {
+          setNumber(0);
+        }
+      } 
+      catch (error) {
         console.log(error)
       }
     }
     getAllComments();
   }, [id]);
 
-  const calcRating = () => {
-    if (eventDetails.opinions.length > 0) {
-      const ratings = eventDetails.opinions.map(e => e.rating);
+  const calcRatingEffect = () => {
+    const ratings = eventDetails.opinions.map(e => e.rating);
+    const suma = ratings.reduce((prev, current) => prev + current);
+    const result = (suma / eventDetails.opinions.length).toFixed(1);
+    return result;
+  }
+
+  const calcRating = (num) => {
+    if (opinion.length === 0) {
+      const resu = (num / 1).toFixed(1);
+      return resu;
+    }
+    else {
+      const ratings = opinion.map(e => e.rating);
       const suma = ratings.reduce((prev, current) => prev + current);
-      const result = (suma / eventDetails.opinions.length).toFixed(1);
+      const otherSuma = suma + num;
+      const total = opinion.length + 1;
+      const result = (otherSuma / total).toFixed(1);
       return result;
     }
-    console.log('no hay opiniones de este organizador');
   }
 
   const handlePostComments = async (e) => {
@@ -52,7 +74,10 @@ const EventComments =  ({ id }) => {
       setOpinion([...opinion, res.data]);
       setNewOpinion('');
       setValue(0);
-    } catch (error) {
+      setNumber(calcRating(res.data.rating));
+      getRatingEvent(id, {rating: calcRating(res.data.rating)});
+    } 
+    catch (error) {
       console.log(error)
     }
   }
@@ -80,7 +105,7 @@ const EventComments =  ({ id }) => {
 
           <div className={styles.subTitle}>
             <p className={styles.ratNumber}>
-              {eventDetails.opinions.length} opiniones - {calcRating() ? calcRating() : '0'} de 5 Positivas 
+              {opinion.length} opiniones - {number} de 5 Positivas 
             </p>
           </div>
 
