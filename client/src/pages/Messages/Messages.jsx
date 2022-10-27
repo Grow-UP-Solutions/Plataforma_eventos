@@ -72,7 +72,7 @@ const Messages = () => {
       setNewMessage("");
     } 
     catch (err) {
-      console.log(err);
+      console.log(err);   
     }
   };  
 
