@@ -1218,6 +1218,16 @@
     text-align: center;
     margin-left: 2rem;
   }
+
+  .removePublic{
+    border:none;
+    background-color: transparent;
+    color:#29aa79;
+    cursor: pointer;
+  }
+  .removePublic:hover{
+    font-weight: bold;
+  }
   
   
   

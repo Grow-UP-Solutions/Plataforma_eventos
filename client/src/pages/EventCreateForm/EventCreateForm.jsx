@@ -48,6 +48,8 @@ import LaunchOutlinedIcon from '@mui/icons-material/LaunchOutlined';
 import WarningOutlinedIcon from '@mui/icons-material/WarningOutlined';
 import axios from "axios";
 import { AuthContext } from '../../context/auth/AuthContext';
+import eventsApi from '../../axios/eventsApi';
+
 
 
 
@@ -59,28 +61,29 @@ const EventCreateForm = () => {
   const dispatch = useDispatch()
 
  
-  useEffect(() => {
-    const myUser = async () => {
-      try {
-        const json = await axios.get("https://plataformaeventos-production-6111.up.railway.app/users/" + id);
-        setResult(json.data);
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    myUser();
-  }, []);
+   //--------------------------------------------------//
+  //               USUARIO              //
 
   const { user } = useContext(AuthContext);
   const id = user.uid;
-  const [result, setResult] = useState({});
-  console.log('user:',user)
-  console.log('id:',id)
-  console.log('result:',result)
+  const [userData, setUserData] = useState({});
 
-  
+ 
+  useEffect(() => {
+    getUserData();
+   }, [user]);
 
+  useEffect(() => {}, [userData]);
+ 
 
+  const getUserData = async () => {
+      let userResult = {}
+      if(user.uid){
+        userResult= await eventsApi.get(`/users/${user.uid}`);
+        setUserData(userResult.data)
+      }
+    }
+   
 
   //--------------------------------------------------//
   //               DEPARTAMENTOS              //
@@ -622,7 +625,7 @@ todas.map((foto)=>{
   const location = `${post.municipio}, ${post.departamento}`;
   const apiKey = 'AIzaSyBr-FUseqSbsY6EMqIGNnGmegD39R--nBA';
   const zoom = '14';
-  const size = '400x300';
+  const size = '200x100';
   const url = `https://maps.googleapis.com/maps/api/staticmap?center=${location}&zoom=${zoom}&size=${size}&key=${apiKey}`;
 
 
@@ -1950,7 +1953,7 @@ todas.map((foto)=>{
                       </div>
 
                       {
-                        index ? 
+                        post.dates.length>1?
                           <button lassName={styles.addDelete}  type="button"  onClick={() => removeFormFields(index)}>
                             <img className={styles.basquet} src={basquet} alt="n" />
                           </button> 
@@ -2162,7 +2165,7 @@ todas.map((foto)=>{
                                 </div>
                                 <hr className={styles.hr}></hr>   
                                 {/* Orgna */}
-                                {user?
+                                {userData?
                                 <div className={styles.containerOrg}>
                                   <div className={styles.containerTopOrg}>
                                     <p className={styles.titleOrg}>Organizador</p>
@@ -2174,14 +2177,16 @@ todas.map((foto)=>{
                                     </div>
                                   </div>
                                   <div className={styles.orgContOrg}>
-                                    {/* <Link
+                                    {userData.userpicture?
+                                   <Link
                                       className={styles.linkOrg}
                                       >
-                                      <img className={styles.orgImgOrg} src={user.picture} alt="N" />
-                                    </Link> */}
+                                      <img className={styles.orgImgOrg} src={userData.userpicture} alt="N" />
+                                    </Link> 
+                                    :''}
 
                                     <div className={styles.orgSubContOrg}>
-                                          <p className={styles.orgNameOrg}>{user.name}</p>
+                                          <p className={styles.orgNameOrg}>{userData.name}</p>
                                           <p className={styles.orgMembershipOrg}>
                                             Miembro desde *falta valor real*
                                           </p>
@@ -2191,7 +2196,7 @@ todas.map((foto)=>{
                                         *descipcion*
                                       </p>
                                       <button className={styles.button2Org}>
-                                        Otros eventos organizados por {user.name}
+                                        Otros eventos organizados por {userData.name}
                                       </button>
                                 </div>
                                 :'No hay usuario todavia'}                                

@@ -17,6 +17,7 @@ import {
   EventCreate,
   EventCreateForm,
   EventDetails,
+  EventEdit,
   Faq,
   Home,
   Messages,
@@ -29,8 +30,6 @@ import {
   WorkWithUs,
   WorkWithUsForm,
 } from './pages';
-import EventEdit from './pages/EventEdit/EventEdit';
-import EventEdit2 from './pages/EventEdit/EventEdit';
 import PanelPrivacy from './pages/PanelPrivacy/PanelPrivacy';
 import { getEvents } from './redux/actions';
 
@@ -71,6 +70,7 @@ function App() {
           <Route path="/registrate" element={<Register />} />
           <Route path="/organiza-un-evento" element={<EventCreate />} />
           <Route path="/oganiza-un-evento-form" element={<EventCreateForm />} />
+          <Route path="/oganiza-un-evento-editar" element={<EventEdit />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/categories" element={<CategoriesResult />} />
           <Route path="/workWithUs" element={<WorkWithUs />} />
@@ -85,8 +85,6 @@ function App() {
             path="/cambiarContrasenia/:token"
             element={<ChangePassword />}
           />
-          <Route path="/oganiza-un-evento-editar" element={<EventEdit />} />
-          <Route path="/oganiza-un-evento-editar2" element={<EventEdit2 />} />
         </Routes>
         <div className="container">
           <Footer />

@@ -15,6 +15,19 @@ export function getEvents() {
   }
 }
 
+export function getEventsCopy() {
+
+  return async function (dispatch) {
+
+    const json = await axios.get('https://plataformaeventos-production-6111.up.railway.app/events');
+
+    return dispatch({
+      type: 'GET_EVENTS_COPY',
+      payload: json.data,
+    });
+  }
+}
+
 export function postEvent(payload) {
 
   return async function (dispatch) {

@@ -1,6 +1,7 @@
 
 const initialState = {
   events: [],
+  eventsCopy: [],
   departamentos:[],
 };
 
@@ -11,7 +12,14 @@ function rootReducer(state = initialState, action) {
       return {
         ...state,
         events: action.payload,
+    
       }
+
+      case 'GET_EVENTS_COPY':
+        return {
+          ...state,
+          eventsCopy: action.payload,     
+        }
 
     case 'GET_COLOMBIA':
       return {
