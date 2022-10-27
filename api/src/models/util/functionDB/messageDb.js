@@ -14,7 +14,7 @@ async function createMessage(message) {
 
       const newMessage = new Message(message);
       await newMessage.save();
-      if (user._id != newMessage.sender) {
+      if (user._id !== newMessage.sender) {
          user.message.push(newMessage._id);
       }
 
@@ -44,15 +44,16 @@ async function findAndUpdateMessage(idUser, conversationId) {
    try {
       const userAndMessage = await allMessageReciverUserDB(idUser);
       const messageConversation = userAndMessage.filter((e) => {
-         return e.conversationId == conversationId;
+         return e.conversationId === conversationId;
       });
+      
 
       messageConversation.forEach(async (e) => {
-         e.read = true;
+         e.read = !e.read;
          await e.save();
       });
 
-      return userAndMessage;
+      return messageConversation;
    } catch (error) {
       throw new Error(error.message);
    }
