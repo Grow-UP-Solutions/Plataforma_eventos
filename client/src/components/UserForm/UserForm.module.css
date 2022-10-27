@@ -762,3 +762,14 @@
 .proccessingOrganizer {
   color: var(--color-blue);
 }
+
+/* AVATAR EDITOR */
+
+.avatarEditor {
+  top: 0;
+  left: 0;
+  background-color: transparent;
+  overflow: hidden;
+  border-radius: 10rem;
+  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.2);
+}

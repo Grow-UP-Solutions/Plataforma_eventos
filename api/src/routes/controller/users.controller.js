@@ -123,81 +123,6 @@ router.get('/existsEmail/:email', async (req, res) => {
   }
 });
 
-/* FACEBOOK */
-
-router.get(
-  '/login/facebook',
-  passport.authenticate('auth-facebook', {
-    prompt: 'select_account',
-    session: false,
-    scope: ['public_profile', 'email'],
-  })
-);
-
-router.get(
-  '/login/facebook/callback',
-  passport.authenticate('auth-facebook', {
-    failureRedirect: '/login/facebook',
-    session: false,
-  }),
-  (req, res) => {
-    try {
-      const userString = JSON.stringify(req.user);
-      res.send(
-        `<!DOCTYPE html> 
-        
-      <html lang="en">
-      <body>
-      </body>
-      <script>
-      window.opener.postMessage(${userString}, '${process.env.CLIENT_URL}')
-      </script>
-      </html>
-      `
-      );
-    } catch (error) {
-      return res.status(500).json({ message: error.message });
-    }
-  }
-);
-
-/* GOOGLE */
-
-router.get(
-  '/login/google',
-  passport.authenticate('google', {
-    prompt: 'select_account',
-    session: false,
-    scope: ['email', 'profile'],
-  })
-);
-
-router.get(
-  '/login/google/callback',
-  passport.authenticate('google', {
-    failureRedirect: '/login/google',
-    session: false,
-  }),
-  (req, res) => {
-    try {
-      const userString = JSON.stringify(req.user);
-      res.send(
-        `<!DOCTYPE html> 
-        
-      <html lang="en">
-      <body>
-      </body>
-      <script>
-      window.opener.postMessage(${userString}, '${process.env.CLIENT_URL}')
-      </script>
-      </html>
-      `
-      );
-    } catch (error) {
-      return res.status(500).json({ message: error.message });
-    }
-  }
-);
 /**/ //////////////Rutas POST/////////////// */
 
 router.post('/acceptOrRejectedOrganizer', async (req, res) => {
@@ -471,6 +396,15 @@ router.put('/update/:id', async (req, res) => {
   } catch (error) {
     return res.status(500).json({ ERROR_USER_UPDATE: error.message });
   }
+});
+
+router.put('/updateUserPicture/:id', async (req, res) => {
+  const { id } = req.params;
+  const { urlImage } = req.body;
+  const user = await getUser(id);
+  user.userpicture = urlImage;
+  await user.save();
+  res.json({ success: true });
 });
 
 router.post('/isSamePassword/:id', async (req, res) => {

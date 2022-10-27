@@ -38,6 +38,10 @@ const CheckSolicitudOrganizer = () => {
         });
       } else if (message === 'Rechazado') {
         setModalResultMessage(`Usted ha rechazado la solicitud de organizador a ${userData.name}.`);
+        setUserData({
+          ...userData,
+          referenciaZ: '',
+        });
       }
     } catch (error) {
       console.log(error);
