@@ -76,12 +76,12 @@ const Messages = () => {
       text: newMessage,
       conversationId: currentChat._id,
     };
-
     try {
       const res = await eventsApi.post("/message/create", message);
       setMessages([...messages, res.data]);
       setNewMessage("");
-    } catch (err) {
+    } 
+    catch (err) {
       console.log(err);
     }
   };  
@@ -150,7 +150,7 @@ const Messages = () => {
                         <div key={i} ref={scrollRef}>
                           <Message message={m} own={m.sender === id} />
                         </div>
-                      ))
+                      )).reverse()
                     }
                   </div> 
                 </> ) : 
