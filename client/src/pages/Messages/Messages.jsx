@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styles from './Messages.module.css';
 import { FiMail, FiArchive, FiStar } from 'react-icons/fi';
 import eventsApi from "../../axios/eventsApi";
@@ -17,7 +17,6 @@ const Messages = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [result, setResult] = useState({});
-  const scrollRef = useRef();
 
   useEffect(() => {
     const getConversations = async () => {
@@ -58,15 +57,6 @@ const Messages = () => {
   useEffect(() => {
     scroll.scrollToTop();
   }, []);
-
-  /* useEffect(() => {
-    if (messages.length > 0) {
-      scrollRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-    else {
-      console.log('ref:', scrollRef.current)
-    }
-  }, [messages]); */
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -147,7 +137,7 @@ const Messages = () => {
                   <div>
                     {
                       messages.map((m, i) => (
-                        <div key={i} ref={scrollRef}>
+                        <div key={i} >
                           <Message message={m} own={m.sender === id} />
                         </div>
                       )).reverse()
