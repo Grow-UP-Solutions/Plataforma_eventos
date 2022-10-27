@@ -28,7 +28,7 @@ async function updateOneEventDb(id, newEvent) {
       return await Events.findByIdAndUpdate({ _id: id }, newEvent, { new: 1 })
          .populate({ path: "organizer" })
          .populate({ path: "categories" })
-         .populate({ path: "opinions" });
+         
    } catch (error) {
       throw new Error(error.message);
    }
