@@ -41,6 +41,8 @@ import LaunchOutlinedIcon from '@mui/icons-material/LaunchOutlined';
 import WarningOutlinedIcon from '@mui/icons-material/WarningOutlined';
 import axios from "axios";
 import { AuthContext } from '../../context/auth/AuthContext';
+import eventsApi from '../../axios/eventsApi';
+
 
 
 
@@ -56,31 +58,35 @@ const EventCreateForm = () => {
   const dispatch = useDispatch()
 
  
-  useEffect(() => {
-    const myUser = async () => {
-      try {
-        const json = await axios.get("https://plataformaeventos-production-6111.up.railway.app/users/" + id);
-        setResult(json.data);
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    myUser();
-  }, []);
+   //--------------------------------------------------//
+  //               USUARIO              //
 
   const { user } = useContext(AuthContext);
   const id = user.uid;
-  const [result, setResult] = useState({});
-  console.log('user:',user)
-  console.log('id:',id)
-  console.log('result:',result)
+  const [userData, setUserData] = useState({});
 
-  
+ 
+  useEffect(() => {
+    getUserData();
+   }, [user]);
 
+  useEffect(() => {}, [userData]);
+ 
 
+<<<<<<< HEAD
 =======
   const user = '';
 >>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
+=======
+  const getUserData = async () => {
+      let userResult = {}
+      if(user.uid){
+        userResult= await eventsApi.get(`/users/${user.uid}`);
+        setUserData(userResult.data)
+      }
+    }
+   
+>>>>>>> Guille
 
   //--------------------------------------------------//
   //               DEPARTAMENTOS              //
@@ -700,7 +706,7 @@ const EventCreateForm = () => {
   const location = `${post.municipio}, ${post.departamento}`;
   const apiKey = process.env.REACT_APP_GOOGLEMAPS_API_KEY;
   const zoom = '14';
-  const size = '400x300';
+  const size = '200x100';
   const url = `https://maps.googleapis.com/maps/api/staticmap?center=${location}&zoom=${zoom}&size=${size}&key=${apiKey}`;
 
   //--------------------------------------------------//
@@ -2688,6 +2694,7 @@ const EventCreateForm = () => {
                         </div>
                         <hr className={styles.hr}></hr>
                       </div>
+<<<<<<< HEAD
                     ))}
                   </div>
                   {errors.dates && (
@@ -2695,6 +2702,70 @@ const EventCreateForm = () => {
                   )}
                   {errors.cupos && (
                     <p className={styles.errors}>{errors.cupos}</p>
+=======
+
+
+
+                      <div className={styles.contStart}>                
+                        <label>Comienza</label>
+                        {failedSubmit && errors.dates?
+                          <input 
+                          type="time" 
+                          name="start" 
+                          value={element.start || ""} 
+                          onChange={e => handleChanges(index, e)} 
+                          required
+                          />
+                          :
+                          <input 
+                          type="time" 
+                          name="start" 
+                          value={element.start || ""} 
+                          onChange={e => handleChanges(index, e)} 
+                          step="900"
+                          />
+                        }
+                      </div>
+
+                      <div className={styles.contStart}>
+                       <label>End</label>
+                      {failedSubmit && errors.dates?
+                        <input 
+                        type="time" 
+                        name="end" 
+                        value={element.end || ""} 
+                        onChange={e => handleChanges(index, e)} 
+                        required
+                        />                      
+                        :
+                        <input 
+                        type="time" 
+                        name="end" 
+                        value={element.end || ""} 
+                        onChange={e => handleChanges(index, e)} 
+                        />
+                      }                 
+                      </div>
+
+                      {
+                        post.dates.length>1?
+                          <button lassName={styles.addDelete}  type="button"  onClick={() => removeFormFields(index)}>
+                            <img className={styles.basquet} src={basquet} alt="n" />
+                          </button> 
+                        : null
+                      }
+                    </div>
+                    <hr className={styles.hr}></hr> 
+                   </div>
+                  ))}
+
+                </div>
+                {errors.dates && (
+                <p className={styles.errors}>{errors.dates}</p>
+                )} 
+                {errors.cupos && (
+                  <p className={styles.errors}>{errors.cupos}</p>
+>>>>>>> Guille
                   )}
 
                   <div>
@@ -2951,7 +3022,11 @@ const EventCreateForm = () => {
                                 <hr className={styles.hr}></hr>
                                 {/* Orgna */}
 <<<<<<< HEAD
+<<<<<<< HEAD
                                 {user?
+=======
+                                {userData?
+>>>>>>> Guille
                                 <div className={styles.containerOrg}>
                                   <div className={styles.containerTopOrg}>
                                     <p className={styles.titleOrg}>Organizador</p>
@@ -2963,14 +3038,16 @@ const EventCreateForm = () => {
                                     </div>
                                   </div>
                                   <div className={styles.orgContOrg}>
-                                    {/* <Link
+                                    {userData.userpicture?
+                                   <Link
                                       className={styles.linkOrg}
                                       >
-                                      <img className={styles.orgImgOrg} src={user.picture} alt="N" />
-                                    </Link> */}
+                                      <img className={styles.orgImgOrg} src={userData.userpicture} alt="N" />
+                                    </Link> 
+                                    :''}
 
                                     <div className={styles.orgSubContOrg}>
-                                          <p className={styles.orgNameOrg}>{user.name}</p>
+                                          <p className={styles.orgNameOrg}>{userData.name}</p>
                                           <p className={styles.orgMembershipOrg}>
                                             Miembro desde *falta valor real*
                                           </p>
@@ -2986,6 +3063,7 @@ const EventCreateForm = () => {
                                         Organizador
 >>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
                                       </p>
+<<<<<<< HEAD
                                       <div className={styles.btnOrg}>
                                         <LocalPostOfficeIcon
                                           sx={{
@@ -3030,6 +3108,15 @@ const EventCreateForm = () => {
                             </div>
                           </div>
                         )}
+=======
+                                      <button className={styles.button2Org}>
+                                        Otros eventos organizados por {userData.name}
+                                      </button>
+                                </div>
+                                :'No hay usuario todavia'}                                
+                             </div>                                           
+                          </div>                                   
+>>>>>>> Guille
                       </div>
 
                       <div>

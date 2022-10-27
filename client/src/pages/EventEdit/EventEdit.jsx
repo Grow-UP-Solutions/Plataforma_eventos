@@ -49,7 +49,6 @@ import 'swiper/modules/pagination/pagination.min.css';
 import 'swiper/modules/scrollbar/scrollbar.min.css';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-
 import { Rating } from '@mui/material';
 import { IoLocationOutline } from 'react-icons/io5';
 import { iconArrowLeft, iconArrowRight } from '../../assets/imgs';
@@ -59,6 +58,8 @@ import LaunchOutlinedIcon from '@mui/icons-material/LaunchOutlined';
 import WarningOutlinedIcon from '@mui/icons-material/WarningOutlined';
 import axios from "axios";
 import { AuthContext } from '../../context/auth/AuthContext';
+import { getEventsCopy } from '../../redux/actions';
+import eventsApi from '../../axios/eventsApi';
 
 
 
@@ -73,30 +74,51 @@ const EventCreateForm = () => {
 <<<<<<< HEAD
   const Swal = require('sweetalert2')
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getEventsCopy());
+  }, []);
+
+
+
+  const eventId = '634579fb73448d0f8739d4bc'
   const eventos = useSelector((state) => state.events)
-  const allEvents=[...eventos]
-  console.log('allEvents:',allEvents[0])
+  const allEvents = [...eventos]
+  const eventDetails = allEvents.filter(e=>e._id === eventId)[0]
+  console.log('eventDetails:',eventDetails)
+
+
+
+  const allEventsCopy = useSelector((state) => state.eventsCopy)
+  const EventCopy= allEventsCopy.filter(e=>e._id === eventId)
+ 
+
+  
+
+
 
   //--------------------------------------------------//
   //               USUARIO              //
-  useEffect(() => {
-    const myUser = async () => {
-      try {
-        const json = await axios.get("https://plataformaeventos-production-6111.up.railway.app/users/" + id);
-        setResult(json.data);
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    myUser();
-  }, []);
-
   const { user } = useContext(AuthContext);
   const id = user.uid;
-  const [result, setResult] = useState({});
-  console.log('user:',user)
-  console.log('id:',id)
-  console.log('result:',result)
+  const [userData, setUserData] = useState({});
+
+ 
+  useEffect(() => {
+    getUserData();
+   }, [user]);
+
+  useEffect(() => {}, [userData]);
+ 
+
+  const getUserData = async () => {
+      let userResult = {}
+      if(user.uid){
+        userResult= await eventsApi.get(`/users/${user.uid}`);
+        setUserData(userResult.data)
+      }
+    }
+   
 
  
 
@@ -130,6 +152,7 @@ const EventCreateForm = () => {
 
   const departamentos = [];
 
+<<<<<<< HEAD
   const elementExist = (departamentosFilter, value) => {
     let i = 0;
     while (i < departamentosFilter.length) {
@@ -138,6 +161,36 @@ const EventCreateForm = () => {
     }
     return false;
   };
+=======
+ const elementExist = (departamentosFilter, value) => {
+  let i = 0;
+  while (i < departamentosFilter.length) {
+    if (departamentosFilter[i].departamento == value) return i;
+    i++;
+  }
+  return false;
+}
+
+departamentosFilter.forEach((e) => {
+  let i = elementExist(departamentos, e.departamento);
+  if (i === false) {
+    departamentos.push({
+      "departamento": e.departamento,
+      "municipio": [e.municipio]
+    });
+  } else {
+    departamentos[i].municipio.push(e.municipio);
+  }
+});
+
+const capitales = ['Medellín','Tunja','Montería','Quibdó','Pasto' ,'Bucaramanga','Villavicencio' ,'Barranquilla','Cartagena de Indias','Manizales','Florencia','Popayán' ,'Valledupar' ,'Bogotá','Neiva','Riohacha' ,'Santa Marta','Armenia','Pereira' ,'Sincelejo','Ibagué','Arauca','Yopal','Mocoa' ,'Leticia','Inírida','Mitú', 'Puerto Carreño', 'San José del Guaviare','San Andrés','Bogota','Cúcuta','Santiago de Cali']
+
+
+
+const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, capital: capitales[indice]}))
+
+
+>>>>>>> Guille
 
   departamentosFilter.forEach((e) => {
     let i = elementExist(departamentos, e.departamento);
@@ -235,7 +288,7 @@ const EventCreateForm = () => {
     idOrganizer: '632cbed4f208f44f5333af48',
 >>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
     title: '',
-    categories: [],
+    categories: '',
     otherCategorie: '',
     shortDescription: '',
     longDescription: '',
@@ -267,29 +320,29 @@ const EventCreateForm = () => {
   });
 
   useEffect(() => {
-    if(allEvents[0]){
+    if(eventDetails){
     setPost({
       ...post,
       idOrganizer:'632cbed4f208f44f5333af48',
-      title: allEvents[0].title,
-      categories: [],
-      otherCategorie:'',
-      shortDescription: allEvents[0].shortDescription,
-      longDescription:  allEvents[0].longDescription,
-      pictures: [],
-      online:  allEvents[0].online,
-      link:  allEvents[0].link,
-      departamento:  allEvents[0].departamento,
-      municipio:  allEvents[0].municipio,
-      direccion:  allEvents[0].direccion,
-      barrio:  allEvents[0].barrio,
-      specialRequires:  allEvents[0].specialRequires,
-      dates: allEvents[0].dates,
+      title: eventDetails.title,
+      categories: eventDetails.category,
+      otherCategorie:eventDetails.otherCategorie,
+      shortDescription: eventDetails.shortDescription,
+      longDescription:  eventDetails.longDescription,
+      pictures: eventDetails.pictures,
+      online:  eventDetails.online,
+      link:  eventDetails.link,
+      departamento:  eventDetails.departamento,
+      municipio:  eventDetails.municipio,
+      direccion:  eventDetails.direccion,
+      barrio:  eventDetails.barrio,
+      specialRequires:  eventDetails.specialRequires,
+      dates: eventDetails.dates,
       isPublic:true,
       revision:false
     })
   }
-  },[allEvents[0]])
+  },[eventDetails])
 
  
 
@@ -405,6 +458,7 @@ const EventCreateForm = () => {
       errors.title = 'No puedes ingresar un numero';
     }
 
+<<<<<<< HEAD
     if (!post.categories[0]) {
       errors.categories = true;
     }
@@ -417,6 +471,19 @@ const EventCreateForm = () => {
     if (!post.otherCategorie.match(letras)) {
       errors.otherCategorie = 'Solo se puede agregar una palabra'
     }
+=======
+    // if (!post.categories[0]) {
+    //   errors.categories = true
+    // }
+
+    // if (post.categories.length > 3) {
+    //   errors.categories = 'Solo podes seleccionar 3 categorias'
+    // }
+
+    // if (!post.otherCategorie.match(letras)) {
+    //   errors.otherCategorie = 'Solo se puede agregar una palabra'
+    // }
+>>>>>>> Guille
 
      
 =======
@@ -628,33 +695,30 @@ const EventCreateForm = () => {
       }
     }
 
-    if(allEvents.length>0){
+    if(allEventsCopy.length>0){
         for (var i=0; i<post.dates.length;i++ ){
-          for(var j=0; j<allEvents[0].dates.length;j++ ){
-          if (post.dates[i]._id === allEvents[0].dates[j]._id && post.dates[i].sells>0  && post.dates[i].cupos < allEvents[0].dates[j].sells) {
-            console.log('entre')
-            console.log('allEvents[0].dates[j].sells',allEvents[0].dates[j].sells)
-            console.log(' post.dates[i].cupos:', post.dates[i].cupos)
-            console.log(' post.dates[i]._id:', post.dates[i]._id)
-            console.log(' allEvents[0].dates[j]._id', allEvents[0].dates[j]._id)
-            console.log('post.dates[i].sells', post.dates[i].sells)
-            errors.cupos= true
-            return swal({
-              title: `Ya se vendieron ${allEvents[0].dates[j].sells}  cupos. El número no puede ser inferior a los cupos ya vendidos `,
-              icon: "warning",
-              dangerMode: true,
-            })
+          for(var j=0; j<EventCopy[0].dates.length;j++ ){
+          if (post.dates[i]._id === EventCopy[0].dates[j]._id && post.dates[i].sells>0  && post.dates[i].cupos < EventCopy[0].dates[j].sells) {
+            errors.cupos= `Ya se vendieron ${EventCopy[0].dates[j].sells}  cupos. El número no puede ser inferior a los cupos ya vendidos `
+            // return swal({
+            //   title: `Ya se vendieron ${EventCopy[0].dates[j].sells}  cupos. El número no puede ser inferior a los cupos ya vendidos `,
+            //   icon: "warning",
+            //   dangerMode: true,
+            // })
             }
-            else  if (post.dates[i]._id === allEvents[0].dates[j]._id && post.dates[i].sells>0 && post.dates[i].price < allEvents[0].dates[j].price) {
-            console.log('entre')
-            console.log('allEvents[0].dates[j].price:',j, allEvents[0].dates[j].price,)       
-            console.log(' post.dates[i].price:', i , post.dates[i].price)
-            errors.price= true
-            return swal({
-              title: `Ya se vendieron ${allEvents[0].dates[j].sells}  cupos. El número no puede ser inferior al de los cupos ya vendidos `,
-              icon: "warning",
-              dangerMode: true,
-            })
+            else  if (post.dates[i]._id === EventCopy[0].dates[j]._id && post.dates[i].sells>0 && post.dates[i].price < EventCopy[0].dates[j].price) {
+              console.log('post.dates[i]._id:',i,post.dates[i]._id)
+              console.log('EventCopy[0].dates[j]._id:',j,EventCopy[0].dates[j]._id)
+              console.log('post.dates[i].sells:',i,post.dates[i].sells)
+              console.log('post.dates[i].price:',i,post.dates[i].price)
+              console.log(' EventCopy[0].dates[j].price:',j, EventCopy[0].dates[j].price)
+             
+            errors.price= `Ya se vendieron ${EventCopy[0].dates[j].sells}  cupos. El número no puede ser inferior al de los cupos ya vendidos `
+            // return swal({
+            //   title: `Ya se vendieron ${EventCopy[0].dates[j].sells}  cupos. El número no puede ser inferior al de los cupos ya vendidos `,
+            //   icon: "warning",
+            //   dangerMode: true,
+            // })
             }
           }
         }
@@ -689,7 +753,6 @@ const EventCreateForm = () => {
         }
         }   
     }
-    
     return errors
 =======
     for (var i = 0; i < post.dates.length; i++) {
@@ -751,8 +814,33 @@ const EventCreateForm = () => {
   //--------------------------------------------------//
   //               POST - CATEGORIA                   //
 
+<<<<<<< HEAD
   const [seleccionados, setSeleccionados] = useState([]);
   const [changed, setChanged] = useState(false);
+=======
+  const categorias =  categories.map(el => {
+        return {
+            name: el.name,
+            check : 'false',       
+        }
+    })
+  
+    for(var i=0;i<categorias.length;i++){
+      for(var j=0;j<post.categories.length;j++){
+        if(categorias[i].name===post.categories[j].name){
+          categorias[i].check = 'true'
+          console.log('categorias[i].name:',categorias[i].name)
+        }
+      }
+    }
+
+
+ console.log('categorias:',categorias)
+  
+  const [seleccionados, setSeleccionados] = useState([])
+  const [changed, setChanged] = useState(false)
+
+>>>>>>> Guille
 
   function handleCategories(e) {
     var categorieName = e.target.value;
@@ -906,7 +994,7 @@ const EventCreateForm = () => {
   const location = `${post.municipio}, ${post.departamento}`;
   const apiKey = 'AIzaSyBr-FUseqSbsY6EMqIGNnGmegD39R--nBA';
   const zoom = '14';
-  const size = '400x300';
+  const size = '200x100';
   const url = `https://maps.googleapis.com/maps/api/staticmap?center=${location}&zoom=${zoom}&size=${size}&key=${apiKey}`;
 
 
@@ -936,17 +1024,16 @@ const EventCreateForm = () => {
       }
     
       for (var i=0; i<post.dates.length;i++ ){
-        for(var j=0; j<allEvents[0].dates.length;j++ ){
-          if(post.dates[i]._id === id && allEvents[0].dates[j]._id===id && post.dates[i].sells>0 && post.dates[i].start !== allEvents[0].dates[j].start){
-            console.log('post.dates[i].sells:',i,post.dates[i].sells)
-            // console.log('allEvents[0].dates[j].sells:',j,allEvents[0].dates[j].sells)
-            console.log('post.dates[i].start:',i,post.dates[i].start)
-            console.log('allEvents[0].dates[j].start:',i,allEvents[0].dates[j].start)
+        for(var j=0; j<EventCopy[0].dates.length;j++ ){
+          if(post.dates[i]._id === id && EventCopy[0].dates[j]._id===id && post.dates[i].sells>0 && post.dates[i].start !== EventCopy[0].dates[j].start){
             return Swal.fire({
-              title: 'Texto &&&&&&&&&&, ver sección &&&& en Guía del Organizador. Si procedes, es importante que le informes de inmediato sobre este cambio a los Asistentes.',
+              html:
+              'Texto &&&&&&&&&&, ' +
+              '<a href="/user/profile" target="_blank">ver sección &&&& en Guía del Organizador</a> ' +
+              '. Si procedes, es importante que le informes de inmediato sobre este cambio a los Asistentes.',
               showDenyButton: true,
               showCancelButton: false,
-              confirmButtonText: 'Cambiar hora inicio',
+              confirmButtonText: 'Cambiar hora',
               denyButtonText: `Cerrar`,
             })
             .then((result)=>{        
@@ -956,19 +1043,22 @@ const EventCreateForm = () => {
                   dates:newFechas
                 }) 
               }else if(result.isDenied){
-                newFechas[i][e.target.name] = allEvents[0].dates[j].start 
+                newFechas[i][e.target.name] = EventCopy[0].dates[j].start 
                 setPost({
                   ...post,
                   dates:newFechas
                 }) 
               }
             })        
-          } else if(post.dates[i]._id === id && allEvents[0].dates[j]._id===id && post.dates[i].sells>0 && post.dates[i].end !== allEvents[0].dates[j].end){
+          } else if(post.dates[i]._id === id && EventCopy[0].dates[j]._id===id && post.dates[i].sells>0 && post.dates[i].end !== EventCopy[0].dates[j].end){
             return Swal.fire({
-              title: 'Texto &&&&&&&&&&, ver sección &&&& en Guía del Organizador. Si procedes, es importante que le informes de inmediato sobre este cambio a los Asistentes.',
+              html:
+                'Texto &&&&&&&&&&, ' +
+                '<a href="/user/profile" target="_blank">ver sección &&&& en Guía del Organizador</a> ' +
+                '. Si procedes, es importante que le informes de inmediato sobre este cambio a los Asistentes.',
               showDenyButton: true,
               showCancelButton: false,
-              confirmButtonText: 'Cambiar hora fin',
+              confirmButtonText: 'Cambiar hora',
               denyButtonText: `Cerrar`,
             })
             .then((result)=>{        
@@ -978,16 +1068,19 @@ const EventCreateForm = () => {
                   dates:newFechas
                 }) 
               }else if(result.isDenied){
-                newFechas[i][e.target.name] = allEvents[0].dates[j].end 
+                newFechas[i][e.target.name] = EventCopy[0].dates[j].end 
                 setPost({
                   ...post,
                   dates:newFechas
                 }) 
               }
             })        
-          } else if(post.dates[i]._id === id && allEvents[0].dates[j]._id===id && post.dates[i].sells>0 && post.dates[i].date !== allEvents[0].dates[j].date){
+          } else if(post.dates[i]._id === id && EventCopy[0].dates[j]._id===id && post.dates[i].sells>0 && post.dates[i].date !== EventCopy[0].dates[j].date){
             return Swal.fire({
-              title: 'Texto &&&&&&&&&&, ver sección &&&& en Guía del Organizador. Si procedes, es importante que le informes de inmediato sobre este cambio a los Asistentes.',
+              html:
+              'Texto &&&&&&&&&&, ' +
+              '<a href="/user/profile" target="_blank">ver sección &&&& en Guía del Organizador</a> ' +
+              '. Si procedes, es importante que le informes de inmediato sobre este cambio a los Asistentes.',
               showDenyButton: true,
               showCancelButton: false,
               confirmButtonText: 'Cambiar fecha',
@@ -1000,7 +1093,7 @@ const EventCreateForm = () => {
                   dates:newFechas
                 }) 
               }else if(result.isDenied){
-                newFechas[i][e.target.name] = allEvents[0].dates[j].date 
+                newFechas[i][e.target.name] = EventCopy[0].dates[j].date 
                 setPost({
                   ...post,
                   dates:newFechas
@@ -1132,6 +1225,75 @@ const EventCreateForm = () => {
     }
   };
 
+<<<<<<< HEAD
+=======
+
+    let removeFromPublic = (i , id ) => {
+     
+      let newFechas = [...post.dates];
+      newFechas[i].isPublic = false;
+         if( newFechas[i].sells === 0){
+            return swal({
+              title: "Esta acción quitará esta fecha de publicados y ya no será visible para el público. ",
+              icon: "warning",
+              buttons:['Cancelar acción','Continuar'],
+              dangerMode: true,
+            })
+            .then((continuar)=>{
+              if(continuar){            
+                setPost({
+                  ...post,
+                  dates:newFechas 
+                })
+              }
+            })  
+          }else  if( newFechas[i].sells > 0){
+            return Swal.fire({
+              html:
+              `Ya hay ${ newFechas[i].sells} cupo(s) comprado(s) para esta fecha, si la quitas de publicados el dinero será devuelto a los compradores. Esta devolución genera unos costos los cuales deberas asumir.` +
+              '<a href="/user/profile" target="_blank">Ver sección &&&&&&&&&& en Términos y Condiciones.</a> ' +
+              'Deseas quitar esta fecha de publicados? ',
+              width: 600,
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonText: 'Continuar',
+              dangerMode: true,
+            })
+            .then((result) => {
+              if (result.isConfirmed) {
+                setPost({
+                  ...post,
+                  dates:newFechas 
+                })
+              } 
+            })
+          }
+      }
+
+      //También se borrará en esta pagina los datos relacionados a esta fecha: hora, número de cupos, precio por cupo y códigos de descuento si alguno.
+
+      let becomePublic = (i , id ) => {
+        let newFechas = [...post.dates];
+        newFechas[i].isPublic = true;
+        return swal({
+          title: "Esta acción agregara esta fecha a publicados. ",
+          icon: "warning",
+          buttons:['Cancelar acción','Continuar'],
+          dangerMode: true,
+        })
+        .then((continuar)=>{
+          if(continuar){            
+            setPost({
+              ...post,
+              dates:newFechas 
+            })
+          }
+        })  
+
+      }
+      
+  
+>>>>>>> Guille
   let addFormFields = () => {
     setPost({
       ...post,
@@ -1156,6 +1318,7 @@ const EventCreateForm = () => {
 
   let removeFormFields = (i, id) => {
     let newFechas = [...post.dates];
+<<<<<<< HEAD
     newFechas.splice(i, 1);
     for (var i = 0; i < post.dates.length; i++) {
       for (var j = 0; j < allEvents[0].dates.length; j++) {
@@ -1257,7 +1420,51 @@ const EventCreateForm = () => {
     }
 <<<<<<< HEAD
   }  
+=======
+      newFechas.splice(i, 1)
+      for(var i = 0; i<post.dates.length; i++){
+      if( post.dates[i]._id === id && post.dates[i].sells === 0){
+        return swal({
+          title: "Se borrara esta fecha y los datos relacionados a la misma: hora, número de cupos, precio por cupo y códigos de descuento si alguno. ",
+          icon: "warning",
+          buttons:['Cancelar acción','Continuar'],
+          dangerMode: true,
+        })
+        .then((continuar)=>{
+          if(continuar){            
+            setPost({
+              ...post,
+              dates:newFechas 
+            })
+          }
+        })  
+      }else  if( post.dates[i]._id === id && post.dates[i].sells > 0){
+        return Swal.fire({
+          html:
+          `Ya hay ${ newFechas[i].sells} cupo(s) comprado(s) para esta fecha, si la quitas de publicados el dinero será devuelto a los compradores. Esta devolución genera unos costos los cuales deberas asumir.` +
+          '<a href="/user/profile" target="_blank">Ver sección &&&&&&&&&& en Términos y Condiciones.</a> ' +
+          'Deseas quitar esta fecha de publicados? ',
+          width: 600,
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: 'Continuar',
+          dangerMode: true,
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            setPost({
+              ...post,
+              dates:newFechas 
+            })
+          } 
+        })
+      }
+    }
+>>>>>>> Guille
   }
+
+
+
  
   var fecha = new Date();
   var anio = fecha.getFullYear();
@@ -1378,7 +1585,7 @@ const EventCreateForm = () => {
                 idOrganizer:id
               })     
             
-          dispatch(postEvent(post,id))
+          //dispatch(postEvent(post,id))
           swal("Tu evento ha sido publicado ", {
             icon: "success",
           });
@@ -1414,9 +1621,10 @@ const EventCreateForm = () => {
              revision:false,
             isPublic:true
        })
+         //navigate("/user/profile" )
         } 
       });
-    } else if(allEvents[0]===post.dates){
+    } else if(eventDetails===post.dates){
       swal(
        "No has hecho ninguna edición "    
       )
@@ -1485,7 +1693,7 @@ const EventCreateForm = () => {
                 idOrganizer:id
               })     
             
-          dispatch(postEvent(post,id))
+          //dispatch(postEvent(post,id))
           swal("Tu evento ha sido publicado ", {
             icon: "success",
           });
@@ -1521,6 +1729,7 @@ const EventCreateForm = () => {
              revision:false,
             isPublic:true
        })
+       //navigate("/user/profile" )
         } 
       }) 
 =======
@@ -1821,17 +2030,26 @@ const EventCreateForm = () => {
                */}
 >>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
 
+<<<<<<< HEAD
                 {categories.map((categorie) => (
+=======
+                {categorias.map ((categoria) => (
+>>>>>>> Guille
                   <div className={styles.checks}>
                     <label className={styles.labelsChecks}>
                       <input
                         className={styles.checkBox}
+<<<<<<< HEAD
                         type='checkbox'
                         value={categorie.name}
+=======
+                        type="checkbox"
+                        value={categoria.name}
+>>>>>>> Guille
                         onChange={(e) => handleCategories(e)}
-                        defaultChecked={false}
+                        defaultChecked={categoria.check==='true'}
                       />
-                      {categorie.name}
+                      {categoria.name}
                     </label>
                   </div>
                 ))}
@@ -2814,6 +3032,8 @@ const EventCreateForm = () => {
                           min={fechaMinima}                       
                           />                     
                           }
+                          <p>{element.dateFormated}</p>
+                          <p>{element.date}</p>
                           
                       </div>
 
@@ -2855,17 +3075,41 @@ const EventCreateForm = () => {
                         value={element.end || ""} 
                         onChange={e => handleChanges(index, e , element._id)}
                         />
-                      }                 
+                      }      
+                      
+                                 
                       </div>
 
                       {
-                        index ? 
-                          <button lassName={styles.addDelete}  type="button"  onClick={() => removeFormFields(index , element._id)}>
+                        element.isPublic===true ? 
+                          <button className={styles.removePublic} type="button"  onClick={() => removeFromPublic(index, element._id)}>
+                            Quitar de Publicados
+                          </button> 
+                        : <button className={styles.removePublic} type="button"  onClick={() => becomePublic(index, element._id)}>
+                            Agregar a Publicados
+                          </button> 
+                      }
+                    
+
+                      {post.dates.length>1?
+                      
+                          <button className={styles.addDelete}  type="button"  onClick={() => removeFormFields(index , element._id)}>
                             <img className={styles.basquet} src={basquet} alt="n" />
                           </button> 
-                        : null
+                        :null
                       }
                     </div>
+                    {errors.dates && (
+                      <p className={styles.errors}>{errors.dates}</p>
+                      )} 
+                      {errors.cupos && (
+                        <p className={styles.errors}>{errors.cupos}</p>
+                        )}
+
+                    {errors.price? 
+                      <p className={styles.errors}>{errors.price}</p>
+                    : null}   
+
                     <hr className={styles.hr}></hr> 
                    </div>
                   ))}
@@ -2890,6 +3134,7 @@ const EventCreateForm = () => {
                         )}
                       </div>
 
+<<<<<<< HEAD
                       <div className={styles.contStart}>
                         <label>Comienza</label>
                         {failedSubmit && errors.dates ? (
@@ -2962,6 +3207,10 @@ const EventCreateForm = () => {
               <hr className={styles.hr}></hr>
 
 <<<<<<< HEAD
+=======
+                </div>
+                
+>>>>>>> Guille
           
 
           <div  >
@@ -3167,7 +3416,7 @@ const EventCreateForm = () => {
                                 </div>
                                 <hr className={styles.hr}></hr>   
                                 {/* Orgna */}
-                                {user?
+                                {userData?
                                 <div className={styles.containerOrg}>
                                   <div className={styles.containerTopOrg}>
                                     <p className={styles.titleOrg}>Organizador</p>
@@ -3179,14 +3428,16 @@ const EventCreateForm = () => {
                                     </div>
                                   </div>
                                   <div className={styles.orgContOrg}>
-                                    {/* <Link
+                                  {userData.userpicture?
+                                   <Link
                                       className={styles.linkOrg}
                                       >
-                                      <img className={styles.orgImgOrg} src={user.picture} alt="N" />
-                                    </Link> */}
+                                      <img className={styles.orgImgOrg} src={userData.userpicture} alt="N" />
+                                    </Link> 
+                                    :''}
 
                                     <div className={styles.orgSubContOrg}>
-                                          <p className={styles.orgNameOrg}>{user.name}</p>
+                                          <p className={styles.orgNameOrg}>{userData.name}</p>
                                           <p className={styles.orgMembershipOrg}>
                                             Miembro desde *falta valor real*
                                           </p>
@@ -3196,7 +3447,7 @@ const EventCreateForm = () => {
                                         *descipcion*
                                       </p>
                                       <button className={styles.button2Org}>
-                                        Otros eventos organizados por {user.name}
+                                        Otros eventos organizados por {userData.name}
                                       </button>
                                 </div>
                                 :'No hay usuario todavia'}                                

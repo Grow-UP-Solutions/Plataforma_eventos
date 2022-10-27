@@ -16,6 +16,7 @@ import {
   EventCreate,
   EventCreateForm,
   EventDetails,
+  EventEdit,
   Faq,
   Home,
   Messages,
@@ -29,12 +30,15 @@ import {
   WorkWithUsForm,
   CheckSolicitudOrganizer,
 } from './pages';
+<<<<<<< HEAD
 import EventEdit from './pages/EventEdit/EventEdit';
 <<<<<<< HEAD
 import EventEdit2 from './pages/EventEdit/EventEdit';
 =======
 import EventsOrganizerResult from './pages/EventsOrganizerResult/EventsOrganizerResult';
 >>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
+=======
+>>>>>>> Guille
 import PanelPrivacy from './pages/PanelPrivacy/PanelPrivacy';
 import { getEvents } from './redux/actions';
 
@@ -78,6 +82,7 @@ function App() {
           <Route path="/registrate" element={<Register />} />
           <Route path="/organiza-un-evento" element={<EventCreate />} />
           <Route path="/oganiza-un-evento-form" element={<EventCreateForm />} />
+          <Route path="/oganiza-un-evento-editar" element={<EventEdit />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/categories" element={<CategoriesResult />} />
           <Route path="/workWithUs" element={<WorkWithUs />} />
@@ -92,8 +97,6 @@ function App() {
             path="/cambiarContrasenia/:token"
             element={<ChangePassword />}
           />
-          <Route path="/oganiza-un-evento-editar" element={<EventEdit />} />
-          <Route path="/oganiza-un-evento-editar2" element={<EventEdit2 />} />
         </Routes>
         <div className="container">
           <Footer />
