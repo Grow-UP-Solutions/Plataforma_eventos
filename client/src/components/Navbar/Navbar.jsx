@@ -12,6 +12,7 @@ import logo from '../../assets/imgs/logoNav.svg';
 import eventsApi from '../../axios/eventsApi';
 
 const Navbar = ({ upper }) => {
+  
   const { toggleScreenLogin } = useContext(UIContext);
   const { user, logged, logout } = useContext(AuthContext);
   const { notes, setNotes, msg, setMsg } = useContext(stateContext);
