@@ -2,6 +2,7 @@ const {
   AllCategoyDb,
   OneCategoryDb,
   updateOneCategoryDb,
+  createCategoryDb,
 } = require("../../models/util/functionDB/CategoryDb.js");
 
 async function getAllCategory() {
@@ -9,21 +10,24 @@ async function getAllCategory() {
   return category;
 }
 async function getCategory(name) {
-  const category = OneCategoryDb(name);
+  const category = await OneCategoryDb(name);
   return category;
 }
 async function createCategory(category) {
   try {
     const { name } = category;
-    const categoryDB = OneCategoryDb(name);
-    if (categoryDB) {
-      return "La categoria existe";
+    const categoryDB = await OneCategoryDb(name);
+    console.log(categoryDB)
+    if (!categoryDB) {
+      
+      const categories = await createCategoryDb(category);
+      return categories;
     }
-    const categories = await createCategory(category);
-    console.log("SEcreo");
-    return categories;
+    return "La categoria existe";
+   
   } catch (error) {
-    console.log("FALLO CATEGORY", error);
+    console.log(error.message)
+    throw new Error(error.message);
   }
 }
 async function categoryUpdate(id, newCategory) {

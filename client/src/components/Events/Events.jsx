@@ -10,7 +10,6 @@ import 'swiper/modules/navigation/navigation.min.css';
 import { useSelector } from 'react-redux';
 
 const Events = () => {
-
   const allEvents = useSelector((state) => state.events);
   const allEventsSlice = allEvents.slice(0, 20);
 
@@ -18,18 +17,12 @@ const Events = () => {
     <div className={styles.cardsSection}>
       <p className={styles.titleCards}>Populares</p>
       <div className={styles.cardsCarousel}>
-        <Swiper
-          slidesPerView={4.2}
-          navigation
-          spaceBetween={0}
-          modules={[Navigation]}
-          className={styles.mySwipper}
-        >
+        <Swiper slidesPerView={4.2} navigation spaceBetween={0} modules={[Navigation]} className={styles.mySwipper}>
           {allEventsSlice.length ? (
             allEventsSlice.map((event, index) => {
               return (
                 <SwiperSlide key={event.id}>
-                  <Card event={event} />
+                  <Card event={event} listName={'populares'} />
                 </SwiperSlide>
               );
             })
@@ -52,7 +45,7 @@ const Events = () => {
               return (
                 <SwiperSlide key={event.id}>
                   <div key={index}>
-                    <Card event={event} />
+                    <Card event={event} listName={'week'} />
                   </div>
                 </SwiperSlide>
               );
@@ -76,7 +69,7 @@ const Events = () => {
               return (
                 <SwiperSlide key={index}>
                   <div>
-                    <Card event={event} />
+                    <Card event={event} listName={'fresquitos'} />
                   </div>
                 </SwiperSlide>
               );
@@ -100,7 +93,7 @@ const Events = () => {
               return (
                 <SwiperSlide key={index}>
                   <div>
-                    <Card event={event} />
+                    <Card event={event} listName={'miLista'} />
                   </div>
                 </SwiperSlide>
               );

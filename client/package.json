@@ -18,6 +18,7 @@
     "dotenv": "^16.0.3",
     "node-sass": "^7.0.3",
     "react": "^18.2.0",
+    "react-avatar-editor": "^13.0.0",
     "react-date-range": "^1.4.0",
     "react-dom": "^18.2.0",
     "react-drag-drop-files": "^2.3.7",
@@ -60,5 +61,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "package-name": "git+https://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:x-oauth-basic@github.com/JeanPierHG/Grow-UP-Solutions/Plataforma_eventos.git"
 }

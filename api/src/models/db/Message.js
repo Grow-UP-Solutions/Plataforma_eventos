@@ -11,6 +11,7 @@ const messageSchema = new Schema(
     text: {
       type: String,
     },
+ 
     read: {
       type: Boolean,
       default: false,
@@ -19,6 +20,10 @@ const messageSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    outstanding:{
+      type:Boolean,
+      default:false
+    }
   },
   { timestamps: true }
 );

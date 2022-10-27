@@ -4,12 +4,12 @@ import { AuthContext, authReducer } from './index';
 
 const Auth_INITIAL_STATE = {
   logged: false,
+  rememberMe: false,
   user: {},
 };
 
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, Auth_INITIAL_STATE);
-
   const login = (user) => {
     dispatch({ type: 'Auth - Login', payload: user });
   };
@@ -21,8 +21,6 @@ export const AuthProvider = ({ children }) => {
 
   const checkUserLocalStorage = async () => {
     const userLocalStorage = JSON.parse(localStorage.getItem('user'));
-
-    console.log(userLocalStorage);
 
     if (userLocalStorage) {
       await eventsApi.delete(`/users/delete/${userLocalStorage.uid}`);
@@ -41,10 +39,7 @@ export const AuthProvider = ({ children }) => {
       const { data } = await eventsApi.get('/users/login/renew');
 
       const user = {
-        uid: data.uid,
-        name: data.name,
-        email: data.email,
-        organizer: data.organizer,
+        ...data,
       };
 
       localStorage.setItem('token', data.token);

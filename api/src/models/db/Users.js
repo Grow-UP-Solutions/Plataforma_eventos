@@ -1,15 +1,33 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model } = require('mongoose');
+const Message = require('./Message');
 
 const UserSchema = new Schema({
+  firstName: String,
+  lastName: String,
   name: String,
   nickname: String,
   direction: String,
   phone: String,
   tel: String,
-  document: Number,
+  document: String,
   city: String,
   frontDocument: String,
   backDocument: String,
+  imageRent: String,
+  referenceU: String,
+  referenceZ: String,
+  rating: {
+    type: Number,
+    default: 0,
+  },
+  isDeclarant: {
+    type: Boolean,
+    default: false,
+  },
+  isProfileCompleted: {
+    type: Boolean,
+    default: false,
+  },
   userpicture: {
     type: String,
     default: null,
@@ -33,6 +51,14 @@ const UserSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  isProccessingToOrganizer: {
+    type: Boolean,
+    default: false,
+  },
+  isRejected: {
+    type: Boolean,
+    default: false,
+  },
   isOrganizer: {
     type: Boolean,
     default: false,
@@ -46,19 +72,19 @@ const UserSchema = new Schema({
   myEventsCreated: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Events",
+      ref: 'Events',
     },
   ],
-  myFavourites: [
+  myFavorites: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Events",
+      ref: 'Events',
     },
   ],
   myEventsBooked: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Events",
+      ref: 'Events',
     },
   ],
 
@@ -74,7 +100,6 @@ const UserSchema = new Schema({
       },
       rating: {
         type: Number,
-        default: 0,
       },
       picture: {
         type: String,
@@ -84,11 +109,11 @@ const UserSchema = new Schema({
     },
   ],
   notifications: [
-    {      
+    {
       msg: String,
       date: {
         type: Date,
-        default: Date.now(),
+        timestamps: true,
       },
       read: {
         type: Boolean,
@@ -100,6 +125,12 @@ const UserSchema = new Schema({
       },
     },
   ],
+  message: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: Message,
+    },
+  ],
 });
 
-module.exports = model("Users", UserSchema);
+module.exports = model('Users', UserSchema);

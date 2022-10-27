@@ -1,30 +1,31 @@
 import React, { useContext, useEffect, useState } from 'react';
-import styles from './OrganizerDetails.module.css';
-import { Rating } from '@mui/material';
-import { animateScroll as scroll } from 'react-scroll';
+import eventsApi from '../../axios/eventsApi';
+import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { IoLocationOutline } from 'react-icons/io5';
+import { animateScroll as scroll } from 'react-scroll';
+import { AuthContext } from '../../context/auth/AuthContext';
 import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
+import { Rating } from '@mui/material';
+import { IoLocationOutline } from 'react-icons/io5';
 import AboutOrganizer from '../../components/Organizer/AboutOrganizer.jsx';
 import NextEvents from '../../components/Organizer/NextEvents.jsx';
 import Opinions from '../../components/Organizer/Opinions.jsx';
-import { useSelector } from 'react-redux';
-import axios from "axios";
-import { AuthContext } from '../../context/auth/AuthContext';
-import { getEvents } from '../../redux/actions';
-import { useDispatch } from 'react-redux';
+import styles from './OrganizerDetails.module.css';
+import swal from 'sweetalert';
+import { UIContext } from '../../context/ui';
 
 const OrganizerDetails = () => {
 
   const id = useParams().id;
+  const { user, logged } = useContext(AuthContext);
+  const { getRatingOrganizer, ratingOrg } = useContext(UIContext);
+  const navigate = useNavigate();
   const [component, setComponent] = useState('');
   const [nextEvent, setNextEvent] = useState({});
   const [conversation, setConversation] = useState({});
-  const { user, logged } = useContext(AuthContext);
-  console.log('user:', user);
-  const navigate = useNavigate();
-  const allEvents = useSelector((state) => state.events);
-  const userDetail = allEvents.filter((e) => e.organizer._id === id)[0];
+  const [userDetail, setUserDetail] = useState({
+    organizer: {},
+  });
 
   useEffect(() => {
     obtenerDatos();
@@ -35,27 +36,50 @@ const OrganizerDetails = () => {
     setConversation({
       senderId: user.uid,
       receiverId: id,
-    })
-  }, []);
+    });
+  }, []);   
 
-  const obtenerDatos = async() => {
-    const data = await fetch('https://plataformaeventos-production-6111.up.railway.app/users/' + id);
-    const json = await data.json();
+  useEffect(() => {
+    if (userDetail.organizer) {
+      getRatingOrganizer(id, {rating: userDetail.organizer.rating});
+    }
+    else {
+      console.log('no hay eventDetails');
+    }
+  }, [userDetail]);
+
+  const obtenerDatos = async () => {
+    const data = await eventsApi.get(
+      '/users/' + id
+    );
+    const json = data.data;
     setNextEvent(json);
-  } 
+    setUserDetail({
+      organizer: json,
+    });
+  };
 
   const handleClickMessages = (e) => {
     e.preventDefault();
-    axios.post('https://plataformaeventos-production-6111.up.railway.app/conversation/create', conversation)
-    .then((response) => {
-      navigate('/user/message');
-    });
-  }
+    eventsApi
+      .post(
+        '/conversation/create',
+        conversation
+      )
+      .then((response) => {
+        navigate('/user/message');
+      });
+  };
 
   const handleAlert = (e) => {
     e.preventDefault();
-    alert('Debes estar registrado para poder enviar mensajes');
-  }
+    swal({
+      title: 'Debes estar registrado para poder enviar un mensaje',
+      icon: 'warning',
+      button: 'Cerrar',
+      dangerMode: true,
+    });
+  };
 
   const handleInput = (e) => {
     const name = e.target.name;
@@ -63,55 +87,76 @@ const OrganizerDetails = () => {
       setComponent(<AboutOrganizer userDetail={userDetail.organizer} />);
     if (name === 'NextEvents')
       setComponent(<NextEvents nextEvent={nextEvent} />);
-    if (name === 'Opinions') setComponent(<Opinions userDetail={userDetail.organizer} />);
+    if (name === 'Opinions')
+      setComponent(<Opinions userDetail={userDetail.organizer} />);
   };
 
   return (
     <div className={`${styles.container} `}>
-      {userDetail?
-      <div>
-     <div className={styles.top}></div>
-      <img className={styles.img} src={userDetail.organizer.picture} alt="N" />
-      <p className={styles.name}>{userDetail.organizer.name}</p>
-      <Rating
-        className={styles.rating}
-        name="read-only"
-        value={userDetail.organizer.rating}
-        readOnly
-      />
-      <div className={styles.containerDir}>
-        <IoLocationOutline className={styles.icon} />
-        <p className={styles.direction}>{userDetail.organizer.direction}</p>
-      </div>
-      <p className={styles.member}>Miembor desde {userDetail.organizer.membership}</p>
-      <div className={styles.containerMess}>
-        <LocalPostOfficeIcon sx={{ fontSize: '13px', color: '#d53e27' }} />
-        <button className={styles.message} onClick={logged === true ? handleClickMessages: handleAlert}>
-          Enviar Mensaje
-        </button>
-      </div>
-      <div className={styles.containerButtons}>
-        <button
-          className={styles.btn}
-          name="AboutOrganizer"
-          onClick={handleInput}
-        >
-          Sobre El Organizador
-        </button>
-        <div className={styles.vLine}></div>
-        <button className={styles.btn} name="NextEvents" onClick={handleInput}>
-          Próximos Eventos
-        </button>
-        <div className={styles.vLine}></div>
-        <button className={styles.btn} name="Opinions" onClick={handleInput}>
-          Opiniones
-        </button>
-      </div>
-      <div>
-        <div className={styles.containerSection}>{component}</div>
-      </div> 
-      </div>
-    :''}
+      {userDetail ? (
+        <div>
+          <div className={styles.top}></div>
+          <img
+            className={styles.img}
+            src={userDetail.organizer.userpicture}
+            alt='N'
+          />
+          <p className={styles.name}>{userDetail.organizer.name}</p>
+          <Rating
+            className={styles.rating}
+            name='read-only'
+            value={ratingOrg}
+            readOnly
+            sx={{ fontSize: 18 }}
+          />
+          <div className={styles.containerDir}>
+            <IoLocationOutline className={styles.icon} />
+            <p className={styles.direction}>{userDetail.organizer.direction}</p>
+          </div>
+          <p className={styles.member}>
+            Miembor desde {userDetail.organizer.membership}
+          </p>
+          <div className={styles.containerMess}>
+            <LocalPostOfficeIcon sx={{ fontSize: '13px', color: '#d53e27' }} />
+            <button
+              className={styles.message}
+              onClick={logged === true ? handleClickMessages : handleAlert}
+            >
+              Enviar Mensaje
+            </button>
+          </div>
+          <div className={styles.containerButtons}>
+            <button
+              className={styles.btn}
+              name='AboutOrganizer'
+              onClick={handleInput}
+            >
+              Sobre El Organizador
+            </button>
+            <div className={styles.vLine}></div>
+            <button
+              className={styles.btn}
+              name='NextEvents'
+              onClick={handleInput}
+            >
+              Próximos Eventos
+            </button>
+            <div className={styles.vLine}></div>
+            <button
+              className={styles.btn}
+              name='Opinions'
+              onClick={handleInput}
+            >
+              Opiniones
+            </button>
+          </div>
+          <div>
+            <div className={styles.containerSection}>{component}</div>
+          </div>
+        </div>
+      ) : (
+        ''
+      )}
     </div>
   );
 };

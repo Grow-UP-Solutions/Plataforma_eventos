@@ -1,31 +1,58 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import style from './Navbar.module.css';
-
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { UIContext } from '../../context/ui';
 import { AuthContext } from '../../context/auth';
+import { stateContext } from '../../context/state/stateContext';
 import Search from '../Search/Search';
 import { GrMail } from 'react-icons/gr';
 import { FaUserCircle } from 'react-icons/fa';
 import { IoNotifications, IoCaretDownSharp } from 'react-icons/io5';
 import logo from '../../assets/imgs/logoNav.svg';
-import notifications from '../../api/noti';
+import eventsApi from '../../axios/eventsApi';
 
 const Navbar = ({ upper }) => {
   const { toggleScreenLogin } = useContext(UIContext);
   const { user, logged, logout } = useContext(AuthContext);
+  const { notes, setNotes, msg, setMsg } = useContext(stateContext);
   const [menuOpen, setMenuOpen] = useState(false);
   const [openNotifications, setOpenNotifications] = useState(false);
   const [openMessages, setOpenMessages] = useState(false);
   const navigate = useNavigate();
-  const allNotifications = notifications;
   const { pathname } = useLocation();
 
+<<<<<<< HEAD
   console.log('logged',logged)
+=======
+  useEffect(() => {
+    getUserData();
+  }, [user]);
+
+  const getUserData = async () => {
+    let userResult = {};
+    if (user.uid) {
+      userResult = await eventsApi.get('/users/' + user.uid);
+      setNotes(userResult.data.notifications.filter((e) => e.read === false));
+      setMsg(userResult.data.message.filter((e) => e.read === false));
+    }
+  };
+>>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
 
   const handleClick = (e) => {
     e.preventDefault();
     navigate('/');
+  };
+
+  const handleOpenMessages = (e) => {
+    e.preventDefault();
+    setOpenMessages(!openMessages);
+    setOpenNotifications(false);
+  };
+
+  const handleOpenNotifications = (e) => {
+    e.preventDefault();
+    setOpenNotifications(!openNotifications);
+    setOpenMessages(false);
   };
 
   const handleClickMessage = (e) => {
@@ -40,24 +67,31 @@ const Navbar = ({ upper }) => {
     setOpenNotifications(false);
   };
 
+  const handleClickAllReadMessages = async (e) => {
+    e.preventDefault();
+    const res = await eventsApi.put('/message/update/' + user.uid);
+    setMsg(res.data.filter((e) => e.read === false));
+  };
+
+  const handleClickAllReadNotifications = async (e) => {
+    e.preventDefault();
+    const res = await eventsApi.put(`/users/${user.uid}/notifications`);
+    setNotes(res.data.filter((e) => e.read === false));
+  };
+
   return (
     <div
-      id="navbar"
+      id='navbar'
       style={{ position: pathname === '/' ? 'fixed' : 'sticky' }}
-      className={`${style.container} ${
-        pathname !== '/' || upper === false ? style.customizeNavBar : ''
-      }`}
+      className={`${style.container} ${pathname !== '/' || upper === false ? style.customizeNavBar : ''}`}
     >
       <div className={`${style.containerInfo} container`}>
         <div className={style.containerImgInput}>
-          <img src={logo} alt="LogoNav" onClick={handleClick} />
-          {pathname !== '/' || upper === false ? (
-            <Search location={'not-home'} />
-          ) : (
-            <></>
-          )}
+          <img src={logo} alt='LogoNav' onClick={handleClick} />
+          {pathname !== '/' || upper === false ? <Search location={'not-home'} /> : <></>}
         </div>
         <div className={style.container_div}>
+<<<<<<< HEAD
           {logged && <a href="$">Mi lista</a>}
           {logged?
           <Link to={`/oganiza-un-evento-form`}>
@@ -72,6 +106,14 @@ const Navbar = ({ upper }) => {
           </p>
           </Link>
           }
+=======
+          {logged && <Link to='/user/perfil/mi-lista'>Mi lista</Link>}
+          {user.organizer && (
+            <Link to={`/organiza-un-evento`}>
+              <p className={`${logged ? style.buttonOrganizar : ''}`}>Organiza un evento</p>
+            </Link>
+          )}
+>>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
           {!logged ? (
             <>
               <p onClick={toggleScreenLogin}>Ingresa</p>
@@ -82,34 +124,25 @@ const Navbar = ({ upper }) => {
           ) : (
             <>
               <div className={style.containerNotification}>
-                <div
-                  className={style.containerMessage}
-                  onClick={() => setOpenMessages(!openMessages)}
-                >
+                <div className={style.containerMessage} onClick={handleOpenMessages}>
                   <GrMail className={style.iconNav} />
-                  <div className={style.bage}>1</div>
+                  <div className={style.bage}>{msg.length}</div>
                 </div>
                 <div className={style.divisorNotis} />
-                <div
-                  className={style.containerNotis}
-                  onClick={() => setOpenNotifications(!openNotifications)}
-                >
+                <div className={style.containerNotis} onClick={handleOpenNotifications}>
                   <IoNotifications className={style.iconNav} />
-                  <div className={style.bage}>{allNotifications.length}</div>
+                  <div className={style.bage}>{notes.length}</div>
                 </div>
 
                 {openMessages && (
                   <div className={style.notifications}>
-                    <p className={style.link_noti}>Marcar todas como leidas</p>
-                    {allNotifications.map((e) => (
-                      <div className={style.noty}>
-                        {e.title} {e.noti}
-                      </div>
+                    <p className={style.link_noti} onClick={handleClickAllReadMessages}>
+                      Marcar todas como leidas
+                    </p>
+                    {msg.map((e) => (
+                      <div className={style.noty}>{e.text}</div>
                     ))}
-                    <p
-                      className={style.link_notis}
-                      onClick={handleClickMessage}
-                    >
+                    <p className={style.link_notis} onClick={handleClickMessage}>
                       Ver todos los mensajes
                     </p>
                   </div>
@@ -117,17 +150,16 @@ const Navbar = ({ upper }) => {
 
                 {openNotifications && (
                   <div className={style.notifications}>
-                    <p className={style.link_noti}>Marcar todas como leidas</p>
-                    {allNotifications.map((e) => (
+                    <p className={style.link_noti} onClick={handleClickAllReadNotifications}>
+                      Marcar todas como leidas
+                    </p>
+                    {notes.map((e) => (
                       <div className={style.noty}>
                         <IoNotifications className={style.iconNav} />
-                        {e.title} {e.noti}
+                        {e.msg}
                       </div>
                     ))}
-                    <p
-                      className={style.link_notis}
-                      onClick={handleClickNotifications}
-                    >
+                    <p className={style.link_notis} onClick={handleClickNotifications}>
                       Ver todas las notificaciones
                     </p>
                   </div>
@@ -135,8 +167,17 @@ const Navbar = ({ upper }) => {
               </div>
 
               <div className={style.containerName}>
-                <p>{user.name.split(' ')[0]}</p>
-                <p>{user.name.split(' ')[1]}</p>
+                {user.nickname ? (
+                  <>
+                    <p>{user.nickname.split(' ')[0]}</p>
+                    <p>{user.nickname.split(' ')[1]}</p>
+                  </>
+                ) : (
+                  <>
+                    <p>{user.name.split(' ')[0]}</p>
+                    <p>{user.name.split(' ')[1]}</p>
+                  </>
+                )}
               </div>
               <div
                 style={{
@@ -148,12 +189,8 @@ const Navbar = ({ upper }) => {
                 onClick={() => setMenuOpen(!menuOpen)}
               >
                 <div className={style.containerImg}>
-                  {user.img ? (
-                    <img
-                      className={style.userImg}
-                      src={user.img}
-                      alt="img-user"
-                    />
+                  {user.picture ? (
+                    <img className={style.userImg} src={user.picture} alt='img-user' />
                   ) : (
                     <FaUserCircle className={style.userImg} />
                   )}
@@ -161,17 +198,18 @@ const Navbar = ({ upper }) => {
                 <IoCaretDownSharp className={style.iconMenu} />
                 {menuOpen && (
                   <div className={style.containerProfileMenu}>
-                    <a href="#">Mis eventos</a>
-                    <Link to="/user/profile">
+                    <Link to='/user/perfil/mi-lista'>Mis eventos</Link>
+                    <Link to='/user/perfil/datos'>
                       <a>Perfil</a>
                     </Link>
-                    <a href="#">Plan de referidos</a>
-                    <a href="#">Preferencias</a>
+                    <Link to='/user/perfil/plan-de-referidos'>Plan de referidos</Link>
+                    <Link to='/user/perfil/preferencias'>Preferencias</Link>
                     <hr />
                     <a
                       onClick={(e) => {
                         e.preventDefault();
                         logout();
+                        navigate('/');
                       }}
                     >
                       Cerrar

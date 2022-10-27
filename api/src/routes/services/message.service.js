@@ -1,17 +1,18 @@
 const {
   findAndUpdateMessage,
   findMessage,
-  findOneMessage,
+  //findOneMessage,
 } = require("../../models/util/functionDB/messageDb.js");
 
-async function updateMessage(id, read) {
+async function updateMessage(id, conversationId) {
   try {
-    const message = await findOneMessage(id);
-
+    console.log(conversationId)
+    const message = await findMessage(id);
+    
     if (!message) {
-      throw new Error("el mensaje no existe");
+      throw new Error("No existe mensaje en esta conversacion");
     }
-    const newMessage = await findAndUpdateMessage(id, read);
+    const newMessage = await findAndUpdateMessage(id, conversationId);
     return newMessage;
   } catch (error) {
     throw new Error(error.message);

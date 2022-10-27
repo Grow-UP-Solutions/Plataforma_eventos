@@ -1,8 +1,31 @@
 
 import React from 'react';
 import styles from './Message.module.css';
-import { FiStar } from 'react-icons/fi';
-import { format } from "timeago.js";
+import Rating from '@mui/material/Rating';
+import { format, register } from "timeago.js";
+
+const localeFunc = (number, index, total_sec) => {
+  // number: the timeago / timein number;
+  // index: the index of array below;
+  // total_sec: total seconds between date to be formatted and today's date;
+  return [
+    ['justo ahora', 'en un rato'],
+    ['hace %s segundos', 'en %s segundos'],
+    ['hace 1 minuto', 'en 1 minuto'],
+    ['hace %s minutos', 'en %s minutos'],
+    ['hace 1 hora', 'en 1 hora'],
+    ['hace %s horas', 'en %s horas'],
+    ['hace 1 día', 'en 1 día'],
+    ['hace %s días', 'en %s días'],
+    ['hace 1 semana', 'en 1 semana'],
+    ['hace %s semanas', 'en %s semanas'],
+    ['hace 1 mes', 'en 1 mes'],
+    ['hace %s meses', 'en %s meses'],
+    ['hace 1 año', 'en 1 año'],
+    ['hace %s años', 'en %s años'],
+  ][index];
+};
+register('es_ES', localeFunc);
 
 const Message = ({ message, own }) => {
 
@@ -11,7 +34,6 @@ const Message = ({ message, own }) => {
     
   }
   
-
   return (
     <div className={styles.containerChatMessage}>
       <div className={own ? styles.ownMessage : styles.otherMessage}>
@@ -19,8 +41,14 @@ const Message = ({ message, own }) => {
         <p className={styles.messageText}>{message.text}</p>
 
         <div className={styles.wrapperInfoMessage}>
-          <FiStar className={styles.iconMessage} onClick={handleClickStar}/>
-          <span className={styles.messageBottom}>{format(message.createdAt)}</span>
+          <Rating 
+            name="customized-10" 
+            defaultValue={0} 
+            max={1} 
+            className={styles.iconMessage} 
+            onClick={handleClickStar}
+          />
+          <span className={styles.messageBottom}>{format(message.createdAt, 'es_ES')}</span>
         </div>
       </div>
     </div>
@@ -28,71 +56,3 @@ const Message = ({ message, own }) => {
 }
 
 export default Message;
-
-
-
-
-
-/* 
-const handleChangeMessages = (e) => {
-    e.preventDefault();
-    setMessage({
-      idGet: '112233',
-      msg: e.target.value,
-    })
-  }
-
-  const handleClickMessages = (e) => {
-    e.preventDefault();
-    axios.post('https://plataformaeventos-production-6111.up.railway.app/users/message/' + id, message)
-    .then((response) => {
-      console.log('axios response', response.data);
-    });
-    setMessage(initialState);
-  }
-*/
-
-
-
-
-
-
-
-
-
-
-{/* <div className={styles.ownMessage}>
-          <p>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed
-            diam nonummy nibh euismod tincidunt ut laoreet dolore magna.
-          </p>
-
-          <div className={styles.wrapperInfoMessage}>
-            <FiStar className={styles.iconMessage} />
-            <span>Enero 25 2020 - 10:50 a.m</span>
-          </div>
-        </div>
-
-        <div className={styles.otherMessage}>
-          <p>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed
-            diam nonummy nibh euismod tincidunt ut laoreet dolore magna.
-          </p>
-
-          <div className={styles.wrapperInfoMessage}>
-            <FiStar className={styles.iconMessage} />
-            <span>Enero 25 2020 - 10:50 a.m</span>
-          </div>
-        </div>
-
-        <div className={styles.ownMessage}>
-          <p>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed
-            diam nonummy nibh euismod tincidunt ut laoreet dolore magna.
-          </p>
-
-          <div className={styles.wrapperInfoMessage}>
-            <FiStar className={styles.iconMessage} />
-            <span>Enero 25 2020 - 10:50 a.m</span>
-          </div>
-        </div> */}

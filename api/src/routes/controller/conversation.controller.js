@@ -3,12 +3,17 @@ const {
   createConversation,
   findAllConversation,
   findConversation,
+  allConversationDB,
+  lockedConversation,
 } = require('../../models/util/functionDB/ConversationDb.js');
 
 const router = Router();
 
+
+
 router.get('/:userId', async (req, res) => {
   const { userId } = req.params;
+  console.log(userId)
   try {
     const allConversation = await findConversation(userId);
     res.status(200).json(allConversation);
@@ -28,5 +33,15 @@ router.post('/create', async (req, res) => {
     return res.status(500).json({ faill: error.message });
   }
 });
+
+router.put('/:idConversation', async (req, res)=>{
+const {idConversation} = req.params
+  try {
+    const lockConversation = await lockedConversation(idConversation)
+    return res.status(200).json(lockConversation)
+  } catch (error) {
+    return res.status(500).json({ faill: error.message });
+  }
+})
 
 module.exports = router;

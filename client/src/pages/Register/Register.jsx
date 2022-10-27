@@ -27,10 +27,7 @@ const Register = () => {
     canReceivedInformation: true,
   });
 
-  const [errorsInputs, handleChangeInputValue] = useValidateForm(
-    formData,
-    setFormData
-  );
+  const [errorsInputs, handleChangeInputValue] = useValidateForm(formData, setFormData);
 
   /* FUNCTIONS FOR VISIBLE PASSWORDS */
   const [isPasswordVisible, setIsPasswordVisible] = useState({
@@ -60,11 +57,7 @@ const Register = () => {
   const onRegister = async (e) => {
     e.preventDefault();
 
-    if (
-      formData.name === '' ||
-      formData.password === '' ||
-      formData.confirmPassword === ''
-    ) {
+    if (formData.name === '' || formData.password === '' || formData.confirmPassword === '') {
       return setMessageError({
         error: true,
         message: 'Ingrese los datos correctamente',
@@ -73,8 +66,11 @@ const Register = () => {
 
     const userData = {
       name: `${formData.name} ${formData.lastName}`,
+      firstName: formData.name,
+      lastName: formData.lastName,
       email: formData.mail,
       password: formData.password,
+      canReceivedInformation: formData.canReceivedInformation,
     };
 
     try {
@@ -96,7 +92,7 @@ const Register = () => {
   const navigateVerificate = () => {
     setSuccesData(false);
 
-    navigate('/verificarmail');
+    navigate('/verificarmail/register');
   };
 
   const registerWithProvider = async (provider) => {
@@ -117,16 +113,20 @@ const Register = () => {
             user = {
               email,
               name,
+              firstName: name.split(' ')[0],
+              lastName: name.split(' ')[1],
               password: id + 'aA@',
             };
           }
 
           if (provider === 'google') {
-            const { sub, name, email } = event.data._json;
+            const { sub, name, email, family_name, given_name } = event.data._json;
 
             user = {
               email,
               name,
+              firstName: given_name,
+              lastName: family_name,
               password: sub + 'aA@',
             };
           }
@@ -153,17 +153,11 @@ const Register = () => {
     <div className={`${styles.pageRegister} container`}>
       <h1 className={styles.title}>Registrate</h1>
       <div className={styles.loginProviders}>
-        <button
-          onClick={() => registerWithProvider('facebook')}
-          className={styles.providerFacebook}
-        >
+        <button onClick={() => registerWithProvider('facebook')} className={styles.providerFacebook}>
           <IconFacebook />
           <span>Ingresa con Facebook</span>
         </button>
-        <button
-          onClick={() => registerWithProvider('google')}
-          className={styles.providerGoogle}
-        >
+        <button onClick={() => registerWithProvider('google')} className={styles.providerGoogle}>
           <IconGoogle />
           <span>Ingresa con Google</span>
         </button>
@@ -179,62 +173,44 @@ const Register = () => {
       <form onSubmit={onRegister} className={styles.formContainer}>
         <div className={styles.containerInputsForm}>
           <div className={styles.formGroup}>
-            <label htmlFor="name">Nombre(s)</label>
-            <input
-              autoComplete="off"
-              type="text"
-              id="name"
-              onChange={handleChangeInputValue}
-              required
-            />
+            <label htmlFor='name'>Nombre(s)</label>
+            <input autoComplete='off' type='text' id='name' onChange={handleChangeInputValue} required />
           </div>
           <div className={styles.formGroup}>
-            <label htmlFor="lastName">Apellido(s)</label>
-            <input
-              autoComplete="off"
-              type="text"
-              id="lastName"
-              onChange={handleChangeInputValue}
-              required
-            />
+            <label htmlFor='lastName'>Apellido(s)</label>
+            <input autoComplete='off' type='text' id='lastName' onChange={handleChangeInputValue} required />
           </div>
           <div className={styles.formGroup}>
-            <label htmlFor="mail">Email</label>
+            <label htmlFor='mail'>Email</label>
             <input
               style={{
                 border: errorsInputs.mail === false && '1px solid #C34A33',
               }}
-              type="email"
-              id="mail"
+              type='email'
+              id='mail'
               onChange={handleChangeInputValue}
-              autoComplete="off"
+              autoComplete='off'
               required
             />
-            {errorsInputs.mail === false && (
-              <span className={styles.errorMessage}>Formato invalido</span>
-            )}
+            {errorsInputs.mail === false && <span className={styles.errorMessage}>Formato invalido</span>}
           </div>
           <div className={styles.formGroup}>
-            <label htmlFor="password">Contraseña</label>
+            <label htmlFor='password'>Contraseña</label>
             <div className={styles.containerInputForPassword}>
               <input
                 style={{
-                  border:
-                    errorsInputs.password === false && '1px solid #C34A33',
+                  border: errorsInputs.password === false && '1px solid #C34A33',
                 }}
                 type={isPasswordVisible.password ? 'text' : 'password'}
-                id="password"
-                placeholder="Entre 12 y 20 caracteres que idealmente incluya combinación de letras, números y caracteres especiales (* / - _ & @^)"
+                id='password'
+                placeholder='Entre 12 y 20 caracteres que idealmente incluya combinación de letras, números y caracteres especiales (* / - _ & @^)'
                 required
                 onChange={handleChangeInputValue}
-                autoComplete="off"
+                autoComplete='off'
               />
 
               {!isPasswordVisible.password ? (
-                <FiEye
-                  onClick={() => handleChangeVisiblePassword('password')}
-                  className={styles.iconVisiblePassword}
-                />
+                <FiEye onClick={() => handleChangeVisiblePassword('password')} className={styles.iconVisiblePassword} />
               ) : (
                 <FiEyeOff
                   onClick={() => handleChangeVisiblePassword('password')}
@@ -242,23 +218,19 @@ const Register = () => {
                 />
               )}
               {errorsInputs.password === false && (
-                <span className={styles.errorMessage}>
-                  Contraseña sin el formato especificado.
-                </span>
+                <span className={styles.errorMessage}>Contraseña sin el formato especificado.</span>
               )}
             </div>
           </div>
           <div className={styles.formGroup}>
-            <label htmlFor="confirmPassword">Confirmar contraseña</label>
+            <label htmlFor='confirmPassword'>Confirmar contraseña</label>
             <div className={styles.containerInputForPassword}>
               <input
                 style={{
-                  border:
-                    errorsInputs.confirmPassword === false &&
-                    '1px solid #C34A33',
+                  border: errorsInputs.confirmPassword === false && '1px solid #C34A33',
                 }}
                 type={isPasswordVisible.confirmPassword ? 'text' : 'password'}
-                id="confirmPassword"
+                id='confirmPassword'
                 required
                 onChange={handleChangeInputValue}
               />
@@ -275,28 +247,23 @@ const Register = () => {
                 />
               )}
               {errorsInputs.confirmPassword === false && (
-                <span className={styles.errorMessage}>
-                  Las contraseñas no coinciden
-                </span>
+                <span className={styles.errorMessage}>Las contraseñas no coinciden</span>
               )}
             </div>
           </div>
           <div className={styles.formGroupReferred}>
-            <label htmlFor="codeReferred">¿Tienes un código de Referido?</label>
+            <label htmlFor='codeReferred'>¿Tienes un código de Referido?</label>
             <input
               style={{
-                border:
-                  errorsInputs.codeReferred === false && '1px solid #C34A33',
+                border: errorsInputs.codeReferred === false && '1px solid #C34A33',
               }}
-              id="codeReferred"
+              id='codeReferred'
               onChange={handleChangeInputValue}
               value={formData.codeReferred}
-              type="text"
+              type='text'
             />
             {errorsInputs.codeReferred === false && (
-              <span className={styles.errorMessage}>
-                El código no es válido.
-              </span>
+              <span className={styles.errorMessage}>El código no es válido.</span>
             )}
           </div>
           {messageError.error && (
@@ -310,36 +277,26 @@ const Register = () => {
 
         <div className={styles.containerDescription}>
           <p>
-            Tu información esta segura con nosotros y no se comparte con
-            terceros. Todos tus datos serán tratados de conformidad con la
-            normatividad de Políticas de Datos y nuestra política de tratamiento
-            de datos. Información que está disponible&nbsp;{' '}
-            <Link to={'/privacy'}>aquí</Link>.
+            Tu información esta segura con nosotros y no se comparte con terceros. Todos tus datos serán tratados de
+            conformidad con la normatividad de Políticas de Datos y nuestra política de tratamiento de datos.
+            Información que está disponible&nbsp; <Link to={'/privacy'}>aquí</Link>.
           </p>
           <p>
-            Al proceder con la creación de tu cuenta aceptas la Política de
-            &nbsp;
-            <Link to={'/'}>
-              Tratamiento de Datos, la Política de Seguridad y los Términos y
-              Condiciones
-            </Link>
-            &nbsp;de LO QUE QUIERO HACER S.A.S. Aceptas ser contactado por
-            nosotros en relación a los eventos que compres o publiques en la
-            Plataforma y confirmas ser mayor de edad.
+            Al proceder con la creación de tu cuenta aceptas la Política de &nbsp;
+            <Link to={'/'}>Tratamiento de Datos, la Política de Seguridad y los Términos y Condiciones</Link>
+            &nbsp;de LO QUE QUIERO HACER S.A.S. Aceptas ser contactado por nosotros en relación a los eventos que
+            compres o publiques en la Plataforma y confirmas ser mayor de edad.
           </p>
         </div>
 
         <div className={styles.containerPromotionAndEmails}>
           <input
-            id="canReceivedInformation"
+            id='canReceivedInformation'
             checked={formData.canReceivedInformation}
-            type="checkbox"
+            type='checkbox'
             onChange={handleChangeInputValue}
           />
-          <p>
-            Quiero recibir información sobre promociones, actualizaciones y
-            eventos que me puedan interesar.
-          </p>
+          <p>Quiero recibir información sobre promociones, actualizaciones y eventos que me puedan interesar.</p>
         </div>
         <div className={styles.btnRegister}>
           <button>Registrate</button>
@@ -355,21 +312,14 @@ const Register = () => {
       {succesData && (
         <div className={styles.overlay}>
           <div className={styles.boxContent}>
-            <MdOutlineClose
-              onClick={() => setSuccesData(false)}
-              className={styles.iconOverlay}
-            />
+            <MdOutlineClose onClick={() => setSuccesData(false)} className={styles.iconOverlay} />
             <div className={styles.containerInfoOverlay}>
               <h2>Ya casi eres parte de 'LO QUE QUIERO HACER'</h2>
               <p>
-                Hemos enviado un código de validación a tu correo electrónico,
-                lo necesitarás para finalizar tu proceso de registro. Recuerda
-                ver la lista de no deseados y agréganos a tu lista de contactos.
+                Hemos enviado un código de validación a tu correo electrónico, lo necesitarás para finalizar tu proceso
+                de registro. Recuerda ver la lista de no deseados y agréganos a tu lista de contactos.
               </p>
-              <button
-                onClick={() => navigateVerificate()}
-                className={styles.btnOverlay}
-              >
+              <button onClick={() => navigateVerificate()} className={styles.btnOverlay}>
                 Listo
               </button>
             </div>

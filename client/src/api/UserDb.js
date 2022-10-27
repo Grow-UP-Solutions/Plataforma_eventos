@@ -58,14 +58,14 @@ const users = [
   },
 ];
 
-function createUsers() {
-    users.forEach((e) => {
-      axios.post('http://localhost:3001/users/create', e);
-    });
-    return 'ok';
-  }
+// function createUsers() {
+//     users.forEach((e) => {
+//       axios.post('http://localhost:3001/users/create', e);
+//     });
+//     return 'ok';
+//   }
 
 
-  createUsers()
+//   createUsers()
 
   

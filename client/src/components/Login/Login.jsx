@@ -26,10 +26,7 @@ const Login = () => {
     password: '',
   });
 
-  const [errorsInputs, handleChangeInputValue] = useValidateForm(
-    formData,
-    setFormData
-  );
+  const [errorsInputs, handleChangeInputValue] = useValidateForm(formData, setFormData);
 
   /* 
     TODO: LOGIN
@@ -48,6 +45,7 @@ const Login = () => {
     const user = {
       email: formData.mail,
       password: formData.password,
+      rememberMe: saveSession,
     };
 
     try {
@@ -82,8 +80,6 @@ const Login = () => {
       if (event.origin === `${process.env.REACT_APP_API_URL}`) {
         if (event.data) {
           let user = {};
-
-          console.log(event.data_json);
 
           if (provider === 'facebook') {
             const { email, id } = event.data._json;
@@ -124,8 +120,13 @@ const Login = () => {
     navigate('/registrate');
   };
 
-  const navigateToChangePassword = async () => {
+  const [modalForgetPassword, setModalForgetPassword] = useState(false);
+
+  const navigateToChangePassword = async (option) => {
     toggleScreenLogin();
+
+    if (option === 'forgetPassword') {
+    }
 
     await eventsApi.post('/users/sendMailChangePassword', {
       email: formData.mail,
@@ -138,17 +139,11 @@ const Login = () => {
         <CgClose onClick={toggleScreenLogin} className={styles.closeIcon} />
         <h1 className={styles.title}>Ingresa</h1>
         <div className={styles.loginProviders}>
-          <button
-            onClick={() => loginWithProvider('facebook')}
-            className={styles.providerFacebook}
-          >
+          <button onClick={() => loginWithProvider('facebook')} className={styles.providerFacebook}>
             <IconFacebook />
             <span>Ingresa con Facebook</span>
           </button>
-          <button
-            onClick={() => loginWithProvider('google')}
-            className={styles.providerGoogle}
-          >
+          <button onClick={() => loginWithProvider('google')} className={styles.providerGoogle}>
             <IconGoogle />
             <span>Ingresa con Google</span>
           </button>
@@ -160,25 +155,13 @@ const Login = () => {
         </div>
         <form onSubmit={onLogin} className={styles.formContainer}>
           <div className={styles.formGroup}>
-            <label htmlFor="mail">Usuario</label>
-            <input
-              required
-              onChange={handleChangeInputValue}
-              type="mail"
-              id="mail"
-            />
-            {errorsInputs.mail === false && (
-              <span>Ingrese un correo válido</span>
-            )}
+            <label htmlFor='mail'>Usuario</label>
+            <input required onChange={handleChangeInputValue} type='mail' id='mail' />
+            {errorsInputs.mail === false && <span>Ingrese un correo válido</span>}
           </div>
           <div className={styles.formGroup}>
-            <label htmlFor="password">Contraseña</label>
-            <input
-              required
-              onChange={handleChangeInputValue}
-              type="password"
-              id="password"
-            />
+            <label htmlFor='password'>Contraseña</label>
+            <input onChange={handleChangeInputValue} type='password' id='password' />
           </div>
           {errorLogin.result && (
             <div className={styles.messageError}>
@@ -187,16 +170,19 @@ const Login = () => {
           )}
           <div className={styles.optionLogin}>
             <div className={styles.checkboxRemember}>
-              <input
-                checked={saveSession}
-                onChange={() => setSaveSession(!saveSession)}
-                type="checkbox"
-              />
+              <input checked={saveSession} onChange={() => setSaveSession(!saveSession)} type='checkbox' />
               <span>Recuérdame</span>
             </div>
 
             <div className={styles.forgetPassword}>
-              <button>¿Olvidaste tu contraseña?</button>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  setModalForgetPassword(true);
+                }}
+              >
+                ¿Olvidaste tu contraseña?
+              </button>
             </div>
           </div>
 
@@ -212,12 +198,20 @@ const Login = () => {
         {modalChangePassword.attemps >= 3 && (
           <div className={styles.containerModalChangePassword}>
             <p>
-              Has intentado entrar muchas veces con contraseña incorrecta. Por
-              tu seguridad enviaremos un correo para que puedas cambiar tu
-              clave.
+              Has intentado entrar muchas veces con contraseña incorrecta. Por tu seguridad enviaremos un correo para
+              que puedas cambiar tu clave.
             </p>
             <button onClick={navigateToChangePassword}>Cambiar clave</button>
           </div>
+        )}
+
+        {modalForgetPassword && (
+          <>
+            <div className={styles.containerModalChangePassword}>
+              <p>Hemos enviado un correo a tu email para poder proceder con tu contraseña.</p>
+              <button onClick={() => navigateToChangePassword('forgetPassword')}>Aceptar</button>
+            </div>
+          </>
         )}
       </div>
     </div>
