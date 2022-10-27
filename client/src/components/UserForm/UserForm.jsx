@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import axios from 'axios';
 import styles from './UserForm.module.css';
@@ -14,16 +14,44 @@ import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { checkMalasPalabras } from '../../utils/checkMalasPalabras';
 import { inputKeyDown, inputKeyUpPh, inputKeyUpTel } from '../../utils/inputOnlyNumbers';
 
-import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../context/auth';
+import { Link } from 'react-router-dom';
 import { invalidWords } from '../../utils/invalidWord';
 import { isValidEmail } from '../../utils/validateEmail';
-import { useRef } from 'react';
-import { useEffect } from 'react';
+
+import AvatarEditor from 'react-avatar-editor';
+import { dataURLtoFile, toDataURL } from '../../utils/convertUrlToImageFile';
 
 const UserForm = ({ userData }) => {
-  const { logout } = useContext(AuthContext);
-  const navigate = useNavigate();
+  const [auxPictureUser, setAuxPictureUser] = useState(userData.userpicture);
+  const [formData, setFormData] = useState({
+    firstName: userData.firstName || '',
+    lastName: userData.lastName || '',
+    nickname: userData.nickname || '',
+    email: userData.email || '',
+    direction: userData.direction || '',
+    city: userData.city || '',
+    tel: userData.tel || '',
+    phone: userData.phone || '',
+    document: userData.document || '',
+    descriptionOrganizer: userData.descriptionOrganizer || '',
+    userpicture: userData.userpicture || '',
+    frontDocument: userData.frontDocument || '',
+    backDocument: userData.backDocument || '',
+    imageRent: userData.imageRent || '',
+    isDeclarant: userData.isDeclarant,
+  });
+
+  const editor = useRef();
+  const [propertysImageUser, setPropertysImageUser] = useState({
+    image: formData.userpicture || '',
+    position: { x: 0.5, y: 0.5 },
+    borderRadius: 100,
+  });
+
+  const handlePositionChange = (position) => {
+    setPropertysImageUser({ ...propertysImageUser, position });
+  };
+
   const handleProfileImg = async (e) => {
     setErrorMessagePhoto({
       userpicture: '',
@@ -42,20 +70,56 @@ const UserForm = ({ userData }) => {
       });
     }
 
+    const imageUrl = URL.createObjectURL(image);
+
+    setFormData({
+      ...formData,
+      userpicture: imageUrl,
+    });
+  };
+
+  const handleOnSaveUserImagePicture = async () => {
+    setCanWriteInput({
+      ...canWriteInput,
+      userpicture: true,
+    });
+
+    const img = editor.current.getImageScaledToCanvas().toDataURL();
+    const rect = editor.current.getCroppingRect();
+
+    if (!img || !rect) return;
+
+    const imageFile = await toDataURL(img).then((dataUrl) => {
+      return dataURLtoFile(dataUrl, 'david-bowie.jpg');
+    });
+
     const imageData = new FormData();
-    imageData.append('file', image);
+    imageData.append('file', imageFile);
     imageData.append('upload_preset', 'j2xzagqg');
 
     try {
       const result = await axios.post('https://api.cloudinary.com/v1_1/dti4vifvz/image/upload', imageData);
-
+      await eventsApi.put(`/users/updateUserPicture/${userData._id}`, { urlImage: result.data.secure_url });
       setFormData({
         ...formData,
         userpicture: result.data.secure_url,
       });
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleCancelUserPicture = () => {
+    setCanWriteInput({
+      ...canWriteInput,
+      userpicture: true,
+    });
+
+    setFormData({
+      ...formData,
+      userpicture: auxPictureUser,
+    });
   };
 
   const [modalCancel, setModalCancel] = useState(false);
@@ -81,24 +145,6 @@ const UserForm = ({ userData }) => {
     status: false,
     message: '',
     color: '',
-  });
-
-  const [formData, setFormData] = useState({
-    firstName: userData.firstName || '',
-    lastName: userData.lastName || '',
-    nickname: userData.nickname || '',
-    email: userData.email || '',
-    direction: userData.direction || '',
-    city: userData.city || '',
-    tel: userData.tel || '',
-    phone: userData.phone || '',
-    document: userData.document || '',
-    descriptionOrganizer: userData.descriptionOrganizer || '',
-    userpicture: userData.userpicture || '',
-    frontDocument: userData.frontDocument || '',
-    backDocument: userData.backDocument || '',
-    imageRent: userData.imageRent || '',
-    isDeclarant: userData.isDeclarant,
   });
 
   const [canWriteInput, setCanWriteInput] = useState({
@@ -364,15 +410,6 @@ const UserForm = ({ userData }) => {
         imageRent: 'Si es declarante por favor ingresar imagen del documento.',
       });
     }
-    /* Object.values(formData).forEach((field) => {
-      if (typeof field === 'boolean') {
-      }
-
-      if (!field) {
-        isProfileCompleted = false;
-        return;
-      }
-    }); */
 
     for (let i = 0; i < Object.keys(formData).length; i++) {
       const key = Object.keys(formData)[i];
@@ -729,13 +766,30 @@ const UserForm = ({ userData }) => {
       <div className={styles.containerPhotoProfile}>
         <div className={styles.containerPhoto}>
           {formData.userpicture !== '' ? (
-            <img src={formData.userpicture} alt='image-profile' />
+            <AvatarEditor
+              border={0}
+              borderRadius={propertysImageUser.borderRadius}
+              onPositionChange={handlePositionChange}
+              className={styles.avatarEditor}
+              ref={editor}
+              image={formData.userpicture}
+            />
           ) : (
             <div className={styles.addPhoto}>
               <BsCamera className={styles.iconAddPhoto} />
             </div>
           )}
         </div>
+        {!canWriteInput.userpicture && (
+          <>
+            <button style={{ marginBottom: 10 }} className={styles.btnSuccess} onClick={handleOnSaveUserImagePicture}>
+              Guardar
+            </button>
+            <button style={{ marginBottom: 10 }} onClick={handleCancelUserPicture} className={styles.btnCancel}>
+              Cancelar
+            </button>
+          </>
+        )}
         <button className={styles.btnAddPhoto}>
           <input onChange={handleProfileImg} type='file' className={styles.inputFile} />
           <BsCardImage className={styles.btnAddPhotoIcon} />

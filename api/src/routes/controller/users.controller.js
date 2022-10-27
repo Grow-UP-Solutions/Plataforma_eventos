@@ -398,6 +398,15 @@ router.put('/update/:id', async (req, res) => {
   }
 });
 
+router.put('/updateUserPicture/:id', async (req, res) => {
+  const { id } = req.params;
+  const { urlImage } = req.body;
+  const user = await getUser(id);
+  user.userpicture = urlImage;
+  await user.save();
+  res.json({ success: true });
+});
+
 router.post('/isSamePassword/:id', async (req, res) => {
   const { id } = req.params;
   const { password } = req.body;
