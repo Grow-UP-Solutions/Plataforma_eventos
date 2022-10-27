@@ -159,7 +159,7 @@ async function updateMyFavorites(idUser, idEvent) {
       
       return event;
    } catch (error) {
-      console.log("FAVORITOS", error.message);
+      
       throw new Error(error.message);
    }
 }
