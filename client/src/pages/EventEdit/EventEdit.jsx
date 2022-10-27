@@ -1,14 +1,8 @@
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-<<<<<<< HEAD
-import React, { useContext,useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Calendar } from 'react-date-range';
-=======
 import React, {useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Calendar} from 'react-date-range';
->>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
 import * as locales from 'react-date-range/dist/locale';
 import {Navigation} from 'swiper';
 import 'swiper/modules/navigation/navigation.min.css';
@@ -38,7 +32,6 @@ import {getColombia, postEvent} from '../../redux/actions';
 import swal from 'sweetalert';
 import {useNavigate} from 'react-router-dom';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-<<<<<<< HEAD
 import dotenv from 'dotenv';
 import {formatDateForm} from '../../utils/formatDateForm';
 import {Button ,Modal, ModalHeader,ModalBody,ModalFooter} from 'reactstrap'
@@ -60,18 +53,11 @@ import axios from "axios";
 import { AuthContext } from '../../context/auth/AuthContext';
 import { getEventsCopy } from '../../redux/actions';
 import eventsApi from '../../axios/eventsApi';
-
-
-
-
-=======
 import Swal from 'sweetalert2';
->>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
 
-const EventCreateForm = () => {
-  const Swal = require('sweetalert2');
+const EventEdit = () => {
+  
 
-<<<<<<< HEAD
   const Swal = require('sweetalert2')
   const dispatch = useDispatch()
 
@@ -120,19 +106,12 @@ const EventCreateForm = () => {
     }
    
 
- 
 
-=======
-  const dispatch = useDispatch();
 
   const f = new Date();
   //Devuelve formato sólo de fecha pero en el formato regional actual ejemplo: 24/8/2019
 
-  const eventos = useSelector((state) => state.events);
-
-  const allEvents = [...eventos];
-  console.log('allEvents:', allEvents[0]);
->>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
+  
 
   //--------------------------------------------------//
   //               DEPARTAMENTOS              //
@@ -152,16 +131,6 @@ const EventCreateForm = () => {
 
   const departamentos = [];
 
-<<<<<<< HEAD
-  const elementExist = (departamentosFilter, value) => {
-    let i = 0;
-    while (i < departamentosFilter.length) {
-      if (departamentosFilter[i].departamento == value) return i;
-      i++;
-    }
-    return false;
-  };
-=======
  const elementExist = (departamentosFilter, value) => {
   let i = 0;
   while (i < departamentosFilter.length) {
@@ -182,27 +151,6 @@ departamentosFilter.forEach((e) => {
     departamentos[i].municipio.push(e.municipio);
   }
 });
-
-const capitales = ['Medellín','Tunja','Montería','Quibdó','Pasto' ,'Bucaramanga','Villavicencio' ,'Barranquilla','Cartagena de Indias','Manizales','Florencia','Popayán' ,'Valledupar' ,'Bogotá','Neiva','Riohacha' ,'Santa Marta','Armenia','Pereira' ,'Sincelejo','Ibagué','Arauca','Yopal','Mocoa' ,'Leticia','Inírida','Mitú', 'Puerto Carreño', 'San José del Guaviare','San Andrés','Bogota','Cúcuta','Santiago de Cali']
-
-
-
-const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, capital: capitales[indice]}))
-
-
->>>>>>> Guille
-
-  departamentosFilter.forEach((e) => {
-    let i = elementExist(departamentos, e.departamento);
-    if (i === false) {
-      departamentos.push({
-        departamento: e.departamento,
-        municipio: [e.municipio],
-      });
-    } else {
-      departamentos[i].municipio.push(e.municipio);
-    }
-  });
 
   const capitales = [
     'Medellín',
@@ -248,11 +196,6 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
   //--------------------------------------------------//
   //               POST Y ERROR            //
 
-<<<<<<< HEAD
-  
-  const [post, setPost] = useState({
-    idOrganizer:'',
-=======
   // const [post, setPost] = useState({
   //   idOrganizer:'632cbed4f208f44f5333af48',
   //   title: '',
@@ -286,7 +229,6 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
 
   const [post, setPost] = useState({
     idOrganizer: '632cbed4f208f44f5333af48',
->>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
     title: '',
     categories: '',
     otherCategorie: '',
@@ -300,53 +242,6 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
     direccion: '',
     barrio: '',
     specialRequires: '',
-<<<<<<< HEAD
-    dates:[{ 
-      date: "", 
-      start : "", 
-      end:"" , 
-      year:0 ,  
-      cupos:0, 
-      price:0, 
-      sells: 0 , 
-      isPublic:true,
-      precioAlPublico:'',
-      gananciaCupo:'',
-      gananciaEvento:'',
-      dateFormated:'',
-     }],
-     revision:false,
-    isPublic:true
-  });
-
-  useEffect(() => {
-    if(eventDetails){
-    setPost({
-      ...post,
-      idOrganizer:'632cbed4f208f44f5333af48',
-      title: eventDetails.title,
-      categories: eventDetails.category,
-      otherCategorie:eventDetails.otherCategorie,
-      shortDescription: eventDetails.shortDescription,
-      longDescription:  eventDetails.longDescription,
-      pictures: eventDetails.pictures,
-      online:  eventDetails.online,
-      link:  eventDetails.link,
-      departamento:  eventDetails.departamento,
-      municipio:  eventDetails.municipio,
-      direccion:  eventDetails.direccion,
-      barrio:  eventDetails.barrio,
-      specialRequires:  eventDetails.specialRequires,
-      dates: eventDetails.dates,
-      isPublic:true,
-      revision:false
-    })
-  }
-  },[eventDetails])
-
- 
-
-=======
     dates: [
       {
         date: '',
@@ -390,7 +285,6 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
       });
     }
   }, [allEvents[0]]);
->>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
 
   const [errors, setErrors] = useState({
     title: '',
@@ -415,18 +309,6 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
   }, [post]);
 
   function validate(post) {
-<<<<<<< HEAD
-     let errors = {}
-                
-     let letras =  (/^[a-zA-Z]*$/g)
-     let offensiveWord= /\b(perro|gato)\b/i
-     let mail = (/[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}/igm)
-     let webSite =(/\b(http|https|www)\b/i)
-     let numeroYdecimales = /^\d*\.?\d*$/
-     let numero = /^[0-9]*$/g
-     let notNumber = /^(?=.*\d).+$/g
-     
-=======
     let errors = {};
 
     let letras = /^[a-zA-Z]*$/g;
@@ -437,7 +319,6 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
     let numero = /^[0-9]*$/g;
     let notNumber = /^(?=.*\d).+$/g;
 
->>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
     if (!post.title) {
       errors.title = true;
     }
@@ -458,7 +339,6 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
       errors.title = 'No puedes ingresar un numero';
     }
 
-<<<<<<< HEAD
     if (!post.categories[0]) {
       errors.categories = true;
     }
@@ -467,11 +347,9 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
       errors.categories = 'Solo podes seleccionar 3 categorias';
     }
 
-<<<<<<< HEAD
     if (!post.otherCategorie.match(letras)) {
       errors.otherCategorie = 'Solo se puede agregar una palabra'
     }
-=======
     // if (!post.categories[0]) {
     //   errors.categories = true
     // }
@@ -483,15 +361,11 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
     // if (!post.otherCategorie.match(letras)) {
     //   errors.otherCategorie = 'Solo se puede agregar una palabra'
     // }
->>>>>>> Guille
 
-     
-=======
     // if (!post.otherCategorie) {
     //   errors.otherCategorie = 'Campo obligatorio(!)'
     // }
 
->>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
     if (!post.shortDescription) {
       errors.shortDescription = true;
     }
@@ -530,13 +404,8 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
       errors.longDescription = 'Palabra ofensiva';
     }
 
-<<<<<<< HEAD
-    if (post.longDescription.match (notNumber)) {
-      errors.longDescription = 'No puedes ingresar un numero'
-=======
     if (post.shortDescription.match(notNumber)) {
       errors.shortDescription = 'No puedes ingresar un numero';
->>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
     }
 
     if (!post.pictures[0]) {
@@ -613,26 +482,24 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
       errors.specialRequires = 'Palabra ofensiva';
     }
 
-<<<<<<< HEAD
 
-    if(post.dates.length>0){
-      for (var i=0; i<post.dates.length;i++ ){
-        if (!post.dates[i].cupos) {
-          errors.cupos= true
-=======
-    //   if(allEvents.length>0){
+    // if(post.dates.length>0){
     //   for (var i=0; i<post.dates.length;i++ ){
-    //     if (!(post.dates[i].cupos).match(numero)) {
-    //       errors.dates = 'No podes'
-    //     }
-    //   }
-    // }
+    //     if (!post.dates[i].cupos) {
+    //       errors.cupos= true
+    // //   if(allEvents.length>0){
+    // //   for (var i=0; i<post.dates.length;i++ ){
+    // //     if (!(post.dates[i].cupos).match(numero)) {
+    // //       errors.dates = 'No podes'
+    // //     }
+    // //   }
+    // // }
 
-    // for (var i=0; i<post.dates.length;i++ ){
-    //   if (!post.dates[i].price.match(numeroYdecimales) ) {
-    //     errors.dates= 'Debe ser un numero'
-    //   }
-    // }
+    // // for (var i=0; i<post.dates.length;i++ ){
+    // //   if (!post.dates[i].price.match(numeroYdecimales) ) {
+    // //     errors.dates= 'Debe ser un numero'
+    // //   }
+    // // }
 
     if (allEvents.length > 0) {
       for (var i = 0; i < post.dates.length; i++) {
@@ -681,124 +548,120 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
               dangerMode: true,
             });
           }
->>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
         }
       }
     }
 
-<<<<<<< HEAD
-    if(post.dates.length>0){
-      for (var i=0; i<post.dates.length;i++ ){
-        if (!post.dates[i].price) {
-          errors.price= true
-        }
-      }
-    }
-
-    if(allEventsCopy.length>0){
-        for (var i=0; i<post.dates.length;i++ ){
-          for(var j=0; j<EventCopy[0].dates.length;j++ ){
-          if (post.dates[i]._id === EventCopy[0].dates[j]._id && post.dates[i].sells>0  && post.dates[i].cupos < EventCopy[0].dates[j].sells) {
-            errors.cupos= `Ya se vendieron ${EventCopy[0].dates[j].sells}  cupos. El número no puede ser inferior a los cupos ya vendidos `
-            // return swal({
-            //   title: `Ya se vendieron ${EventCopy[0].dates[j].sells}  cupos. El número no puede ser inferior a los cupos ya vendidos `,
-            //   icon: "warning",
-            //   dangerMode: true,
-            // })
-            }
-            else  if (post.dates[i]._id === EventCopy[0].dates[j]._id && post.dates[i].sells>0 && post.dates[i].price < EventCopy[0].dates[j].price) {
-              console.log('post.dates[i]._id:',i,post.dates[i]._id)
-              console.log('EventCopy[0].dates[j]._id:',j,EventCopy[0].dates[j]._id)
-              console.log('post.dates[i].sells:',i,post.dates[i].sells)
-              console.log('post.dates[i].price:',i,post.dates[i].price)
-              console.log(' EventCopy[0].dates[j].price:',j, EventCopy[0].dates[j].price)
-             
-            errors.price= `Ya se vendieron ${EventCopy[0].dates[j].sells}  cupos. El número no puede ser inferior al de los cupos ya vendidos `
-            // return swal({
-            //   title: `Ya se vendieron ${EventCopy[0].dates[j].sells}  cupos. El número no puede ser inferior al de los cupos ya vendidos `,
-            //   icon: "warning",
-            //   dangerMode: true,
-            // })
-            }
-          }
-        }
-    
-      }
-      
-
-    for (var i=0; i<post.dates.length;i++ ){
-      if (!post.dates[i].date ||!post.dates[i].start ||!post.dates[i].end ) {
-        errors.dates= true
-      }
-    }
-    
-    for (var i=0; i<post.dates.length;i++ ){
-      if (post.dates[i].start > post.dates[i].end && post.dates[i].end ) {
-        errors.dates = 'Error, hora de fin menor a hora de inicio'
-      }
-    }
-
-    for (var i=0; i<post.dates.length;i++ ){
-      for(var j=1; j<post.dates.length;j++ ){
-      if (  post.dates[i].start.length>0 && post.dates[j].start.length>0 && post.dates[i].end.length>0
-        && post.dates[j].end.length>0 && post.dates[i].date === post.dates[j].date && i !== j ){
-          if(post.dates[i].start === post.dates[j].start||
-            post.dates[i].end === post.dates[j].end ||
-            post.dates[i].start > post.dates[j].start && post.dates[i].start < post.dates[j].end ||
-            post.dates[i].end > post.dates[j].start && post.dates[i].end < post.dates[j].end||
-            post.dates[i].start < post.dates[j].start && post.dates[i].end > post.dates[j].end ||
-            post.dates[i].start > post.dates[j].start && post.dates[i].end < post.dates[j].end ){
-            errors.dates = 'Fechas cruzadas'
-          }         
-        }
-        }   
-    }
-    return errors
-=======
-    for (var i = 0; i < post.dates.length; i++) {
-      if (!post.dates[i].price) {
-        errors.price = true;
-      }
-    }
-
-    // for (var i=0; i<post.dates.length;i++ ){
-    //   for(var j=0; j<allEvents[0].dates.length;j++ ){
-    //   if (post.dates[i].sells>0 && parseInt(post.dates[i].price) < allEvents[0].dates[j].price) {
-    //     console.log('entre')
-    //     errors.price= `Ya se vendieron ${allEvents[0].dates[j].sells}  cupos. El número no puede ser inferior al de los cupos ya vendidos `
+    // if(post.dates.length>0){
+    //   for (var i=0; i<post.dates.length;i++ ){
+    //     if (!post.dates[i].price) {
+    //       errors.price= true
     //     }
     //   }
     // }
 
-    for (var i = 0; i < post.dates.length; i++) {
-      if (!post.dates[i].date || !post.dates[i].start || !post.dates[i].end) {
-        errors.dates = true;
-      }
-    }
+    // if(allEventsCopy.length>0){
+    //     for (var i=0; i<post.dates.length;i++ ){
+    //       for(var j=0; j<EventCopy[0].dates.length;j++ ){
+    //       if (post.dates[i]._id === EventCopy[0].dates[j]._id && post.dates[i].sells>0  && post.dates[i].cupos < EventCopy[0].dates[j].sells) {
+    //         errors.cupos= `Ya se vendieron ${EventCopy[0].dates[j].sells}  cupos. El número no puede ser inferior a los cupos ya vendidos `
+    //         // return swal({
+    //         //   title: `Ya se vendieron ${EventCopy[0].dates[j].sells}  cupos. El número no puede ser inferior a los cupos ya vendidos `,
+    //         //   icon: "warning",
+    //         //   dangerMode: true,
+    //         // })
+    //         }
+    //         else  if (post.dates[i]._id === EventCopy[0].dates[j]._id && post.dates[i].sells>0 && post.dates[i].price < EventCopy[0].dates[j].price) {
+    //           console.log('post.dates[i]._id:',i,post.dates[i]._id)
+    //           console.log('EventCopy[0].dates[j]._id:',j,EventCopy[0].dates[j]._id)
+    //           console.log('post.dates[i].sells:',i,post.dates[i].sells)
+    //           console.log('post.dates[i].price:',i,post.dates[i].price)
+    //           console.log(' EventCopy[0].dates[j].price:',j, EventCopy[0].dates[j].price)
+             
+    //         errors.price= `Ya se vendieron ${EventCopy[0].dates[j].sells}  cupos. El número no puede ser inferior al de los cupos ya vendidos `
+    //         // return swal({
+    //         //   title: `Ya se vendieron ${EventCopy[0].dates[j].sells}  cupos. El número no puede ser inferior al de los cupos ya vendidos `,
+    //         //   icon: "warning",
+    //         //   dangerMode: true,
+    //         // })
+    //         }
+    //       }
+    //     }
+    
+    //   }
+      
 
-    for (var i = 0; i < post.dates.length; i++) {
-      if (post.dates[i].start > post.dates[i].end) {
-        errors.dates = 'No puede empezar despues que termina';
-      }
-    }
+    // for (var i=0; i<post.dates.length;i++ ){
+    //   if (!post.dates[i].date ||!post.dates[i].start ||!post.dates[i].end ) {
+    //     errors.dates= true
+    //   }
+    // }
+    
+    // for (var i=0; i<post.dates.length;i++ ){
+    //   if (post.dates[i].start > post.dates[i].end && post.dates[i].end ) {
+    //     errors.dates = 'Error, hora de fin menor a hora de inicio'
+    //   }
+    // }
 
-    for (var i = 0; i < post.dates.length; i++) {
-      for (var j = 1; j < post.dates.length; j++) {
-        if (
-          (post.dates[i].date === post.dates[j].date &&
-            post.dates[j].start < post.dates[i].end &&
-            post.dates[j].start > post.dates[i].start) ||
-          (post.dates[j].end > post.dates[i].start &&
-            post.dates[j].end < post.dates[i].end) ||
-          (post.dates[j].start < post.dates[i].start &&
-            post.dates[j].end > post.dates[i].end)
-        )
-          errors.dates = 'Fechas cruzadas';
-      }
-    }
+    // for (var i=0; i<post.dates.length;i++ ){
+    //   for(var j=1; j<post.dates.length;j++ ){
+    //   if (  post.dates[i].start.length>0 && post.dates[j].start.length>0 && post.dates[i].end.length>0
+    //     && post.dates[j].end.length>0 && post.dates[i].date === post.dates[j].date && i !== j ){
+    //       if(post.dates[i].start === post.dates[j].start||
+    //         post.dates[i].end === post.dates[j].end ||
+    //         post.dates[i].start > post.dates[j].start && post.dates[i].start < post.dates[j].end ||
+    //         post.dates[i].end > post.dates[j].start && post.dates[i].end < post.dates[j].end||
+    //         post.dates[i].start < post.dates[j].start && post.dates[i].end > post.dates[j].end ||
+    //         post.dates[i].start > post.dates[j].start && post.dates[i].end < post.dates[j].end ){
+    //         errors.dates = 'Fechas cruzadas'
+    //       }         
+    //     }
+    //     }   
+    // }
+    // return errors
+    // for (var i = 0; i < post.dates.length; i++) {
+    //   if (!post.dates[i].price) {
+    //     errors.price = true;
+    //   }
+    // }
+
+    // // for (var i=0; i<post.dates.length;i++ ){
+    // //   for(var j=0; j<allEvents[0].dates.length;j++ ){
+    // //   if (post.dates[i].sells>0 && parseInt(post.dates[i].price) < allEvents[0].dates[j].price) {
+    // //     console.log('entre')
+    // //     errors.price= `Ya se vendieron ${allEvents[0].dates[j].sells}  cupos. El número no puede ser inferior al de los cupos ya vendidos `
+    // //     }
+    // //   }
+    // // }
+
+    // for (var i = 0; i < post.dates.length; i++) {
+    //   if (!post.dates[i].date || !post.dates[i].start || !post.dates[i].end) {
+    //     errors.dates = true;
+    //   }
+    // }
+
+    // for (var i = 0; i < post.dates.length; i++) {
+    //   if (post.dates[i].start > post.dates[i].end) {
+    //     errors.dates = 'No puede empezar despues que termina';
+    //   }
+    // }
+
+    // for (var i = 0; i < post.dates.length; i++) {
+    //   for (var j = 1; j < post.dates.length; j++) {
+    //     if (
+    //       (post.dates[i].date === post.dates[j].date &&
+    //         post.dates[j].start < post.dates[i].end &&
+    //         post.dates[j].start > post.dates[i].start) ||
+    //       (post.dates[j].end > post.dates[i].start &&
+    //         post.dates[j].end < post.dates[i].end) ||
+    //       (post.dates[j].start < post.dates[i].start &&
+    //         post.dates[j].end > post.dates[i].end)
+    //     )
+    //       errors.dates = 'Fechas cruzadas';
+    //   }
+    // }
 
     return errors;
->>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
   }
 
   //--------------------------------------------------//
@@ -814,10 +677,6 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
   //--------------------------------------------------//
   //               POST - CATEGORIA                   //
 
-<<<<<<< HEAD
-  const [seleccionados, setSeleccionados] = useState([]);
-  const [changed, setChanged] = useState(false);
-=======
   const categorias =  categories.map(el => {
         return {
             name: el.name,
@@ -840,38 +699,24 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
   const [seleccionados, setSeleccionados] = useState([])
   const [changed, setChanged] = useState(false)
 
->>>>>>> Guille
 
   function handleCategories(e) {
     var categorieName = e.target.value;
     console.log('targetcat:', e.target.value);
     if (!e.target.checked) {
-<<<<<<< HEAD
-      console.log('seleccionados:',seleccionados)
-      let seleccion = seleccionados.filter((categorie) => categorie !== e.target.value)
-      console.log('seleccion:',seleccion)
-      setSeleccionados(seleccion)
-=======
       let seleccion = seleccionados.filter(
         (categorie) => categorie.name !== categorieName
       );
       setSeleccionados(seleccion);
->>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
       setPost({
         ...post,
         categories: seleccion,
       });
     } else {
-<<<<<<< HEAD
-      let categorieCheck = categories.find((categorie) => categorie.name === categorieName)
-      console.log('categorieCheck:',categorieCheck)
-      setSeleccionados([...seleccionados, categorieCheck.name])
-=======
       let categorieCheck = categories.find(
         (categorie) => categorie.name === categorieName
       );
       setSeleccionados([...seleccionados, categorieCheck.name]);
->>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
       setPost({
         ...post,
         categories: [...post.categories, categorieCheck.name],
@@ -989,7 +834,6 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
     });
   }
 
-<<<<<<< HEAD
   dotenv.config();
   const location = `${post.municipio}, ${post.departamento}`;
   const apiKey = 'AIzaSyBr-FUseqSbsY6EMqIGNnGmegD39R--nBA';
@@ -999,8 +843,6 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
 
 
  
-=======
->>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
   //--------------------------------------------------//
   //               POST  PRICE  && DATE        //
 
@@ -1010,7 +852,6 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
 
   const a = costoDeManejo * IVA;
 
-<<<<<<< HEAD
   
 
   let handleChanges = (i, e , id ) => {
@@ -1106,127 +947,11 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
               dates:newFechas 
             }) 
           }  
-=======
-  let handleChanges = (i, e, id) => {
-    let newFechas = [...post.dates];
-    newFechas[i][e.target.name] = e.target.value;
-    newFechas[i].precioAlPublico =
-      parseFloat(newFechas[i].price) +
-      parseFloat(costoDeManejo) +
-      parseFloat(a);
-    newFechas[i].gananciaCupo =
-      parseFloat(newFechas[i].price) -
-      (parseFloat(newFechas[i].price) * parseFloat(comision) +
-        parseFloat(newFechas[i].price) *
-          parseFloat(comision) *
-          parseFloat(IVA));
-    newFechas[i].gananciaEvento =
-      parseFloat(newFechas[i].gananciaCupo) * parseInt(newFechas[i].cupos);
-
-    for (var i = 0; i < post.dates.length; i++) {
-      for (var j = 0; j < allEvents[0].dates.length; j++) {
-        if (
-          post.dates[i]._id === id &&
-          allEvents[0].dates[j]._id === id &&
-          post.dates[i].sells > 0 &&
-          post.dates[i].start !== allEvents[0].dates[j].start
-        ) {
-          console.log('post.dates[i].sells:', i, post.dates[i].sells);
-          // console.log('allEvents[0].dates[j].sells:',j,allEvents[0].dates[j].sells)
-          console.log('post.dates[i].start:', i, post.dates[i].start);
-          console.log(
-            'allEvents[0].dates[j].start:',
-            i,
-            allEvents[0].dates[j].start
-          );
-          return Swal.fire({
-            title:
-              'Texto &&&&&&&&&&, ver sección &&&& en Guía del Organizador. Si procedes, es importante que le informes de inmediato sobre este cambio a los Asistentes.',
-            showDenyButton: true,
-            showCancelButton: false,
-            confirmButtonText: 'Cambiar hora inicio',
-            denyButtonText: `Cerrar`,
-          }).then((result) => {
-            if (result.isConfirmed) {
-              setPost({
-                ...post,
-                dates: newFechas,
-              });
-            } else if (result.isDenied) {
-              newFechas[i][e.target.name] = allEvents[0].dates[j].start;
-              setPost({
-                ...post,
-                dates: newFechas,
-              });
-            }
-          });
-        } else if (
-          post.dates[i]._id === id &&
-          allEvents[0].dates[j]._id === id &&
-          post.dates[i].sells > 0 &&
-          post.dates[i].end !== allEvents[0].dates[j].end
-        ) {
-          return Swal.fire({
-            title:
-              'Texto &&&&&&&&&&, ver sección &&&& en Guía del Organizador. Si procedes, es importante que le informes de inmediato sobre este cambio a los Asistentes.',
-            showDenyButton: true,
-            showCancelButton: false,
-            confirmButtonText: 'Cambiar hora fin',
-            denyButtonText: `Cerrar`,
-          }).then((result) => {
-            if (result.isConfirmed) {
-              setPost({
-                ...post,
-                dates: newFechas,
-              });
-            } else if (result.isDenied) {
-              newFechas[i][e.target.name] = allEvents[0].dates[j].end;
-              setPost({
-                ...post,
-                dates: newFechas,
-              });
-            }
-          });
-        } else if (
-          post.dates[i]._id === id &&
-          allEvents[0].dates[j]._id === id &&
-          post.dates[i].sells > 0 &&
-          post.dates[i].date !== allEvents[0].dates[j].date
-        ) {
-          return Swal.fire({
-            title:
-              'Texto &&&&&&&&&&, ver sección &&&& en Guía del Organizador. Si procedes, es importante que le informes de inmediato sobre este cambio a los Asistentes.',
-            showDenyButton: true,
-            showCancelButton: false,
-            confirmButtonText: 'Cambiar fecha',
-            denyButtonText: `Cerrar`,
-          }).then((result) => {
-            if (result.isConfirmed) {
-              setPost({
-                ...post,
-                dates: newFechas,
-              });
-            } else if (result.isDenied) {
-              newFechas[i][e.target.name] = allEvents[0].dates[j].date;
-              setPost({
-                ...post,
-                dates: newFechas,
-              });
-            }
-          });
-        } else {
-          setPost({
-            ...post,
-            dates: newFechas,
-          });
->>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
         }
       }
     }
   };
 
-<<<<<<< HEAD
-=======
 
     let removeFromPublic = (i , id ) => {
      
@@ -1293,7 +1018,6 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
       }
       
   
->>>>>>> Guille
   let addFormFields = () => {
     setPost({
       ...post,
@@ -1318,109 +1042,6 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
 
   let removeFormFields = (i, id) => {
     let newFechas = [...post.dates];
-<<<<<<< HEAD
-    newFechas.splice(i, 1);
-    for (var i = 0; i < post.dates.length; i++) {
-      for (var j = 0; j < allEvents[0].dates.length; j++) {
-        if (
-          post.dates[i]._id === id &&
-          post.dates[i].isPublic === true &&
-          post.dates[i].length === 1
-        ) {
-          return swal({
-            title:
-              'Tu evento será quitado de publicados y ya no será visible para el público. Deseas que sea movido a sección ‘Por publicar’ o eliminarlo por completo. ',
-            icon: 'warning',
-            buttons: ['Cancelar acción', 'Eliminar', 'Mover a ‘Por publicar’ '],
-            dangerMode: true,
-          }).then((continuar) => {
-            if (continuar) {
-              setPost({
-                ...post,
-                dates: newFechas,
-              });
-            }
-          });
-        } else if (
-          post.dates[i]._id === id &&
-          post.dates[i].isPublic === true &&
-          post.dates[i].sells === 0
-        ) {
-          return swal({
-            title:
-              'Esta acción quitará esta fecha de publicados y ya no será visible para el público. También se borrará en esta pagina los datos relacionados a esta fecha: hora, número de cupos, precio por cupo y códigos de descuento si alguno.',
-            icon: 'warning',
-            buttons: ['Cancelar acción', 'Continuar'],
-            dangerMode: true,
-          }).then((continuar) => {
-            if (continuar) {
-              setPost({
-                ...post,
-                dates: newFechas,
-              });
-            }
-          });
-        } else if (
-          post.dates[i]._id === id &&
-          post.dates[i].isPublic === true &&
-          post.dates[i].sells > 0
-        ) {
-          return swal({
-            title: `Ya hay ${post.dates[i].sells} cupo(s) comprado(s) para esta fecha, si la quitas de publicados el dinero será devuelto a los compradores. Esta devolución genera unos costos los cuales deberas asumir. Ver sección &&&&&&&&&& en Términos y Condiciones. También se borrará en esta pagina los datos relacionados a esta fecha: hora, número de cupos, precio por cupo y códigos de descuento si alguno. Deseas quitar esta fecha de publicados? `,
-            icon: 'warning',
-            buttons: ['Cancelar acción', 'Continuar'],
-            dangerMode: true,
-          }).then((continuar) => {
-            if (continuar) {
-              setPost({
-                ...post,
-                dates: newFechas,
-              });
-            }
-          });
-        } else if (
-          post.dates[i]._id === id &&
-          post.dates[i].isPublic === false &&
-          post.dates[i].sells === 0
-        ) {
-          return swal({
-            title:
-              'Se borrara esta fecha y los datos relacionados a la misma: hora, número de cupos, precio por cupo y códigos de descuento si alguno.',
-            icon: 'warning',
-            buttons: ['Cancelar acción', 'Continuar'],
-            dangerMode: true,
-          }).then((continuar) => {
-            if (continuar) {
-              setPost({
-                ...post,
-                dates: newFechas,
-              });
-            }
-          });
-        } else if (
-          post.dates[i]._id === id &&
-          post.dates[i].isPublic === false &&
-          post.dates[i].sells > 0
-        ) {
-          return swal({
-            title: `Ya hay ${post.dates[i].sells} cupo(s) comprado(s) para esta fecha, si procedes el dinero será devuelto a los compradores. Texto &&&&&&&&&&, ver sección &&&& en Guía del Organizador. También se borrará en esta pagina los datos relacionados a esta fecha: hora, número de cupos, precio por cupo y códigos de descuento si alguno.`,
-            icon: 'warning',
-            buttons: ['Cancelar acción', 'Continuar'],
-            dangerMode: true,
-          }).then((continuar) => {
-            if (continuar) {
-              setPost({
-                ...post,
-                dates: newFechas,
-              });
-            }
-          });
-        }
-      }
-    }
-<<<<<<< HEAD
-  }  
-=======
       newFechas.splice(i, 1)
       for(var i = 0; i<post.dates.length; i++){
       if( post.dates[i]._id === id && post.dates[i].sells === 0){
@@ -1460,8 +1081,108 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
         })
       }
     }
->>>>>>> Guille
   }
+
+//   newFechas.splice(i, 1);
+//   for (var i = 0; i < post.dates.length; i++) {
+//     for (var j = 0; j < allEvents[0].dates.length; j++) {
+//       if (
+//         post.dates[i]._id === id &&
+//         post.dates[i].isPublic === true &&
+//         post.dates[i].length === 1
+//       ) {
+//         return swal({
+//           title:
+//             'Tu evento será quitado de publicados y ya no será visible para el público. Deseas que sea movido a sección ‘Por publicar’ o eliminarlo por completo. ',
+//           icon: 'warning',
+//           buttons: ['Cancelar acción', 'Eliminar', 'Mover a ‘Por publicar’ '],
+//           dangerMode: true,
+//         }).then((continuar) => {
+//           if (continuar) {
+//             setPost({
+//               ...post,
+//               dates: newFechas,
+//             });
+//           }
+//         });
+//       } else if (
+//         post.dates[i]._id === id &&
+//         post.dates[i].isPublic === true &&
+//         post.dates[i].sells === 0
+//       ) {
+//         return swal({
+//           title:
+//             'Esta acción quitará esta fecha de publicados y ya no será visible para el público. También se borrará en esta pagina los datos relacionados a esta fecha: hora, número de cupos, precio por cupo y códigos de descuento si alguno.',
+//           icon: 'warning',
+//           buttons: ['Cancelar acción', 'Continuar'],
+//           dangerMode: true,
+//         }).then((continuar) => {
+//           if (continuar) {
+//             setPost({
+//               ...post,
+//               dates: newFechas,
+//             });
+//           }
+//         });
+//       } else if (
+//         post.dates[i]._id === id &&
+//         post.dates[i].isPublic === true &&
+//         post.dates[i].sells > 0
+//       ) {
+//         return swal({
+//           title: `Ya hay ${post.dates[i].sells} cupo(s) comprado(s) para esta fecha, si la quitas de publicados el dinero será devuelto a los compradores. Esta devolución genera unos costos los cuales deberas asumir. Ver sección &&&&&&&&&& en Términos y Condiciones. También se borrará en esta pagina los datos relacionados a esta fecha: hora, número de cupos, precio por cupo y códigos de descuento si alguno. Deseas quitar esta fecha de publicados? `,
+//           icon: 'warning',
+//           buttons: ['Cancelar acción', 'Continuar'],
+//           dangerMode: true,
+//         }).then((continuar) => {
+//           if (continuar) {
+//             setPost({
+//               ...post,
+//               dates: newFechas,
+//             });
+//           }
+//         });
+//       } else if (
+//         post.dates[i]._id === id &&
+//         post.dates[i].isPublic === false &&
+//         post.dates[i].sells === 0
+//       ) {
+//         return swal({
+//           title:
+//             'Se borrara esta fecha y los datos relacionados a la misma: hora, número de cupos, precio por cupo y códigos de descuento si alguno.',
+//           icon: 'warning',
+//           buttons: ['Cancelar acción', 'Continuar'],
+//           dangerMode: true,
+//         }).then((continuar) => {
+//           if (continuar) {
+//             setPost({
+//               ...post,
+//               dates: newFechas,
+//             });
+//           }
+//         });
+//       } else if (
+//         post.dates[i]._id === id &&
+//         post.dates[i].isPublic === false &&
+//         post.dates[i].sells > 0
+//       ) {
+//         return swal({
+//           title: `Ya hay ${post.dates[i].sells} cupo(s) comprado(s) para esta fecha, si procedes el dinero será devuelto a los compradores. Texto &&&&&&&&&&, ver sección &&&& en Guía del Organizador. También se borrará en esta pagina los datos relacionados a esta fecha: hora, número de cupos, precio por cupo y códigos de descuento si alguno.`,
+//           icon: 'warning',
+//           buttons: ['Cancelar acción', 'Continuar'],
+//           dangerMode: true,
+//         }).then((continuar) => {
+//           if (continuar) {
+//             setPost({
+//               ...post,
+//               dates: newFechas,
+//             });
+//           }
+//         });
+//       }
+//     }
+//   }
+// }  
 
 
 
@@ -1478,8 +1199,6 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
 
   const fechaMinima = anio+'-'+mes+'-'+dia;
   
-=======
-  };
 
   //--------------------------------------------------//
   //                  CALENDAR                 //
@@ -1500,7 +1219,6 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
   //   // console.log('dateFormatted:',dateFormatted)
   // };
 
->>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
   //-----------------------------------------------------//
   //                  SCROLL_SNAP                     //
 
@@ -1519,28 +1237,17 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
   };
 
   //--------------------------------------------------//
-<<<<<<< HEAD
-  //                VISTA PREVIA         //
+  //                CANCEL          //
 
   const [getPreview, setGetPreview] = useState(false);
 
-
-
-//--------------------------------------------------//
-  //                CANCEL          //
-
-  function handleDelete(e){
-    e.preventDefault()
-    
-=======
-  //                CANCEL          //
+  
   const navigate = useNavigate();
 
   function handleDelete(e) {
     console.log('guardar');
     e.preventDefault();
 
->>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
     swal({
       title:
         'Esta acción borrara todo la información ingresada o modificada en esta sesión',
@@ -1556,9 +1263,7 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
   //--------------------------------------------------//
   //                  SUBMIT              //
 
-<<<<<<< HEAD
   const [failedSubmit, setFailedSubmit] = useState(false)
-  const navigate = useNavigate()
   
 
   function handleSubmit(e) {
@@ -1732,179 +1437,16 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
        //navigate("/user/profile" )
         } 
       }) 
-=======
-  const [failedSubmit, setFailedSubmit] = useState(false);
-
-  const id = '632cbed4f208f44f5333af48';
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    for (var i = 0; i < post.dates.length; i++) {
-      if (Object.values(errors).length > 0) {
-        setFailedSubmit(true);
-        return swal({
-          title: 'Completa los campos faltantes',
-          icon: 'warning',
-          button: 'Completar',
-          dangerMode: true,
-        });
-      } else if (post.dates[i].sells > 0 && post.revision === false) {
-        swal({
-          title:
-            'Si ya hay Asistentes al evento es importante que le informes de inmediato los cambios que consideres podrían afectar su participación ',
-          buttons: true,
-          dangerMode: true,
-        }).then((publicar) => {
-          if (publicar) {
-            dispatch(postEvent(post, id));
-            swal('Tu evento ha sido publicado ', {
-              icon: 'success',
-            });
-            setPost({
-              idOrganizer: '632cbed4f208f44f5333af48',
-              title: '',
-              categories: [],
-              otherCategorie: [],
-              shortDescription: '',
-              longDescription: '',
-              pictures: [],
-              online: '',
-              link: '',
-              departamento: '',
-              municipio: '',
-              direccion: '',
-              barrio: '',
-              specialRequires: '',
-              dates: [
-                {
-                  date: '',
-                  start: '',
-                  end: '',
-                  year: 0,
-                  cupos: '',
-                  price: '',
-                  sells: 0,
-                  isPublic: true,
-                  precioAlPublico: '',
-                  gananciaCupo: '',
-                  gananciaEvento: '',
-                },
-              ],
-              isPublic: true,
-            });
-            navigate('/user/profile');
-          }
-        });
-      } else if (allEvents[0] === post.dates) {
-        swal('No has hecho ninguna edición ');
-      } else if (post.revision === true) {
-        swal({
-          title: 'Este evento y sus fechas será publicado  ',
-          buttons: true,
-          dangerMode: true,
-        }).then((publicar) => {
-          if (publicar) {
-            dispatch(postEvent(post, id));
-            swal(
-              'Tus cambios han sido notificados. La publicación esta en revisión. Un correo con una actualización te llegara pronto. ',
-              {
-                icon: 'success',
-              }
-            );
-            setPost({
-              idOrganizer: '632cbed4f208f44f5333af48',
-              title: '',
-              categories: [],
-              otherCategorie: [],
-              shortDescription: '',
-              longDescription: '',
-              pictures: [],
-              online: '',
-              link: '',
-              departamento: '',
-              municipio: '',
-              direccion: '',
-              barrio: '',
-              specialRequires: '',
-              dates: [
-                {
-                  date: '',
-                  start: '',
-                  end: '',
-                  year: 0,
-                  cupos: '',
-                  price: '',
-                  sells: 0,
-                  isPublic: true,
-                  precioAlPublico: '',
-                  gananciaCupo: '',
-                  gananciaEvento: '',
-                },
-              ],
-              isPublic: true,
-            });
-          }
-        });
-      } else {
-        swal({
-          title: 'Este evento y sus fechas será publicado  ',
-          buttons: true,
-          dangerMode: true,
-        }).then((publicar) => {
-          if (publicar) {
-            dispatch(postEvent(post, id));
-            swal('Tu evento ha sido publicado ', {
-              icon: 'success',
-            });
-            setPost({
-              idOrganizer: '632cbed4f208f44f5333af48',
-              title: '',
-              categories: [],
-              otherCategorie: [],
-              shortDescription: '',
-              longDescription: '',
-              pictures: [],
-              online: '',
-              link: '',
-              departamento: '',
-              municipio: '',
-              direccion: '',
-              barrio: '',
-              specialRequires: '',
-              dates: [
-                {
-                  date: '',
-                  start: '',
-                  end: '',
-                  year: 0,
-                  cupos: '',
-                  price: '',
-                  sells: 0,
-                  isPublic: true,
-                  precioAlPublico: '',
-                  gananciaCupo: '',
-                  gananciaEvento: '',
-                },
-              ],
-              isPublic: true,
-            });
-          }
-        });
-      }
->>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
     }
   }
 
-<<<<<<< HEAD
   
-=======
->>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
   return (
     <div>    
     <div className={styles.container}>  
       <div ref={ref} className={styles.containerForm}>   
         <form onSubmit={(e) => handleSubmit(e)}>
-         <div>
+            <div>
           {/* SECTION 1: Nombre del Evento */}
 
           <div className={styles.section1}>
@@ -1984,7 +1526,7 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
 
           {/* SECTION 2: Categorias */}
 
-          <div className={styles.section2}>
+            <div className={styles.section2}>
             {/* linea vertical */}
 
             <div className={styles.containerLine}>
@@ -2019,50 +1561,34 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
                 diam nonummy nibh, Lorem ipsum dolor sit amet, consectetuer
                 adipiscing elit, sed diam nonummy nibh.{' '}
               </p>
-<<<<<<< HEAD
               <div className={styles.containerChecks}> 
-=======
-              <div className={styles.containerChecks}>
-                {/* {post.categories.length<4 ?
-                 <div className={styles.containerChecks}>  </div>
-                   :<div className={styles.containerChecks2}>  </div>
-                }
-               */}
->>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
 
-<<<<<<< HEAD
-                {categories.map((categorie) => (
-=======
-                {categorias.map ((categoria) => (
->>>>>>> Guille
+                {categories.map ((categorie) => (
                   <div className={styles.checks}>
                     <label className={styles.labelsChecks}>
                       <input
                         className={styles.checkBox}
-<<<<<<< HEAD
-                        type='checkbox'
-                        value={categorie.name}
-=======
                         type="checkbox"
-                        value={categoria.name}
->>>>>>> Guille
+                        value={categorie.name}
                         onChange={(e) => handleCategories(e)}
-                        defaultChecked={categoria.check==='true'}
+                        defaultChecked={false}
                       />
-                      {categoria.name}
+                      {categorie.name}
                     </label>
                   </div>
                 ))}
+                
               </div>
 
               {/* otra categoria*/}
-
+                
+              
               <div className={styles.checkOther}>
                 <input
                   className={styles.checkBox}
                   defaultChecked={false}
-                  type='checkbox'
-                  name='categories'
+                  type="checkbox"
+                  name="categories"
                   value={post.categories}
                 />
                 <label className={styles.labelsChecks}>Otro</label>
@@ -2071,7 +1597,6 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
                   <label className={styles.subTitle}>
                     Si escogiste ‘otro’, especifica :{' '}
                   </label>
-<<<<<<< HEAD
                   {failedSubmit && errors.otherCategorie ?
                 
                       <input
@@ -2096,26 +1621,12 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
                      
                 </div>
               
-=======
-                  <input
-                    className={styles.input2}
-                    type='text'
-                    name='otherCategorie'
-                    values={post.otherCategorie}
-                    onChange={(e) => handleOtherCategorie(e)}
-                  />
-                </div>
-                {errors.otherCategorie && (
-                  <p className={styles.errors}>{errors.otherCategorie}</p>
-                )}
->>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
               </div>
 
-              {errors.categories && (
-                <p className={styles.errors}>{errors.categories}</p>
-              )}
+              {errors.categories &&
+              <p className={styles.errors}>{errors.categories}</p>
+              }
 
-<<<<<<< HEAD
               {failedSubmit && errors.categories && errors.categories<3?
               <p className={styles.errors}>Debes seleccionar al menos una categoría</p>
               :''
@@ -2129,17 +1640,8 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
             
 
               
-=======
-              {failedSubmit && errors.categories && errors.categories < 3 ? (
-                <p className={styles.errors}>
-                  Debes seleccionar al menos una categoría
-                </p>
-              ) : (
-                ''
-              )}
->>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
             </div>
-          </div>
+            </div>
 
           {/* SECTION 3: Descripcion */}
 
@@ -2180,45 +1682,40 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
                   diam nonummy nibh, Lorem ipsum dolor sit amet, consectetuer
                   adipiscing elit, sed diam nonummy nibh.{' '}
                 </p>
-                {failedSubmit && errors.shortDescription ? (
-                  <textarea
-                    className={styles.textareaShort}
-                    type='text'
-                    maxlength='100'
-                    placeholder='descripción breve del evento'
-                    name='shortDescription'
-                    value={post.shortDescription}
-                    onChange={(e) => handleChange(e)}
-                    required
-                  />
-                ) : (
-                  <textarea
-                    className={styles.textareaShort}
-                    type='text'
-                    maxlength='100'
-                    placeholder='descripción breve del evento'
-                    name='shortDescription'
-                    value={post.shortDescription}
-                    onChange={(e) => handleChange(e)}
-                  />
-                )}
-
-                {post.shortDescription.length === 100 ? (
-                  <p className={styles.errors}>Máximo: 100 de caracteres</p>
-                ) : (
-                  <p className={styles.subTitle}>Máximo: 100 de caracteres</p>
-                )}
-                {post.shortDescription.length > 0 ? (
-                  <p className={styles.subTitle}>
-                    Usetd va escribiendo: {post.shortDescription.length}/100
-                    caracteres
-                  </p>
-                ) : (
-                  ''
-                )}
-                {errors.shortDescription ? (
-                  <p className={styles.errors}>{errors.shortDescription}</p>
-                ) : null}
+                {failedSubmit && errors.shortDescription?
+                <textarea
+                  className={styles.textareaShort}
+                  type="text"
+                  maxlength="100"
+                  placeholder="descripción breve del evento"
+                  name="shortDescription"
+                  value={post.shortDescription}
+                  onChange={(e) => handleChange(e)}
+                  required
+                />
+                :
+                <textarea
+                  className={styles.textareaShort}
+                  type="text"
+                  maxlength="100"
+                  placeholder="descripción breve del evento"
+                  name="shortDescription"
+                  value={post.shortDescription}
+                  onChange={(e) => handleChange(e)}
+                />
+                }
+                
+                {post.shortDescription.length===100?
+                <p className={styles.errors}>Máximo: 100 de caracteres</p>
+                : <p className={styles.subTitle}>Máximo: 100 de caracteres</p>
+                }
+                {post.shortDescription.length>0 ?
+                <p className={styles.subTitle}>Usetd va escribiendo: {post.shortDescription.length}/100 caracteres</p>
+                : ''
+                }
+                {errors.shortDescription?
+                <p className={styles.errors}>{errors.shortDescription}</p>
+                : null}    
               </div>
 
               {/* longDescription */}
@@ -2229,46 +1726,41 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
                   diam nonummy nibh, Lorem ipsum dolor sit amet, consectetuer
                   adipiscing elit, sed diam nonummy nibh.{' '}
                 </p>
-                {failedSubmit && errors.longDescription ? (
-                  <textarea
-                    className={styles.textareaLong}
-                    type='text'
-                    minlength='75'
-                    placeholder='descripción detallada del evento'
-                    name='longDescription'
-                    value={post.longDescription}
-                    onChange={(e) => handleChange(e)}
-                    required
-                  />
-                ) : (
-                  <textarea
-                    className={styles.textareaLong}
-                    type='text'
-                    minlength='75'
-                    placeholder='descripción detallada del evento'
-                    name='longDescription'
-                    value={post.longDescription}
-                    onChange={(e) => handleChange(e)}
-                  />
-                )}
+                {failedSubmit && errors.longDescription ?
+                <textarea
+                className={styles.textareaLong}
+                type="text"
+                minlength="75"
+                placeholder="descripción detallada del evento"
+                name="longDescription"
+                value={post.longDescription}
+                onChange={(e) => handleChange(e)}
+                required
+                />
+                
+                :
+                <textarea
+                  className={styles.textareaLong}
+                  type="text"
+                  minlength="75"
+                  placeholder="descripción detallada del evento"
+                  name="longDescription"
+                  value={post.longDescription}
+                  onChange={(e) => handleChange(e)}
+                />
+                }
 
-                {post.longDescription.length < 75 &&
-                post.longDescription.length > 0 ? (
-                  <p className={styles.errors}>Minimo 75 caracteres</p>
-                ) : (
-                  <p className={styles.subTitle}>Minimo 75 caracteres</p>
-                )}
-                {post.longDescription.length > 0 ? (
-                  <p className={styles.subTitle}>
-                    Usetd va escribiendo: {post.longDescription.length}{' '}
-                    caracteres
-                  </p>
-                ) : (
-                  ''
-                )}
-                {errors.longDescription ? (
-                  <p className={styles.errors}>{errors.longDescription}</p>
-                ) : null}
+                {post.longDescription.length<75 && post.longDescription.length>0  ?
+                <p className={styles.errors}>Minimo 75 caracteres</p>
+                : <p className={styles.subTitle}>Minimo 75 caracteres</p>
+                }
+                {post.longDescription.length>0 ?
+                <p className={styles.subTitle}>Usetd va escribiendo: {post.longDescription.length} caracteres</p>
+                : ''
+                }
+                {errors.longDescription ? 
+                <p className={styles.errors}>{errors.longDescription}</p>
+                 : null}    
               </div>
             </div>
           </div>
@@ -2310,45 +1802,43 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
               </p>
               <p className={styles.subTitle4}>Fotos del Evento</p>
 
-              {failedSubmit && errors.pictures ? (
+             
+              {failedSubmit && errors.pictures ?
                 <div
                   ref={wrapperRef}
-                  className={styles.errorsPicture}
-                  onDragEnter={onDragEnter}
-                  onDragLeave={onDragLeave}
-                  onDrop={onDrop}
-                >
+                    className={styles.errorsPicture}
+                    onDragEnter={onDragEnter}
+                    onDragLeave={onDragLeave}
+                    onDrop={onDrop}
+                  > 
                   <div>
-                    <ImageIcon sx={{fontSize: '50px', color: 'grey'}} />
+                  <ImageIcon sx={{ fontSize: '50px', color: 'grey' }} />
                   </div>
-                  <p>Fotos: Jpg, png, Max.100kb </p>
-                  <p>Videos: .MP4 Max 100kb</p>
-                  <p>
-                    "Arrastra los archivos aquí o haz click para agregar
-                    archivos"
-                  </p>
-                  <input
-                    type='file'
-                    value=''
-                    name='pictures'
+                  <p>Fotos: Jpg, png, Max.100kb </p> 
+                  <p>Videos: .MP4 Max 100kb</p>      
+                  <p>"Arrastra los archivos aquí o haz click para agregar archivos"</p>
+                  <input 
+                    type="file" 
+                    value="" 
+                    name="pictures"
                     onChange={onFileDrop}
                   />
-                  {errors.pictures ? (
-                    <p className={styles.errors}>{errors.pictures}</p>
-                  ) : null}
-                </div>
-              ) : (
+                  {errors.pictures?
+                   <p className={styles.errors}>{errors.pictures}</p>
+                   : null
+                  }
+                </div>              
+                :
                 <div
                   ref={wrapperRef}
-                  className={styles.dropFileIput}
-                  onDragEnter={onDragEnter}
-                  onDragLeave={onDragLeave}
-                  onDrop={onDrop}
-                >
+                    className={styles.dropFileIput}
+                    onDragEnter={onDragEnter}
+                    onDragLeave={onDragLeave}
+                    onDrop={onDrop}
+                  > 
                   <div>
-                    <ImageIcon sx={{fontSize: '50px', color: 'grey'}} />
+                  <ImageIcon sx={{ fontSize: '50px', color: 'grey' }} />
                   </div>
-<<<<<<< HEAD
                   <p>Fotos: Jpg, png, Max.100kb </p> 
                   <p>Videos: .MP4 Max 100kb</p>      
                   <p>"Arrastra los archivos aquí o haz click para agregar archivos"</p>
@@ -2357,67 +1847,55 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
                     placeholder='Arrastra los archivos aquí o haz click para agregar archivos'
                     value="" 
                     name="pictures"
-=======
-                  <p>Fotos: Jpg, png, Max.100kb </p>
-                  <p>Videos: .MP4 Max 100kb</p>
-                  <p>
-                    "Arrastra los archivos aquí o haz click para agregar
-                    archivos"
-                  </p>
-                  <input
-                    type='file'
-                    value=''
-                    name='pictures'
->>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
                     onChange={onFileDrop}
                   />
                 </div>
-              )}
+              }
+          
 
-              {post.pictures.length > 0 ? (
-                <div className={styles.dropFilePreview}>
-                  <p>Ready to upload</p>
-                  <Swiper
-                    slidesPerView={1}
-                    navigation
-                    spaceBetween={0}
-                    modules={[Navigation]}
-                    className={styles.mySwipper}
-                  >
-                    {post.pictures.map((item, index) => (
-                      <div key={index} className={styles.mySwiper}>
-                        <SwiperSlide>
-                          <img
-                            className={styles.mySwiperImg}
-                            src={item.picture}
-                            alt=''
-                          />
-                          <button
-                            className={styles.mySwiperBtnDel}
-                            onClick={() => fileRemove(item)}
-                          >
-                            x
-                          </button>
-                          <label className={styles.subInput}>
-                            <input
-                              className={styles.checkBox4}
-                              type='checkbox'
-                              name='cover'
-                              value={item.picture}
-                              onChange={(e) => handleCover(e)}
-                              defaultChecked={false}
-                            />
-                            Quiero que esta sea la portada
-                          </label>
-                        </SwiperSlide>
-                      </div>
-                    ))}
-                  </Swiper>
-                  {errors.pictures ? (
+              {
+                 post.pictures.length > 0 ? (
+                  <div className={styles.dropFilePreview}>
+                    <p>
+                      Ready to upload
+                    </p>
+                    <Swiper
+                      slidesPerView={1}
+                      navigation
+                      spaceBetween={0}
+                      modules={[Navigation]}
+                      className={styles.mySwipper}
+                    >
+                    {
+                        post.pictures.map((item, index) => (
+                            <div key={index} className={styles.mySwiper}>
+                              <SwiperSlide>
+                                <img className={styles.mySwiperImg} src={item.picture} alt=''/>                                
+                                <button className={styles.mySwiperBtnDel} onClick={() => fileRemove(item)}>x</button>
+                                <label className={styles.subInput}>
+                                  <input 
+                                    className={styles.checkBox4} 
+                                    type="checkbox" 
+                                    name='cover'
+                                    value={item.picture}
+                                    onChange={e=>handleCover(e)}                              
+                                    defaultChecked={false}
+                                  />                 
+                                  Quiero que esta sea la portada
+                                </label>
+                              </SwiperSlide>
+                            </div>
+                        ))
+                    }
+                    </Swiper>
+                    {errors.pictures?
                     <p className={styles.errors}>{errors.pictures}</p>
-                  ) : null}
-                </div>
-              ) : null}
+                    : null
+                  }
+                  </div>
+                ) : null
+              }
+     
             </div>
           </div>
 
@@ -2538,10 +2016,7 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
                           </option>
                         ))}
                     </datalist>
-<<<<<<< HEAD
-=======
 
->>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
                     {/* Municipio*/}
 
                     {nuevoArrayDepartamentos &&
@@ -2651,7 +2126,7 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
 
                   <div className={styles.containerMap}>
                     <p className={styles.titleMap}>Ubicación en el mapa</p>
-<<<<<<< HEAD
+
                     {post.municipio?
                      <div>
                      <img 
@@ -2666,9 +2141,9 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
                       alt="mapaStaticGoogleMaps" 
                     />
                   </div>}
-=======
+
                     <img src={mapa} alt='imagen_mapa' />
->>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
+
                     <p className={styles.subtextMap}>Texto google legal aqui</p>
 
                     {/* <img  className={styles.icon} src={iconEditar} alt='n' /> */}
@@ -2767,66 +2242,44 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
                 {post.dates.map((element, index) => (
                   <div>
                     <div className={styles.containerInfo} key={index}>
-                      <div className={styles.containerSubInfo}>
-                        <label className={styles.subInfoTitle}>
-                          Máximo número de participantes
-                          {failedSubmit && errors.cupos ? (
-                            <input
-<<<<<<< HEAD
-                            id='cupos'   
-                            type="number"
-                            placeholder="10"
-                            name="cupos"
-                            value={element.cupos || ""} 
-                            onChange={e => handleChanges(index, e , element._id)}
-                            required
-                          />
-                            :
-=======
-                              id='cupos'
-                              type='number'
-                              placeholder='10'
-                              name='cupos'
-                              value={element.cupos || ''}
-                              onChange={(e) =>
-                                handleChanges(index, e, element._id)
-                              }
-                              required
+                        <div className={styles.containerSubInfo}>
+                            <label className={styles.subInfoTitle}>
+                                Máximo número de participantes
+                                {failedSubmit && errors.cupos?
+                                <input
+                                id='cupos'   
+                                type="number"
+                                placeholder="10"
+                                name="cupos"
+                                value={element.cupos || ""} 
+                                onChange={e => handleChanges(index, e , element._id)}
+                                required
                             />
-                          ) : (
->>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
-                            <input
-                              id='cupos'
-                              className={styles.subInfoInput}
-                              type='number'
-                              placeholder='10'
-                              name='cupos'
-                              value={element.cupos || ''}
-                              onChange={(e) =>
-                                handleChanges(index, e, element._id)
-                              }
-                            />
-<<<<<<< HEAD
-                          }
-                          </label>          
-                        </div>
-=======
-                          )}
-                          {errors.cupos ? (
+                                :
+                                <input
+                                id='cupos'
+                                className={styles.subInfoInput}
+                                type="number"
+                                placeholder="10"
+                                name="cupos"
+                                value={element.cupos || ""} 
+                                onChange={e => handleChanges(index, e , element._id)}
+                                />
+                            }
+                            </label>     
+                            {errors.cupos ? (
                             <p className={styles.errors}>{errors.cupos}</p>
-                          ) : null}
-                        </label>
-                      </div>
->>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
+                                ) : null}     
+                        </div>
 
-                      <div className={styles.containerSubInfo}>
-                        <label className={styles.subInfoTitle}>
-                          Precio por cupo
-                          <div className={styles.labelS}>
-                            <p>$</p>
-                            {failedSubmit && errors.dates ? (
+
+                        <div className={styles.containerSubInfo}>
+                          <label className={styles.subInfoTitle}>
+                            Precio por cupo
+                            <div className={styles.labelS}>
+                              <p>$</p>
+                              {failedSubmit && errors.dates?
                               <input
-<<<<<<< HEAD
                              
                               type='number'
                               placeholder="20.00"
@@ -2846,7 +2299,8 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
                                 onChange={e => handleChanges(index, e , element._id)}
                               />
                             }
-                            </div>
+                        </div>
+
                           </label>
 
                           {element.price === '' ? <p>$21.990</p> : <p>{element.precioAlPublico}</p>}
@@ -2854,74 +2308,15 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
                           <p className={styles.subInfotxt}>
                             Precio al público incluyendo costo de manejo e IVA
                           </p>
-
                         </div>
-
-                         <div className={styles.containerSubInfo}>
-                            <label className={styles.subInfoTitle}>
-                              Tu ganas por cupo
-                              <div className={styles.labelS}>
-                                <p>$</p>
-                                <p className={styles.subInfoInput}>{element.gananciaCupo}</p>
-                              </div>
-                            </label>
-                            <p className={styles.subInfotxt}>
-                              Después de nuestra comisión + IVA
-                            </p>
-                            <a className={styles.btn6} href="/user/profile" target="_blank">Ver mas</a>
-                           
-                        
-=======
-                                id='price'
-                                type='number'
-                                placeholder='20.00'
-                                name='price'
-                                value={element.price || ''}
-                                onChange={(e) =>
-                                  handleChanges(index, e, element._id)
-                                }
-                                required
-                              />
-                            ) : (
-                              <input
-                                className={styles.subInfoInput}
-                                id='price'
-                                type='number'
-                                placeholder='20.00'
-                                name='price'
-                                value={element.price || ''}
-                                onChange={(e) =>
-                                  handleChanges(index, e, element._id)
-                                }
-                              />
-                            )}
-                            {errors.price ? (
+                        {errors.price ? (
                               <p className={styles.errors}>{errors.price}</p>
-                            ) : null}
->>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
-                          </div>
-                        </label>
-
-<<<<<<< HEAD
-                           <div className={styles.containerSubInfo}>
-                              <label className={styles.subInfoTitle}>
-                                Tu ganas por evento
-                                <div className={styles.labelS}>
-                                  <p>$</p>
-                                 <p className={styles.subInfoInput}>{element.gananciaEvento}</p>
-                                </div>
-                              </label>
-                              <p className={styles.subInfotxt}>
-                                Esto sería lo que ganarías si se venden todos tus cupos
-                              </p>
-                              <a className={styles.btn6} href="/user/profile" target="_blank">Ver mas</a>
-                            </div> 
-
+                            ) : null}                         
                        </div>
                       
                       <div  className={styles.contTimeAndDate} key={index}>
                         <div className={styles.contDate}>
-=======
+
                         {element.price === '' ? (
                           <p>$21.990</p>
                         ) : (
@@ -2973,55 +2368,25 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
                           <button className={styles.btn6}>Ver Más</button>
                         </Link>
                       </div>
+
                     </div>
 
-                    {/* <div className={styles.contInputDate}>             
-                            <input 
-                              type="text" 
-                              id="date" 
-                              value={dateFormatted} />
-
-                            <div className={styles.containerDate}>
-                              <input
-                                type="checkbox"
-                                defaultChecked={false}
-                                name="date"
-                                value={element.dadateFormatted || ""}
-                                onChange={e => handleChanges(index, e)}
-                                id="checkCalendar"
-                              />
-                              <label htmlFor="checkCalendar" className={styles.label}>
-                                <img src={calendar} alt="n" />
-                              </label>
-
-                              <div className={styles.calendar}>
-                                <Calendar
-                                  color={'#D53E27'}
-                                  locale={locales['es']}
-                                  date={date}
-                                  name='date'
-                                  onChange={(item) => handleFormatDate(index,item)}
-                                />
-                              </div>
-                            </div>                          
-                        </div> */}
 
                     <div className={styles.contTimeAndDate} key={index}>
                       <div className={styles.contDate}>
->>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
+
                         <label>Fecha</label>
-                        {failedSubmit && errors.dates ? (
+                        {failedSubmit && errors.dates ?
                           <input
                             classname={styles.errors}
-<<<<<<< HEAD
+
                             type="date" 
                             name="date" 
                             value={element.date || ""} 
                             onChange={e => handleChanges(index, e , element._id)}
                             min={fechaMinima}
                             required
-                            />
-                          
+                            />                      
                           :
                           <input 
                           id="fecha"
@@ -3089,15 +2454,29 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
                             Agregar a Publicados
                           </button> 
                       }
+
+                      {index ? (
+                        <button
+                          lassName={styles.addDelete}
+                          type='button'
+                          onClick={() => removeFormFields(index, element._id)}
+                        >
+                          <img
+                            className={styles.basquet}
+                            src={basquet}
+                            alt='n'
+                          />
+                        </button>
+                      ) : null}
                     
 
-                      {post.dates.length>1?
+                      {/* {post.dates.length>1?
                       
                           <button className={styles.addDelete}  type="button"  onClick={() => removeFormFields(index , element._id)}>
                             <img className={styles.basquet} src={basquet} alt="n" />
                           </button> 
                         :null
-                      }
+                      } */}
                     </div>
                     {errors.dates && (
                       <p className={styles.errors}>{errors.dates}</p>
@@ -3113,125 +2492,21 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
                     <hr className={styles.hr}></hr> 
                    </div>
                   ))}
-=======
-                            type='date'
-                            name='date'
-                            value={element.date || ''}
-                            onChange={(e) =>
-                              handleChanges(index, e, element._id)
-                            }
-                            required
-                          />
-                        ) : (
-                          <input
-                            type='date'
-                            name='date'
-                            value={element.date || ''}
-                            onChange={(e) =>
-                              handleChanges(index, e, element._id)
-                            }
-                          />
-                        )}
+
                       </div>
 
-<<<<<<< HEAD
-                      <div className={styles.contStart}>
-                        <label>Comienza</label>
-                        {failedSubmit && errors.dates ? (
-                          <input
-                            type='time'
-                            name='start'
-                            value={element.start || ''}
-                            onChange={(e) =>
-                              handleChanges(index, e, element._id)
-                            }
-                            required
-                          />
-                        ) : (
-                          <input
-                            type='time'
-                            name='start'
-                            value={element.start || ''}
-                            onChange={(e) =>
-                              handleChanges(index, e, element._id)
-                            }
-                          />
-                        )}
-                      </div>
 
-                      <div className={styles.contStart}>
-                        <label>End</label>
-                        {failedSubmit && errors.dates ? (
-                          <input
-                            type='time'
-                            name='end'
-                            value={element.end || ''}
-                            onChange={(e) =>
-                              handleChanges(index, e, element._id)
-                            }
-                            required
-                          />
-                        ) : (
-                          <input
-                            type='time'
-                            name='end'
-                            value={element.end || ''}
-                            onChange={(e) =>
-                              handleChanges(index, e, element._id)
-                            }
-                          />
-                        )}
-                      </div>
-
-                      {index ? (
-                        <button
-                          lassName={styles.addDelete}
-                          type='button'
-                          onClick={() => removeFormFields(index, element._id)}
-                        >
-                          <img
-                            className={styles.basquet}
-                            src={basquet}
-                            alt='n'
-                          />
-                        </button>
-                      ) : null}
                     </div>
-                  </div>
-                ))}
-              </div>
-              {errors.dates && <p className={styles.errors}>{errors.dates}</p>}
-              {errors.cupos && <p className={styles.errors}>{errors.cupos}</p>}
->>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
-
-              <hr className={styles.hr}></hr>
-
-<<<<<<< HEAD
-=======
-                </div>
-                
->>>>>>> Guille
-          
-
-          <div  >
-              <button className={styles.addDate}  type="button" onClick={() => addFormFields()}> + Crear Nueva Fecha</button>
           </div>
-
-   
-=======
-              <div>
-                <button
-                  className={styles.addDate}
-                  type='button'
-                  onClick={() => addFormFields()}
-                >
-                  {' '}
-                  + Crear Nueva Fecha
-                </button>
-              </div>
->>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
-
-              <div>
+              
+            </div>
+            {errors.dates && <p className={styles.errors}>{errors.dates}</p>}
+            {errors.cupos && <p className={styles.errors}>{errors.cupos}</p>}
+            <hr className={styles.hr}></hr>
+            <div>
+              <button className={styles.addDate}  type="button" onClick={() => addFormFields()}> + Crear Nueva Fecha</button>
+            </div>        
+            <div>
                 <p className={styles.acceptText}>
                   Al hacer clic en ‘Publicar’ confirma que ha leído y entendido
                   nuestros Términos y Condiciones, Notas legales de privacidad y
@@ -3458,38 +2733,24 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
                   </div>
     
                   <div>
-<<<<<<< HEAD
                     <button className={styles.viewBtn} type="submit">
                       {' '}
                       Publicar Evento
                     </button>
                   </div>
 
-
-=======
                     <button className={styles.viewBtn}>Vista Previa</button>
-                  </div>
-
-                  <div>
-                    <button className={styles.viewBtn} type='submit'>
-                      {' '}
-                      Publicar Evento
-                    </button>
-                  </div>
->>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
                 </div>
-                <p>Debes llenar todos los campos para poder continuar.</p>
 
-                <button
+            </div>
+            <p>Debes llenar todos los campos para poder continuar.</p>
+            <button
                   className={styles.cancelBtn}
                   onClick={(e) => handleDelete(e)}
                 >
                   Cancelar
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+            </button>
+       
         </form>
       </div>
 
@@ -3532,4 +2793,4 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
   );
 };
 
-export default EventCreateForm;
+export default EventEdit;
