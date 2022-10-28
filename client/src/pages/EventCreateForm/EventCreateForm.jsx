@@ -134,49 +134,6 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
 
 
   //--------------------------------------------------//
-  //               EVENTO HARDCODEADO           //
-
-// const [post, setPost] = useState({
-  //   idOrganizer:'632cbed4f208f44f5333af48',
-  //   title: 'Hola',
-  //   categories: ['Belleza'],
-  //   otherCategorie: '',
-  //   shortDescription: 'Alta',
-  //   longDescription: 'Torneo de playStation, donde el campeon actual defiende su titulo y bvuscara coronarse nuevamente. Torneo online desde cualquier parte del mundo podes jugar.',
-  //   pictures: [ {
-  //     cover: true,
-  //     picture: 'https://culturageek.com.ar/wp-content/uploads/2022/08/Playstation-Torneo-Mexico-Portada.jpg',
-  //   }],
-  //   online: 'false',
-  //   link: '',
-  //   departamento: 'Antioquia',
-  //   municipio: 'Medellin',
-  //   direccion: 'Aaa 21',
-  //   barrio: 'Aaaa',
-  //   specialRequires: '',
-  //   dates:[
-  //     { 
-  //       date: '15/12/2022', 
-  //       start : '10:00', 
-  //       end:'11:00', 
-  //       year:0 ,  
-  //       cupos:32, 
-  //       price:10000, 
-  //       sells: 12, 
-  //       isPublic:true,
-  //       precioAlPublico:'',
-  //       gananciaCupo:'',
-  //       gananciaEvento:'',
-  //       dateFormated:'Octubre 30 de 2022'
-  //      }
-  //    ],
-  //   isPublic:true,
-  //   revision:false
-  // });
-
-
-
-  //--------------------------------------------------//
   //               POST Y ERROR            //
 
     useEffect(() => {
@@ -184,36 +141,6 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
       setPost({
         ...post,
         idOrganizer: userData._id,
-        title: '',
-        categories: [],
-        otherCategorie: '',
-        shortDescription: '',
-        longDescription: '',
-        pictures: [],
-        online: '',
-        link: '',
-        departamento: '',
-        municipio: '',
-        direccion: '',
-        barrio: '',
-        specialRequires: '',
-        dates:[{ 
-          date: "", 
-          start : "", 
-          end:"" , 
-          year:0 ,  
-          cupos:0, 
-          price:0, 
-          sells: 0 , 
-          isPublic:true,
-          precioAlPublico:'',
-          gananciaCupo:'',
-          gananciaEvento:'',
-          dateFormated:'',
-          inRevision: false
-         }],
-        isPublic:true,
-        inRevision: false
       });
     }
   }, [userData]);
@@ -365,9 +292,9 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
       errors.shortDescription = 'No puedes ingresar un numero'
     }
 
-    if (!post.pictures[0]) {
-      errors.pictures = 'Debe ingresar al menos una imagen'
-    }
+    // if (!post.pictures[0]) {
+    //   errors.pictures = 'Debe ingresar al menos una imagen'
+    // }
 
     let repetidas= post.pictures.filter(picture=>picture.cover===true)
 
@@ -759,10 +686,12 @@ todas.map((foto)=>{
 
   function handleSave(e){
     e.preventDefault()
+    console.log('estoy en save')
     setPost({
       ...post,
       isPublic:false,
     })
+    console.log('postEnviadoSave:',post)
     if (Object.values(errors).length > 0) {
       setFailedSubmit(true)
       return swal({
@@ -772,6 +701,10 @@ todas.map((foto)=>{
         dangerMode: true,
       });
     }else{
+      setPost({
+        ...post,
+        isPublic:false,
+      })
     swal({
       title: "Tu evento será guardado",
       buttons: ["Cerrar", "Guardar"],
@@ -784,39 +717,39 @@ todas.map((foto)=>{
           icon: "success",
         });
         console.log('postEnviado:',post)
-        setPost({
-          idOrganizer:'',
-          title: '',
-          categories: [],
-          otherCategorie: '',
-          shortDescription: '',
-          longDescription: '',
-          pictures: [],
-          online: '',
-          link: '',
-          departamento: '',
-          municipio: '',
-          direccion: '',
-          barrio: '',
-          specialRequires: '',
-          dates:[{ 
-            date: "", 
-            start : "", 
-            end:"" , 
-            year:0 ,  
-            cupos:0, 
-            price:0, 
-            sells: 0 , 
-            isPublic:true,
-            precioAlPublico:'',
-            gananciaCupo:'',
-            gananciaEvento:'',
-            dateFormated:'',
-            inRevision: false
-          }],
-          isPublic:true,
-          inRevision: false
-     })
+    //     setPost({
+    //       idOrganizer:'',
+    //       title: '',
+    //       categories: [],
+    //       otherCategorie: '',
+    //       shortDescription: '',
+    //       longDescription: '',
+    //       pictures: [],
+    //       online: '',
+    //       link: '',
+    //       departamento: '',
+    //       municipio: '',
+    //       direccion: '',
+    //       barrio: '',
+    //       specialRequires: '',
+    //       dates:[{ 
+    //         date: "", 
+    //         start : "", 
+    //         end:"" , 
+    //         year:0 ,  
+    //         cupos:0, 
+    //         price:0, 
+    //         sells: 0 , 
+    //         isPublic:true,
+    //         precioAlPublico:'',
+    //         gananciaCupo:'',
+    //         gananciaEvento:'',
+    //         dateFormated:'',
+    //         inRevision: false
+    //       }],
+    //       isPublic:true,
+    //       inRevision: false
+    //  })
          navigate("user/perfil/datos" )
       } 
     }
@@ -855,6 +788,7 @@ todas.map((foto)=>{
 
   function handleSubmit(e) {
     e.preventDefault()
+    console.log('estoy en submit')
     if (Object.values(errors).length > 0) {
       setFailedSubmit(true)
       return swal({

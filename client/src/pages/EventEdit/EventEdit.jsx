@@ -20,7 +20,7 @@ import infoIcon from '../../assets/imgs/infoIcon.svg';
 import ImageIcon from '@mui/icons-material/Image';
 import mapa from '../../assets/imgs/mapa2.png';
 import { formatDate } from '../../utils/formatDate';
-import styles from './EventCreateForm.module.css';
+import styles from './EventEdit.module.css';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ConstructionOutlined, ContactMailOutlined, EmergencyRecordingSharp } from '@mui/icons-material';
