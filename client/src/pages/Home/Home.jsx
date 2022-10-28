@@ -28,8 +28,10 @@ const Home = ({ handleNav }) => {
     let userResult = {};
     if (user.uid) {
       userResult = await eventsApi.get('/users/' + user.uid);
+      const result = userResult.data.message.filter((e) => e.read === false);
+      const final = result.filter(e => e.sender !== user.uid);
       setNotes(userResult.data.notifications.filter((e) => e.read === false));
-      setMsg(userResult.data.message.filter((e) => e.read === false));
+      setMsg(final);
     }
     else {
       console.log('no hay user');
