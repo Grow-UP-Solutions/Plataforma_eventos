@@ -30,12 +30,16 @@ const UserSchema = new Schema({
   },
   userpicture: {
     type: String,
-    default: null,
+    default: '',
   },
   email: String,
   picture: String,
   password: String,
   canReceiveInformation: {
+    type: Boolean,
+    default: true,
+  },
+  canNotificationMyEvents: {
     type: Boolean,
     default: true,
   },
