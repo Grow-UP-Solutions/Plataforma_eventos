@@ -1,12 +1,8 @@
 
 const initialState = {
   events: [],
-<<<<<<< HEAD
-  departamentos: [],
-=======
   eventsCopy: [],
   departamentos:[],
->>>>>>> Guille
 };
 
 function rootReducer(state = initialState, action) {
