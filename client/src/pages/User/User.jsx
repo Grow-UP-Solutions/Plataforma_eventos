@@ -64,7 +64,7 @@ const UserPage = () => {
           setComponent(<ReferralPlan />);
           break;
         case 'preferencias':
-          setComponent(<PreferencesUser />);
+          setComponent(<PreferencesUser userData={userResult.data} />);
           break;
         default:
           setComponent(<UserForm userData={userResult.data} />);
@@ -100,7 +100,7 @@ const UserPage = () => {
       navigate('/user/perfil/plan-de-referidos');
     }
     if (name === 'Preferencias') {
-      setComponent(<PreferencesUser />);
+      setComponent(<PreferencesUser userData={userData} />);
       navigate('/user/perfil/preferencias');
     }
   };

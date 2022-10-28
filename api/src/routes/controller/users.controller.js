@@ -398,6 +398,34 @@ router.put('/update/:id', async (req, res) => {
   }
 });
 
+router.put('/updateCanReceiveInformation/:id', async (req, res) => {
+  const { id } = req.params;
+  const { canReceiveInformation } = req.body;
+
+  try {
+    const userModel = await getUser(id);
+    userModel.canReceiveInformation = canReceiveInformation;
+    await userModel.save();
+    res.json({ success: true });
+  } catch (error) {
+    res.status(404).json({ success: false });
+  }
+});
+
+router.put('/updateCanNotificationMyEvents/:id', async (req, res) => {
+  const { id } = req.params;
+  const { canNotificationMyEvents } = req.body;
+
+  try {
+    const userModel = await getUser(id);
+    userModel.canNotificationMyEvents = canNotificationMyEvents;
+    await userModel.save();
+    res.json({ success: true });
+  } catch (error) {
+    res.status(404).json({ success: false });
+  }
+});
+
 router.put('/updateUserPicture/:id', async (req, res) => {
   const { id } = req.params;
   const { urlImage } = req.body;
