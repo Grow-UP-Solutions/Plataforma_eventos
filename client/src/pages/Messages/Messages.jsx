@@ -68,6 +68,8 @@ const Messages = () => {
     };
     try {
       const res = await eventsApi.post("/message/create", message);
+      console.log('message:', message);
+      console.log('res.data', res.data);
       setMessages([...messages, res.data]);
       setNewMessage("");
     } 

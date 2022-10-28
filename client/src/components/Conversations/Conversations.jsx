@@ -43,8 +43,11 @@ const Conversations = ({ conversation, id }) => {
     }
     const res = await eventsApi.put('/message/update/' + id, data);
     const result = res.data.filter(e => e.read === false);
-    setMessages(result);
-    setMsg(result);
+    const final = result.filter(e => e.sender !== id);
+    console.log('res.dataconversa:', res.data);
+    console.log('data:', data);
+    setMessages(final);
+    setMsg(final);
   }
 
   return (
