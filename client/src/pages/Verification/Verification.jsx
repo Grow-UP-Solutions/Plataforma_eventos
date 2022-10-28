@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
-
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import styles from './Verification.module.css';
 
 import { AiOutlineMinus } from 'react-icons/ai';
@@ -9,18 +8,13 @@ import eventsApi from '../../axios/eventsApi';
 
 import { AuthContext } from '../../context/auth';
 
+import PinField from 'react-pin-field';
+
 const Verification = () => {
   const { path } = useParams();
   const { login } = useContext(AuthContext);
   const [user, setUser] = useState({});
-  const [code, setCode] = useState({
-    input1: '',
-    input2: '',
-    input3: '',
-    input4: '',
-    input5: '',
-    input6: '',
-  });
+  const [code, setCode] = useState('');
 
   const [errorMessage, setErrorMessage] = useState({
     hasError: false,
@@ -49,18 +43,13 @@ const Verification = () => {
     }
   };
 
-  const handleOnChange = async (e) => {
-    setCode({
-      ...code,
-      [e.target.name]: e.target.value,
-    });
+  const handleOnChange = async (code) => {
+    setCode(code);
   };
 
   const confirmAndLog = async (e) => {
     e.preventDefault();
-    const userBody = {
-      code: code.input1 + code.input2 + code.input3 + code.input4 + code.input5 + code.input6,
-    };
+    const userBody = { code };
 
     try {
       const result = await eventsApi.post('/users/confirmEmail', userBody);
@@ -93,17 +82,16 @@ const Verification = () => {
         <span className={styles.mail}>{user.email}</span>
         <div className={styles.divisor} />
         <div className={styles.containerInputs}>
-          <input name='input1' type='number' pattern='[0-9]*' value={code.input1} onChange={handleOnChange} />
-          <input name='input2' value={code.input2} type='number' pattern='[0-9]*' onChange={handleOnChange} />
-          <input name='input3' value={code.input3} type='number' pattern='[0-9]*' onChange={handleOnChange} />
-          <AiOutlineMinus className={styles.iconMinus} />
-          <input name='input4' value={code.input4} type='number' pattern='[0-9]*' onChange={handleOnChange} />
-          <input name='input5' value={code.input5} type='number' pattern='[0-9]*' onChange={handleOnChange} />
-          <input name='input6' value={code.input6} type='number' pattern='[0-9]*' onChange={handleOnChange} />
+          <PinField
+            style={{
+              border: errorMessage.hasError ? '1px solid #f03e3e' : '',
+            }}
+            length={6}
+            validate={/^[0-9]$/}
+            onChange={(code) => handleOnChange(code)}
+          />
         </div>
-
         {errorMessage.hasError && <p className={styles.errorMessage}> {errorMessage.message} </p>}
-
         <button onClick={confirmAndLog} className={styles.sendCode}>
           Enviar
         </button>
