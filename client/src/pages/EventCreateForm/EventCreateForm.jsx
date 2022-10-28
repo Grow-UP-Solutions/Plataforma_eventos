@@ -38,7 +38,6 @@ import 'swiper/modules/pagination/pagination.min.css';
 import 'swiper/modules/scrollbar/scrollbar.min.css';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-
 import { Rating } from '@mui/material';
 import { IoLocationOutline } from 'react-icons/io5';
 import { iconArrowLeft, iconArrowRight } from '../../assets/imgs';
@@ -180,9 +179,47 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
   //--------------------------------------------------//
   //               POST Y ERROR            //
 
-  
+    useEffect(() => {
+    if (user) {
+      setPost({
+        ...post,
+        idOrganizer: userData._id,
+        title: '',
+        categories: [],
+        otherCategorie: '',
+        shortDescription: '',
+        longDescription: '',
+        pictures: [],
+        online: '',
+        link: '',
+        departamento: '',
+        municipio: '',
+        direccion: '',
+        barrio: '',
+        specialRequires: '',
+        dates:[{ 
+          date: "", 
+          start : "", 
+          end:"" , 
+          year:0 ,  
+          cupos:0, 
+          price:0, 
+          sells: 0 , 
+          isPublic:true,
+          precioAlPublico:'',
+          gananciaCupo:'',
+          gananciaEvento:'',
+          dateFormated:'',
+          inRevision: false
+         }],
+        isPublic:true,
+        inRevision: false
+      });
+    }
+  }, [userData]);
+
   const [post, setPost] = useState({
-    idOrganizer:'',
+    idOrganizer: '',
     title: '',
     categories: [],
     otherCategorie: '',
@@ -720,14 +757,12 @@ todas.map((foto)=>{
   //                 SAVE           //
 
 
-  function hanldeClick(e){
+  function handleSave(e){
     e.preventDefault()
     setPost({
       ...post,
       isPublic:false,
-      idOrganizer:id
     })
-    e.preventDefault()
     if (Object.values(errors).length > 0) {
       setFailedSubmit(true)
       return swal({
@@ -748,6 +783,7 @@ todas.map((foto)=>{
         swal("Tu evento ha sido guardado ", {
           icon: "success",
         });
+        console.log('postEnviado:',post)
         setPost({
           idOrganizer:'',
           title: '',
@@ -828,10 +864,6 @@ todas.map((foto)=>{
         dangerMode: true,
       });
     } else {
-      setPost({
-        ...post,
-        idOrganizer:id
-      })
       swal({
         title: "Deseas publicar este evento? ",
         buttons: true,
@@ -839,10 +871,11 @@ todas.map((foto)=>{
       })
       .then((publicar) => {
         if (publicar) {
-          dispatch(postEvent(post,id))
+          dispatch(postEvent(post))
           swal("Tu evento ha sido publicado. Recibirás un correo con los detalles. ", {
             icon: "success",
           });
+          console.log('postEnviado:',post)
           setPost({
             idOrganizer:'',
             title: '',
@@ -2092,7 +2125,7 @@ todas.map((foto)=>{
 
                     {/*guardar*/}
                     <div>
-                      <button className={styles.viewBtn} onClick={(e) => hanldeClick(e)} >
+                      <button className={styles.viewBtn} onClick={(e) => handleSave(e)} >
                         Guardar y Publicar Luego
                       </button>
                     </div>

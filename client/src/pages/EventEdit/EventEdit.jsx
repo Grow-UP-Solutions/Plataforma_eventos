@@ -20,7 +20,7 @@ import infoIcon from '../../assets/imgs/infoIcon.svg';
 import ImageIcon from '@mui/icons-material/Image';
 import mapa from '../../assets/imgs/mapa2.png';
 import { formatDate } from '../../utils/formatDate';
-import styles from './EventEdit.module.css';
+import styles from './EventCreateForm.module.css';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ConstructionOutlined, ContactMailOutlined, EmergencyRecordingSharp } from '@mui/icons-material';
@@ -58,30 +58,6 @@ const EventEdit = () => {
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const Swal = require('sweetalert2')
-
-  //--------------------------------------------------//
-  //               EVENTOS              //
- 
- 
-
-  useEffect(() => {
-    dispatch(getEventsCopy());
-  }, []);
-
-
-//cambiar este id por que me va llegar 
-  const eventId = '634579fb73448d0f8739d4bc'
-  const eventos = useSelector((state) => state.events)
-  const allEvents = [...eventos]
-  const eventDetails = allEvents.filter(e=>e._id === eventId)[0]
-  console.log('eventDetails:',eventDetails)
-
-
-
-  const allEventsCopy = useSelector((state) => state.eventsCopy)
-  const EventCopy= allEventsCopy.filter(e=>e._id === eventId)
- 
 
 
 
@@ -158,11 +134,92 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
 
 
   //--------------------------------------------------//
+  //               EVENTO HARDCODEADO           //
+
+// const [post, setPost] = useState({
+  //   idOrganizer:'632cbed4f208f44f5333af48',
+  //   title: 'Hola',
+  //   categories: ['Belleza'],
+  //   otherCategorie: '',
+  //   shortDescription: 'Alta',
+  //   longDescription: 'Torneo de playStation, donde el campeon actual defiende su titulo y bvuscara coronarse nuevamente. Torneo online desde cualquier parte del mundo podes jugar.',
+  //   pictures: [ {
+  //     cover: true,
+  //     picture: 'https://culturageek.com.ar/wp-content/uploads/2022/08/Playstation-Torneo-Mexico-Portada.jpg',
+  //   }],
+  //   online: 'false',
+  //   link: '',
+  //   departamento: 'Antioquia',
+  //   municipio: 'Medellin',
+  //   direccion: 'Aaa 21',
+  //   barrio: 'Aaaa',
+  //   specialRequires: '',
+  //   dates:[
+  //     { 
+  //       date: '15/12/2022', 
+  //       start : '10:00', 
+  //       end:'11:00', 
+  //       year:0 ,  
+  //       cupos:32, 
+  //       price:10000, 
+  //       sells: 12, 
+  //       isPublic:true,
+  //       precioAlPublico:'',
+  //       gananciaCupo:'',
+  //       gananciaEvento:'',
+  //       dateFormated:'Octubre 30 de 2022'
+  //      }
+  //    ],
+  //   isPublic:true,
+  //   revision:false
+  // });
+
+
+
+  //--------------------------------------------------//
   //               POST Y ERROR            //
 
-  
+    useEffect(() => {
+    if (user) {
+      setPost({
+        ...post,
+        idOrganizer: userData._id,
+        title: '',
+        categories: [],
+        otherCategorie: '',
+        shortDescription: '',
+        longDescription: '',
+        pictures: [],
+        online: '',
+        link: '',
+        departamento: '',
+        municipio: '',
+        direccion: '',
+        barrio: '',
+        specialRequires: '',
+        dates:[{ 
+          date: "", 
+          start : "", 
+          end:"" , 
+          year:0 ,  
+          cupos:0, 
+          price:0, 
+          sells: 0 , 
+          isPublic:true,
+          precioAlPublico:'',
+          gananciaCupo:'',
+          gananciaEvento:'',
+          dateFormated:'',
+          inRevision: false
+         }],
+        isPublic:true,
+        inRevision: false
+      });
+    }
+  }, [userData]);
+
   const [post, setPost] = useState({
-    idOrganizer:'',
+    idOrganizer: '',
     title: '',
     categories: [],
     otherCategorie: '',
@@ -194,32 +251,6 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
     isPublic:true,
     inRevision: false
   });
-
-  //Seteo el post con los datos del evento a
-  useEffect(() => {
-    if (allEvents[0]) {
-      setPost({
-        ...post,
-        idOrganizer:'',
-        title: allEvents[0].title,
-        categories: [],
-        otherCategorie: '',
-        shortDescription: allEvents[0].shortDescription,
-        longDescription: allEvents[0].longDescription,
-        pictures: [],
-        online: allEvents[0].online,
-        link: allEvents[0].link,
-        departamento: allEvents[0].departamento,
-        municipio: allEvents[0].municipio,
-        direccion: allEvents[0].direccion,
-        barrio: allEvents[0].barrio,
-        specialRequires:  allEvents[0].specialRequires,
-        dates:allEvents[0].dates,
-        isPublic:allEvents[0].isPublic,
-        inRevision: allEvents[0].inRevision
-      });
-    }
-  }, [allEvents[0]]);
 
   
 
@@ -726,14 +757,12 @@ todas.map((foto)=>{
   //                 SAVE           //
 
 
-  function hanldeClick(e){
+  function handleSave(e){
     e.preventDefault()
     setPost({
       ...post,
       isPublic:false,
-      idOrganizer:id
     })
-    e.preventDefault()
     if (Object.values(errors).length > 0) {
       setFailedSubmit(true)
       return swal({
@@ -754,6 +783,7 @@ todas.map((foto)=>{
         swal("Tu evento ha sido guardado ", {
           icon: "success",
         });
+        console.log('postEnviado:',post)
         setPost({
           idOrganizer:'',
           title: '',
@@ -834,10 +864,6 @@ todas.map((foto)=>{
         dangerMode: true,
       });
     } else {
-      setPost({
-        ...post,
-        idOrganizer:id
-      })
       swal({
         title: "Deseas publicar este evento? ",
         buttons: true,
@@ -845,10 +871,11 @@ todas.map((foto)=>{
       })
       .then((publicar) => {
         if (publicar) {
-          dispatch(postEvent(post,id))
+          dispatch(postEvent(post))
           swal("Tu evento ha sido publicado. Recibirás un correo con los detalles. ", {
             icon: "success",
           });
+          console.log('postEnviado:',post)
           setPost({
             idOrganizer:'',
             title: '',
@@ -2098,7 +2125,7 @@ todas.map((foto)=>{
 
                     {/*guardar*/}
                     <div>
-                      <button className={styles.viewBtn} onClick={(e) => hanldeClick(e)} >
+                      <button className={styles.viewBtn} onClick={(e) => handleSave(e)} >
                         Guardar y Publicar Luego
                       </button>
                     </div>
