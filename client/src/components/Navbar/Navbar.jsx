@@ -22,9 +22,6 @@ const Navbar = ({ upper }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-<<<<<<< HEAD
-  console.log('logged',logged)
-=======
   useEffect(() => {
     getUserData();
   }, [user]);
@@ -37,7 +34,6 @@ const Navbar = ({ upper }) => {
       setMsg(userResult.data.message.filter((e) => e.read === false));
     }
   };
->>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -92,29 +88,16 @@ const Navbar = ({ upper }) => {
           {pathname !== '/' || upper === false ? <Search location={'not-home'} /> : <></>}
         </div>
         <div className={style.container_div}>
-<<<<<<< HEAD
-          {logged && <a href="$">Mi lista</a>}
-          {logged?
-          <Link to={`/oganiza-un-evento-form`}>
-            <p className={style.buttonOrganizar}>
-              Organiza un evento
-            </p>
-          </Link>
-          :
-          <Link to={'/organiza-un-evento'}>
-          <p className={ style.buttonOrganizar}>
-            Organiza un evento
-          </p>
-          </Link>
-          }
-=======
           {logged && <Link to='/user/perfil/mi-lista'>Mi lista</Link>}
-          {user.organizer && (
+          {user.organizer? (
+            <Link to='/oganiza-un-evento-form'>
+              <p className={`${logged ? style.buttonOrganizar : ''}`}>Organiza un evento</p>
+            </Link>
+          ):
             <Link to={`/organiza-un-evento`}>
               <p className={`${logged ? style.buttonOrganizar : ''}`}>Organiza un evento</p>
             </Link>
-          )}
->>>>>>> b0e1c8911f6a3031783c3f6554ff95b45b31a65f
+          }
           {!logged ? (
             <>
               <p onClick={toggleScreenLogin}>Ingresa</p>
