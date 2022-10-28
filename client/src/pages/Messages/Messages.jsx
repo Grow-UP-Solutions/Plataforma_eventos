@@ -60,19 +60,22 @@ const Messages = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const friendId = currentChat.members.find((m) => m !== id);
     const message = {
       sender: id,
-      resiver: currentChat.members[1], 
+      resiver: friendId, 
       text: newMessage,
       conversationId: currentChat._id,
     };
     try {
       const res = await eventsApi.post("/message/create", message);
+      //console.log('message:', message);
+      //console.log('res.data', res.data);
       setMessages([...messages, res.data]);
       setNewMessage("");
     } 
     catch (err) {
-      console.log(err);
+      console.log(err);   
     }
   };  
 
