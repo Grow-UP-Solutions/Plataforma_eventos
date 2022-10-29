@@ -16,6 +16,11 @@ const UserSchema = new Schema({
   imageRent: String,
   referenceU: String,
   referenceZ: String,
+  referralCode: String,
+  availableCredit: {
+    type: Number,
+    default: 0,
+  },
   rating: {
     type: Number,
     default: 0,
@@ -33,7 +38,6 @@ const UserSchema = new Schema({
     default: '',
   },
   email: String,
-  picture: String,
   password: String,
   canReceiveInformation: {
     type: Boolean,
