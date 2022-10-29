@@ -91,11 +91,15 @@ const Navbar = ({ upper }) => {
         </div>
         <div className={style.container_div}>
           {logged && <Link to='/user/perfil/mi-lista'>Mi lista</Link>}
-          {user.organizer && (
+          {user.organizer? (
+            <Link to='/oganiza-un-evento-form'>
+              <p className={`${logged ? style.buttonOrganizar : ''}`}>Organiza un evento</p>
+            </Link>
+          ):
             <Link to={`/organiza-un-evento`}>
               <p className={`${logged ? style.buttonOrganizar : ''}`}>Organiza un evento</p>
             </Link>
-          )}
+          }
           {!logged ? (
             <>
               <p onClick={toggleScreenLogin}>Ingresa</p>

@@ -16,6 +16,7 @@ import {
   EventCreate,
   EventCreateForm,
   EventDetails,
+  EventEdit,
   Faq,
   Home,
   Messages,
@@ -29,7 +30,6 @@ import {
   WorkWithUsForm,
   CheckSolicitudOrganizer,
 } from './pages';
-import EventEdit from './pages/EventEdit/EventEdit';
 import EventsOrganizerResult from './pages/EventsOrganizerResult/EventsOrganizerResult';
 import PanelPrivacy from './pages/PanelPrivacy/PanelPrivacy';
 import { getEvents } from './redux/actions';
