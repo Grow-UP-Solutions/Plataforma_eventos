@@ -1,13 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './ReferralPlan.module.css';
 import { FiLink2 } from 'react-icons/fi';
 import { IoMdAdd } from 'react-icons/io';
 import { TbTrash } from 'react-icons/tb';
 import { imgMoney } from '../../assets/imgs';
 
+import { Helmet } from 'react-helmet';
+
 const ReferralPlan = ({ userData }) => {
+  const [availableCredit, setAvailableCredit] = useState(userData.availableCredit);
+
   return (
     <div className={styles.containerReferralPlan}>
+      <Helmet>
+        <title>Plan de referidos</title>
+
+        <meta property='og:title' content='Mi código de referido.' />
+        <meta
+          property='og:description'
+          content='Usalo y tendrás grandes descuentos en los eventos que quieras participar!'
+        />
+        <meta
+          property='og:image'
+          content='https://ahrefs.com/blog/wp-content/uploads/2019/12/fb-how-to-become-an-seo-expert.png'
+        />
+      </Helmet>
+
       <div className={styles.containerCurrentReferred}>
         <h2 className={styles.titleCurrentReferred}>Tu código de referido es</h2>
 
@@ -34,7 +52,7 @@ const ReferralPlan = ({ userData }) => {
 
         <div className={styles.money}>
           <p>Saldo disponible</p>
-          <span>200.000$</span>
+          <span>{availableCredit}$</span>
         </div>
       </div>
 

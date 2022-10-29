@@ -17,6 +17,10 @@ const UserSchema = new Schema({
   referenceU: String,
   referenceZ: String,
   referralCode: String,
+  availableCredit: {
+    type: Number,
+    default: 0,
+  },
   rating: {
     type: Number,
     default: 0,
