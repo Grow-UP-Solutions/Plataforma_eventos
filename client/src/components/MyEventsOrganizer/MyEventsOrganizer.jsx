@@ -10,13 +10,18 @@ import 'swiper/modules/scrollbar/scrollbar.min.css';
 import 'swiper/modules/navigation/navigation.min.css';
 
 const MyEventsOrganizer = ({ myEventsCreated }) => {
+
+  const eventsPublic = myEventsCreated.filter(e=> e.isPublic===true)
+  const eventsNoPublic = myEventsCreated.filter(e=> e.isPublic===false)
+
   return (
     <div className={styles.container}>
       <p className={styles.title}>Publicados</p>
 
       <div className={styles.containercard}>
         <Swiper slidesPerView={3} navigation spaceBetween={0} modules={[Navigation]} className={styles.mySwipper}>
-          {myEventsCreated.map((event) => (
+          {eventsPublic && eventsPublic.length? (
+            eventsPublic.map((event) => (
             <div className={styles.card}>
               <SwiperSlide>
                 <Card event={event} listName={'published'} />
@@ -40,7 +45,7 @@ const MyEventsOrganizer = ({ myEventsCreated }) => {
                 <button className={styles.btn}>Editar</button>
               </SwiperSlide>
             </div>
-          ))}
+          ))):'No tienes eventos creados'}
         </Swiper>
       </div>
       <hr className={styles.cardHr}></hr>
@@ -49,8 +54,8 @@ const MyEventsOrganizer = ({ myEventsCreated }) => {
 
       <div className={styles.containercard}>
         <Swiper slidesPerView={3} navigation spaceBetween={0} modules={[Navigation]} className={styles.mySwipper}>
-          {myEventsCreated.length ? (
-            myEventsCreated.map((event, index) => {
+          {eventsNoPublic.length ? (
+            eventsNoPublic.map((event, index) => {
               return (
                 <SwiperSlide>
                   <Card event={event} listName={'to-publish'} />
