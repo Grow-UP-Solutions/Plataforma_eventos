@@ -4,7 +4,7 @@ const Events = require('../../db/Events.js');
 //  } = require("./EventesDb.js");
 const Users = require('../../db/Users.js');
 const bcrypt = require('bcryptjs');
-const generarCodigo = require('../functions/generateReferralCode.js');
+const generarCodigo = require('../helpers/generateReferralCode.js');
 
 /** basic user database operations */
 
