@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux';
 const Events = () => {
   const allEvents = useSelector((state) => state.events);
   const allEventsSlice = allEvents.slice(0, 20);
+  console.log('allEvents:',allEvents)
 
   return (
     <div className={styles.cardsSection}>

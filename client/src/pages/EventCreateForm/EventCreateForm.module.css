@@ -12,8 +12,8 @@
   overflow: auto;
   margin: auto;
   scroll-snap-type: y mandatory;
-  scrollbar-width: none;
-  scrollbar-color: #6969dd #e0e0e0;
+  scrollbar-width: thin;
+  scrollbar-color: #5a5a5a #e0e0e0;
 }
 
 .section {
@@ -22,6 +22,52 @@
   scroll-snap-align: start;
   display: flex;
 }
+
+.section1 {
+  width: 100%;
+  height: 90rem;
+  scroll-snap-align: start;
+  display: flex;
+}
+.section2 {
+  width: 100%;
+  height: 90rem;
+  scroll-snap-align: start;
+  display: flex;
+}
+
+.section3 {
+  width: 100%;
+  height: 90rem;
+  scroll-snap-align: start;
+  display: flex;
+}
+
+
+.section4 {
+  width: 100%;
+  height: 120rem;
+  scroll-snap-align: start;
+  display: flex;
+}
+
+.section5 {
+  width: 100%;
+  height: 120rem;
+  scroll-snap-align: start;
+  display: flex;
+}
+.section6 {
+  width: 100%;
+  height: 200rem;
+  scroll-snap-align: start;
+  display: flex;
+}
+
+
+
+
+
 
 /*SECTION 1 */
 
@@ -1513,7 +1559,6 @@
   border-radius: 18px;
   text-align: center;
   padding: 8px 30px;
-  cursor: pointer;
   border: none;
   font-size: 1.3rem;
   letter-spacing: 1px;
