@@ -231,6 +231,7 @@ router.post(
     try {
       const user = req.body;
       const userCreate = await createUsers(user);
+
       const time = '2h';
       const token = await generateJWT(userCreate._id, userCreate.name, time);
 
