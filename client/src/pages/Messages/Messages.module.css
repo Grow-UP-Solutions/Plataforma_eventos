@@ -294,3 +294,11 @@
 .active {
   background-color: white;
 }
+
+.noMsg {
+  text-align: center;
+  font-weight: bold;
+  font-family: 'Raleway', sans-serif;
+  font-size: 2rem;
+  color: var(--color-grey-3);
+}
