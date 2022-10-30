@@ -431,6 +431,8 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
     });
   }
 
+  //chequeo por palabras
+
   const titleArray = post.title.split(' ')
 
   const longDescriptionArray = post.longDescription.split(' ')
