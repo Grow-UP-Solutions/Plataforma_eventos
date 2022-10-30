@@ -431,6 +431,10 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
     });
   }
 
+  const titleArray = post.title.split(' ')
+
+  const longDescriptionArray = post.longDescription.split(' ')
+
 
   //--------------------------------------------------//
   //               POST - CATEGORIA                   //
@@ -878,9 +882,9 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
                   onChange={(e) => handleChange(e)}
                 />}
           
-                {post.title.length === 75  ?
-                <p className={styles.errors}>Máximo 75 caracteres</p>
-                  : <p className={styles.subInput}>Máximo 75 caracteres</p>
+                {titleArray.length > 10  ?
+                <p className={styles.errors}>Máximo 10 palabras</p>
+                  : <p className={styles.subInput}>Máximo 10 palabras</p>
                   }  
                 {errors.title? 
                   <p className={styles.errors}>{errors.title}</p>
@@ -1083,7 +1087,6 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
                   <textarea
                   className={styles.textareaLong}
                   type="text"
-                  minlength="75"
                   placeholder="descripción detallada del evento"
                   name="longDescription"
                   value={post.longDescription}
@@ -1095,7 +1098,6 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
                   <textarea
                     className={styles.textareaLong}
                     type="text"
-                    minlength="75"
                     placeholder="descripción detallada del evento"
                     name="longDescription"
                     value={post.longDescription}
@@ -1103,12 +1105,12 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
                   />
                   }
 
-                  {post.longDescription.length<75 && post.longDescription.length>0  ?
-                  <p className={styles.errors}>Minimo 75 caracteres</p>
-                  : <p className={styles.subTitle}>Minimo 75 caracteres</p>
+                  {longDescriptionArray.length<75 && longDescriptionArray.length>0  ?
+                  <p className={styles.errors}>Minimo 75 palabras</p>
+                  : <p className={styles.subTitle}>Minimo 75 palabras</p>
                   }
-                  {post.longDescription.length>0 ?
-                  <p className={styles.subTitle}>Usetd va escribiendo: {post.longDescription.length} caracteres</p>
+                  {longDescriptionArray.length>0 ?
+                  <p className={styles.subTitle}>Usetd va escribiendo: {longDescriptionArray.length} palabras</p>
                   : ''
                   }
                   {errors.longDescription ? 
