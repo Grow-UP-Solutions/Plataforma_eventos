@@ -23,7 +23,7 @@ import { formatDate } from '../../utils/formatDate';
 import styles from './EventCreateForm.module.css';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ConstructionOutlined, ContactMailOutlined, EmergencyRecordingSharp } from '@mui/icons-material';
+import { ConstructionOutlined, ContactMailOutlined, EmergencyRecordingSharp, FourGMobiledataRounded } from '@mui/icons-material';
 import { getColombia , postEvent } from '../../redux/actions';
 import swal from 'sweetalert'
 import { useNavigate } from 'react-router-dom';
@@ -48,6 +48,7 @@ import WarningOutlinedIcon from '@mui/icons-material/WarningOutlined';
 import axios from "axios";
 import { AuthContext } from '../../context/auth/AuthContext';
 import eventsApi from '../../axios/eventsApi';
+import ImageUploading, { ImageListType } from "react-images-uploading"
 
 
 
@@ -82,10 +83,9 @@ const EventCreateForm = () => {
       }
     }
 
-  console.log('user:',user)
-  console.log('id:',id)
-  console.log('userData:',userData)
-
+  // console.log('user:',user)
+  // console.log('id:',id)
+  // console.log('userData:',userData)
 
   //--------------------------------------------------//
   //               DEPARTAMENTOS              //
@@ -128,8 +128,6 @@ departamentosFilter.forEach((e) => {
 
 const capitales = ['Medellín','Tunja','Montería','Quibdó','Pasto' ,'Bucaramanga','Villavicencio' ,'Barranquilla','Cartagena de Indias','Manizales','Florencia','Popayán' ,'Valledupar' ,'Bogotá','Neiva','Riohacha' ,'Santa Marta','Armenia','Pereira' ,'Sincelejo','Ibagué','Arauca','Yopal','Mocoa' ,'Leticia','Inírida','Mitú', 'Puerto Carreño', 'San José del Guaviare','San Andrés','Bogota','Cúcuta','Santiago de Cali']
 
-
-
 const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, capital: capitales[indice]}))
 
 
@@ -145,6 +143,7 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
     }
   }, [userData]);
 
+
   const [post, setPost] = useState({
     idOrganizer: '',
     title: '',
@@ -153,7 +152,7 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
     shortDescription: '',
     longDescription: '',
     pictures: [],
-    online: '',
+    online: false,
     link: '',
     departamento: '',
     municipio: '',
@@ -178,8 +177,6 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
     isPublic:true,
     inRevision: false
   });
-
-  
 
 
   const [errors, setErrors] = useState({
@@ -304,7 +301,7 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
 
 
 
-    if (post.online) {
+    if (post.online === true) {
 
       if (!post.link) {
         errors.link = true
@@ -491,64 +488,87 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
   //                POST - DROP DRAG IMAGES                //
 
   
-const wrapperRef = useRef(null);
+// const wrapperRef = useRef(null);
 
 
-const onDragEnter = () => wrapperRef.current.classList.add('dragover');
+// const onDragEnter = () => wrapperRef.current.classList.add('dragover');
 
-const onDragLeave = () => wrapperRef.current.classList.remove('dragover');
+// const onDragLeave = () => wrapperRef.current.classList.remove('dragover');
 
-const onDrop = () => wrapperRef.current.classList.remove('dragover');
+// const onDrop = () => wrapperRef.current.classList.remove('dragover');
 
-const onFileDrop = (e) => {
+// const onFileDrop = (e) => {
   
-  if (e.target.files[0]) {
-      const reader = new FileReader()
-      reader.readAsDataURL(e.target.files[0])
-      reader.onload = (e)=>{
-          e.preventDefault();
-         setPost({
-          ...post,
-          pictures: [...post.pictures, {cover:false, picture: e.target.result}]}
-         )
-         }
-      ;
+//   if (e.target.files[0]) {
+//       const reader = new FileReader()
+//       reader.readAsDataURL(e.target.files[0])
+//       reader.onload = (e)=>{
+//           e.preventDefault();
+//          setPost({
+//           ...post,
+//           pictures: [...post.pictures, {cover:false, picture: e.target.result}]}
+//          )
+//          }
+//       ;
+//   }
+// }
+// const fileRemove = (item) => {
+//   const updatedPictures=[...post.pictures]
+//   updatedPictures.splice(post.pictures.indexOf(item), 1);
+//   setPost({
+//     ...post,
+//     pictures:updatedPictures
+//   })
+//   ;
+// }
+
+// function handleCover(e){
+  
+// const todas = [...post.pictures]
+
+// if(e.target.checked){
+// todas.map((foto)=>{
+//     if(foto.picture===e.target.value){
+//       foto.cover = true}
+//   })
+//   setPost({
+//     ...post,
+//     pictures:todas
+//   })
+// }else{
+//   todas.map((foto)=>{
+//     if(foto.picture===e.target.value){
+//       foto.cover = false}
+//   })
+//   setPost({
+//     ...post,
+//     pictures:todas
+//   })
+// }
+// }
+
+
+  // const [images, setImages] = useState<ImageListType>([]);
+  // const handleChange = (imageList: ImageListType) => setImages(imageList);
+
+  const [imageSelected , setImageSelected] = useState('') 
+
+  function uploadImage(e){
+    e.preventDefault()
+    console.log('entreIm:')
+    const formData = new FormData()
+    formData.append('file', imageSelected)
+    formData.append("upload_preset", "wp0l2oeg")
+    axios.post("https://api.cloudinary.com/v1_1/dhmnttdy2/image/upload", formData)
+    .then((response)=>{
+      console.log('r:',response)
+    })
   }
-}
-const fileRemove = (item) => {
-  const updatedPictures=[...post.pictures]
-  updatedPictures.splice(post.pictures.indexOf(item), 1);
-  setPost({
-    ...post,
-    pictures:updatedPictures
-  })
-  ;
-}
 
-function handleCover(e){
-  
-const todas = [...post.pictures]
+  const [image, setImage] = useState({ files: '' })
 
-if(e.target.checked){
-todas.map((foto)=>{
-    if(foto.picture===e.target.value){
-      foto.cover = true}
-  })
-  setPost({
-    ...post,
-    pictures:todas
-  })
-}else{
-  todas.map((foto)=>{
-    if(foto.picture===e.target.value){
-      foto.cover = false}
-  })
-  setPost({
-    ...post,
-    pictures:todas
-  })
-}
-}
+
+ 
 
   //--------------------------------------------------//
   //               POST  UBICACION                //
@@ -680,86 +700,58 @@ todas.map((foto)=>{
   const [getPreview, setGetPreview] = useState(false);
 
 
+    //--------------------------------------------------//
+  //              ERRORES         //
+
+  const [failedSubmit, setFailedSubmit] = useState(false)
+
+
   //--------------------------------------------------//
   //                 SAVE           //
 
 
-  function handleSave(e){
-    e.preventDefault()
-    console.log('estoy en save')
-    setPost({
-      ...post,
-      isPublic:false,
-    })
-    console.log('postEnviadoSave:',post)
-    if (Object.values(errors).length > 0) {
-      setFailedSubmit(true)
-      return swal({
-        title: "Completa los campos faltantes",
-        icon: "warning",
-        button: "Completar",
-        dangerMode: true,
-      });
-    }else{
-      setPost({
+  async function handleSave(e){
+    try{
+      await setPost({
         ...post,
         isPublic:false,
       })
-    swal({
-      title: "Tu evento será guardado",
-      buttons: ["Cerrar", "Guardar"],
-      dangerMode: true,
-    })
-    .then((guardar) => {
-      if (guardar) {
-        dispatch(postEvent(post))
-        swal("Tu evento ha sido guardado ", {
-          icon: "success",
-        });
-        console.log('postEnviado:',post)
-    //     setPost({
-    //       idOrganizer:'',
-    //       title: '',
-    //       categories: [],
-    //       otherCategorie: '',
-    //       shortDescription: '',
-    //       longDescription: '',
-    //       pictures: [],
-    //       online: '',
-    //       link: '',
-    //       departamento: '',
-    //       municipio: '',
-    //       direccion: '',
-    //       barrio: '',
-    //       specialRequires: '',
-    //       dates:[{ 
-    //         date: "", 
-    //         start : "", 
-    //         end:"" , 
-    //         year:0 ,  
-    //         cupos:0, 
-    //         price:0, 
-    //         sells: 0 , 
-    //         isPublic:true,
-    //         precioAlPublico:'',
-    //         gananciaCupo:'',
-    //         gananciaEvento:'',
-    //         dateFormated:'',
-    //         inRevision: false
-    //       }],
-    //       isPublic:true,
-    //       inRevision: false
-    //  })
-         navigate("user/perfil/datos" )
-      } 
+      console.log('estoy en save')
+      console.log('is public:',post.isPublic)
+      if(Object.values(errors).length > 0){
+        setFailedSubmit(true)
+          return swal({
+            title: "Completa los campos faltantes",
+            icon: "warning",
+            button: "Completar",
+            dangerMode: true,
+          });
+      }else{
+        swal({
+        title: "Tu evento será guardado",
+        buttons: ["Cerrar", "Guardar"],
+        dangerMode: true,
+      })
+       .then((guardar) => {
+        if (guardar) {
+         console.log('post:',post.isPublic)
+         dispatch(postEvent(post))
+          swal("Tu evento ha sido guardado ", {
+            icon: "success",
+          });
+          console.log('is public:',post.isPublic)
+          navigate("user/perfil/datos" )
+        } 
+      }
+      )
+      }
+    }catch(error){
+      console.log('error')
     }
-    )
-  }}
+  }
 
     //--------------------------------------------------//
   //                CANCEL          //
-
-
 
   function handleDelete(e){
     e.preventDefault()
@@ -777,18 +769,19 @@ todas.map((foto)=>{
   }
 
 
-
-  
   //--------------------------------------------------//
   //                  SUBMIT              //
 
-  const [failedSubmit, setFailedSubmit] = useState(false)
-  
-
+ 
 
   function handleSubmit(e) {
     e.preventDefault()
     console.log('estoy en submit')
+    setPost({
+      ...post,
+      isPublic:true,
+    })
+    console.log('is public:',post.isPublic)
     if (Object.values(errors).length > 0) {
       setFailedSubmit(true)
       return swal({
@@ -810,39 +803,6 @@ todas.map((foto)=>{
             icon: "success",
           });
           console.log('postEnviado:',post)
-          setPost({
-            idOrganizer:'',
-            title: '',
-            categories: [],
-            otherCategorie: '',
-            shortDescription: '',
-            longDescription: '',
-            pictures: [],
-            online: '',
-            link: '',
-            departamento: '',
-            municipio: '',
-            direccion: '',
-            barrio: '',
-            specialRequires: '',
-            dates:[{ 
-              date: "", 
-              start : "", 
-              end:"" , 
-              year:0 ,  
-              cupos:0, 
-              price:0, 
-              sells: 0 , 
-              isPublic:true,
-              precioAlPublico:'',
-              gananciaCupo:'',
-              gananciaEvento:'',
-              dateFormated:'',
-              inRevision: false
-            }],
-            isPublic:true,
-            inRevision: false
-       })
         navigate("user/perfil/datos" )
         } 
       });
@@ -1185,108 +1145,12 @@ todas.map((foto)=>{
               </div>
 
               {/* form */}
-              <div className={styles.container1}>
-                <p className={styles.title}>Agrega fotos y/o videos</p>
-                <p className={styles.subTitle}>
-                  Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed
-                  diam nonummy nibh, Lorem ipsum dolor sit amet, consectetuer
-                  adipiscing elit, sed diam nonummy nibh.{' '}
-                </p>
-                <p className={styles.subTitle4}>Fotos del Evento</p>
-        
-                {failedSubmit && errors.pictures ?
-                  <div
-                    ref={wrapperRef}
-                      className={styles.errorsPicture}
-                      onDragEnter={onDragEnter}
-                      onDragLeave={onDragLeave}
-                      onDrop={onDrop}
-                    > 
-                    <div>
-                    <ImageIcon sx={{ fontSize: '50px', color: 'grey' }} />
-                    </div>
-                    <p>Fotos: Jpg, png, Max.100kb </p> 
-                    <p>Videos: .MP4 Max 100kb</p>      
-                    <p>"Arrastra los archivos aquí o haz click para agregar archivos"</p>
-                    <input 
-                      type="file" 
-                      value="" 
-                      name="pictures"
-                      onChange={onFileDrop}
-                    />
-                    {errors.pictures?
-                    <p className={styles.errors}>{errors.pictures}</p>
-                    : null
-                    }
-                  </div>              
-                  :
-                  <div
-                    ref={wrapperRef}
-                      className={styles.dropFileIput}
-                      onDragEnter={onDragEnter}
-                      onDragLeave={onDragLeave}
-                      onDrop={onDrop}
-                    > 
-                    <div>
-                    <ImageIcon sx={{ fontSize: '50px', color: 'grey' }} />
-                    </div>
-                    <p>Fotos: Jpg, png, Max.100kb </p> 
-                    <p>Videos: .MP4 Max 100kb</p>      
-                    <p>"Arrastra los archivos aquí o haz click para agregar archivos"</p>
-                    <input 
-                      type="file" 
-                      placeholder='Arrastra los archivos aquí o haz click para agregar archivos'
-                      value="" 
-                      name="pictures"
-                      onChange={onFileDrop}
-                    />
-                  </div>
-                }
-            
-
-                {
-                  post.pictures.length > 0 ? (
-                    <div className={styles.dropFilePreview}>
-                      <p>
-                        Ready to upload
-                      </p>
-                      <Swiper
-                        slidesPerView={1}
-                        navigation
-                        spaceBetween={0}
-                        modules={[Navigation]}
-                        className={styles.mySwipper}
-                      >
-                      {
-                          post.pictures.map((item, index) => (
-                              <div key={index} className={styles.mySwiper}>
-                                <SwiperSlide>
-                                  <img className={styles.mySwiperImg} src={item.picture} alt=''/>                                
-                                  <button className={styles.mySwiperBtnDel} onClick={() => fileRemove(item)}>x</button>
-                                  <label className={styles.subInput}>
-                                    <input 
-                                      className={styles.checkBox4} 
-                                      type="checkbox" 
-                                      name='cover'
-                                      value={item.picture}
-                                      onChange={e=>handleCover(e)}                              
-                                      defaultChecked={false}
-                                    />                 
-                                    Quiero que esta sea la portada
-                                  </label>
-                                </SwiperSlide>
-                              </div>
-                          ))
-                      }
-                      </Swiper>
-                      {errors.pictures?
-                      <p className={styles.errors}>{errors.pictures}</p>
-                      : null
-                    }
-                    </div>
-                  ) : null
-                }
-      
+              <div classname={styles.container1}>
+                <input 
+                type="file" 
+                onChange={(e)=>{setImageSelected(e.target.files[0])}}
+                />
+                <button onClick={(e)=>{uploadImage(e)}}>Upload Image</button>
               </div>
             </div>
 
