@@ -166,7 +166,13 @@
 .noty {
   border-top: .5px solid var(--color-grey-3);
   padding: 1rem;
+
+  display: grid;
+  grid-template-columns: 25% 75%;
+
 }
+
+
 
 .link_noti {
   color: var(--color-orange);
