@@ -140,6 +140,23 @@
   background-color: white;
 }
 
+.textarea {
+  height: 15rem;
+  border: 1px solid var(--color-grey-4);
+  border-radius: 10px;
+  color: black;
+  background-color: white;
+  font-family: inherit;
+  padding: 1rem;
+  font-size: 1.6rem;
+  resize: none;
+}
+
+.textarea:focus {
+  outline: none;
+  border: 1px solid var(--color-green);
+}
+
 .containerVerifyPassword {
   position: absolute;
   background-color: white;

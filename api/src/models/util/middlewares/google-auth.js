@@ -8,7 +8,7 @@ passport.use(
     {
       clientID: GOOGLE_CLIENT_ID,
       clientSecret: GOOGLE_CLIENT_SECRET,
-      callbackURL: 'http://localhost:3001/users/login/google/callback',
+      callbackURL: 'https://plataformaeventos-production.up.railway.app/users/login/google/callback',
     },
     function (accessToken, refreshToken, profile, done) {
       done(null, profile);

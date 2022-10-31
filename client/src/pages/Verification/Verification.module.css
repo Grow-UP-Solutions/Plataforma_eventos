@@ -63,8 +63,10 @@
   border: 1px solid var(--color-grey-4);
   font-size: 5rem;
   text-align: center;
-
   color: var(--color-grey-1);
+}
+
+.errorInput {
 }
 
 .containerInputs input::-webkit-inner-spin-button,
