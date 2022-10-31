@@ -61,10 +61,10 @@ const UserPage = () => {
           setComponent(<MyListUser myFavorites={userResult.data.myFavorites} />);
           break;
         case 'plan-de-referidos':
-          setComponent(<ReferralPlan />);
+          setComponent(<ReferralPlan userData={userResult.data} />);
           break;
         case 'preferencias':
-          setComponent(<PreferencesUser />);
+          setComponent(<PreferencesUser userData={userResult.data} />);
           break;
         default:
           setComponent(<UserForm userData={userResult.data} />);
@@ -96,11 +96,11 @@ const UserPage = () => {
     }
 
     if (name === 'Plan de Referidos') {
-      setComponent(<ReferralPlan />);
+      setComponent(<ReferralPlan userData={userData} />);
       navigate('/user/perfil/plan-de-referidos');
     }
     if (name === 'Preferencias') {
-      setComponent(<PreferencesUser />);
+      setComponent(<PreferencesUser userData={userData} />);
       navigate('/user/perfil/preferencias');
     }
   };

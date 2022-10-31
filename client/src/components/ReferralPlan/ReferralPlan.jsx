@@ -1,21 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './ReferralPlan.module.css';
 import { FiLink2 } from 'react-icons/fi';
 import { IoMdAdd } from 'react-icons/io';
 import { TbTrash } from 'react-icons/tb';
 import { imgMoney } from '../../assets/imgs';
 
-const ReferralPlan = () => {
-  
+import { Helmet } from 'react-helmet';
+
+const ReferralPlan = ({ userData }) => {
+  const [availableCredit, setAvailableCredit] = useState(userData.availableCredit);
+
   return (
     <div className={styles.containerReferralPlan}>
+      <Helmet>
+        <title>Plan de referidos</title>
+
+        <meta property='og:title' content='Mi código de referido.' />
+        <meta
+          property='og:description'
+          content='Usalo y tendrás grandes descuentos en los eventos que quieras participar!'
+        />
+        <meta
+          property='og:image'
+          content='https://ahrefs.com/blog/wp-content/uploads/2019/12/fb-how-to-become-an-seo-expert.png'
+        />
+      </Helmet>
+
       <div className={styles.containerCurrentReferred}>
-        <h2 className={styles.titleCurrentReferred}>
-          Tu código de referido es
-        </h2>
+        <h2 className={styles.titleCurrentReferred}>Tu código de referido es</h2>
 
         <div className={styles.boxCodeReferred}>
-          <p>r471abc5</p>
+          <p>{userData.referralCode}</p>
         </div>
 
         <div className={styles.containerLinkCdoe}>
@@ -25,20 +40,19 @@ const ReferralPlan = () => {
 
         <div className={styles.codeDesc}>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias sequi
-            aspernatur voluptas sapiente omnis! Ipsum quo ullam dolorem, in
-            maiores molestiae tenetur provident assumenda vero magnam libero
-            corrupti. Repellendus, corporis.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias sequi aspernatur voluptas sapiente omnis!
+            Ipsum quo ullam dolorem, in maiores molestiae tenetur provident assumenda vero magnam libero corrupti.
+            Repellendus, corporis.
           </p>
         </div>
       </div>
 
       <div className={styles.containerQuantityMoney}>
-        <img src={imgMoney} alt="image-cash" className={styles.imgMoney} />
+        <img src={imgMoney} alt='image-cash' className={styles.imgMoney} />
 
         <div className={styles.money}>
           <p>Saldo disponible</p>
-          <span>200.000$</span>
+          <span>{availableCredit}$</span>
         </div>
       </div>
 
@@ -49,10 +63,8 @@ const ReferralPlan = () => {
         </div>
         <div className={styles.containerDetailsDesc}>
           <p>
-            Genera códigos de descuento por el valor de dinero que desees sin
-            exceder tu saldo disponible. El código puede ser redimido por ti o
-            por quien tu desees al momento de realizar la compra de cupo para un
-            evento.
+            Genera códigos de descuento por el valor de dinero que desees sin exceder tu saldo disponible. El código
+            puede ser redimido por ti o por quien tu desees al momento de realizar la compra de cupo para un evento.
           </p>
           <button className={styles.generateCode}>
             <IoMdAdd />
@@ -62,12 +74,12 @@ const ReferralPlan = () => {
 
         <div className={styles.containerInputCode}>
           <div className={styles.formGroup}>
-            <label htmlFor="code">Código</label>
-            <input type="text" id="value" />
+            <label htmlFor='code'>Código</label>
+            <input type='text' id='value' />
           </div>
           <div className={styles.formGroup}>
-            <label htmlFor="value">Valor</label>
-            <input type="text" />
+            <label htmlFor='value'>Valor</label>
+            <input type='text' />
           </div>
 
           <div className={styles.optionCode}>
@@ -77,9 +89,7 @@ const ReferralPlan = () => {
         </div>
 
         <div className={styles.containerCodeRedeemed}>
-          <h3 className={styles.titleCodeRedeemed}>
-            Ver códigos de descuento redimidos
-          </h3>
+          <h3 className={styles.titleCodeRedeemed}>Ver códigos de descuento redimidos</h3>
 
           <div className={styles.containerTableRedeemed}>
             <div className={styles.columnTableRedeemed}>
@@ -110,7 +120,7 @@ const ReferralPlan = () => {
             <div className={styles.columnTableReferred}>
               <p>Tus referidos</p>
               <div className={styles.containerProfileReferred}>
-                <img src="https://i.pravatar.cc/150?img=3" alt="img-profile" />
+                <img src='https://i.pravatar.cc/150?img=3' alt='img-profile' />
                 <p>Pepito Perez</p>
               </div>
             </div>

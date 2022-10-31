@@ -15,7 +15,7 @@ const EventCreate = () => {
       <img src={foto} alt="n" />
 
       <div className={styles.containerBtn}>
-        <Link to={`/oganiza-un-evento-form`}>
+        <Link to={`/registrate`}>
           <button className={styles.btn}>Comenzar</button>
         </Link>
       </div>

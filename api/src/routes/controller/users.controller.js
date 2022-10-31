@@ -231,6 +231,7 @@ router.post(
     try {
       const user = req.body;
       const userCreate = await createUsers(user);
+
       const time = '2h';
       const token = await generateJWT(userCreate._id, userCreate.name, time);
 
@@ -395,6 +396,34 @@ router.put('/update/:id', async (req, res) => {
     return res.status(200).json(usersUpdate);
   } catch (error) {
     return res.status(500).json({ ERROR_USER_UPDATE: error.message });
+  }
+});
+
+router.put('/updateCanReceiveInformation/:id', async (req, res) => {
+  const { id } = req.params;
+  const { canReceiveInformation } = req.body;
+
+  try {
+    const userModel = await getUser(id);
+    userModel.canReceiveInformation = canReceiveInformation;
+    await userModel.save();
+    res.json({ success: true });
+  } catch (error) {
+    res.status(404).json({ success: false });
+  }
+});
+
+router.put('/updateCanNotificationMyEvents/:id', async (req, res) => {
+  const { id } = req.params;
+  const { canNotificationMyEvents } = req.body;
+
+  try {
+    const userModel = await getUser(id);
+    userModel.canNotificationMyEvents = canNotificationMyEvents;
+    await userModel.save();
+    res.json({ success: true });
+  } catch (error) {
+    res.status(404).json({ success: false });
   }
 });
 

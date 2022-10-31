@@ -15,6 +15,7 @@ const Card = ({ event, listName }) => {
 
   return (
     <div className={styles.card}>
+      {event.pictures.length?
       <img
         className={styles.cardImgEvent}
         src={event.pictures[0].picture}
@@ -22,6 +23,7 @@ const Card = ({ event, listName }) => {
         width='200x'
         height='300'
       />
+    :'N'}
       <div className={styles.cardText}>
         {event.dates && event.dates.length > 1 ? (
           <select className={styles.cardDate}>

@@ -53,6 +53,7 @@ const UserForm = ({ userData }) => {
   };
 
   const handleProfileImg = async (e) => {
+    console.log({ event: e.target });
     setErrorMessagePhoto({
       userpicture: '',
     });
@@ -63,6 +64,7 @@ const UserForm = ({ userData }) => {
     });
 
     const image = e.target.files[0];
+    console.log({ image });
 
     if (image.size > 120000) {
       return setErrorMessagePhoto({
@@ -791,7 +793,7 @@ const UserForm = ({ userData }) => {
           </>
         )}
         <button className={styles.btnAddPhoto}>
-          <input onChange={handleProfileImg} type='file' className={styles.inputFile} />
+          <input multiple onChange={handleProfileImg} type='file' className={styles.inputFile} />
           <BsCardImage className={styles.btnAddPhotoIcon} />
           <span>Agregar Imagen</span>
         </button>
