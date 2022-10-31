@@ -14,7 +14,7 @@ import {
 const Home = ({ handleNav }) => {
 
   const { user } = useContext(AuthContext);
-  const { setNotes, setMsg } = useContext(stateContext);
+  const { setNotes, setMsg, setConversa } = useContext(stateContext);
 
   useEffect(() => {
     scroll.scrollToTop();
@@ -22,7 +22,11 @@ const Home = ({ handleNav }) => {
 
   useEffect(() => {
     getUserData();
-  }, [user]);
+  }, [user]); 
+
+  useEffect(() => {
+    getConversations();
+  }, [user]); 
 
   const getUserData = async () => {
     let userResult = {};
@@ -32,6 +36,17 @@ const Home = ({ handleNav }) => {
       const final = result.filter(e => e.sender !== user.uid);
       setNotes(userResult.data.notifications.filter((e) => e.read === false));
       setMsg(final);
+    }
+    else {
+      console.log('no hay user');
+    }
+  };
+
+  const getConversations = async () => {
+    let conversaResult = {};
+    if (user.uid) {
+      conversaResult = await eventsApi.get("/conversation/" + user.uid);
+      setConversa(conversaResult.data);
     }
     else {
       console.log('no hay user');

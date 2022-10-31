@@ -73,6 +73,7 @@ const Messages = () => {
       //console.log('res.data', res.data);
       setMessages([...messages, res.data]);
       setNewMessage("");
+      scroll.scrollToTop();
     } 
     catch (err) {
       console.log(err);   
@@ -148,7 +149,7 @@ const Messages = () => {
                   </div> 
                 </> ) : 
                 (
-                  <span>
+                  <span className={styles.noMsg}>
                     Inicia una conversación.
                   </span>
                 )

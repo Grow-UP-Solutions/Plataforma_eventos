@@ -10,15 +10,39 @@ import { FaUserCircle } from 'react-icons/fa';
 import { IoNotifications, IoCaretDownSharp } from 'react-icons/io5';
 import logo from '../../assets/imgs/logoNav.svg';
 import eventsApi from '../../axios/eventsApi';
+import avatar from '../../assets/imgs/no-avatar.png';
+import { format, register } from "timeago.js";
+import ConversationNoti from '../ConversationNoti/ConversationNoti';
+
+const localeFunc = (number, index, total_sec) => {
+  return [
+    ['justo ahora', 'en un rato'],
+    ['hace %s segundos', 'en %s segundos'],
+    ['hace 1 minuto', 'en 1 minuto'],
+    ['hace %s minutos', 'en %s minutos'],
+    ['hace 1 hora', 'en 1 hora'],
+    ['hace %s horas', 'en %s horas'],
+    ['hace 1 día', 'en 1 día'],
+    ['hace %s días', 'en %s días'],
+    ['hace 1 semana', 'en 1 semana'],
+    ['hace %s semanas', 'en %s semanas'],
+    ['hace 1 mes', 'en 1 mes'],
+    ['hace %s meses', 'en %s meses'],
+    ['hace 1 año', 'en 1 año'],
+    ['hace %s años', 'en %s años'],
+  ][index];
+};
+register('es_ES', localeFunc);
 
 const Navbar = ({ upper }) => {
   
   const { toggleScreenLogin } = useContext(UIContext);
   const { user, logged, logout } = useContext(AuthContext);
-  const { notes, setNotes, msg, setMsg } = useContext(stateContext);
+  const { notes, setNotes, msg, setMsg, conversa } = useContext(stateContext);
   const [menuOpen, setMenuOpen] = useState(false);
   const [openNotifications, setOpenNotifications] = useState(false);
   const [openMessages, setOpenMessages] = useState(false);
+  //const [name, setName] = useState([]);
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -36,6 +60,21 @@ const Navbar = ({ upper }) => {
       setMsg(final);
     }
   };
+
+  /* useEffect(() => {
+    getUserName();
+  }, []);
+
+  const getUserName = async () => {
+    let userResultName = {};
+    if (user.uid) {
+      userResultName = await eventsApi.get('/users/' + msg._id);
+      const result = userResultName.data.name;
+      console.log('msgid', msg._id);
+      console.log('result', result);
+      setName(result);
+    }
+  }; */
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -125,9 +164,32 @@ const Navbar = ({ upper }) => {
                     <p className={style.link_noti} onClick={handleClickAllReadMessages}>
                       Marcar todas como leidas
                     </p>
-                    {msg.map((e) => (
-                      <div className={style.noty}>{e.text}</div>
-                    ))}
+
+                    {
+                      /* msg.map((c, i) => (
+                        <div className={style.noty} key={i} >
+                          <div className={style.container_image}>
+                            <img src={avatar} alt="avatar" style={{width: '4.7rem', height: '4.7rem'}}/>
+                          </div>
+
+                          <div className={style.container_texts}>
+                            <p className={style.text_name}>{}NOMBRE</p>
+                            <p className={style.text_text}>{c.text}</p>
+                            <p className={style.text_date}>{format(c.createdAt, 'es_ES')}</p>
+                          </div>
+                          
+                        </div>
+                      )) */
+                    }
+
+                    {
+                      msg.map((c, i) => (
+                        <div className={style.noty} key={i} >
+                          <ConversationNoti msgs={c} id={user.uid} />
+                        </div>
+                      ))
+                    }
+
                     <p className={style.link_notis} onClick={handleClickMessage}>
                       Ver todos los mensajes
                     </p>
@@ -173,13 +235,13 @@ const Navbar = ({ upper }) => {
                   position: 'relative',
                 }}
                 onClick={() => setMenuOpen(!menuOpen)}
-              >
+                >
                 <div className={style.containerImg}>
                   {user.picture ? (
                     <img className={style.userImg} src={user.picture} alt='img-user' />
-                  ) : (
-                    <FaUserCircle className={style.userImg} />
-                  )}
+                    ) : (
+                      <FaUserCircle className={style.userImg} />
+                      )}
                 </div>
                 <IoCaretDownSharp className={style.iconMenu} />
                 {menuOpen && (
@@ -197,7 +259,7 @@ const Navbar = ({ upper }) => {
                         logout();
                         navigate('/');
                       }}
-                    >
+                      >
                       Cerrar
                     </a>
                   </div>
@@ -212,3 +274,23 @@ const Navbar = ({ upper }) => {
 };
 
 export default Navbar;
+
+
+
+
+{/* {
+    conversa.map((c, i) => (
+      <div className={style.noty} key={i} >
+        <ConversationNoti conversation={c} id={user.uid} />
+      </div>
+    ))
+  } */}
+
+
+{/* <ConversationNoti msgs={c} id={user.uid} /> */}
+
+{/* {
+  msg.map((e) => (
+    <div className={style.noty}>{e.text}</div>
+  ))
+} */}
