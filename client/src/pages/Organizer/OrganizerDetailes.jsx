@@ -22,7 +22,6 @@ const OrganizerDetails = () => {
   const [component, setComponent] = useState('');
   const [nextEvent, setNextEvent] = useState({});
   const [conversation, setConversation] = useState({});
-  //const [rat, setRat] = useState(-1);
   const [userDetail, setUserDetail] = useState({
     organizer: {},
   });
@@ -41,15 +40,6 @@ const OrganizerDetails = () => {
       receiverId: id,
     });
   }, []);   
-
-  /* useEffect(() => {
-    if (rat ==! -1) {
-      getEffectRatingOrganizer(rat);
-    }
-    else {
-      console.log('no hay eventDetails');
-    }
-  }, [userDetail]); */
 
   const obtenerDatos = async () => {
     const data = await eventsApi.get('/users/' + id);
