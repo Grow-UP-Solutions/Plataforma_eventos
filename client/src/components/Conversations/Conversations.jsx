@@ -56,7 +56,7 @@ const Conversations = ({ conversation, id }) => {
           alt="imageAvatar" 
           onClick={hanldeClickMsg}
         />
-        <span >{user.name}</span>
+        <span>{user.name}</span>
 
         <div className={styles.itemChatDivisor} />
 

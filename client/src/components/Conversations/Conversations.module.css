@@ -53,8 +53,9 @@
 }
 
 .itemChat span {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-family: 'Raleway', sans-serif;
+  color: var(--color-grey-3);
 }
 
 .itemOptionsChat {

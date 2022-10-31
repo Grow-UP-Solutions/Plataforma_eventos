@@ -46,6 +46,14 @@ export const UIProvider = ({ children }) => {
     dispatch({ type: 'GET_RATING_EVENT', payload: json });
   }
 
+  const getEffectRatingOrganizer = (json) => {
+    dispatch({type: 'GET_EFFECT_RATING_ORGANIZER', payload: json});
+  }
+
+  const getEffectRatingEvent = (json) => {
+    dispatch({type: 'GET_EFFECT_RATING_EVENT', payload: json});
+  }
+
   return (
     <UIContext.Provider
       value={{
@@ -58,6 +66,8 @@ export const UIProvider = ({ children }) => {
         getEventsFavourites,
         getRatingOrganizer,
         getRatingEvent,
+        getEffectRatingOrganizer,
+        getEffectRatingEvent,
       }}
     >
       {children}

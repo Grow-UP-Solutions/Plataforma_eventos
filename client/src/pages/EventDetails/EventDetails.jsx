@@ -45,21 +45,33 @@ const EventDetails = () => {
   const [description, setDescription] = useState(false);
   const { user } = useContext(AuthContext);
   const { notes, setNotes } = useContext(stateContext);
-  const { getEventsFavourites, getRatingEvent, ratingEvent } = useContext(UIContext);
+  const { getEventsFavourites, getEffectRatingEvent, ratingEvent } = useContext(UIContext);
+
+  useEffect(() => {
+    scroll.scrollToTop();
+  }, []);
 
   useEffect(() => {
     dispatch(getEvents);
-    scroll.scrollToTop();
   }, [dispatch]);
 
   useEffect(() => {
+    const obtenerDatos = async () => {
+      const data = await eventsApi.get('/events/' + id);
+      const json = data.data;
+      getEffectRatingEvent(json.rating);
+    };
+    obtenerDatos();
+  }, [eventDetails]);
+
+  /* useEffect(() => {
     if (eventDetails) {
       getRatingEvent(id, {rating: eventDetails.rating});
     }
     else {
       console.log('no hay eventDetails');
     }
-  }, [eventDetails]);
+  }, [eventDetails]); */
 
   const handleFormatDate = (check) => {
     setCheck(check);

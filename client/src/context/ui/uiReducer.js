@@ -38,6 +38,18 @@ export const uiReducer = (state, action) => {
         ratingEvent: action.payload.rating,
       };
 
+    case 'GET_EFFECT_RATING_ORGANIZER':
+      return {
+        ...state,
+        ratingOrg: action.payload,
+      };
+
+    case 'GET_EFFECT_RATING_EVENT':
+      return {
+        ...state,
+        ratingEvent: action.payload,
+      };
+
     default:
     return state;
   }
