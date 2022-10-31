@@ -1,21 +1,17 @@
 .container {
   display: grid;
-  grid-template-columns: 40% 60%;
-  border: 1px solid green;
-  width: 100%;
+  grid-template-columns: 25% 75%;
 }
 
 .container_image {
-  border: 1px solid black;
   display: grid;
-  justify-content: stretch;
+  justify-content: center;
   align-items: center;
 }
 
 .container_texts {
-  border: 1px solid salmon;
   display: grid;
-  justify-content: stretch;
+  justify-content: start;
   align-items: center;
 }
 
@@ -27,10 +23,10 @@
 
 .text_text {
   font-family: 'Raleway', sans-serif;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
 }
 
 .text_date {
   font-family: 'Raleway', sans-serif;
-  font-size: 1.2rem;
+  font-size: 1rem;
 }

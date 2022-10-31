@@ -48,7 +48,7 @@ const ConversationNoti = (msgs, id) => {
     <div className={style.container}> 
       <div className={style.container_image}>
         <img 
-          style={{width: '4.7rem', height: '4.7rem'}} 
+          style={{width: '4.7rem', height: '4.7rem', borderRadius: '50%'}} 
           src={name.userpicture ? name.userpicture : avatar} 
           alt="avatar" 
         />

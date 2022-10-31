@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import eventsApi from '../../axios/eventsApi';
-import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { animateScroll as scroll } from 'react-scroll';
 import { AuthContext } from '../../context/auth/AuthContext';
@@ -18,19 +17,23 @@ const OrganizerDetails = () => {
 
   const id = useParams().id;
   const { user, logged } = useContext(AuthContext);
-  const { getRatingOrganizer, ratingOrg } = useContext(UIContext);
+  const { getEffectRatingOrganizer, ratingOrg } = useContext(UIContext);
   const navigate = useNavigate();
   const [component, setComponent] = useState('');
   const [nextEvent, setNextEvent] = useState({});
   const [conversation, setConversation] = useState({});
+  //const [rat, setRat] = useState(-1);
   const [userDetail, setUserDetail] = useState({
     organizer: {},
   });
 
   useEffect(() => {
-    obtenerDatos();
     scroll.scrollToTop();
   }, []);
+
+  useEffect(() => {
+    obtenerDatos();
+  }, [userDetail]);
 
   useEffect(() => {
     setConversation({
@@ -39,21 +42,20 @@ const OrganizerDetails = () => {
     });
   }, []);   
 
-  useEffect(() => {
-    if (userDetail.organizer) {
-      getRatingOrganizer(id, {rating: userDetail.organizer.rating});
+  /* useEffect(() => {
+    if (rat ==! -1) {
+      getEffectRatingOrganizer(rat);
     }
     else {
       console.log('no hay eventDetails');
     }
-  }, [userDetail]);
+  }, [userDetail]); */
 
   const obtenerDatos = async () => {
-    const data = await eventsApi.get(
-      '/users/' + id
-    );
+    const data = await eventsApi.get('/users/' + id);
     const json = data.data;
     setNextEvent(json);
+    getEffectRatingOrganizer(json.rating);
     setUserDetail({
       organizer: json,
     });
@@ -61,14 +63,10 @@ const OrganizerDetails = () => {
 
   const handleClickMessages = (e) => {
     e.preventDefault();
-    eventsApi
-      .post(
-        '/conversation/create',
-        conversation
-      )
-      .then((response) => {
-        navigate('/user/message');
-      });
+    eventsApi.post('/conversation/create', conversation)
+    .then((response) => {
+      navigate('/user/message');
+    });
   };
 
   const handleAlert = (e) => {
