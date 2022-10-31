@@ -1,90 +1,84 @@
 const { OneCategoryDb } = require("../../models/util/functionDB/CategoryDb.js");
 const { oneUserDb } = require("../../models/util/functionDB/UserDb.js");
 const {
-  AllEventsDb,
-  createOneEventDb,
-  generateEventComment,
-  findOneEvent,
-  updateOneEventDb,
+   AllEventsDb,
+   createOneEventDb,
+   generateEventComment,
+   findOneEvent,
+   updateOneEventDb,
 } = require("../../models/util/functionDB/EventesDb.js");
 
 async function getAllEvents() {
-  try {
-    const allEvents = AllEventsDb();
-    return allEvents;
-  } catch (error) {
-    throw new Error(error.message);
-  }
+   try {
+      const allEvents = AllEventsDb();
+      return allEvents;
+   } catch (error) {
+      throw new Error(error.message);
+   }
 }
 async function getOneEvent(id) {
-  try {
-    const event = await findOneEvent(id);
-    if (!event) {
-      throw new Error("El evento no existe id incorrecto");
-    }
-    return event;
-  } catch (error) {
-    throw new error.message();
-  }
+   try {
+      const event = await findOneEvent(id);
+      if (!event) {
+         throw new Error("El evento no existe id incorrecto");
+      }
+      return event;
+   } catch (error) {
+      throw new error.message();
+   }
 }
 async function createEvents(event) {
-  try {
-    const { idOrganizer, categories } = event;
-    const organizer = await oneUserDb(idOrganizer);
+   try {
+      const { idOrganizer, categories } = event;
+      const organizer = await oneUserDb(idOrganizer);
 
-    const temp = categories.map(async (e) => {
-      let temp = await OneCategoryDb(e);
-      return temp;
-    });
-    
-    const category = await Promise.all(temp);
-    
-   
-    //console.log('ORGANIZADOR', organizer)
-    if(organizer.isOrganizer){
+      const temp = categories.map(async (e) => {
+         let temp = await OneCategoryDb(e);
+         return temp;
+      });
 
+      const category = await Promise.all(temp);
       
-      event.categories = category.map((e) =>{
-        
-        return e._id});
-        
-      event.organizer = organizer._id;
-      const events = await createOneEventDb(event);
-      
-      organizer.myEventsCreated.push(events._id);
-      await organizer.save();
-      return events;
-    }
-    
-    return {msg: "Aun no eres organizador contacta al administrador"}
+      if (organizer.isOrganizer) {
+         event.categories = category.map((e) => {
+            return e._id;
+         });
 
-  } catch (error) {
-    console.log(error.message)
-    throw new Error(error.message);
-  }
+         event.organizer = organizer._id;
+         const events = await createOneEventDb(event);
+
+         organizer.myEventsCreated.push(events._id);
+         await organizer.save();
+         return events;
+      }
+
+      return { msg: "Aun no eres organizador contacta al administrador" };
+   } catch (error) {
+      throw new Error(error.message);
+   }
 }
 
 async function createOpinionsEvents(id, opinions) {
-  try {
-    const opinionCreat = await generateEventComment(id, opinions);
-    return opinionCreat;
-  } catch (error) {
-    throw new Error(error.message);
-  }
+   try {
+      const opinionCreat = await generateEventComment(id, opinions);
+      return opinionCreat;
+   } catch (error) {
+      throw new Error(error.message);
+   }
 }
 
 async function eventsUpdate(id, newEvent) {
-  try {
-    const newEvents = await updateOneEventDb(id, newEvent);
-    return newEvents;
-  } catch (error) {
-    throw new Error(error.message);
-  }
+   try {
+      const newEvents = await updateOneEventDb(id, newEvent);
+      return newEvents;
+   } catch (error) {
+      throw new Error(error.message);
+   }
 }
 module.exports = {
-  getAllEvents,
-  getOneEvent,
-  createEvents,
-  createOpinionsEvents,
-  eventsUpdate,
+   getAllEvents,
+   getOneEvent,
+   createEvents,
+   createOpinionsEvents,
+   eventsUpdate,
 };
