@@ -1146,7 +1146,7 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
                   <div> 
                     <p>Fotos: Jpg, png, Max.100kb </p> 
                     <p>Videos: .MP4 Max 100kb</p>      
-                    <p>"Arrastra los archivos aquí o haz click para agregar archivos"</p>
+                    <p>"Haz click en examinar para elegir los archivos y luedo en añadir"</p>
                     <input
                       type='file'
                       multiple={true}
@@ -1163,7 +1163,7 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
                   <div> 
                     <p>Fotos: Jpg, png, Max.100kb </p> 
                     <p>Videos: .MP4 Max 100kb</p>      
-                    <p>"Arrastra los archivos aquí o haz click para agregar archivos"</p>
+                    <p>"Haz click en examinar para elegir los archivos y luedo en añadir"</p>
                     <input
                       type='file'
                       multiple={true}
@@ -1171,11 +1171,13 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
                         setImage(e.target.files)
                       }}
                     />
+                   
+                    
                   </div>
                 }
 
                 {image ? (
-                    <button onClick={(e)=>{uploadImage(e)}}>
+                    <button onClick={(e)=>{uploadImage(e)}} className={styles.viewBtn}>
                       Añadir
                     </button>
                   ) : null}
@@ -1185,9 +1187,6 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
                 {
                   post.pictures.length > 0 ? (
                     <div className={styles.dropFilePreview}>
-                      <p>
-                        Ready to upload
-                      </p>
                       <Swiper
                         slidesPerView={1}
                         navigation
