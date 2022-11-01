@@ -1,0 +1,32 @@
+.container {
+  display: grid;
+  grid-template-columns: 25% 75%;
+}
+
+.container_image {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+
+.container_texts {
+  display: grid;
+  justify-content: start;
+  align-items: center;
+}
+
+.text_name {
+  font-family: 'Raleway', sans-serif;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.text_text {
+  font-family: 'Raleway', sans-serif;
+  font-size: 1.4rem;
+}
+
+.text_date {
+  font-family: 'Raleway', sans-serif;
+  font-size: 1rem;
+}

@@ -9,6 +9,7 @@ const UI_INITIAL_STATE = {
   eventsFavourites: [],
   ratingOrg: 0,
   ratingEvent: 0,
+  msgStar: [],
 };
 
 export const UIProvider = ({ children }) => {
@@ -46,6 +47,22 @@ export const UIProvider = ({ children }) => {
     dispatch({ type: 'GET_RATING_EVENT', payload: json });
   }
 
+  const getEffectRatingOrganizer = (json) => {
+    dispatch({type: 'GET_EFFECT_RATING_ORGANIZER', payload: json});
+  }
+
+  const getEffectRatingEvent = (json) => {
+    dispatch({type: 'GET_EFFECT_RATING_EVENT', payload: json});
+  }
+
+  /* const getMsgStar = (json) => {
+    dispatch({type: 'GET_MSG_STAR', payload: json});
+  }
+ */
+  const getMessagesStar = (json) => {
+    dispatch({type: 'GET_MESSAGES_STAR', payload: json});
+  }
+
   return (
     <UIContext.Provider
       value={{
@@ -58,6 +75,10 @@ export const UIProvider = ({ children }) => {
         getEventsFavourites,
         getRatingOrganizer,
         getRatingEvent,
+        getEffectRatingOrganizer,
+        getEffectRatingEvent,
+        /* getMsgStar, */
+        getMessagesStar,
       }}
     >
       {children}

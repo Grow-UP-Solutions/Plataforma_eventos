@@ -10,6 +10,7 @@ import { FaUserCircle } from 'react-icons/fa';
 import { IoNotifications, IoCaretDownSharp } from 'react-icons/io5';
 import logo from '../../assets/imgs/logoNav.svg';
 import eventsApi from '../../axios/eventsApi';
+import ConversationNoti from '../ConversationNoti/ConversationNoti';
 
 const Navbar = ({ upper }) => {
   
@@ -125,9 +126,15 @@ const Navbar = ({ upper }) => {
                     <p className={style.link_noti} onClick={handleClickAllReadMessages}>
                       Marcar todas como leidas
                     </p>
-                    {msg.map((e) => (
-                      <div className={style.noty}>{e.text}</div>
-                    ))}
+
+                    {
+                      msg.map((c, i) => (
+                        <div className={style.noty} key={i} >
+                          <ConversationNoti msgs={c} id={user.uid} />
+                        </div>
+                      ))
+                    }
+
                     <p className={style.link_notis} onClick={handleClickMessage}>
                       Ver todos los mensajes
                     </p>
@@ -173,13 +180,13 @@ const Navbar = ({ upper }) => {
                   position: 'relative',
                 }}
                 onClick={() => setMenuOpen(!menuOpen)}
-              >
+                >
                 <div className={style.containerImg}>
                   {user.picture ? (
                     <img className={style.userImg} src={user.picture} alt='img-user' />
-                  ) : (
-                    <FaUserCircle className={style.userImg} />
-                  )}
+                    ) : (
+                      <FaUserCircle className={style.userImg} />
+                      )}
                 </div>
                 <IoCaretDownSharp className={style.iconMenu} />
                 {menuOpen && (
@@ -197,7 +204,7 @@ const Navbar = ({ upper }) => {
                         logout();
                         navigate('/');
                       }}
-                    >
+                      >
                       Cerrar
                     </a>
                   </div>
