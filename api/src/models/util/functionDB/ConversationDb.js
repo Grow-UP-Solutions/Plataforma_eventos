@@ -8,6 +8,7 @@ async function findAllConversation() {
       throw new Error(error.message);
    }
 }
+
 async function findConversation(userId) {
    try {
       return await Conversation.find({
@@ -43,10 +44,23 @@ async function lockedConversation(idConversation) {
       const conversation = await Conversation.findById({ _id: idConversation });
       if (conversation) {
          conversation.locked = !conversation.locked;
-         await conversation.save()
+         await conversation.save();
          return { msg: "conversacion bloqueda", conversation };
       }
-      return {msg : 'La conversacion no existe'}
+      return { msg: "La conversacion no existe" };
+   } catch (error) {
+      throw new Error(error.message);
+   }
+}
+async function pinupConversation(conversationId) {
+   try {
+      const conversation = await Conversation.findOne({ _id: conversationId });
+      if (conversation) {
+         conversation.pinup = !conversation.pinup;
+         await conversation.save();
+         return conversation;
+      }
+      return { msg: "No se encontro" };
    } catch (error) {
       throw new Error(error.message);
    }
@@ -57,4 +71,5 @@ module.exports = {
    findConversation,
    createConversation,
    lockedConversation,
+   pinupConversation,
 };
