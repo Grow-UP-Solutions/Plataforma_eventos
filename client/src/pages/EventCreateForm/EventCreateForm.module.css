@@ -326,8 +326,8 @@
 } */
 
 .mySwiperImg {
-  width: 80rem;
-  height: 48rem;
+  width: 40rem;
+  height: 24rem;
   border: 2px solid var(--color-grey-4);
   border-radius: 10px;
 }
