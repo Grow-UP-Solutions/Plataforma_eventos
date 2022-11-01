@@ -49,6 +49,7 @@ import axios from "axios";
 import { AuthContext } from '../../context/auth/AuthContext';
 import eventsApi from '../../axios/eventsApi';
 import ImageUploading, { ImageListType } from "react-images-uploading"
+import {Image} from 'cloudinary-react'
 
 
 
@@ -433,9 +434,11 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
 
   //chequeo por palabras
 
-  const titleArray = post.title.split(' ')
+   const titleArray = post.title.split(' ')
+   //const titleArray = [1,2,3,4]
 
-  const longDescriptionArray = post.longDescription.split(' ')
+   const longDescriptionArray = post.longDescription.split(' ')
+   //const longDescriptionArray =[1,2,3,4,5,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 
 
   //--------------------------------------------------//
@@ -494,84 +497,65 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
   //                POST - DROP DRAG IMAGES                //
 
   
-// const wrapperRef = useRef(null);
-
-
-// const onDragEnter = () => wrapperRef.current.classList.add('dragover');
-
-// const onDragLeave = () => wrapperRef.current.classList.remove('dragover');
-
-// const onDrop = () => wrapperRef.current.classList.remove('dragover');
-
-// const onFileDrop = (e) => {
-  
-//   if (e.target.files[0]) {
-//       const reader = new FileReader()
-//       reader.readAsDataURL(e.target.files[0])
-//       reader.onload = (e)=>{
-//           e.preventDefault();
-//          setPost({
-//           ...post,
-//           pictures: [...post.pictures, {cover:false, picture: e.target.result}]}
-//          )
-//          }
-//       ;
-//   }
-// }
-// const fileRemove = (item) => {
-//   const updatedPictures=[...post.pictures]
-//   updatedPictures.splice(post.pictures.indexOf(item), 1);
-//   setPost({
-//     ...post,
-//     pictures:updatedPictures
-//   })
-//   ;
-// }
-
-// function handleCover(e){
-  
-// const todas = [...post.pictures]
-
-// if(e.target.checked){
-// todas.map((foto)=>{
-//     if(foto.picture===e.target.value){
-//       foto.cover = true}
-//   })
-//   setPost({
-//     ...post,
-//     pictures:todas
-//   })
-// }else{
-//   todas.map((foto)=>{
-//     if(foto.picture===e.target.value){
-//       foto.cover = false}
-//   })
-//   setPost({
-//     ...post,
-//     pictures:todas
-//   })
-// }
-// }
-
-
-  // const [images, setImages] = useState<ImageListType>([]);
-  // const handleChange = (imageList: ImageListType) => setImages(imageList);
-
   const [imageSelected , setImageSelected] = useState('') 
 
-  function uploadImage(e){
+  const [image, setImage] = useState({ files: '' })
+ 
+
+  async function uploadImage(e){
     e.preventDefault()
-    console.log('entreIm:')
-    const formData = new FormData()
-    formData.append('file', imageSelected)
-    formData.append("upload_preset", "wp0l2oeg")
-    axios.post("https://api.cloudinary.com/v1_1/dhmnttdy2/image/upload", formData)
-    .then((response)=>{
-      console.log('r:',response)
-    })
+      for (let i = 0; i < image.length; i++) {
+        const formData = new FormData()
+        formData.append('file', image[i])
+        formData.append("upload_preset", "wp0l2oeg")
+        await axios
+          .post(
+            'https://api.cloudinary.com/v1_1/dhmnttdy2/image/upload',
+            formData
+          )
+          .then((response) => {
+            console.log('r:',response)
+            setPost({
+              ...post,
+              pictures: [...post.pictures, {cover:false, picture: response.data.secure_url}]}
+            )
+            setImage({ files: '' })
+          })
+      }
   }
 
-  const [image, setImage] = useState({ files: '' })
+  const fileRemove = (item) => {
+  const updatedPictures=[...post.pictures]
+  updatedPictures.splice(post.pictures.indexOf(item), 1);
+  setPost({
+    ...post,
+    pictures:updatedPictures
+  })
+  ;
+}
+
+  function handleCover(e){
+  const todas = [...post.pictures]
+  if(e.target.checked){
+  todas.map((foto)=>{
+      if(foto.picture===e.target.value){
+        foto.cover = true}
+    })
+    setPost({
+      ...post,
+      pictures:todas
+    })
+  }else{
+    todas.map((foto)=>{
+      if(foto.picture===e.target.value){
+        foto.cover = false}
+    })
+    setPost({
+      ...post,
+      pictures:todas
+    })
+  }
+}
 
 
  
@@ -1041,7 +1025,7 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
                     diam nonummy nibh, Lorem ipsum dolor sit amet, consectetuer
                     adipiscing elit, sed diam nonummy nibh.{' '}
                   </p>
-                  {failedSubmit && errors.shortDescription?
+                 {failedSubmit && errors.shortDescription?
                   <textarea
                     className={styles.textareaShort}
                     type="text"
@@ -1062,7 +1046,7 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
                     value={post.shortDescription}
                     onChange={(e) => handleChange(e)}
                   />
-                  }
+                  } 
                   
                   {post.shortDescription.length===100?
                   <p className={styles.errors}>Máximo: 100 de caracteres</p>
@@ -1074,7 +1058,7 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
                   }
                   {errors.shortDescription?
                   <p className={styles.errors}>{errors.shortDescription}</p>
-                  : null}    
+                  : null}     
                 </div>
 
                 {/* longDescription */}
@@ -1149,12 +1133,98 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
               </div>
 
               {/* form */}
-              <div classname={styles.container1}>
-                <input 
-                type="file" 
-                onChange={(e)=>{setImageSelected(e.target.files[0])}}
-                />
-                <button onClick={(e)=>{uploadImage(e)}}>Upload Image</button>
+              <div className={styles.container1}>
+                <p className={styles.title}>Agrega fotos y/o videos</p>
+                <p className={styles.subTitle}>
+                  Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed
+                  diam nonummy nibh, Lorem ipsum dolor sit amet, consectetuer
+                  adipiscing elit, sed diam nonummy nibh.{' '}
+                </p>
+                <p className={styles.subTitle4}>Fotos del Evento</p>
+        
+                {failedSubmit && errors.pictures ?
+                  <div> 
+                    <p>Fotos: Jpg, png, Max.100kb </p> 
+                    <p>Videos: .MP4 Max 100kb</p>      
+                    <p>"Arrastra los archivos aquí o haz click para agregar archivos"</p>
+                    <input
+                      type='file'
+                      multiple={true}
+                      onChange={(e) => {
+                        setImage(e.target.files)
+                      }}
+                    />
+                    {errors.pictures?
+                    <p className={styles.errors}>{errors.pictures}</p>
+                    : null
+                    }
+                  </div>              
+                  :
+                  <div> 
+                    <p>Fotos: Jpg, png, Max.100kb </p> 
+                    <p>Videos: .MP4 Max 100kb</p>      
+                    <p>"Arrastra los archivos aquí o haz click para agregar archivos"</p>
+                    <input
+                      type='file'
+                      multiple={true}
+                      onChange={(e) => {
+                        setImage(e.target.files)
+                      }}
+                    />
+                  </div>
+                }
+
+                {image ? (
+                    <button onClick={(e)=>{uploadImage(e)}}>
+                      Añadir
+                    </button>
+                  ) : null}
+
+            
+
+                {
+                  post.pictures.length > 0 ? (
+                    <div className={styles.dropFilePreview}>
+                      <p>
+                        Ready to upload
+                      </p>
+                      <Swiper
+                        slidesPerView={1}
+                        navigation
+                        spaceBetween={0}
+                        modules={[Navigation]}
+                        className={styles.mySwipper}
+                      >
+                      {
+                          post.pictures.map((item, index) => (
+                              <div key={index} className={styles.mySwiper}>
+                                <SwiperSlide>
+                                  <img className={styles.mySwiperImg} src={item.picture} alt=''/>                                
+                                  <button className={styles.mySwiperBtnDel} onClick={() => fileRemove(item)}>x</button>
+                                  <label className={styles.subInput}>
+                                    <input 
+                                      className={styles.checkBox4} 
+                                      type="checkbox" 
+                                      name='cover'
+                                      value={item.picture}
+                                      onChange={e=>handleCover(e)}                              
+                                      defaultChecked={false}
+                                    />                 
+                                    Quiero que esta sea la portada
+                                  </label>
+                                </SwiperSlide>
+                              </div>
+                          ))
+                      }
+                      </Swiper>
+                      {errors.pictures?
+                      <p className={styles.errors}>{errors.pictures}</p>
+                      : null
+                    }
+                    </div>
+                  ) : null
+                }
+      
               </div>
             </div>
 
