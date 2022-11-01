@@ -29,6 +29,7 @@ const CheckSolicitudOrganizer = () => {
       const { data } = await eventsApi.post('/users/acceptOrRejectedOrganizer', { option, id: userData.id });
       const message = data.message;
       const referenciaZ = userData.referenciaU.replace('U', 'Z');
+      console.log({ referenciaZ });
       if (message === 'Aceptado') {
         setModalResultMessage(`Usted ha aceptado al usuario ${userData.name}, ahora es organizador.`);
 

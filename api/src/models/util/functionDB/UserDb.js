@@ -74,6 +74,7 @@ async function createOneUserDb(user) {
     userCreated.canReceiveInformation = user.canReceiveInformation;
     userCreated.canNotificationMyEvents = user.canReceiveInformation;
     userCreated.referralCode = referralCode;
+    userCreated.referenceU = 'U123';
     const salt = bcrypt.genSaltSync();
     userCreated.password = bcrypt.hashSync(user.password, salt);
     await userCreated.save();

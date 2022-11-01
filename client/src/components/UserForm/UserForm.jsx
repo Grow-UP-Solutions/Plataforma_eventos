@@ -763,6 +763,8 @@ const UserForm = ({ userData }) => {
     }
   };
 
+  console.log({ userData });
+
   return (
     <div className={styles.containerUserForm}>
       <div className={styles.containerPhotoProfile}>
@@ -799,9 +801,9 @@ const UserForm = ({ userData }) => {
         </button>
         {errorMessagePhoto.userpicture && <span className={styles.errorMessage}>{errorMessagePhoto.userpicture}</span>}
       </div>
-      {!userData.isReject && (
+      {!userData.isRejected && (
         <>
-          {userData.isReject && userData.isProfileCompleted && !userData.isOrganizer && !isProccessingToOrganizer && (
+          {userData.isProfileCompleted && !userData.isOrganizer && !isProccessingToOrganizer && (
             <div className={styles.isUserIsProfileCompleted}>
               <span>¡Tu perfil esta completo! Y eres elegible para ser organizador</span>
               <div className={styles.containerBtnOrganizer}>

@@ -4,7 +4,6 @@ import styles from './MyListUser.module.css';
 import { Link } from 'react-router-dom';
 
 const MyListUser = ({ myFavorites }) => {
-  
   return (
     <div className={styles.container}>
       <p className={styles.title}>Mi Lista</p>
@@ -13,7 +12,7 @@ const MyListUser = ({ myFavorites }) => {
         {myFavorites.length > 0 ? (
           myFavorites.map((event) => (
             <div className={styles.card}>
-              <Card event={event} />
+              <Card event={event} isFavorite={false} />
             </div>
           ))
         ) : (

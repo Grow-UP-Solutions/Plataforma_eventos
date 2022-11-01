@@ -132,7 +132,10 @@
 }
 
 .formGroup {
-  text-align: start;
+  display: flex;
+  gap: 1.2rem;
+  align-items: center;
+  justify-content: center;
 }
 
 .formGroup label {
@@ -140,8 +143,6 @@
   font-size: 1.6rem;
   font-weight: bold;
   color: var(--color-grey-2);
-
-  margin-bottom: 1.2rem;
 }
 
 .formGroup input {
@@ -149,6 +150,9 @@
   border: 1px solid var(--color-grey-4);
   padding: 0.5rem 1rem;
   border-radius: 10px;
+  font-family: inherit;
+  font-size: 1.6rem;
+  color: var(--color-grey-3);
 }
 
 .formGroup input:focus {
@@ -223,4 +227,48 @@
   height: 7rem;
 
   border-radius: 50%;
+}
+
+.containerInputFormCode {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.containerFormCreateCode {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+
+  background-color: var(--color-grey-6);
+  box-shadow: 0px 2px 10px 1px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 2rem 0;
+  margin-bottom: 2rem;
+}
+
+.containerButtons {
+  display: flex;
+  gap: 1.2rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.containerButtons button {
+  padding: 1rem 4rem;
+  font-size: 1.6rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 2rem;
+  cursor: pointer;
+}
+
+.btnSuccess {
+  color: white !important;
+  background-color: var(--color-orange) !important;
+}
+
+.btnCancel {
 }

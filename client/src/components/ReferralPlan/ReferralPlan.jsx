@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import styles from './ReferralPlan.module.css';
 import { FiLink2 } from 'react-icons/fi';
 import { IoMdAdd } from 'react-icons/io';
@@ -7,8 +7,40 @@ import { imgMoney } from '../../assets/imgs';
 
 import { Helmet } from 'react-helmet';
 
+import { generarCodigo } from '../../utils/generateCodeDiscount';
+import { inputKeyDown } from '../../utils/inputOnlyNumbers';
+
 const ReferralPlan = ({ userData }) => {
+  const txtValueCodeDiscount = useRef();
   const [availableCredit, setAvailableCredit] = useState(userData.availableCredit);
+  const [openFormCodeDiscount, setOpenFormCodeDiscount] = useState(false);
+
+  const [codeDiscount, setCodeDiscount] = useState({
+    code: '',
+    value: '',
+  });
+
+  const [errorMessageCode, setErrorMessageCode] = useState('');
+
+  const generateCodeDiscount = async () => {
+    setOpenFormCodeDiscount(true);
+
+    const code = generarCodigo();
+
+    setCodeDiscount({
+      ...codeDiscount,
+      code,
+    });
+  };
+
+  const postCodeDiscount = async () => {
+    const value = txtValueCodeDiscount.current.value;
+
+    if (value > availableCredit) return setErrorMessageCode('Tu saldo no es suficiente');
+
+    try {
+    } catch (error) {}
+  };
 
   return (
     <div className={styles.containerReferralPlan}>
@@ -68,15 +100,48 @@ const ReferralPlan = ({ userData }) => {
           </p>
           <button className={styles.generateCode}>
             <IoMdAdd />
-            <span>Generar código de descuento</span>
+            <button onClick={generateCodeDiscount}>
+              <span>Generar código de descuento</span>
+            </button>
           </button>
         </div>
+
+        {openFormCodeDiscount && (
+          <div className={styles.containerFormCreateCode}>
+            <div className={styles.containerInputFormCode}>
+              <div className={styles.formGroup}>
+                <label htmlFor='code'>Código</label>
+                <input disabled value={codeDiscount.code} type='text' id='value' />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label htmlFor='value'>Valor</label>
+                <input onKeyDown={inputKeyDown} ref={txtValueCodeDiscount} type='text' />
+              </div>
+
+              <div className={styles.optionCode}>
+                <button>Editar</button>
+                <TbTrash />
+              </div>
+            </div>
+            {errorMessageCode && <p>{errorMessageCode}</p>}
+            <div className={styles.containerButtons}>
+              <button onClick={postCodeDiscount} className={styles.btnSuccess}>
+                Crear
+              </button>
+              <button onClick={() => setOpenFormCodeDiscount(false)} className={styles.btnCancel}>
+                Cancelar
+              </button>
+            </div>
+          </div>
+        )}
 
         <div className={styles.containerInputCode}>
           <div className={styles.formGroup}>
             <label htmlFor='code'>Código</label>
             <input type='text' id='value' />
           </div>
+
           <div className={styles.formGroup}>
             <label htmlFor='value'>Valor</label>
             <input type='text' />

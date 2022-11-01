@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './Card.module.css';
 import add from '../../assets/imgs/add.svg';
 import { Link } from 'react-router-dom';
@@ -6,24 +6,43 @@ import { Rating } from '@mui/material';
 import { iconAdd } from '../../assets/imgs';
 import { useContext } from 'react';
 import { UIContext } from '../../context/ui';
+import { useEffect } from 'react';
+import eventsApi from '../../axios/eventsApi';
 
-const Card = ({ event, listName }) => {
+const Card = ({ event, listName, isFavorite, userData }) => {
   const { toggleScreenLogin } = useContext(UIContext);
   const currentYear = new Date().getFullYear();
   const numCadena = currentYear + '';
   const añoActual = numCadena.slice(2, 4);
+  const [organizer, setOrganizer] = useState(null);
+
+  useEffect(() => {
+    if (!isFavorite) {
+      getUserByEvent();
+    }
+  }, []);
+
+  const getUserByEvent = async () => {
+    const { data } = await eventsApi.get(`/events/${event._id}`);
+    console.log({ data });
+    setOrganizer(data.organizer);
+  };
+
+  console.log({ organizer });
 
   return (
     <div className={styles.card}>
-      {event.pictures.length?
-      <img
-        className={styles.cardImgEvent}
-        src={event.pictures[0].picture}
-        alt='Not Found ):'
-        width='200x'
-        height='300'
-      />
-    :'N'}
+      {event.pictures.length ? (
+        <img
+          className={styles.cardImgEvent}
+          src={event.pictures[0].picture}
+          alt='Not Found ):'
+          width='200x'
+          height='300'
+        />
+      ) : (
+        'N'
+      )}
       <div className={styles.cardText}>
         {event.dates && event.dates.length > 1 ? (
           <select className={styles.cardDate}>
@@ -52,10 +71,14 @@ const Card = ({ event, listName }) => {
         )}
 
         <div className={styles.cardAddFav}>
-          <input type='checkbox' id={`${event._id}-${listName}`} />
-          <label htmlFor={`${event._id}-${listName}`}>
-            <img src={iconAdd} alt='iconAdd' />
-          </label>
+          {isFavorite && (
+            <>
+              <input type='checkbox' id={`${event._id}-${listName}`} />
+              <label htmlFor={`${event._id}-${listName}`}>
+                <img src={iconAdd} alt='iconAdd' />
+              </label>
+            </>
+          )}
 
           <div className={styles.cardAddFavMenu}>
             <p>
@@ -94,20 +117,24 @@ const Card = ({ event, listName }) => {
         <p className={styles.cardDescription}>{event.shortDescription.slice(0, 70)}</p>
       </div>
       <hr className={styles.cardHr}></hr>
-      {event.organizer.userpicture && event.organizer.name ? (
+      {(event.organizer.userpicture && event.organizer.name) ||
+      (userData.userpicture && userData.nickname) ||
+      (organizer.userpicture && organizer.nickname) ? (
         <div>
           <div className={styles.cardOrgInfo}>
             <Link className={styles.link} to={`/organizerDetails/${event.organizer._id}`}>
               <img
                 className={styles.cardOrgPicture}
-                src={event.organizer.userpicture}
+                src={event.organizer.userpicture || userData.userpicture || organizer.userpicture || ''}
                 alt='Not Found ):'
                 width='2px'
                 height='3px'
               />
             </Link>
             <Link className={styles.link} to={`/organizerDetails/${event.organizer._id}`}>
-              <p className={styles.cardOrgName}>{event.organizer.name}</p>
+              <p className={styles.cardOrgName}>
+                {event.organizer.name || userData.nickname || organizer.nickname || ''}
+              </p>
             </Link>
             <div className={styles.vLine}></div>
             <p className={styles.cardPrice}>${event.price}</p>
