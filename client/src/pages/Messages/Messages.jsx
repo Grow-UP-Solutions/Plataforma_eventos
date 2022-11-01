@@ -2,17 +2,20 @@ import React, { useContext, useEffect, useState } from 'react';
 import styles from './Messages.module.css';
 import { FiMail, FiArchive, FiStar } from 'react-icons/fi';
 import eventsApi from "../../axios/eventsApi";
-import { AuthContext } from '../../context/auth/AuthContext';
 import avatar from '../../assets/imgs/no-avatar.png';
 import Conversations from '../../components/Conversations/Conversations';
 import Message from '../../components/Message/Message';
 import { animateScroll as scroll } from 'react-scroll';
+import { AuthContext } from '../../context/auth/AuthContext';
 import { UIContext } from '../../context/ui';
+import { stateContext } from '../../context/state/stateContext';
+import swal from 'sweetalert';
 
 const Messages = () => {
 
   const { user } = useContext(AuthContext);
   const { getMessagesStar, msgStar } = useContext(UIContext);
+  const { setMsg, block, setBlock } = useContext(stateContext);
   const id = user.uid;
   const [conversations, setConversations] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
@@ -20,12 +23,15 @@ const Messages = () => {
   const [newMessage, setNewMessage] = useState("");
   const [result, setResult] = useState({});
   const [star, setStar] = useState(false);
+  const [clickOne, setClickOne] = useState(false);
+  const [clickTwo, setClickTwo] = useState(true);
 
   useEffect(() => {
     const getConversations = async () => {
       try {
         const res = await eventsApi.get("/conversation/" + id);
-        setConversations(res.data);
+        setConversations(res.data.filter(e => e.locked === false));
+        setBlock(res.data.filter(e => e.locked === true));
       } catch (err) {
         console.log(err);
       }
@@ -100,6 +106,39 @@ const Messages = () => {
     messagesStar();
   }
 
+  const handleClickAllReadMessages = async (e) => {
+    e.preventDefault();
+    const res = await eventsApi.put('/message/update/' + user.uid);
+    setMsg(res.data.filter((e) => e.read === false));
+  };
+
+  const handleClickFile = (e) => {
+    e.preventDefault();
+    swal({
+      title: 'Tus conversaciones ya se encuentran archivadas',
+      icon: 'info',
+      button: 'Cerrar',
+      closeModal: true,
+      dangerMode: true,
+    });
+  }
+
+  const handleClickOne = (e) => {
+    e.preventDefault();
+    setClickOne(!clickOne);
+    setClickTwo(!clickTwo);
+    if(clickOne === true) setClickOne(true);
+    if(clickTwo === false) setClickTwo(false);
+  } 
+
+  const handleClickTwo = (e) => {
+    e.preventDefault();
+    setClickTwo(!clickTwo);
+    setClickOne(!clickOne);
+    if(clickTwo === true) setClickTwo(true);
+    if(clickOne === false) setClickOne(false);
+  }
+  
   return (
     <div className={`${styles.pageMessage} container`}>
       <div className={styles.containerMessage}>
@@ -113,12 +152,12 @@ const Messages = () => {
           <div className={styles.containerChats}>
             
             <div className={styles.containerOptions}>
-              <div>
+              <div onClick={handleClickAllReadMessages}>
                 <FiMail />
                 <span>Marcar todos como leídos</span>
               </div>
 
-              <div>
+              <div onClick={handleClickFile}>
                 <FiArchive />
                 <span>Archivar todas las conversaciones</span>
               </div>
@@ -132,7 +171,13 @@ const Messages = () => {
             <div className={styles.containerChats}>
 
               {
+                clickTwo === true ?
                 conversations.map((c, i) => (
+                  <div key={i} onClick={() => handleClickConversation(c)} className={currentChat && currentChat._id === c._id ? styles.active : ''}>
+                    <Conversations conversation={c} id={id} />
+                  </div>
+                )) :
+                block.map((c, i) => (
                   <div key={i} onClick={() => handleClickConversation(c)} className={currentChat && currentChat._id === c._id ? styles.active : ''}>
                     <Conversations conversation={c} id={id} />
                   </div>
@@ -187,13 +232,13 @@ const Messages = () => {
           </div>
 
           <div className={styles.buttonsChats}>
-            <div>
+            <div onClick={handleClickOne} className={`${clickOne ? styles.box_event : styles.box1}`}>
               <p>Usuarios Bloqueados</p>
             </div>
 
             <div className={styles.buttonDivisor} />
 
-            <div>
+            <div onClick={handleClickTwo} className={`${clickTwo ? styles.box_event : styles.box2}`}>
               <p>Conversaciones archivadas</p>
             </div>
           </div>

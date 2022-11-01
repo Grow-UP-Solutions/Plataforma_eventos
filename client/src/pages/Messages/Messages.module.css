@@ -302,3 +302,16 @@
   font-size: 2rem;
   color: var(--color-grey-3);
 }
+
+.box1, .box2 {
+  font-family: 'Raleway', sans-serif;
+  font-size: 1.4rem;
+  color: var(--color-grey-3);
+  cursor: pointer;
+}
+
+.box_event {
+  color: var(--color-orange);
+  font-size: 1.4rem;
+  font-weight: bold;
+}
