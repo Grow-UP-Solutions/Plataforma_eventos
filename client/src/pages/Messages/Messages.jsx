@@ -7,16 +7,19 @@ import avatar from '../../assets/imgs/no-avatar.png';
 import Conversations from '../../components/Conversations/Conversations';
 import Message from '../../components/Message/Message';
 import { animateScroll as scroll } from 'react-scroll';
+import { UIContext } from '../../context/ui';
 
 const Messages = () => {
 
   const { user } = useContext(AuthContext);
+  const { getMessagesStar, msgStar } = useContext(UIContext);
   const id = user.uid;
   const [conversations, setConversations] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [result, setResult] = useState({});
+  const [star, setStar] = useState(false);
 
   useEffect(() => {
     const getConversations = async () => {
@@ -69,8 +72,6 @@ const Messages = () => {
     };
     try {
       const res = await eventsApi.post("/message/create", message);
-      //console.log('message:', message);
-      //console.log('res.data', res.data);
       setMessages([...messages, res.data]);
       setNewMessage("");
       scroll.scrollToTop();
@@ -82,7 +83,22 @@ const Messages = () => {
 
   const handleClickConversation = async (c) => {
     setCurrentChat(c);
+    setStar(false);
   } 
+
+  const handleClickStar = (e) => {
+    e.preventDefault();
+    setStar(true);
+    const messagesStar = async () => {
+      try {
+        const res = await eventsApi.get("/message/" + currentChat._id);
+        getMessagesStar(res.data.filter((e) => e.outstanding === true));
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    messagesStar();
+  }
 
   return (
     <div className={`${styles.pageMessage} container`}>
@@ -107,7 +123,7 @@ const Messages = () => {
                 <span>Archivar todas las conversaciones</span>
               </div>
 
-              <div>
+              <div onClick={handleClickStar}>
                 <FiStar />
                 <span>Mensajes destacados</span>
               </div>
@@ -136,7 +152,7 @@ const Messages = () => {
 
             <div className={styles.containerChatMessage}>
               {
-                currentChat ? (
+                currentChat && star === false ? (
                 <>
                   <div>
                     {
@@ -147,6 +163,17 @@ const Messages = () => {
                       )).reverse()
                     }
                   </div> 
+                </> ) : currentChat && star === true ? ( 
+                <>
+                  <div>
+                    {
+                      msgStar.map((m, i) => (
+                        <div key={i} >
+                          <Message message={m} own={m.sender === id} />
+                        </div>
+                      )).reverse()
+                    }
+                  </div>
                 </> ) : 
                 (
                   <span className={styles.noMsg}>

@@ -1,8 +1,10 @@
 
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import styles from './Message.module.css';
-import Rating from '@mui/material/Rating';
 import { format, register } from "timeago.js";
+import StarIcon from '@mui/icons-material/Star';
+import eventsApi from '../../axios/eventsApi';
+//import { UIContext } from '../../context/ui';
 
 const localeFunc = (number, index, total_sec) => {
   // number: the timeago / timein number;
@@ -29,9 +31,14 @@ register('es_ES', localeFunc);
 
 const Message = ({ message, own }) => {
 
-  const handleClickStar = (e) => {
+  const [star, setStar] = useState(false);
+  //const { getMsgStar } = useContext(UIContext);
+
+  const handleClickStar = async (e) => {
     e.preventDefault();
-    
+    setStar(!star);
+    const res = await eventsApi.put('/message/' + message._id);
+    console.log(res);
   }
   
   return (
@@ -41,13 +48,18 @@ const Message = ({ message, own }) => {
         <p className={styles.messageText}>{message.text}</p>
 
         <div className={styles.wrapperInfoMessage}>
-          <Rating 
-            name="customized-10" 
-            defaultValue={0} 
-            max={1} 
-            className={styles.iconMessage} 
-            onClick={handleClickStar}
-          />
+          {
+            star === false ?
+            <StarIcon 
+              onClick={handleClickStar} 
+              className={message.outstanding === false ? styles.iconMessage : styles.iconMessageColor}
+            /> :
+            <StarIcon 
+              onClick={handleClickStar} 
+              className={message.outstanding === false ? styles.iconMessage : styles.iconMessageColor}
+              sx={{color: "#ffe234", fontSize: "2.5rem"}}  
+            />
+          }
           <span className={styles.messageBottom}>{format(message.createdAt, 'es_ES')}</span>
         </div>
       </div>
