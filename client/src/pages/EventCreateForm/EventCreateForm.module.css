@@ -256,7 +256,7 @@
   font-weight: bold;
 }
 
-.dropFileIput {
+/* .dropFileIput {
   text-align: center;
   width: 50rem;
   height: 30rem;
@@ -268,9 +268,9 @@
   background-color: var(--input-bg);
   margin-bottom: 2rem;
   margin-left: 4rem;
-}
+} */
 
-.dropFileIput input {
+/* .dropFileIput input {
   opacity: 0;
   top: 0;
   left: 0;
@@ -309,7 +309,7 @@
   margin-bottom: 1rem;
   font-size: 1.2rem;
   font-weight: bold;
-}
+} */
 
 /* .mySwiper{
   position: relative;
