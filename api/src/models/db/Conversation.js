@@ -9,6 +9,10 @@ const conversationSchema = new Schema(
          type: Boolean,
          default: false,
       },
+      pinup:{
+         type:Boolean,
+         default: false
+      }
    },
 
    { timestamps: true }
