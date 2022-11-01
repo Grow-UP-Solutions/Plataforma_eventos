@@ -75,6 +75,14 @@
 .iconMessage {
   width: 2.2rem;
   height: 2.2rem;
+  cursor: pointer;
+}
+
+.iconMessageColor {
+  width: 2.5rem;
+  height: 2.5rem;
+  cursor: pointer;
+  color: #ffe234;
 }
 
 /* TEXT AREA */

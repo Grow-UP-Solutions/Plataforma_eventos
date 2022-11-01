@@ -50,6 +50,18 @@ export const uiReducer = (state, action) => {
         ratingEvent: action.payload,
       };
 
+    case 'GET_MSG_STAR':
+      return {
+        ...state,
+        msgStar: action.payload,
+      };
+
+    case 'GET_MESSAGES_STAR':
+      return {
+        ...state,
+        msgStar: action.payload,
+      };
+
     default:
     return state;
   }

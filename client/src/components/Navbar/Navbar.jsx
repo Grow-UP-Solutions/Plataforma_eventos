@@ -16,7 +16,7 @@ const Navbar = ({ upper }) => {
   
   const { toggleScreenLogin } = useContext(UIContext);
   const { user, logged, logout } = useContext(AuthContext);
-  const { notes, setNotes, msg, setMsg, conversa } = useContext(stateContext);
+  const { notes, setNotes, msg, setMsg } = useContext(stateContext);
   const [menuOpen, setMenuOpen] = useState(false);
   const [openNotifications, setOpenNotifications] = useState(false);
   const [openMessages, setOpenMessages] = useState(false);

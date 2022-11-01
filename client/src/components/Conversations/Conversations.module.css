@@ -34,6 +34,15 @@
   border-top: 1px solid var(--color-grey-4);
 }
 
+.itemChatC {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+  padding: 1rem 2rem;
+  border: 2px solid var(--color-orange);
+  /* border-top: 1px solid var(--color-grey-4); */
+}
+
 .itemChat:last-child {
   border-bottom: 1px solid var(--color-grey-4);
 }
