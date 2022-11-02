@@ -79,9 +79,12 @@ async function createOneUserDb(user, codeReferral) {
       await userCreated.save();
       if (codeReferral) {
          const user = await Users.findOne({ referralCode: codeReferral });
-         if (user) {
+         if (user) {            
+            userCreated.isReferral = codeReferral
+            await userCreated.save()
             user.referrals = userCreated._id;
-            user.save();
+            user.saldoPendiente += 5000
+            await user.save();            
          } else throw new Error("El codigo no es valido");
       }
       return userCreated;
