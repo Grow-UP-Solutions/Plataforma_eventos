@@ -40,7 +40,10 @@ const EventSchema = new Schema(
             precioAlPublico: String,
             gananciaCupo: String,
             gananciaEvento: String,
-            date: String,
+           inRevision:{
+            type:Boolean,
+            default:false,
+           },
             dateFormated: String,
          },
       ],
@@ -59,6 +62,10 @@ const EventSchema = new Schema(
       isPublic: {
          type: Boolean,
       },
+      inRevision:{
+         type:Boolean,
+         default:false,
+        },
 
       rating: {
          type: Number,

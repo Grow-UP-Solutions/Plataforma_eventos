@@ -67,17 +67,26 @@ async function deleteOneUserDb(id) {
 }
 /**Creating user in Database */
 
-async function createOneUserDb(user) {
+async function createOneUserDb(user, codeReferral) {
   try {
     const userCreated = new Users(user);
     const referralCode = generarCodigo()[0];
     userCreated.canReceiveInformation = user.canReceiveInformation;
     userCreated.canNotificationMyEvents = user.canReceiveInformation;
     userCreated.referralCode = referralCode;
-    userCreated.referenceU = 'U123';
     const salt = bcrypt.genSaltSync();
     userCreated.password = bcrypt.hashSync(user.password, salt);
     await userCreated.save();
+    if (codeReferral) {
+      const user = await Users.findOne({ referralCode: codeReferral });
+      if (user) {
+        userCreated.isReferral = codeReferral;
+        await userCreated.save();
+        user.referrals = userCreated._id;
+        user.saldoPendiente += 5000;
+        await user.save();
+      } else throw new Error('El codigo no es valido');
+    }
     return userCreated;
   } catch (error) {
     throw new Error(error.message);

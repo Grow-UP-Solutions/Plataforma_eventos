@@ -16,7 +16,15 @@ const UserSchema = new Schema({
   imageRent: String,
   referenceU: String,
   referenceZ: String,
-  referralCode: String,
+  saldoPendiente:{
+    type:Number,
+    default:0
+  },
+  saldoTotal:{
+    type:Number,
+    default:0
+  },
+
   availableCredit: {
     type: Number,
     default: 0,
@@ -33,6 +41,7 @@ const UserSchema = new Schema({
     type: Boolean,
     default: false,
   },
+
   userpicture: {
     type: String,
     default: '',
@@ -51,6 +60,7 @@ const UserSchema = new Schema({
     type: Boolean,
     default: false,
   },
+
   isSuperAdmin: {
     type: Boolean,
     default: false,
@@ -67,10 +77,22 @@ const UserSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  isReferral:{
+    type: String,
+    default: null
+  },
   isOrganizer: {
     type: Boolean,
     default: false,
   },
+  referralCode:{
+    type: String,
+    default: ''
+  },
+  referrals:[{
+    type: Schema.Types.ObjectId,
+    ref: 'Users'
+  }],
   isLogged: {
     type: Boolean,
     default: false,
