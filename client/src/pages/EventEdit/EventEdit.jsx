@@ -23,7 +23,7 @@ import { formatDate } from '../../utils/formatDate';
 import styles from './EventEdit.module.css';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ConstructionOutlined, ContactMailOutlined, EmergencyRecordingSharp } from '@mui/icons-material';
+import { ConstructionOutlined, ContactMailOutlined, EmergencyRecordingSharp, FourGMobiledataRounded } from '@mui/icons-material';
 import { getColombia , postEvent } from '../../redux/actions';
 import swal from 'sweetalert'
 import { useNavigate } from 'react-router-dom';
@@ -48,6 +48,11 @@ import WarningOutlinedIcon from '@mui/icons-material/WarningOutlined';
 import axios from "axios";
 import { AuthContext } from '../../context/auth/AuthContext';
 import eventsApi from '../../axios/eventsApi';
+import ImageUploading, { ImageListType } from "react-images-uploading"
+import {Image} from 'cloudinary-react'
+import { getEventsCopy } from '../../redux/actions';
+import {useParams } from 'react-router-dom'
+import { putEvent , getEvents } from '../../redux/actions';
 
 
 
@@ -58,7 +63,34 @@ const EventEdit = () => {
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const Swal = require('sweetalert2')
+  const eventId = useParams().id
 
+  //--------------------------------------------------//
+  //               EVENT              //
+
+  
+  useEffect(() => {
+    dispatch(getEventsCopy());
+  }, []);
+
+//              evento a editar              //
+  
+  const eventos = useSelector((state) => state.events)
+  const allEvents = [...eventos]
+  const eventDetails = allEvents.filter(e=>e._id === eventId)[0]
+
+  console.log('allEvents[0]:',allEvents[0])
+  console.log('eventDetails:',eventDetails)
+ 
+  
+
+
+//              para comparar            //
+  const allEventsCopy = useSelector((state) => state.eventsCopy)
+  const EventCopy= allEventsCopy.filter(e=>e._id === eventId)[0]
+  console.log('EventCopy:',EventCopy)
+ 
 
 
   //--------------------------------------------------//
@@ -82,10 +114,9 @@ const EventEdit = () => {
       }
     }
 
-  console.log('user:',user)
-  console.log('id:',id)
-  console.log('userData:',userData)
-
+  // console.log('user:',user)
+  // console.log('id:',id)
+  // console.log('userData:',userData)
 
   //--------------------------------------------------//
   //               DEPARTAMENTOS              //
@@ -128,95 +159,21 @@ departamentosFilter.forEach((e) => {
 
 const capitales = ['Medellín','Tunja','Montería','Quibdó','Pasto' ,'Bucaramanga','Villavicencio' ,'Barranquilla','Cartagena de Indias','Manizales','Florencia','Popayán' ,'Valledupar' ,'Bogotá','Neiva','Riohacha' ,'Santa Marta','Armenia','Pereira' ,'Sincelejo','Ibagué','Arauca','Yopal','Mocoa' ,'Leticia','Inírida','Mitú', 'Puerto Carreño', 'San José del Guaviare','San Andrés','Bogota','Cúcuta','Santiago de Cali']
 
-
-
 const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, capital: capitales[indice]}))
-
-
-  //--------------------------------------------------//
-  //               EVENTO HARDCODEADO           //
-
-// const [post, setPost] = useState({
-  //   idOrganizer:'632cbed4f208f44f5333af48',
-  //   title: 'Hola',
-  //   categories: ['Belleza'],
-  //   otherCategorie: '',
-  //   shortDescription: 'Alta',
-  //   longDescription: 'Torneo de playStation, donde el campeon actual defiende su titulo y bvuscara coronarse nuevamente. Torneo online desde cualquier parte del mundo podes jugar.',
-  //   pictures: [ {
-  //     cover: true,
-  //     picture: 'https://culturageek.com.ar/wp-content/uploads/2022/08/Playstation-Torneo-Mexico-Portada.jpg',
-  //   }],
-  //   online: 'false',
-  //   link: '',
-  //   departamento: 'Antioquia',
-  //   municipio: 'Medellin',
-  //   direccion: 'Aaa 21',
-  //   barrio: 'Aaaa',
-  //   specialRequires: '',
-  //   dates:[
-  //     { 
-  //       date: '15/12/2022', 
-  //       start : '10:00', 
-  //       end:'11:00', 
-  //       year:0 ,  
-  //       cupos:32, 
-  //       price:10000, 
-  //       sells: 12, 
-  //       isPublic:true,
-  //       precioAlPublico:'',
-  //       gananciaCupo:'',
-  //       gananciaEvento:'',
-  //       dateFormated:'Octubre 30 de 2022'
-  //      }
-  //    ],
-  //   isPublic:true,
-  //   revision:false
-  // });
-
 
 
   //--------------------------------------------------//
   //               POST Y ERROR            //
 
-    useEffect(() => {
-    if (user) {
-      setPost({
-        ...post,
-        idOrganizer: userData._id,
-        title: '',
-        categories: [],
-        otherCategorie: '',
-        shortDescription: '',
-        longDescription: '',
-        pictures: [],
-        online: '',
-        link: '',
-        departamento: '',
-        municipio: '',
-        direccion: '',
-        barrio: '',
-        specialRequires: '',
-        dates:[{ 
-          date: "", 
-          start : "", 
-          end:"" , 
-          year:0 ,  
-          cupos:0, 
-          price:0, 
-          sells: 0 , 
-          isPublic:true,
-          precioAlPublico:'',
-          gananciaCupo:'',
-          gananciaEvento:'',
-          dateFormated:'',
-          inRevision: false
-         }],
-        isPublic:true,
-        inRevision: false
-      });
-    }
-  }, [userData]);
+  //   useEffect(() => {
+  //   if (user) {
+  //     setPost({
+  //       ...post,
+  //       idOrganizer: userData._id,
+  //     });
+  //   }
+  // }, [userData]);
+
 
   const [post, setPost] = useState({
     idOrganizer: '',
@@ -226,7 +183,7 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
     shortDescription: '',
     longDescription: '',
     pictures: [],
-    online: '',
+    online: false,
     link: '',
     departamento: '',
     municipio: '',
@@ -241,18 +198,43 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
       cupos:0, 
       price:0, 
       sells: 0 , 
-      isPublic:true,
+      isPublic:'',
       precioAlPublico:'',
       gananciaCupo:'',
       gananciaEvento:'',
       dateFormated:'',
-      inRevision: false
+      inRevision:'',
      }],
-    isPublic:true,
-    inRevision: false
+    isPublic:'',
+    inRevision: '',
+    compras: 10
   });
 
-  
+  useEffect(() => {
+    if (eventDetails) {
+      setPost({
+        ...post,
+        idOrganizer: eventDetails.organizer._id,
+        title: eventDetails.title,
+        categories: [],
+        otherCategorie: eventDetails.otherCategorie,
+        shortDescription: eventDetails.shortDescription,
+        longDescription: eventDetails.longDescription,
+        pictures: eventDetails.pictures,
+        online: eventDetails.online,
+        link: eventDetails.link,
+        departamento: eventDetails.departamento,
+        municipio: eventDetails.municipio,
+        direccion: eventDetails.direccion,
+        barrio: eventDetails.barrio,
+        specialRequires: eventDetails.specialRequires,
+        dates: eventDetails.dates,
+        isPublic: eventDetails.isPublic,
+        inRevision: true,
+        compras: 10
+      });
+    }
+  }, [eventDetails]);
 
 
   const [errors, setErrors] = useState({
@@ -340,11 +322,6 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
       errors.shortDescription = 'Palabra ofensiva'
     }
 
-    if (post.shortDescription.match (notNumber)) {
-      errors.shortDescription = 'No puedes ingresar un numero'
-    }
-
-
     if (!post.longDescription) {
       errors.longDescription = true
     }
@@ -361,13 +338,10 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
       errors.longDescription = 'Palabra ofensiva'
     }
 
-    if (post.shortDescription.match (notNumber)) {
-      errors.shortDescription = 'No puedes ingresar un numero'
-    }
 
-    if (!post.pictures[0]) {
-      errors.pictures = 'Debe ingresar al menos una imagen'
-    }
+    // if (!post.pictures[0]) {
+    //   errors.pictures = 'Debe ingresar al menos una imagen'
+    // }
 
     let repetidas= post.pictures.filter(picture=>picture.cover===true)
 
@@ -377,7 +351,7 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
 
 
 
-    if (post.online) {
+    if (post.online === true) {
 
       if (!post.link) {
         errors.link = true
@@ -442,22 +416,24 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
       errors.specialRequires = 'Palabra ofensiva'
     }
 
-    if(post.dates.length>0){
-      for (var i=0; i<post.dates.length;i++ ){
+
+    if (allEvents.length > 0) {
+      for (var i = 0; i < post.dates.length; i++) {
         if (!post.dates[i].cupos) {
-          errors.cupos= true
+          errors.cupos = true;
         }
       }
     }
 
-    if(post.dates.length>0){
-      for (var i=0; i<post.dates.length;i++ ){
+    if (allEvents.length > 0) {
+      for (var i = 0; i < post.dates.length; i++) {
         if (!post.dates[i].price) {
-          errors.price= true
+          errors.price = true;
         }
       }
     }
-    
+
+   
  
     // for (var i=0; i<post.dates.length;i++ ){
     //   if (!post.dates[i].price.match(numeroYdecimales) ) {
@@ -465,33 +441,74 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
     //   }
     // }
 
-    for (var i=0; i<post.dates.length;i++ ){
-      if (!post.dates[i].date ||!post.dates[i].start ||!post.dates[i].end ) {
-        errors.dates= true
-      }
-    }
-    
-    for (var i=0; i<post.dates.length;i++ ){
-      if (post.dates[i].start > post.dates[i].end && post.dates[i].end ) {
-        errors.dates = 'Error, hora de fin menor a hora de inicio'
+    if (allEvents.length > 0) {
+      for (var i = 0; i < post.dates.length; i++) {
+        if (!post.dates[i].date  ||!post.dates[i].start ||!post.dates[i].end ) {
+          errors.date = true;
+        }
       }
     }
 
-    for (var i=0; i<post.dates.length;i++ ){
-      for(var j=1; j<post.dates.length;j++ ){
-      if (  post.dates[i].start.length>0 && post.dates[j].start.length>0 && post.dates[i].end.length>0
-        && post.dates[j].end.length>0 && post.dates[i].date === post.dates[j].date && i !== j ){
-          if(post.dates[i].start === post.dates[j].start||
-            post.dates[i].end === post.dates[j].end ||
-            post.dates[i].start > post.dates[j].start && post.dates[i].start < post.dates[j].end ||
-            post.dates[i].end > post.dates[j].start && post.dates[i].end < post.dates[j].end||
-            post.dates[i].start < post.dates[j].start && post.dates[i].end > post.dates[j].end ||
-            post.dates[i].start > post.dates[j].start && post.dates[i].end < post.dates[j].end ){
-            errors.dates = 'Fechas cruzadas'
-          }         
+    if (allEvents.length > 0) {
+      for (var i=0; i<post.dates.length;i++ ){
+        if (post.dates[i].start > post.dates[i].end && post.dates[i].end ) {
+          errors.dates = 'Error, hora de fin menor a hora de inicio'
         }
-        }      
+      }
     }
+
+
+  
+    
+    
+    if (allEvents.length > 0) {
+      for (var i=0; i<post.dates.length;i++ ){
+        for(var j=1; j<post.dates.length;j++ ){
+        if (  post.dates[i].start.length>0 && post.dates[j].start.length>0 && post.dates[i].end.length>0
+          && post.dates[j].end.length>0 && post.dates[i].date === post.dates[j].date && i !== j ){
+            if(post.dates[i].start === post.dates[j].start||
+              post.dates[i].end === post.dates[j].end ||
+              post.dates[i].start > post.dates[j].start && post.dates[i].start < post.dates[j].end ||
+              post.dates[i].end > post.dates[j].start && post.dates[i].end < post.dates[j].end||
+              post.dates[i].start < post.dates[j].start && post.dates[i].end > post.dates[j].end ||
+              post.dates[i].start > post.dates[j].start && post.dates[i].end < post.dates[j].end ){
+              errors.dates = 'Fechas cruzadas'
+            }         
+          }
+          }      
+      }
+    }
+
+    if (allEvents.length > 0) {
+      for (var i = 0; i < post.dates.length; i++) {
+        for (var j = 0; j < eventDetails.dates.length; j++) {
+          if (
+            post.dates[i]._id === eventDetails.dates[j]._id &&
+            post.dates[i].sells > 0 &&
+            post.dates[i].cupos < eventDetails.dates[j].sells
+          ) {
+            errors.cupos = `Ya se vendieron ${eventDetails.dates[j].sells}  cupos. El número no puede ser inferior a los cupos ya vendidos `;
+            // return swal({
+            //   title: `Ya se vendieron ${eventDetails.dates[j].sells}  cupos. El número no puede ser inferior a los cupos ya vendidos `,
+            //   icon: 'warning',
+            //   dangerMode: true,
+            // });
+          } else if (
+            post.dates[i]._id === eventDetails.dates[j]._id &&
+            post.dates[i].sells > 0 &&
+            post.dates[i].price < eventDetails.dates[j].price
+          ) {
+            errors.price =  `Ya se vendieron ${eventDetails.dates[j].sells}  cupos. El número no puede ser inferior al de los cupos ya vendidos `;
+            // return swal({
+            //   title: `Ya se vendieron ${eventDetails.dates[j].sells}  cupos. El número no puede ser inferior al de los cupos ya vendidos `,
+            //   icon: 'warning',
+            //   dangerMode: true,
+            // });
+          }
+        }
+      }
+    }
+
     
     return errors
   }
@@ -506,6 +523,14 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
       [e.target.name]: e.target.value,
     });
   }
+
+  //chequeo por palabras
+
+   const titleArray = post.title.split(' ')
+   //const titleArray = [1,2,3,4]
+
+   const longDescriptionArray = post.longDescription.split(' ')
+   //const longDescriptionArray =[1,2,3,4,5,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 
 
   //--------------------------------------------------//
@@ -564,31 +589,34 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
   //                POST - DROP DRAG IMAGES                //
 
   
-const wrapperRef = useRef(null);
+  const [imageSelected , setImageSelected] = useState('') 
 
+  const [image, setImage] = useState({ files: '' })
+ 
 
-const onDragEnter = () => wrapperRef.current.classList.add('dragover');
-
-const onDragLeave = () => wrapperRef.current.classList.remove('dragover');
-
-const onDrop = () => wrapperRef.current.classList.remove('dragover');
-
-const onFileDrop = (e) => {
-  
-  if (e.target.files[0]) {
-      const reader = new FileReader()
-      reader.readAsDataURL(e.target.files[0])
-      reader.onload = (e)=>{
-          e.preventDefault();
-         setPost({
-          ...post,
-          pictures: [...post.pictures, {cover:false, picture: e.target.result}]}
-         )
-         }
-      ;
+  async function uploadImage(e){
+    e.preventDefault()
+      for (let i = 0; i < image.length; i++) {
+        const formData = new FormData()
+        formData.append('file', image[i])
+        formData.append("upload_preset", "wp0l2oeg")
+        await axios
+          .post(
+            'https://api.cloudinary.com/v1_1/dhmnttdy2/image/upload',
+            formData
+          )
+          .then((response) => {
+            console.log('r:',response)
+            setPost({
+              ...post,
+              pictures: [...post.pictures, {cover:false, picture: response.data.secure_url}]}
+            )
+            setImage({ files: '' })
+          })
+      }
   }
-}
-const fileRemove = (item) => {
+
+  const fileRemove = (item) => {
   const updatedPictures=[...post.pictures]
   updatedPictures.splice(post.pictures.indexOf(item), 1);
   setPost({
@@ -598,30 +626,31 @@ const fileRemove = (item) => {
   ;
 }
 
-function handleCover(e){
-  
-const todas = [...post.pictures]
-
-if(e.target.checked){
-todas.map((foto)=>{
-    if(foto.picture===e.target.value){
-      foto.cover = true}
-  })
-  setPost({
-    ...post,
-    pictures:todas
-  })
-}else{
+  function handleCover(e){
+  const todas = [...post.pictures]
+  if(e.target.checked){
   todas.map((foto)=>{
-    if(foto.picture===e.target.value){
-      foto.cover = false}
-  })
-  setPost({
-    ...post,
-    pictures:todas
-  })
+      if(foto.picture===e.target.value){
+        foto.cover = true}
+    })
+    setPost({
+      ...post,
+      pictures:todas
+    })
+  }else{
+    todas.map((foto)=>{
+      if(foto.picture===e.target.value){
+        foto.cover = false}
+    })
+    setPost({
+      ...post,
+      pictures:todas
+    })
+  }
 }
-}
+
+
+ 
 
   //--------------------------------------------------//
   //               POST  UBICACION                //
@@ -672,49 +701,233 @@ todas.map((foto)=>{
   const a = costoDeManejo * IVA
 
 
-  let handleChanges = (i, e ) => {
+  let handleChanges = (i, e , id ) => {
     let newFechas = [...post.dates];
-    
     newFechas[i][e.target.name] = e.target.value;
-    newFechas[i].precioAlPublico=parseFloat(newFechas[i].price) + parseFloat(costoDeManejo) + parseFloat(a);
+    newFechas[i].precioAlPublico = parseFloat(newFechas[i].price) + parseFloat(costoDeManejo) + parseFloat(a);
     newFechas[i].gananciaCupo = parseFloat(newFechas[i].price)-(((parseFloat(newFechas[i].price)*parseFloat(comision))+((parseFloat(newFechas[i].price)*parseFloat(comision)*parseFloat(IVA)))))
     newFechas[i].gananciaEvento = parseFloat(newFechas[i].gananciaCupo) * parseInt(newFechas[i].cupos)
     if(e.target.name==='date'){
-      newFechas[i].dateFormated = formatDateForm(e.target.value)
+        newFechas[i].dateFormated = formatDateForm(e.target.value)
+      }
+    
+      for (var i=0; i<post.dates.length;i++ ){
+        for(var j=0; j<EventCopy.dates.length;j++ ){
+          if(post.dates[i]._id === id && EventCopy.dates[j]._id===id && post.dates[i].sells>0 && post.dates[i].start !== EventCopy.dates[j].start){
+            return Swal.fire({
+              html:
+              'Texto &&&&&&&&&&, ' +
+              '<a href="/user/perfil/datos" target="_blank">ver sección &&&& en Guía del Organizador</a> ' +
+              '. Si procedes, es importante que le informes de inmediato sobre este cambio a los Asistentes.',
+              showDenyButton: true,
+              showCancelButton: false,
+              confirmButtonText: 'Cambiar hora',
+              denyButtonText: `Cerrar`,
+            })
+            .then((result)=>{        
+              if(result.isConfirmed){              
+                setPost({
+                  ...post,
+                  dates:newFechas
+                }) 
+              }else if(result.isDenied){
+                newFechas[i][e.target.name] = EventCopy.dates[j].start 
+                setPost({
+                  ...post,
+                  dates:newFechas
+                }) 
+              }
+            })        
+          } else if(post.dates[i]._id === id && EventCopy.dates[j]._id===id && post.dates[i].sells>0 && post.dates[i].end !== EventCopy.dates[j].end){
+            return Swal.fire({
+              html:
+                'Texto &&&&&&&&&&, ' +
+                '<a href="/user/perfil/datos" target="_blank">ver sección &&&& en Guía del Organizador</a> ' +
+                '. Si procedes, es importante que le informes de inmediato sobre este cambio a los Asistentes.',
+              showDenyButton: true,
+              showCancelButton: false,
+              confirmButtonText: 'Cambiar hora',
+              denyButtonText: `Cerrar`,
+            })
+            .then((result)=>{        
+              if(result.isConfirmed){              
+                setPost({
+                  ...post,
+                  dates:newFechas
+                }) 
+              }else if(result.isDenied){
+                newFechas[i][e.target.name] = EventCopy.dates[j].end 
+                setPost({
+                  ...post,
+                  dates:newFechas
+                }) 
+              }
+            })        
+          } else if(post.dates[i]._id === id && EventCopy.dates[j]._id===id && post.dates[i].sells>0 && post.dates[i].date !== EventCopy.dates[j].date){
+            return Swal.fire({
+              html:
+              'Texto &&&&&&&&&&, ' +
+              '<a href="/user/perfil/datos" target="_blank">ver sección &&&& en Guía del Organizador</a> ' +
+              '. Si procedes, es importante que le informes de inmediato sobre este cambio a los Asistentes.',
+              showDenyButton: true,
+              showCancelButton: false,
+              confirmButtonText: 'Cambiar fecha',
+              denyButtonText: `Cerrar`,
+            })
+            .then((result)=>{        
+              if(result.isConfirmed){              
+                setPost({
+                  ...post,
+                  dates:newFechas
+                }) 
+              }else if(result.isDenied){
+                newFechas[i][e.target.name] = EventCopy.dates[j].date 
+                setPost({
+                  ...post,
+                  dates:newFechas
+                }) 
+              }
+            })        
+          }else{
+            setPost({
+              ...post,
+              dates:newFechas 
+            }) 
+          }  
+        }
+      }
     }
-    setPost({
-      ...post,
-      dates:newFechas 
-     })   
-    }
+  
 
+
+    let removeFromPublic = (i , id ) => {
+     
+      let newFechas = [...post.dates];
+      newFechas[i].isPublic = false;
+         if( newFechas[i].sells === 0){
+            return swal({
+              title: "Esta acción quitará esta fecha de publicados y ya no será visible para el público. ",
+              icon: "warning",
+              buttons:['Cancelar acción','Continuar'],
+              dangerMode: true,
+            })
+            .then((continuar)=>{
+              if(continuar){            
+                setPost({
+                  ...post,
+                  dates:newFechas 
+                })
+              }
+            })  
+          }else  if( newFechas[i].sells > 0){
+            return Swal.fire({
+              html:
+              `Ya hay ${ newFechas[i].sells} cupo(s) comprado(s) para esta fecha, si la quitas de publicados el dinero será devuelto a los compradores. Esta devolución genera unos costos los cuales deberas asumir.` +
+              '<a href="/user/perfil/datos" target="_blank">Ver sección &&&&&&&&&& en Términos y Condiciones.</a> ' +
+              'Deseas quitar esta fecha de publicados? ',
+              width: 600,
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonText: 'Continuar',
+              dangerMode: true,
+            })
+            .then((result) => {
+              if (result.isConfirmed) {
+                setPost({
+                  ...post,
+                  dates:newFechas 
+                })
+              } 
+            })
+          }
+      }
+
+      //También se borrará en esta pagina los datos relacionados a esta fecha: hora, número de cupos, precio por cupo y códigos de descuento si alguno.
+
+      let becomePublic = (i , id ) => {
+        let newFechas = [...post.dates];
+        newFechas[i].isPublic = true;
+        return swal({
+          title: "Esta acción agregara esta fecha a publicados. ",
+          icon: "warning",
+          buttons:['Cancelar acción','Continuar'],
+          dangerMode: true,
+        })
+        .then((continuar)=>{
+          if(continuar){            
+            setPost({
+              ...post,
+              dates:newFechas 
+            })
+          }
+        })  
+
+      }
+      
   
   let addFormFields = () => {
     setPost({
       ...post,
-      dates:[...post.dates, { date: "", start : "", end:"" , year:0, cupos:'', price:'',isPublic:true,sells:0 , precioAlPublico:'',gananciaCupo:'',gananciaEvento:''}]
-    })
-  }
+      dates: [
+        ...post.dates,
+        {
+          date: '',
+          start: '',
+          end: '',
+          year: 0,
+          cupos: '',
+          price: '',
+          isPublic: true,
+          sells: 0,
+          precioAlPublico: '',
+          gananciaCupo: '',
+          gananciaEvento: '',
+        },
+      ],
+    });
+  };
 
-  let removeFormFields = (i) => {
+  let removeFormFields = (i, id) => {
     let newFechas = [...post.dates];
-      newFechas.splice(i, 1);
-      return swal({
-        title: "Esta acción eliminara esta fecha.",
-        icon: "warning",
-        buttons:['Cancelar acción','Continuar'],
-        dangerMode: true,
-      })
-      .then((continuar)=>{  
-        if(continuar){                 
-          setPost({
-            ...post,
-            dates:newFechas 
-          })
-        }
-      })
-      
-      
+      newFechas.splice(i, 1)
+      for(var i = 0; i<post.dates.length; i++){
+      if( post.dates[i]._id === id && post.dates[i].sells === 0){
+        return swal({
+          title: "Se borrara esta fecha y los datos relacionados a la misma: hora, número de cupos, precio por cupo y códigos de descuento si alguno. ",
+          icon: "warning",
+          buttons:['Cancelar acción','Continuar'],
+          dangerMode: true,
+        })
+        .then((continuar)=>{
+          if(continuar){            
+            setPost({
+              ...post,
+              dates:newFechas 
+            })
+          }
+        })  
+      }else  if( post.dates[i]._id === id && post.dates[i].sells > 0){
+        return Swal.fire({
+          html:
+          `Ya hay ${ newFechas[i].sells} cupo(s) comprado(s) para esta fecha, si la quitas de publicados el dinero será devuelto a los compradores. Esta devolución genera unos costos los cuales deberas asumir.` +
+          '<a href="/user/perfil/datos" target="_blank">Ver sección &&&&&&&&&& en Términos y Condiciones.</a> ' +
+          'Deseas quitar esta fecha de publicados? ',
+          width: 600,
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: 'Continuar',
+          dangerMode: true,
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            setPost({
+              ...post,
+              dates:newFechas 
+            })
+          } 
+        })
+      }
+    }
   }
  
   var fecha = new Date();
@@ -753,80 +966,16 @@ todas.map((foto)=>{
   const [getPreview, setGetPreview] = useState(false);
 
 
-  //--------------------------------------------------//
-  //                 SAVE           //
+    //--------------------------------------------------//
+  //              ERRORES         //
+
+  const [failedSubmit, setFailedSubmit] = useState(false)
 
 
-  function handleSave(e){
-    e.preventDefault()
-    setPost({
-      ...post,
-      isPublic:false,
-    })
-    if (Object.values(errors).length > 0) {
-      setFailedSubmit(true)
-      return swal({
-        title: "Completa los campos faltantes",
-        icon: "warning",
-        button: "Completar",
-        dangerMode: true,
-      });
-    }else{
-    swal({
-      title: "Tu evento será guardado",
-      buttons: ["Cerrar", "Guardar"],
-      dangerMode: true,
-    })
-    .then((guardar) => {
-      if (guardar) {
-        dispatch(postEvent(post))
-        swal("Tu evento ha sido guardado ", {
-          icon: "success",
-        });
-        console.log('postEnviado:',post)
-        setPost({
-          idOrganizer:'',
-          title: '',
-          categories: [],
-          otherCategorie: '',
-          shortDescription: '',
-          longDescription: '',
-          pictures: [],
-          online: '',
-          link: '',
-          departamento: '',
-          municipio: '',
-          direccion: '',
-          barrio: '',
-          specialRequires: '',
-          dates:[{ 
-            date: "", 
-            start : "", 
-            end:"" , 
-            year:0 ,  
-            cupos:0, 
-            price:0, 
-            sells: 0 , 
-            isPublic:true,
-            precioAlPublico:'',
-            gananciaCupo:'',
-            gananciaEvento:'',
-            dateFormated:'',
-            inRevision: false
-          }],
-          isPublic:true,
-          inRevision: false
-     })
-         navigate("user/perfil/datos" )
-      } 
-    }
-    )
-  }}
+  
 
     //--------------------------------------------------//
   //                CANCEL          //
-
-
 
   function handleDelete(e){
     e.preventDefault()
@@ -844,15 +993,10 @@ todas.map((foto)=>{
   }
 
 
-
-  
   //--------------------------------------------------//
   //                  SUBMIT              //
 
-  const [failedSubmit, setFailedSubmit] = useState(false)
-  
-
-
+ 
   function handleSubmit(e) {
     e.preventDefault()
     if (Object.values(errors).length > 0) {
@@ -863,57 +1007,64 @@ todas.map((foto)=>{
         button: "Completar",
         dangerMode: true,
       });
-    } else {
+    } else if(post.compras>0 && post.inRevision===false) {
+      console.log('1')
+      
       swal({
-        title: "Deseas publicar este evento? ",
+        title: "Si ya hay Asistentes al evento es importante que le informes de inmediato los cambios que consideres podrían afectar su participación ",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((publicar) => {
+        if (publicar) {   
+          dispatch(putEvent(post,eventId))
+          swal("Tu evento ha sido publicado ", {
+            icon: "success",
+          });
+         navigate("/user/perfil/datos" )
+        } 
+      });
+    } else if(eventDetails===post){
+      console.log('2')
+      swal(
+       "No has hecho ninguna edición "    
+      )
+    }else if(post.inRevision === true){
+      console.log('3')
+      console.log('en revision')
+      swal({
+        title: "Este evento y sus fechas será publicado  ",
         buttons: true,
         dangerMode: true,
       })
       .then((publicar) => {
         if (publicar) {
-          dispatch(postEvent(post))
-          swal("Tu evento ha sido publicado. Recibirás un correo con los detalles. ", {
+          dispatch(putEvent(post,eventId))
+          swal("Tus cambios han sido notificados. La publicación esta en revisión. Un correo con una actualización te llegara pronto. ", {
             icon: "success",
           });
-          console.log('postEnviado:',post)
-          setPost({
-            idOrganizer:'',
-            title: '',
-            categories: [],
-            otherCategorie: '',
-            shortDescription: '',
-            longDescription: '',
-            pictures: [],
-            online: '',
-            link: '',
-            departamento: '',
-            municipio: '',
-            direccion: '',
-            barrio: '',
-            specialRequires: '',
-            dates:[{ 
-              date: "", 
-              start : "", 
-              end:"" , 
-              year:0 ,  
-              cupos:0, 
-              price:0, 
-              sells: 0 , 
-              isPublic:true,
-              precioAlPublico:'',
-              gananciaCupo:'',
-              gananciaEvento:'',
-              dateFormated:'',
-              inRevision: false
-            }],
-            isPublic:true,
-            inRevision: false
-       })
-        navigate("user/perfil/datos" )
         } 
-      });
-    } 
-  }
+      }) 
+
+    }else if(post.compras===0 && post.inRevision===false){
+      console.log('4')
+      swal({
+        title: "Este evento y sus fechas será publicado  ",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((publicar) => {
+        if (publicar) {
+          dispatch(postEvent(post,id))
+          swal("Tu evento ha sido publicado ", {
+            icon: "success",
+          });
+       navigate("/user/perfil/datos" )
+        } 
+      }) 
+    }
+  
+}
 
   
   return (
@@ -984,9 +1135,9 @@ todas.map((foto)=>{
                   onChange={(e) => handleChange(e)}
                 />}
           
-                {post.title.length === 75  ?
-                <p className={styles.errors}>Máximo 75 caracteres</p>
-                  : <p className={styles.subInput}>Máximo 75 caracteres</p>
+                {titleArray.length > 10  ?
+                <p className={styles.errors}>Máximo 10 palabras</p>
+                  : <p className={styles.subInput}>Máximo 10 palabras</p>
                   }  
                 {errors.title? 
                   <p className={styles.errors}>{errors.title}</p>
@@ -1141,7 +1292,7 @@ todas.map((foto)=>{
                     diam nonummy nibh, Lorem ipsum dolor sit amet, consectetuer
                     adipiscing elit, sed diam nonummy nibh.{' '}
                   </p>
-                  {failedSubmit && errors.shortDescription?
+                 {failedSubmit && errors.shortDescription?
                   <textarea
                     className={styles.textareaShort}
                     type="text"
@@ -1162,7 +1313,7 @@ todas.map((foto)=>{
                     value={post.shortDescription}
                     onChange={(e) => handleChange(e)}
                   />
-                  }
+                  } 
                   
                   {post.shortDescription.length===100?
                   <p className={styles.errors}>Máximo: 100 de caracteres</p>
@@ -1174,7 +1325,7 @@ todas.map((foto)=>{
                   }
                   {errors.shortDescription?
                   <p className={styles.errors}>{errors.shortDescription}</p>
-                  : null}    
+                  : null}     
                 </div>
 
                 {/* longDescription */}
@@ -1189,7 +1340,6 @@ todas.map((foto)=>{
                   <textarea
                   className={styles.textareaLong}
                   type="text"
-                  minlength="75"
                   placeholder="descripción detallada del evento"
                   name="longDescription"
                   value={post.longDescription}
@@ -1201,7 +1351,6 @@ todas.map((foto)=>{
                   <textarea
                     className={styles.textareaLong}
                     type="text"
-                    minlength="75"
                     placeholder="descripción detallada del evento"
                     name="longDescription"
                     value={post.longDescription}
@@ -1209,12 +1358,12 @@ todas.map((foto)=>{
                   />
                   }
 
-                  {post.longDescription.length<75 && post.longDescription.length>0  ?
-                  <p className={styles.errors}>Minimo 75 caracteres</p>
-                  : <p className={styles.subTitle}>Minimo 75 caracteres</p>
+                  {longDescriptionArray.length<75 && longDescriptionArray.length>0  ?
+                  <p className={styles.errors}>Minimo 75 palabras</p>
+                  : <p className={styles.subTitle}>Minimo 75 palabras</p>
                   }
-                  {post.longDescription.length>0 ?
-                  <p className={styles.subTitle}>Usetd va escribiendo: {post.longDescription.length} caracteres</p>
+                  {longDescriptionArray.length>0 ?
+                  <p className={styles.subTitle}>Usetd va escribiendo: {longDescriptionArray.length} palabras</p>
                   : ''
                   }
                   {errors.longDescription ? 
@@ -1261,24 +1410,16 @@ todas.map((foto)=>{
                 <p className={styles.subTitle4}>Fotos del Evento</p>
         
                 {failedSubmit && errors.pictures ?
-                  <div
-                    ref={wrapperRef}
-                      className={styles.errorsPicture}
-                      onDragEnter={onDragEnter}
-                      onDragLeave={onDragLeave}
-                      onDrop={onDrop}
-                    > 
-                    <div>
-                    <ImageIcon sx={{ fontSize: '50px', color: 'grey' }} />
-                    </div>
+                  <div> 
                     <p>Fotos: Jpg, png, Max.100kb </p> 
                     <p>Videos: .MP4 Max 100kb</p>      
-                    <p>"Arrastra los archivos aquí o haz click para agregar archivos"</p>
-                    <input 
-                      type="file" 
-                      value="" 
-                      name="pictures"
-                      onChange={onFileDrop}
+                    <p>"Haz click en examinar para elegir los archivos y luedo en añadir"</p>
+                    <input
+                      type='file'
+                      multiple={true}
+                      onChange={(e) => {
+                        setImage(e.target.files)
+                      }}
                     />
                     {errors.pictures?
                     <p className={styles.errors}>{errors.pictures}</p>
@@ -1286,36 +1427,33 @@ todas.map((foto)=>{
                     }
                   </div>              
                   :
-                  <div
-                    ref={wrapperRef}
-                      className={styles.dropFileIput}
-                      onDragEnter={onDragEnter}
-                      onDragLeave={onDragLeave}
-                      onDrop={onDrop}
-                    > 
-                    <div>
-                    <ImageIcon sx={{ fontSize: '50px', color: 'grey' }} />
-                    </div>
+                  <div> 
                     <p>Fotos: Jpg, png, Max.100kb </p> 
                     <p>Videos: .MP4 Max 100kb</p>      
-                    <p>"Arrastra los archivos aquí o haz click para agregar archivos"</p>
-                    <input 
-                      type="file" 
-                      placeholder='Arrastra los archivos aquí o haz click para agregar archivos'
-                      value="" 
-                      name="pictures"
-                      onChange={onFileDrop}
+                    <p>"Haz click en examinar para elegir los archivos y luedo en añadir"</p>
+                    <input
+                      type='file'
+                      multiple={true}
+                      onChange={(e) => {
+                        setImage(e.target.files)
+                      }}
                     />
+                   
+                    
                   </div>
                 }
+
+                {image ? (
+                    <button onClick={(e)=>{uploadImage(e)}} className={styles.viewBtn}>
+                      Añadir
+                    </button>
+                  ) : null}
+
             
 
                 {
                   post.pictures.length > 0 ? (
                     <div className={styles.dropFilePreview}>
-                      <p>
-                        Ready to upload
-                      </p>
                       <Swiper
                         slidesPerView={1}
                         navigation
@@ -1803,20 +1941,20 @@ todas.map((foto)=>{
                               type="date" 
                               name="date" 
                               value={element.date || ""} 
-                              onChange={e => handleChanges(index, e)} 
+                              onChange={e => handleChanges(index, e , element._id)} 
                               min={fechaMinima}
                               required
                               />                          
                             :
-                            <input 
-                            id="fecha"
-                            type="date" 
-                            name="date" 
-                            value={element.date || ""} 
-                            onChange={e => handleChanges(index, e)} 
-                            min={fechaMinima}              
-                            />                      
-                            }  
+                              <input 
+                              id="fecha"
+                              type="date" 
+                              name="date" 
+                              value={element.date || ""} 
+                              onChange={e => handleChanges(index, e , element._id)} 
+                              min={fechaMinima}              
+                              />                      
+                              }  
                           <p>{element.dateFormated}</p>                         
                         </div>
 
@@ -1828,7 +1966,7 @@ todas.map((foto)=>{
                             type="time" 
                             name="start" 
                             value={element.start || ""} 
-                            onChange={e => handleChanges(index, e)} 
+                            onChange={e => handleChanges(index, e , element._id)} 
                             required
                             />
                             :
@@ -1836,7 +1974,7 @@ todas.map((foto)=>{
                             type="time" 
                             name="start" 
                             value={element.start || ""} 
-                            onChange={e => handleChanges(index, e)} 
+                            onChange={e => handleChanges(index, e , element._id)} 
                             step="900"
                             />
                           }
@@ -1850,7 +1988,7 @@ todas.map((foto)=>{
                           type="time" 
                           name="end" 
                           value={element.end || ""} 
-                          onChange={e => handleChanges(index, e)} 
+                          onChange={e => handleChanges(index, e , element._id)} 
                           required
                           />                      
                           :
@@ -1858,33 +1996,59 @@ todas.map((foto)=>{
                           type="time" 
                           name="end" 
                           value={element.end || ""} 
-                          onChange={e => handleChanges(index, e)} 
+                          onChange={e => handleChanges(index, e , element._id)} 
                           />
                         }                 
                         </div>
 
-                        {/* Remove date*/}
+                        {/* Public*/}
                         {
+                        element.isPublic===true ? 
+                          <button className={styles.removePublic} type="button"  onClick={() => removeFromPublic(index, element._id)}>
+                            Quitar de Publicados
+                          </button> 
+                        : <button className={styles.removePublic} type="button"  onClick={() => becomePublic(index, element._id)}>
+                            Agregar a Publicados
+                          </button> 
+                        }
+
+                        {/* Remove date*/}
+                        {/* {
                           index ? 
-                            <button lassName={styles.addDelete}  type="button"  onClick={() => removeFormFields(index)}>
+                            <button className={styles.addDelete}  type="button"  onClick={() => removeFormFields(index,)}>
                               <img className={styles.basquet} src={basquet} alt="n" />
                             </button> 
                           : null
-                        }
+                        } */}
+                        
+                        <button
+                          lassName={styles.addDelete}
+                          type='button'
+                          onClick={() => removeFormFields(index, element._id)}
+                        >
+                          <img
+                            className={styles.basquet}
+                            src={basquet}
+                            alt='n'
+                          />
+                        </button>
+                    
+                    
                       </div>
+                      {errors.cupos && (
+                        <p className={styles.errors}>{errors.cupos}</p>
+                      )}
+                       {errors.price && (
+                        <p className={styles.errors}>{errors.price}</p>
+                      )}
+                      {errors.dates && (
+                        <p className={styles.errors}>{errors.dates}</p>
+                      )}
 
                       <hr className={styles.hr}></hr> 
                     </div>
                     ))}
                 </div>
-
-                {/* errores*/}
-                {errors.dates && (
-                <p className={styles.errors}>{errors.dates}</p>
-                )} 
-                {errors.cupos && (
-                  <p className={styles.errors}>{errors.cupos}</p>
-                  )}
 
                 {/* agregar fecha*/}
                 <div>
@@ -1899,7 +2063,7 @@ todas.map((foto)=>{
                     Seguridad.
                   </p>
 
-                  {/*vistaprevia-publicar-guardar*/}
+                  {/*vistaprevia-publicar*/}
                   <div className={styles.btnContainer}>
                     {/*vista previa*/}
                     <div className={styles.btnVista}>
@@ -2120,13 +2284,6 @@ todas.map((foto)=>{
                       <button className={styles.viewBtn} type="submit">
                         {' '}
                         Publicar Evento
-                      </button>
-                    </div>
-
-                    {/*guardar*/}
-                    <div>
-                      <button className={styles.viewBtn} onClick={(e) => handleSave(e)} >
-                        Guardar y Publicar Luego
                       </button>
                     </div>
                   </div>
