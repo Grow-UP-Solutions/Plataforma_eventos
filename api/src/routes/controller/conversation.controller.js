@@ -5,6 +5,7 @@ const {
   findConversation,
   allConversationDB,
   lockedConversation,
+  pinupConversation,
 } = require('../../models/util/functionDB/ConversationDb.js');
 
 const router = Router();
@@ -39,6 +40,16 @@ const {idConversation} = req.params
   try {
     const lockConversation = await lockedConversation(idConversation)
     return res.status(200).json(lockConversation)
+  } catch (error) {
+    return res.status(500).json({ faill: error.message });
+  }
+})
+router.put('/:idConversation/pinup', async (req, res)=>{
+const {idConversation} = req.params
+console.log(idConversation)
+  try {
+    const pinupConversations = await pinupConversation(idConversation)
+    return res.status(200).json(pinupConversations)
   } catch (error) {
     return res.status(500).json({ faill: error.message });
   }

@@ -20,7 +20,7 @@ export function getEventsCopy() {
 
   return async function (dispatch) {
 
-    const json = await axios.get('https://plataformaeventos-production-6111.up.railway.app/events');
+    const json = await eventsApi.get('/events');
 
     return dispatch({
       type: 'GET_EVENTS_COPY',
@@ -44,6 +44,26 @@ export function postEvent(payload) {
     });
   }
 }
+
+export function putEvent(payload, id) {
+
+  return async function (dispatch) {
+    console.log('payload,',payload)
+    console.log('idAction,',id)
+
+    const json = await eventsApi.put(`/events/${id}`, payload);
+    console.log('res:',json.data)
+    
+    return dispatch({
+      type: 'PUT_EVENT',
+      payload:json.data
+    
+    });
+  }
+}
+
+
+
 
 export function getColombia() {
 

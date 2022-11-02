@@ -230,7 +230,8 @@ router.post(
   async (req, res) => {
     try {
       const user = req.body;
-      const userCreate = await createUsers(user);
+      const {codeReferral}= req.query
+      const userCreate = await createUsers(user,codeReferral);
 
       const time = '2h';
       const token = await generateJWT(userCreate._id, userCreate.name, time);
