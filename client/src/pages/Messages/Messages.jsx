@@ -15,7 +15,7 @@ const Messages = () => {
 
   const { user } = useContext(AuthContext);
   const { getMessagesStar, msgStar } = useContext(UIContext);
-  const { setMsg, block, setBlock } = useContext(stateContext);
+  const { setMsg, setPinUp } = useContext(stateContext);
   const id = user.uid;
   const [conversations, setConversations] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
@@ -25,14 +25,16 @@ const Messages = () => {
   const [star, setStar] = useState(false);
   const [clickOne, setClickOne] = useState(false);
   const [clickTwo, setClickTwo] = useState(true);
+  const [block, setBlock] = useState([]);
 
   useEffect(() => {
     const getConversations = async () => {
       try {
         const res = await eventsApi.get("/conversation/" + id);
-        setConversations(res.data.filter(e => e.locked === false));
-        setBlock(res.data.filter(e => e.locked === true));
-      } catch (err) {
+        setConversations(res.data.filter((e) => e.locked === false));
+        setBlock(res.data.filter((e) => e.locked === true));
+      } 
+      catch (err) {
         console.log(err);
       }
     };
@@ -44,7 +46,8 @@ const Messages = () => {
       try {
         const res = await eventsApi.get("/message/" + currentChat._id);
         setMessages(res.data);
-      } catch (err) {
+      } 
+      catch (err) {
         console.log(err);
       }
     };
@@ -56,7 +59,8 @@ const Messages = () => {
       try {
         const json = await eventsApi.get("/users/" + id);
         setResult(json.data);
-      } catch (error) {
+      } 
+      catch (error) {
         console.log(error)
       }
     }
@@ -99,7 +103,8 @@ const Messages = () => {
       try {
         const res = await eventsApi.get("/message/" + currentChat._id);
         getMessagesStar(res.data.filter((e) => e.outstanding === true));
-      } catch (err) {
+      } 
+      catch (err) {
         console.log(err);
       }
     };
@@ -129,6 +134,17 @@ const Messages = () => {
     setClickTwo(!clickTwo);
     if(clickOne === true) setClickOne(true);
     if(clickTwo === false) setClickTwo(false);
+    scroll.scrollToTop();
+    const userBlock = async () => {
+      try {
+        const res = await eventsApi.get("/conversation/" + id);
+        setBlock(res.data.filter(e => e.locked === true));
+      } 
+      catch (error) {
+        console.log(error)  
+      }
+    }
+    userBlock();
   } 
 
   const handleClickTwo = (e) => {
@@ -137,6 +153,17 @@ const Messages = () => {
     setClickOne(!clickOne);
     if(clickTwo === true) setClickTwo(true);
     if(clickOne === false) setClickOne(false);
+    scroll.scrollToTop();
+    const userNotBlock = async () => {
+      try {
+        const res = await eventsApi.get("/conversation/" + id);
+        setConversations(res.data.filter(e => e.locked === false));
+      } 
+      catch (error) {
+        console.log(error)  
+      }
+    }
+    userNotBlock();
   }
   
   return (
