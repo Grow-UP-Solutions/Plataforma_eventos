@@ -1,5 +1,5 @@
 
-import React, { useContext, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './Message.module.css';
 import { format, register } from "timeago.js";
 import StarIcon from '@mui/icons-material/Star';
@@ -31,14 +31,23 @@ register('es_ES', localeFunc);
 
 const Message = ({ message, own }) => {
 
-  const [star, setStar] = useState(false);
   //const { getMsgStar } = useContext(UIContext);
+  const [star, setStar] = useState(false);
+
+  useEffect(() => {
+    if (message.outstanding === true) {
+      setStar(true);
+    }
+    else {
+      setStar(false);
+    }
+  }, []);
 
   const handleClickStar = async (e) => {
     e.preventDefault();
-    setStar(!star);
     const res = await eventsApi.put('/message/' + message._id);
-    console.log(res);
+    setStar(!star);
+    console.log(res.data);
   }
   
   return (
@@ -52,12 +61,12 @@ const Message = ({ message, own }) => {
             star === false ?
             <StarIcon 
               onClick={handleClickStar} 
-              className={message.outstanding === false ? styles.iconMessage : styles.iconMessageColor}
+              className={styles.iconMessage}
             /> :
             <StarIcon 
               onClick={handleClickStar} 
-              className={message.outstanding === false ? styles.iconMessage : styles.iconMessageColor}
-              sx={{color: "#ffe234", fontSize: "2.5rem"}}  
+              className={styles.iconMessageColor}
+              sx={{color: "#ffe234", fontSize: "2.2rem"}}  
             />
           }
           <span className={styles.messageBottom}>{format(message.createdAt, 'es_ES')}</span>
