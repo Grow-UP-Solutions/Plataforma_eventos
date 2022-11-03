@@ -70,15 +70,18 @@ async function createOpinionsEvents(id, opinions) {
 async function eventsUpdate(id, newEvent) {
    const {  categories } = newEvent;
    try {
-      const temp = categories.map(async (e) => {
-         let temp = await OneCategoryDb(e);
-         return temp;
-      });
+      if(categories.length > 0){
 
-      const category = await Promise.all(temp);
-      newEvent.categories = category.map((e) => {
-         return e._id;
-      });
+         const temp = categories.map(async (e) => {
+            let temp = await OneCategoryDb(e);
+            return temp;
+         });
+   
+         const category = await Promise.all(temp);
+         newEvent.categories = category.map((e) => {
+            return e._id;
+         });
+      }
       const newEvents = await updateOneEventDb(id, newEvent);
       return newEvents;
    } catch (error) {
