@@ -7,7 +7,6 @@ export const Data = ({children}) => {
   const [notes, setNotes] = useState([]);
   const [msg, setMsg] = useState([]);
   const [conversa, setConversa] = useState([]);
-  const [pinUp, setPinUp] = useState([]);
   
   return (
     <stateContext.Provider value={{ 
@@ -15,7 +14,6 @@ export const Data = ({children}) => {
       notes, setNotes, 
       msg, setMsg, 
       conversa, setConversa,
-      pinUp, setPinUp,
     }}>
       { children }
     </stateContext.Provider>

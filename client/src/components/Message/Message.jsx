@@ -35,13 +35,8 @@ const Message = ({ message, own }) => {
   const [star, setStar] = useState(false);
 
   useEffect(() => {
-    if (message.outstanding === true) {
-      setStar(true);
-    }
-    else {
-      setStar(false);
-    }
-  }, []);
+    setStar(message.outstanding);
+  }, [message]);
 
   const handleClickStar = async (e) => {
     e.preventDefault();
