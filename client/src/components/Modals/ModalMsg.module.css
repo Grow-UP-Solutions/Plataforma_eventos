@@ -1,0 +1,48 @@
+
+.container {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+
+.line_div {
+  border: 0.1px solid rgb(219, 219, 219);
+  margin: 4.5rem 2rem;
+}
+
+.title {
+  color: var(--color-blue);
+  font-size: 1.6rem;
+  font-weight: bold;
+  font-family: 'Raleway', sans-serif;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.container_texts {
+  margin: 3rem 2rem;
+}
+
+.text {
+  font-family: 'Raleway', sans-serif;
+  font-size: 1.4rem;
+  color: var(--color-grey-3);
+  margin-top: .3rem;
+}
+
+.container_button {
+  display: flex;
+}
+
+.button_confirm {
+  background-color: var(--color-orange);
+  border-radius: 15px;
+  padding: 1rem 3rem;
+  margin: 3rem auto;
+  border: none;
+  color: var(--color-grey-6);
+  font-weight: bold;
+  cursor: pointer;
+  font-family: 'Raleway', sans-serif;
+}
+  

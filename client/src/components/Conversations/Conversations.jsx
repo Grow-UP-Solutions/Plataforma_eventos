@@ -10,10 +10,11 @@ import swal from 'sweetalert';
 
 const Conversations = ({ conversation, id }) => {
 
-  const { setMsg, pinUp, setPinUp } = useContext(stateContext);
+  const { setMsg } = useContext(stateContext);
   const [user, setUser] = useState('hola');
   const [messages, setMessages] = useState([]);
-  const [click, setClick] = useState(false);
+  const [click, setClick] = useState(null);
+  const [blocked, setBlocked] = useState(false);
 
   useEffect(() => {
     const friendId = conversation.members.find((m) => m !== id);
@@ -39,15 +40,8 @@ const Conversations = ({ conversation, id }) => {
   }, [conversation]);
 
   useEffect(() => {
-    setTimeout(() => {
-      if (conversation.pinup === true) {
-        setClick(true);
-      }
-      else {
-        setClick(false);
-      }
-    }, 2000);
-  }, []);
+    setClick(conversation.pinup);
+  }, [conversation]);
 
   const hanldeClickMsg = async (e) => {
     e.preventDefault();
@@ -81,6 +75,7 @@ const Conversations = ({ conversation, id }) => {
   
   const handleClickBlock = async (e) => {
     e.preventDefault();
+    setBlocked(true);
     const res = await eventsApi.put('/conversation/' + conversation._id);
     console.log(res);
     swal({
@@ -93,7 +88,7 @@ const Conversations = ({ conversation, id }) => {
   }
 
   return (
-    <div className={styles.listChats} >
+    <div className={blocked === true ? styles.listChatC : styles.listChats} >
 
       <div className={styles.itemChat} >
         <img src={user.userpicture ? user.userpicture : avatar} 
@@ -130,7 +125,7 @@ const Conversations = ({ conversation, id }) => {
             </div>
 
             {
-              conversation.pinup === true ?
+              click === true ?
               (<div className={styles.containerItemMenu} onClick={handleClickPinUp}>
                 
                 <BiPin className={styles.itemMenuIcon} style={{color: '#d53e27'}}/>
