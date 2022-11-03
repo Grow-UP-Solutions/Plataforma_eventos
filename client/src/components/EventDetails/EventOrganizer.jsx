@@ -34,11 +34,20 @@ const EventOrganizer = ({ id }) => {
 
   const handleClickMessages = (e) => {
     e.preventDefault();
-    eventsApi.post('/conversation/create', conversation)
-    .then((response) => {
-      //console.log('axios response', response.data);
-      navigate('/user/message');
-    });
+    if (conversation.senderId === conversation.receiverId) {
+      swal({
+        title: 'Mismo usuario de conversación',
+        icon: 'warning',
+        button: 'Cerrar',
+        dangerMode: true,
+      });
+    }
+    else {
+      eventsApi.post('/conversation/create', conversation)
+      .then((response) => {
+        navigate('/user/message');
+      });
+    }
   }
 
   const handleAlert = (e) => {
