@@ -86,7 +86,7 @@ const EventCreateForm = () => {
 
   // console.log('user:',user)
   // console.log('id:',id)
-  // console.log('userData:',userData)
+  //console.log('userData:',userData)
 
   //--------------------------------------------------//
   //               DEPARTAMENTOS              //

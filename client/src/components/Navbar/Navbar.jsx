@@ -93,11 +93,11 @@ const Navbar = ({ upper }) => {
         <div className={style.container_div}>
           {logged && <Link to='/user/perfil/mi-lista'>Mi lista</Link>}
           {user.organizer? (
-            <Link to='/oganiza-un-evento-form'>
+            <Link to='/oganiza-un-evento'>
               <p className={`${logged ? style.buttonOrganizar : ''}`}>Organiza un evento</p>
             </Link>
           ):
-            <Link to={`/organiza-un-evento`}>
+            <Link to={`organiza-un-evento/beneficios`}>
               <p className={`${logged ? style.buttonOrganizar : ''}`}>Organiza un evento</p>
             </Link>
           }

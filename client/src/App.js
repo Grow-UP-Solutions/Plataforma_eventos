@@ -65,13 +65,13 @@ function App() {
         <Route path='/' element={<Home handleNav={setNavBar} />} />
         <Route path='/contactanos' element={<Contacto />} />
         <Route path='/faq' element={<Faq />} />
-        <Route path='/organizerDetails/:id' element={<Organizer />} />
-        <Route path='/eventdetails/:id' element={<EventDetails />} />
+        <Route path='/sobre-el-organizador/:id' element={<Organizer />} />
+        <Route path='/detalles-del-evento/:id' element={<EventDetails />} />
         <Route path='/cart/:id' element={<Cart />} />
         <Route path='/search' element={<SearchResult />} />
         <Route path='/registrate' element={<Register />} />
-        <Route path='/organiza-un-evento' element={<EventCreate />} />
-        <Route path='/oganiza-un-evento-form' element={<EventCreateForm />} />
+        <Route path='/organiza-un-evento/beneficios' element={<EventCreate />} />
+        <Route path='/oganiza-un-evento' element={<EventCreateForm />} />
         <Route path='/oganiza-un-evento-editar/:id' element={<EventEdit />} />
         <Route path='/payment' element={<Payment />} />
         <Route path='/categories' element={<CategoriesResult />} />
