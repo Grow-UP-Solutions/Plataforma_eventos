@@ -34,6 +34,8 @@ const EventInfo = ({ id }) => {
   const { user } = useContext(AuthContext);
   const { notes, setNotes } = useContext(stateContext);
   const { getEventsFavourites } = useContext(UIContext);
+
+  
   
   const handleFormatDate = (check) => {
     setCheck(check);

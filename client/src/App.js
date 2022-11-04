@@ -77,10 +77,10 @@ function App() {
         <Route path='/categories' element={<CategoriesResult />} />
         <Route path='/workWithUs' element={<WorkWithUs />} />
         <Route path='/workWithUs/form/:work' element={<WorkWithUsForm />} />
-        <Route path='/user/perfil/:option' element={<UserPage />} />
+        <Route path='/usuario/:option' element={<UserPage />} />
         <Route path='/privacy' element={<PanelPrivacy />} />
-        <Route path='/user/message' element={<Messages />} />
-        <Route path='/user/notifications' element={<Notifications />} />
+        <Route path='/usuario/mensajes' element={<Messages />} />
+        <Route path='/usuario/notificaciones' element={<Notifications />} />
         <Route path='/bills' element={<Bills />} />
         <Route path='/verificarmail/:path' element={<Verification />} />
         <Route path='/resulteventsorganizer' element={<EventsOrganizerResult />} />
