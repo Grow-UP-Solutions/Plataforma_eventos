@@ -55,7 +55,7 @@ const Search = ({ location = 'home' }) => {
           location !== 'home' ? style.inputNotHome : style.inputHome
         }`}
         type="text"
-        placeholder="Buscar"
+        placeholder="Criterio de busqueda"
       />
       <button
         onClick={handleSubmit}
