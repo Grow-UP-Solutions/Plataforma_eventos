@@ -1,10 +1,10 @@
-require("../../../DB.js");
-const Events = require("../../db/Events.js");
+require("../../../../DB.js");
+const Events = require("../../../db/Events.js");
 // const {findOneEvent
 //  } = require("./EventesDb.js");
-const Users = require("../../db/Users.js");
+const Users = require("../../../db/Users.js");
 const bcrypt = require("bcryptjs");
-const generarCodigo = require("../helpers/generateReferralCode.js");
+const generarCodigo = require("../../helpers/generateReferralCode.js");
 
 /** basic user database operations */
 
