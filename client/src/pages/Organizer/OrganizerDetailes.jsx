@@ -112,7 +112,7 @@ const OrganizerDetails = () => {
             <p className={styles.direction}>{userDetail.organizer.direction}</p>
           </div>
           <p className={styles.member}>
-            Miembor desde {userDetail.organizer.membership}
+            Miembro desde {userDetail.organizer.membership}
           </p>
           <div className={styles.containerMess}>
             <LocalPostOfficeIcon sx={{ fontSize: '13px', color: '#d53e27' }} />

@@ -27,10 +27,31 @@ const Events = () => {
   const mostPopular = orderByRating.slice(0,20)
 
   
-  //ESTA SEMANA//
+//ESTA SEMANA//
 
-  
-  //FRESQUITOS//
+  let curr = new Date 
+  let week = []
+
+for (let i = 1; i <= 7; i++) {
+  let first = curr.getDate() - curr.getDay() + i 
+  let day = new Date(curr.setDate(first)).toISOString().slice(0, 10)
+  week.push(day)
+}
+
+let weekEvents = []
+
+for (let a = 1; a <= week.length; a++) {
+  for(let b = 0; b < allEvents.length; b++){
+   let evento = allEvents[b].dates.filter(date=>date.date === week[a])[0]
+   weekEvents.push(evento)
+  }
+}
+
+const eventsWeek = weekEvents.filter(e=>e !== undefined)
+console.log('eventsWeek:',eventsWeek)
+
+//FRESQUITOS//
+
   const newEvents = allEvents.slice(allEvents.length-20)
   const newEventsReverse = newEvents.reverse()
 
@@ -55,7 +76,7 @@ const Events = () => {
       }
     }
 
-
+console.log('userData.myFavorites:',userData.myFavorites)
 
   return (
     <div className={styles.cardsSection}>
@@ -84,8 +105,8 @@ const Events = () => {
           modules={[Pagination, Navigation]}
           className={styles.mySwipper}
         >
-          {newEventsReverse.length ? (
-            newEventsReverse.map((event, index) => {
+          {eventsWeek.length && eventsWeek !== undefined? (
+            eventsWeek.map((event, index) => {
               return (
                 <SwiperSlide key={event.id}>
                   <div key={index}>

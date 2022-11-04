@@ -8,6 +8,7 @@ import { AuthContext } from '../../context/auth/AuthContext';
 import { stateContext } from '../../context/state/stateContext';
 import swal from 'sweetalert';
 import eventsApi from "../../axios/eventsApi";
+import { useState } from 'react';
 
 
 const Card = ({ event, listName }) => {
@@ -21,10 +22,9 @@ const Card = ({ event, listName }) => {
 
   const id = user.uid;
  
+  //const cover = event.pictures.filter(picture=>picture.isCover===true)[0]
 
-  const cover = event.pictures.filter(picture=>picture.isCover===true)[0]
-  console.log('cover:',cover)
-  
+ console.log('event',event)
 
   const handleClickFav = async (e) => {
     e.preventDefault();
@@ -50,39 +50,48 @@ const Card = ({ event, listName }) => {
     }
   }
 
+  //precio de cada fecha//
+  const [price , setPrice] = useState('')
+
+  function handlePrice(e){
+    setPrice(e.target.value)
+  }
+
+  
+
   return (
     <div className={styles.card}>
-      {event.pictures.length?
-       (
-        cover !== undefined ?
-          <img
-            className={styles.cardImgEvent}
-            src={event.pictures.cover}
-            alt='Not Found ):'
-            width='200x'
-            height='300'
-          /> : 
-          <img
-            className={styles.cardImgEvent}
-            src={event.pictures[0].picture}
-            alt='Not Found ):'
-            width='200x'
-            height='300'
-          />
-        )
+      {event.pictures.length && event.pictures !== undefined?
+        event.pictures.map(p=>(
+        p.cover === true ?
+        <img
+          className={styles.cardImgEvent}
+          src={p.picture}
+          alt='Not Found ):'
+          width='200x'
+          height='300'
+        /> : 
+        <img
+          className={styles.cardImgEvent}
+          src={event.pictures[0].picture}
+          alt='Not Found ):'
+          width='200x'
+          height='300'
+        />
+        ))
       :'N'}
 
       <div className={styles.cardText}>
         {event.dates && event.dates.length > 1 ? (
-          <select className={styles.cardDate}>
+          <select className={styles.cardDate} onChange={(e)=>handlePrice(e)}>
             {event.dates.map((date, index) =>    
               date.cupos > 0 && date.isPublic===true && date.inRevision===false  ? (
                 date.dateFormated.slice(date.dateFormated.length-4) === numCadena ? (
-                  <option key={index} value={date.date}>
+                  <option key={index} value={date.price}>
                     {date.dateFormated.slice(0, date.dateFormated.length-7)}
                   </option>
                 ) : (
-                  <option key={index} value={date.date}>
+                  <option key={index} value={date.price}>
                     {date.date}
                   </option>
                 )
@@ -171,7 +180,10 @@ const Card = ({ event, listName }) => {
               <p className={styles.cardOrgName}>{event.organizer.name}</p>
             </Link>
             <div className={styles.vLine}></div>
-            <p className={styles.cardPrice}>${event.price}</p>
+            {price ?
+              <p className={styles.cardPrice}>${price}</p>
+              : <p className={styles.cardPrice}>${event.dates[0].price}</p>
+            }
             <div className={styles.vLine}></div>
             <Link className={styles.link} to={`/detalles-del-evento/${event._id}`}>
               <p className={styles.cardDetails}>Ver más</p>
@@ -180,7 +192,10 @@ const Card = ({ event, listName }) => {
         </div>
       ) : (
         <div className={styles.cardOrgInfo}>
-          <p className={styles.cardPrice}>${event.price}</p>
+          {price ?
+           <p className={styles.cardPrice}>${price}</p>
+           : <p className={styles.cardPrice}>${event.dates[0].price}</p>
+          }
           <div className={styles.vLine}></div>
           <Link className={styles.link} to={`/detalles-del-evento/${event._id}`}>
             <p className={styles.cardDetails}>Ver más</p>
