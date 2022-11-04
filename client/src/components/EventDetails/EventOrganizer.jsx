@@ -87,7 +87,7 @@ const EventOrganizer = ({ id }) => {
       <div className={styles.orgCont}>
       <Link
           className={styles.link}
-          to={`/organizerDetails/${eventDetails.organizer._id}`}
+          to={`/sobre-el-organizador/${eventDetails.organizer._id}`}
         >
         <img className={styles.orgImg} src={eventDetails.organizer.userpicture} alt="N" />
         </Link>
