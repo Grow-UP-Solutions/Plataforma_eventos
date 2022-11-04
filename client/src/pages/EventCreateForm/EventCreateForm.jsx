@@ -27,8 +27,11 @@ import iconEditar from '../../assets/imgs/iconEditar.svg';
 import iconExclamacion2 from '../../assets/imgs/iconExclamacion2.svg';
 import mapa from '../../assets/imgs/mapa2.png';
 import eventsApi from '../../axios/eventsApi';
-import ImageUploading, { ImageListType } from 'react-images-uploading';
-import { Image } from 'cloudinary-react';
+
+import { AuthContext } from '../../context/auth/AuthContext';
+import { getColombia, postEvent } from '../../redux/actions';
+import { formatDateForm } from '../../utils/formatDateForm';
+import styles from './EventCreateForm.module.css';
 
 const EventCreateForm = () => {
   const dispatch = useDispatch();

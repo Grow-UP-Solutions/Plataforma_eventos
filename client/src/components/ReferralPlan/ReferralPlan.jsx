@@ -1,14 +1,17 @@
-import React, { useState, useRef } from 'react';
-import styles from './ReferralPlan.module.css';
+import React, { useEffect, useRef, useState } from 'react';
 import { FiLink2 } from 'react-icons/fi';
 import { IoMdAdd } from 'react-icons/io';
 import { TbTrash } from 'react-icons/tb';
 import { imgMoney } from '../../assets/imgs';
+import styles from './ReferralPlan.module.css';
 
 import { Helmet } from 'react-helmet';
 
+import eventsApi from '../../axios/eventsApi';
 import { generarCodigo } from '../../utils/generateCodeDiscount';
 import { inputKeyDown } from '../../utils/inputOnlyNumbers';
+
+import { GoTriangleDown, GoTriangleUp } from 'react-icons/go';
 
 const ReferralPlan = ({ userData }) => {
   const txtValueCodeDiscount = useRef();
@@ -18,10 +21,16 @@ const ReferralPlan = ({ userData }) => {
   const [codeDiscount, setCodeDiscount] = useState({
     code: '',
     value: '',
+    idCreator: userData._id,
   });
 
-  const [errorMessageCode, setErrorMessageCode] = useState('');
+  const [listCodeDiscount, setListCodeDiscount] = useState([]);
 
+  const [errorMessageCode, setErrorMessageCode] = useState('');
+  const [usersReferred, setUsersReferred] = useState([]);
+  const [showRefferred, setShowRefferred] = useState('Mostrar');
+  const [showCodeDiscountRedeemed, setShowCodeDiscountRedeemed] = useState(false);
+  const [showCodeDiscount, setShowCodeDiscount] = useState('Mostrar');
   const generateCodeDiscount = async () => {
     setOpenFormCodeDiscount(true);
 
@@ -38,8 +47,50 @@ const ReferralPlan = ({ userData }) => {
 
     if (value > availableCredit) return setErrorMessageCode('Tu saldo no es suficiente');
 
+    const codeDiscountData = {
+      ...codeDiscount,
+      value,
+    };
+
     try {
-    } catch (error) {}
+      const { data } = await eventsApi.post('/codeDiscount/createCodeDiscount/', { data: codeDiscountData });
+      const restAvaibleCredit = availableCredit - value;
+      setAvailableCredit(restAvaibleCredit);
+      console.log({ data });
+    } catch (error) {
+      console.log({ error });
+    }
+  };
+
+  const getUsersReferred = async (isOpen) => {
+    if (isOpen === 'Mostrar') {
+      setShowRefferred('Ocultar');
+      await userData.referrals.forEach(async (id) => {
+        const { data } = await eventsApi.get(`/users/${id}`);
+        setUsersReferred([...usersReferred, data]);
+      });
+    } else if (isOpen === 'Ocultar') {
+      setUsersReferred([]);
+      setShowRefferred('Mostrar');
+    }
+  };
+
+  const handleShowCodeDiscount = (isOpen) => {
+    if (isOpen === 'Mostrar') return setShowCodeDiscount('Ocultar');
+    else return setShowCodeDiscount('Mostrar');
+  };
+
+  useEffect(() => {
+    getListCodeDiscount();
+  }, []);
+
+  const getListCodeDiscount = async () => {
+    try {
+      const { data } = await eventsApi.get(`/codeDiscount/getListCodeDiscountByCreator/${userData._id}`);
+      setListCodeDiscount(data.listCodeDiscount);
+    } catch (error) {
+      console.log({ error });
+    }
   };
 
   return (
@@ -91,113 +142,149 @@ const ReferralPlan = ({ userData }) => {
       <div className={styles.containerDetailsCodes}>
         <div className={styles.headerDetailsCode}>
           <h2>Códigos de descuento</h2>
-          <span>Mostrar</span>
-        </div>
-        <div className={styles.containerDetailsDesc}>
-          <p>
-            Genera códigos de descuento por el valor de dinero que desees sin exceder tu saldo disponible. El código
-            puede ser redimido por ti o por quien tu desees al momento de realizar la compra de cupo para un evento.
-          </p>
-          <button className={styles.generateCode}>
-            <IoMdAdd />
-            <button onClick={generateCodeDiscount}>
-              <span>Generar código de descuento</span>
-            </button>
+          <button onClick={() => handleShowCodeDiscount(showCodeDiscount)}>
+            <span>{showCodeDiscount}</span>
           </button>
         </div>
 
-        {openFormCodeDiscount && (
-          <div className={styles.containerFormCreateCode}>
-            <div className={styles.containerInputFormCode}>
-              <div className={styles.formGroup}>
-                <label htmlFor='code'>Código</label>
-                <input disabled value={codeDiscount.code} type='text' id='value' />
-              </div>
-
-              <div className={styles.formGroup}>
-                <label htmlFor='value'>Valor</label>
-                <input onKeyDown={inputKeyDown} ref={txtValueCodeDiscount} type='text' />
-              </div>
-
-              <div className={styles.optionCode}>
-                <button>Editar</button>
-                <TbTrash />
-              </div>
-            </div>
-            {errorMessageCode && <p>{errorMessageCode}</p>}
-            <div className={styles.containerButtons}>
-              <button onClick={postCodeDiscount} className={styles.btnSuccess}>
-                Crear
-              </button>
-              <button onClick={() => setOpenFormCodeDiscount(false)} className={styles.btnCancel}>
-                Cancelar
+        {!(showCodeDiscount === 'Mostrar') && (
+          <>
+            <div className={styles.containerDetailsDesc}>
+              <p>
+                Genera códigos de descuento por el valor de dinero que desees sin exceder tu saldo disponible. El código
+                puede ser redimido por ti o por quien tu desees al momento de realizar la compra de cupo para un evento.
+              </p>
+              <button className={styles.generateCode}>
+                <IoMdAdd />
+                <button onClick={generateCodeDiscount}>
+                  <span>Generar código de descuento</span>
+                </button>
               </button>
             </div>
-          </div>
+
+            {openFormCodeDiscount && (
+              <div className={styles.containerFormCreateCode}>
+                <div className={styles.containerInputFormCode}>
+                  <div className={styles.formGroup}>
+                    <label htmlFor='code'>Código</label>
+                    <input disabled value={codeDiscount.code} type='text' id='value' />
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label htmlFor='value'>Valor</label>
+                    <input onKeyDown={inputKeyDown} ref={txtValueCodeDiscount} type='text' />
+                  </div>
+                </div>
+                {errorMessageCode && <p>{errorMessageCode}</p>}
+                <div className={styles.containerButtons}>
+                  <button onClick={postCodeDiscount} className={styles.btnSuccess}>
+                    Crear
+                  </button>
+                  <button onClick={() => setOpenFormCodeDiscount(false)} className={styles.btnCancel}>
+                    Cancelar
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <div className={styles.containerListCodeDiscount}>
+              {listCodeDiscount &&
+                listCodeDiscount.map((codeDiscount) => (
+                  <div key={codeDiscount._id} className={styles.containerCodeDiscount}>
+                    <div className={styles.formGroup}>
+                      <label htmlFor='code'>Código</label>
+                      <input disabled type='text' id='value' value={codeDiscount.code} />
+                    </div>
+
+                    <div className={styles.formGroup}>
+                      <label htmlFor='value'>Valor</label>
+                      <input disabled value={codeDiscount.value} type='text' />
+                    </div>
+
+                    <div className={styles.optionCode}>
+                      <button>Editar</button>
+                      <TbTrash className={styles.iconTrash} />
+                    </div>
+                  </div>
+                ))}
+            </div>
+
+            <div className={styles.containerCodeRedeemed}>
+              <div className={styles.containerTitleCodeRedeemed}>
+                <button
+                  className={styles.titleCodeRedeemed}
+                  onClick={() => setShowCodeDiscountRedeemed(!showCodeDiscountRedeemed)}
+                >
+                  <span>Ver códigos de descuento redimidos</span>
+                  {showCodeDiscountRedeemed ? <GoTriangleUp /> : <GoTriangleDown />}
+                </button>
+              </div>
+
+              {showCodeDiscountRedeemed && (
+                <table className={styles.tableRedeemedCode}>
+                  <colgroup span='4'></colgroup>
+                  <tr className={styles.tableRedeemedCodeHeader}>
+                    <th>Código</th>
+                    <th>Valor redimido</th>
+                    <th>Redimido por</th>
+                    <th>Fecha</th>
+                  </tr>
+                  <tr className={styles.tableInfoCodeRedeemed}>
+                    <td>
+                      <span>U323PML7</span>
+                    </td>
+                    <td>
+                      <span>$0.000</span>
+                    </td>
+                    <td>
+                      <span>Pepito Perez</span>
+                    </td>
+                    <td>
+                      <span>05/10/2020</span>
+                    </td>
+                  </tr>
+                </table>
+              )}
+            </div>
+          </>
         )}
-
-        <div className={styles.containerInputCode}>
-          <div className={styles.formGroup}>
-            <label htmlFor='code'>Código</label>
-            <input type='text' id='value' />
-          </div>
-
-          <div className={styles.formGroup}>
-            <label htmlFor='value'>Valor</label>
-            <input type='text' />
-          </div>
-
-          <div className={styles.optionCode}>
-            <button>Editar</button>
-            <TbTrash />
-          </div>
-        </div>
-
-        <div className={styles.containerCodeRedeemed}>
-          <h3 className={styles.titleCodeRedeemed}>Ver códigos de descuento redimidos</h3>
-
-          <div className={styles.containerTableRedeemed}>
-            <div className={styles.columnTableRedeemed}>
-              <span>Código</span>
-              <p>U323 PML7</p>
-            </div>
-            <div className={styles.columnTableRedeemed}>
-              <span>Valor Redimido</span>
-              <p>$ 0.000</p>
-            </div>
-            <div className={styles.columnTableRedeemed}>
-              <span>Redimido por</span>
-              <p>Pepito Pérez</p>
-            </div>
-            <div className={styles.columnTableRedeemed}>
-              <span>Fecha</span>
-              <p>05/01/2020</p>
-            </div>
-          </div>
-        </div>
 
         <div className={styles.containerShowReferred}>
           <div className={styles.headerDetailsCode}>
             <h2>Mostrar referidos</h2>
-            <span>Mostrar</span>
+            <button onClick={() => getUsersReferred(showRefferred)}>
+              <span>{showRefferred}</span>
+            </button>
           </div>
-          <div className={styles.tableReferreds}>
-            <div className={styles.columnTableReferred}>
-              <p>Tus referidos</p>
-              <div className={styles.containerProfileReferred}>
-                <img src='https://i.pravatar.cc/150?img=3' alt='img-profile' />
-                <p>Pepito Perez</p>
+
+          {usersReferred.length > 0 && (
+            <>
+              <table className={styles.tableReferred}>
+                <colgroup span='3'></colgroup>
+                <tr className={styles.tableReferredHeader}>
+                  <th>Tus referidos</th>
+                  <th>Total saldo pendiente</th>
+                  <th>Total Saldo</th>
+                </tr>
+                {usersReferred.map((user) => (
+                  <tr className={styles.userReferred}>
+                    <td className={styles.userReferredInfo}>
+                      <img src={user.userpicture} alt='img-user' />
+                      <span>{user.nickname}</span>
+                    </td>
+                    <td>5000$</td>
+                    <td>0$</td>
+                  </tr>
+                ))}
+              </table>
+              <div className={styles.msgReferred}>
+                <p>
+                  Si ya has compartido tu código de Referidos confirma que el Referido que ya se haya inscrito a la
+                  Plafatorma. Si aún no has compartido tu código.
+                </p>
               </div>
-            </div>
-            <div className={styles.columnTableReferred}>
-              <p>Total saldo pendiente 20.000$</p>
-              <p>5.000$</p>
-            </div>
-            <div className={styles.columnTableReferred}>
-              <p>Total saldo</p>
-              <p>1.000$</p>
-            </div>
-          </div>
+            </>
+          )}
         </div>
       </div>
     </div>

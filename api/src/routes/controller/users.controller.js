@@ -230,8 +230,8 @@ router.post(
   async (req, res) => {
     try {
       const user = req.body;
-      const {codeReferral}= req.query
-      const userCreate = await createUsers(user,codeReferral);
+      const { codeReferral } = req.query;
+      const userCreate = await createUsers(user, codeReferral);
 
       const time = '2h';
       const token = await generateJWT(userCreate._id, userCreate.name, time);
@@ -619,6 +619,15 @@ router.post('/requestToOrganizer/', async (req, res) => {
   } catch (error) {
     res.status(400).json(error.message);
   }
+});
+
+router.put('/editSaldo/:id', async (req, res) => {
+  const { id } = req.params;
+  const { saldo } = req.body;
+  const user = await getUser(id);
+  user.availableCredit = saldo;
+  await user.save();
+  res.json({ message: 'success' });
 });
 
 module.exports = router;
