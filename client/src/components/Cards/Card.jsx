@@ -9,6 +9,7 @@ import { stateContext } from '../../context/state/stateContext';
 import swal from 'sweetalert';
 import eventsApi from "../../axios/eventsApi";
 
+
 const Card = ({ event, listName }) => {
 
   const { toggleScreenLogin, getEventsFavourites } = useContext(UIContext);
@@ -16,7 +17,14 @@ const Card = ({ event, listName }) => {
   const { notes, setNotes } = useContext(stateContext);
   const currentYear = new Date().getFullYear();
   const numCadena = currentYear + '';
-  const añoActual = numCadena.slice(2, 4);
+ 
+
+  const id = user.uid;
+ 
+
+  const cover = event.pictures.filter(picture=>picture.isCover===true)[0]
+  console.log('cover:',cover)
+  
 
   const handleClickFav = async (e) => {
     e.preventDefault();
@@ -45,22 +53,33 @@ const Card = ({ event, listName }) => {
   return (
     <div className={styles.card}>
       {event.pictures.length?
-      <img
-        className={styles.cardImgEvent}
-        src={event.pictures[0].picture}
-        alt='Not Found ):'
-        width='200x'
-        height='300'
-      />
-    :'N'}
+       (
+        cover !== undefined ?
+          <img
+            className={styles.cardImgEvent}
+            src={event.pictures.cover}
+            alt='Not Found ):'
+            width='200x'
+            height='300'
+          /> : 
+          <img
+            className={styles.cardImgEvent}
+            src={event.pictures[0].picture}
+            alt='Not Found ):'
+            width='200x'
+            height='300'
+          />
+        )
+      :'N'}
+
       <div className={styles.cardText}>
         {event.dates && event.dates.length > 1 ? (
           <select className={styles.cardDate}>
-            {event.dates.map((date, index) =>
-              event.cupos > 0 ? (
-                date.date.slice(8, 10) === añoActual ? (
+            {event.dates.map((date, index) =>    
+              date.cupos > 0 && date.isPublic===true && date.inRevision===false  ? (
+                date.dateFormated.slice(date.dateFormated.length-4) === numCadena ? (
                   <option key={index} value={date.date}>
-                    {date.date.slice(0, 5)}
+                    {date.dateFormated.slice(0, date.dateFormated.length-7)}
                   </option>
                 ) : (
                   <option key={index} value={date.date}>
@@ -72,15 +91,17 @@ const Card = ({ event, listName }) => {
               )
             )}
           </select>
-        ) : event.cupos === 0 ? (
+        ) : event.dates[0].cupos === 0 && event.dates[0].isPublic === true && event.dates[0].inRevision===false ? (
           <p className={styles.cardCuposCurrent}>Cupos LLenos</p>
-        ) : event.dates[0].date.slice(8, 10) === añoActual ? (
-          <p className={styles.cardDateCurrent}>{event.dates[0].date.slice(0, 5)}</p>
-        ) : (
-          <p className={styles.cardDateCurrent}>{event.dates[0].date}</p>
-        )}
+        ) : event.dates[0].dateFormated.slice(event.dates[0].dateFormated.length-4) === numCadena && event.dates[0].isPublic===true && event.dates[0].inRevision===false? (
+          <p className={styles.cardDateCurrent}>{event.dates[0].dateFormated.slice(0,event.dates[0].dateFormated.length-7)}</p>
+        ) : event.dates[0].isPublic===true && event.dates[0].inRevision===false ? (
+          <p className={styles.cardDateCurrent}>{event.dates[0].dateFormated}</p>
+        ) : ''}
 
-        {
+        {event.organizer._id === user.uid ?
+          '' :
+          (
           user.uid ?
           <div className={styles.cardAddFav} onClick={handleClickFav}>
             <input type='checkbox' id={`${event._id}-${listName}`} />
@@ -109,6 +130,7 @@ const Card = ({ event, listName }) => {
               </p>
             </div>
           </div>
+          )
         }
 
         <div className={styles.cardRating}>
@@ -130,11 +152,13 @@ const Card = ({ event, listName }) => {
         <p className={styles.cardNick}>Segundo Titulo</p>
         <p className={styles.cardDescription}>{event.shortDescription.slice(0, 70)}</p>
       </div>
+
       <hr className={styles.cardHr}></hr>
+
       {event.organizer.userpicture && event.organizer.name ? (
         <div>
           <div className={styles.cardOrgInfo}>
-            <Link className={styles.link} to={`/organizerDetails/${event.organizer._id}`}>
+            <Link className={styles.link} to={`/sobre-el-organizador/${event.organizer._id}`}>
               <img
                 className={styles.cardOrgPicture}
                 src={event.organizer.userpicture}
@@ -143,13 +167,13 @@ const Card = ({ event, listName }) => {
                 height='3px'
               />
             </Link>
-            <Link className={styles.link} to={`/organizerDetails/${event.organizer._id}`}>
+            <Link className={styles.link} to={`/sobre-el-organizador/${event.organizer._id}`}>
               <p className={styles.cardOrgName}>{event.organizer.name}</p>
             </Link>
             <div className={styles.vLine}></div>
             <p className={styles.cardPrice}>${event.price}</p>
             <div className={styles.vLine}></div>
-            <Link className={styles.link} to={`/eventdetails/${event._id}`}>
+            <Link className={styles.link} to={`/detalles-del-evento/${event._id}`}>
               <p className={styles.cardDetails}>Ver más</p>
             </Link>
           </div>
@@ -158,7 +182,7 @@ const Card = ({ event, listName }) => {
         <div className={styles.cardOrgInfo}>
           <p className={styles.cardPrice}>${event.price}</p>
           <div className={styles.vLine}></div>
-          <Link className={styles.link} to={`/eventdetails/${event._id}`}>
+          <Link className={styles.link} to={`/detalles-del-evento/${event._id}`}>
             <p className={styles.cardDetails}>Ver más</p>
           </Link>
         </div>
