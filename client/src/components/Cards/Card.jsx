@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import styles from './Card.module.css';
-import { Link } from 'react-router-dom';
+import { Link, useResolvedPath } from 'react-router-dom';
 import { Rating } from '@mui/material';
 import { iconAdd } from '../../assets/imgs';
 import { UIContext } from '../../context/ui';
