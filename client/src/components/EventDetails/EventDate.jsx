@@ -71,8 +71,8 @@ const EventDate = ({ id }) => {
                 </td>
                 <td>{event.date}</td>
                 <td>{event.start}-{event.end}</td>
-                <td>{eventDetails.price}</td>
-                <td>{eventDetails.cupos}</td>
+                <td>{event.price}</td>
+                <td>{event.cupos}</td>
                 <td className={styles.containerNumberBuyCupos}>
                   <button
                     onClick={() => handleNumberBuyCupos(numberBuyCupos - 1)}
