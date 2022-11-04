@@ -133,8 +133,6 @@ console.log('userData.myFavorites:',userData.myFavorites)
         <Swiper
           slidesPerView={4} 
           slidesPerGroup={4}
-          loop= {true}
-          loopFillGroupWithBlank= {true}
           spaceBetween={0}
           navigation
           modules={[Pagination, Navigation]}

@@ -85,7 +85,7 @@ const UserPage = () => {
     /* USER */
     if (name === 'Mi lista') {
       setComponent(<MyListUser myFavorites={userData.myFavorites} />);
-      navigate('/user/perfil/mi-lista');
+      navigate('/usuario/mi-lista');
     }
     if (name === 'Pendientes por Asistir')
       setComponent(<ExpectToAttendUser myEvenstBooked={userData.myEvenstBooked} />);
@@ -93,16 +93,16 @@ const UserPage = () => {
       setComponent(<MyEventsOrganizer userData={userData} myEventsCreated={userData.myEventsCreated} />);
     if (name === 'Perfil') {
       setComponent(<UserForm userData={userData} />);
-      navigate('/user/perfil/datos');
+      navigate('/usuario/perfil');
     }
 
     if (name === 'Plan de Referidos') {
       setComponent(<ReferralPlan userData={userData} />);
-      navigate('/user/perfil/plan-de-referidos');
+      navigate('/usuario/plan-de-referidos');
     }
     if (name === 'Preferencias') {
       setComponent(<PreferencesUser userData={userData} />);
-      navigate('/user/perfil/preferencias');
+      navigate('/usuario/preferencias');
     }
   };
 

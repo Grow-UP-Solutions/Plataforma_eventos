@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import icon1 from '../../assets/imgs/icon-eventcreate1.svg';
 import icon2 from '../../assets/imgs/icon-eventcreate2.svg';
 import icon3 from '../../assets/imgs/icon-eventcreate3.svg';
@@ -8,17 +8,65 @@ import icon5 from '../../assets/imgs/icon-eventcreate5.svg';
 import icon6 from '../../assets/imgs/icon-eventcreate6.svg';
 import foto from '../../assets/imgs/orgEvento.png';
 import styles from './EventCreate.module.css';
+import { UIContext } from '../../context/ui';
+import { useContext, useEffect, useState } from 'react';
+import swal from 'sweetalert';
+import { AuthContext } from '../../context/auth';
+import eventsApi from '../../axios/eventsApi';
+import { useNavigate } from 'react-router-dom';
+import { resolveBreakpointValues } from '@mui/system/breakpoints';
 
 const EventCreate = () => {
+
+  const { toggleScreenLogin } = useContext(UIContext);
+  const { user, logged, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  
+
+  useEffect(() => {
+    getUserData();
+  }, [user]);
+
+  const getUserData = async () => {
+    let userResult = {};
+    if (user.uid) {
+      userResult = await eventsApi.get('/users/' + user.uid);
+    }
+  };
+
+  function ingreso(){
+    swal({
+      title: 'Ingresa para comenzar ',
+      buttons: ['Cerrar', 'Ingresar'],
+    }).then((ingresar) => {
+      if (ingresar) {
+        console.log('ingreso')
+        toggleScreenLogin()
+      }
+    })
+    .then((logged)=>{
+      if(logged && user.organizer){
+        console.log('soy organizador')
+        navigate('/oganiza-un-evento')
+      }
+    })
+  }
+ 
+
   return (
     <div className={styles.container}>
       <img src={foto} alt="n" />
 
-      <div className={styles.containerBtn}>
-        <Link to={`/registrate`}>
-          <button className={styles.btn}>Comenzar</button>
-        </Link>
-      </div>
+      {!logged ? 
+        (
+        <div className={styles.containerBtn}>
+          <button className={styles.btn} onClick={ingreso}>Comenzar</button>
+        </div>
+        )
+        :''
+      }
+      
 
       <div className={styles.containerContent}>
         <div className={styles.header}>

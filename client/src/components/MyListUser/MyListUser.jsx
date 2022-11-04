@@ -7,11 +7,19 @@ import { useState } from 'react';
 
 const MyListUser = ({ myFavorites }) => {
 
+
+  const orderByDate = myFavorites.sort((a,b)=>{
+    if (a.dates[0].date < b.dates[0].date) return -1
+    if (b.dates[0].date < a.dates[0].date) return 1
+    return 0
+  })
+
+  
   const [currentPage, setCurretPage] = useState(1);
   const CardPerPage = 24;
   const indexOfLastCard = currentPage * CardPerPage;
   const indexOfFirstCard = indexOfLastCard - CardPerPage; 
-  const currentCard = myFavorites.slice(indexOfFirstCard, indexOfLastCard);
+  const currentCard = orderByDate.slice(indexOfFirstCard, indexOfLastCard);
   const paginado = (pageNumber) => setCurretPage(pageNumber);
   
   return (
