@@ -3,22 +3,17 @@ import styles from './Categories.module.css';
 import { stateContext } from '../../context/state/stateContext';
 import { UIContext } from '../../context/ui';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 
 const Categories = () => {
 
-  const allEvents = useSelector((state) => state.events);
   const { setResult } = useContext(stateContext);
   const { categories } = useContext(UIContext);
   const navigate = useNavigate();
 
   const handleClick = (e) => {
     e.preventDefault();
-    const data = e.target.id
-    const filtro = allEvents.filter((event) =>
-      event.categories.find((e) => e.name === data)
-    );  
-    setResult(filtro);
+    const data = e.target.id; 
+    setResult(data);
     navigate('/categories/');
   };
 

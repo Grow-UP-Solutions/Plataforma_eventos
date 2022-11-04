@@ -28,7 +28,7 @@ const SearchResult = () => {
 
   return (
     <div className={style.container}>
-      <p className={style.title}>Eventos</p>
+      <p className={style.title}>{result}</p>
       <div className={style.containerCard}>
         {currentCard.length ? (
           currentCard.map((event, index) => {
