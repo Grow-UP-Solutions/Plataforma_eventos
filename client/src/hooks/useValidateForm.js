@@ -15,6 +15,13 @@ const useValidateForm = (formData, setFormData) => {
     const regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[().#?!@$%^&*-]).{12,20}$/;
     let checkValidate = false;
 
+    if (id === 'codeReferred') {
+      return setFormData({
+        ...formData,
+        [id]: value,
+      });
+    }
+
     if (id === 'canReceivedInformation') {
       return setFormData({
         ...formData,

@@ -10,10 +10,9 @@ import 'swiper/modules/pagination/pagination.min.css';
 import 'swiper/modules/scrollbar/scrollbar.min.css';
 import 'swiper/modules/navigation/navigation.min.css';
 
-const MyEventsOrganizer = ({ myEventsCreated }) => {
-
-  const eventsPublic = myEventsCreated.filter(e=> e.isPublic===true)
-  const eventsNoPublic = myEventsCreated.filter(e=> e.isPublic===false)
+const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
+  const eventsPublic = myEventsCreated.filter((e) => e.isPublic === true);
+  const eventsNoPublic = myEventsCreated.filter((e) => e.isPublic === false);
 
   return (
     <div className={styles.container}>
@@ -21,34 +20,35 @@ const MyEventsOrganizer = ({ myEventsCreated }) => {
 
       <div className={styles.containercard}>
         <Swiper slidesPerView={3} navigation spaceBetween={0} modules={[Navigation]} className={styles.mySwipper}>
-          {eventsPublic && eventsPublic.length? (
-            eventsPublic.map((event) => (
-            <div className={styles.card}>
-              <SwiperSlide>
-                <Card event={event} listName={'published'} />
-                <div className={styles.containerDatos}>
-                  <div className={styles.datos}>
-                    <p>Fechas:</p>
-                    <h4>{event.dates.length}</h4>
-                    <button>Ver</button>
-                  </div>
-                  <div className={styles.datos}>
-                    <p>Asistentes:</p>
-                    <h4>{event.participants}</h4>
-                    <button>Ver</button>
-                  </div>
-                  <div className={styles.datos}>
-                    <p>Ganancias:</p>
-                    <h4>$9003</h4>
-                    <button>Ver</button>
-                  </div>
+          {eventsPublic && eventsPublic.length
+            ? eventsPublic.map((event) => (
+                <div className={styles.card}>
+                  <SwiperSlide>
+                    <Card userData={userData} event={event} listName={'published'} />
+                    <div className={styles.containerDatos}>
+                      <div className={styles.datos}>
+                        <p>Fechas:</p>
+                        <h4>{event.dates.length}</h4>
+                        <button>Ver</button>
+                      </div>
+                      <div className={styles.datos}>
+                        <p>Asistentes:</p>
+                        <h4>{event.participants}</h4>
+                        <button>Ver</button>
+                      </div>
+                      <div className={styles.datos}>
+                        <p>Ganancias:</p>
+                        <h4>$9003</h4>
+                        <button>Ver</button>
+                      </div>
+                    </div>
+                    <Link to={'/oganiza-un-evento-editar/' + event._id}>
+                      <button className={styles.btn}>Editar</button>
+                    </Link>
+                  </SwiperSlide>
                 </div>
-                <Link to={'/oganiza-un-evento-editar/' + event._id}>
-                    <button className={styles.btn}>Editar</button>
-                </Link>
-              </SwiperSlide>
-            </div>
-          ))):'No tienes eventos creados'}
+              ))
+            : 'No tienes eventos creados'}
         </Swiper>
       </div>
       <hr className={styles.cardHr}></hr>
@@ -61,7 +61,7 @@ const MyEventsOrganizer = ({ myEventsCreated }) => {
             eventsNoPublic.map((event, index) => {
               return (
                 <SwiperSlide>
-                  <Card event={event} listName={'to-publish'} />
+                  <Card userData={userData} event={event} listName={'to-publish'} />
                 </SwiperSlide>
               );
             })
