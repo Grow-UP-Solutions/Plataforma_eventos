@@ -20,7 +20,7 @@ const MyEventsOrganizer = ({ myEventsCreated }) => {
       <p className={styles.title}>Publicados</p>
 
       <div className={styles.containercard}>
-        <Swiper slidesPerView={3} navigation spaceBetween={0} modules={[Navigation]} className={styles.mySwipper}>
+        <Swiper slidesPerView={3} slidesPerGroup={3} navigation spaceBetween={0} modules={[Navigation]} className={styles.mySwipper}>
           {eventsPublic && eventsPublic.length? (
             eventsPublic.map((event) => (
             <div className={styles.card}>
@@ -56,7 +56,7 @@ const MyEventsOrganizer = ({ myEventsCreated }) => {
       <p className={styles.title}>Por Publicar</p>
 
       <div className={styles.containercard}>
-        <Swiper slidesPerView={3} navigation spaceBetween={0} modules={[Navigation]} className={styles.mySwipper}>
+        <Swiper lidesPerView={3} slidesPerGroup={3} navigation spaceBetween={0} modules={[Navigation]} className={styles.mySwipper}>
           {eventsNoPublic.length ? (
             eventsNoPublic.map((event, index) => {
               return (
