@@ -4,6 +4,7 @@ import styles from './MyEventsOrganizer.module.css';
 import iconEditar from '../../assets/imgs/iconEditar.svg';
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react/swiper-react';
 import { Pagination, Scrollbar, Navigation } from 'swiper';
+import { Link } from 'react-router-dom';
 import 'swiper/swiper.min.css';
 import 'swiper/modules/pagination/pagination.min.css';
 import 'swiper/modules/scrollbar/scrollbar.min.css';
@@ -41,7 +42,9 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
                         <button>Ver</button>
                       </div>
                     </div>
-                    <button className={styles.btn}>Editar</button>
+                    <Link to={'/oganiza-un-evento-editar/' + event._id}>
+                      <button className={styles.btn}>Editar</button>
+                    </Link>
                   </SwiperSlide>
                 </div>
               ))

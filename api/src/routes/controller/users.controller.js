@@ -34,7 +34,7 @@ const {
   findAllUpdateNotification,
   updateMyFavorites,
   updateUserRating,
-} = require('../../models/util/functionDB/UserDb.js');
+} = require('../../models/util/functionDB/users/UserDb.js');
 const {
   createCodeVerifyMail,
   deleteCodeVerifyMail,
@@ -42,7 +42,7 @@ const {
 } = require('../../models/util/functionDB/CodeVerifyMailDb.js');
 const { generateJWTOrganizer } = require('../../models/util/helpers/jwtOrganizer.js');
 const { validateJWTOrganizer } = require('../../models/util/middlewares/validate-organizer.js');
-const { allMessageReciverUserDB } = require('../../models/util/functionDB/messageDb.js');
+const { allMessageReciverUserDB } = require('../../models/util/functionDB/message/messageDb.js');
 const { sendMailUserAccept } = require('../../models/util/mailer/mailUserAccept.js');
 const { sendMailUserRejected } = require('../../models/util/mailer/mailUserRejected.js');
 

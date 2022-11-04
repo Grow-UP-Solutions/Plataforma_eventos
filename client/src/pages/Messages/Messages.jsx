@@ -10,12 +10,43 @@ import { AuthContext } from '../../context/auth/AuthContext';
 import { UIContext } from '../../context/ui';
 import { stateContext } from '../../context/state/stateContext';
 import swal from 'sweetalert';
+import { useModal } from '../../hooks/useModal';
+import Modal from '../../components/Modal/Modal';
+import ModalMsg from '../../components/Modals/ModalMsg';
+
+const validate = (form) => {
+
+  let errors = {};
+                
+  let letras =  (/^[a-zA-Z]*$/g);
+  let mail = (/[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}/igm);
+  let webSite =(/\b(http|https|www)\b/i);
+  let offensiveWord= /\b(perro|gato)\b/i;
+
+  if (!form.text) {
+    errors.text = true
+  }
+
+  if (form.text.match(mail)) {
+    errors.title = 'No puedes ingresar un email o link a redes sociales'
+  }
+
+  if (form.text.match(webSite)) {
+    errors.title = 'No puedes ingresar un dominio o pagina web'
+  }
+
+  if (form.text.match(offensiveWord)) {
+    errors.title = 'Palabra ofensiva'
+  }
+
+  return errors;
+}
 
 const Messages = () => {
 
   const { user } = useContext(AuthContext);
   const { getMessagesStar, msgStar } = useContext(UIContext);
-  const { setMsg, block, setBlock } = useContext(stateContext);
+  const { setMsg } = useContext(stateContext);
   const id = user.uid;
   const [conversations, setConversations] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
@@ -25,14 +56,19 @@ const Messages = () => {
   const [star, setStar] = useState(false);
   const [clickOne, setClickOne] = useState(false);
   const [clickTwo, setClickTwo] = useState(true);
+  const [block, setBlock] = useState([]);
+  const [form, setForm] = useState({text: ''});
+  const [errors, setErrors] = useState({text: ''});
+  const [isOpenModal, openModal, closeModal] = useModal(false);
 
   useEffect(() => {
     const getConversations = async () => {
       try {
         const res = await eventsApi.get("/conversation/" + id);
-        setConversations(res.data.filter(e => e.locked === false));
-        setBlock(res.data.filter(e => e.locked === true));
-      } catch (err) {
+        setConversations(res.data.filter((e) => e.locked === false));
+        setBlock(res.data.filter((e) => e.locked === true));
+      } 
+      catch (err) {
         console.log(err);
       }
     };
@@ -44,7 +80,8 @@ const Messages = () => {
       try {
         const res = await eventsApi.get("/message/" + currentChat._id);
         setMessages(res.data);
-      } catch (err) {
+      } 
+      catch (err) {
         console.log(err);
       }
     };
@@ -56,7 +93,8 @@ const Messages = () => {
       try {
         const json = await eventsApi.get("/users/" + id);
         setResult(json.data);
-      } catch (error) {
+      } 
+      catch (error) {
         console.log(error)
       }
     }
@@ -67,6 +105,15 @@ const Messages = () => {
     scroll.scrollToTop();
   }, []);
 
+  const handleChangeNewMessages = (e) => {
+    e.preventDefault();
+    setNewMessage(e.target.value);
+    setErrors(validate({
+      ...form,
+      text: e.target.value
+  }));
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const friendId = currentChat.members.find((m) => m !== id);
@@ -76,6 +123,9 @@ const Messages = () => {
       text: newMessage,
       conversationId: currentChat._id,
     };
+    if (Object.values(errors).length > 0) {
+      return openModal();
+    }
     try {
       const res = await eventsApi.post("/message/create", message);
       setMessages([...messages, res.data]);
@@ -99,7 +149,8 @@ const Messages = () => {
       try {
         const res = await eventsApi.get("/message/" + currentChat._id);
         getMessagesStar(res.data.filter((e) => e.outstanding === true));
-      } catch (err) {
+      } 
+      catch (err) {
         console.log(err);
       }
     };
@@ -129,6 +180,17 @@ const Messages = () => {
     setClickTwo(!clickTwo);
     if(clickOne === true) setClickOne(true);
     if(clickTwo === false) setClickTwo(false);
+    scroll.scrollToTop();
+    const userBlock = async () => {
+      try {
+        const res = await eventsApi.get("/conversation/" + id);
+        setBlock(res.data.filter(e => e.locked === true));
+      } 
+      catch (error) {
+        console.log(error)  
+      }
+    }
+    userBlock();
   } 
 
   const handleClickTwo = (e) => {
@@ -137,6 +199,17 @@ const Messages = () => {
     setClickOne(!clickOne);
     if(clickTwo === true) setClickTwo(true);
     if(clickOne === false) setClickOne(false);
+    scroll.scrollToTop();
+    const userNotBlock = async () => {
+      try {
+        const res = await eventsApi.get("/conversation/" + id);
+        setConversations(res.data.filter(e => e.locked === false));
+      } 
+      catch (error) {
+        console.log(error)  
+      }
+    }
+    userNotBlock();
   }
   
   return (
@@ -167,6 +240,10 @@ const Messages = () => {
                 <span>Mensajes destacados</span>
               </div>
             </div>
+
+            <Modal isOpen={isOpenModal} closeModal={closeModal} >
+              <ModalMsg closeModal={closeModal}/>
+            </Modal>
 
             <div className={styles.containerChats}>
 
@@ -252,8 +329,8 @@ const Messages = () => {
                 id="message"
                 cols="30"
                 rows="10"
-                placeholder="Escribe un mensaje aquí"
-                onChange={(e) => setNewMessage(e.target.value)}
+                placeholder="Escribe un mensaje aquí"              
+                onChange={handleChangeNewMessages}
                 value={newMessage}
               ></textarea> :
               <textarea
@@ -267,6 +344,7 @@ const Messages = () => {
             }
 
             <div className={styles.wrapperBtnInputMessage}>
+
               <p>
                 No se permite el envío de números de teléfono, direcciones de
                 correo electrónico, enlaces a sitios web o enlaces a redes

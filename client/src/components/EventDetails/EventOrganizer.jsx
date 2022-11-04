@@ -34,11 +34,20 @@ const EventOrganizer = ({ id }) => {
 
   const handleClickMessages = (e) => {
     e.preventDefault();
-    eventsApi.post('/conversation/create', conversation)
-    .then((response) => {
-      //console.log('axios response', response.data);
-      navigate('/user/message');
-    });
+    if (conversation.senderId === conversation.receiverId) {
+      swal({
+        title: 'Mismo usuario de conversación',
+        icon: 'warning',
+        button: 'Cerrar',
+        dangerMode: true,
+      });
+    }
+    else {
+      eventsApi.post('/conversation/create', conversation)
+      .then((response) => {
+        navigate('/user/message');
+      });
+    }
   }
 
   const handleAlert = (e) => {
@@ -78,7 +87,7 @@ const EventOrganizer = ({ id }) => {
       <div className={styles.orgCont}>
       <Link
           className={styles.link}
-          to={`/organizerDetails/${eventDetails.organizer._id}`}
+          to={`/sobre-el-organizador/${eventDetails.organizer._id}`}
         >
         <img className={styles.orgImg} src={eventDetails.organizer.userpicture} alt="N" />
         </Link>

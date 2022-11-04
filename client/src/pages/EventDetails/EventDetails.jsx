@@ -64,15 +64,6 @@ const EventDetails = () => {
     obtenerDatos();
   }, [eventDetails]);
 
-  /* useEffect(() => {
-    if (eventDetails) {
-      getRatingEvent(id, {rating: eventDetails.rating});
-    }
-    else {
-      console.log('no hay eventDetails');
-    }
-  }, [eventDetails]); */
-
   const handleFormatDate = (check) => {
     setCheck(check);
     setChecked(formatDate(check));

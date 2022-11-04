@@ -9,7 +9,7 @@ const {
    sendMessageDB,
    sendNotificationDB,
    updateMyFavorites,
-} = require("../../models/util/functionDB/UserDb.js");
+} = require("../../models/util/functionDB/users/UserDb.js");
 
 const bcrypt = require("bcryptjs");
 const { AllEventsDb } = require("../../models/util/functionDB/EventesDb.js");

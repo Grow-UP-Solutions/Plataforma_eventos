@@ -27,7 +27,6 @@ import iconEditar from '../../assets/imgs/iconEditar.svg';
 import iconExclamacion2 from '../../assets/imgs/iconExclamacion2.svg';
 import mapa from '../../assets/imgs/mapa2.png';
 import eventsApi from '../../axios/eventsApi';
-
 import { AuthContext } from '../../context/auth/AuthContext';
 import { getColombia, postEvent } from '../../redux/actions';
 import { formatDateForm } from '../../utils/formatDateForm';
@@ -59,7 +58,7 @@ const EventCreateForm = () => {
 
   // console.log('user:',user)
   // console.log('id:',id)
-  // console.log('userData:',userData)
+  //console.log('userData:',userData)
 
   //--------------------------------------------------//
   //               DEPARTAMENTOS              //
@@ -781,7 +780,7 @@ const EventCreateForm = () => {
             icon: 'success',
           });
           console.log('postEnviado:', post);
-          navigate('user/perfil/datos');
+          navigate('/user/perfil/datos');
         }
       });
     }
@@ -830,262 +829,17 @@ const EventCreateForm = () => {
                     facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril
                     delenit augue duis dolaore te feugait nulla facilisi.
                   </p>
-                  {failedSubmit && errors.shortDescription ? (
-                    <textarea
-                      className={styles.textareaShort}
+                  {failedSubmit && errors.title ? (
+                    <input
+                      className={styles.input}
                       type='text'
-                      maxlength='100'
-                      placeholder='descripción breve del evento'
-                      name='shortDescription'
-                      value={post.shortDescription}
+                      maxlength='75'
+                      placeholder='Nombre del evento'
+                      name='title'
+                      value={post.title}
                       onChange={(e) => handleChange(e)}
                       required
                     />
-                  ) : (
-                    <textarea
-                      className={styles.textareaShort}
-                      type='text'
-                      maxlength='100'
-                      placeholder='descripción breve del evento'
-                      name='shortDescription'
-                      value={post.shortDescription}
-                      onChange={(e) => handleChange(e)}
-                    />
-                  )}
-
-                  {post.shortDescription.length === 100 ? (
-                    <p className={styles.errors}>Máximo: 100 de caracteres</p>
-                  ) : (
-                    <p className={styles.subTitle}>Máximo: 100 de caracteres</p>
-                  )}
-                  {post.shortDescription.length > 0 ? (
-                    <p className={styles.subTitle}>
-                      Usetd va escribiendo: {post.shortDescription.length}/100 caracteres
-                    </p>
-                  ) : (
-                    ''
-                  )}
-                  {errors.shortDescription ? <p className={styles.errors}>{errors.shortDescription}</p> : null}
-                </div>
-
-                {/* longDescription */}
-                <div className={styles.containerDescription}>
-                  <p className={styles.title}>Descripción detallada</p>
-                  <p className={styles.subTitle}>
-                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum dolor
-                    sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
-                  </p>
-                  {failedSubmit && errors.longDescription ? (
-                    <textarea
-                      className={styles.textareaLong}
-                      type='text'
-                      placeholder='descripción detallada del evento'
-                      name='longDescription'
-                      value={post.longDescription}
-                      onChange={(e) => handleChange(e)}
-                      required
-                    />
-                  ) : (
-                    <textarea
-                      className={styles.textareaLong}
-                      type='text'
-                      placeholder='descripción detallada del evento'
-                      name='longDescription'
-                      value={post.longDescription}
-                      onChange={(e) => handleChange(e)}
-                    />
-                  )}
-
-                  {longDescriptionArray.length < 75 && longDescriptionArray.length > 0 ? (
-                    <p className={styles.errors}>Minimo 75 palabras</p>
-                  ) : (
-                    <p className={styles.subTitle}>Minimo 75 palabras</p>
-                  )}
-                  {longDescriptionArray.length > 0 ? (
-                    <p className={styles.subTitle}>Usetd va escribiendo: {longDescriptionArray.length} palabras</p>
-                  ) : (
-                    ''
-                  )}
-                  {errors.longDescription ? <p className={styles.errors}>{errors.longDescription}</p> : null}
-                </div>
-              </div>
-            </div>
-
-            {/* SECTION 4: Pictures */}
-            <div className={styles.section4}>
-              {/* linea vertical */}
-              <div className={styles.containerLine}>
-                <ul className={styles.timeVerticalRed}>
-                  <li>
-                    <b></b>
-                    <span>4</span>
-                  </li>
-                </ul>
-                <ul className={styles.timeVertical}>
-                  <li>
-                    <b></b>
-                  </li>
-                  <li>
-                    <b></b>
-                  </li>
-                  <li>
-                    <b></b>
-                  </li>
-                  <li>
-                    <b></b>
-                  </li>
-                </ul>
-              </div>
-
-              {/* form */}
-              <div className={styles.container1}>
-                <p className={styles.title}>Agrega fotos y/o videos</p>
-                <p className={styles.subTitle}>
-                  Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum dolor sit
-                  amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
-                </p>
-                <p className={styles.subTitle4}>Fotos del Evento</p>
-
-                {failedSubmit && errors.pictures ? (
-                  <div>
-                    <p>Fotos: Jpg, png, Max.100kb </p>
-                    <p>Videos: .MP4 Max 100kb</p>
-                    <p>"Haz click en examinar para elegir los archivos y luedo en añadir"</p>
-                    <input
-                      type='file'
-                      multiple={true}
-                      onChange={(e) => {
-                        setImage(e.target.files);
-                      }}
-                    />
-                    {errors.pictures ? <p className={styles.errors}>{errors.pictures}</p> : null}
-                  </div>
-                ) : (
-                  <div>
-                    <p>Fotos: Jpg, png, Max.100kb </p>
-                    <p>Videos: .MP4 Max 100kb</p>
-                    <p>"Haz click en examinar para elegir los archivos y luedo en añadir"</p>
-                    <input
-                      type='file'
-                      multiple={true}
-                      onChange={(e) => {
-                        setImage(e.target.files);
-                      }}
-                    />
-                  </div>
-                )}
-
-                {image ? (
-                  <button
-                    onClick={(e) => {
-                      uploadImage(e);
-                    }}
-                    className={styles.viewBtn}
-                  >
-                    Añadir
-                  </button>
-                ) : null}
-
-                {post.pictures.length > 0 ? (
-                  <div className={styles.dropFilePreview}>
-                    <Swiper
-                      slidesPerView={1}
-                      navigation
-                      spaceBetween={0}
-                      modules={[Navigation]}
-                      className={styles.mySwipper}
-                    >
-                      {post.pictures.map((item, index) => (
-                        <div key={index} className={styles.mySwiper}>
-                          <SwiperSlide>
-                            <img className={styles.mySwiperImg} src={item.picture} alt='' />
-                            <button className={styles.mySwiperBtnDel} onClick={() => fileRemove(item)}>
-                              x
-                            </button>
-                            <label className={styles.subInput}>
-                              <input
-                                className={styles.checkBox4}
-                                type='checkbox'
-                                name='cover'
-                                value={item.picture}
-                                onChange={(e) => handleCover(e)}
-                                defaultChecked={false}
-                              />
-                              Quiero que esta sea la portada
-                            </label>
-                          </SwiperSlide>
-                        </div>
-                      ))}
-                    </Swiper>
-                    {errors.pictures ? <p className={styles.errors}>{errors.pictures}</p> : null}
-                  </div>
-                ) : null}
-              </div>
-            </div>
-
-            {/* SECTION 5: Ubicacion */}
-            <div className={styles.section5}>
-              {/* linea vertical */}
-              <div className={styles.containerLine}>
-                <ul className={styles.timeVerticalRed}>
-                  <li>
-                    <b></b>
-                    <span>5</span>
-                  </li>
-                </ul>
-                <ul className={styles.timeVertical}>
-                  <li>
-                    <b></b>
-                  </li>
-                  <li>
-                    <b></b>
-                  </li>
-                  <li>
-                    <b></b>
-                  </li>
-                  <li>
-                    <b></b>
-                  </li>
-                </ul>
-              </div>
-
-              {/* form */}
-              <div className={styles.container1}>
-                {/* Title*/}
-                <p className={styles.title}>¿Dónde es el evento?</p>
-                <p className={styles.subTitle}>
-                  Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum dolor sit
-                  amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
-                </p>
-
-                {/* CheckBoxOnLine*/}
-                <div className={styles.containerOnLine}>
-                  <input
-                    className={styles.checkBox4}
-                    type='checkbox'
-                    defaultChecked={false}
-                    name='online'
-                    value={post.online}
-                    onChange={(e) => handleCheck(e)}
-                    id='check'
-                  />
-                  <label> Este es un evento en linea</label>
-
-                  {/*Online*/}
-
-                  {failedSubmit && errors.link ? (
-                    <div className={styles.online}>
-                      <input
-                        className={styles.input}
-                        type='text'
-                        maxlength='75'
-                        placeholder='Nombre del evento'
-                        name='title'
-                        value={post.title}
-                        onChange={(e) => handleChange(e)}
-                        required
-                      />
-                    </div>
                   ) : (
                     <input
                       className={styles.input}
@@ -1097,6 +851,7 @@ const EventCreateForm = () => {
                       onChange={(e) => handleChange(e)}
                     />
                   )}
+
                   {titleArray.length > 10 ? (
                     <p className={styles.errors}>Máximo 10 palabras</p>
                   ) : (
@@ -1104,437 +859,495 @@ const EventCreateForm = () => {
                   )}
                   {errors.title ? <p className={styles.errors}>{errors.title}</p> : null}
                 </div>
+              </div>
 
-                {/* SECTION 2: Categorias */}
-                <div className={styles.section2}>
-                  {/* linea vertical */}
-                  <div className={styles.containerLine}>
-                    <ul className={styles.timeVerticalRed}>
-                      <li>
-                        <b></b>
-                        <span>2</span>
-                      </li>
-                    </ul>
-                    <ul className={styles.timeVertical}>
-                      <li>
-                        <b></b>
-                      </li>
-                      <li>
-                        <b></b>
-                      </li>
-                      <li>
-                        <b></b>
-                      </li>
-                      <li>
-                        <b></b>
-                      </li>
-                    </ul>
+              {/* SECTION 2: Categorias */}
+              <div className={styles.section2}>
+                {/* linea vertical */}
+                <div className={styles.containerLine}>
+                  <ul className={styles.timeVerticalRed}>
+                    <li>
+                      <b></b>
+                      <span>2</span>
+                    </li>
+                  </ul>
+                  <ul className={styles.timeVertical}>
+                    <li>
+                      <b></b>
+                    </li>
+                    <li>
+                      <b></b>
+                    </li>
+                    <li>
+                      <b></b>
+                    </li>
+                    <li>
+                      <b></b>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* form */}
+                <div className={styles.container1}>
+                  <p className={styles.title}>Categorías</p>
+                  <p className={styles.subTitle}>
+                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum dolor
+                    sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
+                  </p>
+                  <div className={styles.containerChecks}>
+                    {categories.map((categorie) => (
+                      <div className={styles.checks}>
+                        <label className={styles.labelsChecks}>
+                          <input
+                            className={styles.checkBox}
+                            type='checkbox'
+                            value={categorie.name}
+                            onChange={(e) => handleCategories(e)}
+                            defaultChecked={false}
+                          />
+                          {categorie.name}
+                        </label>
+                      </div>
+                    ))}
                   </div>
 
-                  {/* form */}
-                  <div className={styles.container1}>
-                    <p className={styles.title}>Categorías</p>
+                  {/* otra categoria*/}
+                  <div className={styles.checkOther}>
+                    <input
+                      className={styles.checkBox}
+                      defaultChecked={false}
+                      type='checkbox'
+                      name='categories'
+                      value={post.categories}
+                    />
+                    <label className={styles.labelsChecks}>Otro</label>
+
+                    <div className={styles.otherCategorie}>
+                      <label className={styles.subTitle}>Si escogiste ‘otro’, especifica : </label>
+                      {failedSubmit && errors.otherCategorie ? (
+                        <input
+                          className={styles.input2}
+                          type='text'
+                          name='otherCategorie'
+                          values={post.otherCategorie}
+                          onChange={(e) => handleOtherCategorie(e)}
+                          required
+                        />
+                      ) : (
+                        <input
+                          className={styles.input2}
+                          type='text'
+                          name='otherCategorie'
+                          values={post.otherCategorie}
+                          onChange={(e) => handleOtherCategorie(e)}
+                        />
+                      )}
+                    </div>
+                  </div>
+
+                  {errors.categories && <p className={styles.errors}>{errors.categories}</p>}
+
+                  {failedSubmit && errors.categories && errors.categories < 3 ? (
+                    <p className={styles.errors}>Debes seleccionar al menos una categoría</p>
+                  ) : (
+                    ''
+                  )}
+
+                  {failedSubmit && errors.otherCategorie ? (
+                    <p className={styles.errors}>Solo puedes una ingresar una categoria</p>
+                  ) : (
+                    ''
+                  )}
+                </div>
+              </div>
+
+              {/* SECTION 3: Descripcion */}
+              <div className={styles.section3}>
+                {/* linea vertical */}
+                <div className={styles.containerLine}>
+                  <ul className={styles.timeVerticalRed}>
+                    <li>
+                      <b></b>
+                      <span>3</span>
+                    </li>
+                  </ul>
+                  <ul className={styles.timeVertical}>
+                    <li>
+                      <b></b>
+                    </li>
+                    <li>
+                      <b></b>
+                    </li>
+                    <li>
+                      <b></b>
+                    </li>
+                    <li>
+                      <b></b>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* form */}
+                <div className={styles.container1}>
+                  {/* shortDescription */}
+                  <div className={styles.containerDescription}>
+                    <p className={styles.title}>Descripción breve</p>
                     <p className={styles.subTitle}>
                       Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum dolor
                       sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
                     </p>
-                    <div className={styles.containerChecks}>
-                      {categories.map((categorie) => (
-                        <div className={styles.checks}>
-                          <label className={styles.labelsChecks}>
-                            <input
-                              className={styles.checkBox}
-                              type='checkbox'
-                              value={categorie.name}
-                              onChange={(e) => handleCategories(e)}
-                              defaultChecked={false}
-                            />
-                            {categorie.name}
-                          </label>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* otra categoria*/}
-                    <div className={styles.checkOther}>
-                      <input
-                        className={styles.checkBox}
-                        defaultChecked={false}
-                        type='checkbox'
-                        name='categories'
-                        value={post.categories}
+                    {failedSubmit && errors.shortDescription ? (
+                      <textarea
+                        className={styles.textareaShort}
+                        type='text'
+                        maxlength='100'
+                        placeholder='descripción breve del evento'
+                        name='shortDescription'
+                        value={post.shortDescription}
+                        onChange={(e) => handleChange(e)}
+                        required
                       />
-                      <label className={styles.labelsChecks}>Otro</label>
+                    ) : (
+                      <textarea
+                        className={styles.textareaShort}
+                        type='text'
+                        maxlength='100'
+                        placeholder='descripción breve del evento'
+                        name='shortDescription'
+                        value={post.shortDescription}
+                        onChange={(e) => handleChange(e)}
+                      />
+                    )}
 
-                      <div className={styles.otherCategorie}>
-                        <label className={styles.subTitle}>Si escogiste ‘otro’, especifica : </label>
-                        {failedSubmit && errors.otherCategorie ? (
-                          <input
-                            className={styles.input2}
-                            type='text'
-                            name='otherCategorie'
-                            values={post.otherCategorie}
-                            onChange={(e) => handleOtherCategorie(e)}
-                            required
-                          />
-                        ) : (
-                          <input
-                            className={styles.input2}
-                            type='text'
-                            name='otherCategorie'
-                            values={post.otherCategorie}
-                            onChange={(e) => handleOtherCategorie(e)}
-                          />
-                        )}
-                      </div>
-                    </div>
-
-                    {errors.categories && <p className={styles.errors}>{errors.categories}</p>}
-
-                    {failedSubmit && errors.categories && errors.categories < 3 ? (
-                      <p className={styles.errors}>Debes seleccionar al menos una categoría</p>
+                    {post.shortDescription.length === 100 ? (
+                      <p className={styles.errors}>Máximo: 100 de caracteres</p>
+                    ) : (
+                      <p className={styles.subTitle}>Máximo: 100 de caracteres</p>
+                    )}
+                    {post.shortDescription.length > 0 ? (
+                      <p className={styles.subTitle}>
+                        Usetd va escribiendo: {post.shortDescription.length}/100 caracteres
+                      </p>
                     ) : (
                       ''
                     )}
+                    {errors.shortDescription ? <p className={styles.errors}>{errors.shortDescription}</p> : null}
+                  </div>
 
-                    {failedSubmit && errors.otherCategorie ? (
-                      <p className={styles.errors}>Solo puedes una ingresar una categoria</p>
+                  {/* longDescription */}
+                  <div className={styles.containerDescription}>
+                    <p className={styles.title}>Descripción detallada</p>
+                    <p className={styles.subTitle}>
+                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum dolor
+                      sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
+                    </p>
+                    {failedSubmit && errors.longDescription ? (
+                      <textarea
+                        className={styles.textareaLong}
+                        type='text'
+                        placeholder='descripción detallada del evento'
+                        name='longDescription'
+                        value={post.longDescription}
+                        onChange={(e) => handleChange(e)}
+                        required
+                      />
+                    ) : (
+                      <textarea
+                        className={styles.textareaLong}
+                        type='text'
+                        placeholder='descripción detallada del evento'
+                        name='longDescription'
+                        value={post.longDescription}
+                        onChange={(e) => handleChange(e)}
+                      />
+                    )}
+
+                    {longDescriptionArray.length < 75 && longDescriptionArray.length > 0 ? (
+                      <p className={styles.errors}>Minimo 75 palabras</p>
+                    ) : (
+                      <p className={styles.subTitle}>Minimo 75 palabras</p>
+                    )}
+                    {longDescriptionArray.length > 0 ? (
+                      <p className={styles.subTitle}>Usetd va escribiendo: {longDescriptionArray.length} palabras</p>
                     ) : (
                       ''
                     )}
+                    {errors.longDescription ? <p className={styles.errors}>{errors.longDescription}</p> : null}
                   </div>
                 </div>
+              </div>
 
-                {/* SECTION 3: Descripcion */}
-                <div className={styles.section3}>
-                  {/* linea vertical */}
-                  <div className={styles.containerLine}>
-                    <ul className={styles.timeVerticalRed}>
-                      <li>
-                        <b></b>
-                        <span>3</span>
-                      </li>
-                    </ul>
-                    <ul className={styles.timeVertical}>
-                      <li>
-                        <b></b>
-                      </li>
-                      <li>
-                        <b></b>
-                      </li>
-                      <li>
-                        <b></b>
-                      </li>
-                      <li>
-                        <b></b>
-                      </li>
-                    </ul>
-                  </div>
-
-                  {/* form */}
-                  <div className={styles.container1}>
-                    {/* shortDescription */}
-                    <div className={styles.containerDescription}>
-                      <p className={styles.title}>Descripción breve</p>
-                      <p className={styles.subTitle}>
-                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum
-                        dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
-                      </p>
-                      {failedSubmit && errors.shortDescription ? (
-                        <textarea
-                          className={styles.textareaShort}
-                          type='text'
-                          maxlength='100'
-                          placeholder='descripción breve del evento'
-                          name='shortDescription'
-                          value={post.shortDescription}
-                          onChange={(e) => handleChange(e)}
-                          required
-                        />
-                      ) : (
-                        <textarea
-                          className={styles.textareaShort}
-                          type='text'
-                          maxlength='100'
-                          placeholder='descripción breve del evento'
-                          name='shortDescription'
-                          value={post.shortDescription}
-                          onChange={(e) => handleChange(e)}
-                        />
-                      )}
-
-                      {post.shortDescription.length === 100 ? (
-                        <p className={styles.errors}>Máximo: 100 de caracteres</p>
-                      ) : (
-                        <p className={styles.subTitle}>Máximo: 100 de caracteres</p>
-                      )}
-                      {post.shortDescription.length > 0 ? (
-                        <p className={styles.subTitle}>
-                          Usetd va escribiendo: {post.shortDescription.length}/100 caracteres
-                        </p>
-                      ) : (
-                        ''
-                      )}
-                      {errors.shortDescription ? <p className={styles.errors}>{errors.shortDescription}</p> : null}
-                    </div>
-
-                    {/* longDescription */}
-                    <div className={styles.containerDescription}>
-                      <p className={styles.title}>Descripción detallada</p>
-                      <p className={styles.subTitle}>
-                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum
-                        dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
-                      </p>
-                      {failedSubmit && errors.longDescription ? (
-                        <textarea
-                          className={styles.textareaLong}
-                          type='text'
-                          placeholder='descripción detallada del evento'
-                          name='longDescription'
-                          value={post.longDescription}
-                          onChange={(e) => handleChange(e)}
-                          required
-                        />
-                      ) : (
-                        <textarea
-                          className={styles.textareaLong}
-                          type='text'
-                          placeholder='descripción detallada del evento'
-                          name='longDescription'
-                          value={post.longDescription}
-                          onChange={(e) => handleChange(e)}
-                        />
-                      )}
-
-                      {longDescriptionArray.length < 75 && longDescriptionArray.length > 0 ? (
-                        <p className={styles.errors}>Minimo 75 palabras</p>
-                      ) : (
-                        <p className={styles.subTitle}>Minimo 75 palabras</p>
-                      )}
-                      {longDescriptionArray.length > 0 ? (
-                        <p className={styles.subTitle}>Usetd va escribiendo: {longDescriptionArray.length} palabras</p>
-                      ) : (
-                        ''
-                      )}
-                      {errors.longDescription ? <p className={styles.errors}>{errors.longDescription}</p> : null}
-                    </div>
-                  </div>
+              {/* SECTION 4: Pictures */}
+              <div className={styles.section4}>
+                {/* linea vertical */}
+                <div className={styles.containerLine}>
+                  <ul className={styles.timeVerticalRed}>
+                    <li>
+                      <b></b>
+                      <span>4</span>
+                    </li>
+                  </ul>
+                  <ul className={styles.timeVertical}>
+                    <li>
+                      <b></b>
+                    </li>
+                    <li>
+                      <b></b>
+                    </li>
+                    <li>
+                      <b></b>
+                    </li>
+                    <li>
+                      <b></b>
+                    </li>
+                  </ul>
                 </div>
 
-                {/* SECTION 4: Pictures */}
-                <div className={styles.section4}>
-                  {/* linea vertical */}
-                  <div className={styles.containerLine}>
-                    <ul className={styles.timeVerticalRed}>
-                      <li>
-                        <b></b>
-                        <span>4</span>
-                      </li>
-                    </ul>
-                    <ul className={styles.timeVertical}>
-                      <li>
-                        <b></b>
-                      </li>
-                      <li>
-                        <b></b>
-                      </li>
-                      <li>
-                        <b></b>
-                      </li>
-                      <li>
-                        <b></b>
-                      </li>
-                    </ul>
-                  </div>
+                {/* form */}
+                <div className={styles.container1}>
+                  <p className={styles.title}>Agrega fotos y/o videos</p>
+                  <p className={styles.subTitle}>
+                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum dolor
+                    sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
+                  </p>
+                  <p className={styles.subTitle4}>Fotos del Evento</p>
 
-                  {/* form */}
-                  <div classname={styles.container1}>
-                    <input
-                      type='file'
-                      onChange={(e) => {
-                        setImageSelected(e.target.files[0]);
-                      }}
-                    />
+                  {failedSubmit && errors.pictures ? (
+                    <div>
+                      <p>Fotos: Jpg, png, Max.100kb </p>
+                      <p>Videos: .MP4 Max 100kb</p>
+                      <p>"Haz click en examinar para elegir los archivos y luedo en añadir"</p>
+                      <input
+                        type='file'
+                        multiple={true}
+                        onChange={(e) => {
+                          setImage(e.target.files);
+                        }}
+                      />
+                      {errors.pictures ? <p className={styles.errors}>{errors.pictures}</p> : null}
+                    </div>
+                  ) : (
+                    <div>
+                      <p>Fotos: Jpg, png, Max.100kb </p>
+                      <p>Videos: .MP4 Max 100kb</p>
+                      <p>"Haz click en examinar para elegir los archivos y luedo en añadir"</p>
+                      <input
+                        type='file'
+                        multiple={true}
+                        onChange={(e) => {
+                          setImage(e.target.files);
+                        }}
+                      />
+                    </div>
+                  )}
+
+                  {image ? (
                     <button
                       onClick={(e) => {
                         uploadImage(e);
                       }}
+                      className={styles.viewBtn}
                     >
-                      Upload Image
+                      Añadir
                     </button>
-                  </div>
+                  ) : null}
+
+                  {post.pictures.length > 0 ? (
+                    <div className={styles.dropFilePreview}>
+                      <Swiper
+                        slidesPerView={1}
+                        navigation
+                        spaceBetween={0}
+                        modules={[Navigation]}
+                        className={styles.mySwipper}
+                      >
+                        {post.pictures.map((item, index) => (
+                          <div key={index} className={styles.mySwiper}>
+                            <SwiperSlide>
+                              <img className={styles.mySwiperImg} src={item.picture} alt='' />
+                              <button className={styles.mySwiperBtnDel} onClick={() => fileRemove(item)}>
+                                x
+                              </button>
+                              <label className={styles.subInput}>
+                                <input
+                                  className={styles.checkBox4}
+                                  type='checkbox'
+                                  name='cover'
+                                  value={item.picture}
+                                  onChange={(e) => handleCover(e)}
+                                  defaultChecked={false}
+                                />
+                                Quiero que esta sea la portada
+                              </label>
+                            </SwiperSlide>
+                          </div>
+                        ))}
+                      </Swiper>
+                      {errors.pictures ? <p className={styles.errors}>{errors.pictures}</p> : null}
+                    </div>
+                  ) : null}
+                </div>
+              </div>
+
+              {/* SECTION 5: Ubicacion */}
+              <div className={styles.section5}>
+                {/* linea vertical */}
+                <div className={styles.containerLine}>
+                  <ul className={styles.timeVerticalRed}>
+                    <li>
+                      <b></b>
+                      <span>5</span>
+                    </li>
+                  </ul>
+                  <ul className={styles.timeVertical}>
+                    <li>
+                      <b></b>
+                    </li>
+                    <li>
+                      <b></b>
+                    </li>
+                    <li>
+                      <b></b>
+                    </li>
+                    <li>
+                      <b></b>
+                    </li>
+                  </ul>
                 </div>
 
-                {/* SECTION 5: Ubicacion */}
-                <div className={styles.section5}>
-                  {/* linea vertical */}
-                  <div className={styles.containerLine}>
-                    <ul className={styles.timeVerticalRed}>
-                      <li>
-                        <b></b>
-                        <span>5</span>
-                      </li>
-                    </ul>
-                    <ul className={styles.timeVertical}>
-                      <li>
-                        <b></b>
-                      </li>
-                      <li>
-                        <b></b>
-                      </li>
-                      <li>
-                        <b></b>
-                      </li>
-                      <li>
-                        <b></b>
-                      </li>
-                    </ul>
-                  </div>
+                {/* form */}
+                <div className={styles.container1}>
+                  {/* Title*/}
+                  <p className={styles.title}>¿Dónde es el evento?</p>
+                  <p className={styles.subTitle}>
+                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum dolor
+                    sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
+                  </p>
 
-                  {/* form */}
-                  <div className={styles.container1}>
-                    {/* Title*/}
-                    <p className={styles.title}>¿Dónde es el evento?</p>
-                    <p className={styles.subTitle}>
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum dolor
-                      sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
-                    </p>
+                  {/* CheckBoxOnLine*/}
+                  <div className={styles.containerOnLine}>
+                    <input
+                      className={styles.checkBox4}
+                      type='checkbox'
+                      defaultChecked={false}
+                      name='online'
+                      value={post.online}
+                      onChange={(e) => handleCheck(e)}
+                      id='check'
+                    />
+                    <label> Este es un evento en linea</label>
 
-                    {/* CheckBoxOnLine*/}
-                    <div className={styles.containerOnLine}>
-                      <input
-                        className={styles.checkBox4}
-                        type='checkbox'
-                        defaultChecked={false}
-                        name='online'
-                        value={post.online}
-                        onChange={(e) => handleCheck(e)}
-                        id='check'
-                      />
-                      <label> Este es un evento en linea</label>
+                    {/*Online*/}
 
-                      {/*Online*/}
+                    {failedSubmit && errors.link ? (
+                      <div className={styles.online}>
+                        <input
+                          type='text'
+                          placeholder='Colocar el enlace del evento'
+                          name='link'
+                          value={post.link}
+                          onChange={(e) => handleLink(e)}
+                          required
+                        />
+                      </div>
+                    ) : (
+                      <div className={styles.online}>
+                        <input
+                          type='text'
+                          placeholder='Colocar el enlace del evento'
+                          name='link'
+                          value={post.link}
+                          onChange={(e) => handleChange(e)}
+                        />
+                      </div>
+                    )}
+                    {errors.link ? <p className={styles.errors}>{errors.link}</p> : null}
 
-                      {failedSubmit && errors.link ? (
-                        <div className={styles.online}>
+                    {/*notOnline*/}
+                    <div className={styles.notOnline}>
+                      {/* Dpto */}
+                      <div className={styles.containerDirection}>
+                        {failedSubmit && errors.departamento ? (
                           <input
-                            type='text'
-                            placeholder='Colocar el enlace del evento'
-                            name='link'
-                            value={post.link}
-                            onChange={(e) => handleLink(e)}
+                            className={styles.select}
+                            list='dptos'
+                            id='myDep'
+                            name='departamento'
+                            placeholder='Departamento'
+                            value={post.departamento}
+                            onChange={(e) => handleChange(e)}
                             required
                           />
-                        </div>
-                      ) : (
-                        <div className={styles.online}>
+                        ) : (
                           <input
-                            type='text'
-                            placeholder='Colocar el enlace del evento'
-                            name='link'
-                            value={post.link}
+                            className={styles.select}
+                            list='dptos'
+                            id='myDep'
+                            name='departamento'
+                            placeholder='Departamento'
+                            value={post.departamento}
                             onChange={(e) => handleChange(e)}
                           />
-                        </div>
-                      )}
-                      {errors.link ? <p className={styles.errors}>{errors.link}</p> : null}
-
-                      {/*notOnline*/}
-                      <div className={styles.notOnline}>
-                        {/* Dpto */}
-                        <div className={styles.containerDirection}>
-                          {failedSubmit && errors.departamento ? (
-                            <input
-                              className={styles.select}
-                              list='dptos'
-                              id='myDep'
-                              name='departamento'
-                              placeholder='Departamento'
-                              value={post.departamento}
-                              onChange={(e) => handleChange(e)}
-                              required
-                            />
-                          ) : (
-                            <input
-                              className={styles.select}
-                              list='dptos'
-                              id='myDep'
-                              name='departamento'
-                              placeholder='Departamento'
-                              value={post.departamento}
-                              onChange={(e) => handleChange(e)}
-                            />
-                          )}
-                          <datalist id='dptos'>
-                            {nuevoArrayDepartamentos &&
-                              nuevoArrayDepartamentos.map((departamento) => (
-                                <option value={departamento.departamento}>{departamento.departamento}</option>
-                              ))}
-                          </datalist>
-
-                          {/* Municipio*/}
-
+                        )}
+                        <datalist id='dptos'>
                           {nuevoArrayDepartamentos &&
                             nuevoArrayDepartamentos.map((departamento) => (
-                              <div>
-                                {departamento.departamento === post.departamento && (
-                                  <div>
-                                    {failedSubmit && errors.municipio ? (
-                                      <div className={styles.Muni}>
-                                        <input
-                                          list='municipio'
-                                          id='myMuni'
-                                          name='municipio'
-                                          placeholder={departamento.capital}
-                                          value={post.municipio}
-                                          onChange={(e) => handleChange(e)}
-                                          required
-                                        />
-                                        <datalist id='municipio'>
-                                          <option>{departamento.capital}</option>
-                                          {departamento.municipio.map((m) => (
-                                            <option>{m}</option>
-                                          ))}
-                                        </datalist>
-                                      </div>
-                                    ) : (
-                                      <div className={styles.Muni}>
-                                        <input
-                                          list='municipio'
-                                          id='myMuni'
-                                          name='municipio'
-                                          placeholder={departamento.capital}
-                                          value={post.municipio}
-                                          onChange={(e) => handleChange(e)}
-                                        />
-                                        <datalist id='municipio'>
-                                          <option>{departamento.capital}</option>
-                                          {departamento.municipio.map((m) => (
-                                            <option>{m}</option>
-                                          ))}
-                                        </datalist>
-                                      </div>
-                                    )}
-                                  </div>
-                                )}
-                              </div>
+                              <option value={departamento.departamento}>{departamento.departamento}</option>
                             ))}
-                        </div>
+                        </datalist>
 
-                        {/* Direccion*/}
-                        {failedSubmit && errors.direccion ? (
-                          <div className={styles.direccionError}>
-                            <input
-                              className={styles.input5}
-                              type='text'
-                              placeholder='Dirección del evento'
-                              name='direccion'
-                              value={post.direccion}
-                              onChange={(e) => handleChange(e)}
-                              required
-                            />
-                          </div>
-                        ) : (
+                        {/* Municipio*/}
+
+                        {nuevoArrayDepartamentos &&
+                          nuevoArrayDepartamentos.map((departamento) => (
+                            <div>
+                              {departamento.departamento === post.departamento && (
+                                <div>
+                                  {failedSubmit && errors.municipio ? (
+                                    <div className={styles.Muni}>
+                                      <input
+                                        list='municipio'
+                                        id='myMuni'
+                                        name='municipio'
+                                        placeholder={departamento.capital}
+                                        value={post.municipio}
+                                        onChange={(e) => handleChange(e)}
+                                        required
+                                      />
+                                      <datalist id='municipio'>
+                                        <option>{departamento.capital}</option>
+                                        {departamento.municipio.map((m) => (
+                                          <option>{m}</option>
+                                        ))}
+                                      </datalist>
+                                    </div>
+                                  ) : (
+                                    <div className={styles.Muni}>
+                                      <input
+                                        list='municipio'
+                                        id='myMuni'
+                                        name='municipio'
+                                        placeholder={departamento.capital}
+                                        value={post.municipio}
+                                        onChange={(e) => handleChange(e)}
+                                      />
+                                      <datalist id='municipio'>
+                                        <option>{departamento.capital}</option>
+                                        {departamento.municipio.map((m) => (
+                                          <option>{m}</option>
+                                        ))}
+                                      </datalist>
+                                    </div>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                      </div>
+
+                      {/* Direccion*/}
+                      {failedSubmit && errors.direccion ? (
+                        <div className={styles.direccionError}>
                           <input
                             className={styles.input5}
                             type='text'
@@ -1542,24 +1355,24 @@ const EventCreateForm = () => {
                             name='direccion'
                             value={post.direccion}
                             onChange={(e) => handleChange(e)}
+                            required
                           />
-                        )}
-                        {errors.direccion ? <p className={styles.errors}>{errors.direccion}</p> : null}
+                        </div>
+                      ) : (
+                        <input
+                          className={styles.input5}
+                          type='text'
+                          placeholder='Dirección del evento'
+                          name='direccion'
+                          value={post.direccion}
+                          onChange={(e) => handleChange(e)}
+                        />
+                      )}
+                      {errors.direccion ? <p className={styles.errors}>{errors.direccion}</p> : null}
 
-                        {/* Barrio*/}
-                        {failedSubmit && errors.barrio ? (
-                          <div className={styles.barrio}>
-                            <input
-                              className={styles.input5}
-                              type='text'
-                              placeholder='Barrio'
-                              name='barrio'
-                              value={post.barrio}
-                              onChange={(e) => handleChange(e)}
-                              required
-                            />
-                          </div>
-                        ) : (
+                      {/* Barrio*/}
+                      {failedSubmit && errors.barrio ? (
+                        <div className={styles.barrio}>
                           <input
                             className={styles.input5}
                             type='text'
@@ -1567,58 +1380,69 @@ const EventCreateForm = () => {
                             name='barrio'
                             value={post.barrio}
                             onChange={(e) => handleChange(e)}
+                            required
                           />
-                        )}
-                        {errors.barrio ? <p className={styles.errors}>{errors.barrio}</p> : null}
-
-                        {/* Map*/}
-                        <div className={styles.containerMap}>
-                          <p className={styles.titleMap}>Ubicación en el mapa</p>
-                          {post.municipio ? (
-                            <div>
-                              <img src={url} alt='mapaStaticGoogleMaps' />
-                            </div>
-                          ) : (
-                            <div>
-                              <img src={mapa} alt='mapaStaticGoogleMaps' />
-                            </div>
-                          )}
-                          <p className={styles.subtextMap}>Texto google legal aqui</p>
-
-                          {/* <img  className={styles.icon} src={iconEditar} alt='n' /> */}
-                          <button className={styles.btn}>
-                            <img className={styles.icon} src={iconEditar} alt='n' />
-                          </button>
                         </div>
-                      </div>
-                    </div>
+                      ) : (
+                        <input
+                          className={styles.input5}
+                          type='text'
+                          placeholder='Barrio'
+                          name='barrio'
+                          value={post.barrio}
+                          onChange={(e) => handleChange(e)}
+                        />
+                      )}
+                      {errors.barrio ? <p className={styles.errors}>{errors.barrio}</p> : null}
 
-                    {/*especialRequires*/}
-                    <div className={styles.especialRequires}>
-                      <hr className={styles.hr}></hr>
-                      <p className={styles.subtextEspecial}>Accesibilidad y requerimientos especiales</p>
-                      <div className={styles.especialDiv}>
-                        <span>
-                          <img className={styles.iconExclamacion2} src={iconExclamacion2} alt='n' />
-                        </span>
-                        <span>
-                          <p className={styles.subTitle}>
-                            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum
-                            dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
-                          </p>
-                        </span>
+                      {/* Map*/}
+                      <div className={styles.containerMap}>
+                        <p className={styles.titleMap}>Ubicación en el mapa</p>
+                        {post.municipio ? (
+                          <div>
+                            <img src={url} alt='mapaStaticGoogleMaps' />
+                          </div>
+                        ) : (
+                          <div>
+                            <img src={mapa} alt='mapaStaticGoogleMaps' />
+                          </div>
+                        )}
+                        <p className={styles.subtextMap}>Texto google legal aqui</p>
+
+                        {/* <img  className={styles.icon} src={iconEditar} alt='n' /> */}
+                        <button className={styles.btn}>
+                          <img className={styles.icon} src={iconEditar} alt='n' />
+                        </button>
                       </div>
-                      <input
-                        type='text'
-                        name='specialRequires'
-                        value={post.specialRequires}
-                        onChange={(e) => handleChange(e)}
-                      />
                     </div>
-                    {errors.specialRequires ? <p className={styles.errors}>{errors.specialRequires}</p> : null}
                   </div>
+
+                  {/*especialRequires*/}
+                  <div className={styles.especialRequires}>
+                    <hr className={styles.hr}></hr>
+                    <p className={styles.subtextEspecial}>Accesibilidad y requerimientos especiales</p>
+                    <div className={styles.especialDiv}>
+                      <span>
+                        <img className={styles.iconExclamacion2} src={iconExclamacion2} alt='n' />
+                      </span>
+                      <span>
+                        <p className={styles.subTitle}>
+                          Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum
+                          dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
+                        </p>
+                      </span>
+                    </div>
+                    <input
+                      type='text'
+                      name='specialRequires'
+                      value={post.specialRequires}
+                      onChange={(e) => handleChange(e)}
+                    />
+                  </div>
+                  {errors.specialRequires ? <p className={styles.errors}>{errors.specialRequires}</p> : null}
                 </div>
               </div>
+
               {/*SECTION 6: Dates */}
               <div className={styles.section6}>
                 {/* linea vertical */}
@@ -1671,7 +1495,7 @@ const EventCreateForm = () => {
                                 <input
                                   id='cupos'
                                   type='number'
-                                  placeholder='10'
+                                  placeholder='-'
                                   name='cupos'
                                   value={element.cupos || ''}
                                   onChange={(e) => handleChanges(index, e)}
@@ -1682,7 +1506,7 @@ const EventCreateForm = () => {
                                   id='cupos'
                                   className={styles.subInfoInput}
                                   type='number'
-                                  placeholder='10'
+                                  placeholder='-'
                                   name='cupos'
                                   value={element.cupos || ''}
                                   onChange={(e) => handleChanges(index, e)}
@@ -1700,7 +1524,7 @@ const EventCreateForm = () => {
                                 {failedSubmit && errors.dates ? (
                                   <input
                                     type='number'
-                                    placeholder='20.00'
+                                    placeholder='-'
                                     name='price'
                                     value={element.price || ''}
                                     onChange={(e) => handleChanges(index, e)}
@@ -1710,7 +1534,7 @@ const EventCreateForm = () => {
                                   <input
                                     className={styles.subInfoInput}
                                     type='number'
-                                    placeholder='20.00'
+                                    placeholder='-'
                                     name='price'
                                     value={element.price || ''}
                                     onChange={(e) => handleChanges(index, e)}

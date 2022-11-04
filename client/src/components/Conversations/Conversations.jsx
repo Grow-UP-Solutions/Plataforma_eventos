@@ -10,10 +10,11 @@ import swal from 'sweetalert';
 
 const Conversations = ({ conversation, id }) => {
 
-  const { setMsg, block } = useContext(stateContext);
+  const { setMsg } = useContext(stateContext);
   const [user, setUser] = useState('hola');
   const [messages, setMessages] = useState([]);
-  const [click, setClick] = useState(false);
+  const [click, setClick] = useState(null);
+  const [blocked, setBlocked] = useState(false);
 
   useEffect(() => {
     const friendId = conversation.members.find((m) => m !== id);
@@ -36,6 +37,10 @@ const Conversations = ({ conversation, id }) => {
       setMessages(final);
     }
     getMessages();
+  }, [conversation]);
+
+  useEffect(() => {
+    setClick(conversation.pinup);
   }, [conversation]);
 
   const hanldeClickMsg = async (e) => {
@@ -61,17 +66,18 @@ const Conversations = ({ conversation, id }) => {
     });
   }
 
-  const handleClickPinUp = (e) => {
+  const handleClickPinUp = async (e) => {
     e.preventDefault();
-    console.log('pinup');
+    setClick(!click);
+    const res = await eventsApi.put(`/conversation/${conversation._id}/pinup`);
+    console.log(res.data);
   }
   
   const handleClickBlock = async (e) => {
     e.preventDefault();
-    setClick(true);
+    setBlocked(true);
     const res = await eventsApi.put('/conversation/' + conversation._id);
-    const result = res.data.conversation;
-    console.log(result);
+    console.log(res);
     swal({
       title: 'Conversación Bloqueada',
       icon: 'info',
@@ -82,9 +88,9 @@ const Conversations = ({ conversation, id }) => {
   }
 
   return (
-    <div className={styles.listChats} >
+    <div className={blocked === true ? styles.listChatC : styles.listChats} >
 
-      <div className={click === false ? styles.itemChat : styles.itemChatC} >
+      <div className={styles.itemChat} >
         <img src={user.userpicture ? user.userpicture : avatar} 
           alt="imageAvatar" 
           onClick={hanldeClickMsg}
@@ -118,12 +124,27 @@ const Conversations = ({ conversation, id }) => {
               </div>
             </div>
 
-            <div className={styles.containerItemMenu} onClick={handleClickPinUp}>
-              <BiPin className={styles.itemMenuIcon} />
-              <div className={styles.helperMenu}>
-                <p>Fijar conversacion</p>
-              </div>
-            </div>
+            {
+              click === true ?
+              (<div className={styles.containerItemMenu} onClick={handleClickPinUp}>
+                
+                <BiPin className={styles.itemMenuIcon} style={{color: '#d53e27'}}/>
+                <div className={styles.helperMenu}>
+                  <p>Fijar conversacion</p>
+                </div> 
+                  
+              </div>) : 
+               
+              (<div className={styles.containerItemMenu} onClick={handleClickPinUp}>
+                
+                <BiPin className={styles.itemMenuIcon} />
+                <div className={styles.helperMenu}>
+                  <p>Fijar conversacion</p>
+                </div> 
+                 
+              </div>) 
+            }
+              
 
             <div className={styles.containerItemMenu} onClick={handleClickBlock}>
               <BiBlock className={styles.itemMenuIcon} />
