@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import styles from './Card.module.css';
 import { Link, useResolvedPath } from 'react-router-dom';
 import { Rating } from '@mui/material';
@@ -165,7 +165,7 @@ const Card = ({ event, listName }) => {
             <Link className={styles.link} to={`/sobre-el-organizador/${event.organizer._id}`}>
               <img
                 className={styles.cardOrgPicture}
-                src={event.organizer.userpicture || userData.userpicture || organizer.userpicture || ''}
+                src={event.organizer.userpicture}
                 alt='Not Found ):'
                 width='2px'
                 height='3px'

@@ -1,10 +1,10 @@
-require('../../../DB.js');
-const Events = require('../../db/Events.js');
+require('../../../../DB');
 // const {findOneEvent
 //  } = require("./EventesDb.js");
-const Users = require('../../db/Users.js');
+const Users = require('../../../db/Users');
 const bcrypt = require('bcryptjs');
-const generarCodigo = require('../helpers/generateReferralCode.js');
+const generarCodigo = require('../../helpers/generateReferralCode');
+const { findOneEvent } = require('../EventesDb');
 
 /** basic user database operations */
 
@@ -168,7 +168,7 @@ async function updateNotificationDB(reading) {
 async function updateMyFavorites(idUser, idEvent) {
   try {
     const user = await oneUserDb(idUser);
-    const event = await Events.findById({ _id: idEvent });
+    const event = await findOneEvent(idEvent);
     user.myFavorites.push(event._id);
     await user.save();
 
