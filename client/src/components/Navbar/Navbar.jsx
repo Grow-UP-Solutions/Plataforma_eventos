@@ -57,13 +57,13 @@ const Navbar = ({ upper }) => {
 
   const handleClickMessage = (e) => {
     e.preventDefault();
-    navigate('/user/message');
+    navigate('/usuario/mensajes');
     setOpenMessages(false);
   };
 
   const handleClickNotifications = (e) => {
     e.preventDefault();
-    navigate('/user/notifications');
+    navigate('/usuario/notificaciones');
     setOpenNotifications(false);
   };
 
@@ -91,7 +91,7 @@ const Navbar = ({ upper }) => {
           {pathname !== '/' || upper === false ? <Search location={'not-home'} /> : <></>}
         </div>
         <div className={style.container_div}>
-          {logged && <Link to='/user/perfil/mi-lista'>Mi lista</Link>}
+          {logged && <Link to='/usuario/mi-lista'>Mi lista</Link>}
           {user.organizer? (
             <Link to='/oganiza-un-evento'>
               <p className={`${logged ? style.buttonOrganizar : ''}`}>Organiza un evento</p>
@@ -191,12 +191,12 @@ const Navbar = ({ upper }) => {
                 <IoCaretDownSharp className={style.iconMenu} />
                 {menuOpen && (
                   <div className={style.containerProfileMenu}>
-                    <Link to='/user/perfil/mi-lista'>Mis eventos</Link>
-                    <Link to='/user/perfil/datos'>
+                    <Link to='/usuario/mi-lista'>Mis eventos</Link>
+                    <Link to='/usuario/perfil'>
                       <a>Perfil</a>
                     </Link>
-                    <Link to='/user/perfil/plan-de-referidos'>Plan de referidos</Link>
-                    <Link to='/user/perfil/preferencias'>Preferencias</Link>
+                    <Link to='/usuario/plan-de-referidos'>Plan de referidos</Link>
+                    <Link to='/usuario/preferencias'>Preferencias</Link>
                     <hr />
                     <a
                       onClick={(e) => {

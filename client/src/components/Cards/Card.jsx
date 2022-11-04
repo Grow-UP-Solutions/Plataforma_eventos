@@ -33,8 +33,7 @@ const Card = ({ event, listName }) => {
     }
     
     const organizer = allUsers.filter(user=>user._id === event.organizer)
-       console.log('organizer',organizer)
-       console.log('allUsers',allUsers)
+       
     
 
     
@@ -73,13 +72,37 @@ const Card = ({ event, listName }) => {
     setPrice(e.target.value);
   }
 
-  
+  const portada = event.pictures.filter(p=>p.cover===true)[0]
+  console.log('portada:',portada)
+  console.log('event.pictures:',event.pictures)
 
   
  
   return (
     <div className={styles.card}>
-      {event.pictures.length && event.pictures !== undefined?
+      {
+        portada ?
+        <Link to={`/detalles-del-evento/${event._id}`}>
+          <img
+          className={styles.cardImgEvent}
+          src={portada.picture}
+          alt='Not Found ):'
+          width='200x'
+          height='300'
+          />
+        </Link>
+        :
+        <Link to={`/detalles-del-evento/${event._id}`}>
+          <img
+          className={styles.cardImgEvent}
+          src={event.pictures[0].picture}
+          alt='Not Found ):'
+          width='200x'
+          height='300'
+          />
+       </Link>
+      }
+      {/* {event.pictures.length && event.pictures !== undefined?
         event.pictures.map(p=>(
         p.cover === true ?
         <Link to={`/detalles-del-evento/${event._id}`}>
@@ -102,7 +125,7 @@ const Card = ({ event, listName }) => {
           />
         </Link>
         ))
-      :'N'}
+      :'N'} */}
 
       <div className={styles.cardText}>
         {event.dates && event.dates.length > 1 ? (
