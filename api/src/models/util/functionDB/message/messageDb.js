@@ -67,18 +67,26 @@ async function outstandingMessage(idMessage, idUser) {
    try {
       const messageOutstanding = await findOneMessage(idMessage);
 
-      if (messageOutstanding.outstanding.length > 1) {
-         outstanding(idUser, messageOutstanding.outstanding)
-         messageOutstanding.save();
-         return messageOutstanding.outstanding;
-      } 
-         messageOutstanding.outstanding?.push({
-            messageOutstanding: messageOutstanding._id,
-            idUser,
-         });
+      if (messageOutstanding.outstanding.length > 0) {
+         const userExiste = messageOutstanding.outstanding.find(
+            (e) => e.idUser === idUser
+         );
+         userExiste
+            ? outstanding(idUser, messageOutstanding.outstanding)
+            : messageOutstanding.outstanding?.push({
+                 messageOutstanding: messageOutstanding._id,
+                 idUser,
+              });
          (await messageOutstanding.save()).populate({ path: "outstanding" });
-         return { msg: "mensaje destacado", messageOutstanding };
-      
+         return messageOutstanding;
+      }
+
+      messageOutstanding.outstanding?.push({
+         messageOutstanding: messageOutstanding._id,
+         idUser,
+      });
+      (await messageOutstanding.save()).populate({ path: "outstanding" });
+      return { msg: "mensaje destacado", messageOutstanding };
    } catch (error) {
       throw new Error(error.message);
    }
