@@ -1,5 +1,5 @@
 const { OneCategoryDb } = require("../../models/util/functionDB/CategoryDb.js");
-const { oneUserDb } = require("../../models/util/functionDB/UserDb.js");
+const { oneUserDb } = require("../../models/util/functionDB/users/UserDb.js");
 const {
    AllEventsDb,
    createOneEventDb,

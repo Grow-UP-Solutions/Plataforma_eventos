@@ -1,7 +1,8 @@
 require("../../../../DB.js");
 const Conversation = require("../../../db/Conversation.js");
 const Message = require("../../../db/Message.js");
-const { oneUserDb } = require("../UserDb.js");
+const { oneUserDb } = require("../users/UserDb.js");
+const outstanding = require("./oustanding.js");
 
 async function allMessageDB() {
    return await Message.find();
@@ -39,17 +40,15 @@ async function findAndUpdateMessage(idUser, conversationId) {
    try {
       const userAndMessage = await allMessageReciverUserDB(idUser);
       const messageConversation = userAndMessage.filter((e) => {
-         
          return e.conversationId === conversationId;
       });
-      
-      
+
       messageConversation.forEach(async (e) => {
          e.read = true;
          await e.save();
       });
 
-      return  messageConversation;
+      return messageConversation;
    } catch (error) {
       throw new Error(error.message);
    }
@@ -68,26 +67,22 @@ async function outstandingMessage(idMessage, idUser) {
    try {
       const messageOutstanding = await findOneMessage(idMessage);
 
-      if (messageOutstanding.Moutstanding.length > 0) {
-         const prueba = messageOutstanding.Moutstanding.find(e=> e.idUser=== idUser);
-         console.log(idUser)
-         prueba.isOutstanding= !prueba.isOutstanding
-         messageOutstanding.save()
-         return messageOutstanding.Moutstanding;
-      } else {
-         messageOutstanding.Moutstanding?.push({
+      if (messageOutstanding.outstanding.length > 1) {
+         outstanding(idUser, messageOutstanding.outstanding)
+         messageOutstanding.save();
+         return messageOutstanding.outstanding;
+      } 
+         messageOutstanding.outstanding?.push({
             messageOutstanding: messageOutstanding._id,
             idUser,
          });
-         (await messageOutstanding.save()).populate({ path: "Moutstanding" });
+         (await messageOutstanding.save()).populate({ path: "outstanding" });
          return { msg: "mensaje destacado", messageOutstanding };
-      }
       
    } catch (error) {
       throw new Error(error.message);
    }
 }
-
 
 module.exports = {
    allMessageReciverUserDB,
@@ -97,5 +92,4 @@ module.exports = {
    findOneMessage,
    findAndUpdateMessage,
    outstandingMessage,
-  
 };

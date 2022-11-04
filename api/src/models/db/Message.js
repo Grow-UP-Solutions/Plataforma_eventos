@@ -20,7 +20,7 @@ const messageSchema = new Schema(
          type: Boolean,
          default: false,
       },
-      Moutstanding: [
+      outstanding: [
          {
             messageOutstanding: {
                type: String,

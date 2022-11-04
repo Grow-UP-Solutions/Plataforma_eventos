@@ -34,7 +34,7 @@ const {
   findAllUpdateNotification,
   updateMyFavorites,
   updateUserRating,
-} = require('../../models/util/functionDB/UserDb.js');
+} = require('../../models/util/functionDB/users/UserDb.js');
 const {
   createCodeVerifyMail,
   deleteCodeVerifyMail,
