@@ -793,7 +793,7 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
             icon: "success",
           });
           console.log('postEnviado:',post)
-        navigate("user/perfil/datos" )
+        navigate("/user/perfil/datos" )
         } 
       });
     } 
@@ -1578,7 +1578,7 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
                             <input
                             id='cupos'   
                             type="number"
-                            placeholder="10"
+                            placeholder="-"
                             name="cupos"
                             value={element.cupos || ""} 
                             onChange={e => handleChanges(index, e)}
@@ -1589,7 +1589,7 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
                               id='cupos'
                               className={styles.subInfoInput}
                               type="number"
-                              placeholder="10"
+                              placeholder="-"
                               name="cupos"
                               value={element.cupos || ""} 
                               onChange={e => handleChanges(index, e)}
@@ -1607,7 +1607,7 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
                               {failedSubmit && errors.dates?
                               <input
                               type='number'
-                              placeholder="20.00"
+                              placeholder="-"
                               name="price"
                               value={element.price || ""} 
                               onChange={e => handleChanges(index, e)}
@@ -1617,7 +1617,7 @@ const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({...item, c
                               <input
                                 className={styles.subInfoInput}
                                 type="number"
-                                placeholder="20.00"
+                                placeholder="-"
                                 name="price"
                                 value={element.price || ""} 
                                 onChange={e => handleChanges(index, e)}
