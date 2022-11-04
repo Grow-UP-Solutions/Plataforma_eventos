@@ -89,7 +89,8 @@ const UserPage = () => {
     }
     if (name === 'Pendientes por Asistir')
       setComponent(<ExpectToAttendUser myEvenstBooked={userData.myEvenstBooked} />);
-    if (name === 'Mis Eventos') setComponent(<MyEventsOrganizer myEventsCreated={userData.myEventsCreated} />);
+    if (name === 'Mis Eventos')
+      setComponent(<MyEventsOrganizer userData={userData} myEventsCreated={userData.myEventsCreated} />);
     if (name === 'Perfil') {
       setComponent(<UserForm userData={userData} />);
       navigate('/user/perfil/datos');

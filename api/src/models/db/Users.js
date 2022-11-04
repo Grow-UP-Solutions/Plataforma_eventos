@@ -16,15 +16,18 @@ const UserSchema = new Schema({
   imageRent: String,
   referenceU: String,
   referenceZ: String,
-  saldoPendiente:{
-    type:Number,
-    default:0
+  membership: {
+    type: String,
+    default: '',
   },
-  saldoTotal:{
-    type:Number,
-    default:0
+  saldoPendiente: {
+    type: Number,
+    default: 0,
   },
-
+  saldoTotal: {
+    type: Number,
+    default: 0,
+  },
   availableCredit: {
     type: Number,
     default: 0,
@@ -77,22 +80,24 @@ const UserSchema = new Schema({
     type: Boolean,
     default: false,
   },
-  isReferral:{
+  isReferral: {
     type: String,
-    default: null
+    default: null,
   },
   isOrganizer: {
     type: Boolean,
     default: false,
   },
-  referralCode:{
+  referralCode: {
     type: String,
-    default: ''
+    default: '',
   },
-  referrals:[{
-    type: Schema.Types.ObjectId,
-    ref: 'Users'
-  }],
+  referrals: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Users',
+    },
+  ],
   isLogged: {
     type: Boolean,
     default: false,

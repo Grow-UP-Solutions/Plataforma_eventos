@@ -2,7 +2,7 @@ const {
   findAndUpdateMessage,
   findMessage,
   //findOneMessage,
-} = require("../../models/util/functionDB/messageDb.js");
+} = require("../../models/util/functionDB/message/messageDb.js");
 
 async function updateMessage(id, conversationId) {
   try {

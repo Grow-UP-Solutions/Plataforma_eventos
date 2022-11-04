@@ -20,6 +20,7 @@ router.get('/', async (req, res) => {
     return res.status(500).json({ ERROR_EVENTS: error.message });
   }
 });
+
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
   try {
@@ -33,7 +34,7 @@ router.get('/:id', async (req, res) => {
 router.post('/create', async (req, res) => {
   try {
     const event = req.body;
-        
+
     const eventCreat = await createEvents(event);
 
     return res.status(200).json(eventCreat);
@@ -67,16 +68,15 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-router.put('/:idEvent/rating', async (req,res)=>{
-  const {idEvent}= req.params
-  const {rating} = req.body
+router.put('/:idEvent/rating', async (req, res) => {
+  const { idEvent } = req.params;
+  const { rating } = req.body;
   try {
-    const eventRating = await updateEventRating(idEvent,rating)
-    return res.status(200).json(eventRating)    
+    const eventRating = await updateEventRating(idEvent, rating);
+    return res.status(200).json(eventRating);
   } catch (error) {
     return res.status(500).json({ FALLO_UPDATE: error.message });
-    
   }
-})
+});
 
 module.exports = router;

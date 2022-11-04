@@ -71,6 +71,7 @@ const Register = () => {
       email: formData.mail,
       password: formData.password,
       canReceivedInformation: formData.canReceivedInformation,
+      codeReferred: formData.codeReferred,
     };
 
     try {

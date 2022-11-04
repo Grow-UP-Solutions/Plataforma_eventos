@@ -1,6 +1,6 @@
 require("../../../DB.js");
 const Events = require("../../db/Events.js");
-const { oneUserDb } = require("./UserDb.js");
+const { oneUserDb } = require("./users/UserDb.js");
 /**basic user database operations  */
 async function AllEventsDb() {
    try {

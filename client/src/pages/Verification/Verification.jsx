@@ -59,7 +59,7 @@ const Verification = () => {
       }
 
       if (result.data.success) {
-        const userRegister = await eventsApi.post('/users/create', user);
+        const userRegister = await eventsApi.post(`/users/create?codeReferral=${user.codeReferred}`, user);
         localStorage.setItem('token', userRegister.data.token);
         login({ ...userRegister.data });
       } else {
