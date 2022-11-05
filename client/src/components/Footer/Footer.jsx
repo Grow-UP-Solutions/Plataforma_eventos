@@ -4,11 +4,22 @@ import { ImFacebook, ImLinkedin2, ImTwitter, ImYoutube } from 'react-icons/im';
 import { logo } from '../../assets/imgs/';
 import { FaInstagram, FaTiktok } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import { animateScroll as scroll } from 'react-scroll';
 
 const Footer = () => {
+
+  const handleClickToTop = (e) => {
+    e.preventDefault();
+    scroll.scrollToTop();
+  }
+  
   
   return (
     <div className={styles.footer}>
+
+      <ExpandLessIcon className={styles.arrow} sx={{ fontSize: 35 }} onClick={handleClickToTop}/>
+
       <img src={logo} alt="logo-empresa" className={styles.footerImg} />
 
       <div className={styles.footerItems}>

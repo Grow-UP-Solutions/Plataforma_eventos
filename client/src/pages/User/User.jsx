@@ -37,6 +37,7 @@ import eventsApi from '../../axios/eventsApi';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const UserPage = () => {
+
   const { option } = useParams();
   const { user } = useContext(AuthContext);
   const [userData, setUserData] = useState({});
@@ -44,6 +45,7 @@ const UserPage = () => {
   const [component, setComponent] = useState();
   const [isOpenMenu, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
+  
   useEffect(() => {
     getUserData();
   }, [user]);

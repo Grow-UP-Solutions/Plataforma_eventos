@@ -88,7 +88,7 @@ function App() {
         <Route path='/edita-un-evento' element={<EventEdit />} />
         <Route path='/admin/check-solicitud-organizador/:token' element={<CheckSolicitudOrganizer />} />
       </Routes>
-      <div className='container'>
+      <div className='container_footer'>
         <Footer />
       </div>
       <div className='footer_extra'>
