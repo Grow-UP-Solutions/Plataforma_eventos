@@ -28,29 +28,131 @@ const EventCreate = () => {
     getUserData();
   }, [user]);
 
+
+  const id = user.uid;
+  const [userData, setUserData] = useState({});
+
+
+  useEffect(() => {}, [userData]);
+
   const getUserData = async () => {
     let userResult = {};
     if (user.uid) {
-      userResult = await eventsApi.get('/users/' + user.uid);
+      userResult = await eventsApi.get(`/users/${user.uid}`);
+      setUserData(userResult.data);
     }
   };
 
-  function ingreso(){
-    swal({
-      title: 'Ingresa para comenzar ',
-      buttons: ['Cerrar', 'Ingresar'],
-    }).then((ingresar) => {
-      if (ingresar) {
-        console.log('ingreso')
-        toggleScreenLogin()
-      }
-    })
-    .then((logged)=>{
-      if(logged && user.organizer){
-        console.log('soy organizador')
-        navigate('/oganiza-un-evento')
-      }
-    })
+  // function ingreso1(e){
+  //   e.preventDefault();
+  //   swal({
+  //     title: ' Por favor completa tu perfil para convertirte en Organizador',
+  //     buttons: ['Cerrar', 'Continuar'],
+  //   }).then((continuar) => {
+  //     if (continuar) {
+  //       console.log('perfil incompleto')
+  //       navigate('/usuario/perfil')
+  //     }
+  //   })
+  // }
+
+  // function ingreso2(e){
+  //   e.preventDefault();
+  //     swal({
+  //       title: 'Aplica para ser organizador',
+  //       buttons: ['Cerrar', 'Continuar'],
+  //     }).then((continuar) => {
+  //       if (continuar) {
+  //         console.log('perfil completo pero no org')
+  //         navigate('/usuario/perfil')
+  //       }
+  //     })
+  // }
+
+  // function ingreso3(e){
+  //   e.preventDefault();
+  //   swal({
+  //       title: 'Aplica para ser organizador',
+  //       buttons: ['Cerrar', 'Continuar'],
+  //     }).then((continuar) => {
+  //       if (continuar) {
+  //         console.log('perfil completo pero no org y solicitud ya esta en proceso')
+  //         swal({
+  //           title: 'Tu solicitud para ser Organizador ya está en proceso de verificación. Te estaremos escribiendo muy pronto con el resultado',
+  //         })
+  //       }
+  //     })
+  // }
+
+  // function ingreso4(e){
+  //   e.preventDefault();
+  //   swal({
+  //       title: 'Ingresa para comenzar ',
+  //       buttons: ['Cerrar', 'Ingresar'],
+  //     }).then((ingresar) => {
+  //       if (ingresar) {
+  //         console.log('ingreso')
+  //         toggleScreenLogin()
+  //       }
+  //     })
+  //     .then((logged)=>{
+  //       if(logged && user.organizer){
+  //         console.log('soy organizador')
+  //         navigate('/oganiza-un-evento')
+  //       }
+  //     })
+  // }
+
+  function ingreso(e){
+    if(logged && userData.isProfileCompleted === false){
+      swal({
+        title: ' Por favor completa tu perfil para convertirte en Organizador',
+        buttons: ['Cerrar', 'Continuar'],
+      }).then((continuar) => {
+        if (continuar) {
+          console.log('perfil incompleto')
+          navigate('/usuario/perfil')
+        }
+      })
+    } else if(logged && userData.isProfileCompleted === true && userData.isOrganizer === false && userData.isProccessingToOrganizer === false){
+      swal({
+        title: 'Aplica para ser organizador',
+        buttons: ['Cerrar', 'Continuar'],
+      }).then((continuar) => {
+        if (continuar) {
+          console.log('perfil completo pero no org')
+          navigate('/usuario/perfil')
+        }
+      })
+    } else if(logged && userData.isProfileCompleted === true  && userData.isOrganizer === false && userData.isProccessingToOrganizer === true){
+      swal({
+        title: 'Aplica para ser organizador',
+        buttons: ['Cerrar', 'Continuar'],
+      }).then((continuar) => {
+        if (continuar) {
+          console.log('perfil completo pero no org y solicitud ya esta en proceso')
+          swal({
+            title: 'Tu solicitud para ser Organizador ya está en proceso de verificación. Te estaremos escribiendo muy pronto con el resultado',
+          })
+        }
+      })
+    }else if(!logged){
+      swal({
+        title: 'Ingresa para comenzar ',
+        buttons: ['Cerrar', 'Ingresar'],
+      }).then((ingresar) => {
+        if (ingresar) {
+          console.log('ingreso')
+          toggleScreenLogin()
+        }
+      })
+      .then((logged)=>{
+        if(logged && user.organizer){
+          console.log('soy organizador')
+          navigate('/oganiza-un-evento')
+        }
+      })
+    }   
   }
  
 
@@ -58,14 +160,33 @@ const EventCreate = () => {
     <div className={styles.container}>
       <img src={foto} alt="n" />
 
-      {!logged ? 
+      <div className={styles.containerBtn}>
+            <button className={styles.btn} onClick={(e)=>ingreso(e)}>Comenzar</button>
+      </div>
+
+      {/* {
+        logged && userData && userData.isProfileCompleted === false ?
         (
-        <div className={styles.containerBtn}>
-          <button className={styles.btn} onClick={ingreso}>Comenzar</button>
-        </div>
-        )
-        :''
-      }
+          <div className={styles.containerBtn}>
+            <button className={styles.btn} onClick={(e)=>ingreso1(e)}>Comenzar</button>
+          </div>
+        ) : logged && userData && userData.isProfileCompleted === true && userData.isOrganizer === false && userData.isProccessingToOrganizer === false ?
+        (
+          <div className={styles.containerBtn}>
+            <button className={styles.btn} onClick={(e)=>ingreso2(e)}>Comenzar</button>
+          </div>
+        ) :  logged && userData && userData.isProfileCompleted === true  && userData.isOrganizer === false && userData.isProccessingToOrganizer === true ?
+        (
+          <div className={styles.containerBtn}>
+            <button className={styles.btn} onClick={(e)=>ingreso3(e)}>Comenzar</button>
+          </div>
+        ) : !logged ?
+        (
+          <div className={styles.containerBtn}>
+            <button className={styles.btn} onClick={(e)=>ingreso4(e)}>Comenzar</button>
+          </div>
+        ) :''
+      } */}
       
 
       <div className={styles.containerContent}>

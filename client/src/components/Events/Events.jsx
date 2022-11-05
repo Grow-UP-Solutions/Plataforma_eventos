@@ -48,7 +48,7 @@ for (let a = 1; a <= week.length; a++) {
 }
 
 const eventsWeek = weekEvents.filter(e=>e !== undefined)
-console.log('eventsWeek:',eventsWeek)
+
 
 //FRESQUITOS//
 
@@ -76,7 +76,6 @@ console.log('eventsWeek:',eventsWeek)
       }
     }
 
-console.log('userData.myFavorites:',userData.myFavorites)
 
   return (
     <div className={styles.cardsSection}>
