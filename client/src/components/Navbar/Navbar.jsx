@@ -27,6 +27,8 @@ const Navbar = ({ upper }) => {
     getUserData();
   }, [user]);
 
+  const [userData, setUserData] = useState({});
+
   const getUserData = async () => {
     let userResult = {};
     if (user.uid) {
@@ -35,8 +37,12 @@ const Navbar = ({ upper }) => {
       const final = result.filter(e => e.sender !== user.uid);
       setNotes(userResult.data.notifications.filter((e) => e.read === false));
       setMsg(final);
+      setUserData(userResult.data)
     }
+    console.log('userResult',userResult.data)
   };
+
+
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -92,14 +98,16 @@ const Navbar = ({ upper }) => {
         </div>
         <div className={style.container_div}>
           {logged && <Link to='/usuario/mi-lista'>Mi lista</Link>}
+
           {user.organizer? (
             <Link to='/oganiza-un-evento'>
               <p className={`${logged ? style.buttonOrganizar : ''}`}>Organiza un evento</p>
             </Link>
-          ):
+          ) : userData && userData.isRejected === true ? '' 
+          :
             <Link to={`organiza-un-evento/beneficios`}>
               <p className={`${logged ? style.buttonOrganizar : ''}`}>Organiza un evento</p>
-            </Link>
+            </Link>         
           }
           {!logged ? (
             <>
