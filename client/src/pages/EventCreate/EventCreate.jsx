@@ -15,6 +15,7 @@ import { AuthContext } from '../../context/auth';
 import eventsApi from '../../axios/eventsApi';
 import { useNavigate } from 'react-router-dom';
 import { resolveBreakpointValues } from '@mui/system/breakpoints';
+import { animateScroll as scroll } from 'react-scroll';
 
 const EventCreate = () => {
 
@@ -22,7 +23,9 @@ const EventCreate = () => {
   const { user, logged, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  
+  useEffect(() => {
+    scroll.scrollToTop();
+  }, []);
 
   useEffect(() => {
     getUserData();

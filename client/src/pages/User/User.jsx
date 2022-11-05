@@ -35,6 +35,7 @@ import { IoIosArrowForward, IoIosArrowUp, IoIosArrowDown } from 'react-icons/io'
 import { useEffect } from 'react';
 import eventsApi from '../../axios/eventsApi';
 import { useNavigate, useParams } from 'react-router-dom';
+import { animateScroll as scroll } from 'react-scroll';
 
 const UserPage = () => {
 
@@ -48,6 +49,7 @@ const UserPage = () => {
   
   useEffect(() => {
     getUserData();
+    scroll.scrollToTop();
   }, [user]);
 
   const getUserData = async () => {
