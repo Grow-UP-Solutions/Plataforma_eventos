@@ -12,6 +12,7 @@ const Categories = () => {
   const { categories } = useContext(UIContext);
   const navigate = useNavigate();
 
+
   const handleClick = (e) => {
     e.preventDefault();
     const data = e.target.id

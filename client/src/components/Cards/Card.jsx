@@ -40,7 +40,7 @@ const Card = ({ event, listName }) => {
  
   //const cover = event.pictures.filter(picture=>picture.isCover===true)[0]
 
- console.log('eventOrganizer',event.organizer)
+ 
 
   const handleClickFav = async (e) => {
     e.preventDefault();
@@ -73,8 +73,7 @@ const Card = ({ event, listName }) => {
   }
 
   const portada = event.pictures.filter(p=>p.cover===true)[0]
-  console.log('portada:',portada)
-  console.log('event.pictures:',event.pictures)
+ 
 
   
  
