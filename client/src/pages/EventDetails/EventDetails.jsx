@@ -16,8 +16,9 @@ import React, { useContext, useState, useEffect } from 'react';
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { AiOutlineClose } from 'react-icons/ai';
-import { FaInstagram } from 'react-icons/fa';
+import { FaWhatsapp } from 'react-icons/fa';
 import { ImFacebook, ImLinkedin2, ImTwitter } from 'react-icons/im';
+import { IoLinkOutline } from 'react-icons/io5';
 import { Navigation, Pagination } from 'swiper';
 import 'swiper/modules/navigation/navigation.min.css';
 import 'swiper/modules/pagination/pagination.min.css';
@@ -185,11 +186,19 @@ const EventDetails = () => {
                 </a>
 
                 <a
-                  href="https://www.instagram.com/"
+                  href="https://web.whatsapp.com/"
                   target="_blank"
                   rel="noreferrer noopener"
                 >
-                  <FaInstagram className={style.icons} />
+                  <FaWhatsapp className={style.icons} />
+                </a>
+
+                <a
+                  href={eventDetails.link}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
+                  <IoLinkOutline className={style.icons} />
                 </a>
               </div>
             </div>
