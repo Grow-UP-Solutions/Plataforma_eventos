@@ -31,7 +31,9 @@ import {
   CheckSolicitudOrganizer,
 } from './pages';
 import EventsOrganizerResult from './pages/EventsOrganizerResult/EventsOrganizerResult';
+import News from './pages/News/News';
 import PanelPrivacy from './pages/PanelPrivacy/PanelPrivacy';
+import Press from './pages/Press/Press';
 import { getEvents } from './redux/actions';
 
 function App() {
@@ -76,7 +78,9 @@ function App() {
         <Route path='/oganiza-un-evento-editar/:id' element={<EventEdit />} />
         <Route path='/payment' element={<Payment />} />
         <Route path='/categories' element={<CategoriesResult />} />
-        <Route path='/workWithUs' element={<WorkWithUs />} />
+        <Route path='/empleo' element={<WorkWithUs />} />
+        <Route path='/noticias' element={<News />} />
+        <Route path='/prensa' element={<Press />} />
         <Route path='/workWithUs/form/:work' element={<WorkWithUsForm />} />
         <Route path='/usuario/:option' element={<UserPage />} />
         <Route path='/privacidad' element={<PanelPrivacy />} />
