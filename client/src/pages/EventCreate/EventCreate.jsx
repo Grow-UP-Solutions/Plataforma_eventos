@@ -28,6 +28,8 @@ const EventCreate = () => {
     getUserData();
   }, [user]);
 
+ 
+
 
   const id = user.uid;
   const [userData, setUserData] = useState({});
@@ -42,6 +44,12 @@ const EventCreate = () => {
       setUserData(userResult.data);
     }
   };
+
+  useEffect(() => {
+    if(userData.isOrganizer===true){
+      navigate('/oganiza-un-evento')
+    };
+  }, [userData]);
 
   // function ingreso1(e){
   //   e.preventDefault();
@@ -144,14 +152,17 @@ const EventCreate = () => {
         if (ingresar) {
           console.log('ingreso')
           toggleScreenLogin()
+          if(userData.isOrganizer){
+            navigate('/oganiza-un-evento')
+        }
         }
       })
-      .then((logged)=>{
-        if(logged && user.organizer){
-          console.log('soy organizador')
-          navigate('/oganiza-un-evento')
-        }
-      })
+      // .then((logged)=>{
+      //   if(logged && user.organizer){
+      //     console.log('soy organizador')
+      //     navigate('/oganiza-un-evento')
+      //   }
+      // })
     }   
   }
  
