@@ -5,15 +5,21 @@ import {
   AccordionSummary,
   Typography,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BsCalendar2Check, BsSearch } from 'react-icons/bs';
 import { RiUserLine } from 'react-icons/ri';
 import { TbHeadset } from 'react-icons/tb';
 import { Link } from 'react-router-dom';
 import style from './Faq.module.css';
+import { animateScroll as scroll } from 'react-scroll';
 
 const Faq = () => {
+
   const [expanded, setExpanded] = useState(false);
+
+  useEffect(() => {
+    scroll.scrollToTop();
+  }, []);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);

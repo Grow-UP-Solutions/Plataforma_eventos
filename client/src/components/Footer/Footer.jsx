@@ -1,14 +1,27 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styles from './Footer.module.css';
 import { ImFacebook, ImLinkedin2, ImTwitter, ImYoutube } from 'react-icons/im';
 import { logo } from '../../assets/imgs/';
 import { FaInstagram, FaTiktok } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import { animateScroll as scroll } from 'react-scroll';
+import { stateContext } from '../../context/state/stateContext';
 
 const Footer = () => {
+
+  const { setResult } = useContext(stateContext);
+
+  const handleClickToTop = (e) => {
+    e.preventDefault();
+    scroll.scrollToTop();
+  }
   
   return (
     <div className={styles.footer}>
+
+      <ExpandLessIcon className={styles.arrow} sx={{ fontSize: 35 }} onClick={handleClickToTop}/>
+
       <img src={logo} alt="logo-empresa" className={styles.footerImg} />
 
       <div className={styles.footerItems}>
@@ -31,16 +44,20 @@ const Footer = () => {
         <div className={styles.footerList}>
           <p className={styles.titleList}>Legal</p>
           <ul>
-            <li>
-              <Link to={'/privacy'}>
+            <li onClick={() => setResult('privacy')}>
+              <Link to={'/privacidad'}>
                 <a>Privacidad</a>
               </Link>
             </li>
-            <li>
-              <a href="#">Seguridad</a>
+            <li onClick={() => setResult('security')}>
+              <Link to={'/seguridad'}>
+                <a>Seguridad</a>
+              </Link>
             </li>
-            <li>
-              <a href="#">Términos y condiciones</a>
+            <li onClick={() => setResult('tyc')}>
+              <Link to={'/terminos'}>
+                <a>Términos y condiciones</a>
+              </Link>
             </li>
           </ul>
         </div>

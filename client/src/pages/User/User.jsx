@@ -35,8 +35,10 @@ import { IoIosArrowForward, IoIosArrowUp, IoIosArrowDown } from 'react-icons/io'
 import { useEffect } from 'react';
 import eventsApi from '../../axios/eventsApi';
 import { useNavigate, useParams } from 'react-router-dom';
+import { animateScroll as scroll } from 'react-scroll';
 
 const UserPage = () => {
+
   const { option } = useParams();
   const { user } = useContext(AuthContext);
   const [userData, setUserData] = useState({});
@@ -44,8 +46,10 @@ const UserPage = () => {
   const [component, setComponent] = useState();
   const [isOpenMenu, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
+  
   useEffect(() => {
     getUserData();
+    scroll.scrollToTop();
   }, [user]);
 
   const getUserData = async () => {

@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-
+import { animateScroll as scroll } from 'react-scroll';
 import { GrDocumentPdf, GrDocumentWord, GrClose } from 'react-icons/gr';
 import { IoDocumentTextOutline } from 'react-icons/io5';
 import styles from './WorkWithUsForm.module.css';
 
 const fileTypes = '.doc,.docx,.pdf';
+
 const WorkWithUsForm = () => {
+
+  useEffect(() => {
+    scroll.scrollToTop();
+  }, []);
+
   const { work } = useParams();
 
   const [formData, setFormData] = useState({

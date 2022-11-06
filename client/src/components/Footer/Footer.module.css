@@ -3,6 +3,9 @@
   display: flex;
   align-items: center;
   padding-bottom: 4.5rem;
+  max-width: 1420px;
+  margin: 0 auto;
+  position: relative;
 }
 
 .footerImg {
@@ -67,7 +70,7 @@
   margin-top: 3.2rem;
   display: flex;
   align-items: center;
-  gap: 1.6rem;
+  gap: 2.6rem;
 }
 
 .listSocial .icons {
@@ -81,4 +84,14 @@
 .listSocial .icons:hover {
   color: var(--color-orange);
   transform: scale(1.2);
+}
+
+.arrow {
+  color: white;
+  border-radius: 50px;
+  background-color: var(--color-orange);
+  position: absolute;
+  top: -3rem;
+  right: .5rem;
+  cursor: pointer;
 }

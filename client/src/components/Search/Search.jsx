@@ -3,16 +3,12 @@ import style from './Search.module.css';
 import { BsSearch } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import { stateContext } from '../../context/state/stateContext';
-import { useSelector } from 'react-redux';
-import { UIContext } from '../../context/ui';
 
 const Search = ({ location = 'home' }) => {
 
   const [input, setInput] = useState('');
-  const allEvents = useSelector((state) => state.events);
   const navigate = useNavigate();
   const { setResult } = useContext(stateContext);
-  const { events } = useContext(UIContext);
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -22,11 +18,6 @@ const Search = ({ location = 'home' }) => {
   const handleKeyPress = (e) => {
     if (e.charCode === 13) {
       e.preventDefault();
-      /* const title = events.filter((event) => {
-        const response = event.title.toLowerCase().includes(input.toLowerCase());
-        return response;
-      });
-      setResult(title); */
       setResult(input);
       navigate('/search/');
       setInput('');
@@ -35,11 +26,6 @@ const Search = ({ location = 'home' }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    /* const title = events.filter((event) => {
-      const response = event.title.toLowerCase().includes(input.toLowerCase());
-      return response;
-    });
-    setResult(title); */
     setResult(input);
     navigate('/search/');
     setInput('');
@@ -55,7 +41,7 @@ const Search = ({ location = 'home' }) => {
           location !== 'home' ? style.inputNotHome : style.inputHome
         }`}
         type="text"
-        placeholder="Buscar"
+        placeholder="Criterio de busqueda"
       />
       <button
         onClick={handleSubmit}
