@@ -3,7 +3,9 @@
   margin: 0 auto;
 }
 
-.container_titles h1, h3, h5 {
+.container_titles h1,
+h3,
+h5 {
   font-family: 'Raleway', sans-serif;
   text-align: center;
   margin-top: 2rem;
@@ -19,13 +21,13 @@
 .container_titles h3 {
   font-size: 2.5rem;
   font-weight: bold;
-  color: var(--color-grey-2);  
+  color: var(--color-grey-2);
 }
 
 .container_titles h5 {
   font-size: 2rem;
   font-style: italic;
-  color: var(--color-grey-3);  
+  color: var(--color-grey-3);
 }
 
 .container_table {
@@ -73,9 +75,9 @@
 
 .container_one {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   align-items: center;
-  padding: .5rem 1rem;
+  padding: 0.5rem 1rem;
   gap: 1rem;
   color: var(--color-orange);
 }
@@ -89,9 +91,9 @@
 
 .container_two {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   align-items: center;
-  padding: .5rem 2.7rem;
+  padding: 0.5rem 2.7rem;
   gap: 1rem;
   color: var(--color-orange);
 }
@@ -116,5 +118,5 @@
   font-size: 1.6rem;
   font-family: 'Raleway', sans-serif;
   border-bottom: 1px solid var(--color-orange);
-  cursor: pointer;  
+  cursor: pointer;
 }

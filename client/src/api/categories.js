@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 const categories = [
   {
     name: 'Al Aire Libre',
@@ -122,6 +120,5 @@ const categories = [
   return 'ok';
 } 
 createCategorys() */
-
 
 export default categories;

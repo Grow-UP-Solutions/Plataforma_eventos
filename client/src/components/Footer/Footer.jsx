@@ -6,25 +6,22 @@ import { FaInstagram, FaTiktok } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
-  
   return (
     <div className={styles.footer}>
-      <img src={logo} alt="logo-empresa" className={styles.footerImg} />
+      <img src={logo} alt='logo-empresa' className={styles.footerImg} />
 
       <div className={styles.footerItems}>
         <div className={styles.footerList}>
           <p className={styles.titleList}>Empresa</p>
           <ul>
             <li>
-              <Link to="/workWithUs">
-                <a href="#">Empleo</a>
-              </Link>
+              <Link to='/workWithUs'>Empleo</Link>
             </li>
             <li>
-              <a href="#">Noticias</a>
+              <a href='/'>Noticias</a>
             </li>
             <li>
-              <a href="#">Prensa</a>
+              <a href='/'>Prensa</a>
             </li>
           </ul>
         </div>
@@ -32,15 +29,13 @@ const Footer = () => {
           <p className={styles.titleList}>Legal</p>
           <ul>
             <li>
-              <Link to={'/privacy'}>
-                <a>Privacidad</a>
-              </Link>
+              <Link to={'/privacy'}>Privacidad</Link>
             </li>
             <li>
-              <a href="#">Seguridad</a>
+              <a href='/'>Seguridad</a>
             </li>
             <li>
-              <a href="#">Términos y condiciones</a>
+              <a href='/'>Términos y condiciones</a>
             </li>
           </ul>
         </div>
@@ -48,14 +43,10 @@ const Footer = () => {
           <p className={styles.titleList}>Ayuda</p>
           <ul>
             <li>
-              <Link to={'/contactanos'}>
-                <a href="#">Contáctanos</a>
-              </Link>
+              <Link to={'/contactanos'}>Contáctanos</Link>
             </li>
             <li>
-              <Link to={'/faq'}>
-                <a>Preguntas Frecuentes</a>
-              </Link>
+              <Link to={'/faq'}>Preguntas Frecuentes</Link>
             </li>
           </ul>
         </div>
@@ -64,56 +55,32 @@ const Footer = () => {
           <p className={styles.titleSocial}>Siguenos</p>
           <ul className={styles.listSocial}>
             <li>
-              <a
-                href="https://www.facebook.com/"
-                target="_blank"
-                rel="noreferrer noopener"
-              >
+              <a href='https://www.facebook.com/' target='_blank' rel='noreferrer noopener'>
                 <ImFacebook className={styles.icons} />
               </a>
             </li>
             <li>
-              <a
-                href="https://www.instagram.com/"
-                target="_blank"
-                rel="noreferrer noopener"
-              >
+              <a href='https://www.instagram.com/' target='_blank' rel='noreferrer noopener'>
                 <FaInstagram className={styles.icons} />
               </a>
             </li>
             <li>
-              <a
-                href="https://www.twitter.com/"
-                target="_blank"
-                rel="noreferrer noopener"
-              >
+              <a href='https://www.twitter.com/' target='_blank' rel='noreferrer noopener'>
                 <ImTwitter className={styles.icons} />
               </a>
             </li>
             <li>
-              <a
-                href="https://www.tiktok.com/"
-                target="_blank"
-                rel="noreferrer noopener"
-              >
+              <a href='https://www.tiktok.com/' target='_blank' rel='noreferrer noopener'>
                 <FaTiktok className={styles.icons} />
               </a>
             </li>
             <li>
-              <a
-                href="https://www.youtube.com/"
-                target="_blank"
-                rel="noreferrer noopener"
-              >
+              <a href='https://www.youtube.com/' target='_blank' rel='noreferrer noopener'>
                 <ImYoutube className={styles.icons} />
               </a>
             </li>
             <li>
-              <a
-                href="https://www.linkedin.com/"
-                target="_blank"
-                rel="noreferrer noopener"
-              >
+              <a href='https://www.linkedin.com/' target='_blank' rel='noreferrer noopener'>
                 <ImLinkedin2 className={styles.icons} />
               </a>
             </li>

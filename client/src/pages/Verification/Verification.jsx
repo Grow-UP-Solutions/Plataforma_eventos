@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState, useRef } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styles from './Verification.module.css';
 
-import { AiOutlineMinus } from 'react-icons/ai';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import eventsApi from '../../axios/eventsApi';

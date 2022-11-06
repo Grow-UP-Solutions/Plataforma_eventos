@@ -1,14 +1,13 @@
-import React, { useContext } from 'react';
-import styles from './Card.module.css';
-import { Link, useResolvedPath } from 'react-router-dom';
 import { Rating } from '@mui/material';
+import React, { useContext, useState } from 'react';
+import { Link } from 'react-router-dom';
+import swal from 'sweetalert';
 import { iconAdd } from '../../assets/imgs';
-import { UIContext } from '../../context/ui';
+import eventsApi from '../../axios/eventsApi';
 import { AuthContext } from '../../context/auth/AuthContext';
 import { stateContext } from '../../context/state/stateContext';
-import swal from 'sweetalert';
-import eventsApi from '../../axios/eventsApi';
-import { useState } from 'react';
+import { UIContext } from '../../context/ui';
+import styles from './Card.module.css';
 
 const Card = ({ event, listName }) => {
   const { toggleScreenLogin, getEventsFavourites } = useContext(UIContext);
@@ -17,11 +16,7 @@ const Card = ({ event, listName }) => {
   const currentYear = new Date().getFullYear();
   const numCadena = currentYear + '';
 
-  const id = user.uid;
-
   //const cover = event.pictures.filter(picture=>picture.isCover===true)[0]
-
-  console.log('event', event);
 
   const handleClickFav = async (e) => {
     e.preventDefault();
@@ -56,11 +51,19 @@ const Card = ({ event, listName }) => {
   return (
     <div className={styles.card}>
       {event.pictures.length && event.pictures !== undefined
-        ? event.pictures.map((p) =>
+        ? event.pictures.map((p, index) =>
             p.cover === true ? (
-              <img className={styles.cardImgEvent} src={p.picture} alt='Not Found ):' width='200x' height='300' />
+              <img
+                key={index}
+                className={styles.cardImgEvent}
+                src={p.picture}
+                alt='Not Found ):'
+                width='200x'
+                height='300'
+              />
             ) : (
               <img
+                key={index}
                 className={styles.cardImgEvent}
                 src={event.pictures[0].picture}
                 alt='Not Found ):'
@@ -127,7 +130,7 @@ const Card = ({ event, listName }) => {
                     e.preventDefault();
                     toggleScreenLogin();
                   }}
-                  href='#'
+                  href='/'
                 >
                   Ingresa
                 </a>{' '}

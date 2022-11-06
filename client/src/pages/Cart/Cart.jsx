@@ -1,18 +1,13 @@
 import React, { useEffect } from 'react';
-import styles from './Cart.module.css';
-import {
-  iconArrowLeft,
-  iconArrowRight,
-  iconExclamation,
-} from '../../assets/imgs';
-import { animateScroll as scroll } from 'react-scroll';
-import CardProduct from '../../components/CardProduct/CardProduct';
-import FormProductPay from '../../components/FormProductPay/FormProductPay';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { animateScroll as scroll } from 'react-scroll';
+import { iconExclamation } from '../../assets/imgs';
+import CardProduct from '../../components/CardProduct/CardProduct';
+import FormProductPay from '../../components/FormProductPay/FormProductPay';
+import styles from './Cart.module.css';
 
 const Cart = () => {
-
   const id = useParams().id;
   console.log('id:', id);
   const events = useSelector((state) => state.events);
@@ -31,14 +26,13 @@ const Cart = () => {
           <CardProduct event={eventDetail} />
           <div className={styles.summaryCart}>
             <h2 className={styles.summaryTitle}>
-              <img src={iconExclamation} alt="icon-exclamation" />
+              <img src={iconExclamation} alt='icon-exclamation' />
               <span>Accesibilidad y requerimientos especiales</span>
             </h2>
             <p className={styles.summaryDescription}>
-              Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
-              nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam
-              erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci
-              tation ullamcorper suscipit lobortis nisl ut aliquip.
+              Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut
+              laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+              ullamcorper suscipit lobortis nisl ut aliquip.
             </p>
           </div>
         </div>

@@ -33,6 +33,10 @@ const codeDiscountSchema = new Schema({
     type: Number,
     default: 0,
   },
+  dataEvent: {
+    type: String,
+    default: '',
+  },
 });
 
 module.exports = model('CodeDiscount', codeDiscountSchema);

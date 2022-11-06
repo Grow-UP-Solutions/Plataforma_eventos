@@ -1,23 +1,20 @@
 import React, { useContext, useState } from 'react';
-import style from './Search.module.css';
 import { BsSearch } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import { stateContext } from '../../context/state/stateContext';
-import { useSelector } from 'react-redux';
-import { UIContext } from '../../context/ui';
+import style from './Search.module.css';
 
 const Search = ({ location = 'home' }) => {
-
   const [input, setInput] = useState('');
-  const allEvents = useSelector((state) => state.events);
+  // const allEvents = useSelector((state) => state.events);
   const navigate = useNavigate();
   const { setResult } = useContext(stateContext);
-  const { events } = useContext(UIContext);
+  // const { events } = useContext(UIContext);
 
   const handleChange = (e) => {
     e.preventDefault();
     setInput(e.target.value);
-  }
+  };
 
   const handleKeyPress = (e) => {
     if (e.charCode === 13) {
@@ -31,7 +28,7 @@ const Search = ({ location = 'home' }) => {
       navigate('/search/');
       setInput('');
     }
-  }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -43,33 +40,24 @@ const Search = ({ location = 'home' }) => {
     setResult(input);
     navigate('/search/');
     setInput('');
-  }  
+  };
 
   return (
     <div className={style.container}>
       <input
-        onChange={handleChange} 
+        onChange={handleChange}
         onKeyPress={handleKeyPress}
-        value={input} 
-        className={`${
-          location !== 'home' ? style.inputNotHome : style.inputHome
-        }`}
-        type="text"
-        placeholder="Buscar"
+        value={input}
+        className={`${location !== 'home' ? style.inputNotHome : style.inputHome}`}
+        type='text'
+        placeholder='Buscar'
       />
       <button
         onClick={handleSubmit}
-        className={`${
-          location !== 'home' ? style.searchBtnNotHome : style.searchBtnHome
-        }`}
+        className={`${location !== 'home' ? style.searchBtnNotHome : style.searchBtnHome}`}
       >
-        <BsSearch
-          className={`${
-            location !== 'home' ? style.iconSearchNotHome : style.iconSearchHome
-          }`}
-        />
+        <BsSearch className={`${location !== 'home' ? style.iconSearchNotHome : style.iconSearchHome}`} />
       </button>
-
     </div>
   );
 };
