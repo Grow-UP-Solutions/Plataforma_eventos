@@ -9,20 +9,18 @@ import { animateScroll as scroll } from 'react-scroll';
 import { stateContext } from '../../context/state/stateContext';
 
 const Footer = () => {
-
   const { setResult } = useContext(stateContext);
 
   const handleClickToTop = (e) => {
     e.preventDefault();
     scroll.scrollToTop();
-  }
-  
+  };
+
   return (
     <div className={styles.footer}>
+      <ExpandLessIcon className={styles.arrow} sx={{ fontSize: 35 }} onClick={handleClickToTop} />
 
-      <ExpandLessIcon className={styles.arrow} sx={{ fontSize: 35 }} onClick={handleClickToTop}/>
-
-      <img src={logo} alt="logo-empresa" className={styles.footerImg} />
+      <img src={logo} alt='logo-empresa' className={styles.footerImg} />
 
       <div className={styles.footerItems}>
         <div className={styles.footerList}>
@@ -55,10 +53,8 @@ const Footer = () => {
         <div className={styles.footerList}>
           <p className={styles.titleList}>Legal</p>
           <ul>
-            <li onClick={() => setResult('privacy')}>
-              <Link to={'/privacidad'}>
-                <a>Privacidad</a>
-              </Link>
+            <li>
+              <Link to={'/privacy'}>Privacidad</Link>
             </li>
 
             <li onClick={() => setResult('security')}>
@@ -81,15 +77,11 @@ const Footer = () => {
 
           <ul>
             <li>
-              <Link to={'/contactanos'}>
-                <a href="#">Contáctanos</a>
-              </Link>
+              <Link to={'/contactanos'}>Contáctanos</Link>
             </li>
 
             <li>
-              <Link to={'/faq'}>
-                <a>Preguntas Frecuentes</a>
-              </Link>
+              <Link to={'/faq'}>Preguntas Frecuentes</Link>
             </li>
           </ul>
         </div>
@@ -98,56 +90,32 @@ const Footer = () => {
           <p className={styles.titleSocial}>Siguenos</p>
           <ul className={styles.listSocial}>
             <li>
-              <a
-                href="https://www.facebook.com/"
-                target="_blank"
-                rel="noreferrer noopener"
-              >
+              <a href='https://www.facebook.com/' target='_blank' rel='noreferrer noopener'>
                 <ImFacebook className={styles.icons} />
               </a>
             </li>
             <li>
-              <a
-                href="https://www.instagram.com/"
-                target="_blank"
-                rel="noreferrer noopener"
-              >
+              <a href='https://www.instagram.com/' target='_blank' rel='noreferrer noopener'>
                 <FaInstagram className={styles.icons} />
               </a>
             </li>
             <li>
-              <a
-                href="https://www.twitter.com/"
-                target="_blank"
-                rel="noreferrer noopener"
-              >
+              <a href='https://www.twitter.com/' target='_blank' rel='noreferrer noopener'>
                 <ImTwitter className={styles.icons} />
               </a>
             </li>
             <li>
-              <a
-                href="https://www.tiktok.com/"
-                target="_blank"
-                rel="noreferrer noopener"
-              >
+              <a href='https://www.tiktok.com/' target='_blank' rel='noreferrer noopener'>
                 <FaTiktok className={styles.icons} />
               </a>
             </li>
             <li>
-              <a
-                href="https://www.youtube.com/"
-                target="_blank"
-                rel="noreferrer noopener"
-              >
+              <a href='https://www.youtube.com/' target='_blank' rel='noreferrer noopener'>
                 <ImYoutube className={styles.icons} />
               </a>
             </li>
             <li>
-              <a
-                href="https://www.linkedin.com/"
-                target="_blank"
-                rel="noreferrer noopener"
-              >
+              <a href='https://www.linkedin.com/' target='_blank' rel='noreferrer noopener'>
                 <ImLinkedin2 className={styles.icons} />
               </a>
             </li>

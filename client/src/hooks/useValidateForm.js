@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { isValidEmail } from '../utils/validateEmail';
 
 const useValidateForm = (formData, setFormData) => {

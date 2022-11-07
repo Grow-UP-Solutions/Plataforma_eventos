@@ -39,7 +39,6 @@ const EventCreateForm = () => {
   //--------------------------------------------------//
   //               USUARIO              //
   const { user } = useContext(AuthContext);
-  const id = user.uid;
   const [userData, setUserData] = useState({});
 
   useEffect(() => {
@@ -81,7 +80,7 @@ const EventCreateForm = () => {
   const elementExist = (departamentosFilter, value) => {
     let i = 0;
     while (i < departamentosFilter.length) {
-      if (departamentosFilter[i].departamento == value) return i;
+      if (departamentosFilter[i].departamento === value) return i;
       i++;
     }
     return false;
@@ -221,12 +220,12 @@ const EventCreateForm = () => {
   function validate(post) {
     let errors = {};
 
-    let letras = /^[a-zA-Z]*$/g;
+    // let letras = /^[a-zA-Z]*$/g;
     let offensiveWord = /\b(perro|gato)\b/i;
     let mail = /[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}/gim;
     let webSite = /\b(http|https|www)\b/i;
-    let numeroYdecimales = /^\d*\.?\d*$/;
-    let numero = /^[0-9]*$/g;
+    // let numeroYdecimales = /^\d*\.?\d*$/;
+    // let numero = /^[0-9]*$/g;
     let notNumber = /^(?=.*\d).+$/g;
 
     if (!post.title) {
@@ -374,7 +373,7 @@ const EventCreateForm = () => {
     }
 
     if (post.dates.length > 0) {
-      for (var i = 0; i < post.dates.length; i++) {
+      for (let i = 0; i < post.dates.length; i++) {
         if (!post.dates[i].cupos) {
           errors.cupos = true;
         }
@@ -382,33 +381,33 @@ const EventCreateForm = () => {
     }
 
     if (post.dates.length > 0) {
-      for (var i = 0; i < post.dates.length; i++) {
+      for (let i = 0; i < post.dates.length; i++) {
         if (!post.dates[i].price) {
           errors.price = true;
         }
       }
     }
 
-    // for (var i=0; i<post.dates.length;i++ ){
+    // for (let i=0; i<post.dates.length;i++ ){
     //   if (!post.dates[i].price.match(numeroYdecimales) ) {
     //     errors.dates= 'Debe ser un numero'
     //   }
     // }
 
-    for (var i = 0; i < post.dates.length; i++) {
+    for (let i = 0; i < post.dates.length; i++) {
       if (!post.dates[i].date || !post.dates[i].start || !post.dates[i].end) {
         errors.dates = true;
       }
     }
 
-    for (var i = 0; i < post.dates.length; i++) {
+    for (let i = 0; i < post.dates.length; i++) {
       if (post.dates[i].start > post.dates[i].end && post.dates[i].end) {
         errors.dates = 'Error, hora de fin menor a hora de inicio';
       }
     }
 
-    for (var i = 0; i < post.dates.length; i++) {
-      for (var j = 1; j < post.dates.length; j++) {
+    for (let i = 0; i < post.dates.length; i++) {
+      for (let j = 1; j < post.dates.length; j++) {
         if (
           post.dates[i].start.length > 0 &&
           post.dates[j].start.length > 0 &&
@@ -456,10 +455,10 @@ const EventCreateForm = () => {
   //               POST - CATEGORIA                   //
 
   const [seleccionados, setSeleccionados] = useState([]);
-  const [changed, setChanged] = useState(false);
+  const [changed] = useState(false);
 
   function handleCategories(e) {
-    var categorieName = e.target.value;
+    let categorieName = e.target.value;
     console.log('targetcat:', e.target.value);
     if (!e.target.checked) {
       console.log('seleccionados:', seleccionados);
@@ -482,7 +481,7 @@ const EventCreateForm = () => {
   }
 
   useEffect(() => {
-    var checkeds = document.getElementsByClassName('checkbox');
+    let checkeds = document.getElementsByClassName('checkbox');
     for (let i = 0; i < checkeds.length; i++) {
       checkeds[i].checked = false;
     }
@@ -503,7 +502,7 @@ const EventCreateForm = () => {
   //--------------------------------------------------//
   //                POST - DROP DRAG IMAGES                //
 
-  const [imageSelected, setImageSelected] = useState('');
+  // const [imageSelected, setImageSelected] = useState('');
 
   const [image, setImage] = useState({ files: '' });
 
@@ -685,16 +684,17 @@ const EventCreateForm = () => {
     });
   };
 
-  var fecha = new Date();
-  var anio = fecha.getFullYear();
-  var dia = fecha.getDate();
-  var _mes = fecha.getMonth(); //viene con valores de 0 al 11
+  let fecha = new Date();
+  let anio = fecha.getFullYear();
+  let dia = fecha.getDate();
+  let _mes = fecha.getMonth(); //viene con valores de 0 al 11
   _mes = _mes + 1; //ahora lo tienes de 1 al 12
+  let mes = '';
   if (_mes < 10) {
     //ahora le agregas un 0 para el formato date
-    var mes = '0' + _mes;
+    mes = '0' + _mes;
   } else {
-    var mes = '' + _mes;
+    mes = '' + _mes;
   }
 
   const fechaMinima = anio + '-' + mes + '-' + dia;

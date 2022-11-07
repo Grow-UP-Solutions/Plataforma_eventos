@@ -1,15 +1,14 @@
-import React, { useContext } from 'react';
-import styles from './Card.module.css';
-import { Link, useResolvedPath } from 'react-router-dom';
+import React, { useContext, useState, useEffect } from 'react';
 import { Rating } from '@mui/material';
-import { iconAdd } from '../../assets/imgs';
-import { UIContext } from '../../context/ui';
-import { AuthContext } from '../../context/auth/AuthContext';
-import { stateContext } from '../../context/state/stateContext';
+import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
+import { iconAdd } from '../../assets/imgs';
 import eventsApi from '../../axios/eventsApi';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { stateContext } from '../../context/state/stateContext';
+import { UIContext } from '../../context/ui';
+import styles from './Card.module.css';
+
+import { AuthContext } from '../../context/auth';
 
 const Card = ({ event, listName }) => {
   const { toggleScreenLogin, getEventsFavourites } = useContext(UIContext);
@@ -22,25 +21,18 @@ const Card = ({ event, listName }) => {
 
   useEffect(() => {
     getUsers();
-   }, []);
+  }, []);
 
   useEffect(() => {}, [allUsers]);
- 
 
   const getUsers = async () => {
-       let userResult= await eventsApi.get(`/users`);
-       setAllUsers(userResult.data)
-    }
-    
-    const organizer = allUsers.filter(user=>user._id === event.organizer)
-       
-    
+    let userResult = await eventsApi.get(`/users`);
+    setAllUsers(userResult.data);
+  };
 
-    
- 
+  const organizer = allUsers.filter((user) => user._id === event.organizer);
+
   //const cover = event.pictures.filter(picture=>picture.isCover===true)[0]
-
- 
 
   const handleClickFav = async (e) => {
     e.preventDefault();
@@ -72,35 +64,25 @@ const Card = ({ event, listName }) => {
     setPrice(e.target.value);
   }
 
-  const portada = event.pictures.filter(p=>p.cover===true)[0]
- 
+  const portada = event.pictures.filter((p) => p.cover === true)[0];
 
-  
- 
   return (
     <div className={styles.card}>
-      {
-        portada ?
+      {portada ? (
+        <Link to={`/detalles-del-evento/${event._id}`}>
+          <img className={styles.cardImgEvent} src={portada.picture} alt='Not Found ):' width='200x' height='300' />
+        </Link>
+      ) : (
         <Link to={`/detalles-del-evento/${event._id}`}>
           <img
-          className={styles.cardImgEvent}
-          src={portada.picture}
-          alt='Not Found ):'
-          width='200x'
-          height='300'
+            className={styles.cardImgEvent}
+            src={event.pictures[0].picture}
+            alt='Not Found ):'
+            width='200x'
+            height='300'
           />
         </Link>
-        :
-        <Link to={`/detalles-del-evento/${event._id}`}>
-          <img
-          className={styles.cardImgEvent}
-          src={event.pictures[0].picture}
-          alt='Not Found ):'
-          width='200x'
-          height='300'
-          />
-       </Link>
-      }
+      )}
       {/* {event.pictures.length && event.pictures !== undefined?
         event.pictures.map(p=>(
         p.cover === true ?
@@ -182,7 +164,7 @@ const Card = ({ event, listName }) => {
                     e.preventDefault();
                     toggleScreenLogin();
                   }}
-                  href='#'
+                  href='/'
                 >
                   Ingresa
                 </a>{' '}
@@ -213,8 +195,8 @@ const Card = ({ event, listName }) => {
 
       <hr className={styles.cardHr}></hr>
 
-      {organizer.length===1 ?
-        (organizer[0].userpicture && organizer[0].name ? (
+      {organizer.length === 1 ? (
+        organizer[0].userpicture && organizer[0].name ? (
           <div>
             <div className={styles.cardOrgInfo}>
               <Link className={styles.link} to={`/sobre-el-organizador/${organizer[0]._id}`}>
@@ -230,10 +212,11 @@ const Card = ({ event, listName }) => {
                 <p className={styles.cardOrgName}>{organizer[0].name}</p>
               </Link>
               <div className={styles.vLine}></div>
-              {price ?
+              {price ? (
                 <p className={styles.cardPrice}>${price}</p>
-                : <p className={styles.cardPrice}>${event.dates[0].price}</p>
-              }
+              ) : (
+                <p className={styles.cardPrice}>${event.dates[0].price}</p>
+              )}
               <div className={styles.vLine}></div>
               <Link className={styles.link} to={`/detalles-del-evento/${event._id}`}>
                 <p className={styles.cardDetails}>Ver más</p>
@@ -242,57 +225,57 @@ const Card = ({ event, listName }) => {
           </div>
         ) : (
           <div className={styles.cardOrgInfo}>
-            {price ?
-            <p className={styles.cardPrice}>${price}</p>
-            : <p className={styles.cardPrice}>${event.dates[0].price}</p>
-            }
+            {price ? (
+              <p className={styles.cardPrice}>${price}</p>
+            ) : (
+              <p className={styles.cardPrice}>${event.dates[0].price}</p>
+            )}
             <div className={styles.vLine}></div>
             <Link className={styles.link} to={`/detalles-del-evento/${event._id}`}>
               <p className={styles.cardDetails}>Ver más</p>
             </Link>
           </div>
         )
-        ):(
-        event.organizer.userpicture && event.organizer.name ? (
-          <div>
-            <div className={styles.cardOrgInfo}>
-              <Link className={styles.link} to={`/sobre-el-organizador/${event.organizer._id}`}>
-                <img
-                  className={styles.cardOrgPicture}
-                  src={event.organizer.userpicture}
-                  alt='Not Found ):'
-                  width='2px'
-                  height='3px'
-                />
-              </Link>
-              <Link className={styles.link} to={`/sobre-el-organizador/${event.organizer._id}`}>
-                <p className={styles.cardOrgName}>{event.organizer.name}</p>
-              </Link>
-              <div className={styles.vLine}></div>
-              {price ?
-                <p className={styles.cardPrice}>${price}</p>
-                : <p className={styles.cardPrice}>${event.dates[0].price}</p>
-              }
-              <div className={styles.vLine}></div>
-              <Link className={styles.link} to={`/detalles-del-evento/${event._id}`}>
-                <p className={styles.cardDetails}>Ver más</p>
-              </Link>
-            </div>
-          </div>
-        ) : (
+      ) : event.organizer.userpicture && event.organizer.name ? (
+        <div>
           <div className={styles.cardOrgInfo}>
-            {price ?
-            <p className={styles.cardPrice}>${price}</p>
-            : <p className={styles.cardPrice}>${event.dates[0].price}</p>
-            }
+            <Link className={styles.link} to={`/sobre-el-organizador/${event.organizer._id}`}>
+              <img
+                className={styles.cardOrgPicture}
+                src={event.organizer.userpicture}
+                alt='Not Found ):'
+                width='2px'
+                height='3px'
+              />
+            </Link>
+            <Link className={styles.link} to={`/sobre-el-organizador/${event.organizer._id}`}>
+              <p className={styles.cardOrgName}>{event.organizer.name}</p>
+            </Link>
+            <div className={styles.vLine}></div>
+            {price ? (
+              <p className={styles.cardPrice}>${price}</p>
+            ) : (
+              <p className={styles.cardPrice}>${event.dates[0].price}</p>
+            )}
             <div className={styles.vLine}></div>
             <Link className={styles.link} to={`/detalles-del-evento/${event._id}`}>
               <p className={styles.cardDetails}>Ver más</p>
             </Link>
           </div>
-        ))
-      }
-      
+        </div>
+      ) : (
+        <div className={styles.cardOrgInfo}>
+          {price ? (
+            <p className={styles.cardPrice}>${price}</p>
+          ) : (
+            <p className={styles.cardPrice}>${event.dates[0].price}</p>
+          )}
+          <div className={styles.vLine}></div>
+          <Link className={styles.link} to={`/detalles-del-evento/${event._id}`}>
+            <p className={styles.cardDetails}>Ver más</p>
+          </Link>
+        </div>
+      )}
     </div>
   );
 };
