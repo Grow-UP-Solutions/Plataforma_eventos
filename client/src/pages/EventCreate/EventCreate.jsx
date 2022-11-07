@@ -40,6 +40,12 @@ const EventCreate = () => {
     }
   };
 
+  useEffect(() => {
+    if (userData.isOrganizer === true) {
+      navigate('/oganiza-un-evento');
+    }
+  }, [userData]);
+
   // function ingreso1(e){
   //   e.preventDefault();
   //   swal({
@@ -148,19 +154,21 @@ const EventCreate = () => {
       swal({
         title: 'Ingresa para comenzar ',
         buttons: ['Cerrar', 'Ingresar'],
-      })
-        .then((ingresar) => {
-          if (ingresar) {
-            console.log('ingreso');
-            toggleScreenLogin();
-          }
-        })
-        .then((logged) => {
-          if (logged && user.organizer) {
-            console.log('soy organizador');
+      }).then((ingresar) => {
+        if (ingresar) {
+          console.log('ingreso');
+          toggleScreenLogin();
+          if (userData.isOrganizer) {
             navigate('/oganiza-un-evento');
           }
-        });
+        }
+      });
+      // .then((logged)=>{
+      //   if(logged && user.organizer){
+      //     console.log('soy organizador')
+      //     navigate('/oganiza-un-evento')
+      //   }
+      // })
     }
   }
 

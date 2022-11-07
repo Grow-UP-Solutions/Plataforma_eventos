@@ -24,39 +24,62 @@ const Footer = () => {
 
       <div className={styles.footerItems}>
         <div className={styles.footerList}>
+
           <p className={styles.titleList}>Empresa</p>
+
           <ul>
             <li>
-              <Link to='/workWithUs'>Empleo</Link>
+              <Link to="/empleo">
+                <a>Empleo</a>
+              </Link>
             </li>
+
             <li>
-              <a href='/'>Noticias</a>
+              <Link to={"/noticias"}>
+                <a>Noticias</a>
+              </Link>
+              
             </li>
+
             <li>
-              <a href='/'>Prensa</a>
+              <Link to={"/prensa"}>
+                <a>Prensa</a>
+              </Link>
             </li>
           </ul>
+
         </div>
+
         <div className={styles.footerList}>
           <p className={styles.titleList}>Legal</p>
           <ul>
             <li>
               <Link to={'/privacy'}>Privacidad</Link>
             </li>
-            <li>
-              <a href='/'>Seguridad</a>
+
+            <li onClick={() => setResult('security')}>
+              <Link to={'/seguridad'}>
+                <a>Seguridad</a>
+              </Link>
             </li>
-            <li>
-              <a href='/'>Términos y condiciones</a>
+
+            <li onClick={() => setResult('tyc')}>
+              <Link to={'/terminos'}>
+                <a>Términos y condiciones</a>
+              </Link>
             </li>
           </ul>
         </div>
+
         <div className={styles.footerList}>
+
           <p className={styles.titleList}>Ayuda</p>
+
           <ul>
             <li>
               <Link to={'/contactanos'}>Contáctanos</Link>
             </li>
+
             <li>
               <Link to={'/faq'}>Preguntas Frecuentes</Link>
             </li>

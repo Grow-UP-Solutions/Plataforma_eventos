@@ -7,8 +7,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { AiOutlineClose } from 'react-icons/ai';
-import { FaInstagram } from 'react-icons/fa';
+import { FaWhatsapp } from 'react-icons/fa';
 import { ImFacebook, ImLinkedin2, ImTwitter } from 'react-icons/im';
+import { IoLinkOutline } from 'react-icons/io5';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { animateScroll as scroll, Element, scroller } from 'react-scroll';
@@ -158,8 +159,12 @@ const EventDetails = () => {
                   <ImLinkedin2 className={style.icons} />
                 </a>
 
-                <a href='https://www.instagram.com/' target='_blank' rel='noreferrer noopener'>
-                  <FaInstagram className={style.icons} />
+                <a href='https://web.whatsapp.com/' target='_blank' rel='noreferrer noopener'>
+                  <FaWhatsapp className={style.icons} />
+                </a>
+
+                <a href={eventDetails.link} target='_blank' rel='noreferrer noopener'>
+                  <IoLinkOutline className={style.icons} />
                 </a>
               </div>
             </div>
