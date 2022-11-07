@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { isValidEmail } from '../utils/validateEmail';
 
 const useValidateForm = (formData, setFormData) => {
@@ -14,6 +14,13 @@ const useValidateForm = (formData, setFormData) => {
     const value = e.target.value;
     const regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[().#?!@$%^&*-]).{12,20}$/;
     let checkValidate = false;
+
+    if (id === 'codeReferred') {
+      return setFormData({
+        ...formData,
+        [id]: value,
+      });
+    }
 
     if (id === 'canReceivedInformation') {
       return setFormData({

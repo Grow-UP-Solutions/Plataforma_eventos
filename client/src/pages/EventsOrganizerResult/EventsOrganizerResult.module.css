@@ -16,7 +16,7 @@
   margin-top: 20px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: start;
+  justify-content: flex-start;
   gap: 2rem;
   align-content: flex-start;
 }

@@ -19,9 +19,10 @@ const OrganizerDetails = () => {
   const { user, logged } = useContext(AuthContext);
   const { getEffectRatingOrganizer, ratingOrg } = useContext(UIContext);
   const navigate = useNavigate();
-  const [component, setComponent] = useState('');
+  const [component, setComponent] = useState(null);
   const [nextEvent, setNextEvent] = useState({});
   const [conversation, setConversation] = useState({});
+  const [style, setStyle] = useState('');
   const [userDetail, setUserDetail] = useState({
     organizer: {},
   });
@@ -32,7 +33,7 @@ const OrganizerDetails = () => {
 
   useEffect(() => {
     obtenerDatos();
-  }, [userDetail]);
+  }, []);
 
   useEffect(() => {
     setConversation({
@@ -49,6 +50,8 @@ const OrganizerDetails = () => {
     setUserDetail({
       organizer: json,
     });
+    setComponent(<AboutOrganizer userDetail={json.descriptionOrganizer} />)
+    setStyle('aboutOrganizer');
   };
 
   const handleClickMessages = (e) => {
@@ -81,12 +84,21 @@ const OrganizerDetails = () => {
 
   const handleInput = (e) => {
     const name = e.target.name;
-    if (name === 'AboutOrganizer')
-      setComponent(<AboutOrganizer userDetail={userDetail.organizer} />);
-    if (name === 'NextEvents')
+    if (name === 'AboutOrganizer') {
+      setComponent(<AboutOrganizer userDetail={userDetail.organizer.descriptionOrganizer} />);
+      setStyle('aboutOrganizer');
+    }
+    if (name === 'NextEvents') {
       setComponent(<NextEvents nextEvent={nextEvent} />);
-    if (name === 'Opinions')
+      setStyle('nextEvents');
+    }
+    if (name === 'Opinions') {
       setComponent(<Opinions userDetail={userDetail.organizer} />);
+      setStyle('opinions');
+    }
+    else {
+      console.log('growup');
+    }
   };
 
   return (
@@ -112,10 +124,10 @@ const OrganizerDetails = () => {
             <p className={styles.direction}>{userDetail.organizer.direction}</p>
           </div>
           <p className={styles.member}>
-            Miembor desde {userDetail.organizer.membership}
+            Miembro desde {userDetail.organizer.membership}
           </p>
           <div className={styles.containerMess}>
-            <LocalPostOfficeIcon sx={{ fontSize: '13px', color: '#d53e27' }} />
+            <LocalPostOfficeIcon sx={{ fontSize: '1.6rem', color: '#d53e27' }} />
             <button
               className={styles.message}
               onClick={logged === true ? handleClickMessages : handleAlert}
@@ -125,7 +137,7 @@ const OrganizerDetails = () => {
           </div>
           <div className={styles.containerButtons}>
             <button
-              className={styles.btn}
+              className={style === 'aboutOrganizer' ? styles.btn_c : styles.btn}
               name='AboutOrganizer'
               onClick={handleInput}
             >
@@ -133,7 +145,7 @@ const OrganizerDetails = () => {
             </button>
             <div className={styles.vLine}></div>
             <button
-              className={styles.btn}
+              className={style === 'nextEvents' ? styles.btn_c :  styles.btn}
               name='NextEvents'
               onClick={handleInput}
             >
@@ -141,7 +153,7 @@ const OrganizerDetails = () => {
             </button>
             <div className={styles.vLine}></div>
             <button
-              className={styles.btn}
+              className={style === 'opinions' ? styles.btn_c :  styles.btn}
               name='Opinions'
               onClick={handleInput}
             >

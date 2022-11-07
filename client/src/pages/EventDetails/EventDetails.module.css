@@ -132,8 +132,8 @@
 }
 
 .redes {
-  width: 150px;
-  height: 50px;
+  width: 20rem;
+  height: 5rem;
   padding: 0 2rem;
   color: var(--color-orange);
   background-color: var(--color-grey-6);

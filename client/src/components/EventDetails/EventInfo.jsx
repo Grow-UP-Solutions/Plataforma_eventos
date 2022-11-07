@@ -26,14 +26,19 @@ import { UIContext } from '../../context/ui';
 
 const EventInfo = ({ id }) => {
 
+  console.log('ESTOY EN EL DETALLE')
+
   const allEvents = useSelector((state) => state.events);
   const eventDetails = allEvents.filter((event) => event._id === id)[0];
+  console.log(eventDetails)
   const [getDanger, setGetDanger] = useState(false);
   const [check, setCheck] = useState(null);
   const [checked, setChecked] = useState('');
   const { user } = useContext(AuthContext);
   const { notes, setNotes } = useContext(stateContext);
   const { getEventsFavourites } = useContext(UIContext);
+
+  
   
   const handleFormatDate = (check) => {
     setCheck(check);
@@ -73,12 +78,45 @@ const EventInfo = ({ id }) => {
       dangerMode: true,
     });
   }
+
+ // Contenido Inapropiado
+
+ const contenidosInapropiados = ['Despectivo','Racista','Incita a la violencia','Sexual explicito',' Otro']
+
+ const [seleccionados, setSeleccionados] = useState([]);
+ const [changed, setChanged] = useState(false);
+ const [otros, setOtros] = useState([]);
+ 
+ 
+ 
+
+  function handleReport(e) {
+    var contenido = e.target.value;
+    if (!e.target.checked) {
+      let seleccion = seleccionados.filter((c) => c !== e.target.value);
+      setSeleccionados(seleccion);
+    } else {
+      let contenidoCheck = contenidosInapropiados.find((c) => c === contenido);
+      setSeleccionados([...seleccionados, contenidoCheck]);
+    }
+  }
+
+  useEffect(() => {
+    var checkeds = document.getElementsByClassName('checkbox');
+    for (let i = 0; i < checkeds.length; i++) {
+      checkeds[i].checked = false;
+    }
+    setSeleccionados([]);
+  }, [changed]);
+
+ 
   
   return (
     <div>
       {eventDetails?
   
       <div className={style.container}>
+        {/* imagen */}
         <Swiper
           slidesPerView={1}
           spaceBetween={40}
@@ -192,6 +230,7 @@ const EventInfo = ({ id }) => {
         </p>
 
         {getDanger && (
+          
           <div className={style.containerMenuGetDanger}>
             <div className={style.closeMenuGetDanger}>
               <button onClick={() => setGetDanger(false)}>
@@ -207,76 +246,33 @@ const EventInfo = ({ id }) => {
             <div className={style.containerDanger}>
               <div className={style.containerFormDanger}>
                 <div className={style.menuOptions}>
-                  <form action="">
+                  {contenidosInapropiados.map((contenido) => (
                     <div className={style.formGroup}>
                       <label htmlFor="check">
                         <input
-                          type="checkbox"
                           id="check"
-                          value={checked}
+                          type='checkbox'
+                          value={contenido}
+                          onChange={(e) => handleReport(e)}
                           defaultChecked={false}
                         />
-                        Despectivo
+                        {contenido}
                       </label>
                     </div>
-                    <div className={style.formGroup}>
-                      <label htmlFor="check">
-                        <input
-                          type="checkbox"
-                          id="check"
-                          value={checked}
-                          defaultChecked={false}
-                        />
-                        Racista
-                      </label>
-                    </div>
-                    <div className={style.formGroup}>
-                      <label htmlFor="check">
-                        <input
-                          type="checkbox"
-                          id="check"
-                          value={checked}
-                          defaultChecked={false}
-                        />
-                        Incita a la violencia
-                      </label>
-                    </div>
-                    <div className={style.formGroup}>
-                      <label htmlFor="check">
-                        <input
-                          type="checkbox"
-                          id="check"
-                          value={checked}
-                          defaultChecked={false}
-                        />
-                        Sexual explicito
-                      </label>
-                    </div>
-                    <div className={style.formGroup}>
-                      <label htmlFor="check">
-                        <input
-                          type="checkbox"
-                          id="check"
-                          value={checked}
-                          defaultChecked={false}
-                        />
-                        Otro
-                      </label>
-                    </div>
-                    <div className={style.formGroup}>
-                      <label htmlFor="check">Si otro, indicar cual: </label>
-                      <input type="text" id="check" value={checked} />
-                    </div>
-                    <div className={style.containerBtn}>
+                  ))}
+                  <div className={style.formGroup}>
+                    <label htmlFor="check">Si otro, indicar cual: </label>
+                    <input type="text" id="check" value={checked} />
+                  </div>
+                  <div className={style.containerBtn}>
                       <button type="submit" className={style.btnMenuDanger}>
                         Reportar
                       </button>
                       <button type="submit" className={style.btnMenuDanger}>
                         Cancelar
                       </button>
-                    </div>
-                  </form>
-                </div>
+                  </div>
+               </div>
               </div>
             </div>
           </div>

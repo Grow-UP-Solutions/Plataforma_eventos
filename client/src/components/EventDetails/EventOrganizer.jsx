@@ -62,13 +62,8 @@ const EventOrganizer = ({ id }) => {
 
   const handleClickEventsOrganizer = async (e) => {
     e.preventDefault();
-    try {
-      const res = await eventsApi.get('/users/' + eventDetails.organizer._id);
-      setResult(res.data.myEventsCreated);
-      navigate('/resulteventsorganizer/');
-    } catch (error) {
-      console.log(error)
-    }
+    setResult(eventDetails.organizer._id);
+    navigate('/resulteventsorganizer/');
   };
  
   return (
@@ -87,7 +82,7 @@ const EventOrganizer = ({ id }) => {
       <div className={styles.orgCont}>
       <Link
           className={styles.link}
-          to={`/organizerDetails/${eventDetails.organizer._id}`}
+          to={`/sobre-el-organizador/${eventDetails.organizer._id}`}
         >
         <img className={styles.orgImg} src={eventDetails.organizer.userpicture} alt="N" />
         </Link>

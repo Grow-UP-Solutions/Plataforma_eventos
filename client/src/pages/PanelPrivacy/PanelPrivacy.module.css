@@ -49,6 +49,18 @@
   text-align: left;
 }
 
+.button_c {
+  margin-left: 2rem;
+  margin-top: 2rem;
+  color: var(--color-orange);
+  font-size: 1.6rem;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  width: 80%;
+  text-align: left;
+}
+
 .icon {
   font-size: 2rem;
   margin-left: 20rem;
@@ -59,9 +71,9 @@
   margin-left: 10rem;
 }
 
-.button:focus {
+/* .button:focus {
   color: var(--color-orange);
-}
+} */
 
 .containerComponent {
   grid-area: components;
@@ -69,5 +81,30 @@
   margin-top: 4rem;
 }
 
+.container_box {
+  width: 250px;
+  text-align: center;
+  cursor: pointer;
+  margin: 0 auto;
+}
+
+.box1, .box2 {
+  font-family: 'Raleway', sans-serif;
+  font-size: 1.6rem;
+  color: var(--color-grey-3);
+}
+
+.box_event {
+  color: var(--color-orange);
+  border-bottom: 2px solid var(--color-orange);
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+
+.hidden {
+  border-right: 2px solid var(--color-grey-3);
+  margin-left: 10px;
+  margin-right: 10px;
+}
 
 

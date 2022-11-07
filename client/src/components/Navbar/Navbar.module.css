@@ -164,16 +164,14 @@
 }
 
 .noty {
-  border-top: .5px solid var(--color-grey-3);
+  border-top: 0.5px solid var(--color-grey-3);
   padding: 1rem;
 }
-
-
 
 .link_noti {
   color: var(--color-orange);
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 .link_notis {

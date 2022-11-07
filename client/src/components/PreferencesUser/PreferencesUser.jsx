@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { AuthContext } from '../../context/auth/AuthContext';
 import eventsApi from '../../axios/eventsApi';
+import { AuthContext } from '../../context/auth/AuthContext';
 
 import styles from './PreferencesUser.module.css';
 
@@ -39,7 +39,7 @@ const PreferencesUser = ({ userData }) => {
     });
 
     try {
-      const result = await eventsApi.put(`/users/updateCanReceiveInformation/${userData._id}`, {
+      await eventsApi.put(`/users/updateCanReceiveInformation/${userData._id}`, {
         canReceiveInformation: isChecked,
       });
     } catch (error) {
@@ -56,7 +56,7 @@ const PreferencesUser = ({ userData }) => {
     });
 
     try {
-      const result = await eventsApi.put(`/users/updateCanNotificationMyEvents/${userData._id}`, {
+      await eventsApi.put(`/users/updateCanNotificationMyEvents/${userData._id}`, {
         canNotificationMyEvents: isChecked,
       });
     } catch (error) {

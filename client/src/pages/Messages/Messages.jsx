@@ -1,49 +1,47 @@
 import React, { useContext, useEffect, useState } from 'react';
-import styles from './Messages.module.css';
-import { FiMail, FiArchive, FiStar } from 'react-icons/fi';
-import eventsApi from "../../axios/eventsApi";
+import { FiArchive, FiMail, FiStar } from 'react-icons/fi';
+import { animateScroll as scroll } from 'react-scroll';
+import swal from 'sweetalert';
 import avatar from '../../assets/imgs/no-avatar.png';
+import eventsApi from '../../axios/eventsApi';
 import Conversations from '../../components/Conversations/Conversations';
 import Message from '../../components/Message/Message';
-import { animateScroll as scroll } from 'react-scroll';
-import { AuthContext } from '../../context/auth/AuthContext';
-import { UIContext } from '../../context/ui';
-import { stateContext } from '../../context/state/stateContext';
-import swal from 'sweetalert';
-import { useModal } from '../../hooks/useModal';
 import Modal from '../../components/Modal/Modal';
 import ModalMsg from '../../components/Modals/ModalMsg';
+import { AuthContext } from '../../context/auth/AuthContext';
+import { stateContext } from '../../context/state/stateContext';
+import { UIContext } from '../../context/ui';
+import { useModal } from '../../hooks/useModal';
+import styles from './Messages.module.css';
 
 const validate = (form) => {
-
   let errors = {};
-                
-  let letras =  (/^[a-zA-Z]*$/g);
-  let mail = (/[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}/igm);
-  let webSite =(/\b(http|https|www)\b/i);
-  let offensiveWord= /\b(perro|gato)\b/i;
+
+  // let letras = /^[a-zA-Z]*$/g;
+  let mail = /[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}/gim;
+  let webSite = /\b(http|https|www)\b/i;
+  let offensiveWord = /\b(perro|gato)\b/i;
 
   if (!form.text) {
-    errors.text = true
+    errors.text = true;
   }
 
   if (form.text.match(mail)) {
-    errors.title = 'No puedes ingresar un email o link a redes sociales'
+    errors.title = 'No puedes ingresar un email o link a redes sociales';
   }
 
   if (form.text.match(webSite)) {
-    errors.title = 'No puedes ingresar un dominio o pagina web'
+    errors.title = 'No puedes ingresar un dominio o pagina web';
   }
 
   if (form.text.match(offensiveWord)) {
-    errors.title = 'Palabra ofensiva'
+    errors.title = 'Palabra ofensiva';
   }
 
   return errors;
-}
+};
 
 const Messages = () => {
-
   const { user } = useContext(AuthContext);
   const { getMessagesStar, msgStar } = useContext(UIContext);
   const { setMsg } = useContext(stateContext);
@@ -51,24 +49,23 @@ const Messages = () => {
   const [conversations, setConversations] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState("");
+  const [newMessage, setNewMessage] = useState('');
   const [result, setResult] = useState({});
   const [star, setStar] = useState(false);
   const [clickOne, setClickOne] = useState(false);
   const [clickTwo, setClickTwo] = useState(true);
   const [block, setBlock] = useState([]);
-  const [form, setForm] = useState({text: ''});
-  const [errors, setErrors] = useState({text: ''});
+  const [form] = useState({ text: '' });
+  const [errors, setErrors] = useState({ text: '' });
   const [isOpenModal, openModal, closeModal] = useModal(false);
 
   useEffect(() => {
     const getConversations = async () => {
       try {
-        const res = await eventsApi.get("/conversation/" + id);
+        const res = await eventsApi.get('/conversation/' + id);
         setConversations(res.data.filter((e) => e.locked === false));
         setBlock(res.data.filter((e) => e.locked === true));
-      } 
-      catch (err) {
+      } catch (err) {
         console.log(err);
       }
     };
@@ -78,26 +75,24 @@ const Messages = () => {
   useEffect(() => {
     const getMessages = async () => {
       try {
-        const res = await eventsApi.get("/message/" + currentChat._id);
+        const res = await eventsApi.get('/message/' + currentChat._id);
         setMessages(res.data);
-      } 
-      catch (err) {
+      } catch (err) {
         console.log(err);
       }
     };
     getMessages();
-  }, [currentChat]); 
+  }, [currentChat]);
 
   useEffect(() => {
     const myUser = async () => {
       try {
-        const json = await eventsApi.get("/users/" + id);
+        const json = await eventsApi.get('/users/' + id);
         setResult(json.data);
-      } 
-      catch (error) {
-        console.log(error)
+      } catch (error) {
+        console.log(error);
       }
-    }
+    };
     myUser();
   }, [id]);
 
@@ -108,18 +103,20 @@ const Messages = () => {
   const handleChangeNewMessages = (e) => {
     e.preventDefault();
     setNewMessage(e.target.value);
-    setErrors(validate({
-      ...form,
-      text: e.target.value
-  }));
-  }
+    setErrors(
+      validate({
+        ...form,
+        text: e.target.value,
+      })
+    );
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const friendId = currentChat.members.find((m) => m !== id);
     const message = {
       sender: id,
-      resiver: friendId, 
+      resiver: friendId,
       text: newMessage,
       conversationId: currentChat._id,
     };
@@ -127,35 +124,33 @@ const Messages = () => {
       return openModal();
     }
     try {
-      const res = await eventsApi.post("/message/create", message);
+      const res = await eventsApi.post('/message/create', message);
       setMessages([...messages, res.data]);
-      setNewMessage("");
+      setNewMessage('');
       scroll.scrollToTop();
-    } 
-    catch (err) {
-      console.log(err);   
+    } catch (err) {
+      console.log(err);
     }
-  };  
+  };
 
   const handleClickConversation = async (c) => {
     setCurrentChat(c);
     setStar(false);
-  } 
+  };
 
   const handleClickStar = (e) => {
     e.preventDefault();
     setStar(true);
     const messagesStar = async () => {
       try {
-        const res = await eventsApi.get("/message/" + currentChat._id);
+        const res = await eventsApi.get('/message/' + currentChat._id);
         getMessagesStar(res.data.filter((e) => e.outstanding === true));
-      } 
-      catch (err) {
+      } catch (err) {
         console.log(err);
       }
     };
     messagesStar();
-  }
+  };
 
   const handleClickAllReadMessages = async (e) => {
     e.preventDefault();
@@ -172,58 +167,53 @@ const Messages = () => {
       closeModal: true,
       dangerMode: true,
     });
-  }
+  };
 
   const handleClickOne = (e) => {
     e.preventDefault();
     setClickOne(!clickOne);
     setClickTwo(!clickTwo);
-    if(clickOne === true) setClickOne(true);
-    if(clickTwo === false) setClickTwo(false);
+    if (clickOne === true) setClickOne(true);
+    if (clickTwo === false) setClickTwo(false);
     scroll.scrollToTop();
     const userBlock = async () => {
       try {
-        const res = await eventsApi.get("/conversation/" + id);
-        setBlock(res.data.filter(e => e.locked === true));
-      } 
-      catch (error) {
-        console.log(error)  
+        const res = await eventsApi.get('/conversation/' + id);
+        setBlock(res.data.filter((e) => e.locked === true));
+      } catch (error) {
+        console.log(error);
       }
-    }
+    };
     userBlock();
-  } 
+  };
 
   const handleClickTwo = (e) => {
     e.preventDefault();
     setClickTwo(!clickTwo);
     setClickOne(!clickOne);
-    if(clickTwo === true) setClickTwo(true);
-    if(clickOne === false) setClickOne(false);
+    if (clickTwo === true) setClickTwo(true);
+    if (clickOne === false) setClickOne(false);
     scroll.scrollToTop();
     const userNotBlock = async () => {
       try {
-        const res = await eventsApi.get("/conversation/" + id);
-        setConversations(res.data.filter(e => e.locked === false));
-      } 
-      catch (error) {
-        console.log(error)  
+        const res = await eventsApi.get('/conversation/' + id);
+        setConversations(res.data.filter((e) => e.locked === false));
+      } catch (error) {
+        console.log(error);
       }
-    }
+    };
     userNotBlock();
-  }
-  
+  };
+
   return (
     <div className={`${styles.pageMessage} container`}>
       <div className={styles.containerMessage}>
-
         <div className={styles.containerTitle}>
           <h1 className={styles.title}>Mensajes</h1>
         </div>
 
         <div className={styles.gridContainer}>
-
           <div className={styles.containerChats}>
-            
             <div className={styles.containerOptions}>
               <div onClick={handleClickAllReadMessages}>
                 <FiMail />
@@ -241,71 +231,68 @@ const Messages = () => {
               </div>
             </div>
 
-            <Modal isOpen={isOpenModal} closeModal={closeModal} >
-              <ModalMsg closeModal={closeModal}/>
+            <Modal isOpen={isOpenModal} closeModal={closeModal}>
+              <ModalMsg closeModal={closeModal} />
             </Modal>
 
             <div className={styles.containerChats}>
-
-              {
-                clickTwo === true ?
-                conversations.map((c, i) => (
-                  <div key={i} onClick={() => handleClickConversation(c)} className={currentChat && currentChat._id === c._id ? styles.active : ''}>
-                    <Conversations conversation={c} id={id} />
-                  </div>
-                )) :
-                block.map((c, i) => (
-                  <div key={i} onClick={() => handleClickConversation(c)} className={currentChat && currentChat._id === c._id ? styles.active : ''}>
-                    <Conversations conversation={c} id={id} />
-                  </div>
-                ))
-              }
-
+              {clickTwo === true
+                ? conversations.map((c, i) => (
+                    <div
+                      key={i}
+                      onClick={() => handleClickConversation(c)}
+                      className={currentChat && currentChat._id === c._id ? styles.active : ''}
+                    >
+                      <Conversations conversation={c} id={id} />
+                    </div>
+                  ))
+                : block.map((c, i) => (
+                    <div
+                      key={i}
+                      onClick={() => handleClickConversation(c)}
+                      className={currentChat && currentChat._id === c._id ? styles.active : ''}
+                    >
+                      <Conversations conversation={c} id={id} />
+                    </div>
+                  ))}
             </div>
-
           </div>
-          
-          <div className={styles.containerChat}>
 
+          <div className={styles.containerChat}>
             <div className={styles.chatHeader}>
-              <img src={result.userpicture ? result.userpicture : avatar} alt="user-photo" />
+              <img src={result.userpicture ? result.userpicture : avatar} alt='user' />
               <span>{user.name}</span>
             </div>
 
             <div className={styles.containerChatMessage}>
-              {
-                currentChat && star === false ? (
+              {currentChat && star === false ? (
                 <>
                   <div>
-                    {
-                      messages.map((m, i) => (
-                        <div key={i} >
+                    {messages
+                      .map((m, i) => (
+                        <div key={i}>
                           <Message message={m} own={m.sender === id} />
                         </div>
-                      )).reverse()
-                    }
-                  </div> 
-                </> ) : currentChat && star === true ? ( 
-                <>
-                  <div>
-                    {
-                      msgStar.map((m, i) => (
-                        <div key={i} >
-                          <Message message={m} own={m.sender === id} />
-                        </div>
-                      )).reverse()
-                    }
+                      ))
+                      .reverse()}
                   </div>
-                </> ) : 
-                (
-                  <span className={styles.noMsg}>
-                    Inicia una conversación.
-                  </span>
-                )
-              }
-
+                </>
+              ) : currentChat && star === true ? (
+                <>
+                  <div>
+                    {msgStar
+                      .map((m, i) => (
+                        <div key={i}>
+                          <Message message={m} own={m.sender === id} />
+                        </div>
+                      ))
+                      .reverse()}
+                  </div>
+                </>
+              ) : (
+                <span className={styles.noMsg}>Inicia una conversación.</span>
+              )}
             </div>
-
           </div>
 
           <div className={styles.buttonsChats}>
@@ -321,45 +308,35 @@ const Messages = () => {
           </div>
 
           <div className={styles.containerInputMessage}>
-
-            {
-              currentChat ?
+            {currentChat ? (
               <textarea
-                name="message"
-                id="message"
-                cols="30"
-                rows="10"
-                placeholder="Escribe un mensaje aquí"              
+                name='message'
+                id='message'
+                cols='30'
+                rows='10'
+                placeholder='Escribe un mensaje aquí'
                 onChange={handleChangeNewMessages}
                 value={newMessage}
-              ></textarea> :
+              ></textarea>
+            ) : (
               <textarea
                 disabled
-                name="message"
-                id="message"
-                cols="30"
-                rows="10"
-                placeholder="Escribe un mensaje aquí"
+                name='message'
+                id='message'
+                cols='30'
+                rows='10'
+                placeholder='Escribe un mensaje aquí'
               ></textarea>
-            }
+            )}
 
             <div className={styles.wrapperBtnInputMessage}>
-
               <p>
-                No se permite el envío de números de teléfono, direcciones de
-                correo electrónico, enlaces a sitios web o enlaces a redes
-                sociales.
+                No se permite el envío de números de teléfono, direcciones de correo electrónico, enlaces a sitios web o
+                enlaces a redes sociales.
               </p>
-              {
-                currentChat ?
-                <button onClick={handleSubmit}>Enviar</button> :
-                <button disable >Enviar</button>
-              }
-              
+              {currentChat ? <button onClick={handleSubmit}>Enviar</button> : <button disable>Enviar</button>}
             </div>
-            
-          </div> 
-          
+          </div>
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './WorkWithUs.module.css';
 import { Link } from 'react-router-dom';
+import { animateScroll as scroll } from 'react-scroll';
 
 const works = [
   {
@@ -83,6 +84,11 @@ const works = [
 ];
 
 const WorkWithUs = () => {
+
+  useEffect(() => {
+    scroll.scrollToTop();
+  }, []);
+
   return (
     <div className={`${styles.pageWorkWithUs} container`}>
       <h1 className={styles.titleWorkWithUs}>Trabaja con nosotros</h1>
@@ -95,10 +101,8 @@ const WorkWithUs = () => {
               </h2>
               <p>{work.description}</p>
             </div>
-            <Link to={`/workWithUs/form/${work.title}`}>
-              <a href="#" className={styles.btnWork}>
-                Aplicar
-              </a>
+            <Link className={styles.btnWork} to={`/workWithUs/form/${work.title}`}>
+              Aplicar
             </Link>
           </div>
         ))}

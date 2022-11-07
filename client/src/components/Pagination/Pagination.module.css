@@ -1,4 +1,3 @@
-
 .container {
   display: flex;
   justify-content: center;
@@ -7,7 +6,7 @@
 .page {
   display: inline-block;
   cursor: pointer;
-  padding: .1rem .4rem;
+  padding: 0.1rem 0.4rem;
 }
 
 .number:hover {
@@ -15,6 +14,8 @@
 }
 
 .number_nav {
+  background: none;
+  border: none;
   color: var(--color-grey-3);
   text-decoration: none;
   font-size: 2.5rem;
@@ -22,6 +23,8 @@
 }
 
 .number_sel {
+  background: none;
+  border: none;
   color: var(--color-orange);
   text-decoration: none;
   font-size: 2.5rem;

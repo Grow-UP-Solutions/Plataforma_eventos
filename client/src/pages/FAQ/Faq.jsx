@@ -1,19 +1,19 @@
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Typography,
-} from '@mui/material';
-import React, { useState } from 'react';
+import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import { BsCalendar2Check, BsSearch } from 'react-icons/bs';
 import { RiUserLine } from 'react-icons/ri';
 import { TbHeadset } from 'react-icons/tb';
 import { Link } from 'react-router-dom';
 import style from './Faq.module.css';
+import { animateScroll as scroll } from 'react-scroll';
 
 const Faq = () => {
   const [expanded, setExpanded] = useState(false);
+
+  useEffect(() => {
+    scroll.scrollToTop();
+  }, []);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -22,10 +22,10 @@ const Faq = () => {
   return (
     <div className={style.container}>
       <header className={style.header}>
-        <Typography variant="h1" fontWeight={'bold'}>
+        <Typography variant='h1' fontWeight={'bold'}>
           ¡Hola! ¿Cómo te
         </Typography>
-        <Typography variant="h1" fontWeight={'bold'}>
+        <Typography variant='h1' fontWeight={'bold'}>
           podemos ayudar?
         </Typography>
 
@@ -33,11 +33,7 @@ const Faq = () => {
         <br />
         <br />
 
-        <input
-          type="text"
-          placeholder="Escribe una palabra clave"
-          className={style.input}
-        />
+        <input type='text' placeholder='Escribe una palabra clave' className={style.input} />
         <button className={style.button}>
           <BsSearch className={style.loop} />
         </button>
@@ -73,8 +69,8 @@ const Faq = () => {
                   }}
                 />
               }
-              aria-controls="panel1bh-content"
-              id="panel1bh-header"
+              aria-controls='panel1bh-content'
+              id='panel1bh-header'
               sx={{
                 backgroundColor: 'white',
                 boxShadow: '1px 1px 5px 1px #d6d6d6',
@@ -87,18 +83,14 @@ const Faq = () => {
 
             <AccordionDetails sx={{ backgroundColor: '#d6d6d6' }}>
               <p className={style.detail}>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit
-                vitae iste enim optio provident laborum voluptates obcaecati
-                laudantium. Libero rem consequuntur cupiditate delectus omnis
-                soluta, natus officiis voluptatibus architecto ipsam.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit vitae iste enim optio provident laborum
+                voluptates obcaecati laudantium. Libero rem consequuntur cupiditate delectus omnis soluta, natus
+                officiis voluptatibus architecto ipsam.
               </p>
             </AccordionDetails>
           </Accordion>
 
-          <Accordion
-            expanded={expanded === 'panel2'}
-            onChange={handleChange('panel2')}
-          >
+          <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
             <AccordionSummary
               expandIcon={
                 <ExpandMoreIcon
@@ -108,8 +100,8 @@ const Faq = () => {
                   }}
                 />
               }
-              aria-controls="panel2bh-content"
-              id="panel2bh-header"
+              aria-controls='panel2bh-content'
+              id='panel2bh-header'
               sx={{
                 backgroundColor: 'white',
                 boxShadow: '1px 1px 5px 1px #d6d6d6',
@@ -122,18 +114,14 @@ const Faq = () => {
 
             <AccordionDetails sx={{ backgroundColor: '#d6d6d6' }}>
               <p className={style.detail}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod
-                quidem voluptatibus asperiores tempora omnis aperiam recusandae
-                obcaecati molestias officia facilis, nam nostrum! Iste doloribus
-                quas nostrum placeat omnis odio atque.
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod quidem voluptatibus asperiores tempora
+                omnis aperiam recusandae obcaecati molestias officia facilis, nam nostrum! Iste doloribus quas nostrum
+                placeat omnis odio atque.
               </p>
             </AccordionDetails>
           </Accordion>
 
-          <Accordion
-            expanded={expanded === 'panel3'}
-            onChange={handleChange('panel3')}
-          >
+          <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
             <AccordionSummary
               expandIcon={
                 <ExpandMoreIcon
@@ -143,8 +131,8 @@ const Faq = () => {
                   }}
                 />
               }
-              aria-controls="panel3bh-content"
-              id="panel3bh-header"
+              aria-controls='panel3bh-content'
+              id='panel3bh-header'
               sx={{
                 backgroundColor: 'white',
                 boxShadow: '1px 1px 5px 1px #d6d6d6',
@@ -157,18 +145,13 @@ const Faq = () => {
 
             <AccordionDetails sx={{ backgroundColor: '#d6d6d6' }}>
               <p className={style.detail}>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                Veritatis, error! Nam, vitae et nobis vel nisi exercitationem
-                aperiam harum, quos culpa ad omnis odit, minima maxime nesciunt
-                pariatur porro ipsa?
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Veritatis, error! Nam, vitae et nobis vel nisi
+                exercitationem aperiam harum, quos culpa ad omnis odit, minima maxime nesciunt pariatur porro ipsa?
               </p>
             </AccordionDetails>
           </Accordion>
 
-          <Accordion
-            expanded={expanded === 'panel4'}
-            onChange={handleChange('panel4')}
-          >
+          <Accordion expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>
             <AccordionSummary
               expandIcon={
                 <ExpandMoreIcon
@@ -178,8 +161,8 @@ const Faq = () => {
                   }}
                 />
               }
-              aria-controls="panel4bh-content"
-              id="panel4bh-header"
+              aria-controls='panel4bh-content'
+              id='panel4bh-header'
               sx={{
                 backgroundColor: 'white',
                 boxShadow: '1px 1px 5px 1px #d6d6d6',
@@ -192,18 +175,14 @@ const Faq = () => {
 
             <AccordionDetails sx={{ backgroundColor: '#d6d6d6' }}>
               <p className={style.detail}>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                Provident, nihil ipsum nam tempora excepturi ab sapiente est in
-                reprehenderit, nulla commodi voluptatem porro quasi. Et maiores
-                accusantium sint fugiat beatae?
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Provident, nihil ipsum nam tempora excepturi
+                ab sapiente est in reprehenderit, nulla commodi voluptatem porro quasi. Et maiores accusantium sint
+                fugiat beatae?
               </p>
             </AccordionDetails>
           </Accordion>
 
-          <Accordion
-            expanded={expanded === 'panel5'}
-            onChange={handleChange('panel5')}
-          >
+          <Accordion expanded={expanded === 'panel5'} onChange={handleChange('panel5')}>
             <AccordionSummary
               expandIcon={
                 <ExpandMoreIcon
@@ -213,8 +192,8 @@ const Faq = () => {
                   }}
                 />
               }
-              aria-controls="panel5bh-content"
-              id="panel5bh-header"
+              aria-controls='panel5bh-content'
+              id='panel5bh-header'
               sx={{
                 backgroundColor: 'white',
                 boxShadow: '1px 1px 5px 1px #d6d6d6',
@@ -227,10 +206,8 @@ const Faq = () => {
 
             <AccordionDetails sx={{ backgroundColor: '#d6d6d6' }}>
               <p className={style.detail}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque
-                libero corporis, perferendis eaque ut illum eveniet sit nemo in
-                ratione sed reiciendis ullam minima dolor facilis rerum ab quae
-                recusandae.
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque libero corporis, perferendis eaque ut
+                illum eveniet sit nemo in ratione sed reiciendis ullam minima dolor facilis rerum ab quae recusandae.
               </p>
             </AccordionDetails>
           </Accordion>
@@ -238,8 +215,8 @@ const Faq = () => {
 
         <p className={style.parrafo}>
           ¿No encontraste la respuesta que buscabas?{' '}
-          <Link to={'/contactanos'}>
-            <a className={style.link}>Contáctanos</a>
+          <Link className={style.link} to={'/contactanos'}>
+            Contáctanos
           </Link>
         </p>
       </main>

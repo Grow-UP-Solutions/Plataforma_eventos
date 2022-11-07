@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styles from './Register.module.css';
 
 import { AuthContext } from '../../context/auth';
@@ -11,8 +11,10 @@ import { MdOutlineClose } from 'react-icons/md';
 import useValidateForm from '../../hooks/useValidateForm';
 import { UIContext } from '../../context/ui';
 import eventsApi from '../../axios/eventsApi';
+import { animateScroll as scroll } from 'react-scroll';
 
 const Register = () => {
+
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
   const { toggleScreenLogin } = useContext(UIContext);
@@ -71,6 +73,7 @@ const Register = () => {
       email: formData.mail,
       password: formData.password,
       canReceivedInformation: formData.canReceivedInformation,
+      codeReferred: formData.codeReferred,
     };
 
     try {
@@ -148,6 +151,10 @@ const Register = () => {
       }
     });
   };
+
+  useEffect(() => {
+    scroll.scrollToTop();
+  }, []);
 
   return (
     <div className={`${styles.pageRegister} container`}>

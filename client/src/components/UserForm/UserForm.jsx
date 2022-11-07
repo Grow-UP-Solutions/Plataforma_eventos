@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import axios from 'axios';
 import styles from './UserForm.module.css';
@@ -22,7 +22,6 @@ import AvatarEditor from 'react-avatar-editor';
 import { dataURLtoFile, toDataURL } from '../../utils/convertUrlToImageFile';
 
 const UserForm = ({ userData }) => {
-  const [auxPictureUser, setAuxPictureUser] = useState(userData.userpicture);
   const [formData, setFormData] = useState({
     firstName: userData.firstName || '',
     lastName: userData.lastName || '',
@@ -120,7 +119,7 @@ const UserForm = ({ userData }) => {
 
     setFormData({
       ...formData,
-      userpicture: auxPictureUser,
+      userpicture: userData.userpicture,
     });
   };
 
@@ -738,7 +737,7 @@ const UserForm = ({ userData }) => {
     };
 
     try {
-      const result = await eventsApi.post('/users/requestToOrganizer', { user });
+      await eventsApi.post('/users/requestToOrganizer', { user });
     } catch (error) {
       console.log({ error });
     }
@@ -762,6 +761,8 @@ const UserForm = ({ userData }) => {
       setFormData({ ...formData, isDeclarant: false, imageRent: '' });
     }
   };
+
+  console.log({ userData });
 
   return (
     <div className={styles.containerUserForm}>
@@ -799,9 +800,9 @@ const UserForm = ({ userData }) => {
         </button>
         {errorMessagePhoto.userpicture && <span className={styles.errorMessage}>{errorMessagePhoto.userpicture}</span>}
       </div>
-      {!userData.isReject && (
+      {!userData.isRejected && (
         <>
-          {userData.isReject && userData.isProfileCompleted && !userData.isOrganizer && !isProccessingToOrganizer && (
+          {userData.isProfileCompleted && !userData.isOrganizer && !isProccessingToOrganizer && (
             <div className={styles.isUserIsProfileCompleted}>
               <span>¡Tu perfil esta completo! Y eres elegible para ser organizador</span>
               <div className={styles.containerBtnOrganizer}>
@@ -1100,7 +1101,7 @@ const UserForm = ({ userData }) => {
                 {errorPassword.currentPassword === false && (
                   <span className={styles.errorMessage}>
                     Has ingresado una contraseña que no coincide con la registrada,intenta <br /> de nuevo o comunicate
-                    con nosotros <a href='#'>aquí.</a>
+                    con nosotros <Link to='/'>aquí.</Link>
                   </span>
                 )}
               </div>

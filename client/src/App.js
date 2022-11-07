@@ -31,18 +31,17 @@ import {
   CheckSolicitudOrganizer,
 } from './pages';
 import EventsOrganizerResult from './pages/EventsOrganizerResult/EventsOrganizerResult';
+import News from './pages/News/News';
 import PanelPrivacy from './pages/PanelPrivacy/PanelPrivacy';
+import Press from './pages/Press/Press';
 import { getEvents } from './redux/actions';
 
 function App() {
+
   const [navBar, setNavBar] = useState(false);
   const dispatch = useDispatch();
   const { isMenuLoginOpen, getCategories, getAllEvents } = useContext(UIContext);
-  const { checkAuthToken, checkUserLocalStorage } = useContext(AuthContext);
-
-  /* useEffect(() => {
-    checkUserLocalStorage();
-  }, []); */
+  const { checkAuthToken } = useContext(AuthContext);
 
   useEffect(() => {
     checkAuthToken();
@@ -75,12 +74,16 @@ function App() {
         <Route path='/oganiza-un-evento-editar/:id' element={<EventEdit />} />
         <Route path='/payment' element={<Payment />} />
         <Route path='/categories' element={<CategoriesResult />} />
-        <Route path='/workWithUs' element={<WorkWithUs />} />
+        <Route path='/empleo' element={<WorkWithUs />} />
+        <Route path='/noticias' element={<News />} />
+        <Route path='/prensa' element={<Press />} />
         <Route path='/workWithUs/form/:work' element={<WorkWithUsForm />} />
-        <Route path='/user/perfil/:option' element={<UserPage />} />
-        <Route path='/privacy' element={<PanelPrivacy />} />
-        <Route path='/user/message' element={<Messages />} />
-        <Route path='/user/notifications' element={<Notifications />} />
+        <Route path='/usuario/:option' element={<UserPage />} />
+        <Route path='/privacidad' element={<PanelPrivacy />} />
+        <Route path='/seguridad' element={<PanelPrivacy />} />
+        <Route path='/terminos' element={<PanelPrivacy />} />
+        <Route path='/usuario/mensajes' element={<Messages />} />
+        <Route path='/usuario/notificaciones' element={<Notifications />} />
         <Route path='/bills' element={<Bills />} />
         <Route path='/verificarmail/:path' element={<Verification />} />
         <Route path='/resulteventsorganizer' element={<EventsOrganizerResult />} />
@@ -88,7 +91,7 @@ function App() {
         <Route path='/edita-un-evento' element={<EventEdit />} />
         <Route path='/admin/check-solicitud-organizador/:token' element={<CheckSolicitudOrganizer />} />
       </Routes>
-      <div className='container'>
+      <div className='container_footer'>
         <Footer />
       </div>
       <div className='footer_extra'>
