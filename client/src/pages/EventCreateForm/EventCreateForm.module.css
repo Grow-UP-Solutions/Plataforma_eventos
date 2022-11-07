@@ -1219,6 +1219,36 @@
   margin-left: 2rem;
 }
 
+.checkBono {
+  margin-top: -3rem;
+  margin-left: 1rem;
+}
+
+.otherCategorie {
+  display: none;
+  margin-top: 1rem;
+}
+
+.checkBono input:checked ~ .containerBono {
+  display: flex;
+}
+
+
+
+.containerBono {
+  display: none;
+  margin-top: 1rem;
+}
+
+.checkBoxBono {
+  accent-color: #5ed527;
+  margin-right: 1rem;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
 
 
 /* VISTA PREVIA */
