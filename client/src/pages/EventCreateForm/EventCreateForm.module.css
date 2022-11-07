@@ -1249,6 +1249,10 @@
   cursor: pointer;
 }
 
+.containerBonoSub{
+  display: flex
+}
+
 
 
 /* VISTA PREVIA */
