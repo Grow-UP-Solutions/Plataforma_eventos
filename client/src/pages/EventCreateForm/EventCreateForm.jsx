@@ -679,12 +679,6 @@ const EventCreateForm = () => {
     });
   };
 
-<<<<<<< HEAD
-  let fecha = new Date();
-  let anio = fecha.getFullYear();
-  let dia = fecha.getDate();
-  let _mes = fecha.getMonth(); //viene con valores de 0 al 11
-=======
 
   let generarCodigo = (e) => {
     e.preventDefault()
@@ -746,7 +740,6 @@ console.log('codigo:',codigo)
   var anio = fecha.getFullYear();
   var dia = fecha.getDate();
   var _mes = fecha.getMonth(); //viene con valores de 0 al 11
->>>>>>> Guille
   _mes = _mes + 1; //ahora lo tienes de 1 al 12
   let mes = '';
   if (_mes < 10) {
