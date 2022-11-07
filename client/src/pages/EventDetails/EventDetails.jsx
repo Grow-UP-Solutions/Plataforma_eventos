@@ -11,6 +11,7 @@ import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import LaunchOutlinedIcon from '@mui/icons-material/LaunchOutlined';
 import WarningOutlinedIcon from '@mui/icons-material/WarningOutlined';
+import AddIcon from '@mui/icons-material/Add';
 import { Rating, useRadioGroup } from '@mui/material';
 import React, { useContext, useState, useEffect } from 'react';
 import 'react-date-range/dist/styles.css'; // main css file
@@ -44,6 +45,7 @@ const EventDetails = () => {
   const [checked, setChecked] = useState('');
   const [component, setComponent] = useState(null);
   const [description, setDescription] = useState(false);
+  const [heart, setHeart] = useState([]);
   const { user } = useContext(AuthContext);
   const { notes, setNotes } = useContext(stateContext);
   const { getEventsFavourites, getEffectRatingEvent, ratingEvent } = useContext(UIContext);
@@ -64,6 +66,19 @@ const EventDetails = () => {
     };
     obtenerDatos();
   }, [eventDetails]);
+
+  useEffect(() => {
+    const getFav = async () => {
+      try {
+        const res = await eventsApi.get('/users' + user.uid);
+        setHeart(res.data.myFavorites.find(e => e._id === id));
+      } 
+      catch (error) {
+        console.log(error);  
+      }
+    }
+    getFav();
+  }, []);
 
   const handleFormatDate = (check) => {
     setCheck(check);
@@ -147,9 +162,26 @@ const EventDetails = () => {
               )}
             </Swiper>
 
-            <div className={style.container_icon_heart} onClick={user.uid ? handleClickFav : handleAlert}>
+            {
+              eventDetails.organizer._id === user.uid ? (
+                ''
+              ) : user.uid && heart ? (
+              <div className={style.container_icon_heart_p} >
+                 <FavoriteIcon className={style.icon_heart_p} sx={{ fontSize: 25, color: 'white',  margin: 'auto' }} />
+              </div>) :  user.uid && !heart ? (
+              <div className={style.container_icon_heart} onClick={user.uid ? handleClickFav : handleAlert}>
+                <AddIcon className={style.icon_heart} sx={{ fontSize: 30, color: '#868686' }} />
+              </div>) : (
+              <div className={style.container_icon_heart} onClick={user.uid ? handleClickFav : handleAlert}>
+                <AddIcon className={style.icon_heart} sx={{ fontSize: 30, color: '#868686' }} />
+              </div>)
+            }
+
+            
+
+            {/* <div className={style.container_icon_heart} onClick={user.uid ? handleClickFav : handleAlert}>
               <FavoriteIcon className={style.icon_heart} sx={{ fontSize: 25 }} />
-            </div>
+            </div> */}
 
             <div className={style.container_icon_share}>
               <input type="checkbox" id="check" />
@@ -209,8 +241,9 @@ const EventDetails = () => {
               <div className={style.container_rating}>
                 <Rating
                   className={style.rating}
-                  name="read-only"
+                  name="half-rating"
                   value={ratingEvent}
+                  precision={0.5}
                   readOnly
                   sx={{ fontSize: 25 }}
                 />

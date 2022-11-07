@@ -114,7 +114,8 @@ const OrganizerDetails = () => {
           <p className={styles.name}>{userDetail.organizer.name}</p>
           <Rating
             className={styles.rating}
-            name='read-only'
+            name='half-rating'
+            precision={0.5}
             value={ratingOrg}
             readOnly
             sx={{ fontSize: 18 }}
@@ -124,7 +125,7 @@ const OrganizerDetails = () => {
             <p className={styles.direction}>{userDetail.organizer.direction}</p>
           </div>
           <p className={styles.member}>
-            Miembro desde {userDetail.organizer.membership}
+            Miembro desde {userDetail.organizer.createdAt}
           </p>
           <div className={styles.containerMess}>
             <LocalPostOfficeIcon sx={{ fontSize: '1.6rem', color: '#d53e27' }} />
