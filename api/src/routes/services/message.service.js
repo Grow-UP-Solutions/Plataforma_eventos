@@ -6,7 +6,7 @@ const {
 
 async function updateMessage(id, conversationId) {
   try {
-    console.log(conversationId)
+    
     const message = await findMessage(id);
     
     if (!message) {

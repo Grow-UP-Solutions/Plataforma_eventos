@@ -40,11 +40,16 @@ const EventSchema = new Schema(
             precioAlPublico: String,
             gananciaCupo: String,
             gananciaEvento: String,
-           inRevision:{
-            type:Boolean,
-            default:false,
-           },
+            inRevision: {
+               type: Boolean,
+               default: false,
+            },
             dateFormated: String,
+
+            discountVoucher:{
+               type:Schema.Types.ObjectId,
+               ref: "DiscountCoupon"
+            }
          },
       ],
       notificaciones: [
@@ -62,10 +67,10 @@ const EventSchema = new Schema(
       isPublic: {
          type: Boolean,
       },
-      inRevision:{
-         type:Boolean,
-         default:false,
-        },
+      inRevision: {
+         type: Boolean,
+         default: false,
+      },
 
       rating: {
          type: Number,
