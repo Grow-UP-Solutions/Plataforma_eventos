@@ -179,19 +179,15 @@ const EventCreateForm = () => {
         gananciaEvento: '',
         dateFormated: '',
         inRevision: false,
-        codigos:[{
+        codigos:[
+          {
           codigo:'',
           descuento:'',
           cantidad:''
-        }]
+          }
+        ],
       },
     ],
-    codigos:[{
-      fecha:'',
-      codigo:'',
-      descuento:'',
-      cantidad:''
-    }],
     isPublic: true,
     inRevision: false,
   });
@@ -603,22 +599,17 @@ const EventCreateForm = () => {
 
   const a = costoDeManejo * IVA;
 
-  let handleChanges = (i, e) => {
+  let handleChanges = (i, e,indice) => {
     let newFechas = [...post.dates];
 
     newFechas[i][e.target.name] = e.target.value;
     newFechas[i].precioAlPublico = parseFloat(newFechas[i].price) + parseFloat(costoDeManejo) + parseFloat(a);
-    newFechas[i].gananciaCupo =
-      parseFloat(newFechas[i].price) -
-      (parseFloat(newFechas[i].price) * parseFloat(comision) +
-        parseFloat(newFechas[i].price) * parseFloat(comision) * parseFloat(IVA));
+    newFechas[i].gananciaCupo = parseFloat(newFechas[i].price) - (parseFloat(newFechas[i].price) * parseFloat(comision) + parseFloat(newFechas[i].price) * parseFloat(comision) * parseFloat(IVA));
     newFechas[i].gananciaEvento = parseFloat(newFechas[i].gananciaCupo) * parseInt(newFechas[i].cupos);
     if (e.target.name === 'date') {
       newFechas[i].dateFormated = formatDateForm(e.target.value);
     }
-    
-    
-      newFechas[i].codigos[e.target.name] = e.target.value
+    newFechas[i].codigos[indice][e.target.name] = e.target.value
      
     setPost({
       ...post,
@@ -626,10 +617,7 @@ const EventCreateForm = () => {
     });
   };
 
- 
-
   
-
   let addFormFields = () => {
     setPost({
       ...post,
@@ -640,30 +628,37 @@ const EventCreateForm = () => {
           start: '',
           end: '',
           year: 0,
-          cupos: '',
-          price: '',
-          isPublic: true,
+          cupos: 0,
+          price: 0,
           sells: 0,
+          isPublic: true,
           precioAlPublico: '',
           gananciaCupo: '',
           gananciaEvento: '',
+          dateFormated: '',
+          inRevision: false,
+          codigos:[
+            {
+            codigo:'',
+            descuento:'',
+            cantidad:''
+            }
+          ],
         },
       ],
     });
   };
 
-  let addBono = () => {
+  let addBono = (e) => {
+    e.preventDefault()
     setPost({
       ...post.dates,
       codigos:[
         ...post.dates.codigos,
-        {
-          codigo:'',
-          porcentaje:'',
-          cantidad:''
-        }
+        {codigo:''}
+        
       ]
-    });
+    })
   };
 
 
@@ -684,6 +679,63 @@ const EventCreateForm = () => {
       }
     });
   };
+
+
+  let generarCodigo = (e) => {
+    e.preventDefault()
+    setCod(true)
+    console.log(generateRandomCoupons())
+    console.log('generar')
+    setCodigo(generateRandomCoupons())
+  }
+
+  let editarCodigo = (e) => {
+    e.preventDefault()
+    setEd(true)
+  }
+  
+  let guardarCambios = (e) => {
+    e.preventDefault()
+    swal('Cambio ha sido guardado')
+    setCambios(true)
+    setEd(false)
+  }
+
+ 
+
+  const [cod , setCod] = useState(false)
+
+  const [ed , setEd] = useState(false)
+
+  const [cambios , setCambios] = useState(false)
+
+const LETRAS = 2;
+const NUMEROS = 4;
+
+const generateRandomCoupons = () => {
+    const characters = "ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijklmnpqrstuvwxyz";
+    let letrasResult = "";
+   const numeros = "123456789";
+   let numerosResult = "";
+   const charactersLength = characters.length;
+   const numerosLength = numeros.length;
+
+   for (let i = 0; i < LETRAS; i++) {
+      letrasResult += characters.charAt(
+         Math.floor(Math.random() * charactersLength)
+      );
+   }
+
+   for (let i = 0; i < NUMEROS; i++) {
+      numerosResult += numeros.charAt(Math.floor(Math.random() * numerosLength));
+   }
+
+   return `Z-` + letrasResult  + numerosResult;
+
+};
+
+const [codigo , setCodigo] = useState(false)
+console.log('codigo:',codigo)
 
   var fecha = new Date();
   var anio = fecha.getFullYear();
@@ -1432,7 +1484,7 @@ const EventCreateForm = () => {
                       {/* Map*/}
                       <div className={styles.containerMap}>
                         <p className={styles.titleMap}>Ubicación en el mapa</p>
-                        {post.municipio ? (
+                        {/* {post.municipio ? (
                           <div>
                             <img src={url} alt='mapaStaticGoogleMaps' />
                           </div>
@@ -1440,7 +1492,7 @@ const EventCreateForm = () => {
                           <div>
                             <img src={mapa} alt='mapaStaticGoogleMaps' />
                           </div>
-                        )}
+                        )} */}
                         <p className={styles.subtextMap}>Texto google legal aqui</p>
 
                         {/* <img  className={styles.icon} src={iconEditar} alt='n' /> */}
@@ -1692,7 +1744,7 @@ const EventCreateForm = () => {
                         </div>
 
                          {/* bono*/}
-                         {element.codigos.map((e,index)=>(
+                         {element.codigos && element.codigos.map((e,indice)=>(
                          <div className={styles.checkBono}>
                             <input
                               className={styles.checkBox}
@@ -1701,93 +1753,163 @@ const EventCreateForm = () => {
                               name='bono'
                             />
                             <label className={styles.labelsChecks}>Brindar códigos de descuento’</label>
-                            <div className={styles.containerBono} key={index}>
-                              {/* porcentaje*/}
-                              <div className={styles.containerSubInfo}>
-                                <label className={styles.subInfoTitle}>
-                                  Porcentaje
-                                  {failedSubmit && errors.cupos ? (
-                                    <input
-                                      id='porcentaje'
-                                      type='number'
-                                      placeholder='-'
-                                      name='porcentaje'
-                                      value={e.porcentaje || ''}
-                                      onChange={(e) => handleChanges(index, e)}
-                                      required
-                                    />
-                                  ) : (
-                                    <input
-                                      id='porcentaje'
-                                      className={styles.subInfoInput}
-                                      type='number'
-                                      placeholder='-'
-                                      name='porcentaje'
-                                      value={e.porcentaje || ''}
-                                      onChange={(e) => handleChanges(index, e)}
-                                    />
-                                  )}
-                                </label>
-                              </div>
-
-                              {/* cantidad de bonos*/}
-                              <div className={styles.containerSubInfo}>
-                                <label className={styles.subInfoTitle}>
-                                 Cantidad de bonos
-                                  <div className={styles.labelS}>
-                                    {failedSubmit && errors.dates ? (
+                            <div className={styles.containerBono} key={indice}>
+                              {
+                              e.codigo.length && ed === false  ? (
+                                <div className={styles.containerBonoSub}>
+                                  {/* descuento*/}
+                                  <div className={styles.containerSubInfo}>
+                                    <label className={styles.subInfoTitle}>
+                                      Porcentaje
+                                        <p className={styles.subInfoInput}>
+                                          {e.descuento}
+                                        </p>                                     
+                                    </label>
+                                  </div>
+  
+                                  {/* cantidad de bonos*/}
+                                  <div className={styles.containerSubInfo}>
+                                    <label className={styles.subInfoTitle}>
+                                      Cantidad de bonos
+                                        <p className={styles.subInfoInput}>
+                                          {e.cantidad}
+                                        </p>                                    
+                                    </label>                               
+                                  </div>
+                                </div>
+                               )
+                              :(
+                              <div>
+                                {/* descuento*/}
+                                <div className={styles.containerSubInfo}>
+                                  <label className={styles.subInfoTitle}>
+                                    Porcentaje
+                                    {failedSubmit && errors.bonos ? (
                                       <input
+                                        id='descuento'
                                         type='number'
                                         placeholder='-'
-                                        name='cantidad'
-                                        value={e.cantidad || ''}
-                                        onChange={(e) => handleChanges(index, e)}
+                                        name='descuento'
+                                        value={e.descuento || ''}
+                                        onChange={(e) => handleChanges(indice, e, index)}
                                         required
                                       />
                                     ) : (
                                       <input
-                                        className={styles.cantidad}
+                                        id='descuento'
+                                        className={styles.subInfoInput}
                                         type='number'
                                         placeholder='-'
-                                        name='cantidad'
-                                        value={e.cantidad || ''}
-                                        onChange={(e) => handleChanges(index, e)}
+                                        name='descuento'
+                                        value={e.descuento || ''}
+                                        onChange={(e) => handleChanges(indice, e, index)}
                                       />
                                     )}
-                                  </div>
-                                </label>                               
+                                  </label>
+                                </div>
+
+                                {/* cantidad de bonos*/}
+                                <div className={styles.containerSubInfo}>
+                                  <label className={styles.subInfoTitle}>
+                                  Cantidad de bonos
+                                    <div className={styles.labelS}>
+                                      {failedSubmit && errors.bonos ? (
+                                        <input
+                                          type='number'
+                                          placeholder='-'
+                                          name='cantidad'
+                                          value={e.cantidad || ''}
+                                          onChange={(e) => handleChanges(indice, e, index)}
+                                          required
+                                        />
+                                      ) : (
+                                        <input
+                                          className={styles.cantidad}
+                                          type='number'
+                                          placeholder='-'
+                                          name='cantidad'
+                                          value={e.cantidad || ''}
+                                          onChange={(e) => handleChanges(indice, e, index)}
+                                        />
+                                      )}
+                                    </div>
+                                  </label>                               
+                                </div>
                               </div>
+                              )
+                              }
 
                               {/*codigo*/}
-                              <div className={styles.containerSubInfo}>
+                              {ed===true ?
+                                <div className={styles.containerSubInfo}>
+                                  <label className={styles.subInfoTitle}>
+                                    Código
+                                  <p>{e.codigo}</p>
+                                  </label>
+                                </div>
+                              :
+                                <div className={styles.containerSubInfo}>
                                 <label className={styles.subInfoTitle}>
-                                 Código
+                                Código
                                   <div className={styles.labelS}>
-                                    {failedSubmit && errors.dates ? (
+                                    {failedSubmit && errors.bonos ? (
                                       <input
-                                        type='number'
-                                        placeholder='-'
+                                        type='text'
+                                        placeholder=''
                                         name='codigo'
-                                        value={element.price || ''}
-                                        onChange={(e) => handleChanges(index, e)}
+                                        value={e.codigo || ''}
+                                        onChange={(e) => handleChanges(indice, e, index)}
                                         required
                                       />
                                     ) : (
                                       <input
                                         className={styles.subInfoInput}
-                                        type='number'
-                                        placeholder='-'
+                                        type='text'
+                                        placeholder=''
                                         name='codigo'
-                                        value={element.price || ''}
-                                        onChange={(e) => handleChanges(index, e)}
+                                        value={e.codigo || codigo}
+                                        onChange={(e) => handleChanges(indice, e, index)}
                                       />
                                     )}
                                   </div>
                                 </label>                             
-                              </div>
+                                </div>
+                              }
+                             
+                          
+                              {/*generar codigo*/}
+                              {
+                                e.descuento && e.cantidad && cod === false?
+                                  <div className={styles.containerSubInfo}>
+                                    <button onClick={(e)=>generarCodigo(e)}>Generar Código</button>                            
+                                  </div> : 
+                                 cod === true ? (
+                                  <div>
+                                    {/*editar codigo*/}
+                                    <button onClick={(e)=>editarCodigo(e)}>Editar</button>
+                                    {/*borrar codigo*/}
+                                    <div className={styles.containerSubInfo}>
+                                      <button><img className={styles.basquet} src={basquet} alt='n' /></button>                            
+                                    </div>
+ 
+                                  </div>
+                                 ):''
+                                  
+                              }
+
+                              {
+                                ed === true && cambios === false ?
+                               <div>
+                                <button onClick={(e)=>guardarCambios(e)}>Guardar Cambios</button>
+                               </div>
+                               :''
+                              }
                               
+
+                             
+
                               {/*mostrar codigos*/}
-                              <div className={styles.containerSubInfo}>
+                                <div className={styles.containerSubInfo}>
                                <button>Mostrar</button>                            
                               </div>
 
@@ -1796,29 +1918,9 @@ const EventCreateForm = () => {
                                <button>Ocultar</button>                            
                               </div>
 
-                              {/*generar codigo*/}
-                              <div className={styles.containerSubInfo}>
-                               <button>Generar Código</button>                            
-                              </div>
-
-                              {/*guardar codigo*/}
-                              <div className={styles.containerSubInfo}>
-                               <button>Guardar Cambios</button>                            
-                              </div>
-
-                              {/*editar codigo*/}
-                              <div className={styles.containerSubInfo}>
-                               <button>Editar</button>                            
-                              </div>
-
-                              {/*borrar codigo*/}
-                              <div className={styles.containerSubInfo}>
-                               <button><img className={styles.basquet} src={basquet} alt='n' /></button>                            
-                              </div>
-
                                {/*agregar codigo*/}
                               <div>
-                                <button className={styles.addDate} type='button' onClick={() => addBono()}>
+                                <button className={styles.addDate} type='button' onClick={(e) => addBono(e)}>
                                   {' '}
                                   + Agregar otro código
                                 </button>
