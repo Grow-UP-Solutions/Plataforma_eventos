@@ -62,13 +62,8 @@ const EventOrganizer = ({ id }) => {
 
   const handleClickEventsOrganizer = async (e) => {
     e.preventDefault();
-    try {
-      const res = await eventsApi.get('/users/' + eventDetails.organizer._id);
-      setResult(res.data.myEventsCreated);
-      navigate('/resulteventsorganizer/');
-    } catch (error) {
-      console.log(error)
-    }
+    setResult(eventDetails.organizer._id);
+    navigate('/resulteventsorganizer/');
   };
  
   return (

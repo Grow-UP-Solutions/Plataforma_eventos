@@ -72,7 +72,14 @@ const Events = () => {
     <div className={styles.cardsSection}>
       <p className={styles.titleCards}>Populares</p>
       <div className={styles.cardsCarousel}>
-        <Swiper slidesPerView={4.2} navigation spaceBetween={0} modules={[Navigation]} className={styles.mySwipper}>
+        <Swiper
+          slidesPerView={4}
+          slidesPerGroup={4}
+          navigation
+          spaceBetween={0}
+          modules={[Navigation]}
+          className={styles.mySwipper}
+        >
           {mostPopular.length ? (
             mostPopular.map((event, index) => {
               return (
@@ -89,7 +96,8 @@ const Events = () => {
       <p className={styles.titleCards}>Esta Semana</p>
       <div className={styles.cardsCarousel}>
         <Swiper
-          slidesPerView={4.2}
+          slidesPerView={4}
+          slidesPerGroup={4}
           spaceBetween={0}
           navigation
           modules={[Pagination, Navigation]}
@@ -111,7 +119,8 @@ const Events = () => {
       <p className={styles.titleCards}>Fresquitos</p>
       <div className={styles.cardsCarousel}>
         <Swiper
-          slidesPerView={4.2}
+          slidesPerView={4}
+          slidesPerGroup={4}
           spaceBetween={0}
           navigation
           modules={[Pagination, Navigation]}
@@ -133,7 +142,8 @@ const Events = () => {
       <p className={styles.titleCards}>Mi Lista</p>
       <div className={styles.cardsCarousel}>
         <Swiper
-          slidesPerView={4.2}
+          slidesPerView={4}
+          slidesPerGroup={4}
           spaceBetween={0}
           navigation
           modules={[Pagination, Navigation]}

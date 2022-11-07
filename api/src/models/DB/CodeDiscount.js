@@ -33,7 +33,7 @@ const codeDiscountSchema = new Schema({
     type: Number,
     default: 0,
   },
-  dataEvent: {
+  dateEvent: {
     type: String,
     default: '',
   },

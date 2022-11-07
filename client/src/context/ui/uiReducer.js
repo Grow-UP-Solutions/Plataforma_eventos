@@ -9,9 +9,17 @@ export const uiReducer = (state, action) => {
       };
 
     case 'GET_CATEGORIES':
+
+      const data = action.payload;
+      const orden = data.sort(function(a, b){
+        if(a.name < b.name) { return -1; }
+        if(a.name > b.name) { return 1; }
+        return 0;
+      });
+
       return {
         ...state,
-        categories: action.payload,
+        categories: orden,
       };
 
     case 'GET_ALL_EVENTS':
