@@ -18,7 +18,6 @@ const Card = ({ event, listName }) => {
   const numCadena = currentYear + '';
   const { user } = useContext(AuthContext);
   const [allUsers, setAllUsers] = useState([]);
-  const [myFav, setMyFav] = useState([]);
   const [heart, setHeart] = useState([]);
 
   useEffect(() => {
@@ -31,7 +30,6 @@ const Card = ({ event, listName }) => {
     const myUser = async () => {
       try {
         const json = await eventsApi.get("/users/" + user.uid);
-        setMyFav(json.data.myFavorites);
         setHeart(json.data.myFavorites.find(e => e._id === event._id));
       } 
       catch (error) {
@@ -74,6 +72,7 @@ const Card = ({ event, listName }) => {
       const json = await eventsApi.post('/users/notifications', fav);
       getEventsFavourites(user.uid, favorite);
       setNotes([...notes, json.data]);
+      setHeart(true);
       swal({
         text: 'Evento agregado como favorito',
         icon: 'success',

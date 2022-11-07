@@ -70,7 +70,7 @@ const EventDetails = () => {
   useEffect(() => {
     const getFav = async () => {
       try {
-        const res = await eventsApi.get('/users' + user.uid);
+        const res = await eventsApi.get('/users/' + user.uid);
         setHeart(res.data.myFavorites.find(e => e._id === id));
       } 
       catch (error) {
@@ -78,7 +78,7 @@ const EventDetails = () => {
       }
     }
     getFav();
-  }, []);
+  }, [user.uid]);
 
   const handleFormatDate = (check) => {
     setCheck(check);
@@ -98,6 +98,7 @@ const EventDetails = () => {
       const json = await eventsApi.post('/users/notifications', fav);
       getEventsFavourites(user.uid, favorite);
       setNotes([...notes, json.data]);
+      setHeart(true);
       swal({
         text: 'Evento agregado como favorito',
         icon: 'success',
