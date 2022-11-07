@@ -683,8 +683,6 @@ const EventCreateForm = () => {
   let generarCodigo = (e) => {
     e.preventDefault()
     setCod(true)
-    console.log(generateRandomCoupons())
-    console.log('generar')
     setCodigo(generateRandomCoupons())
   }
 
@@ -734,7 +732,7 @@ const generateRandomCoupons = () => {
 };
 
 const [codigo , setCodigo] = useState(false)
-console.log('codigo:',codigo)
+
 
   var fecha = new Date();
   var anio = fecha.getFullYear();
@@ -1864,10 +1862,10 @@ console.log('codigo:',codigo)
                                     ) : (
                                       <input
                                         className={styles.subInfoInput}
-                                        type='text'
+                                        type=''
                                         placeholder=''
                                         name='codigo'
-                                        value={e.codigo || codigo}
+                                        value={codigo || ''}
                                         onChange={(e) => handleChanges(indice, e, index)}
                                       />
                                     )}
