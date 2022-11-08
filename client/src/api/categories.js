@@ -111,6 +111,12 @@ const categories = [
       'https://www.eluniverso.com/resizer/HLjRRVfWIasDJkOTjCmWfrIQWYs=/1000x668/smart/filters:quality(70)/cloudfront-us-east-1.images.arcpublishing.com/eluniverso/25XNG2HZRZDHBENVPMLVPUE5BQ.jpg',
     description: 'Duis autem vel eum iriure',
   },
+  {
+    name: 'Otros',
+    img:
+      'https://www.eluniverso.com/resizer/HLjRRVfWIasDJkOTjCmWfrIQWYs=/1000x668/smart/filters:quality(70)/cloudfront-us-east-1.images.arcpublishing.com/eluniverso/25XNG2HZRZDHBENVPMLVPUE5BQ.jpg',
+    description: 'Duis autem vel eum iriure',
+  },
 ];
 
 /*  function createCategorys() {
