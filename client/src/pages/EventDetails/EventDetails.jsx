@@ -2,8 +2,9 @@ import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import LaunchOutlinedIcon from '@mui/icons-material/LaunchOutlined';
 import WarningOutlinedIcon from '@mui/icons-material/WarningOutlined';
+import AddIcon from '@mui/icons-material/Add';
 import { Rating } from '@mui/material';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { AiOutlineClose } from 'react-icons/ai';
@@ -41,6 +42,7 @@ const EventDetails = () => {
   const [checked] = useState('');
   const [component, setComponent] = useState(null);
   const [description, setDescription] = useState(false);
+  const [heart, setHeart] = useState([]);
   const { user } = useContext(AuthContext);
   const { notes, setNotes } = useContext(stateContext);
   const { getEventsFavourites, getEffectRatingEvent, ratingEvent } = useContext(UIContext);
@@ -62,11 +64,24 @@ const EventDetails = () => {
     obtenerDatos();
   }, [eventDetails]);
 
+  useEffect(() => {
+    const getFav = async () => {
+      try {
+        const res = await eventsApi.get('/users/' + user.uid);
+        setHeart(res.data.myFavorites.find(e => e._id === id));
+      } 
+      catch (error) {
+        console.log(error);  
+      }
+    }
+    getFav();
+  }, [user.uid]);
+
   /* const handleFormatDate = (check) => {
     setCheck(check);
     setChecked(formatDate(check));
-  };
- */
+  }; */
+ 
   const handleClickFav = async (e) => {
     e.preventDefault();
     const fav = {
@@ -80,6 +95,7 @@ const EventDetails = () => {
       const json = await eventsApi.post('/users/notifications', fav);
       getEventsFavourites(user.uid, favorite);
       setNotes([...notes, json.data]);
+      setHeart(true);
       swal({
         text: 'Evento agregado como favorito',
         icon: 'success',
@@ -136,9 +152,26 @@ const EventDetails = () => {
               )}
             </Swiper>
 
-            <div className={style.container_icon_heart} onClick={user.uid ? handleClickFav : handleAlert}>
+            {
+              eventDetails.organizer._id === user.uid ? (
+                ''
+              ) : user.uid && heart ? (
+              <div className={style.container_icon_heart_p} >
+                 <FavoriteIcon className={style.icon_heart_p} sx={{ fontSize: 25, color: 'white',  margin: 'auto' }} />
+              </div>) :  user.uid && !heart ? (
+              <div className={style.container_icon_heart} onClick={user.uid ? handleClickFav : handleAlert}>
+                <AddIcon className={style.icon_heart} sx={{ fontSize: 30, color: '#868686' }} />
+              </div>) : (
+              <div className={style.container_icon_heart} onClick={user.uid ? handleClickFav : handleAlert}>
+                <AddIcon className={style.icon_heart} sx={{ fontSize: 30, color: '#868686' }} />
+              </div>)
+            }
+
+            
+
+            {/* <div className={style.container_icon_heart} onClick={user.uid ? handleClickFav : handleAlert}>
               <FavoriteIcon className={style.icon_heart} sx={{ fontSize: 25 }} />
-            </div>
+            </div> */}
 
             <div className={style.container_icon_share}>
               <input type='checkbox' id='check' />
@@ -173,7 +206,14 @@ const EventDetails = () => {
               <p>{eventDetails.title}</p>
 
               <div className={style.container_rating}>
-                <Rating className={style.rating} name='read-only' value={ratingEvent} readOnly sx={{ fontSize: 25 }} />
+                <Rating
+                  className={style.rating}
+                  name="half-rating"
+                  value={ratingEvent}
+                  precision={0.5}
+                  readOnly
+                  sx={{ fontSize: 25 }}
+                />
               </div>
 
               <p className={style.numberRating}>({ratingEvent})</p>

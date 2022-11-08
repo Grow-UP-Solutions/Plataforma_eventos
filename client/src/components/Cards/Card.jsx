@@ -1,23 +1,25 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import styles from './Card.module.css';
+import { Link, useResolvedPath } from 'react-router-dom';
 import { Rating } from '@mui/material';
-import { Link } from 'react-router-dom';
+import AddIcon from '@mui/icons-material/Add';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import { UIContext } from '../../context/ui';
+import { AuthContext } from '../../context/auth/AuthContext';
+import { stateContext } from '../../context/state/stateContext';
 import swal from 'sweetalert';
 import { iconAdd } from '../../assets/imgs';
 import eventsApi from '../../axios/eventsApi';
-import { stateContext } from '../../context/state/stateContext';
-import { UIContext } from '../../context/ui';
-import styles from './Card.module.css';
-
-import { AuthContext } from '../../context/auth';
 
 const Card = ({ event, listName }) => {
+
   const { toggleScreenLogin, getEventsFavourites } = useContext(UIContext);
   const { notes, setNotes } = useContext(stateContext);
   const currentYear = new Date().getFullYear();
   const numCadena = currentYear + '';
-
   const { user } = useContext(AuthContext);
   const [allUsers, setAllUsers] = useState([]);
+  const [heart, setHeart] = useState([]);
 
   useEffect(() => {
     getUsers();
@@ -25,12 +27,32 @@ const Card = ({ event, listName }) => {
 
   useEffect(() => {}, [allUsers]);
 
-  const getUsers = async () => {
-    let userResult = await eventsApi.get(`/users`);
-    setAllUsers(userResult.data);
-  };
+  useEffect(() => {
+    const myUser = async () => {
+      try {
+        const json = await eventsApi.get("/users/" + user.uid);
+        setHeart(json.data.myFavorites.find(e => e._id === event._id));
+      } 
+      catch (error) {
+        console.log(error)
+      }
+    }
+    myUser();
+  }, [user.uid]);
 
-  const organizer = allUsers.filter((user) => user._id === event.organizer);
+  const getUsers = async () => {
+    try {
+      let userResult= await eventsApi.get(`/users`);
+      setAllUsers(userResult.data);
+    } 
+    catch (error) {
+      console.log(error);
+    }
+  }
+    
+  const organizer = allUsers.filter(user=>user._id === event.organizer);
+       
+  //const fav = myFav.includes(e => e.myFavorites._id === event._id); 
 
   //const cover = event.pictures.filter(picture=>picture.isCover===true)[0]
 
@@ -47,6 +69,7 @@ const Card = ({ event, listName }) => {
       const json = await eventsApi.post('/users/notifications', fav);
       getEventsFavourites(user.uid, favorite);
       setNotes([...notes, json.data]);
+      setHeart(true);
       swal({
         text: 'Evento agregado como favorito',
         icon: 'success',
@@ -143,18 +166,25 @@ const Card = ({ event, listName }) => {
 
         {event.organizer._id === user.uid ? (
           ''
-        ) : user.uid ? (
+        ) : user.uid && !heart ? (
           <div className={styles.cardAddFav} onClick={handleClickFav}>
             <input type='checkbox' id={`${event._id}-${listName}`} />
             <label htmlFor={`${event._id}-${listName}`}>
-              <img src={iconAdd} alt='iconAdd' />
+              <AddIcon sx={{ fontSize: 30, color: '#868686' }}/>
+            </label>
+          </div>
+        ) : user.uid && heart ? (
+          <div className={styles.cardAddFavHeart} >
+            <input type='checkbox' id={`${event._id}-${listName}`} />
+            <label htmlFor={`${event._id}-${listName}`}>
+              <FavoriteIcon sx={{ fontSize: 25, color: 'white' }} />
             </label>
           </div>
         ) : (
           <div className={styles.cardAddFav}>
             <input type='checkbox' id={`${event._id}-${listName}`} />
             <label htmlFor={`${event._id}-${listName}`}>
-              <img src={iconAdd} alt='iconAdd' />
+              <AddIcon sx={{ fontSize: 30, color: '#868686' }}/>
             </label>
             <div className={styles.cardAddFavMenu}>
               <p>

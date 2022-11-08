@@ -43,7 +43,8 @@ const CardComments = ({ o }) => {
             <span className={styles.user}>{o.title}</span>
             <Rating
               className={styles.rating}
-              name="read-only"
+              name='half-rating'
+              precision={0.5}
               value={o.rating}
               readOnly
             />
