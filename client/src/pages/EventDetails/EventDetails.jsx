@@ -77,10 +77,10 @@ const EventDetails = () => {
     getFav();
   }, [user.uid]);
 
-  const handleFormatDate = (check) => {
+  /* const handleFormatDate = (check) => {
     setCheck(check);
     setChecked(formatDate(check));
-  };
+  }; */
  
   const handleClickFav = async (e) => {
     e.preventDefault();
