@@ -32,10 +32,7 @@ const ChangePassword = () => {
     confirmPassword: '',
   });
 
-  const [errorsInputs, handleChangeInputValue] = useValidateForm(
-    formData,
-    setFormData
-  );
+  const [errorsInputs, handleChangeInputValue] = useValidateForm(formData, setFormData);
 
   const [isPasswordVisible, setIsPasswordVisible] = useState({
     password: false,
@@ -82,7 +79,7 @@ const ChangePassword = () => {
     }
 
     try {
-      const result = await eventsApi.post('/users/changePassword', {
+      await eventsApi.post('/users/changePassword', {
         email,
         password,
       });
@@ -111,19 +108,18 @@ const ChangePassword = () => {
           <h1 className={styles.title}>Cambiar contraseña</h1>
           <form onSubmit={changePassword} className={styles.formContainer}>
             <div className={styles.formGroup}>
-              <label htmlFor="password">Contraseña</label>
+              <label htmlFor='password'>Contraseña</label>
               <div className={styles.containerInputForPassword}>
                 <input
                   style={{
-                    border:
-                      errorsInputs.password === false && '1px solid #C34A33',
+                    border: errorsInputs.password === false && '1px solid #C34A33',
                   }}
                   type={isPasswordVisible.password ? 'text' : 'password'}
-                  id="password"
-                  placeholder="Entre 12 y 20 caracteres que idealmente incluya combinación de letras, números y caracteres especiales (* / - _ & @^)"
+                  id='password'
+                  placeholder='Entre 12 y 20 caracteres que idealmente incluya combinación de letras, números y caracteres especiales (* / - _ & @^)'
                   required
                   onChange={handleChangeInputValue}
-                  autoComplete="off"
+                  autoComplete='off'
                 />
 
                 {!isPasswordVisible.password ? (
@@ -138,62 +134,48 @@ const ChangePassword = () => {
                   />
                 )}
                 {errorsInputs.password === false && (
-                  <span className={styles.errorMessage}>
-                    Contraseña sin el formato especificado.
-                  </span>
+                  <span className={styles.errorMessage}>Contraseña sin el formato especificado.</span>
                 )}
               </div>
             </div>
             <div className={styles.formGroup}>
-              <label htmlFor="confirmPassword">Confirmar contraseña</label>
+              <label htmlFor='confirmPassword'>Confirmar contraseña</label>
               <div className={styles.containerInputForPassword}>
                 <input
                   style={{
-                    border:
-                      errorsInputs.confirmPassword === false &&
-                      '1px solid #C34A33',
+                    border: errorsInputs.confirmPassword === false && '1px solid #C34A33',
                   }}
                   type={isPasswordVisible.confirmPassword ? 'text' : 'password'}
-                  id="confirmPassword"
+                  id='confirmPassword'
                   required
                   onChange={handleChangeInputValue}
                 />
 
                 {!isPasswordVisible.confirmPassword ? (
                   <FiEye
-                    onClick={() =>
-                      handleChangeVisiblePassword('confirmPassword')
-                    }
+                    onClick={() => handleChangeVisiblePassword('confirmPassword')}
                     className={styles.iconVisiblePassword}
                   />
                 ) : (
                   <FiEyeOff
-                    onClick={() =>
-                      handleChangeVisiblePassword('confirmPassword')
-                    }
+                    onClick={() => handleChangeVisiblePassword('confirmPassword')}
                     className={styles.iconVisiblePassword}
                   />
                 )}
                 {errorsInputs.confirmPassword === false && (
-                  <span className={styles.errorMessage}>
-                    Las contraseñas no coinciden
-                  </span>
+                  <span className={styles.errorMessage}>Las contraseñas no coinciden</span>
                 )}
               </div>
             </div>
             {errorMessage.isFail && (
               <div>
-                <p className={styles.containerErrorMessageGeneral}>
-                  {errorMessage.message}
-                </p>
+                <p className={styles.containerErrorMessageGeneral}>{errorMessage.message}</p>
               </div>
             )}
 
             {successMessage.isSuccess && (
               <div>
-                <p className={styles.containerSuccessMessageGeneral}>
-                  {successMessage.message}
-                </p>
+                <p className={styles.containerSuccessMessageGeneral}>{successMessage.message}</p>
               </div>
             )}
 

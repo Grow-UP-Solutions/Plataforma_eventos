@@ -1,14 +1,13 @@
 import React from 'react';
-import Card from '../Cards/Card';
-import styles from './MyEventsOrganizer.module.css';
-import iconEditar from '../../assets/imgs/iconEditar.svg';
-import { Swiper, SwiperSlide, useSwiper } from 'swiper/react/swiper-react';
-import { Pagination, Scrollbar, Navigation } from 'swiper';
 import { Link } from 'react-router-dom';
-import 'swiper/swiper.min.css';
+import { Navigation } from 'swiper';
+import 'swiper/modules/navigation/navigation.min.css';
 import 'swiper/modules/pagination/pagination.min.css';
 import 'swiper/modules/scrollbar/scrollbar.min.css';
-import 'swiper/modules/navigation/navigation.min.css';
+import { Swiper, SwiperSlide } from 'swiper/react/swiper-react';
+import 'swiper/swiper.min.css';
+import Card from '../Cards/Card';
+import styles from './MyEventsOrganizer.module.css';
 
 const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
   const eventsPublic = myEventsCreated.filter((e) => e.isPublic === true);

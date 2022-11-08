@@ -1,19 +1,19 @@
-.container{
+.container {
   margin: 0 auto;
   margin-top: 9rem;
   max-width: 1420px;
 }
 
-.containercard{
+.containercard {
   margin-top: 20px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: start;
+  justify-content: flex-start;
   gap: 2rem;
   align-content: flex-start;
 }
 
-.card{
+.card {
   margin-bottom: 3rem;
   text-align: left;
 }

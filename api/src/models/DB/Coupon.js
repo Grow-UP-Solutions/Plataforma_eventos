@@ -1,12 +1,12 @@
 const { Schema, model } = require('mongoose');
 
-const cuponSchema = new Schema({
-  cupon: String,
+const couponSchema = new Schema({
+  coupon: String,
   limit: Number,
   event: {
     type: Schema.Types.ObjectId,
     ref: 'Events',
   },
-});
+},{ timestamps: true });
 
-module.exports = model('Cupon', cuponSchema);
+module.exports = model('Coupon', couponSchema);

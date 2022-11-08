@@ -131,8 +131,7 @@ const ReferralPlan = ({ userData }) => {
       </div>
 
       <div className={styles.containerQuantityMoney}>
-        <img src={imgMoney} alt='image-cash' className={styles.imgMoney} />
-
+        <img src={imgMoney} alt='cash' className={styles.imgMoney} />
         <div className={styles.money}>
           <p>Saldo disponible</p>
           <span>{availableCredit}$</span>

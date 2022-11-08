@@ -4,15 +4,9 @@ import { animateScroll as scroll } from 'react-scroll';
 import eventsApi from '../../axios/eventsApi';
 import { AuthContext } from '../../context/auth';
 import { stateContext } from '../../context/state/stateContext';
-import {
-  CarrouselHome,
-  Categories,
-  Events,
-  HowItWorks,
-} from '../../components';
+import { CarrouselHome, Categories, Events, HowItWorks } from '../../components';
 
 const Home = ({ handleNav }) => {
-
   const { user } = useContext(AuthContext);
   const { setNotes, setMsg, setConversa } = useContext(stateContext);
 
@@ -22,44 +16,34 @@ const Home = ({ handleNav }) => {
 
   useEffect(() => {
     getUserData();
-  }, [user]); 
+  }, [user]);
 
   useEffect(() => {
     getConversations();
-  }, [user]); 
+  }, [user]);
 
   const getUserData = async () => {
     let userResult = {};
     if (user.uid) {
       userResult = await eventsApi.get('/users/' + user.uid);
       const result = userResult.data.message.filter((e) => e.read === false);
-      const final = result.filter(e => e.sender !== user.uid);
+      const final = result.filter((e) => e.sender !== user.uid);
       setNotes(userResult.data.notifications.filter((e) => e.read === false));
       setMsg(final);
-    }
-    else {
-      console.log('no hay user');
     }
   };
 
   const getConversations = async () => {
     let conversaResult = {};
     if (user.uid) {
-      conversaResult = await eventsApi.get("/conversation/" + user.uid);
+      conversaResult = await eventsApi.get('/conversation/' + user.uid);
       setConversa(conversaResult.data);
-    }
-    else {
-      console.log('no hay user');
     }
   };
 
   return (
     <div>
-      <InView
-        rootMargin="-150px"
-        as="div"
-        onChange={(inView, entry) => handleNav(inView)}
-      >
+      <InView rootMargin='-150px' as='div' onChange={(inView, entry) => handleNav(inView)}>
         <CarrouselHome />
       </InView>
       <HowItWorks />

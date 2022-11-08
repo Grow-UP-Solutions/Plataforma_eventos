@@ -166,6 +166,6 @@ const UserSchema = new Schema({
       ref: Message,
     },
   ],
-});
+}, {timestamps: true});
 
 module.exports = model('Users', UserSchema);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Autoplay, Navigation, Pagination } from 'swiper';
 import 'swiper/modules/navigation/navigation.min.css';
 import 'swiper/modules/pagination/pagination.min.css';
@@ -9,42 +9,36 @@ import Search from '../Search/Search';
 import style from './CarrouselHome.module.css';
 
 const CarrouselHome = () => {
-
   const images = [
     {
       id: 1,
       title: 'image1',
-      url:
-        'https://res.cloudinary.com/djsp3n1qy/image/upload/v1663114004/Plataforma_Eventos/gas1_wm6wph.jpg',
+      url: 'https://res.cloudinary.com/djsp3n1qy/image/upload/v1663114004/Plataforma_Eventos/gas1_wm6wph.jpg',
     },
     {
       id: 2,
       title: 'image2',
-      url:
-        'https://res.cloudinary.com/djsp3n1qy/image/upload/v1663113988/Plataforma_Eventos/gas2_corxwc.jpg',
+      url: 'https://res.cloudinary.com/djsp3n1qy/image/upload/v1663113988/Plataforma_Eventos/gas2_corxwc.jpg',
     },
     {
       id: 3,
       title: 'image3',
-      url:
-        'https://res.cloudinary.com/djsp3n1qy/image/upload/v1663114004/Plataforma_Eventos/gas1_wm6wph.jpg',
+      url: 'https://res.cloudinary.com/djsp3n1qy/image/upload/v1663114004/Plataforma_Eventos/gas1_wm6wph.jpg',
     },
     {
       id: 4,
       title: 'image4',
-      url:
-        'https://res.cloudinary.com/djsp3n1qy/image/upload/v1663113988/Plataforma_Eventos/gas2_corxwc.jpg',
+      url: 'https://res.cloudinary.com/djsp3n1qy/image/upload/v1663113988/Plataforma_Eventos/gas2_corxwc.jpg',
     },
     {
       id: 5,
       title: 'image5',
-      url:
-        'https://res.cloudinary.com/djsp3n1qy/image/upload/v1663114004/Plataforma_Eventos/gas1_wm6wph.jpg',
+      url: 'https://res.cloudinary.com/djsp3n1qy/image/upload/v1663114004/Plataforma_Eventos/gas1_wm6wph.jpg',
     },
   ];
 
   return (
-    <div id="hero" className={style.container}>
+    <div id='hero' className={style.container}>
       <Swiper
         slidesPerView={1}
         spaceBetween={0}
@@ -76,9 +70,7 @@ const CarrouselHome = () => {
       <div className={style.container_p}>
         <p>Aqui va un texto de</p>
         <p>enganche grande</p>
-        <p className={style.item_p}>
-          Aqui un texto que acompañe el titulo de enganche
-        </p>
+        <p className={style.item_p}>Aqui un texto que acompañe el titulo de enganche</p>
       </div>
 
       <div className={style.search}>

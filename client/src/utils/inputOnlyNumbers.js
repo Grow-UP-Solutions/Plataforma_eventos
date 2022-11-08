@@ -1,16 +1,16 @@
 export function inputKeyDown(evt) {
   let theEvent = evt;
 
-  if (theEvent.key == 'Backspace') return true;
+  if (theEvent.key === 'Backspace') return true;
 
   // Permitir flecha izquierda
-  if (theEvent.key == 'ArrowLeft') return true;
+  if (theEvent.key === 'ArrowLeft') return true;
 
   // Permitir flecha derecha
-  if (theEvent.key == 'ArrowRight') return true;
+  if (theEvent.key === 'ArrowRight') return true;
 
   // Bloquear tecla de espacio
-  if (theEvent.key == ' ') return false;
+  if (theEvent.key === ' ') return false;
 
   // Bloquear tecla si no es un numero
   if (isNaN(theEvent.key)) {

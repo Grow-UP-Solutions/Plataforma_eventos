@@ -7,6 +7,8 @@ const {
    findOneEvent,
    updateOneEventDb,
 } = require("../../models/util/functionDB/EventesDb.js");
+const { eventCreateOrganizer } = require("../../models/util/mailer/eventeCreateOrganizer.js");
+const { eventCreateAdministrador } = require("../../models/util/mailer/eventCreateAdministrador.js");
 
 async function getAllEvents() {
    try {
@@ -43,12 +45,16 @@ async function createEvents(event) {
          event.categories = category.map((e) => {
             return e._id;
          });
-
          event.organizer = organizer._id;
+
          const events = await createOneEventDb(event);
 
          organizer.myEventsCreated.push(events._id);
+
          await organizer.save();
+
+         events.isPublic ? eventCreateOrganizer(events, organizer): eventCreateAdministrador(events)
+
          return events;
       }
 

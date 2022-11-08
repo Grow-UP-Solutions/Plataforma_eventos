@@ -5,10 +5,6 @@ const codeDiscountSchema = new Schema({
     type: String,
     default: '',
   },
-  idEvent: {
-    type: String,
-    default: '',
-  },
   code: {
     type: String,
     default: '',
@@ -24,14 +20,6 @@ const codeDiscountSchema = new Schema({
   dateRedimeed: {
     type: String,
     default: '',
-  },
-  quotas: {
-    type: Number,
-    default: 1,
-  },
-  percentage: {
-    type: Number,
-    default: 0,
   },
 });
 

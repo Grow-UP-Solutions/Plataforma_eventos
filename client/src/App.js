@@ -41,11 +41,7 @@ function App() {
   const [navBar, setNavBar] = useState(false);
   const dispatch = useDispatch();
   const { isMenuLoginOpen, getCategories, getAllEvents } = useContext(UIContext);
-  const { checkAuthToken, checkUserLocalStorage } = useContext(AuthContext);
-
-  /* useEffect(() => {
-    checkUserLocalStorage();
-  }, []); */
+  const { checkAuthToken } = useContext(AuthContext);
 
   useEffect(() => {
     checkAuthToken();

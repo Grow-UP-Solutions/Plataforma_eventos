@@ -13,7 +13,6 @@ import eventsApi from '../../axios/eventsApi';
 import ConversationNoti from '../ConversationNoti/ConversationNoti';
 
 const Navbar = ({ upper }) => {
-  
   const { toggleScreenLogin } = useContext(UIContext);
   const { user, logged, logout } = useContext(AuthContext);
   const { notes, setNotes, msg, setMsg } = useContext(stateContext);
@@ -34,15 +33,13 @@ const Navbar = ({ upper }) => {
     if (user.uid) {
       userResult = await eventsApi.get('/users/' + user.uid);
       const result = userResult.data.message.filter((e) => e.read === false);
-      const final = result.filter(e => e.sender !== user.uid);
+      const final = result.filter((e) => e.sender !== user.uid);
       setNotes(userResult.data.notifications.filter((e) => e.read === false));
       setMsg(final);
-      setUserData(userResult.data)
+      setUserData(userResult.data);
     }
-    console.log('userResult',userResult.data)
+    console.log('userResult', userResult.data);
   };
-
-
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -99,16 +96,17 @@ const Navbar = ({ upper }) => {
         <div className={style.container_div}>
           {logged && <Link to='/usuario/mi-lista'>Mi lista</Link>}
 
-          {user.organizer? (
+          {user.organizer ? (
             <Link to='/oganiza-un-evento'>
               <p className={`${logged ? style.buttonOrganizar : ''}`}>Organiza un evento</p>
             </Link>
-          ) : userData && userData.isRejected === true ? '' 
-          :
+          ) : userData && userData.isRejected === true ? (
+            ''
+          ) : (
             <Link to={`organiza-un-evento/beneficios`}>
               <p className={`${logged ? style.buttonOrganizar : ''}`}>Organiza un evento</p>
-            </Link>         
-          }
+            </Link>
+          )}
           {!logged ? (
             <>
               <p onClick={toggleScreenLogin}>Ingresa</p>
@@ -135,13 +133,11 @@ const Navbar = ({ upper }) => {
                       Marcar todas como leidas
                     </p>
 
-                    {
-                      msg.map((c, i) => (
-                        <div className={style.noty} key={i} >
-                          <ConversationNoti msgs={c} id={user.uid} />
-                        </div>
-                      ))
-                    }
+                    {msg.map((c, i) => (
+                      <div className={style.noty} key={i}>
+                        <ConversationNoti msgs={c} id={user.uid} />
+                      </div>
+                    ))}
 
                     <p className={style.link_notis} onClick={handleClickMessage}>
                       Ver todos los mensajes
@@ -188,13 +184,13 @@ const Navbar = ({ upper }) => {
                   position: 'relative',
                 }}
                 onClick={() => setMenuOpen(!menuOpen)}
-                >
+              >
                 <div className={style.containerImg}>
                   {user.picture ? (
                     <img className={style.userImg} src={user.picture} alt='img-user' />
-                    ) : (
-                      <FaUserCircle className={style.userImg} />
-                      )}
+                  ) : (
+                    <FaUserCircle className={style.userImg} />
+                  )}
                 </div>
                 <IoCaretDownSharp className={style.iconMenu} />
                 {menuOpen && (
@@ -206,15 +202,15 @@ const Navbar = ({ upper }) => {
                     <Link to='/usuario/plan-de-referidos'>Plan de referidos</Link>
                     <Link to='/usuario/preferencias'>Preferencias</Link>
                     <hr />
-                    <a
+                    <span
                       onClick={(e) => {
                         e.preventDefault();
                         logout();
                         navigate('/');
                       }}
-                      >
+                    >
                       Cerrar
-                    </a>
+                    </span>
                   </div>
                 )}
               </div>

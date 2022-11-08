@@ -1,10 +1,8 @@
-
-import React, { useEffect, useState } from 'react';
 import dotenv from 'dotenv';
+import React from 'react';
 import { useSelector } from 'react-redux';
 
-const Maps = ({id}) => {
-
+const Maps = ({ id }) => {
   dotenv.config();
   const allEvents = useSelector((state) => state.events);
   const eventDetails = allEvents.filter((event) => event._id === id)[0];
@@ -18,12 +16,9 @@ const Maps = ({id}) => {
 
   return (
     <div>
-      <img 
-        src={url} 
-        alt="mapaStaticGoogleMaps" 
-      />
+      <img src={url} alt='mapaStaticGoogleMaps' />
     </div>
   );
-}
+};
 
 export default Maps;
