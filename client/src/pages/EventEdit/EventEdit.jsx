@@ -220,11 +220,13 @@ const EventEdit = () => {
 
   useEffect(() => {
     if (eventDetails) {
+      const auxCategories = eventDetails.categories.map((categorie)=>categorie.name)
+
       setPost({
         ...post,
         idOrganizer: eventDetails.organizer._id,
         title: eventDetails.title,
-        categories: eventDetails.categories,
+        categories: auxCategories,
         otherCategorie: eventDetails.otherCategorie,
         shortDescription: eventDetails.shortDescription,
         longDescription: eventDetails.longDescription,
@@ -544,25 +546,41 @@ const EventEdit = () => {
   const [changed] = useState(false);
 
  
-  function handleCategories(e) {
-    let categorieName = e.target.value;
-    console.log('targetcat:', e.target.value);
-    if (!e.target.checked) {
-      let seleccion = seleccionados.filter((categorie) => categorie !== e.target.value);
-      setSeleccionados(seleccion);
-      setPost({
-        ...post,
-        categories: seleccion,
-      });
-    } else {
-      let categorieCheck = categories.find((categorie) => categorie.name === categorieName);
-      setSeleccionados([...seleccionados, categorieCheck.name]);
-      setPost({
-        ...post,
-        categories: [...post.categories, categorieCheck.name],
-      });
+  function handleCategories(e){
+    let categorieName = e.target.value
+    let categorieChecked= e.target.checked
+
+    let categories = post.categories
+
+    if(categorieChecked){
+      categories.push(categorieName)
+    }else{
+      categories = categories.filter((cate)=>cate !== categorieName)
     }
+    setPost({
+      ...post,
+      categories
+    })
   }
+
+  // function handleCategories(e) {
+  //   let categorieName = e.target.value;
+  //   if (!e.target.checked) {
+  //     let seleccion = seleccionados.filter((categorie) => categorie !== e.target.value);
+  //     setSeleccionados(seleccion);
+  //     setPost({
+  //       ...post,
+  //       categories: seleccion,
+  //     });
+  //   } else {
+  //     let categorieCheck = categories.find((categorie) => categorie.name === categorieName);
+  //     setSeleccionados([...seleccionados, categorieCheck.name]);
+  //     setPost({
+  //       ...post,
+  //       categories: [...post.categories, categorieCheck.name],
+  //     });
+  //   }
+  // }
 
   useEffect(() => {
     let checkeds = document.getElementsByClassName('checkbox');
@@ -1345,21 +1363,22 @@ const EventEdit = () => {
                     sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
                   </p>
                   <div className={styles.containerChecks}>
-                    {categories.map((categorie) => (
-                      <div className={styles.checks}>
-                        <label className={styles.labelsChecks}>                     
-                            <input
-                              className={styles.checkBox}
-                              type='checkbox'
-                              value={categorie.name}
-                              onChange={(e) => handleCategories(e)}
-                              defaultChecked={false}
-                              
-                            />
-                          {categorie.name}
-                        </label>
-                      </div>
-                    ))}
+                    {post&&
+                      categories.map((categorie) => (
+                        <div className={styles.checks}>
+                          <label className={styles.labelsChecks}>                     
+                              <input
+                                className={styles.checkBox}
+                                type='checkbox'
+                                value={categorie.name}
+                                onChange={(e) => handleCategories(e)}
+                                checked={post.categories.includes(categorie.name)}
+                              />
+                            {categorie.name}
+                          </label>
+                        </div>
+                      )) 
+                      }
                   </div>
 
                   {/* otra categoria*/}

@@ -6,12 +6,18 @@ import style from './Search.module.css';
 
 const Search = ({ location = 'home' }) => {
   const [input, setInput] = useState('');
+  const [municipio, setMunicipio] = useState('');
   const navigate = useNavigate();
-  const { setResult } = useContext(stateContext);
-
+  const { setResult , setMuni } = useContext(stateContext);
+ 
   const handleChange = (e) => {
     e.preventDefault();
     setInput(e.target.value);
+  };
+
+  const handleChangeMuni = (e) => {
+    e.preventDefault();
+    setMunicipio(e.target.value)
   };
 
   const handleKeyPress = (e) => {
@@ -26,6 +32,7 @@ const Search = ({ location = 'home' }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setResult(input);
+    setMuni(municipio)
     navigate('/resultados-de-busqueda/');
     setInput('');
   };
@@ -33,7 +40,15 @@ const Search = ({ location = 'home' }) => {
   return (
     <div className={style.container}>
       <input
-        onChange={handleChange}
+        onChange={(e)=>handleChangeMuni(e)}
+        onKeyPress={handleKeyPress}
+        value={municipio}
+        className={`${location !== 'home' ? style.inputNotHome : style.inputHome}`}
+        type='text'
+        placeholder='Municipio'
+      />
+      <input
+        onChange={(e)=>handleChange(e)}
         onKeyPress={handleKeyPress}
         value={input}
         className={`${location !== 'home' ? style.inputNotHome : style.inputHome}`}
