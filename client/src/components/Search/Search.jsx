@@ -18,7 +18,7 @@ const Search = ({ location = 'home' }) => {
     if (e.charCode === 13) {
       e.preventDefault();
       setResult(input);
-      navigate('/search/');
+      navigate('/resultados-de-busqueda/');
       setInput('');
     }
   };
@@ -26,7 +26,7 @@ const Search = ({ location = 'home' }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setResult(input);
-    navigate('/search/');
+    navigate('/resultados-de-busqueda/');
     setInput('');
   };
 
@@ -38,7 +38,7 @@ const Search = ({ location = 'home' }) => {
         value={input}
         className={`${location !== 'home' ? style.inputNotHome : style.inputHome}`}
         type='text'
-        placeholder='Criterio de busqueda'
+        placeholder='Buscar un evento'
       />
       <button
         onClick={handleSubmit}
