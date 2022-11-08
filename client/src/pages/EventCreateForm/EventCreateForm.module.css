@@ -736,10 +736,17 @@
   display: none;
 }
 
+.addDelete{
+  border:none;
+  background-color: transparent;
+}
+
 .basquet {
   height: 2.5rem;
   width: 2.5rem;
   cursor: pointer;
+  border:none;
+  background-color: transparent;
 }
 
 
