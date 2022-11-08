@@ -1,7 +1,8 @@
 import React from 'react';
 import { IoLocationOutline } from 'react-icons/io5';
 import { useSelector } from 'react-redux';
-import Maps from '../Maps/Maps';
+//import Maps from '../Maps/Maps';
+import mapa from '../../assets/imgs/mapa2.png';
 import style from './EventLocation.module.css';
 
 const EventLocation = ({ id }) => {
@@ -28,8 +29,12 @@ const EventLocation = ({ id }) => {
               </div>
 
               <div className={style.img}>
-                <Maps id={id} />
+                <img src={mapa} alt="mapa" />
               </div>
+
+              {/* <div className={style.img}>
+                <Maps id={id} />
+              </div> */}
             </div>
           ) : (
             <div>

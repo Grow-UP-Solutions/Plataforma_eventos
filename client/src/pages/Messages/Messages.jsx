@@ -128,7 +128,8 @@ const Messages = () => {
       setMessages([...messages, res.data]);
       setNewMessage('');
       scroll.scrollToTop();
-    } catch (err) {
+    } 
+    catch (err) {
       console.log(err);
     }
   };
@@ -144,8 +145,11 @@ const Messages = () => {
     const messagesStar = async () => {
       try {
         const res = await eventsApi.get('/message/' + currentChat._id);
-        getMessagesStar(res.data.filter((e) => e.outstanding === true));
-      } catch (err) {
+        const response = res.data.map(e => e.outstanding.filter(e => e.isOutstanding === true &&  e.idUser === '635aea22e035cbb513c8900a'));
+        const responsive = response.filter(e => e.length > 0).flat();
+        getMessagesStar(responsive);
+      } 
+      catch (err) {
         console.log(err);
       }
     };
@@ -180,7 +184,8 @@ const Messages = () => {
       try {
         const res = await eventsApi.get('/conversation/' + id);
         setBlock(res.data.filter((e) => e.locked === true));
-      } catch (error) {
+      } 
+      catch (error) {
         console.log(error);
       }
     };
@@ -198,7 +203,8 @@ const Messages = () => {
       try {
         const res = await eventsApi.get('/conversation/' + id);
         setConversations(res.data.filter((e) => e.locked === false));
-      } catch (error) {
+      } 
+      catch (error) {
         console.log(error);
       }
     };
@@ -283,7 +289,7 @@ const Messages = () => {
                     {msgStar
                       .map((m, i) => (
                         <div key={i}>
-                          <Message message={m} own={m.sender === id} />
+                          <Message message={m} own={m.idUser === id} />
                         </div>
                       ))
                       .reverse()}
