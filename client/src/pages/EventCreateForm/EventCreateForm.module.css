@@ -1199,6 +1199,12 @@
   background-color: #F5F5F5;
 }
 
+.toShow{
+  display: none;
+  margin-top: 1rem;
+  background-color: #F5F5F5;
+}
+
 .checkBono {
   margin-top: -3rem;
   margin-left: 1rem;
@@ -1288,7 +1294,11 @@
 
 }
 
-.checkBono input:checked ~ .containerBono {
+.checkBono input:checked ~ .paso .containerBono {
+  display: block;
+}
+
+.checkBono input:checked ~ .paso .toShow {
   display: block;
 }
 
@@ -1481,6 +1491,35 @@
   border: none;
   text-align: center;
   margin-left: 1rem;
+}
+
+/* .editarResetear{
+  display: flex;
+} */
+
+.editarCodigo {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid var(--color-orange);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.editarCodigo span {
+  color: var(--color-orange);
+}
+
+.editarCodigo .iconEdit {
+  color: var(--color-orange);
+}
+
+
+.flex{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  
 }
 
 
@@ -2004,10 +2043,24 @@
 
 .containerMenuGetDanger {
   position: absolute;
-  padding: 2rem;
-  background-color: white;
-  border-radius: 10px;
+  
+  
+  
   box-shadow: 0px 10px 20px 2px rgba(0, 0, 0, 0.2);
+}
+
+.modalCodigo {
+  position: absolute; 
+  padding: 2rem;
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%;
+  border-radius: 10px;
+  overflow: auto;
+  background-color: white;
+  scrollbar-width: thin;          /* "auto" or "thin" */
+  scrollbar-color: var(--color-grey-6) #2b2a2a;   /* scroll thumb and track */
 }
 
 .containerDescription {
@@ -2092,6 +2145,19 @@
   cursor: pointer;
 }
 
+
+/* {
+  e.show===true ?
+  <div>
+    <button  className={styles.addDate} onClick={(e) => ocultarCodigos(e,index,indice)}>
+      Ocultar Codigos
+    </button>
+  </div>
+  :
+  <button  className={styles.addDate} onClick={(e) => mostrarCodigos(e,index,indice)}>
+    Mostrar Codigos
+  </button>
+}  */
 
 
 
