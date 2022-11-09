@@ -28,7 +28,7 @@ const SearchResult = () => {
 
   return (
     <div className={style.container}>
-      <p className={style.title}>{result}</p>
+      <p className={style.title}>Resultado de búsqueda: {result}</p>
       <div className={style.containerCard}>
         {currentCard.length ? (
           currentCard.map((event, index) => {
