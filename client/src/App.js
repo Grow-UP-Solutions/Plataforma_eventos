@@ -67,7 +67,7 @@ function App() {
         <Route path='/sobre-el-organizador/:id' element={<Organizer />} />
         <Route path='/detalles-del-evento/:id' element={<EventDetails />} />
         <Route path='/cart/:id' element={<Cart />} />
-        <Route path='/search' element={<SearchResult />} />
+        <Route path='/resultados-de-busqueda' element={<SearchResult />} />
         <Route path='/registrate' element={<Register />} />
         <Route path='/organiza-un-evento/beneficios' element={<EventCreate />} />
         <Route path='/oganiza-un-evento' element={<EventCreateForm />} />
