@@ -220,11 +220,13 @@ const EventEdit = () => {
 
   useEffect(() => {
     if (eventDetails) {
+      const auxCategories = eventDetails.categories.map((categorie)=>categorie.name)
+
       setPost({
         ...post,
         idOrganizer: eventDetails.organizer._id,
         title: eventDetails.title,
-        categories: eventDetails.categories,
+        categories: auxCategories,
         otherCategorie: eventDetails.otherCategorie,
         shortDescription: eventDetails.shortDescription,
         longDescription: eventDetails.longDescription,
@@ -477,35 +479,35 @@ const EventEdit = () => {
       }
     }
 
-    if (allEvents.length > 0) {
-      for (let i = 0; i < post.dates.length; i++) {
-        for (let j = 0; j < eventDetails.dates.length; j++) {
-          if (
-            post.dates[i]._id === eventDetails.dates[j]._id &&
-            post.dates[i].sells > 0 &&
-            post.dates[i].cupos < eventDetails.dates[j].sells
-          ) {
-            errors.cupos = `Ya se vendieron ${eventDetails.dates[j].sells}  cupos. El número no puede ser inferior a los cupos ya vendidos `;
-            // return swal({
-            //   title: `Ya se vendieron ${eventDetails.dates[j].sells}  cupos. El número no puede ser inferior a los cupos ya vendidos `,
-            //   icon: 'warning',
-            //   dangerMode: true,
-            // });
-          } else if (
-            post.dates[i]._id === eventDetails.dates[j]._id &&
-            post.dates[i].sells > 0 &&
-            post.dates[i].price < eventDetails.dates[j].price
-          ) {
-            errors.price = `Ya se vendieron ${eventDetails.dates[j].sells}  cupos. El número no puede ser inferior al de los cupos ya vendidos `;
-            // return swal({
-            //   title: `Ya se vendieron ${eventDetails.dates[j].sells}  cupos. El número no puede ser inferior al de los cupos ya vendidos `,
-            //   icon: 'warning',
-            //   dangerMode: true,
-            // });
-          }
-        }
-      }
-    }
+    // if (allEvents.length > 0) {
+    //   for (let i = 0; i < post.dates.length; i++) {
+    //     for (let j = 0; j < eventDetails.dates.length; j++) {
+    //       if (
+    //         post.dates[i]._id === eventDetails.dates[j]._id &&
+    //         post.dates[i].sells > 0 &&
+    //         post.dates[i].cupos < eventDetails.dates[j].sells
+    //       ) {
+    //         errors.cupos = `Ya se vendieron ${eventDetails.dates[j].sells}  cupos. El número no puede ser inferior a los cupos ya vendidos `;
+    //         // return swal({
+    //         //   title: `Ya se vendieron ${eventDetails.dates[j].sells}  cupos. El número no puede ser inferior a los cupos ya vendidos `,
+    //         //   icon: 'warning',
+    //         //   dangerMode: true,
+    //         // });
+    //       } else if (
+    //         post.dates[i]._id === eventDetails.dates[j]._id &&
+    //         post.dates[i].sells > 0 &&
+    //         post.dates[i].price < eventDetails.dates[j].price
+    //       ) {
+    //         errors.price = `Ya se vendieron ${eventDetails.dates[j].sells}  cupos. El número no puede ser inferior al de los cupos ya vendidos `;
+    //         // return swal({
+    //         //   title: `Ya se vendieron ${eventDetails.dates[j].sells}  cupos. El número no puede ser inferior al de los cupos ya vendidos `,
+    //         //   icon: 'warning',
+    //         //   dangerMode: true,
+    //         // });
+    //       }
+    //     }
+    //   }
+    // }
 
     for (let i = 0; i < post.dates.length; i++) {
       for (let j = 0; j < post.dates[i].codigos.length; j++) {
@@ -544,25 +546,23 @@ const EventEdit = () => {
   const [changed] = useState(false);
 
  
-  function handleCategories(e) {
-    let categorieName = e.target.value;
-    console.log('targetcat:', e.target.value);
-    if (!e.target.checked) {
-      let seleccion = seleccionados.filter((categorie) => categorie !== e.target.value);
-      setSeleccionados(seleccion);
-      setPost({
-        ...post,
-        categories: seleccion,
-      });
-    } else {
-      let categorieCheck = categories.find((categorie) => categorie.name === categorieName);
-      setSeleccionados([...seleccionados, categorieCheck.name]);
-      setPost({
-        ...post,
-        categories: [...post.categories, categorieCheck.name],
-      });
+  function handleCategories(e){
+    let categorieName = e.target.value
+    let categorieChecked= e.target.checked
+
+    let categories = post.categories
+
+    if(categorieChecked){
+      categories.push(categorieName)
+    }else{
+      categories = categories.filter((cate)=>cate !== categorieName)
     }
+    setPost({
+      ...post,
+      categories
+    })
   }
+
 
   useEffect(() => {
     let checkeds = document.getElementsByClassName('checkbox');
@@ -698,7 +698,7 @@ const EventEdit = () => {
     if (e.target.name === 'date') {
       newFechas[i].dateFormated = formatDateForm(e.target.value);
     }
-    if(indice !== undefined){
+    if(indice !== undefined &&  newFechas[i].codigos[indice] !== undefined){
       newFechas[i].codigos[indice][e.target.name] = e.target.value
     }
 
@@ -1345,21 +1345,22 @@ const EventEdit = () => {
                     sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
                   </p>
                   <div className={styles.containerChecks}>
-                    {categories.map((categorie) => (
-                      <div className={styles.checks}>
-                        <label className={styles.labelsChecks}>                     
-                            <input
-                              className={styles.checkBox}
-                              type='checkbox'
-                              value={categorie.name}
-                              onChange={(e) => handleCategories(e)}
-                              defaultChecked={false}
-                              
-                            />
-                          {categorie.name}
-                        </label>
-                      </div>
-                    ))}
+                    {post&&
+                      categories.map((categorie) => (
+                        <div className={styles.checks}>
+                          <label className={styles.labelsChecks}>                     
+                              <input
+                                className={styles.checkBox}
+                                type='checkbox'
+                                value={categorie.name}
+                                onChange={(e) => handleCategories(e)}
+                                checked={post.categories.includes(categorie.name)}
+                              />
+                            {categorie.name}
+                          </label>
+                        </div>
+                      )) 
+                      }
                   </div>
 
                   {/* otra categoria*/}
@@ -2156,7 +2157,7 @@ const EventEdit = () => {
                                 type='checkbox'
                                 name='bono'
                               />                       
-                            <label className={styles.labelsChecks}>Brindar códigos de descuento’</label>
+                            <label className={styles.labelsChecks}>Brindar códigos de descuento</label>
                             {element.codigos && element.codigos.map((e,indice)=>(
                               <div className={styles.paso}>                              
                                 <div className={styles.containerBono}>
