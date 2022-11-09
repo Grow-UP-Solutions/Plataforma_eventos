@@ -563,24 +563,6 @@ const EventEdit = () => {
     })
   }
 
-  // function handleCategories(e) {
-  //   let categorieName = e.target.value;
-  //   if (!e.target.checked) {
-  //     let seleccion = seleccionados.filter((categorie) => categorie !== e.target.value);
-  //     setSeleccionados(seleccion);
-  //     setPost({
-  //       ...post,
-  //       categories: seleccion,
-  //     });
-  //   } else {
-  //     let categorieCheck = categories.find((categorie) => categorie.name === categorieName);
-  //     setSeleccionados([...seleccionados, categorieCheck.name]);
-  //     setPost({
-  //       ...post,
-  //       categories: [...post.categories, categorieCheck.name],
-  //     });
-  //   }
-  // }
 
   useEffect(() => {
     let checkeds = document.getElementsByClassName('checkbox');
@@ -716,7 +698,7 @@ const EventEdit = () => {
     if (e.target.name === 'date') {
       newFechas[i].dateFormated = formatDateForm(e.target.value);
     }
-    if(indice !== undefined){
+    if(indice !== undefined &&  newFechas[i].codigos[indice] !== undefined){
       newFechas[i].codigos[indice][e.target.name] = e.target.value
     }
 
@@ -2175,7 +2157,7 @@ const EventEdit = () => {
                                 type='checkbox'
                                 name='bono'
                               />                       
-                            <label className={styles.labelsChecks}>Brindar códigos de descuento’</label>
+                            <label className={styles.labelsChecks}>Brindar códigos de descuento</label>
                             {element.codigos && element.codigos.map((e,indice)=>(
                               <div className={styles.paso}>                              
                                 <div className={styles.containerBono}>

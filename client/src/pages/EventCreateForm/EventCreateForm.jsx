@@ -180,12 +180,12 @@ const EventCreateForm = () => {
         codigos:[
           {
           codigo:'',
-          descuento:'',
-          cantidad:'',
+          descuento:0,
+          cantidad:0,
           cod:false,
           show: true,
           ed:false,
-          uses:''
+          uses:0
           }
         ],
       },
@@ -617,16 +617,31 @@ const EventCreateForm = () => {
     let newFechas = [...post.dates];
     console.log('indice:',indice)
 
-    newFechas[i][e.target.name] = e.target.value;
+    
+    if(e.target.name==='cupos'){
+      newFechas[i].cupos = parseInt(e.target.value);
+    }else if(e.target.name==='price'){
+      newFechas[i].price = parseInt(e.target.value);;
+    }else{
+      newFechas[i][e.target.name] = e.target.value;
+    }
+    
+   
     newFechas[i].precioAlPublico = parseFloat(newFechas[i].price) + parseFloat(costoDeManejo) + parseFloat(a);
     newFechas[i].gananciaCupo = parseFloat(newFechas[i].price) - (parseFloat(newFechas[i].price) * parseFloat(comision) + parseFloat(newFechas[i].price) * parseFloat(comision) * parseFloat(IVA));
     newFechas[i].gananciaEvento = parseFloat(newFechas[i].gananciaCupo) * parseInt(newFechas[i].cupos);
     if (e.target.name === 'date') {
       newFechas[i].dateFormated = formatDateForm(e.target.value);
     }
-      if(indice !== undefined){
-        newFechas[i].codigos[indice][e.target.name] = e.target.value
+      if(indice !== undefined ){
+        if(e.target.name === 'codigo'){
+          newFechas[i].codigos[indice].codigo = e.target.value
+        }else{
+          newFechas[i].codigos[indice][e.target.name] = parseInt(e.target.value)
+        }   
     }
+
+    
      
     setPost({
       ...post,
@@ -657,12 +672,12 @@ const EventCreateForm = () => {
           codigos:[
             {
             codigo:'',
-            descuento:'',
-            cantidad:'',
+            descuento:0,
+            cantidad:0,
             cod:false,
             show: true,
             ed:false,
-            uses:''
+            uses:0
             }
           ],
         },
@@ -677,11 +692,11 @@ const EventCreateForm = () => {
       ...datesAux[i].codigos,
       {
         codigo: '',
-        descuento: '',
-        cantidad: '',
+        descuento: 0,
+        cantidad: 0,
         cod:false,
         show:true,
-        uses:''
+        uses:0
       },
     ];
 
@@ -741,12 +756,12 @@ const EventCreateForm = () => {
     const datesAux = post.dates;
     datesAux[i].codigos[indice] =  {
       codigo: '',
-      descuento: '',
-      cantidad: '',
+      descuento: 0,
+      cantidad: 0,
       cod: false,
       show:true,
       ed:false,
-      uses:''
+      uses:0
     }
      setPost({
       ...post,
@@ -955,12 +970,10 @@ const EventCreateForm = () => {
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log('estoy en submit');
     setPost({
       ...post,
       isPublic: true,
     });
-    console.log('is public:', post.isPublic);
     if (Object.values(errors).length > 0) {
       setFailedSubmit(true);
       return swal({
@@ -1699,7 +1712,7 @@ const EventCreateForm = () => {
                                   type='number'
                                   placeholder='-'
                                   name='cupos'
-                                  value={element.cupos || ''}
+                                  value={element.cupos}
                                   onChange={(e) => handleChanges(index, e)}
                                   required
                                 />
@@ -1710,7 +1723,7 @@ const EventCreateForm = () => {
                                   type='number'
                                   placeholder='-'
                                   name='cupos'
-                                  value={element.cupos || ''}
+                                  value={element.cupos}
                                   onChange={(e) => handleChanges(index, e)}
                                 />
                               )}
@@ -1728,7 +1741,7 @@ const EventCreateForm = () => {
                                     type='number'
                                     placeholder='-'
                                     name='price'
-                                    value={element.price || ''}
+                                    value={element.price}
                                     onChange={(e) => handleChanges(index, e)}
                                     required
                                   />
@@ -1738,7 +1751,7 @@ const EventCreateForm = () => {
                                     type='number'
                                     placeholder='-'
                                     name='price'
-                                    value={element.price || ''}
+                                    value={element.price}
                                     onChange={(e) => handleChanges(index, e)}
                                   />
                                 )}

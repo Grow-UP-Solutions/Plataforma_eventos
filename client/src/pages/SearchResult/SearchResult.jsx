@@ -19,14 +19,21 @@ const SearchResult = () => {
   const currentCard = local.slice(indexOfFirstCard, indexOfLastCard);
   const paginado = (pageNumber) => setCurretPage(pageNumber);
 
-  const localEvents = events.filter((event)=>event.municipio.toLowerCase().includes(muni.toLowerCase()))
 
   useEffect(() => {
     scroll.scrollToTop();
+    const localEvents = events.filter((event)=>event.municipio.toLowerCase().includes(muni.toLowerCase()))
+    if(result){
     const getSearch = () => {
       setLocal(localEvents.filter((event) => event.title.toLowerCase().includes(result.toLowerCase())));
     }
     getSearch();
+    }else{
+      const getSearch = () => {
+        setLocal(localEvents);
+      }
+      getSearch();
+    }
   }, []);
 
   return (
