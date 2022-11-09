@@ -53,13 +53,11 @@ const EventEdit = () => {
   const allEvents = [...eventos];
   const eventDetails = allEvents.filter((e) => e._id === eventId)[0];
 
-  console.log('allEvents[0]:', allEvents[0]);
-  console.log('eventDetails:', eventDetails);
 
   //              para comparar            //
   const allEventsCopy = useSelector((state) => state.eventsCopy);
   const EventCopy = allEventsCopy.filter((e) => e._id === eventId)[0];
-  console.log('EventCopy:', EventCopy);
+
 
   //--------------------------------------------------//
   //               USUARIO              //
@@ -261,6 +259,7 @@ const EventEdit = () => {
     cupos: '',
     price: '',
     dates: '',
+    bono:'',
     isPublic: '',
   });
 
@@ -343,9 +342,9 @@ const EventEdit = () => {
       errors.longDescription = 'Palabra ofensiva';
     }
 
-    // if (!post.pictures[0]) {
-    //   errors.pictures = 'Debe ingresar al menos una imagen'
-    // }
+    if (!post.pictures[0]) {
+      errors.pictures = 'Debe ingresar al menos una imagen'
+    }
 
     let repetidas = post.pictures.filter((picture) => picture.cover === true);
 
@@ -479,41 +478,48 @@ const EventEdit = () => {
       }
     }
 
-    // if (allEvents.length > 0) {
-    //   for (let i = 0; i < post.dates.length; i++) {
-    //     for (let j = 0; j < eventDetails.dates.length; j++) {
-    //       if (
-    //         post.dates[i]._id === eventDetails.dates[j]._id &&
-    //         post.dates[i].sells > 0 &&
-    //         post.dates[i].cupos < eventDetails.dates[j].sells
-    //       ) {
-    //         errors.cupos = `Ya se vendieron ${eventDetails.dates[j].sells}  cupos. El número no puede ser inferior a los cupos ya vendidos `;
-    //         // return swal({
-    //         //   title: `Ya se vendieron ${eventDetails.dates[j].sells}  cupos. El número no puede ser inferior a los cupos ya vendidos `,
-    //         //   icon: 'warning',
-    //         //   dangerMode: true,
-    //         // });
-    //       } else if (
-    //         post.dates[i]._id === eventDetails.dates[j]._id &&
-    //         post.dates[i].sells > 0 &&
-    //         post.dates[i].price < eventDetails.dates[j].price
-    //       ) {
-    //         errors.price = `Ya se vendieron ${eventDetails.dates[j].sells}  cupos. El número no puede ser inferior al de los cupos ya vendidos `;
-    //         // return swal({
-    //         //   title: `Ya se vendieron ${eventDetails.dates[j].sells}  cupos. El número no puede ser inferior al de los cupos ya vendidos `,
-    //         //   icon: 'warning',
-    //         //   dangerMode: true,
-    //         // });
-    //       }
-    //     }
-    //   }
-    // }
+    if (allEvents.length > 0) {
+      for (let i = 0; i < post.dates.length; i++) {
+        for (let j = 0; j < EventCopy.dates.length; j++) {
+          if (
+            post.dates[i]._id === EventCopy.dates[j]._id &&
+            post.dates[i].sells > 0 &&
+            post.dates[i].cupos < EventCopy.dates[j].sells
+          ) {
+            errors.cupos = `Ya se vendieron ${EventCopy.dates[j].sells}  cupos. El número no puede ser inferior a los cupos ya vendidos `;
+            // return swal({
+            //   title: `Ya se vendieron ${EventCopy.dates[j].sells}  cupos. El número no puede ser inferior a los cupos ya vendidos `,
+            //   icon: 'warning',
+            //   dangerMode: true,
+            // });
+          }
+        }
+      }
+    }
+
+    if (allEvents.length > 0) {
+      for (let i = 0; i < post.dates.length; i++) {
+        for (let j = 0; j < EventCopy.dates.length; j++) { 
+           if (
+            post.dates[i]._id === EventCopy.dates[j]._id &&
+            post.dates[i].sells > 0 &&
+            post.dates[i].price < EventCopy.dates[j].price
+          ) {
+            errors.price = `Ya se vendieron ${EventCopy.dates[j].sells}  cupos. El número no puede ser inferior al de los cupos ya vendidos `;
+            // return swal({
+            //   title: `Ya se vendieron ${EventCopy.dates[j].sells}  cupos. El número no puede ser inferior al de los cupos ya vendidos `,
+            //   icon: 'warning',
+            //   dangerMode: true,
+            // });
+          }
+        }
+      }
+    }
 
     for (let i = 0; i < post.dates.length; i++) {
       for (let j = 0; j < post.dates[i].codigos.length; j++) {
-       if(post.dates[i].codigos[j].descuento !=='' && post.dates[i].codigos[j].descuento < 1 || post.dates[i].codigos[j].descuento>100){
-        console.log('post.dates[i].codigos[j].descuento:',post.dates[i].codigos[j].descuento,i,j)
-        errors.dates='Descuento: Valores entre 1 y 99'
+       if( post.dates[i].codigos[j].descuento.length && post.dates[i].codigos[j].descuento < 1 || post.dates[i].codigos[j].descuento>100){
+        errors.bono='Descuento: Valores entre 1 y 99'
        }
       }
     }
@@ -597,7 +603,6 @@ const EventEdit = () => {
       formData.append('file', image[i]);
       formData.append('upload_preset', 'wp0l2oeg');
       await axios.post('https://api.cloudinary.com/v1_1/dhmnttdy2/image/upload', formData).then((response) => {
-        console.log('r:', response);
         setPost({
           ...post,
           pictures: [...post.pictures, { cover: false, picture: response.data.secure_url }],
@@ -686,9 +691,18 @@ const EventEdit = () => {
 
   const a = costoDeManejo * IVA;
 
-  let handleChanges = (i, e, indice, id) => {
+  let handleChanges = (e, i, id,indice,codigo) => {
+    e.preventDefault()
     let newFechas = [...post.dates];
-    newFechas[i][e.target.name] = e.target.value;
+    
+    if(e.target.name==='cupos'){
+      newFechas[i].cupos = parseInt(e.target.value);
+    }else if(e.target.name==='price'){
+      newFechas[i].price = parseInt(e.target.value);;
+    }else{
+      newFechas[i][e.target.name] = e.target.value;
+    }
+
     newFechas[i].precioAlPublico = parseFloat(newFechas[i].price) + parseFloat(costoDeManejo) + parseFloat(a);
     newFechas[i].gananciaCupo =
       parseFloat(newFechas[i].price) -
@@ -698,10 +712,16 @@ const EventEdit = () => {
     if (e.target.name === 'date') {
       newFechas[i].dateFormated = formatDateForm(e.target.value);
     }
-    if(indice !== undefined &&  newFechas[i].codigos[indice] !== undefined){
-      newFechas[i].codigos[indice][e.target.name] = e.target.value
-    }
+    
 
+    if(indice !== undefined &&  newFechas[i].codigos[indice] !== undefined ){
+      if(e.target.name === 'codigo'){
+        newFechas[i].codigos[indice].codigo = e.target.value
+      }else{
+        newFechas[i].codigos[indice][e.target.name] = parseInt(e.target.value)
+      }   
+    }
+    
     for (let i = 0; i < post.dates.length; i++) {
       for (let j = 0; j < EventCopy.dates.length; j++) {
         if (
@@ -719,6 +739,14 @@ const EventEdit = () => {
             showCancelButton: false,
             confirmButtonText: 'Cambiar hora',
             denyButtonText: `Cerrar`,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            width: 600,
+            height:600,
+            customClass : {
+              html: 'swal2-title'
+            }
+            
           }).then((result) => {
             if (result.isConfirmed) {
               setPost({
@@ -785,6 +813,7 @@ const EventEdit = () => {
               });
             } else if (result.isDenied) {
               newFechas[i][e.target.name] = EventCopy.dates[j].date;
+              newFechas[i].dateFormated = EventCopy.dates[j].dateFormated;
               setPost({
                 ...post,
                 dates: newFechas,
@@ -796,7 +825,49 @@ const EventEdit = () => {
             ...post,
             dates: newFechas,
           });
+        }if(indice!==undefined && codigo !== undefined){
+          for(let a = 0;a< post.dates[i].codigos.length;a++){
+            for(let b = 0;b< EventCopy.dates[j].codigos.length;b++){
+              
+              if(post.dates[i].codigos[indice]!==undefined && post.dates[i].codigos[indice].uses>0 ){
+                if(
+                  post.dates[i].codigos[a].codigo===codigo &&
+                  EventCopy.dates[j].codigos[b].codigo===codigo&&
+                  post.dates[i].codigos[a].descuento !== EventCopy.dates[j].codigos[b].descuento
+                  ){
+                    return Swal.fire({
+                      html:
+                        'Ya hay xx cupos vendidos. El cambio sólo aplicara a futuras ventas',
+                      showDenyButton: true,
+                      showCancelButton: false,
+                      confirmButtonText: 'Cambiar % de descuento',
+                      denyButtonText: `Cerrar`,
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        setPost({
+                          ...post,
+                          dates: newFechas,
+                        });
+                      } else if (result.isDenied) {
+                        newFechas[i].codigos[indice][e.target.name]= EventCopy.dates[j].codigos[b].descuento;
+                        setPost({
+                          ...post,
+                          dates: newFechas,
+                        });
+                      }
+                    });
+                  }
+              }else{
+                setPost({
+                  ...post,
+                  dates: newFechas,
+                });
+              }
+  
+            }
+          }
         }
+
       }
     }
   };
@@ -897,7 +968,7 @@ const EventEdit = () => {
 
   let addBono = (e,i) => {
     e.preventDefault()
-    const datesAux = post.dates;
+    const datesAux = [...post.dates];
     datesAux[i].codigos = [
       ...datesAux[i].codigos,
       {
@@ -958,24 +1029,90 @@ const EventEdit = () => {
     }
   };
 
-  let borrarCodigo = (e,i,indice) =>{
+  let borrarCodigo = (e, i, id,indice,codigo) =>{
     e.preventDefault()
-    const datesAux = post.dates;
-    if( datesAux[i].codigos[indice].codigo.length){
+    const datesAux = [...post.dates];
+    
+    if(datesAux[i].codigos[indice].codigo.length && datesAux[i].codigos[indice].uses>0){
+      swal({
+        title: 'Ya hay xx cupos vendidos con este código. El cambio sólo aplicara a futuras ventas. Deseas eliminar este codigo? ',
+        buttons: true,
+        dangerMode: true,
+      }).then((continuar) => {
+        if (continuar) {
+          if(datesAux[i].codigos[indice].length>1){
+            datesAux[i].codigos.splice(indice, 1);
+          setPost({
+            ...post,
+            dates: datesAux,
+          });
+          }else{
+            const datesAux = [...post.dates];
+            datesAux[i].codigos[indice] =  {
+              codigo: '',
+              descuento: '',
+              cantidad: '',
+              cod: false,
+              show:true,
+              ed:false,
+              uses:''
+            }
+            setPost({
+              ...post,
+              dates: datesAux,
+            })
+          }
+        }
+      })
+    }
+    else if( datesAux[i].codigos[indice].codigo.length){
     swal({
       title: 'Deseas eliminar este codigo? ',
       buttons: true,
       dangerMode: true,
     }).then((continuar) => {
       if (continuar) {
-        datesAux[i].codigos.splice(indice, 1);
+        if(datesAux[i].codigos[indice].length>1){
+          datesAux[i].codigos.splice(indice, 1);
         setPost({
           ...post,
           dates: datesAux,
         });
+        }else{
+          const datesAux = [...post.dates];
+          datesAux[i].codigos[indice] =  {
+            codigo: '',
+            descuento: '',
+            cantidad: '',
+            cod: false,
+            show:true,
+            ed:false,
+            uses:''
+          }
+          setPost({
+            ...post,
+            dates: datesAux,
+          })
+        }
       }
     })
-  }else{
+  }else if(datesAux[i].codigos[indice].codigo.length === 0 && datesAux[i].codigos[indice].length === 1 ){
+    const datesAux = [...post.dates];
+      datesAux[i].codigos[indice] =  {
+        codigo: '',
+        descuento: '',
+        cantidad: '',
+        cod: false,
+        show:true,
+        ed:false,
+        uses:''
+      }
+      setPost({
+        ...post,
+        dates: datesAux,
+      })
+  }
+    else{
     datesAux[i].codigos.splice(indice, 1);
     setPost({
       ...post,
@@ -986,7 +1123,7 @@ const EventEdit = () => {
 
   let setearCodigo = (e,i,indice) =>{
     e.preventDefault()
-    const datesAux = post.dates;
+    const datesAux = [...post.dates];
     datesAux[i].codigos[indice] =  {
       codigo: '',
       descuento: '',
@@ -1019,9 +1156,8 @@ const EventEdit = () => {
 
   let editarCodigo = (e,i,indice) => {
     e.preventDefault()
-    //setEd(true)
     setCambios(false)
-    const datesAux = post.dates;
+    const datesAux = [...post.dates];
     datesAux[i].codigos[indice].ed = true
      setPost({
       ...post,
@@ -1029,38 +1165,25 @@ const EventEdit = () => {
     }) 
   }
 
-  let guardarCambios = (e,i,indice) => {
+  let guardarCambios = (e, i, id,indice,codigo) => {
     e.preventDefault()
-    const datesAux = post.dates;
-  //   if(datesAux[i].codigos[indice].uses>0){
-  //   return swal({
-  //     title: 'Ya hay xx cupos vendidos. El cambio sólo aplicara a futuras ventas',
-  //     icon: 'warning',
-  //     buttons: ['Cerrar','Continuar'],
-  //     dangerMode: true,
-  //   })
-  //   .then((continuar) => {
-  //     setCambios(true)
-  //     datesAux[i].codigos[indice].ed = false
-  //     setPost({
-  //       ...post,
-  //       dates: datesAux,
-  //     }) 
-  //   })  
-  // }else{
+    const datesAux =[...post.dates];
+    
+    swal('Cambio ha sido guardado')
     setCambios(true)
-      datesAux[i].codigos[indice].ed = false
-      setPost({
-        ...post,
-        dates: datesAux,
-      }) 
+    datesAux[i].codigos[indice].ed = false
+     setPost({
+      ...post,
+      dates: datesAux,
+    }) 
+    
   }
 
   let mostrarCodigos = (e,i,indice) => {
     e.preventDefault()
     //setGetDanger(false)
     //setMostrar(false)
-    const datesAux = post.dates;
+    const datesAux = [...post.dates];
     datesAux[i].codigos[indice].show = true
      setPost({
       ...post,
@@ -1072,7 +1195,7 @@ const EventEdit = () => {
     e.preventDefault()
     //setGetDanger(false)
     //setMostrar(false)
-    const datesAux = post.dates;
+    const datesAux = [...post.dates];
     datesAux[i].codigos[indice].show =  false
      setPost({
       ...post,
@@ -1181,8 +1304,6 @@ const EventEdit = () => {
         dangerMode: true,
       });
     } else if (post.compras > 0 && post.inRevision === false) {
-      console.log('1');
-
       swal({
         title:
           'Si ya hay Asistentes al evento es importante que le informes de inmediato los cambios que consideres podrían afectar su participación ',
@@ -1198,11 +1319,8 @@ const EventEdit = () => {
         }
       });
     } else if (eventDetails === post) {
-      console.log('2');
       swal('No has hecho ninguna edición ');
     } else if (post.inRevision === true) {
-      console.log('3');
-      console.log('en revision');
       swal({
         title: 'Este evento y sus fechas será publicado  ',
         buttons: true,
@@ -1219,7 +1337,6 @@ const EventEdit = () => {
         }
       });
     } else if (post.compras === 0 && post.inRevision === false) {
-      console.log('4');
       swal({
         title: 'Este evento y sus fechas será publicado  ',
         buttons: true,
@@ -1936,7 +2053,7 @@ const EventEdit = () => {
 
                   {/* Dates*/}
                   <div>
-                    {post.dates.map((element, index) => (
+                    {post.dates.map((date, index) => (
                       <div>
                         {/* cupos-precios*/}
                         <div className={styles.containerInfo} key={index}>
@@ -1950,8 +2067,8 @@ const EventEdit = () => {
                                   type='number'
                                   placeholder='10'
                                   name='cupos'
-                                  value={element.cupos || ''}
-                                  onChange={(e) => handleChanges(index, e)}
+                                  value={date.cupos}
+                                  onChange={(e) => handleChanges(e, index, date._id)}
                                   required
                                 />
                               ) : (
@@ -1961,8 +2078,8 @@ const EventEdit = () => {
                                   type='number'
                                   placeholder='10'
                                   name='cupos'
-                                  value={element.cupos || ''}
-                                  onChange={(e) => handleChanges(index, e)}
+                                  value={date.cupos || ''}
+                                  onChange={(e) => handleChanges(e, index,  date._id)}
                                 />
                               )}
                             </label>
@@ -1979,8 +2096,8 @@ const EventEdit = () => {
                                     type='number'
                                     placeholder='20.00'
                                     name='price'
-                                    value={element.price || ''}
-                                    onChange={(e) => handleChanges(index, e)}
+                                    value={date.price || ''}
+                                    onChange={(e) => handleChanges(e, index,  date._id)}
                                     required
                                   />
                                 ) : (
@@ -1989,14 +2106,14 @@ const EventEdit = () => {
                                     type='number'
                                     placeholder='20.00'
                                     name='price'
-                                    value={element.price || ''}
-                                    onChange={(e) => handleChanges(index, e)}
+                                    value={date.price || ''}
+                                    onChange={(e) => handleChanges(e, index,  date._id)}
                                   />
                                 )}
                               </div>
                             </label>
 
-                            {element.price === '' ? <p>$21.990</p> : <p>{element.precioAlPublico}</p>}
+                            {date.price === '' ? <p>$21.990</p> : <p>{date.precioAlPublico}</p>}
 
                             <p className={styles.subInfotxt}>Precio al público incluyendo costo de manejo e IVA</p>
                           </div>
@@ -2007,7 +2124,7 @@ const EventEdit = () => {
                               Tu ganas por cupo
                               <div className={styles.labelS}>
                                 <p>$</p>
-                                <p className={styles.subInfoInput}>{element.gananciaCupo}</p>
+                                <p className={styles.subInfoInput}>{date.gananciaCupo}</p>
                               </div>
                             </label>
                             <p className={styles.subInfotxt}>Después de nuestra comisión + IVA</p>
@@ -2022,7 +2139,7 @@ const EventEdit = () => {
                               Tu ganas por evento
                               <div className={styles.labelS}>
                                 <p>$</p>
-                                <p className={styles.subInfoInput}>{element.gananciaEvento}</p>
+                                <p className={styles.subInfoInput}>{date.gananciaEvento}</p>
                               </div>
                             </label>
                             <p className={styles.subInfotxt}>Esto sería lo que ganarías si se venden todos tus cupos</p>
@@ -2042,8 +2159,8 @@ const EventEdit = () => {
                                 classname={styles.errors}
                                 type='date'
                                 name='date'
-                                value={element.date || ''}
-                                onChange={(e) => handleChanges(index, e, element._id)}
+                                value={date.date}
+                                onChange={(e) => handleChanges(e, index, date._id)}
                                 min={fechaMinima}
                                 required
                               />
@@ -2052,12 +2169,12 @@ const EventEdit = () => {
                                 id='fecha'
                                 type='date'
                                 name='date'
-                                value={element.date || ''}
-                                onChange={(e) => handleChanges(index, e, element._id)}
+                                value={date.date}
+                                onChange={(e) => handleChanges(e, index, date._id)}
                                 min={fechaMinima}
                               />
                             )}
-                            <p>{element.dateFormated}</p>
+                            <p>{date.dateFormated}</p>
                           </div>
 
                           {/* hora inicio*/}
@@ -2067,16 +2184,16 @@ const EventEdit = () => {
                               <input
                                 type='time'
                                 name='start'
-                                value={element.start || ''}
-                                onChange={(e) => handleChanges(index, e, element._id)}
+                                value={date.start || ''}
+                                onChange={(e) => handleChanges(e, index, date._id)}
                                 required
                               />
                             ) : (
                               <input
                                 type='time'
                                 name='start'
-                                value={element.start || ''}
-                                onChange={(e) => handleChanges(index, e, element._id)}
+                                value={date.start || ''}
+                                onChange={(e) => handleChanges(e, index, date._id)}
                                 step='900'
                               />
                             )}
@@ -2089,26 +2206,26 @@ const EventEdit = () => {
                               <input
                                 type='time'
                                 name='end'
-                                value={element.end || ''}
-                                onChange={(e) => handleChanges(index, e, element._id)}
+                                value={date.end || ''}
+                                onChange={(e) => handleChanges(e, index, date._id)}
                                 required
                               />
                             ) : (
                               <input
                                 type='time'
                                 name='end'
-                                value={element.end || ''}
-                                onChange={(e) => handleChanges(index, e, element._id)}
+                                value={date.end || ''}
+                                onChange={(e) => handleChanges(e, index, date._id)}
                               />
                             )}
                           </div>
 
                           {/* Public*/}
-                          {element.isPublic === true ? (
+                          {date.isPublic === true ? (
                             <button
                               className={styles.removePublic}
                               type='button'
-                              onClick={() => removeFromPublic(index, element._id)}
+                              onClick={(e) => removeFromPublic(e, index, date._id)}
                             >
                               Quitar de Publicados
                             </button>
@@ -2116,7 +2233,7 @@ const EventEdit = () => {
                             <button
                               className={styles.removePublic}
                               type='button'
-                              onClick={() => becomePublic(index, element._id)}
+                              onClick={(e) => becomePublic(e, index, date._id)}
                             >
                               Agregar a Publicados
                             </button>
@@ -2132,9 +2249,9 @@ const EventEdit = () => {
                         } */}
 
                           <button
-                            lassName={styles.addDelete}
+                            className={styles.addDelete}
                             type='button'
-                            onClick={() => removeFormFields(index, element._id)}
+                            onClick={(e) => removeFormFields(e, index, date._id)}
                           >
                             <img className={styles.basquet} src={basquet} alt='n' />
                           </button>
@@ -2142,7 +2259,7 @@ const EventEdit = () => {
 
                         {/* bono*/}                      
                         <div className={styles.checkBono}>
-                          {/* {element.codigos[0].codigo.length?
+                          {date.codigos[0] && date.codigos[0].codigo.length?
                             <input
                               className={styles.checkBoxBono}
                               defaultChecked={true}
@@ -2150,31 +2267,32 @@ const EventEdit = () => {
                               name='bono'
                               checked
                               />
-                              : */}
+                              :
                               <input
                                 className={styles.checkBoxBono}
                                 defaultChecked={false}
                                 type='checkbox'
                                 name='bono'
-                              />                       
+                              />  
+                            }                     
                             <label className={styles.labelsChecks}>Brindar códigos de descuento</label>
-                            {element.codigos && element.codigos.map((e,indice)=>(
+                            {date.codigos && date.codigos.map((codigo,indice)=>(
                               <div className={styles.paso}>                              
                                 <div className={styles.containerBono}>
-                                  {e.show === true ?
+                                  {codigo.show === true ?
                                   <div>
                                     {/*codigo*/}
                                     <div className={styles.opcionesBonos} key={indice}>
                                         {/*%descuento-cantidad*/}
                                           {
-                                            e.codigo.length && e.ed === false  ? (
+                                            codigo.codigo.length && codigo.ed === false  ? (
                                               <div className={styles.descuentoCantidad}>
                                                 {/* descuento*/}
                                                 <div className={styles.descuento} >
                                                   <label>
                                                     Porcentaje
                                                       <p>
-                                                        {e.descuento}
+                                                        {codigo.descuento}
                                                       </p>                                     
                                                   </label>
                                                 </div>
@@ -2184,7 +2302,7 @@ const EventEdit = () => {
                                                   <label>
                                                     Cantidad de bonos
                                                       <p>
-                                                        {e.cantidad}
+                                                        {codigo.cantidad}
                                                       </p>                                    
                                                   </label>                               
                                                 </div>
@@ -2201,24 +2319,24 @@ const EventEdit = () => {
                                                       <input
                                                         id='descuento'
                                                         type='number'
-                                                        placeholder={e.descuento}
+                                                        placeholder={codigo.descuento}
                                                         name='descuento'
-                                                        value={e.descuento || ''}
+                                                        value={codigo.descuento}
                                                         max='100'
                                                         min='1'
-                                                        onChange={(e) => handleChanges(index, e, indice)}
+                                                        onChange={(e) => handleChanges(e, index, date._id,indice,codigo.codigo)}
                                                         required
                                                       />
-                                                    ) : e.ed === true ? (
+                                                    ) : codigo.ed === true ? (
                                                       <input
                                                         id='descuento'
                                                         type='number'
-                                                        placeholder={e.descuento}
+                                                        placeholder={codigo.descuento}
                                                         name='descuento'
-                                                        value={e.descuento || ''}
+                                                        value={codigo.descuento}
                                                         max='100'
                                                         min='1'
-                                                        onChange={(e) => handleChanges(index, e, indice)}
+                                                        onChange={(e) => handleChanges(e, index, date._id, indice, codigo.codigo)}
                                                         required
                                                       />
 
@@ -2228,10 +2346,10 @@ const EventEdit = () => {
                                                         type='number'
                                                         placeholder='-'
                                                         name='descuento'
-                                                        value={e.descuento || ''}
+                                                        value={codigo.descuento}
                                                         max='100'
                                                         min='1'
-                                                        onChange={(e) => handleChanges(index, e, indice)}
+                                                        onChange={(e) => handleChanges(e, index, date._id,indice,codigo.codigo)}
                                                       />
                                                     )}   
                                                   </div> 
@@ -2246,19 +2364,19 @@ const EventEdit = () => {
                                                     {failedSubmit && errors.bonos ? (
                                                       <input
                                                         type='number'
-                                                        placeholder={e.cantidad}
+                                                        placeholder={codigo.cantidad}
                                                         name='cantidad'
-                                                        value={e.cantidad || ''}
-                                                        onChange={(e) => handleChanges(index, e, indice)}
+                                                        value={codigo.cantidad}
+                                                        onChange={(e) => handleChanges(e, index, date._id,indice,codigo.codigo)}
                                                         required
                                                       />
-                                                    ) : e.ed === true ? (
+                                                    ) : codigo.ed === true ? (
                                                       <input
                                                         type='number'
-                                                        placeholder={e.cantidad}
+                                                        placeholder={codigo.cantidad}
                                                         name='cantidad'
-                                                        value={e.cantidad || ''}
-                                                        onChange={(e) => handleChanges(index, e, indice)}
+                                                        value={codigo.cantidad}
+                                                        onChange={(e) => handleChanges(e, index, date._id,indice,codigo.codigo)}
                                                         required
                                                       />
 
@@ -2266,10 +2384,10 @@ const EventEdit = () => {
                                                       <input
                                                         className={styles.cantidad}
                                                         type='number'
-                                                        placeholder={e.cantidad}
+                                                        placeholder={codigo.cantidad}
                                                         name='cantidad'
-                                                        value={e.cantidad || ''}
-                                                        onChange={(e) => handleChanges(index, e, indice)}
+                                                        value={codigo.cantidad}
+                                                        onChange={(e) => handleChanges(e, index, date._id,indice,codigo.codigo)}
                                                       />
                                                     )}
                                                   </div>
@@ -2281,29 +2399,29 @@ const EventEdit = () => {
 
                                         {/*codigo*/}
                                           {
-                                            e.ed===true ?
+                                            codigo.ed===true ?
                                               <div className={styles.descuento} >
                                                 <label>
                                                     Código
-                                                  <p>{e.codigo}</p>
+                                                  <p>{codigo.codigo}</p>
                                                 </label>
                                               </div>
                                             :
                                               <div className={styles.codigoAble}>
                                                 <label >
                                                     Código                                         
-                                                    <p>{e.codigo}</p>
+                                                    <p>{codigo.codigo}</p>
                                                 </label>                             
                                               </div>
                                           }
                                                                   
                                         {/*generar-editar-resetear codigo*/}                                   
                                           {
-                                            e.descuento && e.cantidad && e.cod === false?
+                                            codigo.descuento && codigo.cantidad && codigo.cod === false?
                                               <div className={styles.contDate}>
                                                 <button className={styles.generarCodigo} onClick={(e)=>generarCodigo(e,index,indice)}>Generar Código</button>                            
                                               </div> : 
-                                              e.cod === true ? (
+                                              codigo.cod === true ? (
                                               <div className={styles.editarResetear}>
                                                 {/*editar codigo*/}
                                                 <button className={styles.editarCodigo} onClick={(e)=>editarCodigo(e,index,indice)}>
@@ -2318,20 +2436,20 @@ const EventEdit = () => {
                                   
                                         {/*guardar codigo*/}    
                                           {
-                                            e.ed === true && cambios === false ?
+                                            codigo.ed === true && cambios === false ?
                                               <div>
-                                                <button className={styles.generarCodigo} onClick={(e)=>guardarCambios(e,index,indice)}>Guardar Cambios</button>
+                                                <button className={styles.generarCodigo} onClick={(e)=>guardarCambios(e, index, date._id,indice,codigo.codigo)}>Guardar Cambios</button>
                                               </div>
                                               :''
                                           }
                                         
                                         {/*borrar codigo*/}
                                           {
-                                            indice?                                         
-                                              <button className={styles.deleteBono} onClick={(e)=>borrarCodigo(e,index,indice)}>
-                                                <img  src={basquet} alt='n' />
+                                                                                   
+                                              <button className={styles.addDelete} onClick={(e)=>borrarCodigo(e, index, date._id,indice,codigo.codigo)}>
+                                                <img className={styles.basquet} src={basquet} alt='n' />
                                               </button>                            
-                                            :null
+                                            
                                           }
                                     </div>  
                                   </div>  
@@ -2340,13 +2458,13 @@ const EventEdit = () => {
                                 <div className={styles.toShow}>
                                   {/* Mostrar-Ocultar */}
                                   {
-                                    e.show===true && e.codigo.length?
+                                    codigo.show===true && codigo.codigo.length?
                                     <div>
                                       <button  className={styles.addDate} onClick={(e) => ocultarCodigos(e,index,indice)}>
                                         Ocultar Codigo
                                       </button>
                                     </div>
-                                  : e.show===false && e.codigo.length?
+                                  : codigo.show===false && codigo.codigo.length?
                                     <button  className={styles.addDate} onClick={(e) => mostrarCodigos(e,index,indice)}>
                                       Mostrar Codigo
                                     </button>
@@ -2376,6 +2494,7 @@ const EventEdit = () => {
                         {errors.cupos && <p className={styles.errors}>{errors.cupos}</p>}
                         {errors.price && <p className={styles.errors}>{errors.price}</p>}
                         {errors.dates && <p className={styles.errors}>{errors.dates}</p>}
+                        {errors.bono && <p className={styles.errors}>{errors.bono}</p>}
 
                         <hr className={styles.hr}></hr>
                       </div>
