@@ -8,6 +8,7 @@ const {
   createOpinionsEvents,
   getOneEvent,
 } = require('../services/events.services.js');
+const paymentEvents = require('../services/pasarelaPagoService/paymentEvents.js');
 
 const router = Router();
 
@@ -53,6 +54,19 @@ router.post('/opinionsGenerate/:id', async (req, res) => {
     res.status(500).json(error.message);
   }
 });
+router.post('/:idEvent/payment/:idDate', async (req,res)=>{
+  const {idEvent, idDate}= req.params
+  const {codigoDescuento } = req.query
+  console.log('*/*/',codigoDescuento)
+  try {
+    const eventSoldOut = await paymentEvents(idEvent, idDate, codigoDescuento)
+
+    return res.status(200).json(eventSoldOut)
+
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
+})
 
 router.put('/:id', async (req, res) => {
   try {

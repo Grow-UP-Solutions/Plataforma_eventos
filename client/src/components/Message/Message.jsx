@@ -1,10 +1,10 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styles from './Message.module.css';
 import { format, register } from "timeago.js";
 import StarIcon from '@mui/icons-material/Star';
 import eventsApi from '../../axios/eventsApi';
-//import { UIContext } from '../../context/ui';
+import { AuthContext } from '../../context/auth/AuthContext';
 
 const localeFunc = (number, index, total_sec) => {
   // number: the timeago / timein number;
@@ -31,18 +31,29 @@ register('es_ES', localeFunc);
 
 const Message = ({ message, own }) => {
 
-  //const { getMsgStar } = useContext(UIContext);
+  const { user } = useContext(AuthContext);
   const [star, setStar] = useState(false);
 
-  useEffect(() => {
-    setStar(message.outstanding);
-  }, [message]);
+  /* useEffect(() => {
+    const data = message.outstanding.find((e) => e.idUser === user.uid);
+    if (data) {
+      setStar(data.isOutstanding);
+    }
+    else {
+      setStar(false);
+    }    
+  }, [message]); */
 
   const handleClickStar = async (e) => {
     e.preventDefault();
-    const res = await eventsApi.put('/message/' + message._id);
-    setStar(!star);
-    console.log(res.data);
+    const data = {idUser: user.uid};
+    try {
+      const res = await eventsApi.put(`/message/${message._id}/outstanding`, data);
+      setStar(!star);
+    } 
+    catch (error) {
+      console.log(error)
+    }
   }
   
   return (
@@ -53,7 +64,7 @@ const Message = ({ message, own }) => {
 
         <div className={styles.wrapperInfoMessage}>
           {
-            star === false ?
+            !star ?
             <StarIcon 
               onClick={handleClickStar} 
               className={styles.iconMessage}

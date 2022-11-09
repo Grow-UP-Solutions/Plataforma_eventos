@@ -166,13 +166,17 @@ const Navbar = ({ upper }) => {
               <div className={style.containerName}>
                 {user.nickname ? (
                   <>
-                    <p>{user.nickname.split(' ')[0]}</p>
-                    <p>{user.nickname.split(' ')[1]}</p>
+                    <Link to='/usuario/perfil'>
+                      <p>{user.nickname.split(' ')[0]}</p>
+                      <p>{user.nickname.split(' ')[1]}</p>
+                    </Link>
                   </>
                 ) : (
                   <>
-                    <p>{user.name.split(' ')[0]}</p>
-                    <p>{user.name.split(' ')[1]}</p>
+                    <Link to='/usuario/perfil'>
+                      <p>{user.name.split(' ')[0]}</p>
+                      <p>{user.name.split(' ')[1]}</p>
+                    </Link>
                   </>
                 )}
               </div>

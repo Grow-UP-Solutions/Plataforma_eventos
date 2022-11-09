@@ -9,6 +9,7 @@ import { UIContext } from '../../context/ui';
 const SearchResult = () => {
   
   const { result } = useContext(stateContext);
+  const { muni } = useContext(stateContext);
   const { events } = useContext(UIContext);
   const [local, setLocal] = useState([]);
   const [currentPage, setCurretPage] = useState(1);
@@ -18,17 +19,26 @@ const SearchResult = () => {
   const currentCard = local.slice(indexOfFirstCard, indexOfLastCard);
   const paginado = (pageNumber) => setCurretPage(pageNumber);
 
+
   useEffect(() => {
     scroll.scrollToTop();
+    const localEvents = events.filter((event)=>event.municipio.toLowerCase().includes(muni.toLowerCase()))
+    if(result){
     const getSearch = () => {
-      setLocal(events.filter((event) => event.title.toLowerCase().includes(result.toLowerCase())));
+      setLocal(localEvents.filter((event) => event.title.toLowerCase().includes(result.toLowerCase())));
     }
     getSearch();
+    }else{
+      const getSearch = () => {
+        setLocal(localEvents);
+      }
+      getSearch();
+    }
   }, []);
 
   return (
     <div className={style.container}>
-      <p className={style.title}>{result}</p>
+      <p className={style.title}>Resultado de búsqueda: {result}</p>
       <div className={style.containerCard}>
         {currentCard.length ? (
           currentCard.map((event, index) => {

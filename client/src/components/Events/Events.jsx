@@ -13,7 +13,21 @@ import styles from './Events.module.css';
 
 const Events = () => {
   const todosLosEventos = useSelector((state) => state.events);
+  
   const allEvents = todosLosEventos.filter((event) => event.isPublic === true && event.inRevision === false);
+  
+
+
+
+  //Fecha actual
+  var fecha = new Date();
+  console.log('fecha:',fecha)
+  var hora = fecha.getHours()
+  console.log('hora:',hora)
+  var minutes = fecha.getMinutes()
+  console.log('minutes:',minutes)
+  var dateActual = fecha.getFullYear() + "-" + (fecha.getMonth() +1) + "-" + fecha.getDate()  ;
+  console.log('dateActual:',dateActual)
 
   //POPULARES//
   const orderByRating = allEvents.sort((a, b) => {

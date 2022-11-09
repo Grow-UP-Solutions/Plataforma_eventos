@@ -28,7 +28,11 @@ const messageSchema = new Schema(
             idUser: String,
             isOutstanding: {
                type: Boolean,
-               default: false,
+               default: true,
+            },
+            text: {
+               type: String,
+               default: "",
             },
          },
       ],
