@@ -24,6 +24,7 @@ const Search = ({ location = 'home' }) => {
     if (e.charCode === 13) {
       e.preventDefault();
       setResult(input);
+      setMuni(municipio)
       navigate('/resultados-de-busqueda/');
       setInput('');
     }
@@ -43,7 +44,7 @@ const Search = ({ location = 'home' }) => {
         onChange={(e)=>handleChangeMuni(e)}
         onKeyPress={handleKeyPress}
         value={municipio}
-        className={`${location !== 'home' ? style.inputNotHome : style.inputHome}`}
+        className={`${location !== 'home' ? style.inputNotHomeMuni : style.inputHomeMuni}`}
         type='text'
         placeholder='Municipio'
       />

@@ -479,35 +479,35 @@ const EventEdit = () => {
       }
     }
 
-    if (allEvents.length > 0) {
-      for (let i = 0; i < post.dates.length; i++) {
-        for (let j = 0; j < eventDetails.dates.length; j++) {
-          if (
-            post.dates[i]._id === eventDetails.dates[j]._id &&
-            post.dates[i].sells > 0 &&
-            post.dates[i].cupos < eventDetails.dates[j].sells
-          ) {
-            errors.cupos = `Ya se vendieron ${eventDetails.dates[j].sells}  cupos. El número no puede ser inferior a los cupos ya vendidos `;
-            // return swal({
-            //   title: `Ya se vendieron ${eventDetails.dates[j].sells}  cupos. El número no puede ser inferior a los cupos ya vendidos `,
-            //   icon: 'warning',
-            //   dangerMode: true,
-            // });
-          } else if (
-            post.dates[i]._id === eventDetails.dates[j]._id &&
-            post.dates[i].sells > 0 &&
-            post.dates[i].price < eventDetails.dates[j].price
-          ) {
-            errors.price = `Ya se vendieron ${eventDetails.dates[j].sells}  cupos. El número no puede ser inferior al de los cupos ya vendidos `;
-            // return swal({
-            //   title: `Ya se vendieron ${eventDetails.dates[j].sells}  cupos. El número no puede ser inferior al de los cupos ya vendidos `,
-            //   icon: 'warning',
-            //   dangerMode: true,
-            // });
-          }
-        }
-      }
-    }
+    // if (allEvents.length > 0) {
+    //   for (let i = 0; i < post.dates.length; i++) {
+    //     for (let j = 0; j < eventDetails.dates.length; j++) {
+    //       if (
+    //         post.dates[i]._id === eventDetails.dates[j]._id &&
+    //         post.dates[i].sells > 0 &&
+    //         post.dates[i].cupos < eventDetails.dates[j].sells
+    //       ) {
+    //         errors.cupos = `Ya se vendieron ${eventDetails.dates[j].sells}  cupos. El número no puede ser inferior a los cupos ya vendidos `;
+    //         // return swal({
+    //         //   title: `Ya se vendieron ${eventDetails.dates[j].sells}  cupos. El número no puede ser inferior a los cupos ya vendidos `,
+    //         //   icon: 'warning',
+    //         //   dangerMode: true,
+    //         // });
+    //       } else if (
+    //         post.dates[i]._id === eventDetails.dates[j]._id &&
+    //         post.dates[i].sells > 0 &&
+    //         post.dates[i].price < eventDetails.dates[j].price
+    //       ) {
+    //         errors.price = `Ya se vendieron ${eventDetails.dates[j].sells}  cupos. El número no puede ser inferior al de los cupos ya vendidos `;
+    //         // return swal({
+    //         //   title: `Ya se vendieron ${eventDetails.dates[j].sells}  cupos. El número no puede ser inferior al de los cupos ya vendidos `,
+    //         //   icon: 'warning',
+    //         //   dangerMode: true,
+    //         // });
+    //       }
+    //     }
+    //   }
+    // }
 
     for (let i = 0; i < post.dates.length; i++) {
       for (let j = 0; j < post.dates[i].codigos.length; j++) {

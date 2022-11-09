@@ -13,15 +13,11 @@ import styles from './Events.module.css';
 
 const Events = () => {
   const todosLosEventos = useSelector((state) => state.events);
-  // const events = todosLosEventos.map((e)=>{
-  //   e.dates.map((d)=>{
-  //     if(d.date<dateActual){
-  //       d.isPublic= false
-  //     }
-  //   })
-  // })
+  
   const allEvents = todosLosEventos.filter((event) => event.isPublic === true && event.inRevision === false);
   
+
+
 
   //Fecha actual
   var fecha = new Date();
