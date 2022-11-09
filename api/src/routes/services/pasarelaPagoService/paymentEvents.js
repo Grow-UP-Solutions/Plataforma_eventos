@@ -21,16 +21,12 @@ async function paymentEvents(idEvent, idDate, codigoDescuento) {
 
          let descuento = (parseInt(eventDate.price) * parseInt(montoDeDescuento.descuento)) / 100;
 
-         montoDeDescuento.cantidad -= 1;
-         montoDeDescuento.uses += 1;
-         //parseInt(eventDate.cupos) -= 1
-         eventDate.price - descuento
-         //await event.save()
+         
           total = eventDate.price - descuento
          return {total : total } ;
       }
 
-      //eventDate.cupos -= 1
+      
       
       
       return {total : total } 
