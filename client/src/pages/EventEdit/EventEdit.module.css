@@ -18,7 +18,7 @@
   
   .section {
     width: 100%;
-    height: 200rem;
+    height: 250rem;
     scroll-snap-align: start;
     display: flex;
   }
@@ -59,7 +59,7 @@
   }
   .section6 {
     width: 100%;
-    height: 200rem;
+    height: 250rem;
     scroll-snap-align: start;
     display: flex;
   }
@@ -738,8 +738,17 @@
   
   .basquet {
     height: 2.5rem;
-    width: 2.5rem;
-    cursor: pointer;
+  width: 2.5rem;
+  cursor: pointer;
+  border:none;
+  background-color: transparent;
+  }
+  .basquet:hover {
+    height: 2.7rem;
+  width: 2.7rem;
+  cursor: pointer;
+  border:none;
+  background-color: transparent;
   }
   
   /*BONO*/
@@ -1853,6 +1862,7 @@
 
 }
 
+
 .checkBono input:checked ~ .paso .containerBono {
   display: block;
 }
@@ -2071,6 +2081,11 @@
 
 .editarCodigo .iconEdit {
   color: var(--color-orange);
+}
+
+.editarCodigo .iconEdit:hover {
+  color: var(--color-orange);
+  text-decoration: bolder;
 }
 
 
@@ -2708,6 +2723,11 @@
   border:none;
   background-color: transparent;
 }
+.addDelete:hover{
+  border:none;
+  background-color: transparent;
+  text-decoration:bolder;
+} 
 
 
 /* {
@@ -2722,6 +2742,14 @@
     Mostrar Codigos
   </button>
 }  */
+
+.custom-title-class {
+  color: green;
+}
+
+.swal2-title {
+  color: red;
+}
 
 
 
