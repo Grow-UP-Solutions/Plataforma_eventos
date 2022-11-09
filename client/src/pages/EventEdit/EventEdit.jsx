@@ -211,11 +211,13 @@ const EventEdit = () => {
 
   useEffect(() => {
     if (eventDetails) {
+      const auxCategories = eventDetails.categories.map((categorie) => categorie.name);
+
       setPost({
         ...post,
         idOrganizer: eventDetails.organizer._id,
         title: eventDetails.title,
-        categories: [],
+        categories: auxCategories,
         otherCategorie: eventDetails.otherCategorie,
         shortDescription: eventDetails.shortDescription,
         longDescription: eventDetails.longDescription,
@@ -527,25 +529,20 @@ const EventEdit = () => {
 
   function handleCategories(e) {
     let categorieName = e.target.value;
-    console.log('targetcat:', e.target.value);
-    if (!e.target.checked) {
-      console.log('seleccionados:', seleccionados);
-      let seleccion = seleccionados.filter((categorie) => categorie !== e.target.value);
-      console.log('seleccion:', seleccion);
-      setSeleccionados(seleccion);
-      setPost({
-        ...post,
-        categories: seleccion,
-      });
+    let categorieChecked = e.target.checked;
+
+    let categories = post.categories;
+
+    if (categorieChecked) {
+      categories.push(categorieName);
     } else {
-      let categorieCheck = categories.find((categorie) => categorie.name === categorieName);
-      console.log('categorieCheck:', categorieCheck);
-      setSeleccionados([...seleccionados, categorieCheck.name]);
-      setPost({
-        ...post,
-        categories: [...post.categories, categorieCheck.name],
-      });
+      categories = categories.filter((cate) => cate !== categorieName);
     }
+
+    setPost({
+      ...post,
+      categories,
+    });
   }
 
   useEffect(() => {
@@ -1141,20 +1138,21 @@ const EventEdit = () => {
                     sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
                   </p>
                   <div className={styles.containerChecks}>
-                    {categories.map((categorie) => (
-                      <div className={styles.checks}>
-                        <label className={styles.labelsChecks}>
-                          <input
-                            className={styles.checkBox}
-                            type='checkbox'
-                            value={categorie.name}
-                            onChange={(e) => handleCategories(e)}
-                            defaultChecked={false}
-                          />
-                          {categorie.name}
-                        </label>
-                      </div>
-                    ))}
+                    {post &&
+                      categories.map((categorie) => (
+                        <div className={styles.checks}>
+                          <label className={styles.labelsChecks}>
+                            <input
+                              className={styles.checkBox}
+                              type='checkbox'
+                              value={categorie.name}
+                              onChange={(e) => handleCategories(e)}
+                              checked={post.categories.includes(categorie.name)}
+                            />
+                            {categorie.name}
+                          </label>
+                        </div>
+                      ))}
                   </div>
 
                   {/* otra categoria*/}

@@ -47,10 +47,24 @@ const getListCodeDiscountByCreator = async (id) => {
 const updateCodeDiscount = async (id, value, percentage, quotas) => {
   try {
     const codeDiscount = await CodeDiscountModel.findById(id);
+
+    const userCodeDiscount = await getUser(codeDiscount.idCreator);
+
+    let auxValue = 0;
+    if (value > codeDiscount.value) {
+      auxValue = value - codeDiscount.value;
+      userCodeDiscount.availableCredit = userCodeDiscount.availableCredit - auxValue;
+    } else if (value < codeDiscount.value) {
+      auxValue = codeDiscount.value - value;
+      userCodeDiscount.availableCredit = userCodeDiscount.availableCredit + auxValue;
+    }
+
     codeDiscount.value = value;
     codeDiscount.percentage = percentage;
     codeDiscount.quotas = quotas;
+
     await codeDiscount.save();
+    await userCodeDiscount.save();
   } catch (error) {
     throw new Error(error.message);
   }
@@ -58,7 +72,10 @@ const updateCodeDiscount = async (id, value, percentage, quotas) => {
 
 const deleteCodeDiscountById = async (id) => {
   try {
-    await CodeDiscountModel.findByIdAndDelete(id);
+    const codeDiscountDeleted = await CodeDiscountModel.findByIdAndDelete(id);
+    const userCreateCodeDiscount = await getUser(codeDiscountDeleted.idCreator);
+    userCreateCodeDiscount.availableCredit = userCreateCodeDiscount.availableCredit + codeDiscountDeleted.value;
+    await userCreateCodeDiscount.save();
   } catch (error) {
     throw new Error(error.message);
   }

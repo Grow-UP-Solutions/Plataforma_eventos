@@ -25,12 +25,13 @@ const ReferralPlan = ({ userData }) => {
   });
 
   const [listCodeDiscount, setListCodeDiscount] = useState([]);
-
   const [errorMessageCode, setErrorMessageCode] = useState('');
   const [usersReferred, setUsersReferred] = useState([]);
   const [showRefferred, setShowRefferred] = useState('Mostrar');
   const [showCodeDiscountRedeemed, setShowCodeDiscountRedeemed] = useState(false);
   const [showCodeDiscount, setShowCodeDiscount] = useState('Mostrar');
+  const [editCodeDiscount, setEditCodeDiscount] = useState([]);
+
   const generateCodeDiscount = async () => {
     setOpenFormCodeDiscount(true);
 
@@ -42,21 +43,30 @@ const ReferralPlan = ({ userData }) => {
     });
   };
 
-  const postCodeDiscount = async () => {
+  const createtCodeDiscount = async () => {
     const value = txtValueCodeDiscount.current.value;
-
+    console.log({ value });
     if (value > availableCredit) return setErrorMessageCode('Tu saldo no es suficiente');
-
+    if (value === null || value === undefined || value === '') return setErrorMessageCode('Ingrese un valor');
     const codeDiscountData = {
       ...codeDiscount,
       value,
     };
 
     try {
-      const { data } = await eventsApi.post('/codeDiscount/createCodeDiscount/', { data: codeDiscountData });
+      await eventsApi.post('/codeDiscount/createCodeDiscount/', { data: codeDiscountData });
+      const { data } = await eventsApi.get(`/codeDiscount/getListCodeDiscountByCreator/${userData._id}`);
+
       const restAvaibleCredit = availableCredit - value;
       setAvailableCredit(restAvaibleCredit);
-      console.log({ data });
+      setListCodeDiscount(data.listCodeDiscount);
+
+      const howManyInputEdits = data.listCodeDiscount.map((code) => false);
+
+      setEditCodeDiscount(howManyInputEdits);
+
+      setOpenFormCodeDiscount(false);
+      setErrorMessageCode('');
     } catch (error) {
       console.log({ error });
     }
@@ -67,7 +77,7 @@ const ReferralPlan = ({ userData }) => {
       setShowRefferred('Ocultar');
       await userData.referrals.forEach(async (id) => {
         const { data } = await eventsApi.get(`/users/${id}`);
-        setUsersReferred([...usersReferred, data]);
+        setUsersReferred([data]);
       });
     } else if (isOpen === 'Ocultar') {
       setUsersReferred([]);
@@ -76,8 +86,13 @@ const ReferralPlan = ({ userData }) => {
   };
 
   const handleShowCodeDiscount = (isOpen) => {
-    if (isOpen === 'Mostrar') return setShowCodeDiscount('Ocultar');
-    else return setShowCodeDiscount('Mostrar');
+    if (isOpen === 'Mostrar') {
+      return setShowCodeDiscount('Ocultar');
+    } else {
+      setErrorMessageCode('');
+      setOpenFormCodeDiscount(false);
+      setShowCodeDiscount('Mostrar');
+    }
   };
 
   useEffect(() => {
@@ -88,11 +103,75 @@ const ReferralPlan = ({ userData }) => {
     try {
       const { data } = await eventsApi.get(`/codeDiscount/getListCodeDiscountByCreator/${userData._id}`);
       setListCodeDiscount(data.listCodeDiscount);
+      const howManyInputEdits = data.listCodeDiscount.map((code) => false);
+      setEditCodeDiscount(howManyInputEdits);
     } catch (error) {
       console.log({ error });
     }
   };
 
+  const deleteCodeDiscount = async (idCode, value) => {
+    try {
+      await eventsApi.delete(`/codeDiscount/deleteCodeDiscountById/${idCode}`);
+      const { data } = await eventsApi.get(`/codeDiscount/getListCodeDiscountByCreator/${userData._id}`);
+      const restAvaibleCredit = availableCredit + value;
+      setAvailableCredit(restAvaibleCredit);
+      setListCodeDiscount(data.listCodeDiscount);
+      const howManyInputEdits = data.listCodeDiscount.map((code) => false);
+      setEditCodeDiscount(howManyInputEdits);
+    } catch (error) {
+      console.log({ error });
+    }
+  };
+
+  const setEdit = async (index) => {
+    const aux = editCodeDiscount;
+    console.log({ aux });
+    aux[index] = true;
+    setEditCodeDiscount(aux);
+  };
+
+  const handleFocusInputEdit = (idCode) => {
+    const inputEdit = document.getElementById(idCode);
+    inputEdit.focus();
+  };
+
+  const funciontAux = async (idCode, index) => {
+    console.log({ index });
+    await setEdit(index);
+    handleFocusInputEdit(idCode);
+  };
+
+  const cancelAux = async (index) => {
+    const auxEdit = editCodeDiscount;
+    auxEdit[index] = false;
+    console.log({ auxEdit });
+    setEditCodeDiscount(auxEdit);
+  };
+
+  const updateCodeDiscount = async (idCode, beforeValue) => {
+    const { value } = document.getElementById(idCode);
+    try {
+      await eventsApi.put(`/codeDiscount/updateCodeDiscount/${idCode}`, { value });
+      const { data } = await eventsApi.get(`/codeDiscount/getListCodeDiscountByCreator/${userData._id}`);
+      setEditCodeDiscount(false);
+      let auxValue = 0;
+      let restAvaibleCredit = 0;
+      if (value > beforeValue) {
+        auxValue = value - beforeValue;
+        restAvaibleCredit = availableCredit - auxValue;
+      } else if (value < beforeValue) {
+        auxValue = beforeValue - value;
+        restAvaibleCredit = availableCredit + auxValue;
+      }
+      setAvailableCredit(restAvaibleCredit);
+      setListCodeDiscount(data.listCodeDiscount);
+      const howManyInputEdits = data.listCodeDiscount.map((code) => false);
+      setEditCodeDiscount(howManyInputEdits);
+    } catch (error) {
+      console.log({ error });
+    }
+  };
   return (
     <div className={styles.containerReferralPlan}>
       <Helmet>
@@ -134,7 +213,7 @@ const ReferralPlan = ({ userData }) => {
         <img src={imgMoney} alt='cash' className={styles.imgMoney} />
         <div className={styles.money}>
           <p>Saldo disponible</p>
-          <span>{availableCredit}$</span>
+          <span>{availableCredit}.000$</span>
         </div>
       </div>
 
@@ -174,9 +253,9 @@ const ReferralPlan = ({ userData }) => {
                     <input onKeyDown={inputKeyDown} ref={txtValueCodeDiscount} type='text' />
                   </div>
                 </div>
-                {errorMessageCode && <p>{errorMessageCode}</p>}
+                {errorMessageCode && <p className={styles.erroMessageCreateCodeDiscount}>{errorMessageCode}</p>}
                 <div className={styles.containerButtons}>
-                  <button onClick={postCodeDiscount} className={styles.btnSuccess}>
+                  <button onClick={createtCodeDiscount} className={styles.btnSuccess}>
                     Crear
                   </button>
                   <button onClick={() => setOpenFormCodeDiscount(false)} className={styles.btnCancel}>
@@ -187,25 +266,58 @@ const ReferralPlan = ({ userData }) => {
             )}
 
             <div className={styles.containerListCodeDiscount}>
-              {listCodeDiscount &&
-                listCodeDiscount.map((codeDiscount) => (
-                  <div key={codeDiscount._id} className={styles.containerCodeDiscount}>
-                    <div className={styles.formGroup}>
-                      <label htmlFor='code'>Código</label>
-                      <input disabled type='text' id='value' value={codeDiscount.code} />
-                    </div>
+              {listCodeDiscount.length > 0 ? (
+                <table className={styles.tableCodeDiscount}>
+                  <colgroup span={4}></colgroup>
+                  <tr>
+                    <th>Código</th>
+                    <th>Valor</th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  {listCodeDiscount
+                    .map((codeDiscount, index) => (
+                      <>
+                        <tr key={codeDiscount._id} className={styles.containerCodeDiscount}>
+                          <td>
+                            <input disabled type='text' value={codeDiscount.code} />
+                          </td>
 
-                    <div className={styles.formGroup}>
-                      <label htmlFor='value'>Valor</label>
-                      <input disabled value={codeDiscount.value} type='text' />
-                    </div>
+                          <td>
+                            {!editCodeDiscount[index] ? (
+                              <input id={codeDiscount._id} disabled value={codeDiscount.value} type='text' />
+                            ) : (
+                              <input id={codeDiscount._id} type='text' />
+                            )}
+                          </td>
 
-                    <div className={styles.optionCode}>
-                      <button>Editar</button>
-                      <TbTrash className={styles.iconTrash} />
-                    </div>
-                  </div>
-                ))}
+                          <td className={styles.optionCode}>
+                            <button onClick={() => funciontAux(codeDiscount._id, index)}>Editar</button>
+                            <TbTrash
+                              onClick={() => deleteCodeDiscount(codeDiscount._id, codeDiscount.value)}
+                              className={styles.iconTrash}
+                            />
+                          </td>
+                        </tr>
+                        {editCodeDiscount[index] && (
+                          <tr>
+                            <td colSpan={'2'}>
+                              <div className={styles.containerEditCodeDiscount}>
+                                <button onClick={() => updateCodeDiscount(codeDiscount._id, codeDiscount.value)}>
+                                  Guardar
+                                </button>
+                                <button onClick={() => cancelAux(index)}>Cancelar</button>
+                              </div>
+                            </td>
+                          </tr>
+                        )}
+                      </>
+                    ))
+                    .reverse()}
+                </table>
+              ) : (
+                <p>No ha generado códigos</p>
+              )}
             </div>
 
             <div className={styles.containerCodeRedeemed}>
@@ -261,7 +373,7 @@ const ReferralPlan = ({ userData }) => {
               <table className={styles.tableReferred}>
                 <colgroup span='3'></colgroup>
                 <tr className={styles.tableReferredHeader}>
-                  <th>Tus referidos</th>
+                  <th>Tus referidos ({usersReferred.length})</th>
                   <th>Total saldo pendiente</th>
                   <th>Total Saldo</th>
                 </tr>

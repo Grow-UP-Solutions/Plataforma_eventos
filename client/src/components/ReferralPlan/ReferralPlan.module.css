@@ -162,8 +162,8 @@
 
 .optionCode {
   display: flex;
+  align-items: center;
   gap: 1.2rem;
-
   color: var(--color-orange);
 }
 
@@ -176,9 +176,56 @@
   margin-bottom: 3.2rem;
 }
 
-.containerCodeDiscount {
+.tableCodeDiscount {
+  width: 100%;
+  padding: 0 2rem;
+}
+
+.tableCodeDiscount th {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: var(--color-grey-3);
+  text-align: start;
+}
+
+.tableCodeDiscount td {
+  padding: 1rem 0;
+}
+.tableCodeDiscount tr {
+  text-align: start;
+}
+.tableCodeDiscount input {
+  background-color: transparent !important;
+  border: 1px solid var(--color-grey-4);
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 1.6rem;
+  color: var(--color-grey-3);
+}
+
+.tableCodeDiscount input:focus {
+  outline: none;
+  border: 1px solid var(--color-orange);
+}
+
+.containerEditCodeDiscount {
+  text-align: center;
   display: flex;
+  justify-content: center;
+  align-items: center;
+
   gap: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.containerEditCodeDiscount button {
+  background-color: var(--color-orange);
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 2rem;
 }
 
 .containerInputFormCode {
@@ -209,6 +256,13 @@
 .containerTitleCodeRedeemed {
   border-bottom: 1px solid var(--color-grey-4);
   margin-bottom: 2rem;
+}
+
+.erroMessageCreateCodeDiscount {
+  margin-bottom: 1.2rem;
+  font-size: 1.6rem !important;
+  font-weight: bold;
+  color: var(--color-orange) !important;
 }
 
 .titleCodeRedeemed {
