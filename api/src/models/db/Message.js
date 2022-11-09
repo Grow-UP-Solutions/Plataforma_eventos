@@ -30,6 +30,10 @@ const messageSchema = new Schema(
                type: Boolean,
                default: false,
             },
+            text: {
+               type: String,
+               default: "",
+            },
          },
       ],
    },
