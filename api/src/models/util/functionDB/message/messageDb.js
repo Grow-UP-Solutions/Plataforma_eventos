@@ -84,8 +84,9 @@ async function outstandingMessage(idMessage, idUser) {
       messageOutstanding.outstanding?.push({
          messageOutstanding: messageOutstanding._id,
          idUser,
+         text: messageOutstanding.text
       });
-      (await messageOutstanding.save()).populate({ path: "outstanding" });
+      await messageOutstanding.save();
       return { msg: "mensaje destacado", messageOutstanding };
    } catch (error) {
       throw new Error(error.message);
