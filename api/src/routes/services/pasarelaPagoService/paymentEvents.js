@@ -5,8 +5,8 @@ const Events = require("../../../models/db/Events");
 async function paymentEvents(idEvent, idDate, codigoDescuento) {
    try {
       const event = await Events.findOne({ _id : idEvent});
-   
       const eventDate = event.dates.find((e) => e._id == idDate);
+      let total = parseInt(eventDate.price)
       //if(parseInt(eventDate.cupos) === 0) throw new Error("No hay cupos disponibles")
       
       if (codigoDescuento) {
@@ -25,14 +25,15 @@ async function paymentEvents(idEvent, idDate, codigoDescuento) {
          montoDeDescuento.uses += 1;
          //parseInt(eventDate.cupos) -= 1
          eventDate.price - descuento
-         await event.save()
-         return eventDate ;
+         //await event.save()
+          total = eventDate.price - descuento
+         return {total : total } ;
       }
 
       //eventDate.cupos -= 1
       
-      await event.save()
-      return eventDate
+      
+      return {total : total } 
    } catch (error) {
       throw new Error(error.message);
    }
