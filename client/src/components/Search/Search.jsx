@@ -2,12 +2,15 @@ import React, { useContext, useState } from 'react';
 import { BsSearch } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import { stateContext } from '../../context/state/stateContext';
+import { UIContext } from '../../context/ui';
 import style from './Search.module.css';
 
 const Search = ({ location = 'home' }) => {
+
   const [input, setInput] = useState('');
   const navigate = useNavigate();
-  const { setResult } = useContext(stateContext);
+  const { setSearch, setResult } = useContext(stateContext);
+  const { events } = useContext(UIContext);
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -17,6 +20,8 @@ const Search = ({ location = 'home' }) => {
   const handleKeyPress = (e) => {
     if (e.charCode === 13) {
       e.preventDefault();
+      const data = events.filter((event) => event.title.toLowerCase().includes(input.toLowerCase()));
+      setSearch(data);
       setResult(input);
       navigate('/resultados-de-busqueda/');
       setInput('');
@@ -25,6 +30,8 @@ const Search = ({ location = 'home' }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const data = events.filter((event) => event.title.toLowerCase().includes(input.toLowerCase()));
+    setSearch(data);
     setResult(input);
     navigate('/resultados-de-busqueda/');
     setInput('');

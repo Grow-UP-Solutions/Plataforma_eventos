@@ -53,8 +53,10 @@ const Footer = () => {
         <div className={styles.footerList}>
           <p className={styles.titleList}>Legal</p>
           <ul>
-            <li>
-              <Link to={'/privacy'}>Privacidad</Link>
+            <li onClick={() => setResult('privacy')}>
+              <Link to={'/privacidad'}>
+                <a>Privacidad</a> 
+                </Link>
             </li>
 
             <li onClick={() => setResult('security')}>

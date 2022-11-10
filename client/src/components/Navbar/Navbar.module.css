@@ -163,6 +163,20 @@
   gap: 1rem;
 }
 
+.close_menu {
+  font-weight: bold;
+  font-size: 1.4rem;
+  display: inline-block;
+  width: 2rem;
+}
+
+.close_menu:hover {
+  border: none;
+  font-weight: bold;
+  font-size: 1.6rem;
+  color: var(--color-orange);
+}
+
 .noty {
   border-top: 0.5px solid var(--color-grey-3);
   padding: 1rem;

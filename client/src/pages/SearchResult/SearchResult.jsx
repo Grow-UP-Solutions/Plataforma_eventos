@@ -4,26 +4,23 @@ import { animateScroll as scroll } from 'react-scroll';
 import { stateContext } from '../../context/state/stateContext';
 import { Card } from '../../components';
 import Pagination from '../../components/Pagination/Pagination';
-import { UIContext } from '../../context/ui';
 
 const SearchResult = () => {
   
-  const { result } = useContext(stateContext);
-  const { events } = useContext(UIContext);
-  const [local, setLocal] = useState([]);
+  const { search, result } = useContext(stateContext);
   const [currentPage, setCurretPage] = useState(1);
   const CardPerPage = 8;
   const indexOfLastCard = currentPage * CardPerPage;
   const indexOfFirstCard = indexOfLastCard - CardPerPage; 
-  const currentCard = local.slice(indexOfFirstCard, indexOfLastCard);
+  const currentCard = search.slice(indexOfFirstCard, indexOfLastCard);
   const paginado = (pageNumber) => setCurretPage(pageNumber);
 
   useEffect(() => {
     scroll.scrollToTop();
-    const getSearch = () => {
+    /* const getSearch = () => {
       setLocal(events.filter((event) => event.title.toLowerCase().includes(result.toLowerCase())));
     }
-    getSearch();
+    getSearch(); */
   }, []);
 
   return (
@@ -46,7 +43,7 @@ const SearchResult = () => {
       <div className={style.container_pagination}>
         <Pagination 
           billsPerPage={CardPerPage}
-          state={local.length}
+          state={search.length}
           paginado={paginado}
           page={currentPage}
         />

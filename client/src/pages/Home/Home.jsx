@@ -7,6 +7,7 @@ import { stateContext } from '../../context/state/stateContext';
 import { CarrouselHome, Categories, Events, HowItWorks } from '../../components';
 
 const Home = ({ handleNav }) => {
+  
   const { user } = useContext(AuthContext);
   const { setNotes, setMsg, setConversa } = useContext(stateContext);
 

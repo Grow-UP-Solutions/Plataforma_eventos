@@ -7,12 +7,13 @@ import { stateContext } from '../../context/state/stateContext';
 import Search from '../Search/Search';
 import { GrMail } from 'react-icons/gr';
 import { FaUserCircle } from 'react-icons/fa';
-import { IoNotifications, IoCaretDownSharp } from 'react-icons/io5';
+import { IoNotifications, IoCaretDownSharp, IoCaretUpSharp } from 'react-icons/io5';
 import logo from '../../assets/imgs/logoNav.svg';
 import eventsApi from '../../axios/eventsApi';
 import ConversationNoti from '../ConversationNoti/ConversationNoti';
 
 const Navbar = ({ upper }) => {
+
   const { toggleScreenLogin } = useContext(UIContext);
   const { user, logged, logout } = useContext(AuthContext);
   const { notes, setNotes, msg, setMsg } = useContext(stateContext);
@@ -127,8 +128,12 @@ const Navbar = ({ upper }) => {
                   <div className={style.bage}>{notes.length}</div>
                 </div>
 
-                {openMessages && (
+                {openMessages  && (
                   <div className={style.notifications}>
+                    <span onClick={handleOpenMessages} className={style.close_menu}>
+                      X
+                    </span>
+
                     <p className={style.link_noti} onClick={handleClickAllReadMessages}>
                       Marcar todas como leidas
                     </p>
@@ -147,6 +152,10 @@ const Navbar = ({ upper }) => {
 
                 {openNotifications && (
                   <div className={style.notifications}>
+                    <span onClick={handleOpenNotifications} className={style.close_menu}>
+                      X
+                    </span>
+
                     <p className={style.link_noti} onClick={handleClickAllReadNotifications}>
                       Marcar todas como leidas
                     </p>
@@ -196,7 +205,12 @@ const Navbar = ({ upper }) => {
                     <FaUserCircle className={style.userImg} />
                   )}
                 </div>
-                <IoCaretDownSharp className={style.iconMenu} />
+                {
+                  menuOpen ?
+                  <IoCaretUpSharp className={style.iconMenu}/> :
+                  <IoCaretDownSharp className={style.iconMenu} />
+                }
+                
                 {menuOpen && (
                   <div className={style.containerProfileMenu}>
                     <Link to='/usuario/mi-lista'>Mis eventos</Link>

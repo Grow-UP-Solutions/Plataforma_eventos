@@ -6,6 +6,7 @@ import avatar from '../../assets/imgs/no-avatar.png';
 import eventsApi from '../../axios/eventsApi';
 import Conversations from '../../components/Conversations/Conversations';
 import Message from '../../components/Message/Message';
+import MessageFav from '../../components/MessageFav/MessageFav';
 import Modal from '../../components/Modal/Modal';
 import ModalMsg from '../../components/Modals/ModalMsg';
 import { AuthContext } from '../../context/auth/AuthContext';
@@ -20,7 +21,7 @@ const validate = (form) => {
   // let letras = /^[a-zA-Z]*$/g;
   let mail = /[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}/gim;
   let webSite = /\b(http|https|www)\b/i;
-  let offensiveWord = /\b(perro|gato)\b/i;
+  let offensiveWord = /\b(perro|gato|loro|tortuga)\b/i;
 
   if (!form.text) {
     errors.text = true;
@@ -42,6 +43,7 @@ const validate = (form) => {
 };
 
 const Messages = () => {
+
   const { user } = useContext(AuthContext);
   const { getMessagesStar, msgStar } = useContext(UIContext);
   const { setMsg } = useContext(stateContext);
@@ -141,19 +143,30 @@ const Messages = () => {
 
   const handleClickStar = (e) => {
     e.preventDefault();
-    setStar(true);
-    const messagesStar = async () => {
-      try {
-        const res = await eventsApi.get('/message/' + currentChat._id);
-        const response = res.data.map(e => e.outstanding.filter(e => e.isOutstanding === true &&  e.idUser === '635aea22e035cbb513c8900a'));
-        const responsive = response.filter(e => e.length > 0).flat();
-        getMessagesStar(responsive);
-      } 
-      catch (err) {
-        console.log(err);
-      }
-    };
-    messagesStar();
+    if (currentChat === null) {
+      swal({
+        title: 'Debes seleccionar una conversación',
+        icon: 'info',
+        button: 'Cerrar',
+        closeModal: true,
+        dangerMode: true,
+      });
+    }
+    else {
+      setStar(true);
+      const messagesStar = async () => {
+        try {
+          const res = await eventsApi.get('/message/' + currentChat._id);
+          const response = res.data.map(e => e.outstanding.filter(e => e.isOutstanding === true &&  e.idUser === user.uid));
+          const responsive = response.filter(e => e.length > 0).flat();
+          getMessagesStar(responsive);
+        } 
+        catch (err) {
+          console.log(err);
+        }
+      };
+      messagesStar();
+    }
   };
 
   const handleClickAllReadMessages = async (e) => {
@@ -289,7 +302,7 @@ const Messages = () => {
                     {msgStar
                       .map((m, i) => (
                         <div key={i}>
-                          <Message message={m} own={m.idUser === id} />
+                          <MessageFav message={m} own={m.idUser === id} />
                         </div>
                       ))
                       .reverse()}

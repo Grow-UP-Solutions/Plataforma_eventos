@@ -4,6 +4,7 @@ import { stateContext } from './stateContext';
 export const Data = ({children}) => {
 
   const [result, setResult] = useState('');
+  const [search, setSearch] = useState([]);
   const [notes, setNotes] = useState([]);
   const [msg, setMsg] = useState([]);
   const [conversa, setConversa] = useState([]);
@@ -11,6 +12,7 @@ export const Data = ({children}) => {
   return (
     <stateContext.Provider value={{ 
       result, setResult, 
+      search, setSearch,
       notes, setNotes, 
       msg, setMsg, 
       conversa, setConversa,
