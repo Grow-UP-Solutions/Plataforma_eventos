@@ -7,15 +7,16 @@ const {
   getCodeDiscountById,
   updateCodeDiscount,
   getListCodeDiscountByCreator,
+  redimeedCodeDiscount,
 } = require('../../models/util/functionDB/CodeDiscountDb');
 
 router.post('/createCodeDiscount', async (req, res) => {
   const { data } = req.body;
   try {
     const newCodeDiscount = await createCodeDiscount(data);
-    res.json({ newCodeDiscount });
+    res.status(201).json({ newCodeDiscount });
   } catch (error) {
-    res.json({
+    res.status(400).json({
       message: error.message,
     });
   }
@@ -26,7 +27,7 @@ router.get('/getAllCodeDiscount/', async (req, res) => {
     const allCodeDiscount = await getAllCodeDiscount();
     res.status(200).json({ allCodeDiscount });
   } catch (error) {
-    res.status(400).json({
+    res.status(404).json({
       message: error.message,
     });
   }
@@ -39,7 +40,7 @@ router.get('/getCodeDiscountById/:id', async (req, res) => {
     const codeDiscount = await getCodeDiscountById(id);
     res.status(200).json({ codeDiscount });
   } catch (error) {
-    res.status(400).json({
+    res.status(404).json({
       message: error.message,
     });
   }
@@ -51,7 +52,7 @@ router.get('/getListCodeDiscountByCreator/:id', async (req, res) => {
     const listCodeDiscount = await getListCodeDiscountByCreator(id);
     res.json({ listCodeDiscount });
   } catch (error) {
-    res.json({
+    res.status(404).json({
       message: error.message,
     });
   }
@@ -65,7 +66,7 @@ router.put('/updateCodeDiscount/:id', async (req, res) => {
     await updateCodeDiscount(id, value, percentage, quotas);
     res.json({ success: true });
   } catch (error) {
-    res.json({ message: error.message });
+    res.status(401).json({ message: error.message });
   }
 });
 
@@ -75,7 +76,21 @@ router.delete('/deleteCodeDiscountById/:id', async (req, res) => {
     await deleteCodeDiscountById(id);
     res.json({ success: true });
   } catch (error) {
-    res.json({ message: error.message });
+    res.status(401).json({ message: error.message });
+  }
+});
+
+router.put('/redimeedCodeDiscount/', async (req, res) => {
+  const { idCode, idUser } = req.body;
+  try {
+    await redimeedCodeDiscount(idCode, idUser);
+    res.json({
+      success: true,
+    });
+  } catch (error) {
+    res.status(401).json({
+      message: error.message,
+    });
   }
 });
 

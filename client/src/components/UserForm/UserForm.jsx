@@ -1055,119 +1055,125 @@ const UserForm = ({ userData }) => {
 
           {/* PASSWORD */}
 
-          <div className={styles.formGroup}>
-            <div className={styles.subFormGroup}>
-              <div className={styles.inputsContainer}>
-                <label htmlFor='password'>Contraseña</label>
-                <input disabled value={'*************'} type='password' id='password' />
-              </div>
-              <button onClick={(e) => editFields(e, 'password')}>
-                <BsPencilSquare className={styles.iconEdit} />
-                <span>Editar</span>
-              </button>
-            </div>
-          </div>
-
-          {!canWriteInput.password && (
+          {!userData.registerProvider && (
             <>
-              <div className={styles.formGroupPassword}>
-                <label htmlFor='password'>Contraseña actual:</label>
-                <div className={styles.containerInputForPassword}>
-                  <input
-                    style={{
-                      border: errorPassword.currentPassword === false && '1px solid #C34A33',
-                    }}
-                    type={isPasswordVisible.currentPassword ? 'text' : 'password'}
-                    id='currentPassword'
-                    required
-                    onChange={handleChangeInputPassword}
-                    autoComplete='off'
-                  />
-
-                  {!isPasswordVisible.currentPassword ? (
-                    <FiEye
-                      onClick={() => handleChangeVisiblePassword('currentPassword')}
-                      className={styles.iconVisiblePassword}
-                    />
-                  ) : (
-                    <FiEyeOff
-                      onClick={() => handleChangeVisiblePassword('currentPassword')}
-                      className={styles.iconVisiblePassword}
-                    />
-                  )}
-
-                  {checkSuccessPassword.currentPassword && <AiOutlineCheck className={styles.iconCheckPassword} />}
+              <div className={styles.formGroup}>
+                <div className={styles.subFormGroup}>
+                  <div className={styles.inputsContainer}>
+                    <label htmlFor='password'>Contraseña</label>
+                    <input disabled value={'*************'} type='password' id='password' />
+                  </div>
+                  <button onClick={(e) => editFields(e, 'password')}>
+                    <BsPencilSquare className={styles.iconEdit} />
+                    <span>Editar</span>
+                  </button>
                 </div>
-                {errorPassword.currentPassword === false && (
-                  <span className={styles.errorMessage}>
-                    Has ingresado una contraseña que no coincide con la registrada,intenta <br /> de nuevo o comunicate
-                    con nosotros <Link to='/'>aquí.</Link>
-                  </span>
-                )}
-              </div>
-              <div className={styles.formGroupPassword}>
-                <label htmlFor='newPassword'>Contraseña nueva:</label>
-                <div className={styles.containerInputForPassword}>
-                  <input
-                    style={{
-                      border: errorPassword.newPassword === false && '1px solid #C34A33',
-                    }}
-                    type={isPasswordVisible.newPassword ? 'text' : 'password'}
-                    id='newPassword'
-                    placeholder='Entre 12 y 20 caracteres que idealmente incluya combinación de letras, números y caracteres especiales (* / - _ & @^)'
-                    required
-                    onChange={handleChangeInputPassword}
-                  />
-
-                  {!isPasswordVisible.newPassword ? (
-                    <FiEye
-                      onClick={() => handleChangeVisiblePassword('newPassword')}
-                      className={styles.iconVisiblePassword}
-                    />
-                  ) : (
-                    <FiEyeOff
-                      onClick={() => handleChangeVisiblePassword('newPassword')}
-                      className={styles.iconVisiblePassword}
-                    />
-                  )}
-                  {checkSuccessPassword.newPassword && <AiOutlineCheck className={styles.iconCheckPassword} />}
-                </div>
-                {errorPassword.newPassword === false && (
-                  <span className={styles.errorMessage}>El formato debe tener entre 12 y 20 caracteres.</span>
-                )}
               </div>
 
-              <div className={styles.formGroupPassword}>
-                <label htmlFor='newConfirmPassword'>Repetir contraseña nueva:</label>
-                <div className={styles.containerInputForPassword}>
-                  <input
-                    style={{
-                      border: errorPassword.confirmNewPassword === false && '1px solid #C34A33',
-                    }}
-                    type={isPasswordVisible.confirmNewPassword ? 'text' : 'password'}
-                    id='confirmNewPassword'
-                    required
-                    onChange={handleChangeInputPassword}
-                  />
+              {!canWriteInput.password && (
+                <>
+                  <div className={styles.formGroupPassword}>
+                    <label htmlFor='password'>Contraseña actual:</label>
+                    <div className={styles.containerInputForPassword}>
+                      <input
+                        style={{
+                          border: errorPassword.currentPassword === false && '1px solid #C34A33',
+                        }}
+                        type={isPasswordVisible.currentPassword ? 'text' : 'password'}
+                        id='currentPassword'
+                        required
+                        onChange={handleChangeInputPassword}
+                        autoComplete='off'
+                      />
 
-                  {!isPasswordVisible.confirmNewPassword ? (
-                    <FiEye
-                      onClick={() => handleChangeVisiblePassword('confirmNewPassword')}
-                      className={styles.iconVisiblePassword}
-                    />
-                  ) : (
-                    <FiEyeOff
-                      onClick={() => handleChangeVisiblePassword('confirmNewPassword')}
-                      className={styles.iconVisiblePassword}
-                    />
-                  )}
+                      {!isPasswordVisible.currentPassword ? (
+                        <FiEye
+                          onClick={() => handleChangeVisiblePassword('currentPassword')}
+                          className={styles.iconVisiblePassword}
+                        />
+                      ) : (
+                        <FiEyeOff
+                          onClick={() => handleChangeVisiblePassword('currentPassword')}
+                          className={styles.iconVisiblePassword}
+                        />
+                      )}
 
-                  {checkSuccessPassword.confirmNewPassword && <AiOutlineCheck className={styles.iconCheckPassword} />}
-                </div>
-                {errorPassword.confirmNewPassword === false && (
-                  <span className={styles.errorMessage}>Las contraseñas no coinciden</span>
-                )}
-              </div>
+                      {checkSuccessPassword.currentPassword && <AiOutlineCheck className={styles.iconCheckPassword} />}
+                    </div>
+                    {errorPassword.currentPassword === false && (
+                      <span className={styles.errorMessage}>
+                        Has ingresado una contraseña que no coincide con la registrada,intenta <br /> de nuevo o
+                        comunicate con nosotros <Link to='/'>aquí.</Link>
+                      </span>
+                    )}
+                  </div>
+                  <div className={styles.formGroupPassword}>
+                    <label htmlFor='newPassword'>Contraseña nueva:</label>
+                    <div className={styles.containerInputForPassword}>
+                      <input
+                        style={{
+                          border: errorPassword.newPassword === false && '1px solid #C34A33',
+                        }}
+                        type={isPasswordVisible.newPassword ? 'text' : 'password'}
+                        id='newPassword'
+                        placeholder='Entre 12 y 20 caracteres que idealmente incluya combinación de letras, números y caracteres especiales (* / - _ & @^)'
+                        required
+                        onChange={handleChangeInputPassword}
+                      />
+
+                      {!isPasswordVisible.newPassword ? (
+                        <FiEye
+                          onClick={() => handleChangeVisiblePassword('newPassword')}
+                          className={styles.iconVisiblePassword}
+                        />
+                      ) : (
+                        <FiEyeOff
+                          onClick={() => handleChangeVisiblePassword('newPassword')}
+                          className={styles.iconVisiblePassword}
+                        />
+                      )}
+                      {checkSuccessPassword.newPassword && <AiOutlineCheck className={styles.iconCheckPassword} />}
+                    </div>
+                    {errorPassword.newPassword === false && (
+                      <span className={styles.errorMessage}>El formato debe tener entre 12 y 20 caracteres.</span>
+                    )}
+                  </div>
+
+                  <div className={styles.formGroupPassword}>
+                    <label htmlFor='newConfirmPassword'>Repetir contraseña nueva:</label>
+                    <div className={styles.containerInputForPassword}>
+                      <input
+                        style={{
+                          border: errorPassword.confirmNewPassword === false && '1px solid #C34A33',
+                        }}
+                        type={isPasswordVisible.confirmNewPassword ? 'text' : 'password'}
+                        id='confirmNewPassword'
+                        required
+                        onChange={handleChangeInputPassword}
+                      />
+
+                      {!isPasswordVisible.confirmNewPassword ? (
+                        <FiEye
+                          onClick={() => handleChangeVisiblePassword('confirmNewPassword')}
+                          className={styles.iconVisiblePassword}
+                        />
+                      ) : (
+                        <FiEyeOff
+                          onClick={() => handleChangeVisiblePassword('confirmNewPassword')}
+                          className={styles.iconVisiblePassword}
+                        />
+                      )}
+
+                      {checkSuccessPassword.confirmNewPassword && (
+                        <AiOutlineCheck className={styles.iconCheckPassword} />
+                      )}
+                    </div>
+                    {errorPassword.confirmNewPassword === false && (
+                      <span className={styles.errorMessage}>Las contraseñas no coinciden</span>
+                    )}
+                  </div>
+                </>
+              )}
             </>
           )}
 
