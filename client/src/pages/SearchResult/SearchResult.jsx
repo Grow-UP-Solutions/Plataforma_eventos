@@ -4,6 +4,7 @@ import { animateScroll as scroll } from 'react-scroll';
 import { stateContext } from '../../context/state/stateContext';
 import { Card } from '../../components';
 import Pagination from '../../components/Pagination/Pagination';
+import { UIContext } from '../../context/ui';
 
 const SearchResult = () => {
   

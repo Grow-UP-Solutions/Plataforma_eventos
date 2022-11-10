@@ -2,7 +2,6 @@ import React, { useContext, useState } from 'react';
 import { BsSearch } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import { stateContext } from '../../context/state/stateContext';
-import { UIContext } from '../../context/ui';
 import style from './Search.module.css';
 
 const Search = ({ location = 'home' }) => {
