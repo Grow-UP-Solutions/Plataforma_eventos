@@ -23,6 +23,8 @@ const Home = ({ handleNav }) => {
     getConversations();
   }, [user]);
 
+ 
+
   const getUserData = async () => {
     let userResult = {};
     if (user.uid) {

@@ -7,20 +7,31 @@ import Pagination from '../../components/Pagination/Pagination';
 
 const SearchResult = () => {
   
-  const { search, result } = useContext(stateContext);
+  const { result, muni } = useContext(stateContext);
+  const { events } = useContext(UIContext);
+  const [local, setLocal] = useState([]);
   const [currentPage, setCurretPage] = useState(1);
   const CardPerPage = 8;
   const indexOfLastCard = currentPage * CardPerPage;
   const indexOfFirstCard = indexOfLastCard - CardPerPage; 
-  const currentCard = search.slice(indexOfFirstCard, indexOfLastCard);
+  const currentCard = local.slice(indexOfFirstCard, indexOfLastCard);
   const paginado = (pageNumber) => setCurretPage(pageNumber);
+
 
   useEffect(() => {
     scroll.scrollToTop();
-    /* const getSearch = () => {
-      setLocal(events.filter((event) => event.title.toLowerCase().includes(result.toLowerCase())));
+    const localEvents = events.filter((event)=>event.municipio.toLowerCase().includes(muni.toLowerCase()))
+    if(result){
+    const getSearch = () => {
+      setLocal(localEvents.filter((event) => event.title.toLowerCase().includes(result.toLowerCase())));
     }
-    getSearch(); */
+    getSearch();
+    }else{
+      const getSearch = () => {
+        setLocal(localEvents);
+      }
+      getSearch();
+    }
   }, []);
 
   return (
@@ -43,7 +54,7 @@ const SearchResult = () => {
       <div className={style.container_pagination}>
         <Pagination 
           billsPerPage={CardPerPage}
-          state={search.length}
+          state={local.length}
           paginado={paginado}
           page={currentPage}
         />

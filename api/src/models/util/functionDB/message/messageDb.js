@@ -1,7 +1,7 @@
 require("../../../../DB.js");
 const Conversation = require("../../../db/Conversation.js");
 const Message = require("../../../db/Message.js");
-const { oneUserDb } = require("../users/UserDb.js");
+const { oneUserDb } = require("../UserDb.js");
 const outstanding = require("./oustanding.js");
 
 async function allMessageDB() {
@@ -84,8 +84,9 @@ async function outstandingMessage(idMessage, idUser) {
       messageOutstanding.outstanding?.push({
          messageOutstanding: messageOutstanding._id,
          idUser,
+         text: messageOutstanding.text
       });
-      (await messageOutstanding.save()).populate({ path: "outstanding" });
+      await messageOutstanding.save();
       return { msg: "mensaje destacado", messageOutstanding };
    } catch (error) {
       throw new Error(error.message);

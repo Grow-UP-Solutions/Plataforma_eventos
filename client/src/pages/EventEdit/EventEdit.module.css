@@ -18,7 +18,7 @@
   
   .section {
     width: 100%;
-    height: 200rem;
+    height: 250rem;
     scroll-snap-align: start;
     display: flex;
   }
@@ -59,7 +59,7 @@
   }
   .section6 {
     width: 100%;
-    height: 200rem;
+    height: 250rem;
     scroll-snap-align: start;
     display: flex;
   }
@@ -738,8 +738,17 @@
   
   .basquet {
     height: 2.5rem;
-    width: 2.5rem;
-    cursor: pointer;
+  width: 2.5rem;
+  cursor: pointer;
+  border:none;
+  background-color: transparent;
+  }
+  .basquet:hover {
+    height: 2.7rem;
+  width: 2.7rem;
+  cursor: pointer;
+  border:none;
+  background-color: transparent;
   }
   
   /*BONO*/
@@ -770,6 +779,12 @@
     font-size: 1.2rem;
     margin-right: 4rem;
     cursor: pointer;
+  }
+
+  .inputCodigo::placeholder{
+    text-align: center;
+    justify-content: center;
+    
   }
   
   /*Nueva Fecha*/
@@ -1103,6 +1118,20 @@
     margin-bottom: 1rem;
     font-size: 1.2rem;
     font-weight: bold;
+  }
+
+  .btnAddPhoto {
+    margin-top: 1.5rem;
+    margin-left:1rem;
+    color: var(--color-grey-4);
+    cursor: pointer;
+    width: 10rem;
+  }
+  
+  .btnAddPhoto span {
+    font-size: 1.4rem;
+    color: black;
+    cursor: pointer;
   }
   
   /*Seccion 5*/
@@ -1853,6 +1882,7 @@
 
 }
 
+
 .checkBono input:checked ~ .paso .containerBono {
   display: block;
 }
@@ -2071,6 +2101,11 @@
 
 .editarCodigo .iconEdit {
   color: var(--color-orange);
+}
+
+.editarCodigo .iconEdit:hover {
+  color: var(--color-orange);
+  text-decoration: bolder;
 }
 
 
@@ -2708,6 +2743,11 @@
   border:none;
   background-color: transparent;
 }
+.addDelete:hover{
+  border:none;
+  background-color: transparent;
+  text-decoration:bolder;
+} 
 
 
 /* {
@@ -2722,6 +2762,14 @@
     Mostrar Codigos
   </button>
 }  */
+
+.custom-title-class {
+  color: green;
+}
+
+.swal2-title {
+  color: red;
+}
 
 
 
