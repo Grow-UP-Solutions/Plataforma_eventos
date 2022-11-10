@@ -478,7 +478,7 @@ const EventEdit = () => {
       }
     }
 
-    if (allEvents.length > 0) {
+    if (allEvents.length > 0 && EventCopy !== undefined ) {
       for (let i = 0; i < post.dates.length; i++) {
         for (let j = 0; j < EventCopy.dates.length; j++) {
           if (
@@ -497,7 +497,7 @@ const EventEdit = () => {
       }
     }
 
-    if (allEvents.length > 0) {
+    if (allEvents.length > 0 && EventCopy !== undefined) {
       for (let i = 0; i < post.dates.length; i++) {
         for (let j = 0; j < EventCopy.dates.length; j++) { 
            if (
@@ -531,6 +531,7 @@ const EventEdit = () => {
   //               POST - TITLE,DESCRIPTION       //
 
   function handleChange(e) {
+    e.preventDefault()
     setPost({
       ...post,
       [e.target.name]: e.target.value,
@@ -871,8 +872,9 @@ const EventEdit = () => {
       }
     }
   };
-
-  let removeFromPublic = (i, id) => {
+  
+  let removeFromPublic = (e,i, id) => {
+    e.preventDefault()
     let newFechas = [...post.dates];
     newFechas[i].isPublic = false;
     if (newFechas[i].sells === 0) {
@@ -913,7 +915,8 @@ const EventEdit = () => {
 
   //También se borrará en esta pagina los datos relacionados a esta fecha: hora, número de cupos, precio por cupo y códigos de descuento si alguno.
 
-  let becomePublic = (i, id) => {
+  let becomePublic = (e,i, id) => {
+    e.preventDefault()
     let newFechas = [...post.dates];
     newFechas[i].isPublic = true;
     return swal({
@@ -987,7 +990,8 @@ const EventEdit = () => {
     });
   };
 
-  let removeFormFields = (i, id) => {
+  let removeFormFields = (e,i, id) => {
+    e.preventDefault()
     let newFechas = [...post.dates];
     newFechas.splice(i, 1);
     for (let i = 0; i < post.dates.length; i++) {
@@ -1711,14 +1715,14 @@ const EventEdit = () => {
                   )}
 
                   {image ? (
-                    <button
+                      <button
                       onClick={(e) => {
-                        uploadImage(e);
+                          uploadImage(e);
                       }}
-                      className={styles.viewBtn}
-                    >
-                      Añadir
-                    </button>
+                      className={styles.btnAddPhoto}
+                      >
+                      <span>Agregar Imagen</span>
+                      </button>
                   ) : null}
 
                   {post.pictures.length > 0 ? (
@@ -2124,7 +2128,11 @@ const EventEdit = () => {
                               Tu ganas por cupo
                               <div className={styles.labelS}>
                                 <p>$</p>
-                                <p className={styles.subInfoInput}>{date.gananciaCupo}</p>
+                                <input 
+                                  className={styles.subInfoInput}
+                                  placeholder={date.gananciaCupo}
+                                  disabled
+                                />
                               </div>
                             </label>
                             <p className={styles.subInfotxt}>Después de nuestra comisión + IVA</p>
@@ -2139,7 +2147,11 @@ const EventEdit = () => {
                               Tu ganas por evento
                               <div className={styles.labelS}>
                                 <p>$</p>
-                                <p className={styles.subInfoInput}>{date.gananciaEvento}</p>
+                                <input 
+                                  className={styles.subInfoInput}
+                                  placeholder={date.gananciaEvento}
+                                  disabled
+                                />
                               </div>
                             </label>
                             <p className={styles.subInfotxt}>Esto sería lo que ganarías si se venden todos tus cupos</p>
@@ -2403,7 +2415,12 @@ const EventEdit = () => {
                                               <div className={styles.descuento} >
                                                 <label>
                                                     Código
-                                                  <p>{codigo.codigo}</p>
+                                                    <input
+                                                      className={styles.inputCodigo}
+                                                      placeholder={codigo.codigo}
+                                                      disabled
+                                                        
+                                                    />
                                                 </label>
                                               </div>
                                             :

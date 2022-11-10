@@ -780,6 +780,12 @@
     margin-right: 4rem;
     cursor: pointer;
   }
+
+  .inputCodigo::placeholder{
+    text-align: center;
+    justify-content: center;
+    
+  }
   
   /*Nueva Fecha*/
   
@@ -1112,6 +1118,20 @@
     margin-bottom: 1rem;
     font-size: 1.2rem;
     font-weight: bold;
+  }
+
+  .btnAddPhoto {
+    margin-top: 1.5rem;
+    margin-left:1rem;
+    color: var(--color-grey-4);
+    cursor: pointer;
+    width: 10rem;
+  }
+  
+  .btnAddPhoto span {
+    font-size: 1.4rem;
+    color: black;
+    cursor: pointer;
   }
   
   /*Seccion 5*/
