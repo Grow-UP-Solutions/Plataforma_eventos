@@ -57,6 +57,13 @@ async function updateOneUserDb(id, newUser) {
 }
 async function deleteOneUserDb(id) {
   try {
+    const userDelete = await Users.findById(id);
+    const userReff = await Users.find({ referralCode: userDelete.isReferral });
+
+    userReff[0].referrals = userReff[0].referrals.filter((id) => id !== userDelete._id);
+
+    await userReff[0].save();
+
     return await Users.findByIdAndDelete({ _id: id })
       .populate({ path: 'myEventsCreated' })
       .populate({ path: 'myFavorites' })

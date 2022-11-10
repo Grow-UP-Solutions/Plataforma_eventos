@@ -14,7 +14,6 @@ import eventsApi from '../../axios/eventsApi';
 import { animateScroll as scroll } from 'react-scroll';
 
 const Register = () => {
-
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
   const { toggleScreenLogin } = useContext(UIContext);
@@ -119,6 +118,7 @@ const Register = () => {
               firstName: name.split(' ')[0],
               lastName: name.split(' ')[1],
               password: id + 'aA@',
+              registerProvider: provider,
             };
           }
 
@@ -131,6 +131,7 @@ const Register = () => {
               firstName: given_name,
               lastName: family_name,
               password: sub + 'aA@',
+              registerProvider: provider,
             };
           }
 

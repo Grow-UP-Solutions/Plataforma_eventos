@@ -45,7 +45,6 @@ const ReferralPlan = ({ userData }) => {
 
   const createtCodeDiscount = async () => {
     const value = txtValueCodeDiscount.current.value;
-    console.log({ value });
     if (value > availableCredit) return setErrorMessageCode('Tu saldo no es suficiente');
     if (value === null || value === undefined || value === '') return setErrorMessageCode('Ingrese un valor');
     const codeDiscountData = {
@@ -75,10 +74,17 @@ const ReferralPlan = ({ userData }) => {
   const getUsersReferred = async (isOpen) => {
     if (isOpen === 'Mostrar') {
       setShowRefferred('Ocultar');
-      await userData.referrals.forEach(async (id) => {
+
+      const usersReferredMap = await userData.referrals.map(async (id) => {
         const { data } = await eventsApi.get(`/users/${id}`);
-        setUsersReferred([data]);
+        return data;
       });
+
+      Promise.all(usersReferredMap)
+        .then((success) => {
+          setUsersReferred(success);
+        })
+        .catch((error) => console.log(error));
     } else if (isOpen === 'Ocultar') {
       setUsersReferred([]);
       setShowRefferred('Mostrar');
@@ -92,6 +98,7 @@ const ReferralPlan = ({ userData }) => {
       setErrorMessageCode('');
       setOpenFormCodeDiscount(false);
       setShowCodeDiscount('Mostrar');
+      setShowCodeDiscountRedeemed(false);
     }
   };
 
@@ -125,8 +132,7 @@ const ReferralPlan = ({ userData }) => {
   };
 
   const setEdit = async (index) => {
-    const aux = editCodeDiscount;
-    console.log({ aux });
+    const aux = [...editCodeDiscount];
     aux[index] = true;
     setEditCodeDiscount(aux);
   };
@@ -137,20 +143,23 @@ const ReferralPlan = ({ userData }) => {
   };
 
   const funciontAux = async (idCode, index) => {
-    console.log({ index });
     await setEdit(index);
     handleFocusInputEdit(idCode);
   };
 
   const cancelAux = async (index) => {
-    const auxEdit = editCodeDiscount;
+    const auxEdit = [...editCodeDiscount];
     auxEdit[index] = false;
-    console.log({ auxEdit });
     setEditCodeDiscount(auxEdit);
   };
 
   const updateCodeDiscount = async (idCode, beforeValue) => {
     const { value } = document.getElementById(idCode);
+
+    if (value > availableCredit) return setErrorMessageCode('Tu saldo no es suficiente');
+    if (value === 0 || value < 0) return setErrorMessageCode('Ingrese un valor valido.');
+    if (value === null || value === undefined || value === '') return setErrorMessageCode('Ingrese un valor');
+
     try {
       await eventsApi.put(`/codeDiscount/updateCodeDiscount/${idCode}`, { value });
       const { data } = await eventsApi.get(`/codeDiscount/getListCodeDiscountByCreator/${userData._id}`);
@@ -266,7 +275,7 @@ const ReferralPlan = ({ userData }) => {
             )}
 
             <div className={styles.containerListCodeDiscount}>
-              {listCodeDiscount.length > 0 ? (
+              {listCodeDiscount.length > 0 && listCodeDiscount.find((code) => code.isRedimeed === false) ? (
                 <table className={styles.tableCodeDiscount}>
                   <colgroup span={4}></colgroup>
                   <tr>
@@ -276,43 +285,47 @@ const ReferralPlan = ({ userData }) => {
                     <th></th>
                   </tr>
                   {listCodeDiscount
-                    .map((codeDiscount, index) => (
-                      <>
-                        <tr key={codeDiscount._id} className={styles.containerCodeDiscount}>
-                          <td>
-                            <input disabled type='text' value={codeDiscount.code} />
-                          </td>
+                    .map((codeDiscount, index) => {
+                      if (!codeDiscount.isRedimeed) {
+                        return (
+                          <>
+                            <tr className={styles.containerCodeDiscount}>
+                              <td>
+                                <input disabled type='text' value={codeDiscount.code} />
+                              </td>
 
-                          <td>
-                            {!editCodeDiscount[index] ? (
-                              <input id={codeDiscount._id} disabled value={codeDiscount.value} type='text' />
-                            ) : (
-                              <input id={codeDiscount._id} type='text' />
+                              <td>
+                                {!editCodeDiscount[index] ? (
+                                  <input id={codeDiscount._id} disabled value={codeDiscount.value} type='text' />
+                                ) : (
+                                  <input id={codeDiscount._id} type='text' />
+                                )}
+                              </td>
+
+                              <td className={styles.optionCode}>
+                                <button onClick={() => funciontAux(codeDiscount._id, index)}>Editar</button>
+                                <TbTrash
+                                  onClick={() => deleteCodeDiscount(codeDiscount._id, codeDiscount.value)}
+                                  className={styles.iconTrash}
+                                />
+                              </td>
+                            </tr>
+                            {editCodeDiscount[index] && (
+                              <tr>
+                                <td colSpan={'2'}>
+                                  <div className={styles.containerEditCodeDiscount}>
+                                    <button onClick={() => updateCodeDiscount(codeDiscount._id, codeDiscount.value)}>
+                                      Guardar
+                                    </button>
+                                    <button onClick={() => cancelAux(index)}>Cancelar</button>
+                                  </div>
+                                </td>
+                              </tr>
                             )}
-                          </td>
-
-                          <td className={styles.optionCode}>
-                            <button onClick={() => funciontAux(codeDiscount._id, index)}>Editar</button>
-                            <TbTrash
-                              onClick={() => deleteCodeDiscount(codeDiscount._id, codeDiscount.value)}
-                              className={styles.iconTrash}
-                            />
-                          </td>
-                        </tr>
-                        {editCodeDiscount[index] && (
-                          <tr>
-                            <td colSpan={'2'}>
-                              <div className={styles.containerEditCodeDiscount}>
-                                <button onClick={() => updateCodeDiscount(codeDiscount._id, codeDiscount.value)}>
-                                  Guardar
-                                </button>
-                                <button onClick={() => cancelAux(index)}>Cancelar</button>
-                              </div>
-                            </td>
-                          </tr>
-                        )}
-                      </>
-                    ))
+                          </>
+                        );
+                      }
+                    })
                     .reverse()}
                 </table>
               ) : (
@@ -331,7 +344,9 @@ const ReferralPlan = ({ userData }) => {
                 </button>
               </div>
 
-              {showCodeDiscountRedeemed && (
+              {listCodeDiscount &&
+              !showCodeDiscountRedeemed &&
+              listCodeDiscount.find((code) => code.isRedimeed === true) ? (
                 <table className={styles.tableRedeemedCode}>
                   <colgroup span='4'></colgroup>
                   <tr className={styles.tableRedeemedCodeHeader}>
@@ -340,21 +355,29 @@ const ReferralPlan = ({ userData }) => {
                     <th>Redimido por</th>
                     <th>Fecha</th>
                   </tr>
-                  <tr className={styles.tableInfoCodeRedeemed}>
-                    <td>
-                      <span>U323PML7</span>
-                    </td>
-                    <td>
-                      <span>$0.000</span>
-                    </td>
-                    <td>
-                      <span>Pepito Perez</span>
-                    </td>
-                    <td>
-                      <span>05/10/2020</span>
-                    </td>
-                  </tr>
+                  {listCodeDiscount.map((codeDiscount) => {
+                    if (codeDiscount.isRedimeed) {
+                      return (
+                        <tr key={codeDiscount._id} className={styles.tableInfoCodeRedeemed}>
+                          <td>
+                            <span>{codeDiscount.code}</span>
+                          </td>
+                          <td>
+                            <span>${codeDiscount.value}.000</span>
+                          </td>
+                          <td>
+                            <span>{codeDiscount.userRedimeed}</span>
+                          </td>
+                          <td>
+                            <span>{codeDiscount.dateRedimeed}</span>
+                          </td>
+                        </tr>
+                      );
+                    }
+                  })}
                 </table>
+              ) : (
+                <p>No hay codigos redimidos.</p>
               )}
             </div>
           </>
@@ -368,7 +391,7 @@ const ReferralPlan = ({ userData }) => {
             </button>
           </div>
 
-          {usersReferred.length > 0 && (
+          {usersReferred.length > 0 ? (
             <>
               <table className={styles.tableReferred}>
                 <colgroup span='3'></colgroup>
@@ -388,13 +411,14 @@ const ReferralPlan = ({ userData }) => {
                   </tr>
                 ))}
               </table>
-              <div className={styles.msgReferred}>
-                <p>
-                  Si ya has compartido tu código de Referidos confirma que el Referido que ya se haya inscrito a la
-                  Plafatorma. Si aún no has compartido tu código.
-                </p>
-              </div>
             </>
+          ) : (
+            <div className={styles.msgReferred}>
+              <p>
+                Si ya has compartido tu código de Referidos confirma que el Referido que ya se haya inscrito a la
+                Plafatorma. Si aún no has compartido tu código.
+              </p>
+            </div>
           )}
         </div>
       </div>
