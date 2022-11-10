@@ -1,27 +1,18 @@
 require("../../../DB.js");
 const Events = require("../../db/Events.js");
-const { oneUserDb } = require("./users/UserDb.js");
+const { oneUserDb } = require("./UserDb.js");
+
 /**basic user database operations  */
 async function AllEventsDb() {
    try {
       return await Events.find()
-         .populate({ path: "organizer" })
-         .populate({ path: "categories" })
-         
-         .exec();
-   } catch (error) {
-      throw new Error(error.message);
-   }
-}
-async function findOneEvent(id) {
-   try {
-      return await Events.findById({ _id: id })
          .populate({ path: "organizer" })
          .populate({ path: "categories" });
    } catch (error) {
       throw new Error(error.message);
    }
 }
+
 async function updateOneEventDb(id, newEvent) {
    try {
       return await Events.findByIdAndUpdate({ _id: id }, newEvent, { new: 1 })
@@ -44,6 +35,7 @@ async function createOneEventDb(event) {
 
       return eventCreated;
    } catch (error) {
+      console.log(error.message);
       throw new Error(error.message);
    }
 }
@@ -54,7 +46,7 @@ async function generateEventComment(id, opinions) {
       const { opinion, idUser, rating } = opinions;
 
       const user = await oneUserDb(idUser);
-      const event = await findOneEvent(id);
+      const event = await Events.findOne({ _id: id });
 
       event.opinions.push({
          title: user.name,
@@ -73,7 +65,7 @@ async function generateEventComment(id, opinions) {
 
 async function updateEventRating(idEvent, rating) {
    try {
-      const ratinEvente = await findOneEvent(idEvent);
+      const ratinEvente = await Events.findOne({ _id: idEvent });
       if (ratinEvente) {
          ratinEvente.rating = rating;
          return await ratinEvente.save();
@@ -84,9 +76,20 @@ async function updateEventRating(idEvent, rating) {
    }
 }
 
+const findOneEventDb= async (id) => {
+   try {
+      const event = await Events.findOne({ _id: id });
+      console.log("DB", event.title);
+      return event;
+   } catch (error) {
+      console.log("DB", error.message);
+      throw new Error(error.message);
+   }
+};
+
 module.exports = {
    AllEventsDb,
-   findOneEvent,
+   findOneEventDb,
    updateOneEventDb,
    deleteOneEventDb,
    createOneEventDb,

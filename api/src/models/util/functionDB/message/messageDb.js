@@ -1,7 +1,7 @@
 require("../../../../DB.js");
 const Conversation = require("../../../db/Conversation.js");
 const Message = require("../../../db/Message.js");
-const { oneUserDb } = require("../users/UserDb.js");
+const { oneUserDb } = require("../UserDb.js");
 const outstanding = require("./oustanding.js");
 
 async function allMessageDB() {

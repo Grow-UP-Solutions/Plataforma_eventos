@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { oneEventDb, updateEventRating } = require('../../models/util/functionDB/EventesDb.js');
+const {  updateEventRating } = require('../../models/util/functionDB/EventesDb.js');
 
 const {
   getAllEvents,

@@ -15,6 +15,7 @@ import {
   Contacto,
   EventCreate,
   EventCreateForm,
+  EventCreateForm2,
   EventEdit,
   EventDetails,
   Faq,
@@ -71,6 +72,7 @@ function App() {
         <Route path='/registrate' element={<Register />} />
         <Route path='/organiza-un-evento/beneficios' element={<EventCreate />} />
         <Route path='/oganiza-un-evento' element={<EventCreateForm />} />
+        <Route path='/oganiza-un-evento2' element={<EventCreateForm2 />} />
         <Route path='/oganiza-un-evento-editar/:id' element={<EventEdit />} />
         <Route path='/payment' element={<Payment />} />
         <Route path='/categories' element={<CategoriesResult />} />
