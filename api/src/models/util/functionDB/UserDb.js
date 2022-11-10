@@ -1,10 +1,11 @@
-require('../../../../DB');
-// const {findOneEvent
-//  } = require("./EventesDb.js");
-const Users = require('../../../db/Users');
+require('../../../DB');
+
+const Users = require('../../db/Users');
 const bcrypt = require('bcryptjs');
-const generarCodigo = require('../../helpers/generateReferralCode');
-const { findOneEvent } = require('../EventesDb');
+const generarCodigo = require('../helpers/generateReferralCode');
+//const { oneDb } = require('./EventesDb');
+const Events = require('../../db/Events');
+
 
 /** basic user database operations */
 
@@ -19,6 +20,7 @@ async function allUserDb() {
     throw new Error(error.message);
   }
 }
+
 async function validateEmailUserDb(email) {
   try {
     return await Users.findOne({ email: email });
@@ -26,6 +28,7 @@ async function validateEmailUserDb(email) {
     throw new Error(error.message);
   }
 }
+
 async function oneUserDb(id) {
   const idOrganizer = id;
   if (!idOrganizer) {
@@ -41,6 +44,7 @@ async function oneUserDb(id) {
     throw new Error(error.message);
   }
 }
+
 async function updateOneUserDb(id, newUser) {
   try {
     return await Users.findByIdAndUpdate({ _id: id }, newUser, {
@@ -55,6 +59,7 @@ async function updateOneUserDb(id, newUser) {
     throw new Error(error.message);
   }
 }
+
 async function deleteOneUserDb(id) {
   try {
     return await Users.findByIdAndDelete({ _id: id })
@@ -168,12 +173,14 @@ async function updateNotificationDB(reading) {
 async function updateMyFavorites(idUser, idEvent) {
   try {
     const user = await oneUserDb(idUser);
-    const event = await findOneEvent(idEvent);
+ 
+    const event = await Events.findOne({ _id: idEvent });
     user.myFavorites.push(event._id);
     await user.save();
 
     return event;
   } catch (error) {
+    console.log(error.message)
     throw new Error(error.message);
   }
 }

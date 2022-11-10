@@ -9,7 +9,7 @@ const {
    sendMessageDB,
    sendNotificationDB,
    updateMyFavorites,
-} = require("../../models/util/functionDB/users/UserDb.js");
+} = require("../../models/util/functionDB/UserDb.js");
 
 const bcrypt = require("bcryptjs");
 const { AllEventsDb } = require("../../models/util/functionDB/EventesDb.js");
@@ -55,6 +55,7 @@ async function createOrganizerComment(id, opinion) {
       throw new Error(error.message);
    }
 }
+
 async function getAllCommentUser(id) {
    try {
       const allEvents = await AllEventsDb();
