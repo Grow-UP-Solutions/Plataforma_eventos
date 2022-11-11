@@ -56,10 +56,10 @@ function App() {
   useEffect(() => {
     dispatch(getEvents());
     getAllEvents();
-  }, []);
+  }, []);  
 
   return (
-    <div className='App'>
+    <div className='App' >
       <Navbar upper={navBar} />
       <Routes>
         <Route path='/' element={<Home handleNav={setNavBar} />} />

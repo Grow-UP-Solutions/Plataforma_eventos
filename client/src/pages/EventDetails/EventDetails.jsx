@@ -4,7 +4,7 @@ import LaunchOutlinedIcon from '@mui/icons-material/LaunchOutlined';
 import WarningOutlinedIcon from '@mui/icons-material/WarningOutlined';
 import AddIcon from '@mui/icons-material/Add';
 import { Rating } from '@mui/material';
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { AiOutlineClose } from 'react-icons/ai';
@@ -33,6 +33,7 @@ import { getEvents } from '../../redux/actions';
 import style from './EventDetails.module.css';
 
 const EventDetails = () => {
+
   const id = useParams().id;
   const dispatch = useDispatch();
   const allEvents = useSelector((state) => state.events);
@@ -43,9 +44,11 @@ const EventDetails = () => {
   const [component, setComponent] = useState(null);
   const [description, setDescription] = useState(false);
   const [heart, setHeart] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
   const { user } = useContext(AuthContext);
   const { notes, setNotes } = useContext(stateContext);
   const { getEventsFavourites, getEffectRatingEvent, ratingEvent } = useContext(UIContext);
+  const menuRef = useRef();
 
   useEffect(() => {
     scroll.scrollToTop();
@@ -76,6 +79,19 @@ const EventDetails = () => {
     }
     getFav();
   }, [user.uid]);
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (!menuRef.current.contains(e.target)) {
+        setIsOpen(false);
+        console.log('dropdown:', menuRef.current);
+      }
+    }
+    document.addEventListener('mousedown', handler);
+    return () => {
+      document.removeEventListener('mousedown', handler);
+    }
+  }, []);
 
   /* const handleFormatDate = (check) => {
     setCheck(check);
@@ -127,8 +143,13 @@ const EventDetails = () => {
     setDescription(true);
   };
 
+  const handleClickShare = (e) => {
+    e.preventDefault();
+    setIsOpen(!isOpen);
+  }
+
   return (
-    <div className={`${style.container} container`}>
+    <div className={`${style.container} container`} >
       <div className={style.item1}>
         {eventDetails ? (
           <div className={style.containers}>
@@ -167,39 +188,38 @@ const EventDetails = () => {
               </div>)
             }
 
-            
-
-            {/* <div className={style.container_icon_heart} onClick={user.uid ? handleClickFav : handleAlert}>
-              <FavoriteIcon className={style.icon_heart} sx={{ fontSize: 25 }} />
-            </div> */}
-
-            <div className={style.container_icon_share}>
-              <input type='checkbox' id='check' />
-              <label htmlFor='check' className={style.label}>
+            <div className={style.container_icon_share} ref={menuRef}>
+             {/*  <input type='checkbox' id='check' /> */}
+              <div className={style.label} onClick={handleClickShare} >
                 <LaunchOutlinedIcon className={style.icon_share} sx={{ fontSize: 25 }} />
-              </label>
-
-              <div className={style.redes}>
-                <a href='https://www.facebook.com/' target='_blank' rel='noreferrer noopener'>
-                  <ImFacebook className={style.icons} />
-                </a>
-
-                <a href='https://www.twitter.com/' target='_blank' rel='noreferrer noopener'>
-                  <ImTwitter className={style.icons} />
-                </a>
-
-                <a href='https://www.linkedin.com/' target='_blank' rel='noreferrer noopener'>
-                  <ImLinkedin2 className={style.icons} />
-                </a>
-
-                <a href='https://web.whatsapp.com/' target='_blank' rel='noreferrer noopener'>
-                  <FaWhatsapp className={style.icons} />
-                </a>
-
-                <a href={eventDetails.link} target='_blank' rel='noreferrer noopener'>
-                  <IoLinkOutline className={style.icons} />
-                </a>
               </div>
+              
+            
+              {
+                isOpen && (
+                  <div className={style.redes}>
+                    <a href='https://www.facebook.com/' target='_blank' rel='noreferrer noopener'>
+                      <ImFacebook className={style.icons} />
+                    </a>
+
+                    <a href='https://www.twitter.com/' target='_blank' rel='noreferrer noopener'>
+                      <ImTwitter className={style.icons} />
+                    </a>
+
+                    <a href='https://www.linkedin.com/' target='_blank' rel='noreferrer noopener'>
+                      <ImLinkedin2 className={style.icons} />
+                    </a>
+
+                    <a href='https://web.whatsapp.com/' target='_blank' rel='noreferrer noopener'>
+                      <FaWhatsapp className={style.icons} />
+                    </a>
+
+                    <a href={eventDetails.link} target='_blank' rel='noreferrer noopener'>
+                      <IoLinkOutline className={style.icons} />
+                    </a>
+                  </div>
+                )
+              }
             </div>
 
             <div className={style.title}>

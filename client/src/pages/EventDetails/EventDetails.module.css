@@ -5,8 +5,6 @@
   grid-template-columns: 50% 50%;
 }
 
-
-
 .containers {
   width: 100%;
   margin-left: auto;
@@ -96,7 +94,6 @@
 }
 
 .icon_hear_p {
-
   margin: auto;
   color: white;
   cursor: pointer;
@@ -110,45 +107,32 @@
 
 .container_icon_share {
   display: flex;
-  width: 40px;
-  height: 40px;
-  background-color: var(--color-grey-6);
-  border-radius: 60px;
   position: relative;
-  bottom: 58px;
-  left: 72px;
-  z-index: 100;
-  box-shadow: 1px 6px 10px var(--color-grey-3);
 }
 
-.container_icon_share input {
-  display: none;
-}
-
-.container_icon_share label {
-  display: inline-block;
-  padding: 1rem;
-  cursor: pointer;
-}
-
-.container_icon_share input:checked ~ .redes {
+/*.container_icon_share input:checked ~ .redes {
   display: flex;
   justify-content: center;
   box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.3);
+}*/
+
+.label {
+  display: flex;
+  width: 4rem;
+  height: 4rem;
+  background-color: white;
+  border-radius: 60px;
+  position: relative;
+  bottom: 57px;
+  left: 70px;
+  z-index: 100;
+  box-shadow: 1px 6px 10px var(--color-grey-3);
 }
 
 .icon_share {
   color: var(--color-orange);
   cursor: pointer;
-  position: relative;
-  bottom: 2px;
-  right: 2px;
-}
-
-.label {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  margin: auto;
 }
 
 .redes {
@@ -157,26 +141,10 @@
   padding: 0 2rem;
   color: var(--color-orange);
   background-color: var(--color-grey-6);
-  position: relative;
+  position: absolute;
   border-radius: 10px;
-  bottom: 90px;
-  left: -40px;
-  z-index: 100;
-  margin-top: 3.2rem;
-  display: none;
-  align-items: center;
-  gap: 1.6rem;
-}
-
-.redes_on {
-  width: 150px;
-  height: 50px;
-  color: var(--color-orange);
-  background-color: var(--color-grey-6);
-  position: relative;
-  border-radius: 10px;
-  bottom: 23px;
-  left: 80px;
+  bottom: 103px;
+  left: 60px;
   z-index: 100;
   margin-top: 3.2rem;
   display: flex;

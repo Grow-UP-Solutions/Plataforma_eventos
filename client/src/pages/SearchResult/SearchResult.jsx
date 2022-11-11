@@ -8,8 +8,7 @@ import { UIContext } from '../../context/ui';
 
 const SearchResult = () => {
   
-  const { result } = useContext(stateContext);
-  const { muni } = useContext(stateContext);
+  const { result, muni } = useContext(stateContext);
   const { events } = useContext(UIContext);
   const [local, setLocal] = useState([]);
   const [currentPage, setCurretPage] = useState(1);
