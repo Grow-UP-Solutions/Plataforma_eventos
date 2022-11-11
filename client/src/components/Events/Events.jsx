@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { AiOutlineConsoleSql } from 'react-icons/ai';
 import { useSelector } from 'react-redux';
 import { Navigation, Pagination } from 'swiper';
 import 'swiper/modules/navigation/navigation.min.css';
@@ -12,19 +13,39 @@ import Card from '../Cards/Card';
 import styles from './Events.module.css';
 
 const Events = () => {
-  const todosLosEventos = useSelector((state) => state.events);
-
-  const allEvents = todosLosEventos.filter((event) => event.isPublic === true && event.inRevision === false);
 
   //Fecha actual
-  var fecha = new Date();
-  console.log('fecha:', fecha);
-  var hora = fecha.getHours();
-  console.log('hora:', hora);
-  var minutes = fecha.getMinutes();
-  console.log('minutes:', minutes);
-  var dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
-  console.log('dateActual:', dateActual);
+  const fecha = new Date();
+  //console.log('fecha:', fecha);
+  const hora = fecha.getHours();
+  //console.log('hora:', hora);
+  const minutes = fecha.getMinutes();
+  //console.log('minutes:', minutes);
+  const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
+
+
+  const todosLosEventos = useSelector((state) => state.events);
+
+  if(dateActual){todosLosEventos.map((evento)=>{   
+    evento.dates.map((date)=>{ 
+      if(new Date(date.date)<new Date(dateActual)){ 
+         if(evento.dates.length===1){
+          date.isPublic=false
+          evento.isPublic=false
+         }else{
+          date.isPublic=false
+         }
+      }
+    })
+  })}
+
+  const allEvents = todosLosEventos.filter((event) => event.isPublic === true && event.inRevision === false);
+  
+
+
+
+  
+  
 
   //POPULARES//
   const orderByRating = allEvents.sort((a, b) => {
@@ -43,14 +64,17 @@ const Events = () => {
     let first = curr.getDate() - curr.getDay() + i;
     let day = new Date(curr.setDate(first)).toISOString().slice(0, 10);
     week.push(day);
+    console.log('week:',week)
   }
 
   let weekEvents = [];
 
   for (let a = 1; a <= week.length; a++) {
     for (let b = 0; b < allEvents.length; b++) {
-      let evento = allEvents[b].dates.filter((date) => date.date === week[a])[0];
+      let evento = allEvents[b].dates.filter((date) => new Date(date.date) ===new Date(week[a]))[0];
+      console.log('evento:',evento)
       weekEvents.push(evento);
+      console.log('weekEvents:',weekEvents)
     }
   }
 
