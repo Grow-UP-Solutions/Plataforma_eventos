@@ -53,13 +53,17 @@
   position: relative;
 }
 
-.containerSwiper .swiper-button-next {
-  position: absolute;
-  right: 2rem !important ;
+.containerSwiper .swiper {
+  height: 100vh;
+  position: relative;
+}
+
+.containerSwiper .swiper .swiper-button-next {
+  position: absolute !important;
   top: 50rem !important ;
+  right: 4.1rem !important ;
 
   transform: rotate(90deg);
-  transform-origin: left center;
   /* position: absolute;
   bottom: -50px !important;
   top: unset !important;
@@ -69,12 +73,11 @@
   left: 30px !important; */
 }
 
-.containerSwiper .swiper-button-prev {
-  position: absolute;
-  right: 20rem !important ;
+.containerSwiper .swiper .swiper-button-prev {
+  position: absolute !important;
   top: 45rem !important ;
+  left: 135rem !important ;
   transform: rotate(90deg);
-  transform-origin: left center;
   /* position: absolute;
   bottom: -50px !important;
   top: unset !important;
