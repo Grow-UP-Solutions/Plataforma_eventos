@@ -12,12 +12,36 @@ import Opinions from '../../components/Organizer/Opinions.jsx';
 import styles from './OrganizerDetails.module.css';
 import swal from 'sweetalert';
 import { UIContext } from '../../context/ui';
+import { stateContext } from '../../context/state/stateContext';
+import { format, register } from "timeago.js";
+
+const localeFunc = (number, index, total_sec) => {
+
+  return [
+    ['justo ahora', 'en un rato'],
+    ['hace %s segundos', 'en %s segundos'],
+    ['hace 1 minuto', 'en 1 minuto'],
+    ['hace %s minutos', 'en %s minutos'],
+    ['hace 1 hora', 'en 1 hora'],
+    ['hace %s horas', 'en %s horas'],
+    ['hace 1 día', 'en 1 día'],
+    ['hace %s días', 'en %s días'],
+    ['hace 1 semana', 'en 1 semana'],
+    ['hace %s semanas', 'en %s semanas'],
+    ['hace 1 mes', 'en 1 mes'],
+    ['hace %s meses', 'en %s meses'],
+    ['hace 1 año', 'en 1 año'],
+    ['hace %s años', 'en %s años'],
+  ][index];
+};
+register('es_ES', localeFunc);
 
 const OrganizerDetails = () => {
 
   const id = useParams().id;
   const { user, logged } = useContext(AuthContext);
   const { getEffectRatingOrganizer, ratingOrg } = useContext(UIContext);
+  const { conversa } = useContext(stateContext);
   const navigate = useNavigate();
   const [component, setComponent] = useState(null);
   const [nextEvent, setNextEvent] = useState({});
@@ -40,7 +64,7 @@ const OrganizerDetails = () => {
       senderId: user.uid,
       receiverId: id,
     });
-  }, []);   
+  }, []);  
 
   const obtenerDatos = async () => {
     const data = await eventsApi.get('/users/' + id);
@@ -56,6 +80,8 @@ const OrganizerDetails = () => {
 
   const handleClickMessages = (e) => {
     e.preventDefault();
+    const array = conversa.map(e => e.members).flat();
+    const json = array.includes(id);
     if (conversation.senderId === conversation.receiverId) {
       swal({
         title: 'Mismo usuario de conversación',
@@ -64,10 +90,13 @@ const OrganizerDetails = () => {
         dangerMode: true,
       });
     }
+    else if (json === true) {
+      navigate('/usuario/mensajes');
+    }
     else {
       eventsApi.post('/conversation/create', conversation)
       .then((response) => {
-        navigate('/user/message');
+        navigate('/usuario/mensajes');
       });
     }
   };
@@ -125,7 +154,7 @@ const OrganizerDetails = () => {
             <p className={styles.direction}>{userDetail.organizer.direction}</p>
           </div>
           <p className={styles.member}>
-            Miembro desde {userDetail.organizer.createdAt}
+            Miembro desde {format(userDetail.organizer.createdAt, 'es_ES')}
           </p>
           <div className={styles.containerMess}>
             <LocalPostOfficeIcon sx={{ fontSize: '1.6rem', color: '#d53e27' }} />

@@ -34,7 +34,7 @@ const Press = () => {
 
   return (
     <div className={style.container}>
-      <h1 className={style.title}>Noticias</h1>
+      <h1 className={style.title}>Prensa</h1>
       <div>
         {
           prensa.map((noti) => (
