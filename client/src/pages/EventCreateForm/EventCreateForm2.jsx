@@ -1001,16 +1001,12 @@ const EventCreateForm2 = () => {
     <div>
       <div className={`${styles.container} container`}>
         <div className={styles.containerForm}>
-          <div className='containerSwiper'>
-            <form className={styles.form} onSubmit={(e) => handleSubmit(e)}>
+          <div>
+            <form className='containerSwiper' onSubmit={(e) => handleSubmit(e)}>
               <Swiper
-                //  pagination={pagination}
-                // pagination={{
-                //   dynamicBullets: true,
-                // }}
+                slidesPerView={1}
                 direction={'vertical'}
                 navigation={true}
-                autoHeight={true}
                 spaceBetween={0}
                 modules={[Pagination, Navigation]}
                 className='swiper'
