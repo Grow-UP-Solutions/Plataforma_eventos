@@ -16,13 +16,10 @@ const Events = () => {
 
   //Fecha actual
   const fecha = new Date();
-  //console.log('fecha:', fecha);
   const hora = fecha.getHours();
-  console.log('hora:', hora);
   const minutes = fecha.getMinutes();
-  console.log('minutes:', minutes);
   const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
-  //console.log('dateActual:', dateActual);
+
 
 
   const todosLosEventos = useSelector((state) => state.events);
@@ -96,7 +93,6 @@ const Events = () => {
   
 
   const newEvents = allEvents.slice(allEvents.length-18);
-  console.log('newEvents:',newEvents)
   const newEventsReverse = newEvents.reverse();
 
   //USUARIO//
