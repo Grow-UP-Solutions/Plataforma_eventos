@@ -29,15 +29,13 @@ const orderSchema = new Schema({
     type: String,
     default: '',
   },
-  libros: {
+  events: {
     type: [],
   },
   isHidden: {
     type: Boolean,
     default: false,
   },
-  libros:{
-    type:[]
-  }
+ 
 })
 module.exports = model('Orders', orderSchema)
