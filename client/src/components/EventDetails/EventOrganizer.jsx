@@ -12,7 +12,7 @@ const EventOrganizer = ({ id }) => {
 
   const [conversation, setConversation] = useState({});
   const { user } = useContext(AuthContext);
-  const { setResult } = useContext(stateContext);
+  const { setResult, conversa } = useContext(stateContext);
   const navigate = useNavigate();
   const allEvents = useSelector((state) => state.events);
   const eventDetails = allEvents.filter((event) => event._id === id)[0];
@@ -34,6 +34,8 @@ const EventOrganizer = ({ id }) => {
 
   const handleClickMessages = (e) => {
     e.preventDefault();
+    const array = conversa.map(e => e.members).flat();
+    const json = array.includes(eventDetails.organizer._id);
     if (conversation.senderId === conversation.receiverId) {
       swal({
         title: 'Mismo usuario de conversación',
@@ -42,10 +44,13 @@ const EventOrganizer = ({ id }) => {
         dangerMode: true,
       });
     }
+    else if (json === true) {
+      navigate('/usuario/mensajes');
+    }
     else {
       eventsApi.post('/conversation/create', conversation)
       .then((response) => {
-        navigate('/user/message');
+        navigate('/usuario/mensajes');
       });
     }
   }

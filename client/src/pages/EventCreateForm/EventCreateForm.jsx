@@ -218,9 +218,8 @@ const EventCreateForm = () => {
 
   function validate(post) {
     let errors = {};
-
     // let letras = /^[a-zA-Z]*$/g;
-    let offensiveWord = /\b(perro|gato)\b/i;
+    let offensiveWord = /\b(hijo de puta|hijieputa|pirobo|pirovo|piroba|pirova|marica|maricon|maricona|malparido|malparida|caremonda|chimba|chimbo|gurrupleta|gonorrea|gonorriento|gonorrienta|gueva|guevon|guevona|zuripanta|pichurria)\b/i;
     let mail = /[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}/gim;
     let webSite = /\b(http|https|www)\b/i;
     // let numeroYdecimales = /^\d*\.?\d*$/;
@@ -431,9 +430,8 @@ const EventCreateForm = () => {
 
     for (let i = 0; i < post.dates.length; i++) {
       for (let j = 0; j < post.dates[i].codigos.length; j++) {
-       if(post.dates[i].codigos[j].descuento !=='' && post.dates[i].codigos[j].descuento < 1 || post.dates[i].codigos[j].descuento>100){
-        console.log('post.dates[i].codigos[j].descuento:',post.dates[i].codigos[j].descuento,i,j)
-        errors.dates='Descuento: Valores entre 1 y 99'
+       if(post.dates[i].codigos[j].descuento < 0 || post.dates[i].codigos[j].descuento>100){
+        errors.bono='Descuento: Valores entre 1 y 99'
        }
       }
     }
@@ -614,7 +612,7 @@ const EventCreateForm = () => {
   const a = costoDeManejo * IVA;
 
   let handleChanges = (e, i, indice) => {
-    e.preventDefault()
+   
     let newFechas = [...post.dates];
     
     if(e.target.name==='cupos'){
@@ -1940,7 +1938,7 @@ const EventCreateForm = () => {
                                                         value={codigo.descuento}
                                                         max='100'
                                                         min='1'
-                                                        onChange={(e) => handleChanges(index, e, indice)}
+                                                        onChange={(e) => handleChanges(e, index, indice)}
                                                         required
                                                       />
                                                     ) : codigo.ed === true ? (
@@ -1952,7 +1950,7 @@ const EventCreateForm = () => {
                                                         value={codigo.descuento}
                                                         max='100'
                                                         min='1'
-                                                        onChange={(e) => handleChanges(index, e, indice)}
+                                                        onChange={(e) => handleChanges(e, index, indice)}
                                                         required
                                                       />
 
@@ -1965,7 +1963,7 @@ const EventCreateForm = () => {
                                                         value={codigo.descuento}
                                                         max='100'
                                                         min='1'
-                                                        onChange={(e) => handleChanges(index, e, indice)}
+                                                        onChange={(e) => handleChanges(e, index, indice)}
                                                       />
                                                     )}   
                                                   </div> 
@@ -1983,7 +1981,7 @@ const EventCreateForm = () => {
                                                         placeholder='-'
                                                         name='cantidad'
                                                         value={codigo.cantidad}
-                                                        onChange={(e) => handleChanges(index, e, indice)}
+                                                        onChange={(e) => handleChanges(e, index, indice)}
                                                         required
                                                       />
                                                     ) : codigo.ed === true ? (
@@ -1992,7 +1990,7 @@ const EventCreateForm = () => {
                                                         placeholder='-'
                                                         name='cantidad'
                                                         value={codigo.cantidad}
-                                                        onChange={(e) => handleChanges(index, e, indice)}
+                                                        onChange={(e) => handleChanges(e, index, indice)}
                                                         required
                                                       />
 
@@ -2003,7 +2001,7 @@ const EventCreateForm = () => {
                                                         placeholder='-'
                                                         name='cantidad'
                                                         value={codigo.cantidad}
-                                                        onChange={(e) => handleChanges(index, e, indice)}
+                                                        onChange={(e) => handleChanges(e, index, indice)}
                                                       />
                                                     )}
                                                   </div>
@@ -2035,17 +2033,17 @@ const EventCreateForm = () => {
                                           {
                                             codigo.descuento && codigo.cantidad && codigo.cod === false?
                                               <div className={styles.contDate}>
-                                                <button className={styles.generarCodigo} onClick={(e)=>generarCodigo(e,index,indice)}>Generar Código</button>                            
+                                                <button className={styles.generarCodigo} onClick={(e)=>generarCodigo(e, index, indice)}>Generar Código</button>                            
                                               </div> : 
                                               codigo.cod === true ? (
                                               <div className={styles.editarResetear}>
                                                 {/*editar codigo*/}
-                                                <button className={styles.editarCodigo} onClick={(e)=>editarCodigo(e,index,indice)}>
+                                                <button className={styles.editarCodigo} onClick={(e)=>editarCodigo(e, index, indice)}>
                                                   <BsPencilSquare className={styles.iconEdit} />
                                                   <span>Editar</span>
                                                 </button>
                                                 {/*setear codigo*/}                                           
-                                                <button className={styles.editarCodigo} onClick={(e)=>setearCodigo(e,index,indice)}>Resetear</button>                            
+                                                <button className={styles.editarCodigo} onClick={(e)=>setearCodigo(e, index, indice)}>Resetear</button>                            
                                               </div>
                                             ):''                                        
                                           }
@@ -2054,7 +2052,7 @@ const EventCreateForm = () => {
                                           {
                                             codigo.ed === true && cambios === false ?
                                               <div>
-                                                <button className={styles.generarCodigo} onClick={(e)=>guardarCambios(e,index,indice)}>Guardar Cambios</button>
+                                                <button className={styles.generarCodigo} onClick={(e)=>guardarCambios(e, index, indice)}>Guardar Cambios</button>
                                               </div>
                                               :''
                                           }
@@ -2062,7 +2060,7 @@ const EventCreateForm = () => {
                                         {/*borrar codigo*/}
                                           {
                                             indice?                                         
-                                              <button className={styles.deleteBono} onClick={(e)=>borrarCodigo(e,index,indice)}>
+                                              <button className={styles.deleteBono} onClick={(e)=>borrarCodigo(e, index, indice)}>
                                                 <img  src={basquet} alt='n' />
                                               </button>                            
                                             :null

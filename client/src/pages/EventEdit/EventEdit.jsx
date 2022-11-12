@@ -53,11 +53,9 @@ const EventEdit = () => {
   const allEvents = [...eventos];
   const eventDetails = allEvents.filter((e) => e._id === eventId)[0];
 
-
   //              para comparar            //
   const allEventsCopy = useSelector((state) => state.eventsCopy);
   const EventCopy = allEventsCopy.filter((e) => e._id === eventId)[0];
-
 
   //--------------------------------------------------//
   //               USUARIO              //
@@ -198,17 +196,17 @@ const EventEdit = () => {
         gananciaEvento: '',
         dateFormated: '',
         inRevision: '',
-        codigos:[
+        codigos: [
           {
-          codigo:'',
-          descuento:'',
-          cantidad:'',
-          cod:false,
-          show: true,
-          ed:false,
-          uses:''
-          }
-        ]
+            codigo: '',
+            descuento: '',
+            cantidad: '',
+            cod: false,
+            show: true,
+            ed: false,
+            uses: '',
+          },
+        ],
       },
     ],
     isPublic: '',
@@ -218,7 +216,7 @@ const EventEdit = () => {
 
   useEffect(() => {
     if (eventDetails) {
-      const auxCategories = eventDetails.categories.map((categorie)=>categorie.name)
+      const auxCategories = eventDetails.categories.map((categorie) => categorie.name);
 
       setPost({
         ...post,
@@ -259,7 +257,7 @@ const EventEdit = () => {
     cupos: '',
     price: '',
     dates: '',
-    bono:'',
+    bono: '',
     isPublic: '',
   });
 
@@ -343,7 +341,7 @@ const EventEdit = () => {
     }
 
     if (!post.pictures[0]) {
-      errors.pictures = 'Debe ingresar al menos una imagen'
+      errors.pictures = 'Debe ingresar al menos una imagen';
     }
 
     let repetidas = post.pictures.filter((picture) => picture.cover === true);
@@ -478,7 +476,7 @@ const EventEdit = () => {
       }
     }
 
-    if (allEvents.length > 0) {
+    if (allEvents.length > 0 && EventCopy !== undefined) {
       for (let i = 0; i < post.dates.length; i++) {
         for (let j = 0; j < EventCopy.dates.length; j++) {
           if (
@@ -497,10 +495,10 @@ const EventEdit = () => {
       }
     }
 
-    if (allEvents.length > 0) {
+    if (allEvents.length > 0 && EventCopy !== undefined) {
       for (let i = 0; i < post.dates.length; i++) {
-        for (let j = 0; j < EventCopy.dates.length; j++) { 
-           if (
+        for (let j = 0; j < EventCopy.dates.length; j++) {
+          if (
             post.dates[i]._id === EventCopy.dates[j]._id &&
             post.dates[i].sells > 0 &&
             post.dates[i].price < EventCopy.dates[j].price
@@ -518,9 +516,12 @@ const EventEdit = () => {
 
     for (let i = 0; i < post.dates.length; i++) {
       for (let j = 0; j < post.dates[i].codigos.length; j++) {
-       if( post.dates[i].codigos[j].descuento.length && post.dates[i].codigos[j].descuento < 1 || post.dates[i].codigos[j].descuento>100){
-        errors.bono='Descuento: Valores entre 1 y 99'
-       }
+        if (
+          (post.dates[i].codigos[j].descuento.length && post.dates[i].codigos[j].descuento < 1) ||
+          post.dates[i].codigos[j].descuento > 100
+        ) {
+          errors.bono = 'Descuento: Valores entre 1 y 99';
+        }
       }
     }
 
@@ -531,6 +532,7 @@ const EventEdit = () => {
   //               POST - TITLE,DESCRIPTION       //
 
   function handleChange(e) {
+    e.preventDefault();
     setPost({
       ...post,
       [e.target.name]: e.target.value,
@@ -551,24 +553,22 @@ const EventEdit = () => {
   const [seleccionados, setSeleccionados] = useState([]);
   const [changed] = useState(false);
 
- 
-  function handleCategories(e){
-    let categorieName = e.target.value
-    let categorieChecked= e.target.checked
+  function handleCategories(e) {
+    let categorieName = e.target.value;
+    let categorieChecked = e.target.checked;
 
-    let categories = post.categories
+    let categories = post.categories;
 
-    if(categorieChecked){
-      categories.push(categorieName)
-    }else{
-      categories = categories.filter((cate)=>cate !== categorieName)
+    if (categorieChecked) {
+      categories.push(categorieName);
+    } else {
+      categories = categories.filter((cate) => cate !== categorieName);
     }
     setPost({
       ...post,
-      categories
-    })
+      categories,
+    });
   }
-
 
   useEffect(() => {
     let checkeds = document.getElementsByClassName('checkbox');
@@ -691,15 +691,15 @@ const EventEdit = () => {
 
   const a = costoDeManejo * IVA;
 
-  let handleChanges = (e, i, id,indice,codigo) => {
-    e.preventDefault()
+  let handleChanges = (e, i, id, indice, codigo) => {
+    e.preventDefault();
     let newFechas = [...post.dates];
-    
-    if(e.target.name==='cupos'){
+
+    if (e.target.name === 'cupos') {
       newFechas[i].cupos = parseInt(e.target.value);
-    }else if(e.target.name==='price'){
-      newFechas[i].price = parseInt(e.target.value);;
-    }else{
+    } else if (e.target.name === 'price') {
+      newFechas[i].price = parseInt(e.target.value);
+    } else {
       newFechas[i][e.target.name] = e.target.value;
     }
 
@@ -712,16 +712,15 @@ const EventEdit = () => {
     if (e.target.name === 'date') {
       newFechas[i].dateFormated = formatDateForm(e.target.value);
     }
-    
 
-    if(indice !== undefined &&  newFechas[i].codigos[indice] !== undefined ){
-      if(e.target.name === 'codigo'){
-        newFechas[i].codigos[indice].codigo = e.target.value
-      }else{
-        newFechas[i].codigos[indice][e.target.name] = parseInt(e.target.value)
-      }   
+    if (indice !== undefined && newFechas[i].codigos[indice] !== undefined) {
+      if (e.target.name === 'codigo') {
+        newFechas[i].codigos[indice].codigo = e.target.value;
+      } else {
+        newFechas[i].codigos[indice][e.target.name] = parseInt(e.target.value);
+      }
     }
-    
+
     for (let i = 0; i < post.dates.length; i++) {
       for (let j = 0; j < EventCopy.dates.length; j++) {
         if (
@@ -742,11 +741,10 @@ const EventEdit = () => {
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             width: 600,
-            height:600,
-            customClass : {
-              html: 'swal2-title'
-            }
-            
+            height: 600,
+            customClass: {
+              html: 'swal2-title',
+            },
           }).then((result) => {
             if (result.isConfirmed) {
               setPost({
@@ -825,54 +823,52 @@ const EventEdit = () => {
             ...post,
             dates: newFechas,
           });
-        }if(indice!==undefined && codigo !== undefined){
-          for(let a = 0;a< post.dates[i].codigos.length;a++){
-            for(let b = 0;b< EventCopy.dates[j].codigos.length;b++){
-              
-              if(post.dates[i].codigos[indice]!==undefined && post.dates[i].codigos[indice].uses>0 ){
-                if(
-                  post.dates[i].codigos[a].codigo===codigo &&
-                  EventCopy.dates[j].codigos[b].codigo===codigo&&
+        }
+        if (indice !== undefined && codigo !== undefined) {
+          for (let a = 0; a < post.dates[i].codigos.length; a++) {
+            for (let b = 0; b < EventCopy.dates[j].codigos.length; b++) {
+              if (post.dates[i].codigos[indice] !== undefined && post.dates[i].codigos[indice].uses > 0) {
+                if (
+                  post.dates[i].codigos[a].codigo === codigo &&
+                  EventCopy.dates[j].codigos[b].codigo === codigo &&
                   post.dates[i].codigos[a].descuento !== EventCopy.dates[j].codigos[b].descuento
-                  ){
-                    return Swal.fire({
-                      html:
-                        'Ya hay xx cupos vendidos. El cambio sólo aplicara a futuras ventas',
-                      showDenyButton: true,
-                      showCancelButton: false,
-                      confirmButtonText: 'Cambiar % de descuento',
-                      denyButtonText: `Cerrar`,
-                    }).then((result) => {
-                      if (result.isConfirmed) {
-                        setPost({
-                          ...post,
-                          dates: newFechas,
-                        });
-                      } else if (result.isDenied) {
-                        newFechas[i].codigos[indice][e.target.name]= EventCopy.dates[j].codigos[b].descuento;
-                        setPost({
-                          ...post,
-                          dates: newFechas,
-                        });
-                      }
-                    });
-                  }
-              }else{
+                ) {
+                  return Swal.fire({
+                    html: 'Ya hay xx cupos vendidos. El cambio sólo aplicara a futuras ventas',
+                    showDenyButton: true,
+                    showCancelButton: false,
+                    confirmButtonText: 'Cambiar % de descuento',
+                    denyButtonText: `Cerrar`,
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      setPost({
+                        ...post,
+                        dates: newFechas,
+                      });
+                    } else if (result.isDenied) {
+                      newFechas[i].codigos[indice][e.target.name] = EventCopy.dates[j].codigos[b].descuento;
+                      setPost({
+                        ...post,
+                        dates: newFechas,
+                      });
+                    }
+                  });
+                }
+              } else {
                 setPost({
                   ...post,
                   dates: newFechas,
                 });
               }
-  
             }
           }
         }
-
       }
     }
   };
 
-  let removeFromPublic = (i, id) => {
+  let removeFromPublic = (e, i, id) => {
+    e.preventDefault();
     let newFechas = [...post.dates];
     newFechas[i].isPublic = false;
     if (newFechas[i].sells === 0) {
@@ -913,7 +909,8 @@ const EventEdit = () => {
 
   //También se borrará en esta pagina los datos relacionados a esta fecha: hora, número de cupos, precio por cupo y códigos de descuento si alguno.
 
-  let becomePublic = (i, id) => {
+  let becomePublic = (e, i, id) => {
+    e.preventDefault();
     let newFechas = [...post.dates];
     newFechas[i].isPublic = true;
     return swal({
@@ -950,24 +947,24 @@ const EventEdit = () => {
           gananciaEvento: '',
           dateFormated: '',
           inRevision: false,
-          codigos:[
+          codigos: [
             {
-            codigo:'',
-            descuento:'',
-            cantidad:'',
-            cod:false,
-            show: true,
-            ed:false,
-            uses:''
-            }
+              codigo: '',
+              descuento: '',
+              cantidad: '',
+              cod: false,
+              show: true,
+              ed: false,
+              uses: '',
+            },
           ],
         },
       ],
     });
   };
 
-  let addBono = (e,i) => {
-    e.preventDefault()
+  let addBono = (e, i) => {
+    e.preventDefault();
     const datesAux = [...post.dates];
     datesAux[i].codigos = [
       ...datesAux[i].codigos,
@@ -975,9 +972,9 @@ const EventEdit = () => {
         codigo: '',
         descuento: '',
         cantidad: '',
-        cod:false,
-        show:true,
-        uses:''
+        cod: false,
+        show: true,
+        uses: '',
       },
     ];
 
@@ -987,7 +984,8 @@ const EventEdit = () => {
     });
   };
 
-  let removeFormFields = (i, id) => {
+  let removeFormFields = (e, i, id) => {
+    e.preventDefault();
     let newFechas = [...post.dates];
     newFechas.splice(i, 1);
     for (let i = 0; i < post.dates.length; i++) {
@@ -1029,208 +1027,200 @@ const EventEdit = () => {
     }
   };
 
-  let borrarCodigo = (e, i, id,indice,codigo) =>{
-    e.preventDefault()
+  let borrarCodigo = (e, i, id, indice, codigo) => {
+    e.preventDefault();
     const datesAux = [...post.dates];
-    
-    if(datesAux[i].codigos[indice].codigo.length && datesAux[i].codigos[indice].uses>0){
+
+    if (datesAux[i].codigos[indice].codigo.length && datesAux[i].codigos[indice].uses > 0) {
       swal({
-        title: 'Ya hay xx cupos vendidos con este código. El cambio sólo aplicara a futuras ventas. Deseas eliminar este codigo? ',
+        title:
+          'Ya hay xx cupos vendidos con este código. El cambio sólo aplicara a futuras ventas. Deseas eliminar este codigo? ',
         buttons: true,
         dangerMode: true,
       }).then((continuar) => {
         if (continuar) {
-          if(datesAux[i].codigos[indice].length>1){
+          if (datesAux[i].codigos[indice].length > 1) {
             datesAux[i].codigos.splice(indice, 1);
-          setPost({
-            ...post,
-            dates: datesAux,
-          });
-          }else{
+            setPost({
+              ...post,
+              dates: datesAux,
+            });
+          } else {
             const datesAux = [...post.dates];
-            datesAux[i].codigos[indice] =  {
+            datesAux[i].codigos[indice] = {
               codigo: '',
               descuento: '',
               cantidad: '',
               cod: false,
-              show:true,
-              ed:false,
-              uses:''
-            }
+              show: true,
+              ed: false,
+              uses: '',
+            };
             setPost({
               ...post,
               dates: datesAux,
-            })
+            });
           }
         }
-      })
-    }
-    else if( datesAux[i].codigos[indice].codigo.length){
-    swal({
-      title: 'Deseas eliminar este codigo? ',
-      buttons: true,
-      dangerMode: true,
-    }).then((continuar) => {
-      if (continuar) {
-        if(datesAux[i].codigos[indice].length>1){
-          datesAux[i].codigos.splice(indice, 1);
-        setPost({
-          ...post,
-          dates: datesAux,
-        });
-        }else{
-          const datesAux = [...post.dates];
-          datesAux[i].codigos[indice] =  {
-            codigo: '',
-            descuento: '',
-            cantidad: '',
-            cod: false,
-            show:true,
-            ed:false,
-            uses:''
+      });
+    } else if (datesAux[i].codigos[indice].codigo.length) {
+      swal({
+        title: 'Deseas eliminar este codigo? ',
+        buttons: true,
+        dangerMode: true,
+      }).then((continuar) => {
+        if (continuar) {
+          if (datesAux[i].codigos[indice].length > 1) {
+            datesAux[i].codigos.splice(indice, 1);
+            setPost({
+              ...post,
+              dates: datesAux,
+            });
+          } else {
+            const datesAux = [...post.dates];
+            datesAux[i].codigos[indice] = {
+              codigo: '',
+              descuento: '',
+              cantidad: '',
+              cod: false,
+              show: true,
+              ed: false,
+              uses: '',
+            };
+            setPost({
+              ...post,
+              dates: datesAux,
+            });
           }
-          setPost({
-            ...post,
-            dates: datesAux,
-          })
         }
-      }
-    })
-  }else if(datesAux[i].codigos[indice].codigo.length === 0 && datesAux[i].codigos[indice].length === 1 ){
-    const datesAux = [...post.dates];
-      datesAux[i].codigos[indice] =  {
+      });
+    } else if (datesAux[i].codigos[indice].codigo.length === 0 && datesAux[i].codigos[indice].length === 1) {
+      const datesAux = [...post.dates];
+      datesAux[i].codigos[indice] = {
         codigo: '',
         descuento: '',
         cantidad: '',
         cod: false,
-        show:true,
-        ed:false,
-        uses:''
-      }
+        show: true,
+        ed: false,
+        uses: '',
+      };
       setPost({
         ...post,
         dates: datesAux,
-      })
-  }
-    else{
-    datesAux[i].codigos.splice(indice, 1);
-    setPost({
-      ...post,
-      dates: datesAux,
-    });
-  }
-  }
+      });
+    } else {
+      datesAux[i].codigos.splice(indice, 1);
+      setPost({
+        ...post,
+        dates: datesAux,
+      });
+    }
+  };
 
-  let setearCodigo = (e,i,indice) =>{
-    e.preventDefault()
+  let setearCodigo = (e, i, indice) => {
+    e.preventDefault();
     const datesAux = [...post.dates];
-    datesAux[i].codigos[indice] =  {
+    datesAux[i].codigos[indice] = {
       codigo: '',
       descuento: '',
       cantidad: '',
       cod: false,
-      show:true,
-      ed:false,
-      uses:''
-    }
-     setPost({
+      show: true,
+      ed: false,
+      uses: '',
+    };
+    setPost({
       ...post,
       dates: datesAux,
-    })
+    });
     //setEd(false)
-  }
+  };
 
-  let generarCodigo = (e,i,indice) => {
-    e.preventDefault()
+  let generarCodigo = (e, i, indice) => {
+    e.preventDefault();
     let newFechas = [...post.dates];
-    const codi = generateRandomCoupons()
-    newFechas[i].codigos[indice].codigo = codi
-    newFechas[i].codigos[indice].cod = true
-   
-    
+    const codi = generateRandomCoupons();
+    newFechas[i].codigos[indice].codigo = codi;
+    newFechas[i].codigos[indice].cod = true;
+
     setPost({
       ...post,
       dates: newFechas,
     });
-  }
+  };
 
-  let editarCodigo = (e,i,indice) => {
-    e.preventDefault()
-    setCambios(false)
+  let editarCodigo = (e, i, indice) => {
+    e.preventDefault();
+    setCambios(false);
     const datesAux = [...post.dates];
-    datesAux[i].codigos[indice].ed = true
-     setPost({
+    datesAux[i].codigos[indice].ed = true;
+    setPost({
       ...post,
       dates: datesAux,
-    }) 
-  }
+    });
+  };
 
-  let guardarCambios = (e, i, id,indice,codigo) => {
-    e.preventDefault()
-    const datesAux =[...post.dates];
-    
-    swal('Cambio ha sido guardado')
-    setCambios(true)
-    datesAux[i].codigos[indice].ed = false
-     setPost({
+  let guardarCambios = (e, i, id, indice, codigo) => {
+    e.preventDefault();
+    const datesAux = [...post.dates];
+
+    swal('Cambio ha sido guardado');
+    setCambios(true);
+    datesAux[i].codigos[indice].ed = false;
+    setPost({
       ...post,
       dates: datesAux,
-    }) 
-    
-  }
+    });
+  };
 
-  let mostrarCodigos = (e,i,indice) => {
-    e.preventDefault()
+  let mostrarCodigos = (e, i, indice) => {
+    e.preventDefault();
     //setGetDanger(false)
     //setMostrar(false)
     const datesAux = [...post.dates];
-    datesAux[i].codigos[indice].show = true
-     setPost({
+    datesAux[i].codigos[indice].show = true;
+    setPost({
       ...post,
       dates: datesAux,
-    }) 
-  }
+    });
+  };
 
-  let ocultarCodigos = (e,i,indice) => {
-    e.preventDefault()
+  let ocultarCodigos = (e, i, indice) => {
+    e.preventDefault();
     //setGetDanger(false)
     //setMostrar(false)
     const datesAux = [...post.dates];
-    datesAux[i].codigos[indice].show =  false
-     setPost({
+    datesAux[i].codigos[indice].show = false;
+    setPost({
       ...post,
       dates: datesAux,
-    }) 
-  }
+    });
+  };
 
-  const [cambios , setCambios] = useState(false)
+  const [cambios, setCambios] = useState(false);
 
   const LETRAS = 2;
   const NUMEROS = 4;
 
   const generateRandomCoupons = () => {
-      const characters = "ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijklmnpqrstuvwxyz";
-      let letrasResult = "";
-    const numeros = "123456789";
-    let numerosResult = "";
+    const characters = 'ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijklmnpqrstuvwxyz';
+    let letrasResult = '';
+    const numeros = '123456789';
+    let numerosResult = '';
     const charactersLength = characters.length;
     const numerosLength = numeros.length;
 
     for (let i = 0; i < LETRAS; i++) {
-        letrasResult += characters.charAt(
-          Math.floor(Math.random() * charactersLength)
-        );
+      letrasResult += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
 
     for (let i = 0; i < NUMEROS; i++) {
-        numerosResult += numeros.charAt(Math.floor(Math.random() * numerosLength));
+      numerosResult += numeros.charAt(Math.floor(Math.random() * numerosLength));
     }
 
-    return `Z-` + letrasResult  + numerosResult;
-
+    return `Z-` + letrasResult + numerosResult;
   };
-
-
 
   let fecha = new Date();
   let anio = fecha.getFullYear();
@@ -1462,22 +1452,21 @@ const EventEdit = () => {
                     sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
                   </p>
                   <div className={styles.containerChecks}>
-                    {post&&
+                    {post &&
                       categories.map((categorie) => (
                         <div className={styles.checks}>
-                          <label className={styles.labelsChecks}>                     
-                              <input
-                                className={styles.checkBox}
-                                type='checkbox'
-                                value={categorie.name}
-                                onChange={(e) => handleCategories(e)}
-                                checked={post.categories.includes(categorie.name)}
-                              />
+                          <label className={styles.labelsChecks}>
+                            <input
+                              className={styles.checkBox}
+                              type='checkbox'
+                              value={categorie.name}
+                              onChange={(e) => handleCategories(e)}
+                              checked={post.categories.includes(categorie.name)}
+                            />
                             {categorie.name}
                           </label>
                         </div>
-                      )) 
-                      }
+                      ))}
                   </div>
 
                   {/* otra categoria*/}
@@ -1715,9 +1704,9 @@ const EventEdit = () => {
                       onClick={(e) => {
                         uploadImage(e);
                       }}
-                      className={styles.viewBtn}
+                      className={styles.btnAddPhoto}
                     >
-                      Añadir
+                      <span>Agregar Imagen</span>
                     </button>
                   ) : null}
 
@@ -2079,7 +2068,7 @@ const EventEdit = () => {
                                   placeholder='10'
                                   name='cupos'
                                   value={date.cupos || ''}
-                                  onChange={(e) => handleChanges(e, index,  date._id)}
+                                  onChange={(e) => handleChanges(e, index, date._id)}
                                 />
                               )}
                             </label>
@@ -2097,7 +2086,7 @@ const EventEdit = () => {
                                     placeholder='20.00'
                                     name='price'
                                     value={date.price || ''}
-                                    onChange={(e) => handleChanges(e, index,  date._id)}
+                                    onChange={(e) => handleChanges(e, index, date._id)}
                                     required
                                   />
                                 ) : (
@@ -2107,7 +2096,7 @@ const EventEdit = () => {
                                     placeholder='20.00'
                                     name='price'
                                     value={date.price || ''}
-                                    onChange={(e) => handleChanges(e, index,  date._id)}
+                                    onChange={(e) => handleChanges(e, index, date._id)}
                                   />
                                 )}
                               </div>
@@ -2124,7 +2113,7 @@ const EventEdit = () => {
                               Tu ganas por cupo
                               <div className={styles.labelS}>
                                 <p>$</p>
-                                <p className={styles.subInfoInput}>{date.gananciaCupo}</p>
+                                <input className={styles.subInfoInput} placeholder={date.gananciaCupo} disabled />
                               </div>
                             </label>
                             <p className={styles.subInfotxt}>Después de nuestra comisión + IVA</p>
@@ -2139,7 +2128,7 @@ const EventEdit = () => {
                               Tu ganas por evento
                               <div className={styles.labelS}>
                                 <p>$</p>
-                                <p className={styles.subInfoInput}>{date.gananciaEvento}</p>
+                                <input className={styles.subInfoInput} placeholder={date.gananciaEvento} disabled />
                               </div>
                             </label>
                             <p className={styles.subInfotxt}>Esto sería lo que ganarías si se venden todos tus cupos</p>
@@ -2257,240 +2246,266 @@ const EventEdit = () => {
                           </button>
                         </div>
 
-                        {/* bono*/}                      
+                        {/* bono*/}
                         <div className={styles.checkBono}>
-                          {date.codigos[0] && date.codigos[0].codigo.length?
+                          {date.codigos[0] && date.codigos[0].codigo.length ? (
                             <input
                               className={styles.checkBoxBono}
                               defaultChecked={true}
                               type='checkbox'
                               name='bono'
                               checked
-                              />
-                              :
-                              <input
-                                className={styles.checkBoxBono}
-                                defaultChecked={false}
-                                type='checkbox'
-                                name='bono'
-                              />  
-                            }                     
-                            <label className={styles.labelsChecks}>Brindar códigos de descuento</label>
-                            {date.codigos && date.codigos.map((codigo,indice)=>(
-                              <div className={styles.paso}>                              
+                            />
+                          ) : (
+                            <input className={styles.checkBoxBono} defaultChecked={false} type='checkbox' name='bono' />
+                          )}
+                          <label className={styles.labelsChecks}>Brindar códigos de descuento</label>
+                          {date.codigos &&
+                            date.codigos.map((codigo, indice) => (
+                              <div className={styles.paso}>
                                 <div className={styles.containerBono}>
-                                  {codigo.show === true ?
-                                  <div>
-                                    {/*codigo*/}
-                                    <div className={styles.opcionesBonos} key={indice}>
+                                  {codigo.show === true ? (
+                                    <div>
+                                      {/*codigo*/}
+                                      <div className={styles.opcionesBonos} key={indice}>
                                         {/*%descuento-cantidad*/}
-                                          {
-                                            codigo.codigo.length && codigo.ed === false  ? (
-                                              <div className={styles.descuentoCantidad}>
-                                                {/* descuento*/}
-                                                <div className={styles.descuento} >
-                                                  <label>
-                                                    Porcentaje
-                                                      <p>
-                                                        {codigo.descuento}
-                                                      </p>                                     
-                                                  </label>
-                                                </div>
-                
-                                                {/* cantidad de bonos*/}
-                                                <div className={styles.descuento}>
-                                                  <label>
-                                                    Cantidad de bonos
-                                                      <p>
-                                                        {codigo.cantidad}
-                                                      </p>                                    
-                                                  </label>                               
-                                                </div>
-                                              </div>
-                                            )
-                                            :(
-                                            <div className={styles.descuentoCantidad}>
-                                              {/* descuento*/}
-                                              <div className={styles.descuento}>
-                                                <label>
-                                                  Porcentaje
-                                                  <div>
-                                                    { failedSubmit && errors.bonos ? (
-                                                      <input
-                                                        id='descuento'
-                                                        type='number'
-                                                        placeholder={codigo.descuento}
-                                                        name='descuento'
-                                                        value={codigo.descuento}
-                                                        max='100'
-                                                        min='1'
-                                                        onChange={(e) => handleChanges(e, index, date._id,indice,codigo.codigo)}
-                                                        required
-                                                      />
-                                                    ) : codigo.ed === true ? (
-                                                      <input
-                                                        id='descuento'
-                                                        type='number'
-                                                        placeholder={codigo.descuento}
-                                                        name='descuento'
-                                                        value={codigo.descuento}
-                                                        max='100'
-                                                        min='1'
-                                                        onChange={(e) => handleChanges(e, index, date._id, indice, codigo.codigo)}
-                                                        required
-                                                      />
-
-                                                    ) : (
-                                                      <input
-                                                        id='descuento'
-                                                        type='number'
-                                                        placeholder='-'
-                                                        name='descuento'
-                                                        value={codigo.descuento}
-                                                        max='100'
-                                                        min='1'
-                                                        onChange={(e) => handleChanges(e, index, date._id,indice,codigo.codigo)}
-                                                      />
-                                                    )}   
-                                                  </div> 
-                                                </label>                              
-                                              </div>
-
-                                              {/* cantidad de bonos*/}
-                                              <div className={styles.descuento}>
-                                                <label>
-                                                Cantidad de bonos
-                                                  <div>
-                                                    {failedSubmit && errors.bonos ? (
-                                                      <input
-                                                        type='number'
-                                                        placeholder={codigo.cantidad}
-                                                        name='cantidad'
-                                                        value={codigo.cantidad}
-                                                        onChange={(e) => handleChanges(e, index, date._id,indice,codigo.codigo)}
-                                                        required
-                                                      />
-                                                    ) : codigo.ed === true ? (
-                                                      <input
-                                                        type='number'
-                                                        placeholder={codigo.cantidad}
-                                                        name='cantidad'
-                                                        value={codigo.cantidad}
-                                                        onChange={(e) => handleChanges(e, index, date._id,indice,codigo.codigo)}
-                                                        required
-                                                      />
-
-                                                    ) : (
-                                                      <input
-                                                        className={styles.cantidad}
-                                                        type='number'
-                                                        placeholder={codigo.cantidad}
-                                                        name='cantidad'
-                                                        value={codigo.cantidad}
-                                                        onChange={(e) => handleChanges(e, index, date._id,indice,codigo.codigo)}
-                                                      />
-                                                    )}
-                                                  </div>
-                                                </label>                               
-                                              </div>
+                                        {codigo.codigo.length && codigo.ed === false ? (
+                                          <div className={styles.descuentoCantidad}>
+                                            {/* descuento*/}
+                                            <div className={styles.descuento}>
+                                              <label>
+                                                Porcentaje
+                                                <p>{codigo.descuento}</p>
+                                              </label>
                                             </div>
-                                            )
-                                          }
+
+                                            {/* cantidad de bonos*/}
+                                            <div className={styles.descuento}>
+                                              <label>
+                                                Cantidad de bonos
+                                                <p>{codigo.cantidad}</p>
+                                              </label>
+                                            </div>
+                                          </div>
+                                        ) : (
+                                          <div className={styles.descuentoCantidad}>
+                                            {/* descuento*/}
+                                            <div className={styles.descuento}>
+                                              <label>
+                                                Porcentaje
+                                                <div>
+                                                  {failedSubmit && errors.bonos ? (
+                                                    <input
+                                                      id='descuento'
+                                                      type='number'
+                                                      placeholder={codigo.descuento}
+                                                      name='descuento'
+                                                      value={codigo.descuento}
+                                                      max='100'
+                                                      min='1'
+                                                      onChange={(e) =>
+                                                        handleChanges(e, index, date._id, indice, codigo.codigo)
+                                                      }
+                                                      required
+                                                    />
+                                                  ) : codigo.ed === true ? (
+                                                    <input
+                                                      id='descuento'
+                                                      type='number'
+                                                      placeholder={codigo.descuento}
+                                                      name='descuento'
+                                                      value={codigo.descuento}
+                                                      max='100'
+                                                      min='1'
+                                                      onChange={(e) =>
+                                                        handleChanges(e, index, date._id, indice, codigo.codigo)
+                                                      }
+                                                      required
+                                                    />
+                                                  ) : (
+                                                    <input
+                                                      id='descuento'
+                                                      type='number'
+                                                      placeholder='-'
+                                                      name='descuento'
+                                                      value={codigo.descuento}
+                                                      max='100'
+                                                      min='1'
+                                                      onChange={(e) =>
+                                                        handleChanges(e, index, date._id, indice, codigo.codigo)
+                                                      }
+                                                    />
+                                                  )}
+                                                </div>
+                                              </label>
+                                            </div>
+
+                                            {/* cantidad de bonos*/}
+                                            <div className={styles.descuento}>
+                                              <label>
+                                                Cantidad de bonos
+                                                <div>
+                                                  {failedSubmit && errors.bonos ? (
+                                                    <input
+                                                      type='number'
+                                                      placeholder={codigo.cantidad}
+                                                      name='cantidad'
+                                                      value={codigo.cantidad}
+                                                      onChange={(e) =>
+                                                        handleChanges(e, index, date._id, indice, codigo.codigo)
+                                                      }
+                                                      required
+                                                    />
+                                                  ) : codigo.ed === true ? (
+                                                    <input
+                                                      type='number'
+                                                      placeholder={codigo.cantidad}
+                                                      name='cantidad'
+                                                      value={codigo.cantidad}
+                                                      onChange={(e) =>
+                                                        handleChanges(e, index, date._id, indice, codigo.codigo)
+                                                      }
+                                                      required
+                                                    />
+                                                  ) : (
+                                                    <input
+                                                      className={styles.cantidad}
+                                                      type='number'
+                                                      placeholder={codigo.cantidad}
+                                                      name='cantidad'
+                                                      value={codigo.cantidad}
+                                                      onChange={(e) =>
+                                                        handleChanges(e, index, date._id, indice, codigo.codigo)
+                                                      }
+                                                    />
+                                                  )}
+                                                </div>
+                                              </label>
+                                            </div>
+                                          </div>
+                                        )}
 
                                         {/*codigo*/}
-                                          {
-                                            codigo.ed===true ?
-                                              <div className={styles.descuento} >
-                                                <label>
-                                                    Código
-                                                  <p>{codigo.codigo}</p>
-                                                </label>
-                                              </div>
-                                            :
-                                              <div className={styles.codigoAble}>
-                                                <label >
-                                                    Código                                         
-                                                    <p>{codigo.codigo}</p>
-                                                </label>                             
-                                              </div>
-                                          }
-                                                                  
-                                        {/*generar-editar-resetear codigo*/}                                   
-                                          {
-                                            codigo.descuento && codigo.cantidad && codigo.cod === false?
-                                              <div className={styles.contDate}>
-                                                <button className={styles.generarCodigo} onClick={(e)=>generarCodigo(e,index,indice)}>Generar Código</button>                            
-                                              </div> : 
-                                              codigo.cod === true ? (
-                                              <div className={styles.editarResetear}>
-                                                {/*editar codigo*/}
-                                                <button className={styles.editarCodigo} onClick={(e)=>editarCodigo(e,index,indice)}>
-                                                  <BsPencilSquare className={styles.iconEdit} />
-                                                  <span>Editar</span>
-                                                </button>
-                                                {/*setear codigo*/}                                           
-                                                <button className={styles.editarCodigo} onClick={(e)=>setearCodigo(e,index,indice)}>Resetear</button>                            
-                                              </div>
-                                            ):''                                        
-                                          }
-                                  
-                                        {/*guardar codigo*/}    
-                                          {
-                                            codigo.ed === true && cambios === false ?
-                                              <div>
-                                                <button className={styles.generarCodigo} onClick={(e)=>guardarCambios(e, index, date._id,indice,codigo.codigo)}>Guardar Cambios</button>
-                                              </div>
-                                              :''
-                                          }
-                                        
+                                        {codigo.ed === true ? (
+                                          <div className={styles.descuento}>
+                                            <label>
+                                              Código
+                                              <input
+                                                className={styles.inputCodigo}
+                                                placeholder={codigo.codigo}
+                                                disabled
+                                              />
+                                            </label>
+                                          </div>
+                                        ) : (
+                                          <div className={styles.codigoAble}>
+                                            <label>
+                                              Código
+                                              <p>{codigo.codigo}</p>
+                                            </label>
+                                          </div>
+                                        )}
+
+                                        {/*generar-editar-resetear codigo*/}
+                                        {codigo.descuento && codigo.cantidad && codigo.cod === false ? (
+                                          <div className={styles.contDate}>
+                                            <button
+                                              className={styles.generarCodigo}
+                                              onClick={(e) => generarCodigo(e, index, indice)}
+                                            >
+                                              Generar Código
+                                            </button>
+                                          </div>
+                                        ) : codigo.cod === true ? (
+                                          <div className={styles.editarResetear}>
+                                            {/*editar codigo*/}
+                                            <button
+                                              className={styles.editarCodigo}
+                                              onClick={(e) => editarCodigo(e, index, indice)}
+                                            >
+                                              <BsPencilSquare className={styles.iconEdit} />
+                                              <span>Editar</span>
+                                            </button>
+                                            {/*setear codigo*/}
+                                            <button
+                                              className={styles.editarCodigo}
+                                              onClick={(e) => setearCodigo(e, index, indice)}
+                                            >
+                                              Resetear
+                                            </button>
+                                          </div>
+                                        ) : (
+                                          ''
+                                        )}
+
+                                        {/*guardar codigo*/}
+                                        {codigo.ed === true && cambios === false ? (
+                                          <div>
+                                            <button
+                                              className={styles.generarCodigo}
+                                              onClick={(e) => guardarCambios(e, index, date._id, indice, codigo.codigo)}
+                                            >
+                                              Guardar Cambios
+                                            </button>
+                                          </div>
+                                        ) : (
+                                          ''
+                                        )}
+
                                         {/*borrar codigo*/}
-                                          {
-                                                                                   
-                                              <button className={styles.addDelete} onClick={(e)=>borrarCodigo(e, index, date._id,indice,codigo.codigo)}>
-                                                <img className={styles.basquet} src={basquet} alt='n' />
-                                              </button>                            
-                                            
-                                          }
-                                    </div>  
-                                  </div>  
-                                  :''}                            
-                                </div> 
+                                        {
+                                          <button
+                                            className={styles.addDelete}
+                                            onClick={(e) => borrarCodigo(e, index, date._id, indice, codigo.codigo)}
+                                          >
+                                            <img className={styles.basquet} src={basquet} alt='n' />
+                                          </button>
+                                        }
+                                      </div>
+                                    </div>
+                                  ) : (
+                                    ''
+                                  )}
+                                </div>
                                 <div className={styles.toShow}>
                                   {/* Mostrar-Ocultar */}
-                                  {
-                                    codigo.show===true && codigo.codigo.length?
+                                  {codigo.show === true && codigo.codigo.length ? (
                                     <div>
-                                      <button  className={styles.addDate} onClick={(e) => ocultarCodigos(e,index,indice)}>
+                                      <button
+                                        className={styles.addDate}
+                                        onClick={(e) => ocultarCodigos(e, index, indice)}
+                                      >
                                         Ocultar Codigo
                                       </button>
                                     </div>
-                                  : codigo.show===false && codigo.codigo.length?
-                                    <button  className={styles.addDate} onClick={(e) => mostrarCodigos(e,index,indice)}>
+                                  ) : codigo.show === false && codigo.codigo.length ? (
+                                    <button
+                                      className={styles.addDate}
+                                      onClick={(e) => mostrarCodigos(e, index, indice)}
+                                    >
                                       Mostrar Codigo
                                     </button>
-                                  :''
-                                  }
-                                </div> 
-                              </div>                                            
-                            ))}
-                              {/*agregar otro codigo*/}
-                              <div className={styles.flex}>
-                                <div className={styles.addBono} >                                  
-                                      {
-                                      
-                                        <div>
-                                          <button className={styles.addDate} type='button' onClick={(e) => addBono(e,index)}>
-                                            {' '}
-                                            + Agregar otro código
-                                          </button>
-                                        </div>
-                                        
-                                      }
-                                      
+                                  ) : (
+                                    ''
+                                  )}
                                 </div>
                               </div>
+                            ))}
+                          {/*agregar otro codigo*/}
+                          <div className={styles.flex}>
+                            <div className={styles.addBono}>
+                              {
+                                <div>
+                                  <button className={styles.addDate} type='button' onClick={(e) => addBono(e, index)}>
+                                    {' '}
+                                    + Agregar otro código
+                                  </button>
+                                </div>
+                              }
+                            </div>
+                          </div>
                         </div>
-                        
+
                         {errors.cupos && <p className={styles.errors}>{errors.cupos}</p>}
                         {errors.price && <p className={styles.errors}>{errors.price}</p>}
                         {errors.dates && <p className={styles.errors}>{errors.dates}</p>}

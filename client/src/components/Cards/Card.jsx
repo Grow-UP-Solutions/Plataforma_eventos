@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import styles from './Card.module.css';
 import { Link, useResolvedPath } from 'react-router-dom';
 import { Rating } from '@mui/material';
@@ -20,6 +20,8 @@ const Card = ({ event, listName }) => {
   const { user } = useContext(AuthContext);
   const [allUsers, setAllUsers] = useState([]);
   const [heart, setHeart] = useState([]);
+  const [local, setLocal] = useState(false);
+  const menuRef = useRef();
 
   useEffect(() => {
     getUsers();
@@ -39,6 +41,22 @@ const Card = ({ event, listName }) => {
     }
     myUser();
   }, [user.uid]);
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (menuRef.current === null || menuRef.current === undefined) {
+        console.log('soy user');
+      }
+      else if (!menuRef.current.contains(e.target)) {
+        setLocal(false);
+        console.log(menuRef.current);
+      }
+    }
+    document.addEventListener('mousedown', handler);
+    return () => {
+      document.removeEventListener('mousedown', handler);
+    }
+  });
 
   const getUsers = async () => {
     try {
@@ -88,6 +106,11 @@ const Card = ({ event, listName }) => {
   }
 
   const portada = event.pictures.filter((p) => p.cover === true)[0];
+
+  const handleClickOpenDrop = (e) => {
+    e.preventDefault();
+    setLocal(!local);
+  }
 
   return (
     <div className={styles.card}>
@@ -181,26 +204,31 @@ const Card = ({ event, listName }) => {
             </label>
           </div>
         ) : (
-          <div className={styles.cardAddFav}>
+          <div className={styles.cardAddFav} ref={menuRef}>
+            
             <input type='checkbox' id={`${event._id}-${listName}`} />
-            <label htmlFor={`${event._id}-${listName}`}>
-              <AddIcon sx={{ fontSize: 30, color: '#868686' }}/>
+            <label htmlFor={`${event._id}-${listName}`} onClick={handleClickOpenDrop} >
+              <AddIcon sx={{ fontSize: 30, color: '#868686', cursor: 'pointer' }} />
             </label>
-            <div className={styles.cardAddFavMenu}>
-              <p>
-                Para agregar este evento a tu lista{' '}
-                <a
-                  onClick={(e) => {
-                    e.preventDefault();
-                    toggleScreenLogin();
-                  }}
-                  href='/'
-                >
-                  Ingresa
-                </a>{' '}
-                o <Link to={'/registrate'}>Registrate</Link>
-              </p>
-            </div>
+            {
+              local && (
+                <div className={styles.cardAddFavMenu}>
+                  <p>
+                    Para agregar este evento a tu lista{' '}
+                    <a
+                      onClick={(e) => {
+                        e.preventDefault();
+                        toggleScreenLogin();
+                      }}
+                      href='/'
+                    >
+                      Ingresa
+                    </a>{' '}
+                    o <Link to={'/registrate'}>Registrate</Link>
+                  </p>
+                </div>
+              )
+            }
           </div>
         )}
 

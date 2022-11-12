@@ -5,10 +5,11 @@ import { stateContext } from '../../context/state/stateContext';
 import style from './Search.module.css';
 
 const Search = ({ location = 'home' }) => {
+
   const [input, setInput] = useState('');
   const [municipio, setMunicipio] = useState('');
   const navigate = useNavigate();
-  const { setResult , setMuni } = useContext(stateContext);
+  const { setResult, setMuni } = useContext(stateContext);
  
   const handleChange = (e) => {
     e.preventDefault();

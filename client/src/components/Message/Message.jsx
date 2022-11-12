@@ -34,7 +34,7 @@ const Message = ({ message, own }) => {
   const { user } = useContext(AuthContext);
   const [star, setStar] = useState(false);
 
-  /* useEffect(() => {
+  useEffect(() => {
     const data = message.outstanding.find((e) => e.idUser === user.uid);
     if (data) {
       setStar(data.isOutstanding);
@@ -42,7 +42,7 @@ const Message = ({ message, own }) => {
     else {
       setStar(false);
     }    
-  }, [message]); */
+  }, [message]);
 
   const handleClickStar = async (e) => {
     e.preventDefault();

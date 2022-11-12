@@ -21,6 +21,10 @@ const codeDiscountSchema = new Schema({
     type: String,
     default: '',
   },
+  userRedimeed: {
+    type: String,
+    default: '',
+  },
 });
 
 module.exports = model('CodeDiscount', codeDiscountSchema);

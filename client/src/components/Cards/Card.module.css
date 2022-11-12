@@ -111,7 +111,7 @@
   transform: translateX(-80%);
   background-color: white;
 
-  display: none;
+  /* display: none; */
   animation: cardMenuOpen 0.5s;
 }
 

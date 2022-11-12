@@ -38,7 +38,7 @@ const randomCoding = () => {
 export const generarCodigo = () => {
   const generator = new CodeGenerator();
   const codeLetters = randomCoding();
-  const pattern = `U###${codeLetters}#`;
+  const pattern = `U### ${codeLetters}#`;
   const howMany = 1;
   const options = { alphanumericsChars: 'ABCDEFGHJKLMNPQRSTUVWXYZ', numericChars: '123456789' };
 
