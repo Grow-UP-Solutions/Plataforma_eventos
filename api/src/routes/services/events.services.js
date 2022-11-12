@@ -1,30 +1,25 @@
 const { OneCategoryDb } = require("../../models/util/functionDB/CategoryDb.js");
-const { oneUserDb } = require("../../models/util/functionDB/UserDb.js");
-const {
-   AllEventsDb,
-   createOneEventDb,
-   generateEventComment,
-   updateOneEventDb,
-   findOneEventDb,
-} = require("../../models/util/functionDB/EventesDb.js");
 const {
    eventCreateOrganizer,
 } = require("../../models/util/mailer/eventeCreateOrganizer.js");
 const {
    eventCreateAdministrador,
 } = require("../../models/util/mailer/eventCreateAdministrador.js");
+const EventFunctionDb = require("../../models/util/functionDB/event/index.event.js");
+const UsersFunctionDb = require("../../models/util/functionDB/users/index.users.js");
 
 async function getAllEvents() {
    try {
-      const allEvents = AllEventsDb();
+      const allEvents = EventFunctionDb.allEvents();
       return allEvents;
    } catch (error) {
       throw new Error(error.message);
    }
 }
+
 async function getOneEvent(id) {
    try {
-      const event = await findOneEventDb(id);
+      const event = await EventFunctionDb.oneEvent(id);
       if (!event) {
          throw new Error("El evento no existe id incorrecto");
       }
@@ -33,10 +28,11 @@ async function getOneEvent(id) {
       throw new error.message();
    }
 }
+
 async function createEvents(event) {
    try {
       const { idOrganizer, categories } = event;
-      const organizer = await oneUserDb(idOrganizer);
+      const organizer = await UsersFunctionDb.oneUser(idOrganizer);
 
       const temp = categories.map(async (e) => {
          let temp = await OneCategoryDb(e);
@@ -51,7 +47,7 @@ async function createEvents(event) {
          });
          event.organizer = organizer._id;
 
-         const events = await createOneEventDb(event);
+         const events = await EventFunctionDb.createEvent(event);
 
          organizer.myEventsCreated.push(events._id);
 
@@ -72,7 +68,7 @@ async function createEvents(event) {
 
 async function createOpinionsEvents(id, opinions) {
    try {
-      const opinionCreat = await generateEventComment(id, opinions);
+      const opinionCreat = await EventFunctionDb.commentEvent(id, opinions);
       return opinionCreat;
    } catch (error) {
       throw new Error(error.message);
@@ -93,12 +89,13 @@ async function eventsUpdate(id, newEvent) {
             return e._id;
          });
       }
-      const newEvents = await updateOneEventDb(id, newEvent);
+      const newEvents = await EventFunctionDb.updateEvent(id, newEvent);
       return newEvents;
    } catch (error) {
       throw new Error(error.message);
    }
 }
+
 module.exports = {
    getAllEvents,
    getOneEvent,
