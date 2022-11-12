@@ -9,7 +9,6 @@ const {
   login,
   createOrganizerComment,
   getAllCommentUser,
-  sendMessageUser,
   sendNotificationsUser,
   getUserByEmail,
   eventesFavorites,
@@ -28,14 +27,6 @@ const { sendVerifyMail } = require('../../models/util/mailer/confirmEmail.js');
 const { sendMailToOrganizer } = require('../../models/util/mailer/mailToConverOrganizer');
 const { changePasswordMail } = require('../../models/util/mailer/changePassword.js');
 const {
-  validateEmailUserDb,
-  updateNotificationDB,
-  deleteNotificationDB,
-  findAllUpdateNotification,
-  updateMyFavorites,
-  updateUserRating,
-} = require('../../models/util/functionDB/UserDb.js');
-const {
   createCodeVerifyMail,
   deleteCodeVerifyMail,
   getCodeVerifyEmail,
@@ -45,6 +36,7 @@ const { validateJWTOrganizer } = require('../../models/util/middlewares/validate
 const { allMessageReciverUserDB } = require('../../models/util/functionDB/message/messageDb.js');
 const { sendMailUserAccept } = require('../../models/util/mailer/mailUserAccept.js');
 const { sendMailUserRejected } = require('../../models/util/mailer/mailUserRejected.js');
+const UsersFunctionDb = require('../../models/util/functionDB/users/index.users.js');
 
 const router = Router();
 /**/ ///////////////Rutas GET////////////// */
@@ -183,7 +175,7 @@ router.post('/notifications', async (req, res) => {
 router.put('/notifications', async (req, res) => {
   const read = req.body;
   try {
-    const notificacionesRead = await updateNotificationDB(read);
+    const notificacionesRead = await UsersFunctionDb.readNotification(read);
     return res.status(200).json(notificacionesRead);
   } catch (error) {
     res.status(500).json(error.Menssage);
@@ -193,7 +185,7 @@ router.put('/notifications', async (req, res) => {
 router.put('/:idUser/notifications', async (req, res) => {
   const { idUser } = req.params;
   try {
-    const notificacionesRead = await findAllUpdateNotification(idUser);
+    const notificacionesRead = await UsersFunctionDb.readAllNotification(idUser);
     return res.status(200).json(notificacionesRead);
   } catch (error) {
     res.status(500).json(error.Menssage);
@@ -203,7 +195,7 @@ router.put('/:idUser/rating', async (req, res) => {
   const { idUser } = req.params;
   const { rating } = req.body;
   try {
-    const userRating = await updateUserRating(idUser, rating);
+    const userRating = await UsersFunctionDb.updateRating(idUser, rating);
     return res.status(200).json(userRating);
   } catch (error) {
     return res.status(500).json({ FALLO_UPDATE: error.message });
@@ -213,7 +205,7 @@ router.put('/:idUser/rating', async (req, res) => {
 router.delete('/notifications', async (req, res) => {
   const newDelete = req.body;
   try {
-    const notificacionesDelete = await deleteNotificationDB(newDelete);
+    const notificacionesDelete = await UsersFunctionDb.deleteNotification(newDelete);
     return res.status(200).json(notificacionesDelete);
   } catch (error) {
     res.status(500).json(error.Menssage);
@@ -506,7 +498,7 @@ router.get('/mail/validateTokenPassword', validateJWTPassword, async (req, res) 
 router.post('/changePassword', async (req, res) => {
   const { email, password } = req.body;
   try {
-    const user = await validateEmailUserDb(email);
+    const user = await UsersFunctionDb.validationEmail(email);
     const salt = bcrypt.genSaltSync();
     user.password = bcrypt.hashSync(password, salt);
     await user.save();
