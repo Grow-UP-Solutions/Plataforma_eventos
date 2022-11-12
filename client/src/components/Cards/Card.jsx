@@ -12,7 +12,6 @@ import { iconAdd } from '../../assets/imgs';
 import eventsApi from '../../axios/eventsApi';
 
 const Card = ({ event, listName }) => {
-
   const { toggleScreenLogin, getEventsFavourites } = useContext(UIContext);
   const { notes, setNotes } = useContext(stateContext);
   const currentYear = new Date().getFullYear();
@@ -32,13 +31,12 @@ const Card = ({ event, listName }) => {
   useEffect(() => {
     const myUser = async () => {
       try {
-        const json = await eventsApi.get("/users/" + user.uid);
-        setHeart(json.data.myFavorites.find(e => e._id === event._id));
-      } 
-      catch (error) {
-        console.log(error)
+        const json = await eventsApi.get('/users/' + user.uid);
+        setHeart(json.data.myFavorites.find((e) => e._id === event._id));
+      } catch (error) {
+        console.log(error);
       }
-    }
+    };
     myUser();
   }, [user.uid]);
 
@@ -46,31 +44,29 @@ const Card = ({ event, listName }) => {
     const handler = (e) => {
       if (menuRef.current === null || menuRef.current === undefined) {
         console.log('soy user');
-      }
-      else if (!menuRef.current.contains(e.target)) {
+      } else if (!menuRef.current.contains(e.target)) {
         setLocal(false);
         console.log(menuRef.current);
       }
-    }
+    };
     document.addEventListener('mousedown', handler);
     return () => {
       document.removeEventListener('mousedown', handler);
-    }
+    };
   });
 
   const getUsers = async () => {
     try {
-      let userResult= await eventsApi.get(`/users`);
+      let userResult = await eventsApi.get(`/users`);
       setAllUsers(userResult.data);
-    } 
-    catch (error) {
+    } catch (error) {
       console.log(error);
     }
-  }
-    
-  const organizer = allUsers.filter(user=>user._id === event.organizer);
-       
-  //const fav = myFav.includes(e => e.myFavorites._id === event._id); 
+  };
+
+  const organizer = allUsers.filter((user) => user._id === event.organizer);
+
+  //const fav = myFav.includes(e => e.myFavorites._id === event._id);
 
   //const cover = event.pictures.filter(picture=>picture.isCover===true)[0]
 
@@ -80,9 +76,11 @@ const Card = ({ event, listName }) => {
       type: 'favoritos',
       idUser: user.uid,
     };
+
     const favorite = {
       idEvent: event._id,
     };
+
     try {
       const json = await eventsApi.post('/users/notifications', fav);
       getEventsFavourites(user.uid, favorite);
@@ -105,17 +103,17 @@ const Card = ({ event, listName }) => {
     setPrice(e.target.value);
   }
 
-  let portada = event.pictures.filter((p) => p.cover === true)[0];
+  //let portada = event.pictures.filter((p) => p.cover === true)[0];
  
 
   const handleClickOpenDrop = (e) => {
     e.preventDefault();
     setLocal(!local);
-  }
+  };
 
   return (
     <div className={styles.card}>
-      {portada ? (
+      {/* {portada ? (
         <Link to={`/detalles-del-evento/${event._id}`}>
           <img className={styles.cardImgEvent} src={portada.picture} alt='Not Found ):' width='200x' height='300' />
         </Link>
@@ -129,33 +127,26 @@ const Card = ({ event, listName }) => {
             height='300'
           />
         </Link>
-        
-      )} 
-      
-      {/* {event.pictures.length && event.pictures !== undefined?
-        event.pictures.map(p=>(
-        p.cover === true ?
-        <Link to={`/detalles-del-evento/${event._id}`}>
-          <img
-          className={styles.cardImgEvent}
-          src={p.picture}
-          alt='Not Found ):'
-          width='200x'
-          height='300'
-          />
-        </Link>
-         : 
-         <Link to={`/detalles-del-evento/${event._id}`}>
-          <img
-          className={styles.cardImgEvent}
-          src={event.pictures[0].picture}
-          alt='Not Found ):'
-          width='200x'
-          height='300'
-          />
-        </Link>
-        ))
-      :'N'} */}
+      )} */}
+      {event.pictures.length && event.pictures !== undefined
+        ? event.pictures.map((p) =>
+            p.cover === true ? (
+              <Link to={`/detalles-del-evento/${event._id}`}>
+                <img className={styles.cardImgEvent} src={p.picture} alt='Not Found ):' width='200x' height='300' />
+              </Link>
+            ) : (
+              <Link to={`/detalles-del-evento/${event._id}`}>
+                <img
+                  className={styles.cardImgEvent}
+                  src={event.pictures[0].picture}
+                  alt='Not Found ):'
+                  width='200x'
+                  height='300'
+                />
+              </Link>
+            )
+          )
+        : 'N'}
 
       <div className={styles.cardText}>
         {event.dates && event.dates.length > 1 ? (
@@ -196,11 +187,11 @@ const Card = ({ event, listName }) => {
           <div className={styles.cardAddFav} onClick={handleClickFav}>
             <input type='checkbox' id={`${event._id}-${listName}`} />
             <label htmlFor={`${event._id}-${listName}`}>
-              <AddIcon sx={{ fontSize: 30, color: '#868686' }}/>
+              <AddIcon sx={{ fontSize: 30, color: '#868686' }} />
             </label>
           </div>
         ) : user.uid && heart ? (
-          <div className={styles.cardAddFavHeart} >
+          <div className={styles.cardAddFavHeart}>
             <input type='checkbox' id={`${event._id}-${listName}`} />
             <label htmlFor={`${event._id}-${listName}`}>
               <FavoriteIcon sx={{ fontSize: 25, color: 'white' }} />
@@ -208,30 +199,27 @@ const Card = ({ event, listName }) => {
           </div>
         ) : (
           <div className={styles.cardAddFav} ref={menuRef}>
-            
             <input type='checkbox' id={`${event._id}-${listName}`} />
-            <label htmlFor={`${event._id}-${listName}`} onClick={handleClickOpenDrop} >
+            <label htmlFor={`${event._id}-${listName}`} onClick={handleClickOpenDrop}>
               <AddIcon sx={{ fontSize: 30, color: '#868686', cursor: 'pointer' }} />
             </label>
-            {
-              local && (
-                <div className={styles.cardAddFavMenu}>
-                  <p>
-                    Para agregar este evento a tu lista{' '}
-                    <a
-                      onClick={(e) => {
-                        e.preventDefault();
-                        toggleScreenLogin();
-                      }}
-                      href='/'
-                    >
-                      Ingresa
-                    </a>{' '}
-                    o <Link to={'/registrate'}>Registrate</Link>
-                  </p>
-                </div>
-              )
-            }
+            {local && (
+              <div className={styles.cardAddFavMenu}>
+                <p>
+                  Para agregar este evento a tu lista{' '}
+                  <a
+                    onClick={(e) => {
+                      e.preventDefault();
+                      toggleScreenLogin();
+                    }}
+                    href='/'
+                  >
+                    Ingresa
+                  </a>{' '}
+                  o <Link to={'/registrate'}>Registrate</Link>
+                </p>
+              </div>
+            )}
           </div>
         )}
 

@@ -155,6 +155,12 @@ router.post('/acceptOrRejectedOrganizer', async (req, res) => {
 router.put('/:idUser/favorites', async (req, res) => {
   const { idUser } = req.params;
   const { idEvent } = req.body;
+
+  console.log({
+    idUser,
+    idEvent,
+  });
+
   try {
     const myFavorites = await eventesFavorites(idUser, idEvent);
     return res.status(200).json(myFavorites);
