@@ -105,6 +105,7 @@ const Card = ({ event, listName }) => {
     setPrice(e.target.value);
   }
 
+  
   const portada = event.pictures.filter((p) => p.cover === true)[0];
 
   const handleClickOpenDrop = (e) => {
