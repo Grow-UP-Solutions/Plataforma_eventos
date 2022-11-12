@@ -18,10 +18,11 @@ const Events = () => {
   const fecha = new Date();
   //console.log('fecha:', fecha);
   const hora = fecha.getHours();
-  //console.log('hora:', hora);
+  console.log('hora:', hora);
   const minutes = fecha.getMinutes();
-  //console.log('minutes:', minutes);
+  console.log('minutes:', minutes);
   const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
+  //console.log('dateActual:', dateActual);
 
 
   const todosLosEventos = useSelector((state) => state.events);
@@ -35,6 +36,15 @@ const Events = () => {
          }else{
           date.isPublic=false
          }
+      }else if(date.date === dateActual){
+        if(date.end.slice(0,2) <= hora && date.end.slice(3,5) <= minutes+2 ){
+          if(evento.dates.length===1){
+            date.isPublic=false
+            evento.isPublic=false
+           }else{
+            date.isPublic=false
+           }
+        }
       }
     })
   })}
@@ -48,12 +58,14 @@ const Events = () => {
   
 
   //POPULARES//
+
   const orderByRating = allEvents.sort((a, b) => {
     if (a.rating > b.rating) return -1;
     if (b.rating > a.rating) return 1;
     return 0;
   });
   const mostPopular = orderByRating.slice(0, 20);
+
 
   //ESTA SEMANA//
 
@@ -64,25 +76,26 @@ const Events = () => {
     let first = curr.getDate() - curr.getDay() + i;
     let day = new Date(curr.setDate(first)).toISOString().slice(0, 10);
     week.push(day);
-    console.log('week:',week)
   }
 
   let weekEvents = [];
 
   for (let a = 1; a <= week.length; a++) {
-    for (let b = 0; b < allEvents.length; b++) {
-      let evento = allEvents[b].dates.filter((date) => new Date(date.date) ===new Date(week[a]))[0];
-      console.log('evento:',evento)
-      weekEvents.push(evento);
-      console.log('weekEvents:',weekEvents)
-    }
+    allEvents.map((evento)=>{
+      evento.dates.map((date)=>{
+        if(date.date === week[a]){
+          weekEvents.push(evento);
+        }
+      })
+    })
   }
 
   const eventsWeek = weekEvents.filter((e) => e !== undefined);
 
   //FRESQUITOS//
 
-  const newEvents = allEvents.slice(allEvents.length - 20);
+  const newEvents = allEvents.slice(allEvents.length-1);
+  console.log('newEvents:',newEvents)
   const newEventsReverse = newEvents.reverse();
 
   //USUARIO//
