@@ -93,8 +93,9 @@ const Events = () => {
   const eventsWeek = weekEvents.filter((e) => e !== undefined);
 
   //FRESQUITOS//
+  
 
-  const newEvents = allEvents.slice(allEvents.length-1);
+  const newEvents = allEvents.slice(allEvents.length-18);
   console.log('newEvents:',newEvents)
   const newEventsReverse = newEvents.reverse();
 
