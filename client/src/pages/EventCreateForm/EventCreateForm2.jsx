@@ -1010,6 +1010,7 @@ const EventCreateForm2 = () => {
                 spaceBetween={0}
                 modules={[Pagination, Navigation]}
                 className='swiper'
+                autoHeight={true}
               >
                 <SwiperSlide>
                   {/* SECTION 1: Nombre del Evento */}
@@ -1861,7 +1862,7 @@ const EventCreateForm2 = () => {
 
                               {/* hora fin*/}
                               <div className={styles.contStart}>
-                                <label>End</label>
+                                <label>Termina</label>
                                 {failedSubmit && errors.dates ? (
                                   <input
                                     type='time'

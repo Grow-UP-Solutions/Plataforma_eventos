@@ -103,7 +103,12 @@ const Card = ({ event, listName }) => {
     setPrice(e.target.value);
   }
 
+<<<<<<< HEAD
   // const portada = event.pictures.filter((p) => p.cover === true)[0];
+=======
+  
+  const portada = event.pictures.filter((p) => p.cover === true)[0];
+>>>>>>> Guille
 
   const handleClickOpenDrop = (e) => {
     e.preventDefault();
