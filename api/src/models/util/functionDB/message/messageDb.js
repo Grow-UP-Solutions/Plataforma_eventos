@@ -1,7 +1,7 @@
 require("../../../../DB.js");
 const Conversation = require("../../../db/Conversation.js");
 const Message = require("../../../db/Message.js");
-const { oneUserDb } = require("../UserDb.js");
+const UsersFunctionDb = require("../users/index.users.js");
 const outstanding = require("./oustanding.js");
 
 async function allMessageDB() {
@@ -11,7 +11,7 @@ async function allMessageDB() {
 async function createMessage(message) {
    const { resiver } = message;
    try {
-      const user = await oneUserDb(resiver);
+      const user = await UsersFunctionDb.oneUser(resiver);
 
       const newMessage = new Message(message);
       await newMessage.save();

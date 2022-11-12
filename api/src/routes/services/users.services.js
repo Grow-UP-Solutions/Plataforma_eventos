@@ -1,28 +1,15 @@
-const {
-   allUserDb,
-   oneUserDb,
-   updateOneUserDb,
-   deleteOneUserDb,
-   createOneUserDb,
-   validateEmailUserDb,
-   generateUserComment,
-   sendMessageDB,
-   sendNotificationDB,
-   updateMyFavorites,
-} = require("../../models/util/functionDB/UserDb.js");
-
 const bcrypt = require("bcryptjs");
-const { AllEventsDb } = require("../../models/util/functionDB/EventesDb.js");
-
 const validatonType = require("../../models/util/notifications/validatonType.js");
+const UsersFunctionDb = require("../../models/util/functionDB/users/index.users.js");
+const EventFunctionDb = require("../../models/util/functionDB/event/index.event.js");
 
 async function getAllUsers() {
-   const allUsers = allUserDb();
+   const allUsers = await UsersFunctionDb.allUsers();
    return allUsers;
 }
 async function getUser(id) {
    try {
-      const user = oneUserDb(id);
+      const user = await UsersFunctionDb.oneUser(id);
       if (!user) {
          throw new Error(`El usuario no fue encontrado`);
       }
@@ -31,25 +18,27 @@ async function getUser(id) {
       throw new Error(error.message);
    }
 }
+
 async function createUsers(user, code) {
    const { email } = user;
    try {
-      const userDB = await validateEmailUserDb(email);
+      const userDB = await UsersFunctionDb.validationEmail(email);
 
       if (userDB) {
          throw new Error("El email ya se encuentra registrado");
       }
 
-      const users = await createOneUserDb(user, code);
+      const users = await UsersFunctionDb.createUsers(user, code);
 
       return users;
    } catch (error) {
       throw new Error(error.message);
    }
 }
+
 async function createOrganizerComment(id, opinion) {
    try {
-      const generateComment = await generateUserComment(id, opinion);
+      const generateComment = await UsersFunctionDb.commentUsers(id, opinion);
       return generateComment;
    } catch (error) {
       throw new Error(error.message);
@@ -58,8 +47,9 @@ async function createOrganizerComment(id, opinion) {
 
 async function getAllCommentUser(id) {
    try {
-      const allEvents = await AllEventsDb();
-      const allUser = await allUserDb();
+      const allEvents = await EventFunctionDb.allEvents();
+      const allUser = await UsersFunctionDb.allUsers();
+
       const allCommentUser = allUser
          .map((e) => e.opinionsOrg)
          .flat()
@@ -73,18 +63,20 @@ async function getAllCommentUser(id) {
       throw new Error(error.message);
    }
 }
+
 async function userUpdate(id, newUser) {
    try {
-      const newUsers = updateOneUserDb(id, newUser);
+      const newUsers = await UsersFunctionDb.updateUsers(id, newUser);
 
       return newUsers;
    } catch (error) {
       throw new Error(error.message);
    }
 }
+
 async function userDelete(id) {
    try {
-      const deleteUser = await deleteOneUserDb(id);
+      const deleteUser = await UsersFunctionDb.deleteUsers(id);
       if (!deleteUser) "Usuario no encontardo";
 
       return deleteUser;
@@ -93,22 +85,13 @@ async function userDelete(id) {
    }
 }
 
-async function sendMessageUser(idSend, message) {
-   try {
-      const { idGet, msg } = message;
-      const sendMessage = await sendMessageDB(idSend, idGet, msg);
-      return sendMessage;
-   } catch (error) {
-      throw new Error(error.message);
-   }
-}
 async function eventesFavorites(idUser, idEvent) {
    try {
-      const user = await oneUserDb(idUser);
+      const user = await UsersFunctionDb.oneUser(idUser);
       const eventeFavorite = user.myFavorites.find((e) => e._id == idEvent);
 
       if (!eventeFavorite) {
-         const addFavorite = await updateMyFavorites(idUser, idEvent);
+         const addFavorite = await UsersFunctionDb.myFavorite(idUser, idEvent);
          return addFavorite;
       }
 
@@ -122,7 +105,10 @@ async function sendNotificationsUser(notifications) {
    const { type, idUser } = notifications;
    const msg = validatonType(type);
    try {
-      const newNotification = await sendNotificationDB(idUser, msg);
+      const newNotification = await UsersFunctionDb.sendNotification(
+         idUser,
+         msg
+      );
       return newNotification;
    } catch (error) {
       throw new Error(error.message);
@@ -131,7 +117,7 @@ async function sendNotificationsUser(notifications) {
 
 async function login(email, password) {
    try {
-      const user = await validateEmailUserDb(email);
+      const user = await UsersFunctionDb.validationEmail(email);
 
       if (!user) {
          throw new Error("Email no encontrado en sistema");
@@ -151,7 +137,7 @@ async function login(email, password) {
 
 async function getUserByEmail(email) {
    try {
-      const user = await validateEmailUserDb(email);
+      const user = await UsersFunctionDb.validationEmail(email);
 
       if (user) {
          return true;
@@ -171,7 +157,6 @@ module.exports = {
    createUsers,
    createOrganizerComment,
    login,
-   sendMessageUser,
    userDelete,
    userUpdate,
    getAllCommentUser,

@@ -1,5 +1,11 @@
 const Events = require("../../../models/db/Events");
 
+const payu = require('payu-latam-node')
+
+const payuConfig = payu({
+   apiKey: '8q8hwj36k6436hWAINJ5k3vS94',
+   apiLogin: '5XSkH8WGwh7OA81'
+})
 
 
 async function paymentEvents(idEvent, idDate, codigoDescuento) {

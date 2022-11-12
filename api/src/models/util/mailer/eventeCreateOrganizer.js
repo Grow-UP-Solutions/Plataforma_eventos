@@ -126,7 +126,7 @@ const { EMAIL, PASSWORD } = process.env;
     
               <p>Hola, usted ha publicado el siguiente evento, de click para poder visualizar su publicación.</p>
     
-              <a class="event-name" href="https://events-jean.vercel.app/${_id}">${title}</a>
+              <a class="event-name" href="https://events-jean.vercel.app/events/${_id}">${title}</a>
             </div>
             <div class="franja-bottom"></div>
           </div>
