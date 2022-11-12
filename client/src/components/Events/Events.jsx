@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { AiOutlineConsoleSql } from 'react-icons/ai';
 import { useSelector } from 'react-redux';
 import { Navigation, Pagination } from 'swiper';
 import 'swiper/modules/navigation/navigation.min.css';
@@ -12,27 +13,56 @@ import Card from '../Cards/Card';
 import styles from './Events.module.css';
 
 const Events = () => {
-  const todosLosEventos = useSelector((state) => state.events);
-
-  const allEvents = todosLosEventos.filter((event) => event.isPublic === true && event.inRevision === false);
 
   //Fecha actual
-  var fecha = new Date();
-  console.log('fecha:', fecha);
-  var hora = fecha.getHours();
-  console.log('hora:', hora);
-  var minutes = fecha.getMinutes();
-  console.log('minutes:', minutes);
-  var dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
-  console.log('dateActual:', dateActual);
+  const fecha = new Date();
+  const hora = fecha.getHours();
+  const minutes = fecha.getMinutes();
+  const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
+
+
+
+  const todosLosEventos = useSelector((state) => state.events);
+
+  if(dateActual){todosLosEventos.map((evento)=>{   
+    evento.dates.map((date)=>{ 
+      if(new Date(date.date)<new Date(dateActual)){ 
+         if(evento.dates.length===1){
+          date.isPublic=false
+          evento.isPublic=false
+         }else{
+          date.isPublic=false
+         }
+      }else if(date.date === dateActual){
+        if(date.end.slice(0,2) <= hora && date.end.slice(3,5) <= minutes+2 ){
+          if(evento.dates.length===1){
+            date.isPublic=false
+            evento.isPublic=false
+           }else{
+            date.isPublic=false
+           }
+        }
+      }
+    })
+  })}
+
+  const allEvents = todosLosEventos.filter((event) => event.isPublic === true && event.inRevision === false);
+  
+
+
+
+  
+  
 
   //POPULARES//
+
   const orderByRating = allEvents.sort((a, b) => {
     if (a.rating > b.rating) return -1;
     if (b.rating > a.rating) return 1;
     return 0;
   });
   const mostPopular = orderByRating.slice(0, 20);
+
 
   //ESTA SEMANA//
 
@@ -48,17 +78,21 @@ const Events = () => {
   let weekEvents = [];
 
   for (let a = 1; a <= week.length; a++) {
-    for (let b = 0; b < allEvents.length; b++) {
-      let evento = allEvents[b].dates.filter((date) => date.date === week[a])[0];
-      weekEvents.push(evento);
-    }
+    allEvents.map((evento)=>{
+      evento.dates.map((date)=>{
+        if(date.date === week[a]){
+          weekEvents.push(evento);
+        }
+      })
+    })
   }
 
   const eventsWeek = weekEvents.filter((e) => e !== undefined);
 
   //FRESQUITOS//
+  
 
-  const newEvents = allEvents.slice(allEvents.length - 20);
+  const newEvents = allEvents.slice(allEvents.length-18);
   const newEventsReverse = newEvents.reverse();
 
   //USUARIO//
