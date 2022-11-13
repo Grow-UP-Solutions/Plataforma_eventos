@@ -194,7 +194,7 @@ const Events = () => {
             navigation
             modules={[Pagination, Navigation]}
             className={styles.mySwipper}
-          >
+          >            
             {userData.myFavorites !== undefined ? (
               userData.myFavorites.map((event) => {
                 return (
