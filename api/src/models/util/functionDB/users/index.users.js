@@ -1,6 +1,6 @@
 const UsersFunctionDb = {
   oneUser: require('./oneUsers'),
-  allUsers: require('./allUsers'),
+  allUserDb: require('./allUsers'),
   validationEmail: require('./emailUser'),
   updateUsers: require('./updateUsers'),
   deleteUsers: require('./deleteUsers'),

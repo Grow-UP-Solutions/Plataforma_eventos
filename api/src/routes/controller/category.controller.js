@@ -1,10 +1,5 @@
 const { Router } = require('express');
-const {
-  getCategory,
-  createCategory,
-  categoryUpdate,
-  getAllCategory,
-} = require('../services/category.service.js');
+const { getCategory, createCategory, categoryUpdate, getAllCategory } = require('../services/category.service.js');
 
 const router = Router();
 
