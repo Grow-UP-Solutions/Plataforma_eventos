@@ -62,7 +62,7 @@ const UserPage = () => {
           setComponent(<UserForm userData={userResult.data} />);
           break;
         case 'mi-lista':
-          setComponent(<MyListUser myFavorites={userResult.data.myFavorites} />);
+          setComponent(<MyListUser myFavorites={userResult.data.myFavorites} myEventsBooked={userResult.data.myEventsBooked} />);
           break;
         case 'plan-de-referidos':
           setComponent(<ReferralPlan userData={userResult.data} />);
