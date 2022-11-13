@@ -506,7 +506,8 @@ const EventEdit = () => {
           if (
             post.dates[i]._id === EventCopy.dates[j]._id &&
             post.dates[i].sells > 0 &&
-            post.dates[i].cupos < EventCopy.dates[j].sells
+            post.dates[i].cupos < EventCopy.dates[j].sells &&
+            post.dates[i].cupos !== EventCopy.dates[j].cupos
           ) {
             errors.cupos = `Ya se vendieron ${EventCopy.dates[j].sells}  cupos. El número no puede ser inferior a los cupos ya vendidos `;
             // return swal({
