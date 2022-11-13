@@ -1,5 +1,5 @@
 const { Router } = require('express');
-require('../../DB.js');
+const UsersFunctionDb = require('../../models/util/functionDB/users/index.users.js');
 const {
   getAllUsers,
   createUsers,
@@ -36,7 +36,6 @@ const { validateJWTOrganizer } = require('../../models/util/middlewares/validate
 const { allMessageReciverUserDB } = require('../../models/util/functionDB/message/messageDb.js');
 const { sendMailUserAccept } = require('../../models/util/mailer/mailUserAccept.js');
 const { sendMailUserRejected } = require('../../models/util/mailer/mailUserRejected.js');
-const UsersFunctionDb = require('../../models/util/functionDB/users/index.users.js');
 
 const router = Router();
 /**/ ///////////////Rutas GET////////////// */

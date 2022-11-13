@@ -5,12 +5,12 @@ const EventFunctionDb = require('../../models/util/functionDB/event/index.event.
 const Users = require('../../models/db/Users.js');
 
 async function getAllUsers() {
-  const allUsers = await UsersFunctionDb.allUsers();
+  const allUsers = await UsersFunctionDb.allUserDb();
   return allUsers;
 }
 async function getUser(id) {
   try {
-    const user = await Users.findById(id);
+    const user = await UsersFunctionDb.oneUser(id);
     if (!user) {
       throw new Error(`El usuario no fue encontrado`);
     }
@@ -88,7 +88,7 @@ async function userDelete(id) {
 
 async function eventesFavorites(idUser, idEvent) {
   try {
-    const user = await getUser(idUser);
+    const user = await UsersFunctionDb.oneUser(idUser);
     const eventeFavorite = user.myFavorites.find((e) => e._id == idEvent);
 
     if (!eventeFavorite) {
