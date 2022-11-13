@@ -73,7 +73,84 @@ const EventEdit = () => {
   const eventos = useSelector((state) => state.events);
   const allEvents = [...eventos];
 
-  const eventDetails = allEvents.filter((e) => e._id === eventId)[0];
+  const eventDetails = allEvents.find((e) => e._id === eventId);
+  console.log('eventDetails:',eventDetails)
+
+  const [post, setPost] = useState({
+    idOrganizer: '',
+    title: '',
+    categories: [],
+    otherCategorie: '',
+    shortDescription: '',
+    longDescription: '',
+    pictures: [],
+    online: false,
+    link: '',
+    departamento: '',
+    municipio: '',
+    direccion: '',
+    barrio: '',
+    specialRequires: '',
+    dates: [
+      {
+        date: '',
+        start: '',
+        end: '',
+        year: 0,
+        cupos: '',
+        price: '',
+        sells: 0,
+        isPublic: '',
+        precioAlPublico: '',
+        gananciaCupo: '',
+        gananciaEvento: '',
+        dateFormated: '',
+        inRevision: '',
+        codigos: [
+          {
+            codigo: '',
+            descuento: '',
+            cantidad: '',
+            cod: false,
+            show: true,
+            ed: false,
+            uses: '',
+          },
+        ],
+      },
+    ],
+    isPublic: '',
+    inRevision: '',
+    compras: 10,
+  });
+
+  useEffect(() => {
+    if(eventDetails){
+      const auxCategories = eventDetails.categories.map((categorie) => categorie.name)
+      setPost({
+        ...post,
+        idOrganizer: eventDetails.organizer._id,
+        title: eventDetails.title,
+        categories: auxCategories,
+        otherCategorie: eventDetails.otherCategorie,
+        shortDescription: eventDetails.shortDescription,
+        longDescription: eventDetails.longDescription,
+        pictures: eventDetails.pictures,
+        online: eventDetails.online,
+        link: eventDetails.link,
+        departamento: eventDetails.departamento,
+        municipio: eventDetails.municipio,
+        direccion: eventDetails.direccion,
+        barrio: eventDetails.barrio,
+        specialRequires: eventDetails.specialRequires,
+        dates: eventDetails.dates,
+        isPublic: eventDetails.isPublic,
+        inRevision: eventDetails.inRevision,
+        compras: 10,
+      })
+    }}, [eventDetails]);
+
+
 
   //              para comparar            //
   const allEventsCopy = useSelector((state) => state.eventsCopy);
@@ -188,81 +265,7 @@ const EventEdit = () => {
   //   }
   // }, [userData]);
 
-  const [post, setPost] = useState({
-    idOrganizer: '',
-    title: '',
-    categories: [],
-    otherCategorie: '',
-    shortDescription: '',
-    longDescription: '',
-    pictures: [],
-    online: false,
-    link: '',
-    departamento: '',
-    municipio: '',
-    direccion: '',
-    barrio: '',
-    specialRequires: '',
-    dates: [
-      {
-        date: '',
-        start: '',
-        end: '',
-        year: 0,
-        cupos: '',
-        price: '',
-        sells: 0,
-        isPublic: '',
-        precioAlPublico: '',
-        gananciaCupo: '',
-        gananciaEvento: '',
-        dateFormated: '',
-        inRevision: '',
-        codigos: [
-          {
-            codigo: '',
-            descuento: '',
-            cantidad: '',
-            cod: false,
-            show: true,
-            ed: false,
-            uses: '',
-          },
-        ],
-      },
-    ],
-    isPublic: '',
-    inRevision: '',
-    compras: 10,
-  });
-
-  useEffect(() => {
-    if (eventDetails) {
-      const auxCategories = eventDetails.categories.map((categorie) => categorie.name);
-
-      setPost({
-        ...post,
-        idOrganizer: eventDetails.organizer._id,
-        title: eventDetails.title,
-        categories: auxCategories,
-        otherCategorie: eventDetails.otherCategorie,
-        shortDescription: eventDetails.shortDescription,
-        longDescription: eventDetails.longDescription,
-        pictures: eventDetails.pictures,
-        online: eventDetails.online,
-        link: eventDetails.link,
-        departamento: eventDetails.departamento,
-        municipio: eventDetails.municipio,
-        direccion: eventDetails.direccion,
-        barrio: eventDetails.barrio,
-        specialRequires: eventDetails.specialRequires,
-        dates: eventDetails.dates,
-        isPublic: eventDetails.isPublic,
-        inRevision: eventDetails.inRevision,
-        compras: 10,
-      });
-    }
-  }, [eventDetails]);
+  
 
   const [errors, setErrors] = useState({
     title: '',
@@ -888,6 +891,9 @@ const EventEdit = () => {
     }
   };
 
+  // const removeFromPublic = (e,i,id)=>{
+  //   console.log('2')
+  // }
   let removeFromPublic = (e, i, id) => {
     e.preventDefault();
     let newFechas = [...post.dates];
@@ -2073,7 +2079,7 @@ const EventEdit = () => {
                   <div>
                     {post.dates.map((date, index) => (
                       new Date(date.date)<new Date(dateActual) || date.date === dateActual && date.end.slice(0,2) <= hora && date.end.slice(3,5) <= minutes+2 ?
-                      '':
+                      (''):(
                       <div>
                         {/* cupos-precios*/}
                         <div className={styles.containerInfo} key={index}>
@@ -2543,7 +2549,7 @@ const EventEdit = () => {
                         {errors.bono && <p className={styles.errors}>{errors.bono}</p>}
 
                         <hr className={styles.hr}></hr>
-                      </div>
+                      </div>)
             
                     ))}
                   </div>
@@ -2771,7 +2777,7 @@ const EventEdit = () => {
 
                       {/*publicar*/}
                       <div>
-                        <button className={styles.viewBtn} type='submit'>
+                        <button className={styles.viewBtn} onClick={(e)=>handleSubmit(e)}>
                           {' '}
                           Publicar Evento
                         </button>
