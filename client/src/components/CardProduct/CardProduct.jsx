@@ -1,33 +1,44 @@
 import React from 'react';
 import styles from './CardProduct.module.css';
 import { iconArrowLeft, iconArrowRight } from '../../assets/imgs';
+import 'swiper/modules/navigation/navigation.min.css';
+import 'swiper/modules/pagination/pagination.min.css';
+import 'swiper/modules/scrollbar/scrollbar.min.css';
+import { Swiper, SwiperSlide } from 'swiper/react/swiper-react';
+import 'swiper/swiper.min.css';
+import { Navigation, Pagination } from 'swiper';
 
 const CardProduct = ({ event }) => {
   
   return (
     <div className={styles.cartProduct}>
       <div className={styles.containerProductDetails}>
+        
         <div className={styles.imgContainer}>
-          <img src={event.pictures[0]} alt="img-product" />
+          <img src={event.pictures[0].picture} alt="img-product" />
         </div>
         <div className={styles.containerDescription}>
-          <h2 className={styles.productName}>{event.name}</h2>
-          <div className={styles.productDate}>
-            <button className={styles.productDateBtn}>
-              <img src={iconArrowLeft} alt="icon-left" />
-            </button>
-            <span>{event.dates[0].date.replace('/', ' de ')}</span>
-            <button className={styles.productDateBtn}>
-              <img src={iconArrowRight} alt="icon-left" />
-            </button>
-          </div>
-          <p className={styles.productTime}>{event.dates[0].start} a {event.dates[0].end}</p>
-          <p className={styles.productLocation}>
-            {event.city} - {event.state}
-          </p>
-          <p className={styles.productCupos}>
-            Cupos disponibles : {event.cupos}
-          </p>
+          <h2 className={styles.productName}>{event.title}</h2>
+          {event.dates.map((date)=>(
+            <div>
+              <div className={styles.productDate}>
+                <button className={styles.productDateBtn}>
+                  <img src={iconArrowLeft} alt="icon-left" />
+                </button>
+                  <span>{date.dateFormated.replace('/', ' de ')}</span>
+                <button className={styles.productDateBtn}>
+                  <img src={iconArrowRight} alt="icon-left" />
+                </button>
+              </div>
+              <p className={styles.productTime}>{date.start} a {date.end}</p>
+              <p className={styles.productLocation}>
+                {event.departamento} - {event.municipio}
+              </p>
+              <p className={styles.productCupos}>
+                Cupos disponibles : {date.cupos}
+              </p>
+            </div>
+          ))} 
         </div>
       </div>
       <div className={styles.containerOptions}>
@@ -66,3 +77,40 @@ const CardProduct = ({ event }) => {
 };
 
 export default CardProduct;
+
+
+//
+{/* <div>
+          <Swiper
+                slidesPerView={1}
+                navigation
+                spaceBetween={0}
+                modules={[Navigation]}
+               
+            >
+               {event.dates.map((date)=>(
+                <SwiperSlide >
+                  <div>
+                    <div className={styles.productDate}>
+                      {/* <button className={styles.productDateBtn}>
+                        <img src={iconArrowLeft} alt="icon-left" />
+                      </button> */}
+             //           <span>{date.dateFormated.replace('/', ' de ')}</span>
+                      {/* <button className={styles.productDateBtn}>
+                        <img src={iconArrowRight} alt="icon-left" />
+                      </button> */}
+                  //   </div>
+                  //   <div>
+                  //   <p className={styles.productTime}>{date.start} a {date.end}</p>
+                  //   <p className={styles.productLocation}>
+                  //     {event.departamento} - {event.municipio}
+                  //   </p>
+                  //   <p className={styles.productCupos}>
+                  //     Cupos disponibles : {date.cupos}
+                  //   </p>
+                  //   </div>
+                  // </div>
+           //     </SwiperSlide>
+              
+      //    </Swiper>
+      //    </div> */}

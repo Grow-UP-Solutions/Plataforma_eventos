@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styles from './EventDate.module.css';
 import { Calendar } from 'react-date-range';
 import * as locales from 'react-date-range/dist/locale';
@@ -10,6 +10,9 @@ import { iconArrowLeft, iconArrowRight } from '../../assets/imgs';
 import { formatDate } from '../../utils/formatDate';
 import { Link } from 'react-router-dom';
 import { useSelector } from "react-redux";
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../context/auth';
+import { UIContext } from '../../context/ui';
 
 const EventDate = ({ id }) => {
 
@@ -19,6 +22,9 @@ const EventDate = ({ id }) => {
   const [date, setDate] = useState(null);
   const [dateFormatted, setDateFormatted] = useState('');
   const [numberBuyCupos, setNumberBuyCupos] = useState(0);
+  const navigate = useNavigate();
+  const { toggleScreenLogin } = useContext(UIContext);
+  const { user, logged, logout } = useContext(AuthContext);
 
   const handleNumberBuyCupos = (num) => {
     if (num <= -1) return;
@@ -31,6 +37,17 @@ const EventDate = ({ id }) => {
     setDate(date);
     setDateFormatted(formatDate(date));
   };
+
+  const comprar = (e) => {
+    // if (logged) {
+    //       navigate(`/cart/${id}`);
+    //     }
+    //  else if (!logged) {
+    //       toggleScreenLogin();
+    //     }
+    navigate(`/cart/${id}`);
+    }
+  
 
   return (
     <div>
@@ -59,20 +76,20 @@ const EventDate = ({ id }) => {
             </tr>
           </thead>
           <tbody>
-            {eventDetails.dates.map((event) => (
+            {eventDetails.dates.map((date) => (
               <tr >
                 <td>
                   <input
                     type="checkbox"
                     class={styles.checkBox}
-                    value={event.id}
+                    value={date.id}
                     defaultChecked={false}
                   ></input>
                 </td>
-                <td>{event.date}</td>
-                <td>{event.start}-{event.end}</td>
-                <td>{event.price}</td>
-                <td>{event.cupos}</td>
+                <td>{date.date}</td>
+                <td>{date.start}-{date.end}</td>
+                <td>{date.price}</td>
+                <td>{date.cupos}</td>
                 <td className={styles.containerNumberBuyCupos}>
                   <button
                     onClick={() => handleNumberBuyCupos(numberBuyCupos - 1)}
@@ -92,9 +109,11 @@ const EventDate = ({ id }) => {
         </table>
       </div>
 
-      <Link to={`/cart/${id}`}>
-        <button className={styles.button}>Comprar</button>
-      </Link>
+      <button className={styles.button}  onClick={(e) => comprar(e)}>Comprar</button>
+
+      {/* <Link to={`/cart/${id}`}>
+        <button className={styles.button}  onClick={(e) => comprar(e)}>Comprar</button>
+      </Link> */}
       <p className={styles.parrafo}>
         Nuevas fechas pueden ser solicitadas en cuyo caso un mínimo aplicaría de
         cupos a ser adquiridos por el solicitante, será sujeto a aprobación de

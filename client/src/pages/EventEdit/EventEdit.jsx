@@ -40,6 +40,27 @@ const EventEdit = () => {
   const Swal = require('sweetalert2');
   const eventId = useParams().id;
 
+  let fecha = new Date();
+  let anio = fecha.getFullYear();
+  let dia = fecha.getDate();
+  let _mes = fecha.getMonth(); //viene con valores de 0 al 11
+  _mes = _mes + 1; //ahora lo tienes de 1 al 12
+  let mes = '';
+  if (_mes < 10) {
+    //ahora le agregas un 0 para el formato date
+    mes = '0' + _mes;
+  } else {
+    mes = '' + _mes;
+  }
+
+  
+
+  const hora = fecha.getHours();
+  const minutes = fecha.getMinutes();
+  const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
+
+
+
   //--------------------------------------------------//
   //               EVENT              //
 
@@ -51,6 +72,7 @@ const EventEdit = () => {
 
   const eventos = useSelector((state) => state.events);
   const allEvents = [...eventos];
+
   const eventDetails = allEvents.filter((e) => e._id === eventId)[0];
 
   //              para comparar            //
@@ -187,8 +209,8 @@ const EventEdit = () => {
         start: '',
         end: '',
         year: 0,
-        cupos: 0,
-        price: 0,
+        cupos: '',
+        price: '',
         sells: 0,
         isPublic: '',
         precioAlPublico: '',
@@ -236,7 +258,7 @@ const EventEdit = () => {
         specialRequires: eventDetails.specialRequires,
         dates: eventDetails.dates,
         isPublic: eventDetails.isPublic,
-        inRevision: true,
+        inRevision: eventDetails.inRevision,
         compras: 10,
       });
     }
@@ -258,7 +280,6 @@ const EventEdit = () => {
     price: '',
     dates: '',
     bono: '',
-    isPublic: '',
   });
 
   useEffect(() => {
@@ -517,7 +538,7 @@ const EventEdit = () => {
     for (let i = 0; i < post.dates.length; i++) {
       for (let j = 0; j < post.dates[i].codigos.length; j++) {
         if (
-          (post.dates[i].codigos[j].descuento.length && post.dates[i].codigos[j].descuento < 1) ||
+          ( post.dates[i].codigos[j].descuento !== null &&post.dates[i].codigos[j].descuento.length && post.dates[i].codigos[j].descuento < 1) ||
           post.dates[i].codigos[j].descuento > 100
         ) {
           errors.bono = 'Descuento: Valores entre 1 y 99';
@@ -878,12 +899,31 @@ const EventEdit = () => {
         buttons: ['Cancelar acción', 'Continuar'],
         dangerMode: true,
       }).then((continuar) => {
-        if (continuar) {
+        if (continuar){
+        if(post.dates.length>1){
           setPost({
             ...post,
             dates: newFechas,
+          })
+          post.dates.map((date)=>{ 
+            if(new Date(date.date)<new Date(dateActual) || date.date === dateActual && date.end.slice(0,2) <= hora && date.end.slice(3,5) <= minutes+2){
+              date.isPublic=false
+            }
+          })     
+          let allFalse = post.dates.filter((date)=>date.isPublic === true)
+          if(allFalse.length===0){
+            setPost({
+              ...post,
+              isPublic:false
+            })
+          }
+        }else if(post.dates.length===1){
+          setPost({
+            ...post,
+            dates: newFechas,
+            isPublic:false
           });
-        }
+        }} 
       });
     } else if (newFechas[i].sells > 0) {
       return Swal.fire({
@@ -913,6 +953,7 @@ const EventEdit = () => {
     e.preventDefault();
     let newFechas = [...post.dates];
     newFechas[i].isPublic = true;
+    
     return swal({
       title: 'Esta acción agregara esta fecha a publicados. ',
       icon: 'warning',
@@ -923,6 +964,7 @@ const EventEdit = () => {
         setPost({
           ...post,
           dates: newFechas,
+          isPublic:true
         });
       }
     });
@@ -1222,19 +1264,7 @@ const EventEdit = () => {
     return `Z-` + letrasResult + numerosResult;
   };
 
-  let fecha = new Date();
-  let anio = fecha.getFullYear();
-  let dia = fecha.getDate();
-  let _mes = fecha.getMonth(); //viene con valores de 0 al 11
-  _mes = _mes + 1; //ahora lo tienes de 1 al 12
-  let mes = '';
-  if (_mes < 10) {
-    //ahora le agregas un 0 para el formato date
-    mes = '0' + _mes;
-  } else {
-    mes = '' + _mes;
-  }
-
+ 
   const fechaMinima = anio + '-' + mes + '-' + dia;
 
   //-----------------------------------------------------//
@@ -1267,7 +1297,7 @@ const EventEdit = () => {
   //--------------------------------------------------//
   //                CANCEL          //
 
-  function handleDelete(e) {
+  const handleDelete = (e) => {
     e.preventDefault();
     swal({
       title: 'Esta acción borrara todo la información ingresada o modificada en esta sesión',
@@ -1283,7 +1313,7 @@ const EventEdit = () => {
   //--------------------------------------------------//
   //                  SUBMIT              //
 
-  function handleSubmit(e) {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (Object.values(errors).length > 0) {
       setFailedSubmit(true);
@@ -1342,7 +1372,6 @@ const EventEdit = () => {
       });
     }
   }
-
   return (
     <div>
       <div className={styles.container}>
@@ -2043,6 +2072,8 @@ const EventEdit = () => {
                   {/* Dates*/}
                   <div>
                     {post.dates.map((date, index) => (
+                      new Date(date.date)<new Date(dateActual) || date.date === dateActual && date.end.slice(0,2) <= hora && date.end.slice(3,5) <= minutes+2 ?
+                      '':
                       <div>
                         {/* cupos-precios*/}
                         <div className={styles.containerInfo} key={index}>
@@ -2513,6 +2544,7 @@ const EventEdit = () => {
 
                         <hr className={styles.hr}></hr>
                       </div>
+            
                     ))}
                   </div>
 

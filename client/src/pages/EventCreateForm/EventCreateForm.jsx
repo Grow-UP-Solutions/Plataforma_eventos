@@ -180,8 +180,8 @@ const EventCreateForm = () => {
         codigos:[
           {
           codigo:'',
-          descuento:0,
-          cantidad:0,
+          descuento:'',
+          cantidad:'',
           cod:false,
           show: true,
           ed:false,
