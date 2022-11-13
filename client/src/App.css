@@ -107,7 +107,7 @@
 }
 
 .containerSwiper .swiper-pagination-bullet {
-  background-color: white !important;
+  background-color: rgb(255, 255, 255) !important;
 }
 
 .containerSwiper .swiper-pagination-bullet-active {
