@@ -30,8 +30,10 @@ export const UIProvider = ({ children }) => {
   }
 
   const getEventsFavourites = async (id, payload) => {
+    console.log('despache:')
     const res = await eventsApi.put(`/users/${id}/favorites`, payload);
     const json = res.data;
+    console.log('json Fav:',json)
     dispatch({ type: 'GET_EVENTS_FAVOURITES', payload: json });
   }
 

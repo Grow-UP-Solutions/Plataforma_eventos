@@ -1,17 +1,16 @@
-const UsersFunctionDb = require("./index.users");
+const Users = require('../../../db/Users');
 
-module.exports=async function findAllUpdateNotification(id) {
-    try {
-       const user = await UsersFunctionDb.oneUser(id);
- 
-       user.notifications.forEach(async (e) => {
-          e.read = true;
-       });
+module.exports = async function findAllUpdateNotification(id) {
+  try {
+    const user = await Users.findById(id);
 
-       await user.save();
-       return user.notifications;
-       
-    } catch (error) {
-       throw new Error(error.message);
-    }
- }
+    user.notifications.forEach(async (e) => {
+      e.read = true;
+    });
+
+    await user.save();
+    return user.notifications;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
