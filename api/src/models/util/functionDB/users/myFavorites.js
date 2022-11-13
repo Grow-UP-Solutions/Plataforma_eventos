@@ -1,10 +1,9 @@
-const { getUser } = require('../../../../routes/services/users.services');
+const Users = require('../../../db/Users');
 const EventFunctionDb = require('../event/index.event');
-const UsersFunctionDb = require('./index.users');
 
 module.exports = async function updateMyFavorites(idUser, idEvent) {
   try {
-    const user = await getUser(idUser);
+    const user = await Users.findById(idUser);
 
     const event = await EventFunctionDb.oneEvent(idEvent);
 
