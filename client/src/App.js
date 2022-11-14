@@ -30,6 +30,7 @@ import {
   WorkWithUs,
   WorkWithUsForm,
   CheckSolicitudOrganizer,
+  MyEventsAsistentes
 } from './pages';
 import EventsOrganizerResult from './pages/EventsOrganizerResult/EventsOrganizerResult';
 import News from './pages/News/News';
@@ -92,6 +93,8 @@ function App() {
         <Route path='/cambiarContrasenia/:token' element={<ChangePassword />} />
         <Route path='/edita-un-evento' element={<EventEdit />} />
         <Route path='/admin/check-solicitud-organizador/:token' element={<CheckSolicitudOrganizer />} />
+        <Route path='/usuario/asistentes-al-evento/:eventId/:dateId' element={<MyEventsAsistentes />} />
+        
       </Routes>
       <div className='container_footer'>
         <Footer />

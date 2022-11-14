@@ -10,8 +10,10 @@ import { stateContext } from '../../context/state/stateContext';
 import swal from 'sweetalert';
 import { iconAdd } from '../../assets/imgs';
 import eventsApi from '../../axios/eventsApi';
+import { AiOutlineClose } from 'react-icons/ai';
 
-const Card = ({ event, listName,orgEvent , selectedDate , datePrice }) => {
+
+const Card = ({ event, listName , orgEvent }) => {
   const { toggleScreenLogin, getEventsFavourites } = useContext(UIContext);
   const { notes, setNotes } = useContext(stateContext);
   const currentYear = new Date().getFullYear();
@@ -22,10 +24,8 @@ const Card = ({ event, listName,orgEvent , selectedDate , datePrice }) => {
   const [local, setLocal] = useState(false);
   const menuRef = useRef();
 
-  console.log('orgEvent:',orgEvent)
-  console.log('datePrice:',datePrice)
-  
-  
+
+
 
   useEffect(() => {
     getUsers();
@@ -47,11 +47,10 @@ const Card = ({ event, listName,orgEvent , selectedDate , datePrice }) => {
 
   useEffect(() => {
     const handler = (e) => {
-      if (menuRef.current === null || menuRef.current === undefined) {
-        console.log('soy user');
+      if (menuRef.current === null || menuRef.current === undefined) {  
       } else if (!menuRef.current.contains(e.target)) {
         setLocal(false);
-        console.log(menuRef.current);
+        setGetDates(false)
       }
     };
     document.addEventListener('mousedown', handler);
@@ -101,16 +100,19 @@ const Card = ({ event, listName,orgEvent , selectedDate , datePrice }) => {
     }
   };
 
-  //precio de cada fecha//
-  const [price, setPrice] = useState('');
+  //PRECIO FECHA HOME//
 
-  console.log('price',price)
+  const firstPublicDate = event.dates.find(date=>date.isPublic === true)
+
+  
+  const [price, setPrice] = useState(firstPublicDate !==undefined ? firstPublicDate.price : '')
+
 
   function handlePrice(e) {
     setPrice(e.target.value);
   }
 
-  
+  // PORTADA//
   const portada = event.pictures.filter((p) => p.cover === true)[0];
 
   const handleClickOpenDrop = (e) => {
@@ -118,10 +120,39 @@ const Card = ({ event, listName,orgEvent , selectedDate , datePrice }) => {
     setLocal(!local);
   };
 
+  //MIS EVENTOS CARD
+
+  const [getDates, setGetDates] = useState(false);
+  const [getAssistants, setGetAssistants] = useState(false);
+  const [selectedDateId , setSelectedDateId] = useState('')
+  const [selectedDate , setSelectedDate] = useState('')
+  const [datePrice , setDatePrice] = useState(undefined)
+
+
+  const handleDates = (e ,  ) =>{
+    e.preventDefault() 
+    setGetDates(!getDates)
+  }
+
+  const chooseDate = (e , dateId , dateF , datePrice) =>{
+    e.preventDefault()
+    setSelectedDateId(dateId)
+    setGetDates(false)
+    setSelectedDate(dateF)
+    setDatePrice(datePrice)
+  }
+
+ 
+  
+  const handleEarns = (e ,  ) =>{
+    e.preventDefault() 
+    setGetDates(!getDates)
+  }
+
 
 
   return (
-    <div className={styles.card}>
+    <div className={orgEvent === 'true' ? styles.cardOrg : styles.card }>
       {portada ? (
         <Link to={`/detalles-del-evento/${event._id}`}>
           <img className={styles.cardImgEvent} src={portada.picture} alt='Not Found ):' width='200x' height='300' />
@@ -139,15 +170,11 @@ const Card = ({ event, listName,orgEvent , selectedDate , datePrice }) => {
       )}
 
       <div className={styles.cardText}>
-        { orgEvent === 'true'  ?
-          (
-            selectedDate !== undefined ?
-            <div>
-              <p className={styles.cardDateCurrent}>{selectedDate.replace('de','/')}</p>
-            </div>
-              :
-              <p className={styles.cardDateCurrent}>{event.dates[0].dateFormated.replace('de','/')}</p>
-          ):
+        { orgEvent === 'true' && selectedDate === ''  ?
+           <p className={styles.cardDateCurrent}>{event.dates[0].dateFormated.replace('de','/')}</p>
+           : orgEvent === 'true' && selectedDate !== '' ?
+           <p className={styles.cardDateCurrent}>{selectedDate.replace('de','/')}</p>
+           : orgEvent !== 'true' ?
           <div>
           {event.dates && event.dates.length > 1 ? (
             <select className={styles.cardDate} onChange={(e) => handlePrice(e)}>
@@ -181,6 +208,8 @@ const Card = ({ event, listName,orgEvent , selectedDate , datePrice }) => {
             ''
           )}
 
+
+          {/* FAVORITO */}
           {event.organizer._id === user.uid || orgEvent==='true' ? (
             ''
           ) : user.uid && !heart ? (
@@ -223,6 +252,7 @@ const Card = ({ event, listName,orgEvent , selectedDate , datePrice }) => {
             </div>
           )}
           </div>
+          :''
         }
 
         {/* RATING */}
@@ -265,11 +295,22 @@ const Card = ({ event, listName,orgEvent , selectedDate , datePrice }) => {
                 <p className={styles.cardOrgName}>{organizer[0].name}</p>
               </Link>
               <div className={styles.vLine}></div>
-              {price ? (
-                <p className={styles.cardPrice}>${price}</p>
-              ) : (
-                <p className={styles.cardPrice}>${event.dates[0].price}</p>
-              )}
+               {/* PRICE */}
+                {orgEvent === 'true' && datePrice === undefined ? 
+                <div>
+                  <p className={styles.cardPrice}>${event.dates[0].price}</p>       
+                </div>
+                : orgEvent === 'true' && datePrice !== undefined ?
+                <div>
+                  <p className={styles.cardPrice}>${datePrice}</p> 
+                </div>
+                : orgEvent === undefined && datePrice === undefined && price !=='' ? (
+                  <p className={styles.cardPrice}>${price}</p>
+                 
+                ) : (
+                  <p className={styles.cardPrice}>${event.dates[0].price}</p>
+                )
+                }
               <div className={styles.vLine}></div>
               <Link className={styles.link} to={`/detalles-del-evento/${event._id}`}>
                 <p className={styles.cardDetails}>Ver más</p>
@@ -278,26 +319,25 @@ const Card = ({ event, listName,orgEvent , selectedDate , datePrice }) => {
           </div>
         ) : (
           <div className={styles.cardOrgInfo}>
-            {orgEvent === 'true' && datePrice === undefined && price==='' ? 
-            <div>
-               <p className={styles.cardPrice}>${event.dates[0].price}</p>
-            </div>
-            : orgEvent === 'true' && datePrice !== undefined && price==='' ?
-            <div>
-               <p className={styles.cardPrice}>${datePrice}</p>
-            </div>
-            : orgEvent === undefined && datePrice === undefined && price !=='' ? (
-              <p className={styles.cardPrice}>${price}</p>
-            ) : (
-              <p className={styles.cardPrice}>${event.dates[0].price}</p>
-            )
-            }
-            {/* {price ? (
-              <p className={styles.cardPrice}>${price}</p>
-            ) : (
-              <p className={styles.cardPrice}>${event.dates[0].price}</p>
-            )} */}
+            {/* PRICE */}
+            {orgEvent === 'true' && datePrice === undefined ? 
+                <div>
+                  <p className={styles.cardPrice}>${event.dates[0].price}</p>       
+                </div>
+                : orgEvent === 'true' && datePrice !== undefined ?
+                <div>
+                  <p className={styles.cardPrice}>${datePrice}</p> 
+                </div>
+                : orgEvent === undefined && datePrice === undefined && price !=='' ? (
+                  <p className={styles.cardPrice}>${price}</p>
+                 
+                ) : (
+                  <p className={styles.cardPrice}>${event.dates[0].price}</p>
+                )
+                }
             <div className={styles.vLine}></div>
+
+             {/* VER MAS */}
             <Link className={styles.link} to={`/detalles-del-evento/${event._id}`}>
               <p className={styles.cardDetails}>Ver más</p>
             </Link>
@@ -319,11 +359,23 @@ const Card = ({ event, listName,orgEvent , selectedDate , datePrice }) => {
               <p className={styles.cardOrgName}>{event.organizer.name}</p>
             </Link>
             <div className={styles.vLine}></div>
-            {price ? (
-              <p className={styles.cardPrice}>${price}</p>
-            ) : (
-              <p className={styles.cardPrice}>${event.dates[0].price}</p>
-            )}
+             {/* PRICE */}
+             {orgEvent === 'true' && datePrice === undefined  ? 
+                <div>
+                  <p className={styles.cardPrice}>${event.dates[0].price}</p>       
+                </div>
+                : orgEvent === 'true' && datePrice !== undefined ?
+                <div>
+                  <p className={styles.cardPrice}>${datePrice}</p> 
+                </div>
+                : orgEvent === undefined && datePrice === undefined && price !=='' ? (
+                  <p className={styles.cardPrice}>${price}</p>
+                 
+                ) : (
+                  <p className={styles.cardPrice}>${event.dates[0].price}</p>
+                )
+                }
+           
             <div className={styles.vLine}></div>
             <Link className={styles.link} to={`/detalles-del-evento/${event._id}`}>
               <p className={styles.cardDetails}>Ver más</p>
@@ -332,17 +384,80 @@ const Card = ({ event, listName,orgEvent , selectedDate , datePrice }) => {
         </div>
       ) : (
         <div className={styles.cardOrgInfo}>
-          {price ? (
-            <p className={styles.cardPrice}>${price}</p>
-          ) : (
-            <p className={styles.cardPrice}>${event.dates[0].price}</p>
-          )}
+           {/* PRICE */}
+           {orgEvent === 'true' && datePrice === undefined  ? 
+                <div>
+                  <p className={styles.cardPrice}>${event.dates[0].price}</p>       
+                </div>
+                : orgEvent === 'true' && datePrice !== undefined  ?
+                <div>
+                  <p className={styles.cardPrice}>${datePrice}</p> 
+                </div>
+                : orgEvent === undefined && datePrice === undefined && price !=='' ? (
+                  <p className={styles.cardPrice}>${price}</p>
+                 
+                ) : (
+                  <p className={styles.cardPrice}>${event.dates[0].price}</p>
+                )
+                }
           <div className={styles.vLine}></div>
           <Link className={styles.link} to={`/detalles-del-evento/${event._id}`}>
             <p className={styles.cardDetails}>Ver más</p>
           </Link>
         </div>
       )}
+
+      {/* CARD ORGANIZADOR */}
+      {orgEvent === 'true' &&
+        <div className={styles.containerDatos}>
+          <div className={styles.datos}>
+            {event.dates.length>1 ?(
+            <div className={styles.subDatos} >
+              <p>Fechas:</p>
+              <h4>{event.dates.length}</h4>
+              <button onClick={(e) => handleDates(e)}>
+                Ver
+              </button>
+                {getDates && (              
+                    <div className={styles.containerMenuGetDates} ref={menuRef}>
+                      <div className={styles.closeMenuGetDate}>
+                        <button onClick={() => setGetDates(false)}>
+                          <AiOutlineClose />
+                        </button>
+                      </div> 
+                      <div>
+                        {event.dates.map((date,index)=>   
+                                              
+                          <p className={styles.choosedate} onClick={(e)=>chooseDate(e, date._id , date.dateFormated , date.price)}>{date.date}</p>  
+                        
+                        ) }   
+                      </div>                      
+                    </div>
+                 
+                  )}
+            </div>
+              )
+              :''
+            }
+            <div className={styles.subDatos}>
+              <p>Asistentes:</p>
+              <h4>{event.dates.length}</h4>
+              <Link  to={`/usuario/asistentes-al-evento/${event._id}/${selectedDateId}`}>
+              <button>
+                Ver
+              </button>
+              </Link>
+            </div>
+            <div className={styles.subDatos}>
+              <p>Ganancias:</p>
+              <h4>{event.dates.length}</h4>
+              <button onClick={(e) => handleEarns(e)}>
+                Ver
+              </button>
+            </div>
+          </div>
+        </div>
+      }
     </div>
   );
 };
