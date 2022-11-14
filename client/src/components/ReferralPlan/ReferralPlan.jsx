@@ -296,7 +296,12 @@ const ReferralPlan = ({ userData }) => {
 
                               <td>
                                 {!editCodeDiscount[index] ? (
-                                  <input id={codeDiscount._id} disabled value={codeDiscount.value} type='text' />
+                                  <input
+                                    id={codeDiscount._id}
+                                    disabled
+                                    value={`${codeDiscount.value}.000$`}
+                                    type='text'
+                                  />
                                 ) : (
                                   <input id={codeDiscount._id} type='text' />
                                 )}
