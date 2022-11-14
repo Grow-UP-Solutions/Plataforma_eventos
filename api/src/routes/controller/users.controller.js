@@ -462,8 +462,9 @@ router.post('/isSamePassword/:id', async (req, res) => {
 router.delete('/delete/:id', async (req, res) => {
   try {
     const { id } = req.params;
+    const { reasonForDeleteAccount } = req.body;
 
-    const deleteUser = await userDelete(id);
+    const deleteUser = await userDelete(id, reasonForDeleteAccount);
     return res.status(200).json({
       user: deleteUser,
       msg: 'El usuario ha sido eliminado con exito',

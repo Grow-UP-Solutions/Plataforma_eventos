@@ -26,8 +26,6 @@ const Card = ({ event, listName }) => {
     getUsers();
   }, []);
 
-  useEffect(() => {}, [allUsers]);
-
   useEffect(() => {
     const myUser = async () => {
       try {
