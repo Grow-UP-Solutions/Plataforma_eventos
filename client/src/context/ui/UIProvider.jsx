@@ -30,11 +30,15 @@ export const UIProvider = ({ children }) => {
   }
 
   const getEventsFavourites = async (id, payload) => {
-    console.log('despache:')
     const res = await eventsApi.put(`/users/${id}/favorites`, payload);
     const json = res.data;
-    console.log('json Fav:',json)
     dispatch({ type: 'GET_EVENTS_FAVOURITES', payload: json });
+  }
+
+  const getEventsWithoutFavourites = async (id, payload) => {
+    const res = await eventsApi.put(`/users/${id}/notFavorites`, payload);
+    const json = res.data;
+    dispatch({ type: 'GET_EVENTS_WITHOUT_FAVOURITES', payload: json });
   }
 
   const getRatingOrganizer = async (id, payload) => {
@@ -75,6 +79,7 @@ export const UIProvider = ({ children }) => {
         getCategories,
         getAllEvents,
         getEventsFavourites,
+        getEventsWithoutFavourites,
         getRatingOrganizer,
         getRatingEvent,
         getEffectRatingOrganizer,

@@ -8,11 +8,11 @@ import { UIContext } from '../../context/ui';
 import { AuthContext } from '../../context/auth/AuthContext';
 import { stateContext } from '../../context/state/stateContext';
 import swal from 'sweetalert';
-import { iconAdd } from '../../assets/imgs';
 import eventsApi from '../../axios/eventsApi';
 
 const Card = ({ event, listName }) => {
-  const { toggleScreenLogin, getEventsFavourites } = useContext(UIContext);
+
+  const { toggleScreenLogin, getEventsFavourites, getEventsWithoutFavourites } = useContext(UIContext);
   const { notes, setNotes } = useContext(stateContext);
   const currentYear = new Date().getFullYear();
   const numCadena = currentYear + '';
@@ -95,6 +95,25 @@ const Card = ({ event, listName }) => {
       console.log(error);
     }
   };
+
+  const handleClickWithoutFav = async (e) => {
+    e.preventDefault();
+    const favorite = {
+      idEvent: event._id,
+    };
+    try {
+      getEventsWithoutFavourites(user.uid, favorite);
+      setHeart(false);
+      swal({
+        text: 'Evento retirado de "Mi Lista"',
+        icon: 'success',
+        button: 'OK',
+      });
+    } 
+    catch (error) {
+      console.log(error);
+    }
+  }
 
   //precio de cada fecha//
   const [price, setPrice] = useState('');
@@ -183,18 +202,18 @@ const Card = ({ event, listName }) => {
 
         {event.organizer._id === user.uid ? (
           ''
+        ) : user.uid && heart ? (
+          <div className={styles.cardAddFavHeart} onClick={handleClickWithoutFav}>
+            <input type='checkbox' id={`${event._id}-${listName}`} />
+            <label htmlFor={`${event._id}-${listName}`}>
+              <FavoriteIcon sx={{ fontSize: 25, color: 'white' }} />
+            </label>
+          </div>
         ) : user.uid && !heart ? (
           <div className={styles.cardAddFav} onClick={handleClickFav}>
             <input type='checkbox' id={`${event._id}-${listName}`} />
             <label htmlFor={`${event._id}-${listName}`}>
               <AddIcon sx={{ fontSize: 30, color: '#868686' }} />
-            </label>
-          </div>
-        ) : user.uid && heart ? (
-          <div className={styles.cardAddFavHeart}>
-            <input type='checkbox' id={`${event._id}-${listName}`} />
-            <label htmlFor={`${event._id}-${listName}`}>
-              <FavoriteIcon sx={{ fontSize: 25, color: 'white' }} />
             </label>
           </div>
         ) : (

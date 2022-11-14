@@ -34,6 +34,12 @@ export const uiReducer = (state, action) => {
         eventsFavourites: action.payload,
       };
 
+    case 'GET_EVENTS_WITHOUT_FAVOURITES':
+      return {
+        ...state,
+        eventsFavourites: action.payload,
+      };
+
     case 'GET_RATING_ORGANIZER':
       return {
         ...state,

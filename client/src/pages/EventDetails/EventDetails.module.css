@@ -91,6 +91,7 @@
   left: 20px;
   z-index: 100;
   box-shadow: 1px 6px 10px var(--color-grey-3);
+  cursor: pointer;
 }
 
 .icon_hear_p {
