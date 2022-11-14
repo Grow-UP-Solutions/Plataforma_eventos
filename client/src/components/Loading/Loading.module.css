@@ -1,0 +1,22 @@
+.loadingContainer {
+  display: grid;
+  place-items: center;
+  height: 60rem;
+}
+
+.iconLoading {
+  width: 4.8rem;
+  height: 4.8rem;
+  color: var(--color-orange);
+  animation: spinner 2s infinite;
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

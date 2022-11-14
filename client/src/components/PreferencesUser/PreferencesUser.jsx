@@ -30,6 +30,12 @@ const PreferencesUser = ({ userData }) => {
   const [modalDeleteAccount, setModalDeleteAccount] = useState(false);
   const [password, setPassword] = useState('');
 
+  const [otherReason, setOtherReason] = useState('');
+
+  const handleOnChangeOtherReason = (e) => {
+    setOtherReason(e.target.value);
+  };
+
   const handleCheckPromotionEvents = async (e) => {
     const isChecked = e.target.checked;
 
@@ -95,8 +101,16 @@ const PreferencesUser = ({ userData }) => {
   };
 
   const deleteAccount = async () => {
+    let reasonForDeleteAccount = otherReason;
+
+    if (userConfigs.reasonForElimination !== 'Otro') {
+      reasonForDeleteAccount = userConfigs.reasonForElimination;
+    }
+
     try {
-      await eventsApi.delete(`/users/delete/${userData._id}`);
+      await eventsApi.delete(`/users/delete/${userData._id}`, {
+        reasonForDeleteAccount,
+      });
       logout();
       setModalConfirmDeleteAccount(false);
       return setModalDeleteAccount(true);
@@ -185,10 +199,19 @@ const PreferencesUser = ({ userData }) => {
         )}
       </div>
 
-      <div className={styles.containerSub3}>
-        <p className={styles.titleOptionSelect}>¿Cuál?: *Opcional</p>
-        <textarea name='other-option' id='other-option' cols='60' rows='10' className={styles.textarea}></textarea>
-      </div>
+      {userConfigs.reasonForElimination === 'Otro' && (
+        <div className={styles.containerSub3}>
+          <p className={styles.titleOptionSelect}>¿Cuál?: *Opcional</p>
+          <textarea
+            onChange={handleOnChangeOtherReason}
+            name='other-option'
+            id='other-option'
+            cols='60'
+            rows='10'
+            className={styles.textarea}
+          />
+        </div>
+      )}
 
       {modalConfirmDeleteAccount && (
         <div className={styles.overlayModalDeleteAccount}>

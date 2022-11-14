@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useRef } from 'react';
 import { FiArchive, FiMail, FiStar } from 'react-icons/fi';
 import { animateScroll as scroll } from 'react-scroll';
 import swal from 'sweetalert';
@@ -43,7 +44,6 @@ const validate = (form) => {
 };
 
 const Messages = () => {
-
   const { user } = useContext(AuthContext);
   const { getMessagesStar, msgStar } = useContext(UIContext);
   const { setMsg } = useContext(stateContext);
@@ -130,8 +130,7 @@ const Messages = () => {
       setMessages([...messages, res.data]);
       setNewMessage('');
       scroll.scrollToTop();
-    } 
-    catch (err) {
+    } catch (err) {
       console.log(err);
     }
   };
@@ -151,17 +150,17 @@ const Messages = () => {
         closeModal: true,
         dangerMode: true,
       });
-    }
-    else {
+    } else {
       setStar(true);
       const messagesStar = async () => {
         try {
           const res = await eventsApi.get('/message/' + currentChat._id);
-          const response = res.data.map(e => e.outstanding.filter(e => e.isOutstanding === true &&  e.idUser === user.uid));
-          const responsive = response.filter(e => e.length > 0).flat();
+          const response = res.data.map((e) =>
+            e.outstanding.filter((e) => e.isOutstanding === true && e.idUser === user.uid)
+          );
+          const responsive = response.filter((e) => e.length > 0).flat();
           getMessagesStar(responsive);
-        } 
-        catch (err) {
+        } catch (err) {
           console.log(err);
         }
       };
@@ -197,8 +196,7 @@ const Messages = () => {
       try {
         const res = await eventsApi.get('/conversation/' + id);
         setBlock(res.data.filter((e) => e.locked === true));
-      } 
-      catch (error) {
+      } catch (error) {
         console.log(error);
       }
     };
@@ -216,8 +214,7 @@ const Messages = () => {
       try {
         const res = await eventsApi.get('/conversation/' + id);
         setConversations(res.data.filter((e) => e.locked === false));
-      } 
-      catch (error) {
+      } catch (error) {
         console.log(error);
       }
     };
@@ -235,17 +232,17 @@ const Messages = () => {
           <div className={styles.containerChats}>
             <div className={styles.containerOptions}>
               <div onClick={handleClickAllReadMessages}>
-                <FiMail />
+                <FiMail className={styles.iconOptions} />
                 <span>Marcar todos como leídos</span>
               </div>
 
               <div onClick={handleClickFile}>
-                <FiArchive />
+                <FiArchive className={styles.iconOptions} />
                 <span>Archivar todas las conversaciones</span>
               </div>
 
               <div onClick={handleClickStar}>
-                <FiStar />
+                <FiStar className={styles.iconOptions} />
                 <span>Mensajes destacados</span>
               </div>
             </div>
@@ -286,27 +283,23 @@ const Messages = () => {
             <div className={styles.containerChatMessage}>
               {currentChat && star === false ? (
                 <>
-                  <div>
-                    {messages
-                      .map((m, i) => (
-                        <div key={i}>
-                          <Message message={m} own={m.sender === id} />
-                        </div>
-                      ))
-                      .reverse()}
-                  </div>
+                  {messages
+                    .map((m, i) => (
+                      <div key={i}>
+                        <Message message={m} own={m.sender === id} />
+                      </div>
+                    ))
+                    .reverse()}
                 </>
               ) : currentChat && star === true ? (
                 <>
-                  <div>
-                    {msgStar
-                      .map((m, i) => (
-                        <div key={i}>
-                          <MessageFav message={m} own={m.idUser === id} />
-                        </div>
-                      ))
-                      .reverse()}
-                  </div>
+                  {msgStar
+                    .map((m, i) => (
+                      <div key={i}>
+                        <MessageFav message={m} own={m.idUser === id} />
+                      </div>
+                    ))
+                    .reverse()}
                 </>
               ) : (
                 <span className={styles.noMsg}>Inicia una conversación.</span>

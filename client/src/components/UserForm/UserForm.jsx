@@ -762,8 +762,6 @@ const UserForm = ({ userData }) => {
     }
   };
 
-  console.log({ userData });
-
   return (
     <div className={styles.containerUserForm}>
       <div className={styles.containerPhotoProfile}>

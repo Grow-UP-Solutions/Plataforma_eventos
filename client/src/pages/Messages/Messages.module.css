@@ -41,6 +41,11 @@
   padding: 1.8rem 0;
 }
 
+.iconOptions {
+  height: 4.8rem;
+  width: 4.8rem;
+}
+
 .containerOptions > div {
   display: flex;
   flex-direction: column;
@@ -151,7 +156,7 @@
 .containerChat {
   background-color: white;
   height: 58.6rem;
-  
+
   display: flex;
   flex-direction: column;
 }
@@ -172,11 +177,15 @@
   border-radius: 50%;
 }
 
+.chatHeader span {
+  font-size: 1.6rem;
+}
+
 .containerChatMessage {
   flex: 1;
 
   padding: 2rem;
-} 
+}
 
 /* CHAT MESSAGE */
 
@@ -185,6 +194,9 @@
   flex-direction: column;
   gap: 2.2rem;
   overflow-y: scroll;
+}
+.containerChatMessage div div {
+  overflow: hidden;
 }
 
 .ownMessage,
@@ -225,7 +237,6 @@
   height: 2.2rem;
 }
 
-
 /* TEXT AREA */
 
 /* .containerDivMessage {
@@ -238,7 +249,6 @@
   padding: 2rem;
   width: 100%;
   background-color: white;
-  
 }
 
 .containerInputMessage textarea {
@@ -248,6 +258,10 @@
   border-radius: 10px;
   border: 1px solid var(--color-grey-4);
   padding: 1rem 2rem;
+  font-size: 1.6rem;
+  font-family: inherit;
+  font-weight: 600;
+  color: var(--color-grey-1);
 }
 
 .containerInputMessage textarea:focus {
@@ -256,20 +270,20 @@
 }
 
 .containerInputMessage textarea::placeholder {
-  font-style: italic;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-family: inherit;
 }
 
 .wrapperBtnInputMessage {
   display: flex;
   justify-content: space-between;
+  margin-top: 1rem;
 }
 
 .wrapperBtnInputMessage p {
   font-size: 1rem;
   font-style: italic;
-  color: var(--color-grey-4);
+  color: var(--color-grey-3);
   width: 28rem;
 }
 
@@ -303,7 +317,8 @@
   color: var(--color-grey-3);
 }
 
-.box1, .box2 {
+.box1,
+.box2 {
   font-family: 'Raleway', sans-serif;
   font-size: 1.4rem;
   color: var(--color-grey-3);
@@ -315,8 +330,6 @@
   font-size: 1.4rem;
   font-weight: bold;
 }
-
-
 
 /* .line_div {
   border: 0.1px solid rgb(219, 219, 219);

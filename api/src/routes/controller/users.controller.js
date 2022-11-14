@@ -12,6 +12,7 @@ const {
   sendNotificationsUser,
   getUserByEmail,
   eventesFavorites,
+  eventesDeleteFavorites,
 } = require('../services/users.services.js');
 
 const passport = require('passport');
@@ -151,6 +152,15 @@ router.post('/acceptOrRejectedOrganizer', async (req, res) => {
   }
 });
 
+router.put('/editReferenceU/:id', async (req, res) => {
+  const { id } = req.params;
+  const user = await getUser(id);
+
+  user.referenceU = 'U453';
+  await user.save();
+  res.json({ hola: 'success' });
+});
+
 router.put('/:idUser/favorites', async (req, res) => {
   const { idUser } = req.params;
   const { idEvent } = req.body;
@@ -162,6 +172,18 @@ router.put('/:idUser/favorites', async (req, res) => {
 
   try {
     const myFavorites = await eventesFavorites(idUser, idEvent);
+    return res.status(200).json(myFavorites);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+});
+
+router.put('/:idUser/notFavorites', async (req, res) => {
+  const { idUser } = req.params;
+  const { idEvent } = req.body;
+
+  try {
+    const myFavorites = await eventesDeleteFavorites(idUser, idEvent);
     return res.status(200).json(myFavorites);
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -462,8 +484,9 @@ router.post('/isSamePassword/:id', async (req, res) => {
 router.delete('/delete/:id', async (req, res) => {
   try {
     const { id } = req.params;
+    const { reasonForDeleteAccount } = req.body;
 
-    const deleteUser = await userDelete(id);
+    const deleteUser = await userDelete(id, reasonForDeleteAccount);
     return res.status(200).json({
       user: deleteUser,
       msg: 'El usuario ha sido eliminado con exito',

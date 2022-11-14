@@ -1,7 +1,6 @@
-
 import React, { useContext, useEffect, useState } from 'react';
 import styles from './Message.module.css';
-import { format, register } from "timeago.js";
+import { format, register } from 'timeago.js';
 import StarIcon from '@mui/icons-material/Star';
 import eventsApi from '../../axios/eventsApi';
 import { AuthContext } from '../../context/auth/AuthContext';
@@ -30,7 +29,6 @@ const localeFunc = (number, index, total_sec) => {
 register('es_ES', localeFunc);
 
 const Message = ({ message, own }) => {
-
   const { user } = useContext(AuthContext);
   const [star, setStar] = useState(false);
 
@@ -38,48 +36,42 @@ const Message = ({ message, own }) => {
     const data = message.outstanding.find((e) => e.idUser === user.uid);
     if (data) {
       setStar(data.isOutstanding);
-    }
-    else {
+    } else {
       setStar(false);
-    }    
+    }
   }, [message]);
 
   const handleClickStar = async (e) => {
     e.preventDefault();
-    const data = {idUser: user.uid};
+    const data = { idUser: user.uid };
     try {
       const res = await eventsApi.put(`/message/${message._id}/outstanding`, data);
       setStar(!star);
-    } 
-    catch (error) {
-      console.log(error)
+    } catch (error) {
+      console.log(error);
     }
-  }
-  
+  };
+
   return (
     <div className={styles.containerChatMessage}>
       <div className={own ? styles.ownMessage : styles.otherMessage}>
-
         <p className={styles.messageText}>{message.text}</p>
 
         <div className={styles.wrapperInfoMessage}>
-          {
-            !star ?
-            <StarIcon 
-              onClick={handleClickStar} 
-              className={styles.iconMessage}
-            /> :
-            <StarIcon 
-              onClick={handleClickStar} 
+          {!star ? (
+            <StarIcon onClick={handleClickStar} className={styles.iconMessage} />
+          ) : (
+            <StarIcon
+              onClick={handleClickStar}
               className={styles.iconMessageColor}
-              sx={{color: "#ffe234", fontSize: "2.2rem"}}  
+              sx={{ color: '#ffe234', fontSize: '2.2rem' }}
             />
-          }
+          )}
           <span className={styles.messageBottom}>{format(message.createdAt, 'es_ES')}</span>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default Message;

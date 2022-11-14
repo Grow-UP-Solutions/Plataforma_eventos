@@ -18,6 +18,7 @@ import {
   Finance,
   ReferralPlan,
   UserForm,
+  Loading,
 } from '../../components';
 
 import {
@@ -38,7 +39,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { animateScroll as scroll } from 'react-scroll';
 
 const UserPage = () => {
-
   const { option } = useParams();
   const { user } = useContext(AuthContext);
   const [userData, setUserData] = useState({});
@@ -46,8 +46,11 @@ const UserPage = () => {
   const [component, setComponent] = useState();
   const [isOpenMenu, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
-  
+  const [optionChecked, setOptionChecked] = useState(option);
+  const [optionSubMenuChecked, setOptionSubMenuChecked] = useState(option);
+
   useEffect(() => {
+    setComponent(<Loading />);
     getUserData();
     scroll.scrollToTop();
   }, [user]);
@@ -58,7 +61,7 @@ const UserPage = () => {
       setUserData(userResult.data);
 
       switch (option) {
-        case 'datos':
+        case 'perfil':
           setComponent(<UserForm userData={userResult.data} />);
           break;
         case 'mi-lista':
@@ -81,6 +84,15 @@ const UserPage = () => {
   }, [option]);
 
   const handleInput = (e) => {
+    setOptionChecked(e.target.value);
+    setOptionSubMenuChecked('');
+
+    if (e.target.name === 'eventos') {
+      setIsMenuOpen(!isOpenMenu);
+    } else {
+      setIsMenuOpen(false);
+    }
+
     const name = e.target.name;
     /* ORGANIZER */
     if (name === 'Finance') setComponent(<Finance />);
@@ -91,10 +103,7 @@ const UserPage = () => {
       setComponent(<MyListUser myFavorites={userData.myFavorites} />);
       navigate('/usuario/mi-lista');
     }
-    if (name === 'Pendientes por Asistir')
-      setComponent(<ExpectToAttendUser myEvenstBooked={userData.myEvenstBooked} />);
-    if (name === 'Mis Eventos')
-      setComponent(<MyEventsOrganizer userData={userData} myEventsCreated={userData.myEventsCreated} />);
+
     if (name === 'Perfil') {
       setComponent(<UserForm userData={userData} />);
       navigate('/usuario/perfil');
@@ -110,6 +119,17 @@ const UserPage = () => {
     }
   };
 
+  const handleInputSubMenu = (e) => {
+    const name = e.target.name;
+
+    setOptionSubMenuChecked(e.target.value);
+    if (name === 'Mi lista') setComponent(<MyListUser myFavorites={userData.myFavorites} />);
+    if (name === 'Pendientes por Asistir')
+      setComponent(<ExpectToAttendUser myEvenstBooked={userData.myEvenstBooked} />);
+    if (name === 'Mis Eventos')
+      setComponent(<MyEventsOrganizer userData={userData} myEventsCreated={userData.myEventsCreated} />);
+  };
+
   return (
     <div className={`${styles.pageUser} container`}>
       <div className={styles.sideMenu}>
@@ -118,18 +138,38 @@ const UserPage = () => {
             <>
               <li className={styles.containerItemOptionMenu}>
                 <div className={styles.optionMenu}>
-                  <button className={styles.btn} name='Finance' onClick={handleInput}>
+                  <input
+                    type={'checkbox'}
+                    value={'finance'}
+                    className={styles.btn}
+                    name='Finance'
+                    id='finance'
+                    onChange={handleInput}
+                    checked={optionChecked === 'finance' ? true : false}
+                  />
+                  <label className={styles.labelOption} htmlFor='finance'>
                     Finanzas
-                  </button>
+                  </label>
+
                   <IconFinances className={styles.iconMenu} />
                   <IoIosArrowForward className={styles.iconArrow} />
                 </div>
               </li>
               <li className={styles.containerItemOptionMenu}>
                 <div className={styles.optionMenu}>
-                  <button className={styles.btn} name='Guia Del Organizador' onClick={handleInput}>
+                  <input
+                    type={'checkbox'}
+                    value={'guide'}
+                    className={styles.btn}
+                    name='Guia Del Organizador'
+                    id='guide'
+                    onChange={handleInput}
+                    checked={optionChecked === 'guide' ? true : false}
+                  />
+                  <label className={styles.labelOption} htmlFor='guide'>
                     Guia Del Organizador
-                  </button>
+                  </label>
+
                   <IconGuide className={styles.iconMenu} />
                   <IoIosArrowForward className={styles.iconArrow} />
                 </div>
@@ -139,9 +179,19 @@ const UserPage = () => {
 
           <li className={`${styles.optionMenu} ${styles.containerMenuEvent}`}>
             <div className={styles.menuEvent}>
-              <button className={styles.btn} onClick={() => setIsMenuOpen(!isOpenMenu)}>
+              <input
+                type={'checkbox'}
+                value={'events'}
+                className={styles.btn}
+                name='eventos'
+                id='eventos'
+                onChange={handleInput}
+                checked={optionChecked === 'events' ? true : false}
+              />
+              <label className={styles.labelOption} htmlFor='eventos'>
                 Eventos
-              </button>
+              </label>
+
               <IconEvents className={styles.iconMenu} />
               {isOpenMenu ? <IoIosArrowDown className={styles.iconEvent} /> : <IoIosArrowUp />}
             </div>
@@ -149,25 +199,58 @@ const UserPage = () => {
             {isOpenMenu && (
               <ul className={styles.listMenuEvent}>
                 <li className={styles.optionMenu}>
-                  <button className={styles.btn} name='Mi lista' onClick={handleInput}>
+                  <input
+                    type={'checkbox'}
+                    value={'myListEvents'}
+                    className={styles.btn}
+                    name='Mi lista'
+                    id='miList'
+                    onChange={handleInputSubMenu}
+                    checked={optionSubMenuChecked === 'myListEvents' ? true : false}
+                  />
+                  <label className={styles.labelOption} htmlFor='miList'>
                     Mi lista
-                  </button>
+                  </label>
                   <IconEvents className={styles.iconMenu} />
                   <IoIosArrowForward className={styles.iconArrow} />
                 </li>
                 <li className={styles.optionMenu}>
-                  <button className={styles.btn} name='Pendientes por Asistir' onClick={handleInput}>
+                  <input
+                    type={'checkbox'}
+                    value={'eventsForAssist'}
+                    className={styles.btn}
+                    name='Pendientes por Asistir'
+                    id='pendientes'
+                    onChange={handleInputSubMenu}
+                    checked={optionSubMenuChecked === 'eventsForAssist' ? true : false}
+                  />
+                  <label className={styles.labelOption} htmlFor='pendientes'>
                     Pendientes por Asistir
-                  </button>
+                  </label>
+
                   <IconEvents className={styles.iconMenu} />
                   <IoIosArrowForward className={styles.iconArrow} />
                 </li>
                 {user.organizer && (
                   <>
                     <li className={styles.optionMenu}>
-                      <button className={styles.btn} name='Mis Eventos' onClick={handleInput}>
+                      <button className={styles.btn} name='Mis Eventos' onClick={handleInputSubMenu}>
                         Mis Eventos
                       </button>
+
+                      <input
+                        type={'checkbox'}
+                        value={'myEvents'}
+                        className={styles.btn}
+                        name='Mis Eventos'
+                        id='myEvents'
+                        onChange={handleInputSubMenu}
+                        checked={optionSubMenuChecked === 'myEvents' ? true : false}
+                      />
+                      <label className={styles.labelOption} htmlFor='myEvents'>
+                        Mis Eventos
+                      </label>
+
                       <IconEvents className={styles.iconMenu} />
                       <IoIosArrowForward className={styles.iconArrow} />
                     </li>
@@ -179,10 +262,18 @@ const UserPage = () => {
 
           <li className={styles.containerItemOptionMenu}>
             <div className={styles.optionMenu}>
-              {' '}
-              <button className={styles.btn} name='Perfil' onClick={handleInput}>
+              <input
+                type={'checkbox'}
+                value={'perfil'}
+                className={styles.btn}
+                name='Perfil'
+                id='perfil'
+                onChange={handleInput}
+                checked={optionChecked === 'perfil' ? true : false}
+              />
+              <label className={styles.labelOption} htmlFor='perfil'>
                 Perfil
-              </button>
+              </label>
               <IconUser className={styles.iconMenu} />
               <div className={styles.perfilStatus}>
                 {user.isProfileCompleted ? (
@@ -205,6 +296,20 @@ const UserPage = () => {
               <button className={styles.btn} name='Plan de Referidos' onClick={handleInput}>
                 Plan de Referidos
               </button>
+
+              <input
+                type={'checkbox'}
+                value={'plan-de-referidos'}
+                className={styles.btn}
+                name='Plan de Referidos'
+                id='plan-de-referidos'
+                onChange={handleInput}
+                checked={optionChecked === 'plan-de-referidos' ? true : false}
+              />
+              <label className={styles.labelOption} htmlFor='plan-de-referidos'>
+                Plan de Referidos
+              </label>
+
               <IconReferred className={styles.iconMenu} />
               <IoIosArrowForward className={styles.iconArrow} />
             </div>
@@ -214,11 +319,28 @@ const UserPage = () => {
               <button className={styles.btn} name='Preferencias' onClick={handleInput}>
                 Preferencias
               </button>
+
+              <input
+                type={'checkbox'}
+                value={'preferencias'}
+                className={styles.btn}
+                name='Preferencias'
+                id='preferencias'
+                checked={optionChecked === 'preferencias' ? true : false}
+                onChange={handleInput}
+              />
+              <label className={styles.labelOption} htmlFor='preferencias'>
+                Preferencias
+              </label>
+
               <IconPreferences className={styles.iconMenu} />
               <IoIosArrowForward className={styles.iconArrow} />
             </div>
           </li>
         </ul>
+
+        {/* CALENDAR */}
+
         <div className={styles.menuCalendar}>
           <span className={styles.titleCalendar}>Mi calendario</span>
           <Calendar
