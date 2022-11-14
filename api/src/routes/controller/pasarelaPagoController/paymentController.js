@@ -8,14 +8,13 @@ mercadopago.configure({
    access_token: `${ACCESS_TOKEN}`,
 });
 
-router.post("/orden", async (req, res) => {
+router.post("/pago", async (req, res) => {
    const carrito = req.body;
    const {codigoDescuento}= req.query
    
    
 
-   const monto = carrito
-      .map((e) => {
+   const monto = carrito?.map((e) => {
          const montoTem = e.unit_price * e.quantity;
          return montoTem;
       })
@@ -80,3 +79,5 @@ router.post("/orden", async (req, res) => {
       return console.log("FALLO MERCADO PAGO", error);
    }
 });
+
+module.exports= router

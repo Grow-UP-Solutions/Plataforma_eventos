@@ -1,3 +1,5 @@
+require('../../../../DB')
+const Users = require("../../../db/Users");
 const UsersFunctionDb = require("../users/index.users");
 
 

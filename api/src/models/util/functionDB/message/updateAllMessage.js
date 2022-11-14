@@ -1,9 +1,11 @@
+require('../../../../DB')
+const Users = require('../../../db/Users');
 const MessageFunctionDb = require("./index.message");
 
 module.exports = async function findAndUpdateMessage(idUser, conversationId) {
     try {
-       const userAndMessage = await MessageFunctionDb.allMessageReciver(idUser);
-       const messageConversation = userAndMessage.filter((e) => {
+       const userAndMessage = await Users.findOne({_id:idUser});
+       const messageConversation = userAndMessage.message.filter((e) => {
           return e.conversationId === conversationId;
        });
  
