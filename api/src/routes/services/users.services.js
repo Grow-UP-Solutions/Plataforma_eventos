@@ -111,7 +111,7 @@ async function eventesDeleteFavorites(idUser, idEvent) {
     const eventeFavorite = user.myFavorites.find((e) => e._id == idEvent);
 
     if (eventeFavorite) {
-      user.myFavorites = user.myFavorites.filter((e) => e._id !== idEvent);
+      user.myFavorites = user.myFavorites.filter((e) => e._id !== eventeFavorite._id);
       await user.save();
       return { msg: 'Exito' };
     }
