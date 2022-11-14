@@ -55,6 +55,7 @@ function App() {
 
   useEffect(() => {
     dispatch(getEvents());
+    
     getAllEvents();
   }, []);
 

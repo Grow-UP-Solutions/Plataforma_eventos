@@ -28,6 +28,12 @@ export const uiReducer = (state, action) => {
         events: action.payload,
       };
 
+      case 'GET_ALL_USERS':
+        return {
+          ...state,
+          events: action.payload,
+        };
+
     case 'GET_EVENTS_FAVOURITES':
       return {
         ...state,
