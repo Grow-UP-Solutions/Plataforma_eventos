@@ -105,6 +105,23 @@ async function eventesFavorites(idUser, idEvent) {
   }
 }
 
+async function eventesDeleteFavorites(idUser, idEvent) {
+  try {
+    const user = await UsersFunctionDb.oneUser(idUser);
+    const eventeFavorite = user.myFavorites.find((e) => e._id == idEvent);
+
+    if (eventeFavorite) {
+      user.myFavorites = user.myFavorites.filter((e) => e._id !== idEvent);
+      await user.save();
+      return { msg: 'Exito' };
+    }
+
+    return { msg: 'el evento no existe en favoritos', eventeFavorite };
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
 async function sendNotificationsUser(notifications) {
   const { type, idUser } = notifications;
   const msg = validatonType(type);
@@ -152,6 +169,7 @@ async function getUserByEmail(email) {
 
 module.exports = {
   eventesFavorites,
+  eventesDeleteFavorites,
   sendNotificationsUser,
   getAllUsers,
   getUser,
