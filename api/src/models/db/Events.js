@@ -45,6 +45,16 @@ const EventSchema = new Schema(
                default: false,
             },
             dateFormated: String,
+            buyers: [
+               {
+                  type: Schema.Types.ObjectId,
+                  ref: 'Users'
+               },
+            ],
+            profits:{
+               type:Number,
+               default: 0
+            },
             codigos: [
                {
                   codigo: { type: String, default: "" },
@@ -58,6 +68,16 @@ const EventSchema = new Schema(
             ],
          },
       ],
+      generalBuyers: [
+         {
+            type: Schema.Types.ObjectId,
+            ref: 'Users'
+         },
+      ],
+      overallEarnings:{
+         type:Number,
+         default: 0
+      },
       notificaciones: [
          {
             image: String,
