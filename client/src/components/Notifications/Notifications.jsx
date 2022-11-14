@@ -7,7 +7,6 @@ import eventsApi from '../../axios/eventsApi';
 import swal from 'sweetalert';
 
 const Notifications = () => {
-
   const { setNotes } = useContext(stateContext);
   const { user } = useContext(AuthContext);
   const [state, setState] = useState([]);
@@ -20,33 +19,32 @@ const Notifications = () => {
     let userResult = {};
     userResult = await eventsApi.get('/users/' + user.uid);
     setState(userResult.data.notifications);
-  }
+  };
 
   const handleClickRead = async (noti) => {
     const data = {
       read: true,
-      idNotifications: noti._id
-    }
+      idNotifications: noti._id,
+    };
     const json = await eventsApi.put('/users/notifications', data);
     setState(json.data);
-    setNotes(json.data.filter(e => e.read === false));
+    setNotes(json.data.filter((e) => e.read === false));
     swal({
       text: 'Notificacion Leída',
       icon: 'success',
       button: 'OK',
     });
-  }
+  };
 
   const handleClickAllRead = async (e) => {
     e.preventDefault();
     const res = await eventsApi.put(`/users/${user.uid}/notifications`);
     setState(res.data);
-    setNotes(res.data.filter(e => e.read === false));
-  }
+    setNotes(res.data.filter((e) => e.read === false));
+  };
 
   return (
     <div className={style.container}>
-
       <div className={style.container_title}>
         <h1 className={style.title}>Notificaciones</h1>
         <button className={style.button} onClick={handleClickAllRead}>
@@ -55,28 +53,28 @@ const Notifications = () => {
       </div>
 
       <div className={style.container_notifications}>
-        {
-          state ? (
-            <>
-              <div>
-                {
-                  state.map((noti) => (
-                    <div 
-                      className={noti.read === false ? style.notification : style.notification_read}
-                      onClick={() => handleClickRead(noti)}
-                    >
-                      <HiBell className={style.icon}/>
-                      <p>{noti.msg}</p>
-                    </div>
-                  )).reverse()
-                }
-              </div>
-            </>
-          ) : <p>No hay notificaciones</p>
-        }
+        {state ? (
+          <>
+            <div>
+              {state
+                .map((noti) => (
+                  <div
+                    className={noti.read === false ? style.notification : style.notification_read}
+                    onClick={() => handleClickRead(noti)}
+                  >
+                    <HiBell className={style.icon} />
+                    <p>{noti.msg}</p>
+                  </div>
+                ))
+                .reverse()}
+            </div>
+          </>
+        ) : (
+          <p>No hay notificaciones</p>
+        )}
       </div>
     </div>
   );
-}
+};
 
 export default Notifications;

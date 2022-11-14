@@ -127,7 +127,14 @@ const PreferencesUser = ({ userData }) => {
           <p className={styles.texto}>Promociones o eventos que pueden ser de mi interés</p>
           <div className={styles.cont_txt_btn}>
             <p className={styles.texto}>Recordatorio de fechas de eventos en</p>
-            <button className={styles.btn}>Mi lista</button>
+            <button
+              onClick={() => {
+                navigate('/usuario/mi-lista');
+              }}
+              className={styles.btn}
+            >
+              Mi lista
+            </button>
           </div>
         </div>
 
