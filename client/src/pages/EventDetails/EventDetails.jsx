@@ -33,7 +33,6 @@ import { getEvents } from '../../redux/actions';
 import style from './EventDetails.module.css';
 
 const EventDetails = () => {
-
   const id = useParams().id;
   const dispatch = useDispatch();
   const allEvents = useSelector((state) => state.events);
@@ -71,12 +70,11 @@ const EventDetails = () => {
     const getFav = async () => {
       try {
         const res = await eventsApi.get('/users/' + user.uid);
-        setHeart(res.data.myFavorites.find(e => e._id === id));
-      } 
-      catch (error) {
-        console.log(error);  
+        setHeart(res.data.myFavorites.find((e) => e._id === id));
+      } catch (error) {
+        console.log(error);
       }
-    }
+    };
     getFav();
   }, [user.uid]);
 
@@ -86,18 +84,18 @@ const EventDetails = () => {
         setIsOpen(false);
         console.log('dropdown:', menuRef.current);
       }
-    }
+    };
     document.addEventListener('mousedown', handler);
     return () => {
       document.removeEventListener('mousedown', handler);
-    }
+    };
   }, []);
 
   /* const handleFormatDate = (check) => {
     setCheck(check);
     setChecked(formatDate(check));
   }; */
- 
+
   const handleClickFav = async (e) => {
     e.preventDefault();
     const fav = {
@@ -146,10 +144,10 @@ const EventDetails = () => {
   const handleClickShare = (e) => {
     e.preventDefault();
     setIsOpen(!isOpen);
-  }
+  };
 
   return (
-    <div className={`${style.container} container`} >
+    <div className={`${style.container} container`}>
       <div className={style.item1}>
         {eventDetails ? (
           <div className={style.containers}>
@@ -173,53 +171,51 @@ const EventDetails = () => {
               )}
             </Swiper>
 
-            {
-              eventDetails.organizer._id === user.uid ? (
-                ''
-              ) : user.uid && heart ? (
-              <div className={style.container_icon_heart_p} >
-                 <FavoriteIcon className={style.icon_heart_p} sx={{ fontSize: 25, color: 'white',  margin: 'auto' }} />
-              </div>) :  user.uid && !heart ? (
+            {eventDetails.organizer._id === user.uid ? (
+              ''
+            ) : user.uid && heart ? (
+              <div className={style.container_icon_heart_p}>
+                <FavoriteIcon className={style.icon_heart_p} sx={{ fontSize: 25, color: 'white', margin: 'auto' }} />
+              </div>
+            ) : user.uid && !heart ? (
               <div className={style.container_icon_heart} onClick={user.uid ? handleClickFav : handleAlert}>
                 <AddIcon className={style.icon_heart} sx={{ fontSize: 30, color: '#868686' }} />
-              </div>) : (
+              </div>
+            ) : (
               <div className={style.container_icon_heart} onClick={user.uid ? handleClickFav : handleAlert}>
                 <AddIcon className={style.icon_heart} sx={{ fontSize: 30, color: '#868686' }} />
-              </div>)
-            }
+              </div>
+            )}
 
             <div className={style.container_icon_share} ref={menuRef}>
-             {/*  <input type='checkbox' id='check' /> */}
-              <div className={style.label} onClick={handleClickShare} >
+              {/*  <input type='checkbox' id='check' /> */}
+              <div className={style.label} onClick={handleClickShare}>
                 <LaunchOutlinedIcon className={style.icon_share} sx={{ fontSize: 25 }} />
               </div>
-              
-            
-              {
-                isOpen && (
-                  <div className={style.redes}>
-                    <a href='https://www.facebook.com/' target='_blank' rel='noreferrer noopener'>
-                      <ImFacebook className={style.icons} />
-                    </a>
 
-                    <a href='https://www.twitter.com/' target='_blank' rel='noreferrer noopener'>
-                      <ImTwitter className={style.icons} />
-                    </a>
+              {isOpen && (
+                <div className={style.redes}>
+                  <a href='https://www.facebook.com/' target='_blank' rel='noreferrer noopener'>
+                    <ImFacebook className={style.icons} />
+                  </a>
 
-                    <a href='https://www.linkedin.com/' target='_blank' rel='noreferrer noopener'>
-                      <ImLinkedin2 className={style.icons} />
-                    </a>
+                  <a href='https://www.twitter.com/' target='_blank' rel='noreferrer noopener'>
+                    <ImTwitter className={style.icons} />
+                  </a>
 
-                    <a href='https://web.whatsapp.com/' target='_blank' rel='noreferrer noopener'>
-                      <FaWhatsapp className={style.icons} />
-                    </a>
+                  <a href='https://www.linkedin.com/' target='_blank' rel='noreferrer noopener'>
+                    <ImLinkedin2 className={style.icons} />
+                  </a>
 
-                    <a href={eventDetails.link} target='_blank' rel='noreferrer noopener'>
-                      <IoLinkOutline className={style.icons} />
-                    </a>
-                  </div>
-                )
-              }
+                  <a href='https://web.whatsapp.com/' target='_blank' rel='noreferrer noopener'>
+                    <FaWhatsapp className={style.icons} />
+                  </a>
+
+                  <a href={eventDetails.link} target='_blank' rel='noreferrer noopener'>
+                    <IoLinkOutline className={style.icons} />
+                  </a>
+                </div>
+              )}
             </div>
 
             <div className={style.title}>
@@ -228,7 +224,7 @@ const EventDetails = () => {
               <div className={style.container_rating}>
                 <Rating
                   className={style.rating}
-                  name="half-rating"
+                  name='half-rating'
                   value={ratingEvent}
                   precision={0.5}
                   readOnly

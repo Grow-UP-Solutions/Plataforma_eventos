@@ -176,6 +176,7 @@ const Login = () => {
 
             <div className={styles.forgetPassword}>
               <button
+                type='button'
                 onClick={(e) => {
                   e.preventDefault();
                   setModalForgetPassword(true);

@@ -3,6 +3,7 @@ const validatonType = require('../../models/util/notifications/validatonType.js'
 const UsersFunctionDb = require('../../models/util/functionDB/users/index.users.js');
 const EventFunctionDb = require('../../models/util/functionDB/event/index.event.js');
 const Users = require('../../models/db/Users.js');
+const { sendMailForDeleteAccount } = require('../../models/util/mailer/mailToSendReasonForDeleteAccount.js');
 
 async function getAllUsers() {
   const allUsers = await UsersFunctionDb.allUserDb();
@@ -75,11 +76,12 @@ async function userUpdate(id, newUser) {
   }
 }
 
-async function userDelete(id) {
+async function userDelete(id, reasonForDeleteAccount) {
   try {
     const deleteUser = await UsersFunctionDb.deleteUsers(id);
-    if (!deleteUser) 'Usuario no encontardo';
-
+    if (!deleteUser) 'Usuario no encontrado';
+    const { name, email } = deleteUser;
+    await sendMailForDeleteAccount(name, email, reasonForDeleteAccount);
     return deleteUser;
   } catch (error) {
     throw new Error(error.message);
@@ -98,6 +100,23 @@ async function eventesFavorites(idUser, idEvent) {
     }
 
     return { msg: 'el evento existe en favoritos', eventeFavorite };
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+async function eventesDeleteFavorites(idUser, idEvent) {
+  try {
+    const user = await UsersFunctionDb.oneUser(idUser);
+    const eventeFavorite = user.myFavorites.find((e) => e._id == idEvent);
+
+    if (eventeFavorite) {
+      user.myFavorites = user.myFavorites.filter((e) => e._id !== idEvent);
+      await user.save();
+      return { msg: 'Exito' };
+    }
+
+    return { msg: 'el evento no existe en favoritos', eventeFavorite };
   } catch (error) {
     throw new Error(error.message);
   }
@@ -150,6 +169,7 @@ async function getUserByEmail(email) {
 
 module.exports = {
   eventesFavorites,
+  eventesDeleteFavorites,
   sendNotificationsUser,
   getAllUsers,
   getUser,

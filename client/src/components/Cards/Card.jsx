@@ -22,11 +22,11 @@ const Card = ({ event, listName }) => {
   const [local, setLocal] = useState(false);
   const menuRef = useRef();
 
+  //console.log('event card:',event)
+
   useEffect(() => {
     getUsers();
   }, []);
-
-  useEffect(() => {}, [allUsers]);
 
   useEffect(() => {
     const myUser = async () => {
@@ -103,7 +103,8 @@ const Card = ({ event, listName }) => {
     setPrice(e.target.value);
   }
 
-  // const portada = event.pictures.filter((p) => p.cover === true)[0];
+  
+  const portada = event.pictures.filter((p) => p.cover === true)[0];
 
   const handleClickOpenDrop = (e) => {
     e.preventDefault();
@@ -112,7 +113,7 @@ const Card = ({ event, listName }) => {
 
   return (
     <div className={styles.card}>
-      {/* {portada ? (
+      {portada ? (
         <Link to={`/detalles-del-evento/${event._id}`}>
           <img className={styles.cardImgEvent} src={portada.picture} alt='Not Found ):' width='200x' height='300' />
         </Link>
@@ -126,8 +127,8 @@ const Card = ({ event, listName }) => {
             height='300'
           />
         </Link>
-      )} */}
-      {event.pictures.length && event.pictures !== undefined
+      )}
+      {/* {event.pictures.length && event.pictures !== undefined
         ? event.pictures.map((p) =>
             p.cover === true ? (
               <Link to={`/detalles-del-evento/${event._id}`}>
@@ -145,7 +146,7 @@ const Card = ({ event, listName }) => {
               </Link>
             )
           )
-        : 'N'}
+        : 'N'} */}
 
       <div className={styles.cardText}>
         {event.dates && event.dates.length > 1 ? (
@@ -158,7 +159,7 @@ const Card = ({ event, listName }) => {
                   </option>
                 ) : (
                   <option key={index} value={date.price}>
-                    {date.dateFormated}
+                    {date.dateFormated.replace('de','/')}
                   </option>
                 )
               ) : (
@@ -175,7 +176,7 @@ const Card = ({ event, listName }) => {
             {event.dates[0].dateFormated.slice(0, event.dates[0].dateFormated.length - 7)}
           </p>
         ) : event.dates[0].isPublic === true && event.dates[0].inRevision === false ? (
-          <p className={styles.cardDateCurrent}>{event.dates[0].dateFormated}</p>
+          <p className={styles.cardDateCurrent}>{event.dates[0].dateFormated.replace('de','/')}</p>
         ) : (
           ''
         )}
