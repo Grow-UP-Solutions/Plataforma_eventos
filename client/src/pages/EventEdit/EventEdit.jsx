@@ -40,6 +40,27 @@ const EventEdit = () => {
   const Swal = require('sweetalert2');
   const eventId = useParams().id;
 
+  let fecha = new Date();
+  let anio = fecha.getFullYear();
+  let dia = fecha.getDate();
+  let _mes = fecha.getMonth(); //viene con valores de 0 al 11
+  _mes = _mes + 1; //ahora lo tienes de 1 al 12
+  let mes = '';
+  if (_mes < 10) {
+    //ahora le agregas un 0 para el formato date
+    mes = '0' + _mes;
+  } else {
+    mes = '' + _mes;
+  }
+
+  
+
+  const hora = fecha.getHours();
+  const minutes = fecha.getMinutes();
+  const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
+
+
+
   //--------------------------------------------------//
   //               EVENT              //
 
@@ -51,7 +72,85 @@ const EventEdit = () => {
 
   const eventos = useSelector((state) => state.events);
   const allEvents = [...eventos];
-  const eventDetails = allEvents.filter((e) => e._id === eventId)[0];
+
+  const eventDetails = allEvents.find((e) => e._id === eventId);
+  console.log('eventDetails:',eventDetails)
+
+  const [post, setPost] = useState({
+    idOrganizer: '',
+    title: '',
+    categories: [],
+    otherCategorie: '',
+    shortDescription: '',
+    longDescription: '',
+    pictures: [],
+    online: false,
+    link: '',
+    departamento: '',
+    municipio: '',
+    direccion: '',
+    barrio: '',
+    specialRequires: '',
+    dates: [
+      {
+        date: '',
+        start: '',
+        end: '',
+        year: 0,
+        cupos: '',
+        price: '',
+        sells: 0,
+        isPublic: '',
+        precioAlPublico: '',
+        gananciaCupo: '',
+        gananciaEvento: '',
+        dateFormated: '',
+        inRevision: '',
+        codigos: [
+          {
+            codigo: '',
+            descuento: '',
+            cantidad: '',
+            cod: false,
+            show: true,
+            ed: false,
+            uses: '',
+          },
+        ],
+      },
+    ],
+    isPublic: '',
+    inRevision: '',
+    compras: 10,
+  });
+
+  useEffect(() => {
+    if(eventDetails){
+      const auxCategories = eventDetails.categories.map((categorie) => categorie.name)
+      setPost({
+        ...post,
+        idOrganizer: eventDetails.organizer._id,
+        title: eventDetails.title,
+        categories: auxCategories,
+        otherCategorie: eventDetails.otherCategorie,
+        shortDescription: eventDetails.shortDescription,
+        longDescription: eventDetails.longDescription,
+        pictures: eventDetails.pictures,
+        online: eventDetails.online,
+        link: eventDetails.link,
+        departamento: eventDetails.departamento,
+        municipio: eventDetails.municipio,
+        direccion: eventDetails.direccion,
+        barrio: eventDetails.barrio,
+        specialRequires: eventDetails.specialRequires,
+        dates: eventDetails.dates,
+        isPublic: eventDetails.isPublic,
+        inRevision: eventDetails.inRevision,
+        compras: 10,
+      })
+    }}, [eventDetails]);
+
+
 
   //              para comparar            //
   const allEventsCopy = useSelector((state) => state.eventsCopy);
@@ -166,81 +265,7 @@ const EventEdit = () => {
   //   }
   // }, [userData]);
 
-  const [post, setPost] = useState({
-    idOrganizer: '',
-    title: '',
-    categories: [],
-    otherCategorie: '',
-    shortDescription: '',
-    longDescription: '',
-    pictures: [],
-    online: false,
-    link: '',
-    departamento: '',
-    municipio: '',
-    direccion: '',
-    barrio: '',
-    specialRequires: '',
-    dates: [
-      {
-        date: '',
-        start: '',
-        end: '',
-        year: 0,
-        cupos: 0,
-        price: 0,
-        sells: 0,
-        isPublic: '',
-        precioAlPublico: '',
-        gananciaCupo: '',
-        gananciaEvento: '',
-        dateFormated: '',
-        inRevision: '',
-        codigos: [
-          {
-            codigo: '',
-            descuento: '',
-            cantidad: '',
-            cod: false,
-            show: true,
-            ed: false,
-            uses: '',
-          },
-        ],
-      },
-    ],
-    isPublic: '',
-    inRevision: '',
-    compras: 10,
-  });
-
-  useEffect(() => {
-    if (eventDetails) {
-      const auxCategories = eventDetails.categories.map((categorie) => categorie.name);
-
-      setPost({
-        ...post,
-        idOrganizer: eventDetails.organizer._id,
-        title: eventDetails.title,
-        categories: auxCategories,
-        otherCategorie: eventDetails.otherCategorie,
-        shortDescription: eventDetails.shortDescription,
-        longDescription: eventDetails.longDescription,
-        pictures: eventDetails.pictures,
-        online: eventDetails.online,
-        link: eventDetails.link,
-        departamento: eventDetails.departamento,
-        municipio: eventDetails.municipio,
-        direccion: eventDetails.direccion,
-        barrio: eventDetails.barrio,
-        specialRequires: eventDetails.specialRequires,
-        dates: eventDetails.dates,
-        isPublic: eventDetails.isPublic,
-        inRevision: true,
-        compras: 10,
-      });
-    }
-  }, [eventDetails]);
+  
 
   const [errors, setErrors] = useState({
     title: '',
@@ -258,7 +283,6 @@ const EventEdit = () => {
     price: '',
     dates: '',
     bono: '',
-    isPublic: '',
   });
 
   useEffect(() => {
@@ -482,7 +506,8 @@ const EventEdit = () => {
           if (
             post.dates[i]._id === EventCopy.dates[j]._id &&
             post.dates[i].sells > 0 &&
-            post.dates[i].cupos < EventCopy.dates[j].sells
+            post.dates[i].cupos < EventCopy.dates[j].sells &&
+            post.dates[i].cupos !== EventCopy.dates[j].cupos
           ) {
             errors.cupos = `Ya se vendieron ${EventCopy.dates[j].sells}  cupos. El número no puede ser inferior a los cupos ya vendidos `;
             // return swal({
@@ -517,7 +542,7 @@ const EventEdit = () => {
     for (let i = 0; i < post.dates.length; i++) {
       for (let j = 0; j < post.dates[i].codigos.length; j++) {
         if (
-          (post.dates[i].codigos[j].descuento.length && post.dates[i].codigos[j].descuento < 1) ||
+          ( post.dates[i].codigos[j].descuento !== null &&post.dates[i].codigos[j].descuento.length && post.dates[i].codigos[j].descuento < 1) ||
           post.dates[i].codigos[j].descuento > 100
         ) {
           errors.bono = 'Descuento: Valores entre 1 y 99';
@@ -867,6 +892,9 @@ const EventEdit = () => {
     }
   };
 
+  // const removeFromPublic = (e,i,id)=>{
+  //   console.log('2')
+  // }
   let removeFromPublic = (e, i, id) => {
     e.preventDefault();
     let newFechas = [...post.dates];
@@ -878,12 +906,31 @@ const EventEdit = () => {
         buttons: ['Cancelar acción', 'Continuar'],
         dangerMode: true,
       }).then((continuar) => {
-        if (continuar) {
+        if (continuar){
+        if(post.dates.length>1){
           setPost({
             ...post,
             dates: newFechas,
+          })
+          post.dates.map((date)=>{ 
+            if(new Date(date.date)<new Date(dateActual) || date.date === dateActual && date.end.slice(0,2) <= hora && date.end.slice(3,5) <= minutes+2){
+              date.isPublic=false
+            }
+          })     
+          let allFalse = post.dates.filter((date)=>date.isPublic === true)
+          if(allFalse.length===0){
+            setPost({
+              ...post,
+              isPublic:false
+            })
+          }
+        }else if(post.dates.length===1){
+          setPost({
+            ...post,
+            dates: newFechas,
+            isPublic:false
           });
-        }
+        }} 
       });
     } else if (newFechas[i].sells > 0) {
       return Swal.fire({
@@ -913,6 +960,7 @@ const EventEdit = () => {
     e.preventDefault();
     let newFechas = [...post.dates];
     newFechas[i].isPublic = true;
+    
     return swal({
       title: 'Esta acción agregara esta fecha a publicados. ',
       icon: 'warning',
@@ -923,6 +971,7 @@ const EventEdit = () => {
         setPost({
           ...post,
           dates: newFechas,
+          isPublic:true
         });
       }
     });
@@ -1222,19 +1271,7 @@ const EventEdit = () => {
     return `Z-` + letrasResult + numerosResult;
   };
 
-  let fecha = new Date();
-  let anio = fecha.getFullYear();
-  let dia = fecha.getDate();
-  let _mes = fecha.getMonth(); //viene con valores de 0 al 11
-  _mes = _mes + 1; //ahora lo tienes de 1 al 12
-  let mes = '';
-  if (_mes < 10) {
-    //ahora le agregas un 0 para el formato date
-    mes = '0' + _mes;
-  } else {
-    mes = '' + _mes;
-  }
-
+ 
   const fechaMinima = anio + '-' + mes + '-' + dia;
 
   //-----------------------------------------------------//
@@ -1267,7 +1304,7 @@ const EventEdit = () => {
   //--------------------------------------------------//
   //                CANCEL          //
 
-  function handleDelete(e) {
+  const handleDelete = (e) => {
     e.preventDefault();
     swal({
       title: 'Esta acción borrara todo la información ingresada o modificada en esta sesión',
@@ -1283,7 +1320,7 @@ const EventEdit = () => {
   //--------------------------------------------------//
   //                  SUBMIT              //
 
-  function handleSubmit(e) {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (Object.values(errors).length > 0) {
       setFailedSubmit(true);
@@ -1342,7 +1379,6 @@ const EventEdit = () => {
       });
     }
   }
-
   return (
     <div>
       <div className={styles.container}>
@@ -2043,6 +2079,8 @@ const EventEdit = () => {
                   {/* Dates*/}
                   <div>
                     {post.dates.map((date, index) => (
+                      new Date(date.date)<new Date(dateActual) || date.date === dateActual && date.end.slice(0,2) <= hora && date.end.slice(3,5) <= minutes+2 ?
+                      (''):(
                       <div>
                         {/* cupos-precios*/}
                         <div className={styles.containerInfo} key={index}>
@@ -2512,7 +2550,8 @@ const EventEdit = () => {
                         {errors.bono && <p className={styles.errors}>{errors.bono}</p>}
 
                         <hr className={styles.hr}></hr>
-                      </div>
+                      </div>)
+            
                     ))}
                   </div>
 
@@ -2739,7 +2778,7 @@ const EventEdit = () => {
 
                       {/*publicar*/}
                       <div>
-                        <button className={styles.viewBtn} type='submit'>
+                        <button className={styles.viewBtn} onClick={(e)=>handleSubmit(e)}>
                           {' '}
                           Publicar Evento
                         </button>

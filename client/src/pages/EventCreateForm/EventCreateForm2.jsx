@@ -175,12 +175,13 @@ const EventCreateForm2 = () => {
         gananciaCupo: '',
         gananciaEvento: '',
         dateFormated: '',
+        dateFormated2:'',
         inRevision: false,
         codigos: [
           {
             codigo: '',
-            descuento: 0,
-            cantidad: 0,
+            descuento: '',
+            cantidad: '',
             cod: false,
             show: true,
             ed: false,
@@ -629,7 +630,7 @@ const EventCreateForm2 = () => {
         parseFloat(newFechas[i].price) * parseFloat(comision) * parseFloat(IVA));
     newFechas[i].gananciaEvento = parseFloat(newFechas[i].gananciaCupo) * parseInt(newFechas[i].cupos);
     if (e.target.name === 'date') {
-      newFechas[i].dateFormated = formatDateForm(e.target.value);
+      newFechas[i].dateFormated = formatDateForm(e.target.value)
     }
 
     if (indice !== undefined) {
@@ -1010,6 +1011,7 @@ const EventCreateForm2 = () => {
                 spaceBetween={0}
                 modules={[Pagination, Navigation]}
                 className='swiper'
+                autoHeight={true}
               >
                 <SwiperSlide>
                   {/* SECTION 1: Nombre del Evento */}
@@ -1861,7 +1863,7 @@ const EventCreateForm2 = () => {
 
                               {/* hora fin*/}
                               <div className={styles.contStart}>
-                                <label>End</label>
+                                <label>Termina</label>
                                 {failedSubmit && errors.dates ? (
                                   <input
                                     type='time'
