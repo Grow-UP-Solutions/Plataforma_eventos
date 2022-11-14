@@ -1,7 +1,5 @@
-const Message = require("../../../db/Message");
-
+const Message = require('../../../db/Message');
 
 module.exports = async function allMessageDB() {
-   
-    return await Message.find();
- }
+  return await Message.find();
+};

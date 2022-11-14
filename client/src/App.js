@@ -38,7 +38,6 @@ import Press from './pages/Press/Press';
 import { getEvents } from './redux/actions';
 
 function App() {
-
   const [navBar, setNavBar] = useState(false);
   const dispatch = useDispatch();
   const { isMenuLoginOpen, getCategories, getAllEvents } = useContext(UIContext);
@@ -56,10 +55,10 @@ function App() {
   useEffect(() => {
     dispatch(getEvents());
     getAllEvents();
-  }, []);  
+  }, []);
 
   return (
-    <div className='App' >
+    <div className='App'>
       <Navbar upper={navBar} />
       <Routes>
         <Route path='/' element={<Home handleNav={setNavBar} />} />
