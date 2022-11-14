@@ -18,6 +18,7 @@ import {
   Finance,
   ReferralPlan,
   UserForm,
+  Loading,
 } from '../../components';
 
 import {
@@ -38,7 +39,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { animateScroll as scroll } from 'react-scroll';
 
 const UserPage = () => {
-
   const { option } = useParams();
   const { user } = useContext(AuthContext);
   const [userData, setUserData] = useState({});
@@ -46,13 +46,14 @@ const UserPage = () => {
   const [component, setComponent] = useState();
   const [isOpenMenu, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     getUserData();
     scroll.scrollToTop();
   }, [user]);
 
   const getUserData = async () => {
+    setComponent(<Loading />);
     if (user.uid) {
       const userResult = await eventsApi.get(`/users/${user.uid}`);
       setUserData(userResult.data);
@@ -88,7 +89,6 @@ const UserPage = () => {
 
     /* USER */
     if (name === 'Mi lista') {
-      setComponent(<MyListUser myFavorites={userData.myFavorites} />);
       navigate('/usuario/mi-lista');
     }
     if (name === 'Pendientes por Asistir')
@@ -96,16 +96,13 @@ const UserPage = () => {
     if (name === 'Mis Eventos')
       setComponent(<MyEventsOrganizer userData={userData} myEventsCreated={userData.myEventsCreated} />);
     if (name === 'Perfil') {
-      setComponent(<UserForm userData={userData} />);
       navigate('/usuario/perfil');
     }
 
     if (name === 'Plan de Referidos') {
-      setComponent(<ReferralPlan userData={userData} />);
       navigate('/usuario/plan-de-referidos');
     }
     if (name === 'Preferencias') {
-      setComponent(<PreferencesUser userData={userData} />);
       navigate('/usuario/preferencias');
     }
   };

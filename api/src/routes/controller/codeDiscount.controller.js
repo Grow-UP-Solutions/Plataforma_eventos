@@ -8,6 +8,7 @@ const {
   updateCodeDiscount,
   getListCodeDiscountByCreator,
   redimeedCodeDiscount,
+  getCodeDiscountByCode,
 } = require('../../models/util/functionDB/CodeDiscountDb');
 
 router.post('/createCodeDiscount', async (req, res) => {
@@ -46,6 +47,19 @@ router.get('/getCodeDiscountById/:id', async (req, res) => {
   }
 });
 
+router.get('/getCodeDiscountByCode/:code', async (req, res) => {
+  const { code } = req.params;
+
+  try {
+    const codeDiscount = await getCodeDiscountByCode(code);
+    res.json({ codeDiscount });
+  } catch (error) {
+    res.status(404).json({
+      message: error.message,
+    });
+  }
+});
+
 router.get('/getListCodeDiscountByCreator/:id', async (req, res) => {
   const { id } = req.params;
   try {
@@ -77,20 +91,6 @@ router.delete('/deleteCodeDiscountById/:id', async (req, res) => {
     res.json({ success: true });
   } catch (error) {
     res.status(401).json({ message: error.message });
-  }
-});
-
-router.put('/redimeedCodeDiscount/', async (req, res) => {
-  const { idCode, idUser } = req.body;
-  try {
-    await redimeedCodeDiscount(idCode, idUser);
-    res.json({
-      success: true,
-    });
-  } catch (error) {
-    res.status(401).json({
-      message: error.message,
-    });
   }
 });
 

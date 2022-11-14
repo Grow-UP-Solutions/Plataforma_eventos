@@ -2,15 +2,16 @@
   max-width: 1420px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 30% 70% ;
-  grid-template-areas: 
-  'buttons components';
+  grid-template-columns: 30% 70%;
+  grid-template-areas: 'buttons components';
+
+  height: 100vh;
 }
 
 .container_title {
   grid-area: buttons;
   background-color: var(--color-grey-6);
-  border-bottom: .3px solid var(--color-grey-4);
+  border-bottom: 0.3px solid var(--color-grey-4);
   padding-bottom: 1rem;
   width: 90%;
   margin-left: 1.5rem;
@@ -88,7 +89,8 @@
   margin: 0 auto;
 }
 
-.box1, .box2 {
+.box1,
+.box2 {
   font-family: 'Raleway', sans-serif;
   font-size: 1.6rem;
   color: var(--color-grey-3);
@@ -106,5 +108,3 @@
   margin-left: 10px;
   margin-right: 10px;
 }
-
-

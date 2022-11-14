@@ -13,10 +13,9 @@ import styles from './OrganizerDetails.module.css';
 import swal from 'sweetalert';
 import { UIContext } from '../../context/ui';
 import { stateContext } from '../../context/state/stateContext';
-import { format, register } from "timeago.js";
+import { format, register } from 'timeago.js';
 
 const localeFunc = (number, index, total_sec) => {
-
   return [
     ['justo ahora', 'en un rato'],
     ['hace %s segundos', 'en %s segundos'],
@@ -37,7 +36,6 @@ const localeFunc = (number, index, total_sec) => {
 register('es_ES', localeFunc);
 
 const OrganizerDetails = () => {
-
   const id = useParams().id;
   const { user, logged } = useContext(AuthContext);
   const { getEffectRatingOrganizer, ratingOrg } = useContext(UIContext);
@@ -64,7 +62,7 @@ const OrganizerDetails = () => {
       senderId: user.uid,
       receiverId: id,
     });
-  }, []);  
+  }, []);
 
   const obtenerDatos = async () => {
     const data = await eventsApi.get('/users/' + id);
@@ -74,13 +72,13 @@ const OrganizerDetails = () => {
     setUserDetail({
       organizer: json,
     });
-    setComponent(<AboutOrganizer userDetail={json.descriptionOrganizer} />)
+    setComponent(<AboutOrganizer userDetail={json.descriptionOrganizer} />);
     setStyle('aboutOrganizer');
   };
 
   const handleClickMessages = (e) => {
     e.preventDefault();
-    const array = conversa.map(e => e.members).flat();
+    const array = conversa.map((e) => e.members).flat();
     const json = array.includes(id);
     if (conversation.senderId === conversation.receiverId) {
       swal({
@@ -89,13 +87,10 @@ const OrganizerDetails = () => {
         button: 'Cerrar',
         dangerMode: true,
       });
-    }
-    else if (json === true) {
+    } else if (json === true) {
       navigate('/usuario/mensajes');
-    }
-    else {
-      eventsApi.post('/conversation/create', conversation)
-      .then((response) => {
+    } else {
+      eventsApi.post('/conversation/create', conversation).then((response) => {
         navigate('/usuario/mensajes');
       });
     }
@@ -124,8 +119,7 @@ const OrganizerDetails = () => {
     if (name === 'Opinions') {
       setComponent(<Opinions userDetail={userDetail.organizer} />);
       setStyle('opinions');
-    }
-    else {
+    } else {
       console.log('growup');
     }
   };
@@ -135,11 +129,7 @@ const OrganizerDetails = () => {
       {userDetail ? (
         <div>
           <div className={styles.top}></div>
-          <img
-            className={styles.img}
-            src={userDetail.organizer.userpicture}
-            alt='N'
-          />
+          <img className={styles.img} src={userDetail.organizer.userpicture} alt='N' />
           <p className={styles.name}>{userDetail.organizer.name}</p>
           <Rating
             className={styles.rating}
@@ -153,15 +143,10 @@ const OrganizerDetails = () => {
             <IoLocationOutline className={styles.icon} />
             <p className={styles.direction}>{userDetail.organizer.direction}</p>
           </div>
-          <p className={styles.member}>
-            Miembro desde {format(userDetail.organizer.createdAt, 'es_ES')}
-          </p>
+          <p className={styles.member}>Miembro desde {format(userDetail.organizer.createdAt, 'es_ES')}</p>
           <div className={styles.containerMess}>
             <LocalPostOfficeIcon sx={{ fontSize: '1.6rem', color: '#d53e27' }} />
-            <button
-              className={styles.message}
-              onClick={logged === true ? handleClickMessages : handleAlert}
-            >
+            <button className={styles.message} onClick={logged === true ? handleClickMessages : handleAlert}>
               Enviar Mensaje
             </button>
           </div>
@@ -175,18 +160,14 @@ const OrganizerDetails = () => {
             </button>
             <div className={styles.vLine}></div>
             <button
-              className={style === 'nextEvents' ? styles.btn_c :  styles.btn}
+              className={style === 'nextEvents' ? styles.btn_c : styles.btn}
               name='NextEvents'
               onClick={handleInput}
             >
               Próximos Eventos
             </button>
             <div className={styles.vLine}></div>
-            <button
-              className={style === 'opinions' ? styles.btn_c :  styles.btn}
-              name='Opinions'
-              onClick={handleInput}
-            >
+            <button className={style === 'opinions' ? styles.btn_c : styles.btn} name='Opinions' onClick={handleInput}>
               Opiniones
             </button>
           </div>
