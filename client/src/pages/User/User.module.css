@@ -117,7 +117,18 @@
   background-color: var(--color-blue);
 }
 
+.btn:checked ~ .labelOption {
+  font-weight: bold;
+  color: var(--color-orange);
+}
+
+.labelOption {
+  font-size: 1.6rem;
+  cursor: pointer;
+}
+
 .btn {
+  display: none;
   background-color: transparent;
   border: none;
   color: #868686;
@@ -125,13 +136,13 @@
   cursor: pointer;
 }
 
-.btn:focus {
+.btn:checked {
   color: #d53e27;
   font-weight: bold;
 }
 
-.btn:focus ~ .iconMenu,
-.btn:focus ~ .iconArrow {
+.btn:checked ~ .iconMenu,
+.btn:checked ~ .iconArrow {
   stroke: var(--color-orange);
   color: var(--color-orange);
   visibility: visible;

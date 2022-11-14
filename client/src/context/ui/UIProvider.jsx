@@ -29,6 +29,11 @@ export const UIProvider = ({ children }) => {
     dispatch({ type: 'GET_ALL_EVENTS', payload: res.data });
   }
 
+  const getAllUsers = async () => {
+    const res = await eventsApi.get('/users');
+    dispatch({ type: 'GET_ALL_USERS', payload: res.data });
+  }
+
   const getEventsFavourites = async (id, payload) => {
     console.log('despache:')
     const res = await eventsApi.put(`/users/${id}/favorites`, payload);
@@ -74,6 +79,7 @@ export const UIProvider = ({ children }) => {
         toggleScreenLogin,
         getCategories,
         getAllEvents,
+        getAllUsers,
         getEventsFavourites,
         getRatingOrganizer,
         getRatingEvent,

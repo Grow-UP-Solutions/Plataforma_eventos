@@ -8,15 +8,18 @@ import { Swiper, SwiperSlide } from 'swiper/react/swiper-react';
 import 'swiper/swiper.min.css';
 import Card from '../Cards/Card';
 import styles from './MyEventsOrganizer.module.css';
+import { BsCamera, BsCardImage, BsInfoCircle, BsPencilSquare } from 'react-icons/bs';
+import basquet from '../../assets/imgs/basquet.svg';
+import { AiOutlineClose } from 'react-icons/ai';
+import { useContext, useState , useEffect ,useRef} from 'react';
 
 const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
-
   const fecha = new Date();
   const hora = fecha.getHours();
   const minutes = fecha.getMinutes();
   const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
-
-  if(dateActual){myEventsCreated.map((evento)=>{   
+ 
+  if(dateActual && myEventsCreated!==undefined ){myEventsCreated.map((evento)=>{   
     evento.dates.map((date)=>{ 
       if(new Date(date.date)<new Date(dateActual)){ 
          if(evento.dates.length===1){
@@ -38,77 +41,77 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
     })
   })}
 
-
-
+ 
   const eventsPublic = myEventsCreated.filter((e) => e.isPublic === true);
   const eventsNoPublic = myEventsCreated.filter((e) => e.isPublic === false);
 
+  
+  const deleteEvent = (e) =>{
+    console.log('borrar evento')
+  }
+
+ 
+
   return (
     <div className={styles.container}>
-      <p className={styles.title}>Publicados</p>
+      {myEventsCreated.length>0?
+        <div>
+        <p className={styles.title}>Publicados</p>
 
-      <div className={styles.containercard}>
-        <Swiper slidesPerView={3} slidesPerGroup={3} navigation spaceBetween={0} modules={[Navigation]} className={styles.mySwipper}>
-          {eventsPublic && eventsPublic.length
-            ? eventsPublic.map((event) => (
+        <div className={styles.containercard}>
+          <Swiper slidesPerView={3} slidesPerGroup={3} navigation spaceBetween={0} modules={[Navigation]} className={styles.mySwipper}>
+            {eventsPublic && eventsPublic.length
+              ? eventsPublic.map((event) => (
+                  <div className={styles.card}>
+                    <SwiperSlide>
+                      <Card userData={userData} event={event} listName={'published'} orgEvent={'true'} />
+                      <Link className={styles.btn} to={'/oganiza-un-evento-editar/' + event._id}>
+                        <BsPencilSquare className={styles.iconEdit} />
+                        <span>Editar</span>
+                      </Link>
+                    </SwiperSlide>
+                  </div>
+                ))
+              : 'No tienes eventos creados'}
+          </Swiper>
+        </div>
+        <hr className={styles.cardHr}></hr>
+
+        <p className={styles.title}>Por Publicar</p>
+
+        <div className={styles.containercard}>
+          <Swiper lidesPerView={3} slidesPerGroup={3} navigation spaceBetween={0} modules={[Navigation]} className={styles.mySwipper}>
+            {eventsNoPublic.length ? (
+              eventsNoPublic.map((event, index) => (
                 <div className={styles.card}>
                   <SwiperSlide>
-                    <Card userData={userData} event={event} listName={'published'} />
-                    <div className={styles.containerDatos}>
-                      <div className={styles.datos}>
-                        <p>Fechas:</p>
-                        <h4>{event.dates.length}</h4>
-                        <button>Ver</button>
+                    
+                      <div>
+                      <Card userData={userData} event={event} listName={'to-publish'}  orgEvent={''} />
                       </div>
-                      <div className={styles.datos}>
-                        <p>Asistentes:</p>
-                        <h4>{event.participants}</h4>
-                        <button>Ver</button>
+                      <div className={styles.btns}>
+                        <Link className={styles.btn} to={'/oganiza-un-evento-editar/' + event._id}>
+                          <BsPencilSquare className={styles.iconEdit} />
+                          <span>Editar</span>
+                        </Link>
+                        <button className={styles.btn} onClick={(e)=>deleteEvent(e)}>
+                          <img  src={basquet} alt='n' />
+                        </button> 
+
                       </div>
-                      <div className={styles.datos}>
-                        <p>Ganancias:</p>
-                        <h4>$9003</h4>
-                        <button>Ver</button>
-                      </div>
-                    </div>
-                    <Link to={'/oganiza-un-evento-editar/' + event._id}>
-                      <button className={styles.btn}>Editar</button>
-                    </Link>
+                    
                   </SwiperSlide>
                 </div>
-              ))
-            : 'No tienes eventos creados'}
-        </Swiper>
-      </div>
-      <hr className={styles.cardHr}></hr>
-
-      <p className={styles.title}>Por Publicar</p>
-
-      <div className={styles.containercard}>
-        <Swiper lidesPerView={3} slidesPerGroup={3} navigation spaceBetween={0} modules={[Navigation]} className={styles.mySwipper}>
-          {eventsNoPublic.length ? (
-            eventsNoPublic.map((event, index) => (
-              <div className={styles.card}>
-                <SwiperSlide>
-                  
-                    <div>
-                    <Card userData={userData} event={event} listName={'to-publish'} />
-                    </div>
-                    <div>
-                    <Link to={'/oganiza-un-evento-editar/' + event._id}>
-                        <button className={styles.btn}>Editar</button>
-                    </Link>
-                    </div>
-                  
-                </SwiperSlide>
-              </div>
+                )
               )
-            )
-          ) : (
-            <h5>No Tienes Eventos Por Publicar</h5>
-          )}
-        </Swiper>
+            ) : (
+              <h5>No Tienes Eventos Por Publicar</h5>
+            )}
+          </Swiper>
+        </div>
       </div>
+      : 'Aun no tienes eventos publicados o por publicar. Crea tu evento' +
+      '<a href="/oganiza-un-evento" target="_blank">aqui</a> ' }
     </div>
   );
 };

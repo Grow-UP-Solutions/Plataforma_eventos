@@ -30,6 +30,7 @@ import {
   WorkWithUs,
   WorkWithUsForm,
   CheckSolicitudOrganizer,
+  MyEventsAsistentes
 } from './pages';
 import EventsOrganizerResult from './pages/EventsOrganizerResult/EventsOrganizerResult';
 import News from './pages/News/News';
@@ -38,7 +39,6 @@ import Press from './pages/Press/Press';
 import { getEvents } from './redux/actions';
 
 function App() {
-
   const [navBar, setNavBar] = useState(false);
   const dispatch = useDispatch();
   const { isMenuLoginOpen, getCategories, getAllEvents } = useContext(UIContext);
@@ -55,11 +55,12 @@ function App() {
 
   useEffect(() => {
     dispatch(getEvents());
+    
     getAllEvents();
-  }, []);  
+  }, []);
 
   return (
-    <div className='App' >
+    <div className='App'>
       <Navbar upper={navBar} />
       <Routes>
         <Route path='/' element={<Home handleNav={setNavBar} />} />
@@ -92,6 +93,8 @@ function App() {
         <Route path='/cambiarContrasenia/:token' element={<ChangePassword />} />
         <Route path='/edita-un-evento' element={<EventEdit />} />
         <Route path='/admin/check-solicitud-organizador/:token' element={<CheckSolicitudOrganizer />} />
+        <Route path='/usuario/asistentes-al-evento/:eventId/:dateId' element={<MyEventsAsistentes />} />
+        
       </Routes>
       <div className='container_footer'>
         <Footer />

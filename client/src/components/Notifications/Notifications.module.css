@@ -1,7 +1,10 @@
+.container {
+  height: 95vh;
+}
 
 .container_title {
-  position: relative;  
-} 
+  position: relative;
+}
 
 .title {
   font-family: 'Raleway', sans-serif;
@@ -25,7 +28,7 @@
   font-family: 'Raleway', sans-serif;
   font-size: 1.4rem;
   color: var(--color-grey-2);
-  border-bottom: .5px solid var(--color-grey-3);
+  border-bottom: 0.5px solid var(--color-grey-3);
 }
 
 .container_notifications {
@@ -53,7 +56,8 @@
   padding: 2rem;
 }
 
-.notification p, .notification_read p {
+.notification p,
+.notification_read p {
   font-family: 'Raleway', sans-serif;
   font-size: 1.4rem;
   color: var(--color-grey-2);

@@ -1,33 +1,7 @@
 /* CHAT */
-
-.containerChat {
-  background-color: white;
-  height: 58.6rem;
-
-  display: flex;
-  flex-direction: column;
-  overflow: auto;
-}
-  
-.chatHeader {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-  color: var(--color-grey-2);
-  border-bottom: 1px solid var(--color-grey-4);
-  padding: 1.8rem;
-}
-
-.chatHeader img {
-  width: 3.7rem;
-  height: 3.7rem;
-  border-radius: 50%;
-}
-
 .containerChatMessage {
-  flex: 1;
-  
   padding: 2rem;
+  overflow: hidden;
 }
 
 /* CHAT MESSAGE */
@@ -43,7 +17,7 @@
 .otherMessage {
   padding: 2rem;
   border-radius: 10px;
-  box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.2);
 }
 
 .ownMessage {
@@ -56,7 +30,7 @@
 }
 
 .containerChatMessage p {
-  font-size: 1.4rem;
+  font-size: 1.6rem !important;
   color: var(--color-grey-1);
   width: 27rem;
 
@@ -140,9 +114,3 @@
   background-color: var(--color-orange);
   color: white;
 }
-
-
-
-
-
-
