@@ -1,9 +1,7 @@
-
 import React from 'react';
 import style from './ModalMsg.module.css';
 
 const ModalMsg = ({ closeModal }) => {
-
   return (
     <div className={style.container}>
       <div className={style.line_div}></div>
@@ -17,10 +15,12 @@ const ModalMsg = ({ closeModal }) => {
       </div>
 
       <div className={style.container_button}>
-        <button className={style.button_confirm} onClick={closeModal}>Listo</button>
+        <button className={style.button_confirm} onClick={closeModal}>
+          Listo
+        </button>
       </div>
     </div>
   );
-}
+};
 
 export default ModalMsg;
