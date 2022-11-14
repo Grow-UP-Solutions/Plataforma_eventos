@@ -8,6 +8,16 @@
   display: inline-block;
 }
 
+.cardOrg{
+  width: 30rem;
+  height: 49rem;
+  background-color: rgba(248, 248, 248, 255);
+  overflow: hidden;
+  border-radius: 1rem;
+  position: relative;
+  display: inline-block;
+}
+
 .cardDate {
   position: absolute;
   top: 10px;
@@ -226,6 +236,7 @@
   display: flex;
   align-items: center;
   margin-top: 1rem;
+  margin-bottom: 2rem;
 }
 
 .cardOrgPicture {
@@ -278,3 +289,98 @@
     opacity: 100;
   }
 }
+
+.containerDatos{
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+  width: 100%;
+  background-color: white;
+
+  
+}
+
+.datos p{
+  color:#585858;
+  font-size: 1.6rem;
+  font-weight: bold;
+  height: 2rem;
+  margin-bottom: 2rem;
+  margin-right:2rem;
+}
+
+.datos h4{
+  color:#a8a8a8;
+  font-size: 1.6rem;
+  font-weight: bold;
+  height: 2rem;
+  margin-bottom: 2rem;
+  margin-right: 1.5rem;
+}
+
+.datos button{
+  font-size: 1.6rem;
+  text-decoration: underline;
+  cursor: pointer;
+  background-color: white;
+  color:#D53E27;
+  border:none;
+  margin-top: -2rem;
+}
+
+.subDatos{
+  display: flex;
+}
+
+.containerMenuGetDates {
+  position: absolute;
+  top:0;
+  right:0;
+  height: 15rem;
+  width: 15rem;
+  padding: 2rem;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 10px 20px 2px rgba(0, 0, 0, 0.2);
+}
+
+.modal {
+  position: absolute; 
+  left: 0;
+  top: 0;
+  width: 200%; 
+  height: 120%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4); 
+  z-index: 999999999999999;
+  margin-left: -50%;
+  margin-right: -50%;
+ 
+}
+
+.modalContent {
+  position: absolute; 
+  display:flex;
+  background-color: #fefefe;
+  padding: 10px;
+  border: 1px solid #888;
+  width: 200%;
+  margin-left: 5rem;
+  
+}
+
+.modalContent p {
+ color:#D53E27
+  
+}
+
+.link{
+  font-size: 1.6rem;
+  text-decoration: underline;
+  cursor: pointer;
+  background-color: white;
+  color:#D53E27;
+  border:none;
+  margin-top: -2rem;
+  
+}
+

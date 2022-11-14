@@ -48,9 +48,7 @@ export function postEvent(payload) {
 export function putEvent(payload, id) {
 
   return async function (dispatch) {
-    console.log('payload,',payload)
-    console.log('idAction,',id)
-
+ 
     const json = await eventsApi.put(`/events/${id}`, payload);
     console.log('res:',json.data)
     
@@ -58,6 +56,19 @@ export function putEvent(payload, id) {
       type: 'PUT_EVENT',
       payload:json.data
     
+    });
+  }
+}
+
+export function getUsers() {
+  console.log('entre a get user')
+  return async function (dispatch) {
+
+    const json = await eventsApi.get('/users');
+    console.log('jason',json.data)
+    return dispatch({
+      type: 'GET_USERS',
+      payload: json.data,
     });
   }
 }
