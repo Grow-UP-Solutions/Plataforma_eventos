@@ -62,6 +62,19 @@ export function putEvent(payload, id) {
   }
 }
 
+export function getUsers() {
+
+  return async function (dispatch) {
+
+    const json = await eventsApi.get('/users');
+
+    return dispatch({
+      type: 'GET_USERS',
+      payload: json.data,
+    });
+  }
+}
+
 
 
 
