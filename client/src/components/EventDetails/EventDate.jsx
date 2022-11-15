@@ -13,6 +13,8 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/auth';
 import { UIContext } from '../../context/ui';
 import EventDateMap from './EventDateMap';
+import { iconArrowLeft, iconArrowRight } from '../../assets/imgs';
+import { stateContext } from '../../context/state/stateContext';
 
 const EventDate = ({ id }) => {
 
@@ -25,6 +27,15 @@ const EventDate = ({ id }) => {
   const { toggleScreenLogin } = useContext(UIContext);
   const { user, logged, logout } = useContext(AuthContext);
   const [checked, setChecked] = useState(false);
+  const { carrito, setCarrito } = useContext(stateContext);
+  console.log('carrito:',carrito)
+  
+
+//   if(eventDetails!==undefined){
+//   eventDetails.dates.map((d)=>{
+//   d.checked=false})
+// }
+
 
   const fecha = new Date();
   const hora = fecha.getHours();
@@ -35,6 +46,47 @@ const EventDate = ({ id }) => {
     setDate(date);
     setDateFormatted(formatDate(date));
   };
+
+
+  const [dateId, setDateId] = useState(0);
+
+  const dateSelected = (e) => {
+    e.preventDefault()
+    setChecked(true)
+    const fechaElegida = e.target.value
+    if (!e.target.checked) {
+      console.log('No checke')
+        let seleccion = carrito.filter((f)=>f.fechaId !== fechaElegida )
+        setCarrito(seleccion)
+     
+          // for( let i = 0 ; i<eventDetails.dates.length ; i++){
+          //   if(eventDetails.dates[i]._id===e.target.value){
+          //     eventDetails.dates[i].checked=false
+          //     console.log(' eventDetails.dates[i].checked', eventDetails.dates[i].checked)
+          //   }
+          //  }
+         
+     }else{
+      //let fechaCheked = date.buyers.find((buyer) => buyer === buyerId)
+      setCarrito([...carrito, {fechaId:fechaElegida, cupos:0}])
+      
+      // for( let i = 0 ; i<eventDetails.dates.length ; i++){
+      //   if(eventDetails.dates[i]._id===e.target.value){
+      //     eventDetails.dates[i].checked=true
+      //     console.log(' eventDetails.dates[i].checked', eventDetails.dates[i].checked)
+      //   }
+      //  }
+      
+
+     }
+    
+
+  }
+
+
+  
+  //COMPRAR
+
 
   const comprar = (e) => {
     if (!logged) {
@@ -47,6 +99,9 @@ const EventDate = ({ id }) => {
       alert('debes seleccionar una fecha del evento');
     }
   }
+
+  //CARRITO
+ 
 
   return (
     <div>
@@ -84,9 +139,8 @@ const EventDate = ({ id }) => {
                       <input
                         type="checkBox"
                         class={styles.checkBox}
-                        value={date.id}
-                        name={date.id}  
-                        onChange={() => setChecked(true)}                
+                        value={date._id}
+                        onChange={(e) => dateSelected(e)}                
                       />
                     </td>
 
@@ -98,7 +152,32 @@ const EventDate = ({ id }) => {
 
                     <td>{date.cupos}</td>
 
-                    <EventDateMap />
+                    {/* <td className={styles.containerNumberBuyCupos}>
+
+                      <button
+                        onClick={() => handleNumberBuyCupos(date.cuposToBuy - 1, date._id )}
+                      >
+                        <img src={iconArrowLeft} alt="icon-left" />
+                      </button>
+
+                      <span>{date.cuposToBuy}</span>
+
+                      <button
+                        onClick={() => handleNumberBuyCupos(date.cuposToBuy + 1, date._id )}
+                      >
+                        <img src={iconArrowRight} alt="icon-left" />
+                      </button>
+
+                    </td> */}
+                    
+                    <EventDateMap id={date._id}/>
+                    {/* {date.checked === false ?
+                    <td>false</td>:
+                    date.checked === true? 
+                    <td>true</td>
+                    : <td>ninguna</td>
+                    }
+                     */}
 
                   </tr>
                 )}
@@ -108,7 +187,9 @@ const EventDate = ({ id }) => {
         </table>
       </div>
 
-      <button className={styles.button}  onClick={(e) => comprar(e)}>Comprar</button>
+      <Link to={`/cart/${id}`}>
+        <button className={styles.button}  onClick={(e) => comprar(e)}>Comprar</button>
+      </Link>
 
       {/* <Link to={`/cart/${id}`}>
         <button className={styles.button}  onClick={(e) => comprar(e)}>Comprar</button>

@@ -10,7 +10,11 @@ import styles from './Cart.module.css';
 const Cart = () => {
   
   const id = useParams().id;
+  const dateId = useParams().dateId;
+  const num = useParams().num;
   console.log('id:', id);
+  console.log('dateId:', dateId);
+  console.log('num:', num);
   const events = useSelector((state) => state.events);
   const eventDetail = events.filter((e) => e._id === id)[0];
   console.log('eventdetails:', eventDetail);
@@ -24,7 +28,7 @@ const Cart = () => {
       <h1 className={styles.pageCartTitle}>Usted está comprando</h1>
       <div className={styles.containerPageCart}>
         <div className={styles.containerCardProduct}>
-          <CardProduct event={eventDetail} />
+          <CardProduct event={eventDetail}  />
           <div className={styles.summaryCart}>
             <h2 className={styles.summaryTitle}>
               <img src={iconExclamation} alt='icon-exclamation' />

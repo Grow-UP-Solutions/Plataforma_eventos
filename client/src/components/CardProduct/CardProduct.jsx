@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext,useEffect } from 'react';
 import styles from './CardProduct.module.css';
 import { iconArrowLeft, iconArrowRight } from '../../assets/imgs';
 import 'swiper/modules/navigation/navigation.min.css';
@@ -7,8 +7,27 @@ import 'swiper/modules/scrollbar/scrollbar.min.css';
 import { Swiper, SwiperSlide } from 'swiper/react/swiper-react';
 import 'swiper/swiper.min.css';
 import { Navigation, Pagination } from 'swiper';
+import { useState } from 'react';
+import { stateContext } from '../../context/state/stateContext';
 
 const CardProduct = ({ event }) => {
+
+
+  const { carrito, setCarrito } = useContext(stateContext);
+  console.log('carrito:',carrito)
+
+
+  const numero=[1,2,3,4]
+const [a,SetA]=useState(numero[0])
+
+const changeDate=(x)=>{
+  if(x===left){
+    SetA(numero[1])
+  }else{
+    SetA(numero[0])
+  }
+
+}
   
   return (
     <div className={styles.cartProduct}>
@@ -39,6 +58,42 @@ const CardProduct = ({ event }) => {
               </p>
             </div>
           ))} 
+          {/* {date!==undefined?
+          <div>
+              <div className={styles.productDate}>
+                <button className={styles.productDateBtn}>
+                  <img src={iconArrowLeft} alt="icon-left" />
+                </button>
+                  <span>{date.dateFormated.replace('/', ' de ')}</span>
+                <button className={styles.productDateBtn}>
+                  <img src={iconArrowRight} alt="icon-left" />
+                </button>
+              </div>
+              <p className={styles.productTime}>{date.start} a {date.end}</p>
+              <p className={styles.productLocation}>
+                {event.departamento} - {event.municipio}
+              </p>
+              <p className={styles.productCupos}>
+                Cupos disponibles : {date.cupos}
+              </p>
+            </div>
+            :''} */}
+            <div>
+            <button
+                onClick={() => changeDate(left)}
+              >
+                <img src={iconArrowLeft} alt="icon-left" />
+              </button>
+
+              <span>{a}</span>
+
+              <button
+                onClick={() => changeDate(rigth)}
+              >
+                <img src={iconArrowRight} alt="icon-left" />
+              </button>
+            </div>
+
         </div>
       </div>
       <div className={styles.containerOptions}>
