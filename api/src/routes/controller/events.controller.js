@@ -7,7 +7,6 @@ const {
   createOpinionsEvents,
   getOneEvent,
 } = require('../services/events.services.js');
-const paymentEvents = require('../services/pasarelaPagoService/paymentEvents.js');
 
 const router = Router();
 
