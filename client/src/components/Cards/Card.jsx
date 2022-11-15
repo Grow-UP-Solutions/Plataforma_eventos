@@ -25,6 +25,36 @@ const Card = ({ event, listName , orgEvent }) => {
   const menuRef = useRef();
 
 
+  const fecha = new Date();
+  const hora = fecha.getHours();
+  const minutes = fecha.getMinutes();
+  const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
+
+
+  if(dateActual && orgEvent!== 'true' ){
+    event.dates.map((date)=>{ 
+      if(new Date(date.date)<new Date(dateActual)){ 
+         if(event.dates.length===1){
+          date.isPublic=false
+          event.isPublic=false
+         }else{
+          date.isPublic=false
+         }
+      }else if(date.date === dateActual){
+        if(date.end.slice(0,2) <= hora && date.end.slice(3,5) <= minutes+2 ){
+          if(event.dates.length===1){
+            date.isPublic=false
+            event.isPublic=false
+           }else{
+            date.isPublic=false
+           }
+        }
+      }
+    })
+  }
+  
+
+
 
 
   useEffect(() => {
@@ -122,7 +152,7 @@ const Card = ({ event, listName , orgEvent }) => {
 
   const [getDates, setGetDates] = useState(false);
   const [getAssistants, setGetAssistants] = useState(false);
-  const [selectedDateId , setSelectedDateId] = useState('')
+  const [selectedDateId , setSelectedDateId] = useState(event.dates[0]._id)
   const [selectedDate , setSelectedDate] = useState('')
   const [datePrice , setDatePrice] = useState(undefined)
 
@@ -424,10 +454,8 @@ const Card = ({ event, listName , orgEvent }) => {
                         </button>
                       </div> 
                       <div>
-                        {event.dates.map((date,index)=>   
-                                              
-                          <p className={styles.choosedate} onClick={(e)=>chooseDate(e, date._id , date.dateFormated , date.price)}>{date.date}</p>  
-                        
+                        {event.dates.map((date)=>                                                
+                          <p className={styles.choosedate} onClick={(e)=>chooseDate(e, date._id , date.dateFormated , date.price)}>{date.date}</p>                          
                         ) }   
                       </div>                      
                     </div>
@@ -439,7 +467,19 @@ const Card = ({ event, listName , orgEvent }) => {
             }
             <div className={styles.subDatos}>
               <p>Asistentes:</p>
-              <h4>{event.dates.length}</h4>
+              {event.dates.map((date)=>
+                date._id === selectedDateId ? (
+                    date.buyers.length>1 ?
+                  <h4>{date.buyers.length}</h4>
+                  : date.buyers.length === 0 ?
+                  <h4>0</h4> 
+                  : date.buyers !== undefined ?
+                  <h4>0</h4> 
+                  : <h4>0</h4> 
+                  )
+                  :''
+                )
+              }
               <Link  to={`/usuario/asistentes-al-evento/${event._id}/${selectedDateId}`}>
               <button>
                 Ver
