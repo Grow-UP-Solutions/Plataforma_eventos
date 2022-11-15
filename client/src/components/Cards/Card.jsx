@@ -468,13 +468,18 @@ const Card = ({ event, listName , orgEvent }) => {
                 {getDates && (              
                     <div className={styles.containerMenuGetDates} ref={menuRef}>
                       <div className={styles.closeMenuGetDate}>
-                        <button onClick={() => setGetDates(false)}>
+                        {/* <button onClick={() => setGetDates(false)}>
                           <AiOutlineClose />
-                        </button>
+                        </button> */}
                       </div> 
-                      <div>
+                      <div className={styles.container_choosedate}>
                         {event.dates.map((date)=>                                                
-                          <p className={styles.choosedate} onClick={(e)=>chooseDate(e, date._id , date.dateFormated , date.price)}>{date.date}</p>                          
+                          <p 
+                            style={{ color: '#868686', fontFamily: 'Raleway', fontSize: '1.5rem', margin: '1rem auto' }} 
+                            onClick={(e)=>chooseDate(e, date._id , date.dateFormated , date.price)}
+                          >
+                            {date.date}
+                          </p>                          
                         ) }   
                       </div>                      
                     </div>
