@@ -6,13 +6,13 @@ import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { AiOutlineClose } from 'react-icons/ai';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import { iconArrowLeft, iconArrowRight } from '../../assets/imgs';
 import { formatDate } from '../../utils/formatDate';
 import { Link } from 'react-router-dom';
 import { useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/auth';
 import { UIContext } from '../../context/ui';
+import EventDateMap from './EventDateMap';
 
 const EventDate = ({ id }) => {
 
@@ -21,17 +21,15 @@ const EventDate = ({ id }) => {
   const [getNewDate, setGetNewDate] = useState(false);
   const [date, setDate] = useState(null);
   const [dateFormatted, setDateFormatted] = useState('');
-  const [numberBuyCupos, setNumberBuyCupos] = useState(0);
   const navigate = useNavigate();
   const { toggleScreenLogin } = useContext(UIContext);
   const { user, logged, logout } = useContext(AuthContext);
+  const [checked, setChecked] = useState(false);
 
-  const handleNumberBuyCupos = (num) => {
-    if (num <= -1) return;
-    if (num > 10) return;
-
-    setNumberBuyCupos(num);
-  };
+  const fecha = new Date();
+  const hora = fecha.getHours();
+  const minutes = fecha.getMinutes();
+  const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
 
   const handleFormatDate = (date) => {
     setDate(date);
@@ -39,15 +37,16 @@ const EventDate = ({ id }) => {
   };
 
   const comprar = (e) => {
-    // if (logged) {
-    //       navigate(`/cart/${id}`);
-    //     }
-    //  else if (!logged) {
-    //       toggleScreenLogin();
-    //     }
-    navigate(`/cart/${id}`);
+    if (!logged) {
+      toggleScreenLogin();
     }
-  
+    else if (logged && checked) {
+      navigate(`/cart/${id}`);
+    }
+    else if (logged && !checked) {
+      alert('debes seleccionar una fecha del evento');
+    }
+  }
 
   return (
     <div>
@@ -76,35 +75,35 @@ const EventDate = ({ id }) => {
             </tr>
           </thead>
           <tbody>
-            {eventDetails.dates.map((date) => (
-              <tr >
-                <td>
-                  <input
-                    type="checkbox"
-                    class={styles.checkBox}
-                    value={date.id}
-                    defaultChecked={false}
-                  ></input>
-                </td>
-                <td>{date.date}</td>
-                <td>{date.start}-{date.end}</td>
-                <td>{date.price}</td>
-                <td>{date.cupos}</td>
-                <td className={styles.containerNumberBuyCupos}>
-                  <button
-                    onClick={() => handleNumberBuyCupos(numberBuyCupos - 1)}
-                  >
-                    <img src={iconArrowLeft} alt="icon-left" />
-                  </button>
-                  <span>{numberBuyCupos}</span>
-                  <button
-                    onClick={() => handleNumberBuyCupos(numberBuyCupos + 1)}
-                  >
-                    <img src={iconArrowRight} alt="icon-left" />
-                  </button>
-                </td>
-              </tr>
-            ))}
+            {eventDetails.dates.map((date) => {
+              if (date.date > dateActual) {
+                return (
+                  <tr>
+
+                    <td>
+                      <input
+                        type="checkBox"
+                        class={styles.checkBox}
+                        value={date.id}
+                        name={date.id}  
+                        onChange={() => setChecked(true)}                
+                      />
+                    </td>
+
+                    <td>{date.date}</td>
+
+                    <td>{date.start}-{date.end}</td>
+
+                    <td>{date.price}</td>
+
+                    <td>{date.cupos}</td>
+
+                    <EventDateMap />
+
+                  </tr>
+                )}
+              else {return ''}
+            })}
           </tbody>
         </table>
       </div>

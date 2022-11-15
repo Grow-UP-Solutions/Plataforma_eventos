@@ -67,7 +67,7 @@ const EventOrganizer = ({ id }) => {
     navigate('/resulteventsorganizer/');
   };
 
-  console.log({ eventORganizar: eventDetails.organizer });
+  //console.log({ eventORganizar: eventDetails.organizer });
 
   return (
     <div>

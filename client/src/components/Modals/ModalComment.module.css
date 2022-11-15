@@ -1,8 +1,14 @@
-
 .container {
   display: grid;
   justify-content: center;
   align-items: center;
+  width: 90%;
+  margin: auto;
+}
+
+.container_close {
+  display: flex;
+  margin: 1rem 0;
 }
 
 .modal_close {
@@ -13,22 +19,23 @@
   margin-left: auto;
 }
 
-.line_div {
-  border: 0.1px solid rgb(219, 219, 219);
-  margin: 4.5rem 2rem;
-}
-
 .title {
   color: var(--color-blue);
   font-size: 1.6rem;
   font-weight: bold;
   font-family: 'Raleway', sans-serif;
-  margin-top: 1rem;
-  text-align: center;
+  margin-top: 1rem 2rem;
+  text-align: start;
+  margin-right: auto;
+}
+
+.line_div {
+  border: 0.1px solid rgb(219, 219, 219);
+  margin: 1rem 0;
 }
 
 .container_texts {
-  margin: 3rem 2rem;
+  margin: 1rem 0;
 }
 
 .text {
@@ -36,6 +43,35 @@
   font-size: 1.4rem;
   color: var(--color-grey-3);
   margin-top: .3rem;
+  text-align: start;
+}
+
+.container_select {
+  margin-top: 1rem;
+}
+
+.select {
+  width: 100%;
+  border: .5px solid var(--color-grey-3);
+  padding: .5rem;
+  font-size: 1.4rem;
+  font-family: 'Raleway', sans-serif;
+  color: var(--color-grey-3);
+  background-color: white;
+}
+
+.container_title {
+  margin-top: 1rem;
+}
+
+.container_title p {
+  text-align: start;
+  margin-top: 1rem;
+}
+
+.container_title textarea {
+  width: 100%;
+  margin-top: 1rem;
 }
 
 .container_button {
@@ -53,4 +89,4 @@
   cursor: pointer;
   font-family: 'Raleway', sans-serif;
 }
-  
+

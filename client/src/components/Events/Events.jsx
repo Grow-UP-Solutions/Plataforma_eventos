@@ -23,7 +23,7 @@ const Events = () => {
 
 
   const todosLosEventos = useSelector((state) => state.events);
-  console.log('todosLosEventos:',todosLosEventos)
+  //console.log('todosLosEventos:',todosLosEventos)
 
   if(dateActual){todosLosEventos.map((evento)=>{   
     evento.dates.map((date)=>{ 
