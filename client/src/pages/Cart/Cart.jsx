@@ -8,6 +8,7 @@ import FormProductPay from '../../components/FormProductPay/FormProductPay';
 import styles from './Cart.module.css';
 
 const Cart = () => {
+  
   const id = useParams().id;
   console.log('id:', id);
   const events = useSelector((state) => state.events);

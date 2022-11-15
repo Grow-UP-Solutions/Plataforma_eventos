@@ -23,7 +23,6 @@ const Events = () => {
 
 
   const todosLosEventos = useSelector((state) => state.events);
-  
 
 
   const allEvents = todosLosEventos.filter((event) => event.isPublic === true && event.inRevision === false);
@@ -174,7 +173,7 @@ const Events = () => {
             navigation
             modules={[Pagination, Navigation]}
             className={styles.mySwipper}
-          >
+          >            
             {userData.myFavorites !== undefined ? (
               userData.myFavorites.map((event) => {
                 return (

@@ -46,7 +46,7 @@ const EventDetails = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useContext(AuthContext);
   const { notes, setNotes } = useContext(stateContext);
-  const { getEventsFavourites, getEffectRatingEvent, ratingEvent } = useContext(UIContext);
+  const { getEventsFavourites, getEffectRatingEvent, ratingEvent, getEventsWithoutFavourites } = useContext(UIContext);
   const menuRef = useRef();
 
   useEffect(() => {
@@ -120,6 +120,25 @@ const EventDetails = () => {
     }
   };
 
+  const handleClickWithoutFav = async (e) => {
+    e.preventDefault();
+    const favorite = {
+      idEvent: id,
+    };
+    try {
+      getEventsWithoutFavourites(user.uid, favorite);
+      setHeart(false);
+      swal({
+        text: 'Evento retirado de "Mi Lista"',
+        icon: 'success',
+        button: 'OK',
+      });
+    } 
+    catch (error) {
+      console.log(error);
+    }
+  }
+
   const handleAlert = (e) => {
     e.preventDefault();
     swal({
@@ -171,25 +190,26 @@ const EventDetails = () => {
               )}
             </Swiper>
 
-            {eventDetails.organizer._id === user.uid ? (
-              ''
-            ) : user.uid && heart ? (
-              <div className={style.container_icon_heart_p}>
-                <FavoriteIcon className={style.icon_heart_p} sx={{ fontSize: 25, color: 'white', margin: 'auto' }} />
+            {
+              eventDetails.organizer._id === user.uid ? (
+                ''
+              ) : user.uid && heart ? (
+              <div className={style.container_icon_heart_p} onClick={handleClickWithoutFav}>
+                <FavoriteIcon className={style.icon_heart_p} sx={{ fontSize: 25, color: 'white',  margin: 'auto' }} />
               </div>
-            ) : user.uid && !heart ? (
+              ) :  user.uid && !heart ? (
               <div className={style.container_icon_heart} onClick={user.uid ? handleClickFav : handleAlert}>
                 <AddIcon className={style.icon_heart} sx={{ fontSize: 30, color: '#868686' }} />
               </div>
-            ) : (
+              ) : (
               <div className={style.container_icon_heart} onClick={user.uid ? handleClickFav : handleAlert}>
                 <AddIcon className={style.icon_heart} sx={{ fontSize: 30, color: '#868686' }} />
               </div>
             )}
 
             <div className={style.container_icon_share} ref={menuRef}>
-              {/*  <input type='checkbox' id='check' /> */}
-              <div className={style.label} onClick={handleClickShare}>
+             
+              <div className={style.label} onClick={handleClickShare} >
                 <LaunchOutlinedIcon className={style.icon_share} sx={{ fontSize: 25 }} />
               </div>
 

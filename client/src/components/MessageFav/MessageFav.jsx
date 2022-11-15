@@ -1,10 +1,8 @@
 
-import React, { useContext, useState } from 'react';
-import { AuthContext } from '../../context/auth/AuthContext';
+import React from 'react';
 import styles from './MessageFav.module.css';
 import { format, register } from "timeago.js";
 import StarIcon from '@mui/icons-material/Star';
-import eventsApi from '../../axios/eventsApi';
 
 const localeFunc = (number, index, total_sec) => {
  

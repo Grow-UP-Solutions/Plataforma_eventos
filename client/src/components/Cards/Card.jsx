@@ -8,13 +8,13 @@ import { UIContext } from '../../context/ui';
 import { AuthContext } from '../../context/auth/AuthContext';
 import { stateContext } from '../../context/state/stateContext';
 import swal from 'sweetalert';
-import { iconAdd } from '../../assets/imgs';
 import eventsApi from '../../axios/eventsApi';
 import { AiOutlineClose } from 'react-icons/ai';
 
 
 const Card = ({ event, listName , orgEvent }) => {
-  const { toggleScreenLogin, getEventsFavourites } = useContext(UIContext);
+
+  const { toggleScreenLogin, getEventsFavourites, getEventsWithoutFavourites } = useContext(UIContext);
   const { notes, setNotes } = useContext(stateContext);
   const currentYear = new Date().getFullYear();
   const numCadena = currentYear + '';
@@ -128,6 +128,25 @@ const Card = ({ event, listName , orgEvent }) => {
     }
   };
 
+  const handleClickWithoutFav = async (e) => {
+    e.preventDefault();
+    const favorite = {
+      idEvent: event._id,
+    };
+    try {
+      getEventsWithoutFavourites(user.uid, favorite);
+      setHeart(false);
+      swal({
+        text: 'Evento retirado de "Mi Lista"',
+        icon: 'success',
+        button: 'OK',
+      });
+    } 
+    catch (error) {
+      console.log(error);
+    }
+  }
+
   //PRECIO FECHA HOME//
 
   const firstPublicDate = event.dates.find(date=>date.isPublic === true)
@@ -135,13 +154,13 @@ const Card = ({ event, listName , orgEvent }) => {
   
   const [price, setPrice] = useState(firstPublicDate !==undefined ? firstPublicDate.price : '')
 
-
   function handlePrice(e) {
     setPrice(e.target.value);
   }
 
   // PORTADA//
   const portada = event.pictures.filter((p) => p.cover === true)[0];
+ 
 
   const handleClickOpenDrop = (e) => {
     e.preventDefault();
@@ -195,7 +214,7 @@ const Card = ({ event, listName , orgEvent }) => {
             height='300'
           />
         </Link>
-      )}
+      )} 
 
       <div className={styles.cardText}>
         { orgEvent === 'true' && selectedDate === ''  ?
@@ -248,7 +267,7 @@ const Card = ({ event, listName , orgEvent }) => {
               </label>
             </div>
           ) : user.uid && heart ? (
-            <div className={styles.cardAddFavHeart}>
+            <div className={styles.cardAddFavHeart} onClick={handleClickWithoutFav}>
               <input type='checkbox' id={`${event._id}-${listName}`} />
               <label htmlFor={`${event._id}-${listName}`}>
                 <FavoriteIcon sx={{ fontSize: 25, color: 'white' }} />

@@ -22,7 +22,7 @@ const validate = (form) => {
   // let letras = /^[a-zA-Z]*$/g;
   let mail = /[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}/gim;
   let webSite = /\b(http|https|www)\b/i;
-  let offensiveWord = /\b(perro|gato|loro|tortuga)\b/i;
+  let offensiveWord = /\b(puta|hijieputa|pirobo|pirovo|piroba|pirova|marica|maricon|maricona|malparido|malparida|caremonda|chimba|chimbo|gurrupleta|gonorrea|gonorriento|gonorrienta|gueva|guevon|guevona|zuripanta|pichurria)\b/i;
 
   if (!form.text) {
     errors.text = true;

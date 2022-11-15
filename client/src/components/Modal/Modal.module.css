@@ -21,17 +21,7 @@
   max-height: 60rem;
   overflow-y: auto;
   background-color: var(--color-grey-6);
-  border-radius: 20px;
-}
-  
-.modal_close {
-  position: absolute;
-  top: 2rem;
-  right: 2rem;
-  font-size: 2rem;
-  color: var(--color-grey-3);
-  font-weight: bold;
-  cursor: pointer;
+  border-radius: 15px;
 }
   
 .modal.is_open {
