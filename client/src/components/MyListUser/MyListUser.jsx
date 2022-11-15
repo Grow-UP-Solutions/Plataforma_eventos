@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import Pagination from '../../components/Pagination/Pagination';
 import { useState } from 'react';
 
-const MyListUser = ({ myFavorites }) => {
+const MyListUser = ({ myFavorites , myEventsBooked }) => {
 
 
   const orderByDate = myFavorites.sort((a,b)=>{
@@ -13,6 +13,9 @@ const MyListUser = ({ myFavorites }) => {
     if (b.dates[0].date < a.dates[0].date) return 1
     return 0
   })
+
+  console.log('myFavorites',myFavorites)
+  console.log('myEventsBooked',myEventsBooked)
 
   
   const [currentPage, setCurretPage] = useState(1);

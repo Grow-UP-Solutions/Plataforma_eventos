@@ -23,29 +23,7 @@ const Events = () => {
 
 
   const todosLosEventos = useSelector((state) => state.events);
-  //console.log('todosLosEventos:',todosLosEventos)
 
-  if(dateActual){todosLosEventos.map((evento)=>{   
-    evento.dates.map((date)=>{ 
-      if(new Date(date.date)<new Date(dateActual)){ 
-         if(evento.dates.length===1){
-          date.isPublic=false
-          evento.isPublic=false
-         }else{
-          date.isPublic=false
-         }
-      }else if(date.date === dateActual){
-        if(date.end.slice(0,2) <= hora && date.end.slice(3,5) <= minutes+2 ){
-          if(evento.dates.length===1){
-            date.isPublic=false
-            evento.isPublic=false
-           }else{
-            date.isPublic=false
-           }
-        }
-      }
-    })
-  })}
 
   const allEvents = todosLosEventos.filter((event) => event.isPublic === true && event.inRevision === false);
   

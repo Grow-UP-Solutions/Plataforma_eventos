@@ -1,3 +1,4 @@
+require('../../../../DB')
 const Message = require("../../../db/Message");
 
 module.exports = async function findOneMessage(idMessage) {

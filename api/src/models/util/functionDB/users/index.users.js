@@ -1,4 +1,7 @@
+require('../../../../DB')
+
 const UsersFunctionDb = {
+  
   oneUser: require('./oneUsers'),
   allUserDb: require('./allUsers'),
   validationEmail: require('./emailUser'),
