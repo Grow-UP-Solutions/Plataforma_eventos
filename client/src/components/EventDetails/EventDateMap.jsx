@@ -19,6 +19,7 @@ const EventDateMap = ({id}) => {
     for( let i = 0 ; i<carritoCupos.length ; i++){
       if(carritoCupos[i].fechaId === id){
         carritoCupos[i].cupos = num
+        carritoCupos[i].subtotal= num *  carritoCupos[i].price
 
         setCarrito(
           carritoCupos

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState ,useEffect } from 'react';
 import styles from './EventDate.module.css';
 import { Calendar } from 'react-date-range';
 import * as locales from 'react-date-range/dist/locale';
@@ -35,6 +35,12 @@ const EventDate = ({ id }) => {
 //   eventDetails.dates.map((d)=>{
 //   d.checked=false})
 // }
+  useEffect(() => {
+    
+      setCarrito([])
+    
+  },[])
+
 
 
   const fecha = new Date();
@@ -50,7 +56,7 @@ const EventDate = ({ id }) => {
 
   const [dateId, setDateId] = useState(0);
 
-  const dateSelected = (e) => {
+  const dateSelected = (e,price) => {
     e.preventDefault()
     setChecked(true)
     const fechaElegida = e.target.value
@@ -68,7 +74,17 @@ const EventDate = ({ id }) => {
          
      }else{
       //let fechaCheked = date.buyers.find((buyer) => buyer === buyerId)
-      setCarrito([...carrito, {fechaId:fechaElegida, cupos:0}])
+      setCarrito([...carrito, {
+        fechaId:fechaElegida, 
+        cupos:0,
+        price:price,
+        codigoDescuento:'',
+        codigoReferido:'',
+        codigoCorrecto:'',
+        subtotal:'',
+        descuento:''
+      }])
+
       
       // for( let i = 0 ; i<eventDetails.dates.length ; i++){
       //   if(eventDetails.dates[i]._id===e.target.value){
@@ -140,7 +156,7 @@ const EventDate = ({ id }) => {
                         type="checkBox"
                         class={styles.checkBox}
                         value={date._id}
-                        onChange={(e) => dateSelected(e)}                
+                        onChange={(e) => dateSelected(e,date.price)}                
                       />
                     </td>
 

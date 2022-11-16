@@ -15,6 +15,21 @@ const CardProduct = ({ event }) => {
 
   const { carrito, setCarrito } = useContext(stateContext);
   console.log('carrito:',carrito)
+  console.log('event:',event)
+
+  const datesToBuy = []
+
+  for(let i = 0 ; i < carrito.length ; i++){
+    for(let j = 0 ; j < event.dates.length ; i++){
+      if(carrito[i].fechasId === event.dates[j]._id){
+        const fecha = event.dates[j]._id
+        datesToBuy.push(fecha)
+      }
+    }
+  }
+
+  console.log('datesToBuy:',datesToBuy)
+ 
 
   const [currentPage, setCurretPage] = useState(1);
   const CardPerPage = 1;
