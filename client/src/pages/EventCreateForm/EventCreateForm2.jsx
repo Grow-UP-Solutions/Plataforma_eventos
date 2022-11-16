@@ -175,7 +175,7 @@ const EventCreateForm2 = () => {
         gananciaCupo: '',
         gananciaEvento: '',
         dateFormated: '',
-        dateFormated2:'',
+        dateFormated2: '',
         inRevision: false,
         codigos: [
           {
@@ -630,7 +630,7 @@ const EventCreateForm2 = () => {
         parseFloat(newFechas[i].price) * parseFloat(comision) * parseFloat(IVA));
     newFechas[i].gananciaEvento = parseFloat(newFechas[i].gananciaCupo) * parseInt(newFechas[i].cupos);
     if (e.target.name === 'date') {
-      newFechas[i].dateFormated = formatDateForm(e.target.value)
+      newFechas[i].dateFormated = formatDateForm(e.target.value);
     }
 
     if (indice !== undefined) {
@@ -1699,7 +1699,7 @@ const EventCreateForm2 = () => {
                     </div>
 
                     {/* form */}
-                    <div className={styles.container1}>
+                    <div className={`${styles.container1} ${styles.containerFormDate}`}>
                       {/* titulo*/}
                       <div>
                         <p className={styles.title}>Costo y fecha</p>
