@@ -36,6 +36,7 @@
   right: 35px;
   background-color: transparent;
   border: none;
+  cursor: pointer;
 }
 
 .loop {
@@ -48,9 +49,9 @@
 .container_box {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin-top: 30px;
-  margin-bottom: 50px;
+  gap: 2rem;
+  margin-top: 3rem;
+  margin-bottom: 5rem;
 }
 
 .box {
@@ -58,7 +59,7 @@
   flex-direction: column;
   height: 89px;
   width: 175px;
-  background-color: var(--color-grey-4);
+  background-color: var(--color-grey-6);
   border-bottom: 5px solid var(--color-orange);
   opacity: 100%;
   border-radius: 1px;
@@ -66,7 +67,21 @@
   text-align: center;
 }
 
-.box p {
+.box1 {
+  display: flex;
+  flex-direction: column;
+  height: 89px;
+  width: 175px;
+  background-color: var(--color-grey-6);
+  border-bottom: 5px solid var(--color-grey-4);
+  opacity: 100%;
+  border-radius: 1px;
+  box-shadow: 0px 3px 5px 2px var(--color-grey-4);
+  text-align: center;
+  cursor: pointer;
+}
+
+.box p, .box1 p {
   font-size: 1.8rem;
   font-weight: bold;
   color: var(--color-grey-3);
@@ -74,24 +89,24 @@
 }
 
 .icon {
-  width: 50px;
-  height: 45px;
+  width: 5rem;
+  height: 4.5rem;
   color: var(--color-grey-3);
   margin: auto;  
 }
 
 .headset {
-  width: 420px;
-  height: 365px;
+  width: 42rem;
+  height: 36rem;
   color: rgb(0, 0, 0);
   position: absolute;
-  bottom: 70px;
-  right: 400px;
+  bottom: 7rem;
+  right: 50rem;
   opacity: 0.2;
 }
 
 .container_accordion {
-  padding: 2rem 30rem;
+  padding: .5rem 35rem;
 }
 
 .text {
