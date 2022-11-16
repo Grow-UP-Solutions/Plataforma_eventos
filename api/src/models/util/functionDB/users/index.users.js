@@ -15,6 +15,7 @@ const UsersFunctionDb = {
   updateRating: require('./updateRating'),
   commentUsers: require('./commentUsers'),
   myFavorite: require('./myFavorites'),
+  codeUser: require('./codeUser')
 };
 
 module.exports = UsersFunctionDb;
