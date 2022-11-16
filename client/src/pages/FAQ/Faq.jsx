@@ -75,7 +75,7 @@ const Faq = () => {
                 backgroundColor: 'white',
                 boxShadow: '1px 1px 5px 1px #d6d6d6',
                 borderRadius: '5px',
-                margin: '10px 0',
+                margin: '10px 0 0 0',
               }}
             >
               <p className={style.text}>Aqui va una pregunta sobre el tema</p>
@@ -106,7 +106,7 @@ const Faq = () => {
                 backgroundColor: 'white',
                 boxShadow: '1px 1px 5px 1px #d6d6d6',
                 borderRadius: '5px',
-                margin: '10px 0',
+                margin: '10px 0 0 0',
               }}
             >
               <p className={style.text}>Aqui va una pregunta sobre el tema</p>
@@ -137,7 +137,7 @@ const Faq = () => {
                 backgroundColor: 'white',
                 boxShadow: '1px 1px 5px 1px #d6d6d6',
                 borderRadius: '5px',
-                margin: '10px 0',
+                margin: '10px 0 0 0',
               }}
             >
               <p className={style.text}>Aqui va una pregunta sobre el tema</p>
@@ -167,7 +167,7 @@ const Faq = () => {
                 backgroundColor: 'white',
                 boxShadow: '1px 1px 5px 1px #d6d6d6',
                 borderRadius: '5px',
-                margin: '10px 0',
+                margin: '10px 0 0 0',
               }}
             >
               <p className={style.text}>Aqui va una pregunta sobre el tema</p>
@@ -198,7 +198,7 @@ const Faq = () => {
                 backgroundColor: 'white',
                 boxShadow: '1px 1px 5px 1px #d6d6d6',
                 borderRadius: '5px',
-                margin: '10px 0',
+                margin: '10px 0 0 0',
               }}
             >
               <p className={style.text}>Aqui va una pregunta sobre el tema</p>

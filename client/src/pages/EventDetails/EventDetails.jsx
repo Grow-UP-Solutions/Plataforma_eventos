@@ -32,6 +32,7 @@ import { getEvents } from '../../redux/actions';
 // import { formatDate } from '../../utils/formatDate';
 import style from './EventDetails.module.css';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { Hearts } from  'react-loader-spinner';
 
 const EventDetails = () => {
   const id = useParams().id;
@@ -45,6 +46,7 @@ const EventDetails = () => {
   const [description, setDescription] = useState(false);
   const [heart, setHeart] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { user } = useContext(AuthContext);
   const { notes, setNotes } = useContext(stateContext);
   const { getEventsFavourites, getEffectRatingEvent, ratingEvent, getEventsWithoutFavourites } = useContext(UIContext);
@@ -91,6 +93,12 @@ const EventDetails = () => {
       document.removeEventListener('mousedown', handler);
     };
   }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 5000)
+  }, [heart, user]);
 
   /* const handleFormatDate = (check) => {
     setCheck(check);
@@ -201,21 +209,37 @@ const EventDetails = () => {
             </Swiper>
 
             {
-              eventDetails.organizer._id === user.uid ? (
-                ''
-              ) : user.uid && heart ? (
-              <div className={style.container_icon_heart_p} onClick={handleClickWithoutFav}>
-                <FavoriteIcon className={style.icon_heart_p} sx={{ fontSize: 25, color: 'white',  margin: 'auto' }} />
+              isLoading ?
+              <div className={style.container_icon_heart_l}>
+                <Hearts 
+                  height="40"
+                  width="40"
+                  color="#d53e27"
+                  ariaLabel="hearts-loading"
+                  wrapperStyle={{}}
+                  wrapperClass=""
+                  visible={true}
+                />
+              </div> :
+              <div>
+                {
+                  eventDetails.organizer._id === user.uid ? (
+                    ''
+                  ) : user.uid && heart ? (
+                  <div className={style.container_icon_heart_p} onClick={handleClickWithoutFav}>
+                    <FavoriteIcon className={style.icon_heart_p} sx={{ fontSize: 25, color: 'white',  margin: 'auto' }} />
+                  </div>
+                  ) :  user.uid && !heart ? (
+                  <div className={style.container_icon_heart} onClick={handleClickFav}>
+                    <AddIcon className={style.icon_heart} sx={{ fontSize: 30, color: '#868686' }} />
+                  </div>
+                  ) : (
+                  <div className={style.container_icon_heart} onClick={handleAlert}>
+                    <AddIcon className={style.icon_heart} sx={{ fontSize: 30, color: '#868686' }} />
+                  </div>)
+                }
               </div>
-              ) :  user.uid && !heart ? (
-              <div className={style.container_icon_heart} onClick={user.uid ? handleClickFav : handleAlert}>
-                <AddIcon className={style.icon_heart} sx={{ fontSize: 30, color: '#868686' }} />
-              </div>
-              ) : (
-              <div className={style.container_icon_heart} onClick={user.uid ? handleClickFav : handleAlert}>
-                <AddIcon className={style.icon_heart} sx={{ fontSize: 30, color: '#868686' }} />
-              </div>
-            )}
+            }
 
             <div className={style.container_icon_share} ref={menuRef}>
              
