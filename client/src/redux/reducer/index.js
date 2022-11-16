@@ -34,6 +34,8 @@ function rootReducer(state = initialState, action) {
         users: action.payload,
       }
 
+    
+
     default:
     return state;
   }

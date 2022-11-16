@@ -10,6 +10,7 @@ const UI_INITIAL_STATE = {
   ratingOrg: 0,
   ratingEvent: 0,
   msgStar: [],
+  codeReferal:[]
 };
 
 export const UIProvider = ({ children }) => {
@@ -74,6 +75,8 @@ export const UIProvider = ({ children }) => {
     dispatch({type: 'GET_MESSAGES_STAR', payload: json});
   }
 
+ 
+
   return (
     <UIContext.Provider
       value={{
@@ -92,6 +95,7 @@ export const UIProvider = ({ children }) => {
         getEffectRatingEvent,
         /* getMsgStar, */
         getMessagesStar,
+        
       }}
     >
       {children}
