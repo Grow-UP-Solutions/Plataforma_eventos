@@ -1,3 +1,120 @@
-.flex{
-    display:flex
+.container{
+    text-align: center;
+    justify-content: center;
+    margin-top: 5rem;
 }
+
+.containerTop{
+    text-align: center;
+    justify-content: center;
+}
+
+.title{
+    color: #585858;
+    font-size: 2.5rem;
+    margin-bottom: 4rem;
+    font-weight: 900;
+}
+
+.eventTitle{
+    color:#1B3C6A;
+    font-size: 3rem;
+    font-weight: 1000;
+    margin-bottom: 1rem;
+}
+
+.location{
+    color:#868686;
+    font-size: 1.9rem;
+    font-size: 500;
+    margin-bottom: 1rem;
+}
+
+.date{
+    color:#585858;
+    font-size: 1.9rem;
+    font-size: 500;
+    margin-bottom: 1rem;
+}
+
+
+.flex{
+    display:flex;
+    text-align: center;
+}
+
+.containerTable{
+    text-align: center;
+    justify-content: center;
+    margin-top: 10rem;
+}
+
+.table {
+    text-align: center;
+    justify-content: center;
+    width: 80%;
+  }
+  
+  .table td,
+  .table th {
+    padding: 2vh 2.5vh 2vh 2.5vh;
+    text-align: center;
+  }
+  
+  .table th {
+    color: #707070;
+    text-align: center;
+    font-weight: 600;
+    position: sticky;
+    top: 0px;
+    outline: 0;
+    max-height: 98vh;
+    overflow: auto;
+    font-size: 1.8rem;
+  }
+  
+  .table td {
+    text-align: center;
+    font-size: 1.8rem;
+    padding-left: 1vw;
+    font-weight: 400;
+    width: fit-content;
+    color: rgba(112, 112, 112, 255);
+  }
+  
+  .table td input:checked {
+    color: brown;
+    background-color: brown;
+  }
+
+  .checkBox {
+    accent-color: var(--color-orange);
+  }
+
+  .btn{
+    margin-right:0;
+    display: flex;
+}
+
+.btnTop{
+    display: block;
+}
+
+.button{
+    margin-left: 0.3rem;
+    display: block;
+    background-color: transparent;
+    border:none;
+    color:#d53e27;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.userImg {
+  border-radius: 50%;
+  width: 6.7rem;
+  height: 6.7rem;
+}
+
+  
+  

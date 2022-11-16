@@ -12,6 +12,7 @@ const EventOrganizer = ({ id }) => {
   const [conversation, setConversation] = useState({});
   const { user } = useContext(AuthContext);
   const { setResult, conversa } = useContext(stateContext);
+  console.log('conversa:',conversa)
   const navigate = useNavigate();
   const allEvents = useSelector((state) => state.events);
   const eventDetails = allEvents.filter((event) => event._id === id)[0];
@@ -67,7 +68,7 @@ const EventOrganizer = ({ id }) => {
     navigate('/resulteventsorganizer/');
   };
 
-  console.log({ eventORganizar: eventDetails.organizer });
+  //console.log({ eventORganizar: eventDetails.organizer });
 
   return (
     <div>

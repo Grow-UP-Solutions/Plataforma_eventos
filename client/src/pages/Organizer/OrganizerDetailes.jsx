@@ -17,7 +17,7 @@ import { format, register } from 'timeago.js';
 
 const localeFunc = (number, index, total_sec) => {
   return [
-    ['justo ahora', 'en un rato'],
+    ['ahora', 'en un rato'],
     ['hace %s segundos', 'en %s segundos'],
     ['hace 1 minuto', 'en 1 minuto'],
     ['hace %s minutos', 'en %s minutos'],

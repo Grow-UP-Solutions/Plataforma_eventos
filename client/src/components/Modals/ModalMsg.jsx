@@ -4,6 +4,10 @@ import style from './ModalMsg.module.css';
 const ModalMsg = ({ closeModal }) => {
   return (
     <div className={style.container}>
+      <p className={style.modal_close} onClick={closeModal}>
+        X
+      </p>
+
       <div className={style.line_div}></div>
 
       <p className={style.title}>Su mensaje no fue enviado</p>

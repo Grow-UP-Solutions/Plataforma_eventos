@@ -5,6 +5,9 @@ import avatar from '../../assets/imgs/no-avatar.png';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import { Rating } from '@mui/material';
 import { format, register } from "timeago.js";
+import { useModal } from '../../hooks/useModal';
+import Modal from '../../components/Modal/Modal';
+import ModalComment from '../Modals/ModalComment';
 
 const localeFunc = (number, index, total_sec) => {
   // number: the timeago / timein number;
@@ -31,11 +34,22 @@ register('es_ES', localeFunc);
 
 const CardComments = ({ o }) => {
 
+  const [isOpenModal, openModal, closeModal] = useModal(false);
+
+  const handleClickOpenModal = (e) => {
+    e.preventDefault();
+    openModal();
+  }
+
   return (
     <div className={styles.userComment}>
       <div>
         <img className={styles.picture} src={avatar} alt="Not Found ):" width="20px" height="30px"/>
       </div>
+
+      <Modal isOpen={isOpenModal} closeModal={closeModal}>
+        <ModalComment closeModal={closeModal} />
+      </Modal>
 
       <div className={styles.nameDan}>
         <div  className={styles.infoComment}>
@@ -53,8 +67,8 @@ const CardComments = ({ o }) => {
           <p  className={styles.opinion}>{o.opinion}</p>
         </div>
 
-        <div className={styles.reportCom} data-hover='Reportar contenido inapropiado'>
-          <ReportProblemIcon sx={{ fontSize: '40px', color: '#cbcbcb'  }}/>
+        <div className={styles.reportCom} onClick={handleClickOpenModal} data-hover='Reportar contenido inapropiado'>
+          <ReportProblemIcon sx={{ fontSize: '40px', color: '#cbcbcb'  }} />
         </div>
       </div>
     </div>           

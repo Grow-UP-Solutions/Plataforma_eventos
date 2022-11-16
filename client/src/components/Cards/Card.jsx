@@ -8,13 +8,13 @@ import { UIContext } from '../../context/ui';
 import { AuthContext } from '../../context/auth/AuthContext';
 import { stateContext } from '../../context/state/stateContext';
 import swal from 'sweetalert';
-import { iconAdd } from '../../assets/imgs';
 import eventsApi from '../../axios/eventsApi';
 import { AiOutlineClose } from 'react-icons/ai';
 
 
 const Card = ({ event, listName , orgEvent }) => {
-  const { toggleScreenLogin, getEventsFavourites } = useContext(UIContext);
+
+  const { toggleScreenLogin, getEventsFavourites, getEventsWithoutFavourites } = useContext(UIContext);
   const { notes, setNotes } = useContext(stateContext);
   const currentYear = new Date().getFullYear();
   const numCadena = currentYear + '';
@@ -23,6 +23,36 @@ const Card = ({ event, listName , orgEvent }) => {
   const [heart, setHeart] = useState([]);
   const [local, setLocal] = useState(false);
   const menuRef = useRef();
+
+
+  const fecha = new Date();
+  const hora = fecha.getHours();
+  const minutes = fecha.getMinutes();
+  const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
+
+
+  if(dateActual && orgEvent!== 'true' ){
+    event.dates.map((date)=>{ 
+      if(new Date(date.date)<new Date(dateActual)){ 
+         if(event.dates.length===1){
+          date.isPublic=false
+          event.isPublic=false
+         }else{
+          date.isPublic=false
+         }
+      }else if(date.date === dateActual){
+        if(date.end.slice(0,2) <= hora && date.end.slice(3,5) <= minutes+2 ){
+          if(event.dates.length===1){
+            date.isPublic=false
+            event.isPublic=false
+           }else{
+            date.isPublic=false
+           }
+        }
+      }
+    })
+  }
+  
 
 
 
@@ -98,6 +128,25 @@ const Card = ({ event, listName , orgEvent }) => {
     }
   };
 
+  const handleClickWithoutFav = async (e) => {
+    e.preventDefault();
+    const favorite = {
+      idEvent: event._id,
+    };
+    try {
+      getEventsWithoutFavourites(user.uid, favorite);
+      setHeart(false);
+      swal({
+        text: 'Evento retirado de "Mi Lista"',
+        icon: 'success',
+        button: 'OK',
+      });
+    } 
+    catch (error) {
+      console.log(error);
+    }
+  }
+
   //PRECIO FECHA HOME//
 
   const firstPublicDate = event.dates.find(date=>date.isPublic === true)
@@ -105,13 +154,13 @@ const Card = ({ event, listName , orgEvent }) => {
   
   const [price, setPrice] = useState(firstPublicDate !==undefined ? firstPublicDate.price : '')
 
-
   function handlePrice(e) {
     setPrice(e.target.value);
   }
 
   // PORTADA//
   const portada = event.pictures.filter((p) => p.cover === true)[0];
+ 
 
   const handleClickOpenDrop = (e) => {
     e.preventDefault();
@@ -122,7 +171,7 @@ const Card = ({ event, listName , orgEvent }) => {
 
   const [getDates, setGetDates] = useState(false);
   const [getAssistants, setGetAssistants] = useState(false);
-  const [selectedDateId , setSelectedDateId] = useState('')
+  const [selectedDateId , setSelectedDateId] = useState(event.dates[0]._id)
   const [selectedDate , setSelectedDate] = useState('')
   const [datePrice , setDatePrice] = useState(undefined)
 
@@ -165,7 +214,7 @@ const Card = ({ event, listName , orgEvent }) => {
             height='300'
           />
         </Link>
-      )}
+      )} 
 
       <div className={styles.cardText}>
         { orgEvent === 'true' && selectedDate === ''  ?
@@ -218,7 +267,7 @@ const Card = ({ event, listName , orgEvent }) => {
               </label>
             </div>
           ) : user.uid && heart ? (
-            <div className={styles.cardAddFavHeart}>
+            <div className={styles.cardAddFavHeart} onClick={handleClickWithoutFav}>
               <input type='checkbox' id={`${event._id}-${listName}`} />
               <label htmlFor={`${event._id}-${listName}`}>
                 <FavoriteIcon sx={{ fontSize: 25, color: 'white' }} />
@@ -424,10 +473,8 @@ const Card = ({ event, listName , orgEvent }) => {
                         </button>
                       </div> 
                       <div>
-                        {event.dates.map((date,index)=>   
-                                              
-                          <p className={styles.choosedate} onClick={(e)=>chooseDate(e, date._id , date.dateFormated , date.price)}>{date.date}</p>  
-                        
+                        {event.dates.map((date)=>                                                
+                          <p className={styles.choosedate} onClick={(e)=>chooseDate(e, date._id , date.dateFormated , date.price)}>{date.date}</p>                          
                         ) }   
                       </div>                      
                     </div>
@@ -439,7 +486,19 @@ const Card = ({ event, listName , orgEvent }) => {
             }
             <div className={styles.subDatos}>
               <p>Asistentes:</p>
-              <h4>{event.dates.length}</h4>
+              {event.dates.map((date)=>
+                date._id === selectedDateId ? (
+                    date.buyers.length>1 ?
+                  <h4>{date.buyers.length}</h4>
+                  : date.buyers.length === 0 ?
+                  <h4>0</h4> 
+                  : date.buyers !== undefined ?
+                  <h4>0</h4> 
+                  : <h4>0</h4> 
+                  )
+                  :''
+                )
+              }
               <Link  to={`/usuario/asistentes-al-evento/${event._id}/${selectedDateId}`}>
               <button>
                 Ver
