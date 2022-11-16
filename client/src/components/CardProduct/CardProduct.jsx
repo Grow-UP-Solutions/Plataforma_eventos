@@ -16,29 +16,107 @@ const CardProduct = ({ event }) => {
   const { carrito, setCarrito } = useContext(stateContext);
   console.log('carrito:',carrito)
 
+  const [currentPage, setCurretPage] = useState(1);
+  const CardPerPage = 1;
+  const indexOfLastCard = currentPage * CardPerPage;
+  const indexOfFirstCard = indexOfLastCard - CardPerPage; 
+  const currentCard = event.dates.slice(indexOfFirstCard, indexOfLastCard);
+  const paginado = (pageNumber) => setCurretPage(pageNumber);
+  console.log('currentCard',currentCard)
 
-  const numero=[1,2,3,4]
-const [a,SetA]=useState(numero[0])
+  const handlePrev = (e)=>{
+    if(currentPage===1){
+      setCurretPage(1)
+    }else{
+      setCurretPage(currentPage-1)
+    }
 
-const changeDate=(x)=>{
-  if(x===left){
-    SetA(numero[1])
-  }else{
-    SetA(numero[0])
   }
 
-}
+  const handleNext = (e)=>{
+    if(currentPage===event.dates.length){
+      setCurretPage(event.dates.length)
+    }else{
+      setCurretPage(currentPage+1)
+    }
+   
+    
+  }
+
+
   
   return (
     <div className={styles.cartProduct}>
-      <div className={styles.containerProductDetails}>
-        
+      <div className={styles.containerProductDetails}>       
         <div className={styles.imgContainer}>
           <img src={event.pictures[0].picture} alt="img-product" />
         </div>
         <div className={styles.containerDescription}>
           <h2 className={styles.productName}>{event.title}</h2>
-          {event.dates.map((date)=>(
+          <div className={styles.containercard}>
+          
+            <div>
+            
+              <div className={styles.productDate}>
+              <button onClick={(e)=>handlePrev(e)}>
+                <img src={iconArrowLeft} alt="icon-left" />
+              </button>
+                <span>{currentCard[0].dateFormated.replace('/', ' de ')}</span>
+                <button onClick={(e)=>handleNext(e)}>
+                <img src={iconArrowRight} alt="icon-right" />
+              </button>
+              </div>
+             
+              <div>
+              <p className={styles.productTime}>{currentCard[0].start} a {currentCard[0].end}</p>
+              <p className={styles.productLocation}>
+              {event.departamento} - {event.municipio}
+                </p>
+              <p className={styles.productCupos}>
+                Cupos disponibles : {currentCard[0].cupos}
+              </p>
+              </div>
+            </div>
+            {/* <div className={styles.container_pagination}>
+              <Pagination 
+                billsPerPage={CardPerPage}
+                state={event.dates.length}
+                paginado={paginado}
+                page={currentPage}
+              />
+            </div> */}
+          </div>
+      
+
+        {/* <div>
+          <Swiper
+                slidesPerView={1}
+                navigation
+                spaceBetween={0}
+                modules={[Navigation]}
+            >
+               {event.dates.map((date)=>(
+                <SwiperSlide >
+                  <div>
+                    <div className={styles.productDate}>
+                      <span>{date.dateFormated.replace('/', ' de ')}</span>
+                    </div>
+                   <div>
+                   <p className={styles.productTime}>{date.start} a {date.end}</p>
+                   <p className={styles.productLocation}>
+                   {event.departamento} - {event.municipio}
+                    </p>
+                   <p className={styles.productCupos}>
+                     Cupos disponibles : {date.cupos}
+                    </p>
+                    </div>
+                 </div>
+               </SwiperSlide>
+               ))}
+              
+           </Swiper>
+        </div>  */}
+          {/* {event.dates.map((date)=>(
             <div>
               <div className={styles.productDate}>
                 <button className={styles.productDateBtn}>
@@ -57,7 +135,7 @@ const changeDate=(x)=>{
                 Cupos disponibles : {date.cupos}
               </p>
             </div>
-          ))} 
+          ))}  */}
           {/* {date!==undefined?
           <div>
               <div className={styles.productDate}>
@@ -78,21 +156,7 @@ const changeDate=(x)=>{
               </p>
             </div>
             :''} */}
-            <div>
-            <button
-                onClick={() => changeDate(left)}
-              >
-                <img src={iconArrowLeft} alt="icon-left" />
-              </button>
-
-              <span>{a}</span>
-
-              <button
-                onClick={() => changeDate(rigth)}
-              >
-                <img src={iconArrowRight} alt="icon-left" />
-              </button>
-            </div>
+       
 
         </div>
       </div>
