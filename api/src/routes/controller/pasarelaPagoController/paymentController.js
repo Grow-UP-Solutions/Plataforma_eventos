@@ -1,7 +1,9 @@
 require("dotenv").config();
+const axios = require("axios");
 const { Router } = require("express");
 const router = Router();
 const mercadopago = require("mercadopago");
+const EventFunctionDb = require("../../../models/util/functionDB/event/index.event");
 const UsersFunctionDb = require("../../../models/util/functionDB/users/index.users");
 const { ACCESS_TOKEN } = process.env;
 
@@ -11,37 +13,18 @@ mercadopago.configure({
 
 router.post("/pago", async (req, res) => {
    const carrito = req.body;
-   const { codigoDescuento } = req.query;
-
-   // const monto = carrito?.map((e) => {
-   //       const montoTem = e.unit_price * e.quantity;
-   //       return montoTem;
-   //    })
-   //    .reduce((a, b) => a + b);
 
    const userDB = await UsersFunctionDb.oneUser(carrito.idUser);
+
+   const eventDB = await EventFunctionDb.oneEvent(carrito.idEvent);
+
+   const date = eventDB.dates.find((e) => e._id == carrito.idDate);
+
    const telefono = userDB.tel.split(" ").join("");
-   console.log(parseInt(telefono));
-   console.log("Carrito", carrito);
-   //console.log("USERS", userDB);
 
-   // const newOrder = new Orders({
-   //    status: EnumStatus.PENDING,
-   //    fecha: new Date(),
-   //    usuario: userDB._id,
-   //    produt: carrito.map((e) => e.title),
-   //    total: monto,
-   //    payment_id: 0,
-   //    status_order: Enum.CREATED,
-   //    libros: carrito.map((e) => {
-   //       return { title: e.title, quantity: e.quantity };
-   //    }),
-   // });
-
-   //await newOrder.save();
-   // userDB.buyBooks = userDB.buyBooks.concat(newOrder._id);
-   // await userDB.save();
-
+   if (date.cupos <= 0) {
+      throw new Error("El evento esta sobrevendido");
+   }
    try {
       const itemsMp = carrito;
 
@@ -49,12 +32,16 @@ router.post("/pago", async (req, res) => {
          items: [itemsMp],
          nameUser: userDB.name,
          emailUser: userDB.email,
-         external_reference: `${userDB._id}`,
+         identification: {
+            number: userDB.document,
+            type: "CC",
+         },
+         external_reference: `${carrito.idEvent},${carrito.idDate},${carrito.idUser}`,
          payer: {
-            name: userDB.name,
-            surname: "user-surname",
+            name: userDB.firstName,
+            surname: userDB.lastName,
             email: userDB.email,
-            date_created: Date.now,
+            date_created: Date.now(),
             phone: {
                area_code: "57",
                number: parseInt(telefono),
@@ -82,48 +69,95 @@ router.post("/pago", async (req, res) => {
             },
          ],
       };
-     
 
       const respuesta = await mercadopago.preferences.create(preference);
 
       const globalInitPoint = respuesta.body.init_point;
+
       return res.json({ init_point: globalInitPoint });
    } catch (error) {
       res.status(500).json(error.message);
    }
 });
 
-router.get('/success', async (req, res) => {
-   const algo = req.query
-   try {
-    console.log('/*/*/*//*/',algo)
-     res.json(algo)
-     
-   } catch (error) {
-     return res.json({ msg: 'FALLO SUCCESS ', error: error })
-   }
- })
+router.get("/success", async (req, res) => {
+   const { external_reference, payment_id, preference_id } = req.query;
+   const ids = external_reference.split(",");
+   const idEvent = ids[0];
+   const idDate = ids[1];
+   const idUser = ids[2];
 
- router.get('/fail', async (req, res) => {
-   const algo = req.query
    try {
-    console.log('/*/*/*//*/',algo)
-     res.json(algo)
-     
-   } catch (error) {
-     return res.json({ msg: 'FALLO SUCCESS ', error: error })
-   }
- })
+      const dataPayments = await axios(
+         `https://api.mercadopago.com/v1/payments/${payment_id}?access_token=${ACCESS_TOKEN}`
+      );
 
- router.get('/pending', async (req, res) => {
-   const algo = req.query
-   try {
-    console.log('/*/*/*//*/',algo)
-     res.json(algo)
-     
+      const response = dataPayments.data;
+
+      const event = await EventFunctionDb.oneEvent(idEvent);
+
+      const date = event.dates.find((e) => e._id == idDate);
+
+      const user = await UsersFunctionDb.oneUser(idUser);
+
+      if (
+         response.status === "approved" &&
+         response.status_detail === "accredited"
+      ) {
+         console.log("estoy aqui");
+         event.generalBuyers.push(user._id);
+
+         date?.buyers.push(user._id);
+
+         date.cupos -= 1;
+
+         user.myEventsBooked.push(event._id);
+
+         if (user.isReferral.code && !user.isReferral.use) {
+            const userReferral = await UsersFunctionDb.codeUser(
+               user.isReferral
+            );
+            userReferral.saldoPendiente -= 5000;
+            userReferral.saldoTotal += 5000;
+            user.isReferral.use = true;
+         }
+
+         await event.save();
+         await user.save();
+      }
+
+      res.json({ response });
    } catch (error) {
-     return res.json({ msg: 'FALLO SUCCESS ', error: error })
+      return res.status(500).json(error.message);
    }
- })
+});
+
+router.get("/fail", async (req, res) => {
+   const algo = req.query;
+   try {
+      console.log("/*/*/*//*/", algo);
+      res.json(algo);
+   } catch (error) {
+      return res.status(500).json(error.message);
+   }
+});
+
+router.get("/pending", async (req, res) => {
+   const algo = req.query;
+   try {
+      console.log("/*/*/*//*/", algo);
+      res.json(algo);
+   } catch (error) {
+      return res.status(500).json(error.message);
+   }
+});
 
 module.exports = router;
+
+// https://api.mercadopago.com/checkout/preferences/220603994-5eb74901-5a8b-443d-a3c1-9cfc3c24fd5d?access_token=TEST-5290894943630049-070117-211fea6e87d83f8ab0769bbc6f6087b0-220603994#json
+
+/**https://api.mercadopago.com/merchant_orders/6506950463?access_token=TEST-5290894943630049-070117-211fea6e87d83f8ab0769bbc6f6087b0-220603994#json */
+
+// const dataPreference = await axios(
+//    `https://api.mercadopago.com/checkout/preferences/${preference_id}?access_token=${ACCESS_TOKEN}`
+// );
