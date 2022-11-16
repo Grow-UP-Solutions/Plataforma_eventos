@@ -31,6 +31,7 @@ import { UIContext } from '../../context/ui';
 import { getEvents } from '../../redux/actions';
 // import { formatDate } from '../../utils/formatDate';
 import style from './EventDetails.module.css';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 const EventDetails = () => {
   const id = useParams().id;
@@ -165,6 +166,15 @@ const EventDetails = () => {
     setIsOpen(!isOpen);
   };
 
+  const handleClickCopy = (e) => {
+    e.preventDefault();
+    swal({
+      title: 'Enlace copiado',
+      icon: 'success',
+      button: 'OK',
+    });
+  }
+
   return (
     <div className={`${style.container} container`}>
       <div className={style.item1}>
@@ -231,9 +241,9 @@ const EventDetails = () => {
                     <FaWhatsapp className={style.icons} />
                   </a>
 
-                  <a href={eventDetails.link} target='_blank' rel='noreferrer noopener'>
-                    <IoLinkOutline className={style.icons} />
-                  </a>
+                  <CopyToClipboard text={`http://localhost:3000/detalles-del-evento/${id}`} >
+                    <IoLinkOutline onClick={handleClickCopy} className={style.icons} />
+                  </CopyToClipboard>
                 </div>
               )}
             </div>

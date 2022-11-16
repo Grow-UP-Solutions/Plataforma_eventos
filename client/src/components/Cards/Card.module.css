@@ -333,10 +333,10 @@
 
 .containerMenuGetDates {
   position: absolute;
-  top:0;
-  right:0;
-  height: 15rem;
-  width: 15rem;
+  top: .5rem;
+  right: .5rem;
+  /* height: 15rem;
+  width: 15rem; */
   padding: 2rem;
   background-color: white;
   border-radius: 10px;
@@ -382,5 +382,13 @@
   border:none;
   margin-top: -2rem;
   
+}
+
+.container_choosedate {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
 
