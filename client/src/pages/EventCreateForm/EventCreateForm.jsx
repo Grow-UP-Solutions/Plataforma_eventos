@@ -1,39 +1,43 @@
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import LaunchOutlinedIcon from '@mui/icons-material/LaunchOutlined';
-import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
-import WarningOutlinedIcon from '@mui/icons-material/WarningOutlined';
-import { Rating } from '@mui/material';
-import axios from 'axios';
-import 'bootstrap';
-import dotenv from 'dotenv';
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { IoLocationOutline } from 'react-icons/io5';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import swal from 'sweetalert';
-import { Navigation, Pagination } from 'swiper';
-import 'swiper/modules/navigation/navigation.min.css';
-import 'swiper/modules/pagination/pagination.min.css';
-import 'swiper/modules/scrollbar/scrollbar.min.css';
-import { Swiper, SwiperSlide } from 'swiper/react/swiper-react';
-import 'swiper/swiper.min.css';
-import categories from '../../api/categories';
-import basquet from '../../assets/imgs/basquet.svg';
-import iconEditar from '../../assets/imgs/iconEditar.svg';
-import iconExclamacion2 from '../../assets/imgs/iconExclamacion2.svg';
-import mapa from '../../assets/imgs/mapa2.png';
-import eventsApi from '../../axios/eventsApi';
-import { AuthContext } from '../../context/auth/AuthContext';
-import { getColombia, postEvent } from '../../redux/actions';
-import { formatDateForm } from '../../utils/formatDateForm';
-import styles from './EventCreateForm.module.css';
-import { AiOutlineClose } from 'react-icons/ai';
-import { BsCamera, BsCardImage, BsInfoCircle, BsPencilSquare } from 'react-icons/bs';
-
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import LaunchOutlinedIcon from "@mui/icons-material/LaunchOutlined";
+import LocalPostOfficeIcon from "@mui/icons-material/LocalPostOffice";
+import WarningOutlinedIcon from "@mui/icons-material/WarningOutlined";
+import { Rating } from "@mui/material";
+import axios from "axios";
+import "bootstrap";
+import dotenv from "dotenv";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { IoLocationOutline } from "react-icons/io5";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import swal from "sweetalert";
+import { Navigation, Pagination } from "swiper";
+import "swiper/modules/navigation/navigation.min.css";
+import "swiper/modules/pagination/pagination.min.css";
+import "swiper/modules/scrollbar/scrollbar.min.css";
+import { Swiper, SwiperSlide } from "swiper/react/swiper-react";
+import "swiper/swiper.min.css";
+import categories from "../../api/categories";
+import basquet from "../../assets/imgs/basquet.svg";
+import iconEditar from "../../assets/imgs/iconEditar.svg";
+import iconExclamacion2 from "../../assets/imgs/iconExclamacion2.svg";
+import mapa from "../../assets/imgs/mapa2.png";
+import eventsApi from "../../axios/eventsApi";
+import { AuthContext } from "../../context/auth/AuthContext";
+import { getColombia, postEvent } from "../../redux/actions";
+import { formatDateForm } from "../../utils/formatDateForm";
+import styles from "./EventCreateForm.module.css";
+import { AiOutlineClose } from "react-icons/ai";
+import {
+  BsCamera,
+  BsCardImage,
+  BsInfoCircle,
+  BsPencilSquare,
+} from "react-icons/bs";
 
 const EventCreateForm = () => {
   const dispatch = useDispatch();
@@ -98,42 +102,45 @@ const EventCreateForm = () => {
   });
 
   const capitales = [
-    'Medellín',
-    'Tunja',
-    'Montería',
-    'Quibdó',
-    'Pasto',
-    'Bucaramanga',
-    'Villavicencio',
-    'Barranquilla',
-    'Cartagena de Indias',
-    'Manizales',
-    'Florencia',
-    'Popayán',
-    'Valledupar',
-    'Bogotá',
-    'Neiva',
-    'Riohacha',
-    'Santa Marta',
-    'Armenia',
-    'Pereira',
-    'Sincelejo',
-    'Ibagué',
-    'Arauca',
-    'Yopal',
-    'Mocoa',
-    'Leticia',
-    'Inírida',
-    'Mitú',
-    'Puerto Carreño',
-    'San José del Guaviare',
-    'San Andrés',
-    'Bogota',
-    'Cúcuta',
-    'Santiago de Cali',
+    "Medellín",
+    "Tunja",
+    "Montería",
+    "Quibdó",
+    "Pasto",
+    "Bucaramanga",
+    "Villavicencio",
+    "Barranquilla",
+    "Cartagena de Indias",
+    "Manizales",
+    "Florencia",
+    "Popayán",
+    "Valledupar",
+    "Bogotá",
+    "Neiva",
+    "Riohacha",
+    "Santa Marta",
+    "Armenia",
+    "Pereira",
+    "Sincelejo",
+    "Ibagué",
+    "Arauca",
+    "Yopal",
+    "Mocoa",
+    "Leticia",
+    "Inírida",
+    "Mitú",
+    "Puerto Carreño",
+    "San José del Guaviare",
+    "San Andrés",
+    "Bogota",
+    "Cúcuta",
+    "Santiago de Cali",
   ];
 
-  const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({ ...item, capital: capitales[indice] }));
+  const nuevoArrayDepartamentos = departamentos.map((item, indice) => ({
+    ...item,
+    capital: capitales[indice],
+  }));
 
   //--------------------------------------------------//
   //               POST Y ERROR            //
@@ -148,45 +155,45 @@ const EventCreateForm = () => {
   }, [userData]);
 
   const [post, setPost] = useState({
-    idOrganizer: '',
-    title: '',
+    idOrganizer: "",
+    title: "",
     categories: [],
-    otherCategorie: '',
-    shortDescription: '',
-    longDescription: '',
+    otherCategorie: "",
+    shortDescription: "",
+    longDescription: "",
     pictures: [],
     online: false,
-    link: '',
-    departamento: '',
-    municipio: '',
-    direccion: '',
-    barrio: '',
-    specialRequires: '',
+    link: "",
+    departamento: "",
+    municipio: "",
+    direccion: "",
+    barrio: "",
+    specialRequires: "",
     dates: [
       {
-        date: '',
-        start: '',
-        end: '',
+        date: "",
+        start: "",
+        end: "",
         year: 0,
         cupos: 0,
         price: 0,
         sells: 0,
         isPublic: true,
-        precioAlPublico: '',
-        gananciaCupo: '',
-        gananciaEvento: '',
-        dateFormated: '',
+        precioAlPublico: "",
+        gananciaCupo: "",
+        gananciaEvento: "",
+        dateFormated: "",
         inRevision: false,
-        codigos:[
+        codigos: [
           {
-          codigo:'',
-          descuento:'',
-          cantidad:'',
-          cod:false,
-          show: true,
-          ed:false,
-          uses:0
-          }
+            codigo: "",
+            descuento: "",
+            cantidad: "",
+            cod: false,
+            show: true,
+            ed: false,
+            uses: 0,
+          },
         ],
       },
     ],
@@ -195,21 +202,21 @@ const EventCreateForm = () => {
   });
 
   const [errors, setErrors] = useState({
-    title: '',
-    categories: '',
-    otherCategorie: '',
-    shortDescription: '',
-    longDescription: '',
-    pictures: '',
-    link: '',
-    departamento: '',
-    direccion: '',
-    barrio: '',
-    specialRequires: '',
-    cupos: '',
-    price: '',
-    dates: '',
-    isPublic: '',
+    title: "",
+    categories: "",
+    otherCategorie: "",
+    shortDescription: "",
+    longDescription: "",
+    pictures: "",
+    link: "",
+    departamento: "",
+    direccion: "",
+    barrio: "",
+    specialRequires: "",
+    cupos: "",
+    price: "",
+    dates: "",
+    isPublic: "",
   });
 
   useEffect(() => {
@@ -231,19 +238,19 @@ const EventCreateForm = () => {
     }
 
     if (post.title.match(mail)) {
-      errors.title = 'No puedes ingresar un email o link a redes sociales';
+      errors.title = "No puedes ingresar un email o link a redes sociales";
     }
 
     if (post.title.match(webSite)) {
-      errors.title = 'No puedes ingresar un dominio o pagina web';
+      errors.title = "No puedes ingresar un dominio o pagina web";
     }
 
     if (post.title.match(offensiveWord)) {
-      errors.title = 'Palabra ofensiva';
+      errors.title = "Palabra ofensiva";
     }
 
     if (post.title.match(notNumber)) {
-      errors.title = 'No puedes ingresar un numero';
+      errors.title = "No puedes ingresar un numero";
     }
 
     if (!post.categories[0]) {
@@ -251,7 +258,7 @@ const EventCreateForm = () => {
     }
 
     if (post.categories.length > 3) {
-      errors.categories = 'Solo podes seleccionar 3 categorias';
+      errors.categories = "Solo podes seleccionar 3 categorias";
     }
 
     // if (!post.otherCategorie.match(letras)) {
@@ -263,19 +270,20 @@ const EventCreateForm = () => {
     }
 
     if (post.shortDescription.match(mail)) {
-      errors.shortDescription = 'No puedes ingresar un email o link a redes sociales';
+      errors.shortDescription =
+        "No puedes ingresar un email o link a redes sociales";
     }
 
     if (post.shortDescription.match(webSite)) {
-      errors.shortDescription = 'No puedes ingresar un dominio o pagina web';
+      errors.shortDescription = "No puedes ingresar un dominio o pagina web";
     }
 
     if (post.shortDescription.match(offensiveWord)) {
-      errors.shortDescription = 'Palabra ofensiva';
+      errors.shortDescription = "Palabra ofensiva";
     }
 
     if (post.shortDescription.match(notNumber)) {
-      errors.shortDescription = 'No puedes ingresar un numero';
+      errors.shortDescription = "No puedes ingresar un numero";
     }
 
     if (!post.longDescription) {
@@ -283,19 +291,20 @@ const EventCreateForm = () => {
     }
 
     if (post.longDescription.match(mail)) {
-      errors.longDescription = 'No puedes ingresar un email o link a redes sociales';
+      errors.longDescription =
+        "No puedes ingresar un email o link a redes sociales";
     }
 
     if (post.longDescription.match(webSite)) {
-      errors.longDescription = 'No puedes ingresar un dominio o pagina web';
+      errors.longDescription = "No puedes ingresar un dominio o pagina web";
     }
 
     if (post.longDescription.match(offensiveWord)) {
-      errors.longDescription = 'Palabra ofensiva';
+      errors.longDescription = "Palabra ofensiva";
     }
 
     if (post.shortDescription.match(notNumber)) {
-      errors.shortDescription = 'No puedes ingresar un numero';
+      errors.shortDescription = "No puedes ingresar un numero";
     }
 
     // if (!post.pictures[0]) {
@@ -305,7 +314,7 @@ const EventCreateForm = () => {
     let repetidas = post.pictures.filter((picture) => picture.cover === true);
 
     if (repetidas.length > 1) {
-      errors.pictures = 'Solo puede elegir una portada';
+      errors.pictures = "Solo puede elegir una portada";
     }
 
     if (post.online === true) {
@@ -314,7 +323,7 @@ const EventCreateForm = () => {
       }
 
       if (post.link.match(offensiveWord)) {
-        errors.link = 'Palabra ofensiva';
+        errors.link = "Palabra ofensiva";
       }
     } else {
       if (!post.departamento) {
@@ -330,15 +339,16 @@ const EventCreateForm = () => {
       }
 
       if (post.direccion.match(mail)) {
-        errors.direccion = 'No puedes ingresar un email o link a redes sociales';
+        errors.direccion =
+          "No puedes ingresar un email o link a redes sociales";
       }
 
       if (post.direccion.match(webSite)) {
-        errors.direccion = 'No puedes ingresar un dominio o pagina web';
+        errors.direccion = "No puedes ingresar un dominio o pagina web";
       }
 
       if (post.direccion.match(offensiveWord)) {
-        errors.direccion = 'Palabra ofensiva';
+        errors.direccion = "Palabra ofensiva";
       }
 
       if (!post.barrio) {
@@ -346,28 +356,29 @@ const EventCreateForm = () => {
       }
 
       if (post.barrio.match(mail)) {
-        errors.barrio = 'No puedes ingresar un email o link a redes sociales';
+        errors.barrio = "No puedes ingresar un email o link a redes sociales";
       }
 
       if (post.barrio.match(webSite)) {
-        errors.barrio = 'No puedes ingresar un dominio o pagina web';
+        errors.barrio = "No puedes ingresar un dominio o pagina web";
       }
 
       if (post.barrio.match(offensiveWord)) {
-        errors.barrio = 'Palabra ofensiva';
+        errors.barrio = "Palabra ofensiva";
       }
     }
 
     if (post.specialRequires.match(mail)) {
-      errors.specialRequires = 'No puedes ingresar un email o link a redes sociales';
+      errors.specialRequires =
+        "No puedes ingresar un email o link a redes sociales";
     }
 
     if (post.specialRequires.match(webSite)) {
-      errors.specialRequires = 'No puedes ingresar un dominio o pagina web';
+      errors.specialRequires = "No puedes ingresar un dominio o pagina web";
     }
 
     if (post.specialRequires.match(offensiveWord)) {
-      errors.specialRequires = 'Palabra ofensiva';
+      errors.specialRequires = "Palabra ofensiva";
     }
 
     if (post.dates.length > 0) {
@@ -400,7 +411,7 @@ const EventCreateForm = () => {
 
     for (let i = 0; i < post.dates.length; i++) {
       if (post.dates[i].start > post.dates[i].end && post.dates[i].end) {
-        errors.dates = 'Error, hora de fin menor a hora de inicio';
+        errors.dates = "Error, hora de fin menor a hora de inicio";
       }
     }
 
@@ -417,12 +428,16 @@ const EventCreateForm = () => {
           if (
             post.dates[i].start === post.dates[j].start ||
             post.dates[i].end === post.dates[j].end ||
-            (post.dates[i].start > post.dates[j].start && post.dates[i].start < post.dates[j].end) ||
-            (post.dates[i].end > post.dates[j].start && post.dates[i].end < post.dates[j].end) ||
-            (post.dates[i].start < post.dates[j].start && post.dates[i].end > post.dates[j].end) ||
-            (post.dates[i].start > post.dates[j].start && post.dates[i].end < post.dates[j].end)
+            (post.dates[i].start > post.dates[j].start &&
+              post.dates[i].start < post.dates[j].end) ||
+            (post.dates[i].end > post.dates[j].start &&
+              post.dates[i].end < post.dates[j].end) ||
+            (post.dates[i].start < post.dates[j].start &&
+              post.dates[i].end > post.dates[j].end) ||
+            (post.dates[i].start > post.dates[j].start &&
+              post.dates[i].end < post.dates[j].end)
           ) {
-            errors.dates = 'Fechas cruzadas';
+            errors.dates = "Fechas cruzadas";
           }
         }
       }
@@ -430,13 +445,14 @@ const EventCreateForm = () => {
 
     for (let i = 0; i < post.dates.length; i++) {
       for (let j = 0; j < post.dates[i].codigos.length; j++) {
-       if(post.dates[i].codigos[j].descuento < 0 || post.dates[i].codigos[j].descuento>100){
-        errors.bono='Descuento: Valores entre 1 y 99'
-       }
+        if (
+          post.dates[i].codigos[j].descuento < 0 ||
+          post.dates[i].codigos[j].descuento > 100
+        ) {
+          errors.bono = "Descuento: Valores entre 1 y 99";
+        }
       }
     }
-
-
 
     return errors;
   }
@@ -453,10 +469,10 @@ const EventCreateForm = () => {
 
   //chequeo por palabras
 
-  const titleArray = post.title.split(' ');
+  const titleArray = post.title.split(" ");
   //const titleArray = [1,2,3,4]
 
-  const longDescriptionArray = post.longDescription.split(' ');
+  const longDescriptionArray = post.longDescription.split(" ");
   //const longDescriptionArray =[1,2,3,4,5,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 
   //--------------------------------------------------//
@@ -467,19 +483,23 @@ const EventCreateForm = () => {
 
   function handleCategories(e) {
     let categorieName = e.target.value;
-    console.log('targetcat:', e.target.value);
+    console.log("targetcat:", e.target.value);
     if (!e.target.checked) {
-      console.log('seleccionados:', seleccionados);
-      let seleccion = seleccionados.filter((categorie) => categorie !== e.target.value);
-      console.log('seleccion:', seleccion);
+      console.log("seleccionados:", seleccionados);
+      let seleccion = seleccionados.filter(
+        (categorie) => categorie !== e.target.value
+      );
+      console.log("seleccion:", seleccion);
       setSeleccionados(seleccion);
       setPost({
         ...post,
         categories: seleccion,
       });
     } else {
-      let categorieCheck = categories.find((categorie) => categorie.name === categorieName);
-      console.log('categorieCheck:', categorieCheck);
+      let categorieCheck = categories.find(
+        (categorie) => categorie.name === categorieName
+      );
+      console.log("categorieCheck:", categorieCheck);
       setSeleccionados([...seleccionados, categorieCheck.name]);
       setPost({
         ...post,
@@ -489,7 +509,7 @@ const EventCreateForm = () => {
   }
 
   useEffect(() => {
-    let checkeds = document.getElementsByClassName('checkbox');
+    let checkeds = document.getElementsByClassName("checkbox");
     for (let i = 0; i < checkeds.length; i++) {
       checkeds[i].checked = false;
     }
@@ -512,27 +532,35 @@ const EventCreateForm = () => {
 
   // const [imageSelected, setImageSelected] = useState('');
 
-  const [image, setImage] = useState({ files: '' });
+  const [image, setImage] = useState({ files: "" });
 
   async function uploadImage(e) {
     e.preventDefault();
     for (let i = 0; i < image.length; i++) {
       const formData = new FormData();
-      formData.append('file', image[i]);
-      formData.append('upload_preset', 'wp0l2oeg');
-      await axios.post('https://api.cloudinary.com/v1_1/dhmnttdy2/image/upload', formData).then((response) => {
-        console.log('r:', response);
-        setPost({
-          ...post,
-          pictures: [...post.pictures, { cover: false, picture: response.data.secure_url }],
+      formData.append("file", image[i]);
+      formData.append("upload_preset", "wp0l2oeg");
+      await axios
+        .post(
+          "https://api.cloudinary.com/v1_1/dhmnttdy2/image/upload",
+          formData
+        )
+        .then((response) => {
+          console.log("r:", response);
+          setPost({
+            ...post,
+            pictures: [
+              ...post.pictures,
+              { cover: false, picture: response.data.secure_url },
+            ],
+          });
+          setImage({ files: "" });
         });
-        setImage({ files: '' });
-      });
     }
   }
 
-  const fileRemove = (e,item) => {
-    e.preventDefault()
+  const fileRemove = (e, item) => {
+    e.preventDefault();
     const updatedPictures = [...post.pictures];
     updatedPictures.splice(post.pictures.indexOf(item), 1);
     setPost({
@@ -574,16 +602,16 @@ const EventCreateForm = () => {
       setPost({
         ...post,
         [e.target.name]: true,
-        departamento: '',
-        municipio: '',
-        barrio: '',
-        direccion: '',
+        departamento: "",
+        municipio: "",
+        barrio: "",
+        direccion: "",
       });
     } else {
       setPost({
         ...post,
         [e.target.name]: false,
-        link: '',
+        link: "",
       });
     }
   }
@@ -597,9 +625,9 @@ const EventCreateForm = () => {
 
   dotenv.config();
   const location = `${post.municipio}, ${post.departamento}`;
-  const apiKey = 'AIzaSyBr-FUseqSbsY6EMqIGNnGmegD39R--nBA';
-  const zoom = '14';
-  const size = '200x100';
+  const apiKey = "AIzaSyBr-FUseqSbsY6EMqIGNnGmegD39R--nBA";
+  const zoom = "14";
+  const size = "200x100";
   const url = `https://maps.googleapis.com/maps/api/staticmap?center=${location}&zoom=${zoom}&size=${size}&key=${apiKey}`;
 
   //--------------------------------------------------//
@@ -612,89 +640,93 @@ const EventCreateForm = () => {
   const a = costoDeManejo * IVA;
 
   let handleChanges = (e, i, indice) => {
-   
     let newFechas = [...post.dates];
-    
-    if(e.target.name==='cupos'){
+
+    if (e.target.name === "cupos") {
       newFechas[i].cupos = parseInt(e.target.value);
-    }else if(e.target.name==='price'){
-      newFechas[i].price = parseInt(e.target.value);;
-    }else{
+    } else if (e.target.name === "price") {
+      newFechas[i].price = parseInt(e.target.value);
+    } else {
       newFechas[i][e.target.name] = e.target.value;
     }
-    
-   
-    newFechas[i].precioAlPublico = parseFloat(newFechas[i].price) + parseFloat(costoDeManejo) + parseFloat(a);
-    newFechas[i].gananciaCupo = parseFloat(newFechas[i].price) - (parseFloat(newFechas[i].price) * parseFloat(comision) + parseFloat(newFechas[i].price) * parseFloat(comision) * parseFloat(IVA));
-    newFechas[i].gananciaEvento = parseFloat(newFechas[i].gananciaCupo) * parseInt(newFechas[i].cupos);
-    if (e.target.name === 'date') {
+
+    newFechas[i].precioAlPublico =
+      parseFloat(newFechas[i].price) +
+      parseFloat(costoDeManejo) +
+      parseFloat(a);
+    newFechas[i].gananciaCupo =
+      parseFloat(newFechas[i].price) -
+      (parseFloat(newFechas[i].price) * parseFloat(comision) +
+        parseFloat(newFechas[i].price) *
+          parseFloat(comision) *
+          parseFloat(IVA));
+    newFechas[i].gananciaEvento =
+      parseFloat(newFechas[i].gananciaCupo) * parseInt(newFechas[i].cupos);
+    if (e.target.name === "date") {
       newFechas[i].dateFormated = formatDateForm(e.target.value);
     }
 
-    if(indice !== undefined ){
-      if(e.target.name === 'codigo'){
-        newFechas[i].codigos[indice].codigo = e.target.value
-      }else{
-        newFechas[i].codigos[indice][e.target.name] = parseInt(e.target.value)
-      }   
+    if (indice !== undefined) {
+      if (e.target.name === "codigo") {
+        newFechas[i].codigos[indice].codigo = e.target.value;
+      } else {
+        newFechas[i].codigos[indice][e.target.name] = parseInt(e.target.value);
+      }
     }
 
-    
-     
     setPost({
       ...post,
       dates: newFechas,
     });
   };
 
-  
   let addFormFields = () => {
     setPost({
       ...post,
       dates: [
         ...post.dates,
         {
-          date: '',
-          start: '',
-          end: '',
+          date: "",
+          start: "",
+          end: "",
           year: 0,
           cupos: 0,
           price: 0,
           sells: 0,
           isPublic: true,
-          precioAlPublico: '',
-          gananciaCupo: '',
-          gananciaEvento: '',
-          dateFormated: '',
+          precioAlPublico: "",
+          gananciaCupo: "",
+          gananciaEvento: "",
+          dateFormated: "",
           inRevision: false,
-          codigos:[
+          codigos: [
             {
-            codigo:'',
-            descuento:0,
-            cantidad:0,
-            cod:false,
-            show: true,
-            ed:false,
-            uses:0
-            }
+              codigo: "",
+              descuento: 0,
+              cantidad: 0,
+              cod: false,
+              show: true,
+              ed: false,
+              uses: 0,
+            },
           ],
         },
       ],
     });
   };
 
-  let addBono = (e,i) => {
-    e.preventDefault()
+  let addBono = (e, i) => {
+    e.preventDefault();
     const datesAux = post.dates;
     datesAux[i].codigos = [
       ...datesAux[i].codigos,
       {
-        codigo: '',
+        codigo: "",
         descuento: 0,
         cantidad: 0,
-        cod:false,
-        show:true,
-        uses:0
+        cod: false,
+        show: true,
+        uses: 0,
       },
     ];
 
@@ -704,14 +736,13 @@ const EventCreateForm = () => {
     });
   };
 
- 
   let removeFormFields = (i) => {
     let newFechas = [...post.dates];
     newFechas.splice(i, 1);
     return swal({
-      title: 'Esta acción eliminara esta fecha.',
-      icon: 'warning',
-      buttons: ['Cancelar acción', 'Continuar'],
+      title: "Esta acción eliminara esta fecha.",
+      icon: "warning",
+      buttons: ["Cancelar acción", "Continuar"],
       dangerMode: true,
     }).then((continuar) => {
       if (continuar) {
@@ -723,140 +754,139 @@ const EventCreateForm = () => {
     });
   };
 
-  let borrarCodigo = (e,i,indice) =>{
-    e.preventDefault()
+  let borrarCodigo = (e, i, indice) => {
+    e.preventDefault();
     const datesAux = post.dates;
-    if( datesAux[i].codigos[indice].codigo.length){
-    swal({
-      title: 'Deseas eliminar este codigo? ',
-      buttons: true,
-      dangerMode: true,
-    }).then((continuar) => {
-      if (continuar) {
-        datesAux[i].codigos.splice(indice, 1);
-        setPost({
-          ...post,
-          dates: datesAux,
-        });
-      }
-    })
-  }else{
-    datesAux[i].codigos.splice(indice, 1);
+    if (datesAux[i].codigos[indice].codigo.length) {
+      swal({
+        title: "Deseas eliminar este codigo? ",
+        buttons: true,
+        dangerMode: true,
+      }).then((continuar) => {
+        if (continuar) {
+          datesAux[i].codigos.splice(indice, 1);
+          setPost({
+            ...post,
+            dates: datesAux,
+          });
+        }
+      });
+    } else {
+      datesAux[i].codigos.splice(indice, 1);
+      setPost({
+        ...post,
+        dates: datesAux,
+      });
+    }
+  };
+
+  let setearCodigo = (e, i, indice) => {
+    e.preventDefault();
+    const datesAux = post.dates;
+    datesAux[i].codigos[indice] = {
+      codigo: "",
+      descuento: 0,
+      cantidad: 0,
+      cod: false,
+      show: true,
+      ed: false,
+      uses: 0,
+    };
     setPost({
       ...post,
       dates: datesAux,
     });
-  }
-  }
-
-  let setearCodigo = (e,i,indice) =>{
-    e.preventDefault()
-    const datesAux = post.dates;
-    datesAux[i].codigos[indice] =  {
-      codigo: '',
-      descuento: 0,
-      cantidad: 0,
-      cod: false,
-      show:true,
-      ed:false,
-      uses:0
-    }
-     setPost({
-      ...post,
-      dates: datesAux,
-    })
     //setEd(false)
-  }
+  };
 
-
-  let generarCodigo = (e,i,indice) => {
-    e.preventDefault()
+  let generarCodigo = (e, i, indice) => {
+    e.preventDefault();
     let newFechas = [...post.dates];
-    const codi = generateRandomCoupons()
-    newFechas[i].codigos[indice].codigo = codi
-    newFechas[i].codigos[indice].cod = true
-   
-    
+    const codi = generateRandomCoupons();
+    newFechas[i].codigos[indice].codigo = codi;
+    newFechas[i].codigos[indice].cod = true;
+
     setPost({
       ...post,
       dates: newFechas,
     });
-  }
+  };
 
-  let editarCodigo = (e,i,indice) => {
-    e.preventDefault()
+  let editarCodigo = (e, i, indice) => {
+    e.preventDefault();
     //setEd(true)
-    setCambios(false)
+    setCambios(false);
     const datesAux = post.dates;
-    datesAux[i].codigos[indice].ed = true
-     setPost({
+    datesAux[i].codigos[indice].ed = true;
+    setPost({
       ...post,
       dates: datesAux,
-    }) 
-  }
-  
-  let guardarCambios = (e,i,indice) => {
-    e.preventDefault()
-    swal('Cambio ha sido guardado')
-    setCambios(true)
+    });
+  };
+
+  let guardarCambios = (e, i, indice) => {
+    e.preventDefault();
+    swal("Cambio ha sido guardado");
+    setCambios(true);
     //setEd(false)
     const datesAux = post.dates;
-    datesAux[i].codigos[indice].ed = false
-     setPost({
+    datesAux[i].codigos[indice].ed = false;
+    setPost({
       ...post,
       dates: datesAux,
-    }) 
-  }
+    });
+  };
 
-  let mostrarCodigos = (e,i,indice) => {
-    e.preventDefault()
+  let mostrarCodigos = (e, i, indice) => {
+    e.preventDefault();
     //setGetDanger(false)
     //setMostrar(false)
     const datesAux = post.dates;
-    datesAux[i].codigos[indice].show = true
-     setPost({
+    datesAux[i].codigos[indice].show = true;
+    setPost({
       ...post,
       dates: datesAux,
-    }) 
-  }
+    });
+  };
 
-  let ocultarCodigos = (e,i,indice) => {
-    e.preventDefault()
+  let ocultarCodigos = (e, i, indice) => {
+    e.preventDefault();
     //setGetDanger(false)
     //setMostrar(false)
     const datesAux = post.dates;
-    datesAux[i].codigos[indice].show =  false
-     setPost({
+    datesAux[i].codigos[indice].show = false;
+    setPost({
       ...post,
       dates: datesAux,
-    }) 
-  }
+    });
+  };
 
-  const [cambios , setCambios] = useState(false)
+  const [cambios, setCambios] = useState(false);
 
   const LETRAS = 2;
   const NUMEROS = 4;
 
   const generateRandomCoupons = () => {
-      const characters = "ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijklmnpqrstuvwxyz";
-      let letrasResult = "";
+    const characters = "ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijklmnpqrstuvwxyz";
+    let letrasResult = "";
     const numeros = "123456789";
     let numerosResult = "";
     const charactersLength = characters.length;
     const numerosLength = numeros.length;
 
     for (let i = 0; i < LETRAS; i++) {
-        letrasResult += characters.charAt(
-          Math.floor(Math.random() * charactersLength)
-        );
+      letrasResult += characters.charAt(
+        Math.floor(Math.random() * charactersLength)
+      );
     }
 
     for (let i = 0; i < NUMEROS; i++) {
-        numerosResult += numeros.charAt(Math.floor(Math.random() * numerosLength));
+      numerosResult += numeros.charAt(
+        Math.floor(Math.random() * numerosLength)
+      );
     }
 
-    return `Z-` + letrasResult  + numerosResult;
-
+    return `Z-` + letrasResult + numerosResult;
   };
 
   var fecha = new Date();
@@ -864,19 +894,15 @@ const EventCreateForm = () => {
   var dia = fecha.getDate();
   var _mes = fecha.getMonth(); //viene con valores de 0 al 11
   _mes = _mes + 1; //ahora lo tienes de 1 al 12
-  let mes = '';
+  let mes = "";
   if (_mes < 10) {
     //ahora le agregas un 0 para el formato date
-    mes = '0' + _mes;
+    mes = "0" + _mes;
   } else {
-    mes = '' + _mes;
+    mes = "" + _mes;
   }
 
-  const fechaMinima = anio + '-' + mes + '-' + dia;
-
-
-  
-  
+  const fechaMinima = anio + "-" + mes + "-" + dia;
 
   //-----------------------------------------------------//
   //                  SCROLL_SNAP                     //
@@ -889,7 +915,7 @@ const EventCreateForm = () => {
     ref.current.scrollTo({
       top: scrollY + px,
       left: 0,
-      behavior: 'smooth',
+      behavior: "smooth",
     });
 
     setScrollY(scrollY + px);
@@ -915,35 +941,35 @@ const EventCreateForm = () => {
         ...post,
         isPublic: false,
       });
-      console.log('estoy en save');
-      console.log('is public:', post.isPublic);
+      console.log("estoy en save");
+      console.log("is public:", post.isPublic);
       if (Object.values(errors).length > 0) {
         setFailedSubmit(true);
         return swal({
-          title: 'Completa los campos faltantes',
-          icon: 'warning',
-          button: 'Completar',
+          title: "Completa los campos faltantes",
+          icon: "warning",
+          button: "Completar",
           dangerMode: true,
         });
       } else {
         swal({
-          title: 'Tu evento será guardado',
-          buttons: ['Cerrar', 'Guardar'],
+          title: "Tu evento será guardado",
+          buttons: ["Cerrar", "Guardar"],
           dangerMode: true,
         }).then((guardar) => {
           if (guardar) {
-            console.log('post:', post.isPublic);
+            console.log("post:", post.isPublic);
             dispatch(postEvent(post));
-            swal('Tu evento ha sido guardado ', {
-              icon: 'success',
+            swal("Tu evento ha sido guardado ", {
+              icon: "success",
             });
-            console.log('is public:', post.isPublic);
-            navigate('user/perfil/datos');
+            console.log("is public:", post.isPublic);
+            navigate("user/perfil/datos");
           }
         });
       }
     } catch (error) {
-      console.log('error');
+      console.log("error");
     }
   }
 
@@ -953,12 +979,13 @@ const EventCreateForm = () => {
   function handleDelete(e) {
     e.preventDefault();
     swal({
-      title: 'Esta acción borrara todo la información ingresada o modificada en esta sesión',
-      buttons: ['Cerrar', 'Continuar'],
+      title:
+        "Esta acción borrara todo la información ingresada o modificada en esta sesión",
+      buttons: ["Cerrar", "Continuar"],
       dangerMode: true,
     }).then((continuar) => {
       if (continuar) {
-        navigate('user/perfil/datos');
+        navigate("user/perfil/datos");
       }
     });
   }
@@ -975,24 +1002,27 @@ const EventCreateForm = () => {
     if (Object.values(errors).length > 0) {
       setFailedSubmit(true);
       return swal({
-        title: 'Completa los campos faltantes',
-        icon: 'warning',
-        button: 'Completar',
+        title: "Completa los campos faltantes",
+        icon: "warning",
+        button: "Completar",
         dangerMode: true,
       });
     } else {
       swal({
-        title: 'Deseas publicar este evento? ',
+        title: "Deseas publicar este evento? ",
         buttons: true,
         dangerMode: true,
       }).then((publicar) => {
         if (publicar) {
           dispatch(postEvent(post));
-          swal('Tu evento ha sido publicado. Recibirás un correo con los detalles. ', {
-            icon: 'success',
-          });
-          console.log('postEnviado:', post);
-          navigate('/user/perfil/datos');
+          swal(
+            "Tu evento ha sido publicado. Recibirás un correo con los detalles. ",
+            {
+              icon: "success",
+            }
+          );
+          console.log("postEnviado:", post);
+          navigate("/user/perfil/datos");
         }
       });
     }
@@ -1034,20 +1064,24 @@ const EventCreateForm = () => {
                 <div className={styles.container1}>
                   <p className={styles.title}>Nombre del Evento</p>
                   <p className={styles.subTitle}>
-                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut
-                    laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
-                    ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure
-                    dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla
-                    facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril
-                    delenit augue duis dolaore te feugait nulla facilisi.
+                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
+                    sed diam nonummy nibh euismod tincidunt ut laoreet dolore
+                    magna aliquam erat volutpat. Ut wisi enim ad minim veniam,
+                    quis nostrud exerci tation ullamcorper suscipit lobortis
+                    nisl ut aliquip ex ea commodo consequat. Duis autem vel eum
+                    iriure dolor in hendrerit in vulputate velit esse molestie
+                    consequat, vel illum dolore eu feugiat nulla facilisis at
+                    vero eros et accumsan et iusto odio dignissim qui blandit
+                    praesent luptatum zzril delenit augue duis dolaore te
+                    feugait nulla facilisi.
                   </p>
                   {failedSubmit && errors.title ? (
                     <input
                       className={styles.input}
-                      type='text'
-                      maxlength='75'
-                      placeholder='Nombre del evento'
-                      name='title'
+                      type="text"
+                      maxlength="75"
+                      placeholder="Nombre del evento"
+                      name="title"
                       value={post.title}
                       onChange={(e) => handleChange(e)}
                       required
@@ -1055,10 +1089,10 @@ const EventCreateForm = () => {
                   ) : (
                     <input
                       className={styles.input}
-                      type='text'
-                      maxlength='75'
-                      placeholder='Nombre del evento'
-                      name='title'
+                      type="text"
+                      maxlength="75"
+                      placeholder="Nombre del evento"
+                      name="title"
                       value={post.title}
                       onChange={(e) => handleChange(e)}
                     />
@@ -1069,7 +1103,9 @@ const EventCreateForm = () => {
                   ) : (
                     <p className={styles.subInput}>Máximo 10 palabras</p>
                   )}
-                  {errors.title ? <p className={styles.errors}>{errors.title}</p> : null}
+                  {errors.title ? (
+                    <p className={styles.errors}>{errors.title}</p>
+                  ) : null}
                 </div>
               </div>
 
@@ -1103,8 +1139,9 @@ const EventCreateForm = () => {
                 <div className={styles.container1}>
                   <p className={styles.title}>Categorías</p>
                   <p className={styles.subTitle}>
-                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum dolor
-                    sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
+                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
+                    sed diam nonummy nibh, Lorem ipsum dolor sit amet,
+                    consectetuer adipiscing elit, sed diam nonummy nibh.{" "}
                   </p>
                   <div className={styles.containerChecks}>
                     {categories.map((categorie) => (
@@ -1112,7 +1149,7 @@ const EventCreateForm = () => {
                         <label className={styles.labelsChecks}>
                           <input
                             className={styles.checkBox}
-                            type='checkbox'
+                            type="checkbox"
                             value={categorie.name}
                             onChange={(e) => handleCategories(e)}
                             defaultChecked={false}
@@ -1128,19 +1165,21 @@ const EventCreateForm = () => {
                     <input
                       className={styles.checkBoxBono}
                       defaultChecked={false}
-                      type='checkbox'
-                      name='categories'
+                      type="checkbox"
+                      name="categories"
                       value={post.categories}
                     />
                     <label className={styles.labelsChecks}>Otro</label>
 
                     <div className={styles.otherCategorie}>
-                      <label className={styles.subTitle}>Si escogiste ‘otro’, especifica : </label>
+                      <label className={styles.subTitle}>
+                        Si escogiste ‘otro’, especifica :{" "}
+                      </label>
                       {failedSubmit && errors.otherCategorie ? (
                         <input
                           className={styles.input2}
-                          type='text'
-                          name='otherCategorie'
+                          type="text"
+                          name="otherCategorie"
                           values={post.otherCategorie}
                           onChange={(e) => handleOtherCategorie(e)}
                           required
@@ -1148,8 +1187,8 @@ const EventCreateForm = () => {
                       ) : (
                         <input
                           className={styles.input2}
-                          type='text'
-                          name='otherCategorie'
+                          type="text"
+                          name="otherCategorie"
                           values={post.otherCategorie}
                           onChange={(e) => handleOtherCategorie(e)}
                         />
@@ -1157,18 +1196,26 @@ const EventCreateForm = () => {
                     </div>
                   </div>
 
-                  {errors.categories && <p className={styles.errors}>{errors.categories}</p>}
+                  {errors.categories && (
+                    <p className={styles.errors}>{errors.categories}</p>
+                  )}
 
-                  {failedSubmit && errors.categories && errors.categories < 3 ? (
-                    <p className={styles.errors}>Debes seleccionar al menos una categoría</p>
+                  {failedSubmit &&
+                  errors.categories &&
+                  errors.categories < 3 ? (
+                    <p className={styles.errors}>
+                      Debes seleccionar al menos una categoría
+                    </p>
                   ) : (
-                    ''
+                    ""
                   )}
 
                   {failedSubmit && errors.otherCategorie ? (
-                    <p className={styles.errors}>Solo puedes una ingresar una categoria</p>
+                    <p className={styles.errors}>
+                      Solo puedes una ingresar una categoria
+                    </p>
                   ) : (
-                    ''
+                    ""
                   )}
                 </div>
               </div>
@@ -1205,16 +1252,17 @@ const EventCreateForm = () => {
                   <div className={styles.containerDescription}>
                     <p className={styles.title}>Descripción breve</p>
                     <p className={styles.subTitle}>
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum dolor
-                      sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
+                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
+                      sed diam nonummy nibh, Lorem ipsum dolor sit amet,
+                      consectetuer adipiscing elit, sed diam nonummy nibh.{" "}
                     </p>
                     {failedSubmit && errors.shortDescription ? (
                       <textarea
                         className={styles.textareaShort}
-                        type='text'
-                        maxlength='100'
-                        placeholder='descripción breve del evento'
-                        name='shortDescription'
+                        type="text"
+                        maxlength="100"
+                        placeholder="descripción breve del evento"
+                        name="shortDescription"
                         value={post.shortDescription}
                         onChange={(e) => handleChange(e)}
                         required
@@ -1222,10 +1270,10 @@ const EventCreateForm = () => {
                     ) : (
                       <textarea
                         className={styles.textareaShort}
-                        type='text'
-                        maxlength='100'
-                        placeholder='descripción breve del evento'
-                        name='shortDescription'
+                        type="text"
+                        maxlength="100"
+                        placeholder="descripción breve del evento"
+                        name="shortDescription"
                         value={post.shortDescription}
                         onChange={(e) => handleChange(e)}
                       />
@@ -1234,31 +1282,37 @@ const EventCreateForm = () => {
                     {post.shortDescription.length === 100 ? (
                       <p className={styles.errors}>Máximo: 100 de caracteres</p>
                     ) : (
-                      <p className={styles.subTitle}>Máximo: 100 de caracteres</p>
+                      <p className={styles.subTitle}>
+                        Máximo: 100 de caracteres
+                      </p>
                     )}
                     {post.shortDescription.length > 0 ? (
                       <p className={styles.subTitle}>
-                        Usetd va escribiendo: {post.shortDescription.length}/100 caracteres
+                        Usetd va escribiendo: {post.shortDescription.length}/100
+                        caracteres
                       </p>
                     ) : (
-                      ''
+                      ""
                     )}
-                    {errors.shortDescription ? <p className={styles.errors}>{errors.shortDescription}</p> : null}
+                    {errors.shortDescription ? (
+                      <p className={styles.errors}>{errors.shortDescription}</p>
+                    ) : null}
                   </div>
 
                   {/* longDescription */}
                   <div className={styles.containerDescription}>
                     <p className={styles.title}>Descripción detallada</p>
                     <p className={styles.subTitle}>
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum dolor
-                      sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
+                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
+                      sed diam nonummy nibh, Lorem ipsum dolor sit amet,
+                      consectetuer adipiscing elit, sed diam nonummy nibh.{" "}
                     </p>
                     {failedSubmit && errors.longDescription ? (
                       <textarea
                         className={styles.textareaLong}
-                        type='text'
-                        placeholder='descripción detallada del evento'
-                        name='longDescription'
+                        type="text"
+                        placeholder="descripción detallada del evento"
+                        name="longDescription"
                         value={post.longDescription}
                         onChange={(e) => handleChange(e)}
                         required
@@ -1266,25 +1320,31 @@ const EventCreateForm = () => {
                     ) : (
                       <textarea
                         className={styles.textareaLong}
-                        type='text'
-                        placeholder='descripción detallada del evento'
-                        name='longDescription'
+                        type="text"
+                        placeholder="descripción detallada del evento"
+                        name="longDescription"
                         value={post.longDescription}
                         onChange={(e) => handleChange(e)}
                       />
                     )}
 
-                    {longDescriptionArray.length < 75 && longDescriptionArray.length > 0 ? (
+                    {longDescriptionArray.length < 75 &&
+                    longDescriptionArray.length > 0 ? (
                       <p className={styles.errors}>Minimo 75 palabras</p>
                     ) : (
                       <p className={styles.subTitle}>Minimo 75 palabras</p>
                     )}
                     {longDescriptionArray.length > 0 ? (
-                      <p className={styles.subTitle}>Usetd va escribiendo: {longDescriptionArray.length} palabras</p>
+                      <p className={styles.subTitle}>
+                        Usetd va escribiendo: {longDescriptionArray.length}{" "}
+                        palabras
+                      </p>
                     ) : (
-                      ''
+                      ""
                     )}
-                    {errors.longDescription ? <p className={styles.errors}>{errors.longDescription}</p> : null}
+                    {errors.longDescription ? (
+                      <p className={styles.errors}>{errors.longDescription}</p>
+                    ) : null}
                   </div>
                 </div>
               </div>
@@ -1319,8 +1379,9 @@ const EventCreateForm = () => {
                 <div className={styles.container1}>
                   <p className={styles.title}>Agrega fotos y/o videos</p>
                   <p className={styles.subTitle}>
-                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum dolor
-                    sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
+                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
+                    sed diam nonummy nibh, Lorem ipsum dolor sit amet,
+                    consectetuer adipiscing elit, sed diam nonummy nibh.{" "}
                   </p>
                   <p className={styles.subTitle4}>Fotos del Evento</p>
 
@@ -1328,23 +1389,31 @@ const EventCreateForm = () => {
                     <div>
                       <p>Fotos: Jpg, png, Max.100kb </p>
                       <p>Videos: .MP4 Max 100kb</p>
-                      <p>"Haz click en examinar para elegir los archivos y luedo en añadir"</p>
+                      <p>
+                        "Haz click en examinar para elegir los archivos y luedo
+                        en añadir"
+                      </p>
                       <input
-                        type='file'
+                        type="file"
                         multiple={true}
                         onChange={(e) => {
                           setImage(e.target.files);
                         }}
                       />
-                      {errors.pictures ? <p className={styles.errors}>{errors.pictures}</p> : null}
+                      {errors.pictures ? (
+                        <p className={styles.errors}>{errors.pictures}</p>
+                      ) : null}
                     </div>
                   ) : (
                     <div>
                       <p>Fotos: Jpg, png, Max.100kb </p>
                       <p>Videos: .MP4 Max 100kb</p>
-                      <p>"Haz click en examinar para elegir los archivos y luedo en añadir"</p>
+                      <p>
+                        "Haz click en examinar para elegir los archivos y luedo
+                        en añadir"
+                      </p>
                       <input
-                        type='file'
+                        type="file"
                         multiple={true}
                         onChange={(e) => {
                           setImage(e.target.files);
@@ -1376,15 +1445,22 @@ const EventCreateForm = () => {
                         {post.pictures.map((item, index) => (
                           <div key={index} className={styles.mySwiper}>
                             <SwiperSlide>
-                              <img className={styles.mySwiperImg} src={item.picture} alt='' />
-                              <button className={styles.mySwiperBtnDel} onClick={(e) => fileRemove(e,item)}>
+                              <img
+                                className={styles.mySwiperImg}
+                                src={item.picture}
+                                alt=""
+                              />
+                              <button
+                                className={styles.mySwiperBtnDel}
+                                onClick={(e) => fileRemove(e, item)}
+                              >
                                 x
                               </button>
                               <label className={styles.subInput}>
                                 <input
                                   className={styles.checkBox4}
-                                  type='checkbox'
-                                  name='cover'
+                                  type="checkbox"
+                                  name="cover"
                                   value={item.picture}
                                   onChange={(e) => handleCover(e)}
                                   defaultChecked={false}
@@ -1395,7 +1471,9 @@ const EventCreateForm = () => {
                           </div>
                         ))}
                       </Swiper>
-                      {errors.pictures ? <p className={styles.errors}>{errors.pictures}</p> : null}
+                      {errors.pictures ? (
+                        <p className={styles.errors}>{errors.pictures}</p>
+                      ) : null}
                     </div>
                   ) : null}
                 </div>
@@ -1432,20 +1510,21 @@ const EventCreateForm = () => {
                   {/* Title*/}
                   <p className={styles.title}>¿Dónde es el evento?</p>
                   <p className={styles.subTitle}>
-                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum dolor
-                    sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
+                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
+                    sed diam nonummy nibh, Lorem ipsum dolor sit amet,
+                    consectetuer adipiscing elit, sed diam nonummy nibh.{" "}
                   </p>
 
                   {/* CheckBoxOnLine*/}
                   <div className={styles.containerOnLine}>
                     <input
                       className={styles.checkBox4}
-                      type='checkbox'
+                      type="checkbox"
                       defaultChecked={false}
-                      name='online'
+                      name="online"
                       value={post.online}
                       onChange={(e) => handleCheck(e)}
-                      id='check'
+                      id="check"
                     />
                     <label> Este es un evento en linea</label>
 
@@ -1454,9 +1533,9 @@ const EventCreateForm = () => {
                     {failedSubmit && errors.link ? (
                       <div className={styles.online}>
                         <input
-                          type='text'
-                          placeholder='Colocar el enlace del evento'
-                          name='link'
+                          type="text"
+                          placeholder="Colocar el enlace del evento"
+                          name="link"
                           value={post.link}
                           onChange={(e) => handleLink(e)}
                           required
@@ -1465,15 +1544,17 @@ const EventCreateForm = () => {
                     ) : (
                       <div className={styles.online}>
                         <input
-                          type='text'
-                          placeholder='Colocar el enlace del evento'
-                          name='link'
+                          type="text"
+                          placeholder="Colocar el enlace del evento"
+                          name="link"
                           value={post.link}
                           onChange={(e) => handleChange(e)}
                         />
                       </div>
                     )}
-                    {errors.link ? <p className={styles.errors}>{errors.link}</p> : null}
+                    {errors.link ? (
+                      <p className={styles.errors}>{errors.link}</p>
+                    ) : null}
 
                     {/*notOnline*/}
                     <div className={styles.notOnline}>
@@ -1482,10 +1563,10 @@ const EventCreateForm = () => {
                         {failedSubmit && errors.departamento ? (
                           <input
                             className={styles.select}
-                            list='dptos'
-                            id='myDep'
-                            name='departamento'
-                            placeholder='Departamento'
+                            list="dptos"
+                            id="myDep"
+                            name="departamento"
+                            placeholder="Departamento"
                             value={post.departamento}
                             onChange={(e) => handleChange(e)}
                             required
@@ -1493,18 +1574,20 @@ const EventCreateForm = () => {
                         ) : (
                           <input
                             className={styles.select}
-                            list='dptos'
-                            id='myDep'
-                            name='departamento'
-                            placeholder='Departamento'
+                            list="dptos"
+                            id="myDep"
+                            name="departamento"
+                            placeholder="Departamento"
                             value={post.departamento}
                             onChange={(e) => handleChange(e)}
                           />
                         )}
-                        <datalist id='dptos'>
+                        <datalist id="dptos">
                           {nuevoArrayDepartamentos &&
                             nuevoArrayDepartamentos.map((departamento) => (
-                              <option value={departamento.departamento}>{departamento.departamento}</option>
+                              <option value={departamento.departamento}>
+                                {departamento.departamento}
+                              </option>
                             ))}
                         </datalist>
 
@@ -1513,20 +1596,21 @@ const EventCreateForm = () => {
                         {nuevoArrayDepartamentos &&
                           nuevoArrayDepartamentos.map((departamento) => (
                             <div>
-                              {departamento.departamento === post.departamento && (
+                              {departamento.departamento ===
+                                post.departamento && (
                                 <div>
                                   {failedSubmit && errors.municipio ? (
                                     <div className={styles.Muni}>
                                       <input
-                                        list='municipio'
-                                        id='myMuni'
-                                        name='municipio'
+                                        list="municipio"
+                                        id="myMuni"
+                                        name="municipio"
                                         placeholder={departamento.capital}
                                         value={post.municipio}
                                         onChange={(e) => handleChange(e)}
                                         required
                                       />
-                                      <datalist id='municipio'>
+                                      <datalist id="municipio">
                                         <option>{departamento.capital}</option>
                                         {departamento.municipio.map((m) => (
                                           <option>{m}</option>
@@ -1536,14 +1620,14 @@ const EventCreateForm = () => {
                                   ) : (
                                     <div className={styles.Muni}>
                                       <input
-                                        list='municipio'
-                                        id='myMuni'
-                                        name='municipio'
+                                        list="municipio"
+                                        id="myMuni"
+                                        name="municipio"
                                         placeholder={departamento.capital}
                                         value={post.municipio}
                                         onChange={(e) => handleChange(e)}
                                       />
-                                      <datalist id='municipio'>
+                                      <datalist id="municipio">
                                         <option>{departamento.capital}</option>
                                         {departamento.municipio.map((m) => (
                                           <option>{m}</option>
@@ -1562,9 +1646,9 @@ const EventCreateForm = () => {
                         <div className={styles.direccionError}>
                           <input
                             className={styles.input5}
-                            type='text'
-                            placeholder='Dirección del evento'
-                            name='direccion'
+                            type="text"
+                            placeholder="Dirección del evento"
+                            name="direccion"
                             value={post.direccion}
                             onChange={(e) => handleChange(e)}
                             required
@@ -1573,23 +1657,25 @@ const EventCreateForm = () => {
                       ) : (
                         <input
                           className={styles.input5}
-                          type='text'
-                          placeholder='Dirección del evento'
-                          name='direccion'
+                          type="text"
+                          placeholder="Dirección del evento"
+                          name="direccion"
                           value={post.direccion}
                           onChange={(e) => handleChange(e)}
                         />
                       )}
-                      {errors.direccion ? <p className={styles.errors}>{errors.direccion}</p> : null}
+                      {errors.direccion ? (
+                        <p className={styles.errors}>{errors.direccion}</p>
+                      ) : null}
 
                       {/* Barrio*/}
                       {failedSubmit && errors.barrio ? (
                         <div className={styles.barrio}>
                           <input
                             className={styles.input5}
-                            type='text'
-                            placeholder='Barrio'
-                            name='barrio'
+                            type="text"
+                            placeholder="Barrio"
+                            name="barrio"
                             value={post.barrio}
                             onChange={(e) => handleChange(e)}
                             required
@@ -1598,14 +1684,16 @@ const EventCreateForm = () => {
                       ) : (
                         <input
                           className={styles.input5}
-                          type='text'
-                          placeholder='Barrio'
-                          name='barrio'
+                          type="text"
+                          placeholder="Barrio"
+                          name="barrio"
                           value={post.barrio}
                           onChange={(e) => handleChange(e)}
                         />
                       )}
-                      {errors.barrio ? <p className={styles.errors}>{errors.barrio}</p> : null}
+                      {errors.barrio ? (
+                        <p className={styles.errors}>{errors.barrio}</p>
+                      ) : null}
 
                       {/* Map*/}
                       <div className={styles.containerMap}>
@@ -1619,11 +1707,17 @@ const EventCreateForm = () => {
                             <img src={mapa} alt='mapaStaticGoogleMaps' />
                           </div>
                         )} */}
-                        <p className={styles.subtextMap}>Texto google legal aqui</p>
+                        <p className={styles.subtextMap}>
+                          Texto google legal aqui
+                        </p>
 
                         {/* <img  className={styles.icon} src={iconEditar} alt='n' /> */}
                         <button className={styles.btn}>
-                          <img className={styles.icon} src={iconEditar} alt='n' />
+                          <img
+                            className={styles.icon}
+                            src={iconEditar}
+                            alt="n"
+                          />
                         </button>
                       </div>
                     </div>
@@ -1632,26 +1726,36 @@ const EventCreateForm = () => {
                   {/*especialRequires*/}
                   <div className={styles.especialRequires}>
                     <hr className={styles.hr}></hr>
-                    <p className={styles.subtextEspecial}>Accesibilidad y requerimientos especiales</p>
+                    <p className={styles.subtextEspecial}>
+                      Accesibilidad y requerimientos especiales
+                    </p>
                     <div className={styles.especialDiv}>
                       <span>
-                        <img className={styles.iconExclamacion2} src={iconExclamacion2} alt='n' />
+                        <img
+                          className={styles.iconExclamacion2}
+                          src={iconExclamacion2}
+                          alt="n"
+                        />
                       </span>
                       <span>
                         <p className={styles.subTitle}>
-                          Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum
-                          dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
+                          Lorem ipsum dolor sit amet, consectetuer adipiscing
+                          elit, sed diam nonummy nibh, Lorem ipsum dolor sit
+                          amet, consectetuer adipiscing elit, sed diam nonummy
+                          nibh.{" "}
                         </p>
                       </span>
                     </div>
                     <input
-                      type='text'
-                      name='specialRequires'
+                      type="text"
+                      name="specialRequires"
                       value={post.specialRequires}
                       onChange={(e) => handleChange(e)}
                     />
                   </div>
-                  {errors.specialRequires ? <p className={styles.errors}>{errors.specialRequires}</p> : null}
+                  {errors.specialRequires ? (
+                    <p className={styles.errors}>{errors.specialRequires}</p>
+                  ) : null}
                 </div>
               </div>
 
@@ -1687,8 +1791,9 @@ const EventCreateForm = () => {
                   <div>
                     <p className={styles.title}>Costo y fecha</p>
                     <p className={styles.subTitle}>
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum dolor
-                      sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
+                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
+                      sed diam nonummy nibh, Lorem ipsum dolor sit amet,
+                      consectetuer adipiscing elit, sed diam nonummy nibh.{" "}
                     </p>
                   </div>
 
@@ -1706,21 +1811,21 @@ const EventCreateForm = () => {
                               Máximo número de participantes
                               {failedSubmit && errors.cupos ? (
                                 <input
-                                  id='cupos'
-                                  type='number'
-                                  placeholder='-'
-                                  name='cupos'
+                                  id="cupos"
+                                  type="number"
+                                  placeholder="-"
+                                  name="cupos"
                                   value={date.cupos}
                                   onChange={(e) => handleChanges(e, index)}
                                   required
                                 />
                               ) : (
                                 <input
-                                  id='cupos'
+                                  id="cupos"
                                   className={styles.subInfoInput}
-                                  type='number'
-                                  placeholder='-'
-                                  name='cupos'
+                                  type="number"
+                                  placeholder="-"
+                                  name="cupos"
                                   value={date.cupos}
                                   onChange={(e) => handleChanges(e, index)}
                                 />
@@ -1736,9 +1841,9 @@ const EventCreateForm = () => {
                                 <p>$</p>
                                 {failedSubmit && errors.dates ? (
                                   <input
-                                    type='number'
-                                    placeholder='-'
-                                    name='price'
+                                    type="number"
+                                    placeholder="-"
+                                    name="price"
                                     value={date.price}
                                     onChange={(e) => handleChanges(e, index)}
                                     required
@@ -1746,9 +1851,9 @@ const EventCreateForm = () => {
                                 ) : (
                                   <input
                                     className={styles.subInfoInput}
-                                    type='number'
-                                    placeholder='-'
-                                    name='price'
+                                    type="number"
+                                    placeholder="-"
+                                    name="price"
                                     value={date.price}
                                     onChange={(e) => handleChanges(e, index)}
                                   />
@@ -1756,9 +1861,15 @@ const EventCreateForm = () => {
                               </div>
                             </label>
 
-                            {date.price === '' ? <p>$21.990</p> : <p>{date.precioAlPublico}</p>}
+                            {date.price === "" ? (
+                              <p>$21.990</p>
+                            ) : (
+                              <p>{date.precioAlPublico}</p>
+                            )}
 
-                            <p className={styles.subInfotxt}>Precio al público incluyendo costo de manejo e IVA</p>
+                            <p className={styles.subInfotxt}>
+                              Precio al público incluyendo costo de manejo e IVA
+                            </p>
                           </div>
 
                           {/* ganacia x cupo*/}
@@ -1767,11 +1878,19 @@ const EventCreateForm = () => {
                               Tu ganas por cupo
                               <div className={styles.labelS}>
                                 <p>$</p>
-                                <p className={styles.subInfoInput}>{date.gananciaCupo}</p>
+                                <p className={styles.subInfoInput}>
+                                  {date.gananciaCupo}
+                                </p>
                               </div>
                             </label>
-                            <p className={styles.subInfotxt}>Después de nuestra comisión + IVA</p>
-                            <a className={styles.btn6} href='user/perfil/datos' target='_blank'>
+                            <p className={styles.subInfotxt}>
+                              Después de nuestra comisión + IVA
+                            </p>
+                            <a
+                              className={styles.btn6}
+                              href="user/perfil/datos"
+                              target="_blank"
+                            >
                               Ver mas
                             </a>
                           </div>
@@ -1782,11 +1901,20 @@ const EventCreateForm = () => {
                               Tu ganas por evento
                               <div className={styles.labelS}>
                                 <p>$</p>
-                                <p className={styles.subInfoInput}>{date.gananciaEvento}</p>
+                                <p className={styles.subInfoInput}>
+                                  {date.gananciaEvento}
+                                </p>
                               </div>
                             </label>
-                            <p className={styles.subInfotxt}>Esto sería lo que ganarías si se venden todos tus cupos</p>
-                            <a className={styles.btn6} href='user/perfil/datos' target='_blank'>
+                            <p className={styles.subInfotxt}>
+                              Esto sería lo que ganarías si se venden todos tus
+                              cupos
+                            </p>
+                            <a
+                              className={styles.btn6}
+                              href="user/perfil/datos"
+                              target="_blank"
+                            >
                               Ver mas
                             </a>
                           </div>
@@ -1800,18 +1928,18 @@ const EventCreateForm = () => {
                             {failedSubmit && errors.dates ? (
                               <input
                                 classname={styles.errors}
-                                type='date'
-                                name='date'
-                                value={date.date || ''}
+                                type="date"
+                                name="date"
+                                value={date.date || ""}
                                 onChange={(e) => handleChanges(e, index)}
                                 min={fechaMinima}
                                 required
                               />
                             ) : (
                               <input
-                                id='fecha'
-                                type='date'
-                                name='date'
+                                id="fecha"
+                                type="date"
+                                name="date"
                                 value={date.date}
                                 onChange={(e) => handleChanges(e, index)}
                                 min={fechaMinima}
@@ -1825,19 +1953,19 @@ const EventCreateForm = () => {
                             <label>Comienza</label>
                             {failedSubmit && errors.dates ? (
                               <input
-                                type='time'
-                                name='start'
+                                type="time"
+                                name="start"
                                 value={date.start}
                                 onChange={(e) => handleChanges(e, index)}
                                 required
                               />
                             ) : (
                               <input
-                                type='time'
-                                name='start'
+                                type="time"
+                                name="start"
                                 value={date.start}
                                 onChange={(e) => handleChanges(e, index)}
-                                step='900'
+                                step="900"
                               />
                             )}
                           </div>
@@ -1847,16 +1975,16 @@ const EventCreateForm = () => {
                             <label>End</label>
                             {failedSubmit && errors.dates ? (
                               <input
-                                type='time'
-                                name='end'
+                                type="time"
+                                name="end"
                                 value={date.end}
                                 onChange={(e) => handleChanges(e, index)}
                                 required
                               />
                             ) : (
                               <input
-                                type='time'
-                                name='end'
+                                type="time"
+                                name="end"
                                 value={date.end}
                                 onChange={(e) => handleChanges(e, index)}
                               />
@@ -1865,260 +1993,370 @@ const EventCreateForm = () => {
 
                           {/* Remove date*/}
                           {index ? (
-                            <button className={styles.addDelete} type='button' onClick={() => removeFormFields(index)}>
-                              <img className={styles.basquet} src={basquet} alt='n' />
+                            <button
+                              className={styles.addDelete}
+                              type="button"
+                              onClick={() => removeFormFields(index)}
+                            >
+                              <img
+                                className={styles.basquet}
+                                src={basquet}
+                                alt="n"
+                              />
                             </button>
                           ) : null}
                         </div>
 
-                         {/* bono*/}                      
+                        {/* bono*/}
                         <div className={styles.checkBono}>
-                          {date.codigos[0].codigo.length?
+                          {date.codigos[0].codigo.length ? (
                             <input
                               className={styles.checkBoxBono}
                               defaultChecked={true}
-                              type='checkbox'
-                              name='bono'
+                              type="checkbox"
+                              name="bono"
                               checked
-                              />
-                              :
-                              <input
-                                className={styles.checkBoxBono}
-                                defaultChecked={false}
-                                type='checkbox'
-                                name='bono'
-                              />
-                            }                          
-                            <label className={styles.labelsChecks}>Brindar códigos de descuento’</label>
-                            {date.codigos && date.codigos.map((codigo,indice)=>(
-                              <div className={styles.paso}>                              
+                            />
+                          ) : (
+                            <input
+                              className={styles.checkBoxBono}
+                              defaultChecked={false}
+                              type="checkbox"
+                              name="bono"
+                            />
+                          )}
+                          <label className={styles.labelsChecks}>
+                            Brindar códigos de descuento’
+                          </label>
+                          {date.codigos &&
+                            date.codigos.map((codigo, indice) => (
+                              <div className={styles.paso}>
                                 <div className={styles.containerBono}>
-                                  {codigo.show === true ?
-                                  <div>
-                                    {/*codigo*/}
-                                    <div className={styles.opcionesBonos} key={indice}>
+                                  {codigo.show === true ? (
+                                    <div>
+                                      {/*codigo*/}
+                                      <div
+                                        className={styles.opcionesBonos}
+                                        key={indice}
+                                      >
                                         {/*%descuento-cantidad*/}
-                                          {
-                                            codigo.codigo.length && codigo.ed === false  ? (
-                                              <div className={styles.descuentoCantidad}>
-                                                {/* descuento*/}
-                                                <div className={styles.descuento} >
-                                                  <label>
-                                                    Porcentaje
-                                                      <p>
-                                                        {codigo.descuento}
-                                                      </p>                                     
-                                                  </label>
-                                                </div>
-                
-                                                {/* cantidad de bonos*/}
-                                                <div className={styles.descuento}>
-                                                  <label>
-                                                    Cantidad de bonos
-                                                      <p>
-                                                        {codigo.cantidad}
-                                                      </p>                                    
-                                                  </label>                               
-                                                </div>
-                                              </div>
-                                            )
-                                            :(
-                                            <div className={styles.descuentoCantidad}>
-                                              {/* descuento*/}
-                                              <div className={styles.descuento}>
-                                                <label>
-                                                  Porcentaje
-                                                  <div>
-                                                    { failedSubmit && errors.bonos ? (
-                                                      <input
-                                                        id='descuento'
-                                                        type='number'
-                                                        placeholder='-'
-                                                        name='descuento'
-                                                        value={codigo.descuento}
-                                                        max='100'
-                                                        min='1'
-                                                        onChange={(e) => handleChanges(e, index, indice)}
-                                                        required
-                                                      />
-                                                    ) : codigo.ed === true ? (
-                                                      <input
-                                                        id='descuento'
-                                                        type='number'
-                                                        placeholder='-'
-                                                        name='descuento'
-                                                        value={codigo.descuento}
-                                                        max='100'
-                                                        min='1'
-                                                        onChange={(e) => handleChanges(e, index, indice)}
-                                                        required
-                                                      />
-
-                                                    ) : (
-                                                      <input
-                                                        id='descuento'
-                                                        type='number'
-                                                        placeholder='-'
-                                                        name='descuento'
-                                                        value={codigo.descuento}
-                                                        max='100'
-                                                        min='1'
-                                                        onChange={(e) => handleChanges(e, index, indice)}
-                                                      />
-                                                    )}   
-                                                  </div> 
-                                                </label>                              
-                                              </div>
-
-                                              {/* cantidad de bonos*/}
-                                              <div className={styles.descuento}>
-                                                <label>
-                                                Cantidad de bonos
-                                                  <div>
-                                                    {failedSubmit && errors.bonos ? (
-                                                      <input
-                                                        type='number'
-                                                        placeholder='-'
-                                                        name='cantidad'
-                                                        value={codigo.cantidad}
-                                                        onChange={(e) => handleChanges(e, index, indice)}
-                                                        required
-                                                      />
-                                                    ) : codigo.ed === true ? (
-                                                      <input
-                                                        type='number'
-                                                        placeholder='-'
-                                                        name='cantidad'
-                                                        value={codigo.cantidad}
-                                                        onChange={(e) => handleChanges(e, index, indice)}
-                                                        required
-                                                      />
-
-                                                    ) : (
-                                                      <input
-                                                        className={styles.cantidad}
-                                                        type='number'
-                                                        placeholder='-'
-                                                        name='cantidad'
-                                                        value={codigo.cantidad}
-                                                        onChange={(e) => handleChanges(e, index, indice)}
-                                                      />
-                                                    )}
-                                                  </div>
-                                                </label>                               
-                                              </div>
+                                        {codigo.codigo.length &&
+                                        codigo.ed === false ? (
+                                          <div
+                                            className={styles.descuentoCantidad}
+                                          >
+                                            {/* descuento*/}
+                                            <div className={styles.descuento}>
+                                              <label>
+                                                Porcentaje
+                                                <p>{codigo.descuento}</p>
+                                              </label>
                                             </div>
-                                            )
-                                          }
+
+                                            {/* cantidad de bonos*/}
+                                            <div className={styles.descuento}>
+                                              <label>
+                                                Cantidad de bonos
+                                                <p>{codigo.cantidad}</p>
+                                              </label>
+                                            </div>
+                                          </div>
+                                        ) : (
+                                          <div
+                                            className={styles.descuentoCantidad}
+                                          >
+                                            {/* descuento*/}
+                                            <div className={styles.descuento}>
+                                              <label>
+                                                Porcentaje
+                                                <div>
+                                                  {failedSubmit &&
+                                                  errors.bonos ? (
+                                                    <input
+                                                      id="descuento"
+                                                      type="number"
+                                                      placeholder="-"
+                                                      name="descuento"
+                                                      value={codigo.descuento}
+                                                      max="100"
+                                                      min="1"
+                                                      onChange={(e) =>
+                                                        handleChanges(
+                                                          e,
+                                                          index,
+                                                          indice
+                                                        )
+                                                      }
+                                                      required
+                                                    />
+                                                  ) : codigo.ed === true ? (
+                                                    <input
+                                                      id="descuento"
+                                                      type="number"
+                                                      placeholder="-"
+                                                      name="descuento"
+                                                      value={codigo.descuento}
+                                                      max="100"
+                                                      min="1"
+                                                      onChange={(e) =>
+                                                        handleChanges(
+                                                          e,
+                                                          index,
+                                                          indice
+                                                        )
+                                                      }
+                                                      required
+                                                    />
+                                                  ) : (
+                                                    <input
+                                                      id="descuento"
+                                                      type="number"
+                                                      placeholder="-"
+                                                      name="descuento"
+                                                      value={codigo.descuento}
+                                                      max="100"
+                                                      min="1"
+                                                      onChange={(e) =>
+                                                        handleChanges(
+                                                          e,
+                                                          index,
+                                                          indice
+                                                        )
+                                                      }
+                                                    />
+                                                  )}
+                                                </div>
+                                              </label>
+                                            </div>
+
+                                            {/* cantidad de bonos*/}
+                                            <div className={styles.descuento}>
+                                              <label>
+                                                Cantidad de bonos
+                                                <div>
+                                                  {failedSubmit &&
+                                                  errors.bonos ? (
+                                                    <input
+                                                      type="number"
+                                                      placeholder="-"
+                                                      name="cantidad"
+                                                      value={codigo.cantidad}
+                                                      onChange={(e) =>
+                                                        handleChanges(
+                                                          e,
+                                                          index,
+                                                          indice
+                                                        )
+                                                      }
+                                                      required
+                                                    />
+                                                  ) : codigo.ed === true ? (
+                                                    <input
+                                                      type="number"
+                                                      placeholder="-"
+                                                      name="cantidad"
+                                                      value={codigo.cantidad}
+                                                      onChange={(e) =>
+                                                        handleChanges(
+                                                          e,
+                                                          index,
+                                                          indice
+                                                        )
+                                                      }
+                                                      required
+                                                    />
+                                                  ) : (
+                                                    <input
+                                                      className={
+                                                        styles.cantidad
+                                                      }
+                                                      type="number"
+                                                      placeholder="-"
+                                                      name="cantidad"
+                                                      value={codigo.cantidad}
+                                                      onChange={(e) =>
+                                                        handleChanges(
+                                                          e,
+                                                          index,
+                                                          indice
+                                                        )
+                                                      }
+                                                    />
+                                                  )}
+                                                </div>
+                                              </label>
+                                            </div>
+                                          </div>
+                                        )}
 
                                         {/*codigo*/}
-                                          {
-                                            codigo.ed===true ?
-                                              <div className={styles.descuento} >
-                                                <label>
-                                                    Código
-                                                  <p>{codigo.codigo}</p>
-                                                </label>
-                                              </div>
-                                            :
-                                              <div className={styles.codigoAble}>
-                                                <label >
-                                                    Código                                         
-                                                    <p>{codigo.codigo}</p>
-                                                </label>                             
-                                              </div>
-                                          }
-                                                                  
-                                        {/*generar-editar-resetear codigo*/}                                   
-                                          {
-                                            codigo.descuento && codigo.cantidad && codigo.cod === false?
-                                              <div className={styles.contDate}>
-                                                <button className={styles.generarCodigo} onClick={(e)=>generarCodigo(e, index, indice)}>Generar Código</button>                            
-                                              </div> : 
-                                              codigo.cod === true ? (
-                                              <div className={styles.editarResetear}>
-                                                {/*editar codigo*/}
-                                                <button className={styles.editarCodigo} onClick={(e)=>editarCodigo(e, index, indice)}>
-                                                  <BsPencilSquare className={styles.iconEdit} />
-                                                  <span>Editar</span>
-                                                </button>
-                                                {/*setear codigo*/}                                           
-                                                <button className={styles.editarCodigo} onClick={(e)=>setearCodigo(e, index, indice)}>Resetear</button>                            
-                                              </div>
-                                            ):''                                        
-                                          }
-                                  
-                                        {/*guardar codigo*/}    
-                                          {
-                                            codigo.ed === true && cambios === false ?
-                                              <div>
-                                                <button className={styles.generarCodigo} onClick={(e)=>guardarCambios(e, index, indice)}>Guardar Cambios</button>
-                                              </div>
-                                              :''
-                                          }
-                                        
+                                        {codigo.ed === true ? (
+                                          <div className={styles.descuento}>
+                                            <label>
+                                              Código
+                                              <p>{codigo.codigo}</p>
+                                            </label>
+                                          </div>
+                                        ) : (
+                                          <div className={styles.codigoAble}>
+                                            <label>
+                                              Código
+                                              <p>{codigo.codigo}</p>
+                                            </label>
+                                          </div>
+                                        )}
+
+                                        {/*generar-editar-resetear codigo*/}
+                                        {codigo.descuento &&
+                                        codigo.cantidad &&
+                                        codigo.cod === false ? (
+                                          <div className={styles.contDate}>
+                                            <button
+                                              className={styles.generarCodigo}
+                                              onClick={(e) =>
+                                                generarCodigo(e, index, indice)
+                                              }
+                                            >
+                                              Generar Código
+                                            </button>
+                                          </div>
+                                        ) : codigo.cod === true ? (
+                                          <div
+                                            className={styles.editarResetear}
+                                          >
+                                            {/*editar codigo*/}
+                                            <button
+                                              className={styles.editarCodigo}
+                                              onClick={(e) =>
+                                                editarCodigo(e, index, indice)
+                                              }
+                                            >
+                                              <BsPencilSquare
+                                                className={styles.iconEdit}
+                                              />
+                                              <span>Editar</span>
+                                            </button>
+                                            {/*setear codigo*/}
+                                            <button
+                                              className={styles.editarCodigo}
+                                              onClick={(e) =>
+                                                setearCodigo(e, index, indice)
+                                              }
+                                            >
+                                              Resetear
+                                            </button>
+                                          </div>
+                                        ) : (
+                                          ""
+                                        )}
+
+                                        {/*guardar codigo*/}
+                                        {codigo.ed === true &&
+                                        cambios === false ? (
+                                          <div>
+                                            <button
+                                              className={styles.generarCodigo}
+                                              onClick={(e) =>
+                                                guardarCambios(e, index, indice)
+                                              }
+                                            >
+                                              Guardar Cambios
+                                            </button>
+                                          </div>
+                                        ) : (
+                                          ""
+                                        )}
+
                                         {/*borrar codigo*/}
-                                          {
-                                            indice?                                         
-                                              <button className={styles.deleteBono} onClick={(e)=>borrarCodigo(e, index, indice)}>
-                                                <img  src={basquet} alt='n' />
-                                              </button>                            
-                                            :null
-                                          }
-                                    </div>  
-                                  </div>  
-                                  :''}                            
-                                </div> 
+                                        {indice ? (
+                                          <button
+                                            className={styles.deleteBono}
+                                            onClick={(e) =>
+                                              borrarCodigo(e, index, indice)
+                                            }
+                                          >
+                                            <img src={basquet} alt="n" />
+                                          </button>
+                                        ) : null}
+                                      </div>
+                                    </div>
+                                  ) : (
+                                    ""
+                                  )}
+                                </div>
                                 <div className={styles.toShow}>
                                   {/* Mostrar-Ocultar */}
-                                  {
-                                    codigo.show===true && codigo.codigo.length?
+                                  {codigo.show === true &&
+                                  codigo.codigo.length ? (
                                     <div>
-                                      <button  className={styles.addDate} onClick={(e) => ocultarCodigos(e,index,indice)}>
+                                      <button
+                                        className={styles.addDate}
+                                        onClick={(e) =>
+                                          ocultarCodigos(e, index, indice)
+                                        }
+                                      >
                                         Ocultar Codigo
                                       </button>
                                     </div>
-                                  : codigo.show===false && codigo.codigo.length?
-                                    <button  className={styles.addDate} onClick={(e) => mostrarCodigos(e,index,indice)}>
+                                  ) : codigo.show === false &&
+                                    codigo.codigo.length ? (
+                                    <button
+                                      className={styles.addDate}
+                                      onClick={(e) =>
+                                        mostrarCodigos(e, index, indice)
+                                      }
+                                    >
                                       Mostrar Codigo
                                     </button>
-                                  :''
-                                  }
-                                </div> 
-                              </div>                                            
-                            ))}
-                              {/*agregar otro codigo*/}
-                              <div className={styles.flex}>
-                                <div className={styles.addBono} >                                  
-                                      {
-                                        date.codigos[0].codigo.length ?
-                                        <div>
-                                          <button className={styles.addDate} type='button' onClick={(e) => addBono(e,index)}>
-                                            {' '}
-                                            + Agregar otro código
-                                          </button>
-                                        </div>
-                                        :''
-                                      }
-                                      
+                                  ) : (
+                                    ""
+                                  )}
                                 </div>
                               </div>
+                            ))}
+                          {/*agregar otro codigo*/}
+                          <div className={styles.flex}>
+                            <div className={styles.addBono}>
+                              {date.codigos[0].codigo.length ? (
+                                <div>
+                                  <button
+                                    className={styles.addDate}
+                                    type="button"
+                                    onClick={(e) => addBono(e, index)}
+                                  >
+                                    {" "}
+                                    + Agregar otro código
+                                  </button>
+                                </div>
+                              ) : (
+                                ""
+                              )}
+                            </div>
+                          </div>
                         </div>
-                        
+
                         <hr className={styles.hr}></hr>
                       </div>
                     ))}
                   </div>
 
                   {/* errores*/}
-                  {errors.dates && <p className={styles.errors}>{errors.dates}</p>}
-                  {errors.cupos && <p className={styles.errors}>{errors.cupos}</p>}
+                  {errors.dates && (
+                    <p className={styles.errors}>{errors.dates}</p>
+                  )}
+                  {errors.cupos && (
+                    <p className={styles.errors}>{errors.cupos}</p>
+                  )}
 
                   {/* agregar dates */}
                   <div className={styles.flex}>
                     <div>
-                      <button className={styles.addDate} type='button' onClick={() => addFormFields()}>
-                        {' '}
+                      <button
+                        className={styles.addDate}
+                        type="button"
+                        onClick={() => addFormFields()}
+                      >
+                        {" "}
                         + Crear Nueva Fecha
                       </button>
                     </div>
@@ -2127,21 +2365,28 @@ const EventCreateForm = () => {
                   {/*botones*/}
                   <div>
                     <p className={styles.acceptText}>
-                      Al hacer clic en ‘Publicar’ confirma que ha leído y entendido nuestros Términos y Condiciones,
-                      Notas legales de privacidad y Seguridad.
+                      Al hacer clic en ‘Publicar’ confirma que ha leído y
+                      entendido nuestros Términos y Condiciones, Notas legales
+                      de privacidad y Seguridad.
                     </p>
 
                     {/*vistaprevia-publicar-guardar*/}
                     <div className={styles.btnContainer}>
                       {/*vista previa*/}
                       <div className={styles.btnVista}>
-                        <p onClick={() => setGetPreview(!getPreview)} className={styles.viewBtn}>
+                        <p
+                          onClick={() => setGetPreview(!getPreview)}
+                          className={styles.viewBtn}
+                        >
                           Vista Previa
                         </p>
                         {getPreview && (
                           <div className={styles.modal}>
                             <div className={styles.closeMenuGetPreview}>
-                              <button className={styles.viewBtn} onClick={() => setGetPreview(false)}>
+                              <button
+                                className={styles.viewBtn}
+                                onClick={() => setGetPreview(false)}
+                              >
                                 Salir de Vista Previa
                               </button>
                             </div>
@@ -2153,91 +2398,137 @@ const EventCreateForm = () => {
                                       slidesPerView={1}
                                       spaceBetween={40}
                                       navigation
-                                      onSlideChange={() => console.log('slide change')}
+                                      onSlideChange={() =>
+                                        console.log("slide change")
+                                      }
                                       onSwiper={(swiper) => console.log(swiper)}
                                       modules={[Pagination, Navigation]}
                                       className={styles.mySwipperInfo}
                                     >
                                       {post.pictures.map((picture) => (
                                         <SwiperSlide>
-                                          <img className={styles.imgInfo} src={picture.picture} alt='Not Found ):' />
+                                          <img
+                                            className={styles.imgInfo}
+                                            src={picture.picture}
+                                            alt="Not Found ):"
+                                          />
                                         </SwiperSlide>
                                       ))}
                                     </Swiper>
                                   ) : (
-                                    'No'
+                                    "No"
                                   )}
 
-                                  <div className={styles.container_icon_heartInfo}>
-                                    <FavoriteIcon className={styles.icon_heartInfo} sx={{ fontSize: 25 }} />
+                                  <div
+                                    className={styles.container_icon_heartInfo}
+                                  >
+                                    <FavoriteIcon
+                                      className={styles.icon_heartInfo}
+                                      sx={{ fontSize: 25 }}
+                                    />
                                   </div>
 
-                                  <div className={styles.container_icon_shareInfo}>
-                                    <input type='checkbox' id='check' />
-                                    <label htmlFor='check' className={styles.labelInfo}>
-                                      <LaunchOutlinedIcon className={styles.icon_shareInfo} sx={{ fontSize: 25 }} />
+                                  <div
+                                    className={styles.container_icon_shareInfo}
+                                  >
+                                    <input type="checkbox" id="check" />
+                                    <label
+                                      htmlFor="check"
+                                      className={styles.labelInfo}
+                                    >
+                                      <LaunchOutlinedIcon
+                                        className={styles.icon_shareInfo}
+                                        sx={{ fontSize: 25 }}
+                                      />
                                     </label>
                                   </div>
 
                                   <div className={styles.titleInfo}>
                                     <p>{post.title}</p>
 
-                                    <div className={styles.container_ratingInfo}>
+                                    <div
+                                      className={styles.container_ratingInfo}
+                                    >
                                       <Rating
                                         className={styles.ratingInfo}
-                                        name='read-only'
+                                        name="read-only"
                                         value={5}
                                         readOnly
                                         sx={{ fontSize: 25 }}
                                       />
                                     </div>
-                                    <p className={styles.numberRatingInfo}>({5})</p>
+                                    <p className={styles.numberRatingInfo}>
+                                      ({5})
+                                    </p>
                                   </div>
-                                  <div className={styles.container_opinionsInfo}>
-                                    <p className={styles.opinionsInfo}>Ver Opiniones</p>
+                                  <div
+                                    className={styles.container_opinionsInfo}
+                                  >
+                                    <p className={styles.opinionsInfo}>
+                                      Ver Opiniones
+                                    </p>
                                   </div>
                                   <p className={styles.title_descriptionInfo}>
-                                    <DescriptionOutlinedIcon fontSize='large' /> Descripcion Del Evento
+                                    <DescriptionOutlinedIcon fontSize="large" />{" "}
+                                    Descripcion Del Evento
                                   </p>
-                                  <p className={styles.descriptionInfo}>{post.longDescription}</p>
+                                  <p className={styles.descriptionInfo}>
+                                    {post.longDescription}
+                                  </p>
                                   <div className={styles.container_plusInfo}>
                                     <p>Ver más</p>
                                   </div>
                                   <hr className={styles.hr}></hr>
 
                                   <p className={styles.reportInfo}>
-                                    <WarningOutlinedIcon fontSize='medium' /> Reportar Contenido Inapropiado
+                                    <WarningOutlinedIcon fontSize="medium" />{" "}
+                                    Reportar Contenido Inapropiado
                                   </p>
                                 </div>
                                 <div className={styles.containerLoc}>
                                   <div className={styles.container_locationLoc}>
-                                    <IoLocationOutline className={styles.iconLoc} />
+                                    <IoLocationOutline
+                                      className={styles.iconLoc}
+                                    />
                                     <p>Ubicacion</p>
                                   </div>
-                                  {post.online === 'false' ? (
+                                  {post.online === "false" ? (
                                     <div>
                                       <div>
-                                        <span className={styles.cityLoc}>{post.municipio} / </span>
-                                        <span className={styles.stateLoc}>{post.departamento}</span>
+                                        <span className={styles.cityLoc}>
+                                          {post.municipio} /{" "}
+                                        </span>
+                                        <span className={styles.stateLoc}>
+                                          {post.departamento}
+                                        </span>
                                         <p className={styles.textoLoc}>
-                                          La ubicación exacta se te enviará al adquirir tu entrada
+                                          La ubicación exacta se te enviará al
+                                          adquirir tu entrada
                                         </p>
                                       </div>
                                       <div className={styles.imgLoc}>
                                         <div>
-                                          <img src={url} alt='mapaStaticGoogleMaps' />
+                                          <img
+                                            src={url}
+                                            alt="mapaStaticGoogleMaps"
+                                          />
                                         </div>
                                       </div>
                                     </div>
                                   ) : (
                                     <div>
-                                      <span className={styles.cityLoc}>En Linea</span>
+                                      <span className={styles.cityLoc}>
+                                        En Linea
+                                      </span>
                                       <p className={styles.textoLoc}>
-                                        El enlace para el evento se te enviara al momento de adquirir tu cupo
+                                        El enlace para el evento se te enviara
+                                        al momento de adquirir tu cupo
                                       </p>
                                     </div>
                                   )}
-                                  <p className={styles.descriptionLoc}>{post.shortDescription}</p>
+                                  <p className={styles.descriptionLoc}>
+                                    {post.shortDescription}
+                                  </p>
                                   <hr className={styles.hr}></hr>
                                 </div>
                               </div>
@@ -2247,12 +2538,14 @@ const EventCreateForm = () => {
                                     <div className={styles.containerTitleDate}>
                                       <CalendarMonthIcon
                                         sx={{
-                                          fontSize: '16px',
-                                          color: '#585858',
-                                          '& :hover': { color: '#ef5350' },
+                                          fontSize: "16px",
+                                          color: "#585858",
+                                          "& :hover": { color: "#ef5350" },
                                         }}
                                       />
-                                      <p className={styles.titleDate}>Próximas Fechas</p>
+                                      <p className={styles.titleDate}>
+                                        Próximas Fechas
+                                      </p>
                                     </div>
                                     <div>
                                       <table className={styles.tableDate}>
@@ -2271,7 +2564,7 @@ const EventCreateForm = () => {
                                             <tr>
                                               <td>
                                                 <input
-                                                  type='checkbox'
+                                                  type="checkbox"
                                                   class={styles.checkBox}
                                                   value={date.id}
                                                   defaultChecked={false}
@@ -2290,18 +2583,24 @@ const EventCreateForm = () => {
                                     </div>
                                     <p className={styles.buttonDate}>Comprar</p>
                                     <p className={styles.parrafoDate}>
-                                      Nuevas fechas pueden ser solicitadas en cuyo caso un mínimo aplicaría de cupos a
-                                      ser adquiridos por el solicitante, será sujeto a aprobación de fecha
+                                      Nuevas fechas pueden ser solicitadas en
+                                      cuyo caso un mínimo aplicaría de cupos a
+                                      ser adquiridos por el solicitante, será
+                                      sujeto a aprobación de fecha
                                     </p>
                                     <p>Solicitar nuevas fechas</p>
                                     <hr className={styles.hr}></hr>
                                   </div>
                                 </div>
                                 <div className={styles.container2Special}>
-                                  <p className={styles.c2titleSpecial}>Accesibilidad y requerimientos especiales</p>
+                                  <p className={styles.c2titleSpecial}>
+                                    Accesibilidad y requerimientos especiales
+                                  </p>
                                   <div className={styles.subcontainer2Special}>
                                     <p className={styles.iconSpecial}>!</p>
-                                    <p className={styles.c2subtitleSpecial}>{post.specialRequires}</p>
+                                    <p className={styles.c2subtitleSpecial}>
+                                      {post.specialRequires}
+                                    </p>
                                   </div>
                                 </div>
                                 <hr className={styles.hr}></hr>
@@ -2309,27 +2608,47 @@ const EventCreateForm = () => {
                                 {userData ? (
                                   <div className={styles.containerOrg}>
                                     <div className={styles.containerTopOrg}>
-                                      <p className={styles.titleOrg}>Organizador</p>
+                                      <p className={styles.titleOrg}>
+                                        Organizador
+                                      </p>
                                       <div className={styles.btnOrg}>
-                                        <LocalPostOfficeIcon sx={{ fontSize: '13px', color: '#d53e27' }} />
-                                        <button className={styles.buttonOrg}>Enviar Mensaje</button>
+                                        <LocalPostOfficeIcon
+                                          sx={{
+                                            fontSize: "13px",
+                                            color: "#d53e27",
+                                          }}
+                                        />
+                                        <button className={styles.buttonOrg}>
+                                          Enviar Mensaje
+                                        </button>
                                       </div>
                                     </div>
                                     <div className={styles.orgContOrg}>
-                                      <img className={styles.orgImgOrg} src={userData.userpicture} alt='N' />
+                                      <img
+                                        className={styles.orgImgOrg}
+                                        src={userData.userpicture}
+                                        alt="N"
+                                      />
 
                                       <div className={styles.orgSubContOrg}>
-                                        <p className={styles.orgNameOrg}>{userData.name}</p>
-                                        <p className={styles.orgMembershipOrg}>Miembro desde *falta valor real*</p>
+                                        <p className={styles.orgNameOrg}>
+                                          {userData.name}
+                                        </p>
+                                        <p className={styles.orgMembershipOrg}>
+                                          Miembro desde *falta valor real*
+                                        </p>
                                       </div>
                                     </div>
-                                    <p className={styles.orgDescriptionOrg}>{userData.descriptionOrganizer}</p>
+                                    <p className={styles.orgDescriptionOrg}>
+                                      {userData.descriptionOrganizer}
+                                    </p>
                                     <button className={styles.button2Org}>
-                                      Otros eventos organizados por {userData.name}
+                                      Otros eventos organizados por{" "}
+                                      {userData.name}
                                     </button>
                                   </div>
                                 ) : (
-                                  'No hay usuario todavia'
+                                  "No hay usuario todavia"
                                 )}
                               </div>
                             </div>
@@ -2339,15 +2658,18 @@ const EventCreateForm = () => {
 
                       {/*publicar*/}
                       <div>
-                        <button className={styles.viewBtn} type='submit'>
-                          {' '}
+                        <button className={styles.viewBtn} type="submit">
+                          {" "}
                           Publicar Evento
                         </button>
                       </div>
 
                       {/*guardar*/}
                       <div>
-                        <button className={styles.viewBtn} onClick={(e) => handleSave(e)}>
+                        <button
+                          className={styles.viewBtn}
+                          onClick={(e) => handleSave(e)}
+                        >
                           Guardar y Publicar Luego
                         </button>
                       </div>
@@ -2356,7 +2678,10 @@ const EventCreateForm = () => {
                     <p>Debes llenar todos los campos para poder continuar.</p>
 
                     {/*cancelar*/}
-                    <button className={styles.cancelBtn} onClick={(e) => handleDelete(e)}>
+                    <button
+                      className={styles.cancelBtn}
+                      onClick={(e) => handleDelete(e)}
+                    >
                       Cancelar
                     </button>
                   </div>
@@ -2369,31 +2694,37 @@ const EventCreateForm = () => {
         {/*SECTIONS BUTTONS - UP AND DOWN*/}
         {getPreview === false ? (
           <div className={styles.containerBtnSection}>
-            <button className={styles.btnSectionMove} onClick={() => scrollSections(-1000)}>
+            <button
+              className={styles.btnSectionMove}
+              onClick={() => scrollSections(-1000)}
+            >
               <KeyboardArrowUpIcon
                 sx={{
-                  fontSize: '40px',
-                  color: 'white',
-                  border: 'none',
+                  fontSize: "40px",
+                  color: "white",
+                  border: "none",
                   borderRadius: 10,
-                  backgroundColor: '#D53E27',
+                  backgroundColor: "#D53E27",
                 }}
               />
             </button>
-            <button className={styles.btnSectionMove} onClick={() => scrollSections(1000)}>
+            <button
+              className={styles.btnSectionMove}
+              onClick={() => scrollSections(1000)}
+            >
               <KeyboardArrowDownRoundedIcon
                 sx={{
-                  fontSize: '40px',
-                  color: 'white',
-                  border: 'none',
+                  fontSize: "40px",
+                  color: "white",
+                  border: "none",
                   borderRadius: 10,
-                  backgroundColor: '#D53E27',
+                  backgroundColor: "#D53E27",
                 }}
               />
             </button>
           </div>
         ) : (
-          ''
+          ""
         )}
       </div>
     </div>
