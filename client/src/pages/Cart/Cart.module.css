@@ -133,8 +133,6 @@
   font-weight: bold;
 }
 
-.containerOptions {
-}
 
 .productOptions {
   display: flex;
@@ -201,8 +199,6 @@
   color: var(--color-grey-3);
 }
 
-.productDiscount {
-}
 
 .quitar{
   margin-top: 0.5rem;
