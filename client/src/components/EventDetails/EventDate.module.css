@@ -103,6 +103,7 @@
 
 .checkBox {
   accent-color: var(--color-orange);
+  cursor: pointer;
 }
 
 .containerNumberBuyCupos {
@@ -251,6 +252,32 @@
 }
 
 .containerNumberBuyCupos button img {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+.containerNumberBuyCuposDisable {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 2.4rem;
+}
+
+.containerNumberBuyCuposDisable button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 4px;
+
+  border: none;
+  background-color: transparent;
+  color: #d7cece;
+  border-radius: 100px;
+  box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.3);
+}
+
+.containerNumberBuyCuposDisable button img {
   width: 1.6rem;
   height: 1.6rem;
 }

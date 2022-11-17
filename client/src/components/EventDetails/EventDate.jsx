@@ -15,6 +15,7 @@ import { UIContext } from '../../context/ui';
 import EventDateMap from './EventDateMap';
 import { iconArrowLeft, iconArrowRight } from '../../assets/imgs';
 import { stateContext } from '../../context/state/stateContext';
+import swal from 'sweetalert';
 
 const EventDate = ({ id }) => {
 
@@ -112,9 +113,11 @@ const EventDate = ({ id }) => {
       navigate(`/cart/${id}`);
     }
     else if (logged && !checked) {
-      alert('debes seleccionar una fecha del evento');
+      swal('Debes seleccionar al menos una fecha');
     }
   }
+
+  // {`/cart/${id}`}
 
   //CARRITO
  
@@ -186,14 +189,25 @@ const EventDate = ({ id }) => {
 
                     </td> */}
                     
-                    <EventDateMap id={date._id}/>
-                    {/* {date.checked === false ?
-                    <td>false</td>:
-                    date.checked === true? 
-                    <td>true</td>
-                    : <td>ninguna</td>
-                    }
-                     */}
+
+                    {carrito.length > 0?
+                     carrito.map((c)=>
+                     c.fechaId === date._id?
+                     <EventDateMap id={date._id}/>
+                     :
+                     ''
+                     )
+                        : <td className={styles.containerNumberBuyCuposDisable}>
+                            <button>
+                              <img src={iconArrowLeft} alt="icon-left" />
+                            </button>           
+                            <span>-</span>               
+                            <button>
+                              <img src={iconArrowRight} alt="icon-left" />
+                            </button>
+                          </td>
+                          }
+                   
 
                   </tr>
                 )}
@@ -203,9 +217,8 @@ const EventDate = ({ id }) => {
         </table>
       </div>
 
-      <Link to={`/cart/${id}`}>
         <button className={styles.button}  onClick={(e) => comprar(e)}>Comprar</button>
-      </Link>
+    
 
       {/* <Link to={`/cart/${id}`}>
         <button className={styles.button}  onClick={(e) => comprar(e)}>Comprar</button>

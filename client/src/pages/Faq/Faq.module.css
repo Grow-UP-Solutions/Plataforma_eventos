@@ -96,12 +96,12 @@
 }
 
 .headset {
-  width: 42rem;
-  height: 36rem;
+  width: 38rem;
+  height: 26rem;
   color: rgb(0, 0, 0);
   position: absolute;
-  bottom: 7rem;
-  right: 50rem;
+  bottom: 14rem;
+  right: 35rem;
   opacity: 0.2;
 }
 
