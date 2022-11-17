@@ -86,7 +86,8 @@ const Cart = () => {
   const indexOfFirstCard = indexOfLastCard - CardPerPage;
   const currentDate = datesToBuy.slice(indexOfFirstCard, indexOfLastCard);
   const paginado = (pageNumber) => setCurretPage(pageNumber);
-
+  const fechaIn = datesToBuy.length
+  console.log('fechaIn',fechaIn)
 
   const handlePrev = (e)=>{
     if(currentPage===1){
@@ -492,7 +493,10 @@ const Cart = () => {
     <div className={`${styles.pageCart} container`}>
       {currentDate[0] !== undefined ?
       <div>
-        <h1 className={styles.pageCartTitle}>Usted está comprando</h1>
+        {carrito.length > 1 ?
+        <h1 className={styles.pageCartTitle}>Usted está comprando: {carrito.length} Fechas</h1>
+        : <h1 className={styles.pageCartTitle}>Usted está comprando</h1>
+        }
         <div className={styles.containerPageCart}>
           <div className={styles.containerCardProduct}>
             {/* CARD PRODUCT */}
@@ -509,17 +513,20 @@ const Cart = () => {
                       <div>
                         <div className={styles.productDate}>
                           {carrito.length===1?
-                           <span>{currentDate[0].dateFormated.replace('/', ' de ')}</span>
-                          :
-                          <div className={styles.quantityBtns}>
-                            <button onClick={(e)=>handlePrev(e)}>
-                              <img src={iconArrowLeft} alt="icon-left" />
-                            </button>
-                            <span>{currentDate[0].dateFormated.replace('/', ' de ')}</span>
-                            <button onClick={(e)=>handleNext(e)}>
-                            <img src={iconArrowRight} alt="icon-right" />
-                            </button>
-                          </div>}
+                            <div className={styles.quantityBtns}>                          
+                            <span>{currentDate[0].dateFormated.replace('/', ' de ')}</span>                         
+                            </div>
+                            :
+                            <div className={styles.quantityBtns}>
+                              <button onClick={(e)=>handlePrev(e)}>
+                                <img src={iconArrowLeft} alt="icon-left" />
+                              </button>
+                              <span>{currentDate[0].dateFormated.replace('/', ' de ')}</span>
+                              <button onClick={(e)=>handleNext(e)}>
+                              <img src={iconArrowRight} alt="icon-right" />
+                              </button>
+                            </div>
+                          }
                          
                         </div>
                         <div>
@@ -530,6 +537,9 @@ const Cart = () => {
                         <p className={styles.productCupos}>
                           Cupos disponibles : {currentDate[0].cupos}
                         </p>
+                        {carrito.length > 1 ?
+                        <h2 className={styles.fechaIn}>Fecha: {currentPage} / {carrito.length}</h2>
+                        : ''}
                         </div>
                       </div>
                     </div>
@@ -588,13 +598,17 @@ const Cart = () => {
                             placeholder={c.codigoDescuento? c.codigoDescuento: c.codigoReferido||''}
                             onChange={(e) => handleCodigo(e)}
                           />
-                        <button onClick={(e)=>{aplicar(e,currentDate[0]._id)}}>Aplicar</button>
-                        <button onClick={(e)=>{quitar(e,currentDate[0]._id)}}>Quitar</button>
+                        <div className={styles.btnsDisc}>
+                          <button onClick={(e)=>{aplicar(e,currentDate[0]._id)}}>Aplicar</button>
+                          <button className={styles.quitar} onClick={(e)=>{quitar(e,currentDate[0]._id)}}>Quitar</button>
+                        </div>
                       </div>
                     </div>
                     :'')}
                 </div>
               </div>
+              {eventDetail.specialRequires.length>1?
+
               <div className={styles.summaryCart}>
                 <h2 className={styles.summaryTitle}>
                   <img src={iconExclamation} alt='icon-exclamation' />
@@ -603,7 +617,9 @@ const Cart = () => {
                 <p className={styles.summaryDescription}>
                   {eventDetail.specialRequires}
                 </p>
-              </div>
+              </div> 
+              :''
+              }
             </div>
             :'LOADING...'}
           </div>

@@ -1,14 +1,26 @@
 
-import React, { useState , useContext } from 'react';
+import React, { useState , useContext ,useEffect } from 'react';
 import styles from './EventDateMap.module.css';
 import { iconArrowLeft, iconArrowRight } from '../../assets/imgs';
 import { stateContext } from '../../context/state/stateContext';
 
 const EventDateMap = ({id}) => {
 
+  
+
   const { carrito, setCarrito } = useContext(stateContext);
 
   const [numberBuyCupos, setNumberBuyCupos] = useState(0);
+
+  // useEffect(() => {
+  //   for(let i = 0 ; i<carrito.length; i++){
+  //     if(carrito[i].fechaId === id){
+  //       if(!carrito.includes(carrito[i])){
+  //         setNumberBuyCupos(0)
+  //       }
+  //     }
+  //   }
+  // }, []);
 
   const handleNumberBuyCupos = (num) => {
     const carritoCupos = [...carrito]
