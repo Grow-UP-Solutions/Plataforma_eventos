@@ -297,6 +297,28 @@ const Cart = () => {
       }
   };
 
+  const luis={
+    idUser: "6356d50112a8fda25313907a",
+    idEvent: "636bab4a76757c4e62166121",
+    dates:[ 
+      {
+      title: "algo 2",
+      quantity:2,
+      unit_price: 250000,
+      idDate: "636bab4a76757c4e62166123",
+      },
+      {
+        title: "algo 3",
+        quantity:2,
+        unit_price: 250000,
+        idDate: "636bab4a76757c4e62166123",
+        }
+    ]
+    }
+
+// mercadoPago/orden?codigo=xxx
+// mercadoPago/success
+
   useEffect(() => {
     const discTotal = []
  
