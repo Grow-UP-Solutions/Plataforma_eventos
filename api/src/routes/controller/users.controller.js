@@ -1,5 +1,5 @@
-const { Router } = require('express');
-const UsersFunctionDb = require('../../models/util/functionDB/users/index.users.js');
+const { Router } = require("express");
+const UsersFunctionDb = require("../../models/util/functionDB/users/index.users.js");
 const {
   getAllUsers,
   createUsers,
@@ -13,56 +13,84 @@ const {
   getUserByEmail,
   eventesFavorites,
   eventesDeleteFavorites,
-} = require('../services/users.services.js');
+} = require("../services/users.services.js");
 
-const passport = require('passport');
-const bcrypt = require('bcryptjs');
+const passport = require("passport");
+const bcrypt = require("bcryptjs");
 
-const { check } = require('express-validator');
-const validateFields = require('../../models/util/middlewares/validate-fields.js');
-const { generateJWT } = require('../../models/util/helpers/jwt.js');
-const { generateJWTPassword } = require('../../models/util/helpers/jwtPassword.js');
-const { validateJWT } = require('../../models/util/middlewares/validate-jwt.js');
-const { validateJWTPassword } = require('../../models/util/middlewares/validate-jwt-password.js');
-const { sendVerifyMail } = require('../../models/util/mailer/confirmEmail.js');
-const { sendMailToOrganizer } = require('../../models/util/mailer/mailToConverOrganizer');
-const { changePasswordMail } = require('../../models/util/mailer/changePassword.js');
+const { check } = require("express-validator");
+const validateFields = require("../../models/util/middlewares/validate-fields.js");
+const { generateJWT } = require("../../models/util/helpers/jwt.js");
+const {
+  generateJWTPassword,
+} = require("../../models/util/helpers/jwtPassword.js");
+const {
+  validateJWT,
+} = require("../../models/util/middlewares/validate-jwt.js");
+const {
+  validateJWTPassword,
+} = require("../../models/util/middlewares/validate-jwt-password.js");
+const { sendVerifyMail } = require("../../models/util/mailer/confirmEmail.js");
+const {
+  sendMailToOrganizer,
+} = require("../../models/util/mailer/mailToConverOrganizer");
+const {
+  changePasswordMail,
+} = require("../../models/util/mailer/changePassword.js");
 const {
   createCodeVerifyMail,
   deleteCodeVerifyMail,
   getCodeVerifyEmail,
-} = require('../../models/util/functionDB/CodeVerifyMailDb.js');
-const { generateJWTOrganizer } = require('../../models/util/helpers/jwtOrganizer.js');
-const { validateJWTOrganizer } = require('../../models/util/middlewares/validate-organizer.js');
-const { allMessageReciverUserDB } = require('../../models/util/functionDB/message/messageDb.js');
-const { sendMailUserAccept } = require('../../models/util/mailer/mailUserAccept.js');
-const { sendMailUserRejected } = require('../../models/util/mailer/mailUserRejected.js');
+} = require("../../models/util/functionDB/CodeVerifyMailDb.js");
+const {
+  generateJWTOrganizer,
+} = require("../../models/util/helpers/jwtOrganizer.js");
+const {
+  validateJWTOrganizer,
+} = require("../../models/util/middlewares/validate-organizer.js");
+const {
+  allMessageReciverUserDB,
+} = require("../../models/util/functionDB/message/messageDb.js");
+const {
+  sendMailUserAccept,
+} = require("../../models/util/mailer/mailUserAccept.js");
+const {
+  sendMailUserRejected,
+} = require("../../models/util/mailer/mailUserRejected.js");
+const {
+  sendEmailToEventNewDate,
+} = require("../../models/util/mailer/mailToEventNewDate.js");
 
 const router = Router();
 /**/ ///////////////Rutas GET////////////// */
 
-router.get('/checkValidateTokenOrganizer/', validateJWTOrganizer, async (req, res) => {
-  const { name, phone, document, tel, email, referenciaU, referenciaZ, id } = req;
+router.get(
+  "/checkValidateTokenOrganizer/",
+  validateJWTOrganizer,
+  async (req, res) => {
+    const { name, phone, document, tel, email, referenciaU, referenciaZ, id } =
+      req;
 
-  try {
-    res.status(200).json({
-      name,
-      phone,
-      document,
-      tel,
-      email,
-      referenciaU,
-      referenciaZ,
-      id,
-    });
-  } catch (error) {
-    res.status(404).json({
-      message: error.message,
-    });
+    try {
+      res.status(200).json({
+        name,
+        phone,
+        document,
+        tel,
+        email,
+        referenciaU,
+        referenciaZ,
+        id,
+      });
+    } catch (error) {
+      res.status(404).json({
+        message: error.message,
+      });
+    }
   }
-});
+);
 
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const allUsers = await getAllUsers();
     return res.status(200).json(allUsers);
@@ -70,7 +98,7 @@ router.get('/', async (req, res) => {
     return res.status(500).json({ ERROR_USER: error.message });
   }
 });
-router.get('/:idUser/message', async (req, res) => {
+router.get("/:idUser/message", async (req, res) => {
   const { idUser } = req.params;
 
   try {
@@ -82,7 +110,7 @@ router.get('/:idUser/message', async (req, res) => {
   }
 });
 
-router.get('/:id', async (req, res) => {
+router.get("/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -93,7 +121,7 @@ router.get('/:id', async (req, res) => {
     return res.status(400).json({ ERROR_USER: error.message });
   }
 });
-router.get('/opinionsUser/:id', async (req, res) => {
+router.get("/opinionsUser/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const allComment = await getAllCommentUser(id);
@@ -103,7 +131,7 @@ router.get('/opinionsUser/:id', async (req, res) => {
   }
 });
 
-router.get('/existsEmail/:email', async (req, res) => {
+router.get("/existsEmail/:email", async (req, res) => {
   const { email } = req.params;
 
   try {
@@ -117,27 +145,27 @@ router.get('/existsEmail/:email', async (req, res) => {
 
 /**/ //////////////Rutas POST/////////////// */
 
-router.post('/acceptOrRejectedOrganizer', async (req, res) => {
+router.post("/acceptOrRejectedOrganizer", async (req, res) => {
   const { option, id } = req.body;
-  let message = '';
+  let message = "";
   try {
     const user = await getUser(id);
-    if (option === 'accept') {
+    if (option === "accept") {
       user.isOrganizer = true;
       user.isProccessingToOrganizer = false;
       user.isRejected = false;
-      user.referenceZ = user.referenceU.replace('U', 'Z');
+      user.referenceZ = user.referenceU.replace("U", "Z");
       await sendMailUserAccept(user.name, user.email);
-      message = 'Aceptado';
-    } else if (option === 'reject') {
+      message = "Aceptado";
+    } else if (option === "reject") {
       user.isRejected = true;
       user.isOrganizer = false;
       user.isProccessingToOrganizer = false;
-      user.referenceZ = '';
+      user.referenceZ = "";
       await sendMailUserRejected(user.name, user.email);
-      message = 'Rechazado';
+      message = "Rechazado";
     } else {
-      return res.status(400).json({ message: 'error' });
+      return res.status(400).json({ message: "error" });
     }
     await user.save();
 
@@ -152,16 +180,16 @@ router.post('/acceptOrRejectedOrganizer', async (req, res) => {
   }
 });
 
-router.put('/editReferenceU/:id', async (req, res) => {
+router.put("/editReferenceU/:id", async (req, res) => {
   const { id } = req.params;
   const user = await getUser(id);
 
-  user.referenceU = 'U453';
+  user.referenceU = "U453";
   await user.save();
-  res.json({ hola: 'success' });
+  res.json({ hola: "success" });
 });
 
-router.put('/:idUser/favorites', async (req, res) => {
+router.put("/:idUser/favorites", async (req, res) => {
   const { idUser } = req.params;
   const { idEvent } = req.body;
 
@@ -178,7 +206,7 @@ router.put('/:idUser/favorites', async (req, res) => {
   }
 });
 
-router.put('/:idUser/notFavorites', async (req, res) => {
+router.put("/:idUser/notFavorites", async (req, res) => {
   const { idUser } = req.params;
   const { idEvent } = req.body;
 
@@ -190,7 +218,7 @@ router.put('/:idUser/notFavorites', async (req, res) => {
   }
 });
 
-router.post('/notifications', async (req, res) => {
+router.post("/notifications", async (req, res) => {
   const notificaciones = req.body;
   try {
     const newNotification = await sendNotificationsUser(notificaciones);
@@ -199,7 +227,7 @@ router.post('/notifications', async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 });
-router.put('/notifications', async (req, res) => {
+router.put("/notifications", async (req, res) => {
   const read = req.body;
   try {
     const notificacionesRead = await UsersFunctionDb.readNotification(read);
@@ -209,16 +237,18 @@ router.put('/notifications', async (req, res) => {
   }
 });
 
-router.put('/:idUser/notifications', async (req, res) => {
+router.put("/:idUser/notifications", async (req, res) => {
   const { idUser } = req.params;
   try {
-    const notificacionesRead = await UsersFunctionDb.readAllNotification(idUser);
+    const notificacionesRead = await UsersFunctionDb.readAllNotification(
+      idUser
+    );
     return res.status(200).json(notificacionesRead);
   } catch (error) {
     res.status(500).json(error.Menssage);
   }
 });
-router.put('/:idUser/rating', async (req, res) => {
+router.put("/:idUser/rating", async (req, res) => {
   const { idUser } = req.params;
   const { rating } = req.body;
   try {
@@ -229,10 +259,12 @@ router.put('/:idUser/rating', async (req, res) => {
   }
 });
 
-router.delete('/notifications', async (req, res) => {
+router.delete("/notifications", async (req, res) => {
   const newDelete = req.body;
   try {
-    const notificacionesDelete = await UsersFunctionDb.deleteNotification(newDelete);
+    const notificacionesDelete = await UsersFunctionDb.deleteNotification(
+      newDelete
+    );
     return res.status(200).json(notificacionesDelete);
   } catch (error) {
     res.status(500).json(error.Menssage);
@@ -240,10 +272,10 @@ router.delete('/notifications', async (req, res) => {
 });
 
 router.post(
-  '/create',
+  "/create",
   [
-    check('email', 'El email es obligatorio').isEmail(),
-    check('password', 'El password es obligatorio').isStrongPassword(),
+    check("email", "El email es obligatorio").isEmail(),
+    check("password", "El password es obligatorio").isStrongPassword(),
     validateFields,
   ],
   async (req, res) => {
@@ -252,7 +284,7 @@ router.post(
       const { codeReferral } = req.query;
       const userCreate = await createUsers(user, codeReferral);
 
-      const time = '2h';
+      const time = "2h";
       const token = await generateJWT(userCreate._id, userCreate.name, time);
 
       return res.json({
@@ -271,7 +303,7 @@ router.post(
   }
 );
 
-router.post('/commentOrganizer/:id', async (req, res) => {
+router.post("/commentOrganizer/:id", async (req, res) => {
   try {
     const opinion = req.body;
     const { id } = req.params;
@@ -282,7 +314,7 @@ router.post('/commentOrganizer/:id', async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 });
-router.post('/message/:id', async (req, res) => {
+router.post("/message/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const msg = req.body;
@@ -296,18 +328,18 @@ router.post('/message/:id', async (req, res) => {
 /* AUTH */
 
 router.post(
-  '/login',
+  "/login",
   [
-    check('email', 'El email es obligatorio').isEmail(),
-    check('password', 'El password es obligatorio').isStrongPassword(),
+    check("email", "El email es obligatorio").isEmail(),
+    check("password", "El password es obligatorio").isStrongPassword(),
     validateFields,
   ],
   async (req, res) => {
     const { email, password, rememberMe } = req.body;
 
-    let time = '2h';
+    let time = "2h";
 
-    if (rememberMe) time = '365d';
+    if (rememberMe) time = "365d";
 
     try {
       const user = await login(email, password);
@@ -330,7 +362,7 @@ router.post(
   }
 );
 
-router.get('/login/renew', validateJWT, async (req, res) => {
+router.get("/login/renew", validateJWT, async (req, res) => {
   const uid = req.uid;
   const name = req.name;
   const time = req.time;
@@ -353,22 +385,22 @@ router.get('/login/renew', validateJWT, async (req, res) => {
   }
 });
 
-router.post('/confirmEmail', async (req, res) => {
+router.post("/confirmEmail", async (req, res) => {
   const { code } = req.body;
 
   try {
     const codedb = await getCodeVerifyEmail(code);
 
-    if (!codedb) throw new Error('Código incorrecto');
+    if (!codedb) throw new Error("Código incorrecto");
 
     if (code === codedb.validacion) {
       await deleteCodeVerifyMail(code);
       return res.status(201).json({
         success: true,
-        message: 'Código correcto',
+        message: "Código correcto",
       });
     } else {
-      throw new Error('Código incorrecto');
+      throw new Error("Código incorrecto");
     }
   } catch (error) {
     return res.status(500).json({
@@ -378,10 +410,10 @@ router.post('/confirmEmail', async (req, res) => {
   }
 });
 
-router.post('/sendEmailForConfirm', async (req, res) => {
+router.post("/sendEmailForConfirm", async (req, res) => {
   const { email } = req.body;
 
-  let code = '';
+  let code = "";
 
   for (let x = 0; x < 6; x++) {
     code = code + Math.trunc(Math.random() * 10);
@@ -401,7 +433,7 @@ router.post('/sendEmailForConfirm', async (req, res) => {
 });
 
 /**/ ///////////Rutas PUT///////////////////////////////// */
-router.put('/update/:id', async (req, res) => {
+router.put("/update/:id", async (req, res) => {
   const { id } = req.params;
   let newUser = req.body;
 
@@ -419,7 +451,7 @@ router.put('/update/:id', async (req, res) => {
   }
 });
 
-router.put('/updateCanReceiveInformation/:id', async (req, res) => {
+router.put("/updateCanReceiveInformation/:id", async (req, res) => {
   const { id } = req.params;
   const { canReceiveInformation } = req.body;
 
@@ -433,7 +465,7 @@ router.put('/updateCanReceiveInformation/:id', async (req, res) => {
   }
 });
 
-router.put('/updateCanNotificationMyEvents/:id', async (req, res) => {
+router.put("/updateCanNotificationMyEvents/:id", async (req, res) => {
   const { id } = req.params;
   const { canNotificationMyEvents } = req.body;
 
@@ -447,7 +479,7 @@ router.put('/updateCanNotificationMyEvents/:id', async (req, res) => {
   }
 });
 
-router.put('/updateUserPicture/:id', async (req, res) => {
+router.put("/updateUserPicture/:id", async (req, res) => {
   const { id } = req.params;
   const { urlImage } = req.body;
   const user = await getUser(id);
@@ -456,7 +488,7 @@ router.put('/updateUserPicture/:id', async (req, res) => {
   res.json({ success: true });
 });
 
-router.post('/isSamePassword/:id', async (req, res) => {
+router.post("/isSamePassword/:id", async (req, res) => {
   const { id } = req.params;
   const { password } = req.body;
 
@@ -466,10 +498,10 @@ router.post('/isSamePassword/:id', async (req, res) => {
     const validPassword = bcrypt.compareSync(password, user.password);
 
     if (!validPassword) {
-      throw new Error('Contraseña invalida');
+      throw new Error("Contraseña invalida");
     }
     return res.status(200).json({
-      message: 'Si es correcto',
+      message: "Si es correcto",
       success: true,
     });
   } catch (error) {
@@ -480,8 +512,30 @@ router.post('/isSamePassword/:id', async (req, res) => {
   }
 });
 
+router.put("/sendEmailToEventNewDate/", async (req, res) => {
+  const { dataForEmail } = req.body;
+
+  const { name, email } = dataForEmail.user;
+  const { title, picture } = dataForEmail.event;
+  const { start, end, coupons, emailOrganizer, dateFormatted } = dataForEmail;
+
+  await sendEmailToEventNewDate(
+    name,
+    email,
+    title,
+    picture,
+    start,
+    end,
+    coupons,
+    emailOrganizer,
+    dateFormatted
+  );
+
+  res.json({ succes: true });
+});
+
 /**/ ///////////////Rutas DELETE/////////////////////////// */
-router.delete('/delete/:id', async (req, res) => {
+router.delete("/delete/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { reasonForDeleteAccount } = req.body;
@@ -489,7 +543,7 @@ router.delete('/delete/:id', async (req, res) => {
     const deleteUser = await userDelete(id, reasonForDeleteAccount);
     return res.status(200).json({
       user: deleteUser,
-      msg: 'El usuario ha sido eliminado con exito',
+      msg: "El usuario ha sido eliminado con exito",
     });
   } catch (error) {
     return res.status(500).json({ FALLO_USER_DELETE: error.message });
@@ -498,7 +552,7 @@ router.delete('/delete/:id', async (req, res) => {
 
 /* CHANGE PASSWORD */
 
-router.post('/sendMailChangePassword', async (req, res) => {
+router.post("/sendMailChangePassword", async (req, res) => {
   const { email } = req.body;
 
   const token = await generateJWTPassword(email);
@@ -512,18 +566,22 @@ router.post('/sendMailChangePassword', async (req, res) => {
   });
 });
 
-router.get('/mail/validateTokenPassword', validateJWTPassword, async (req, res) => {
-  const email = req.email;
-  try {
-    res.json({ email });
-  } catch (error) {
-    res.status(400).json({
-      message: 'Error en la petición',
-    });
+router.get(
+  "/mail/validateTokenPassword",
+  validateJWTPassword,
+  async (req, res) => {
+    const email = req.email;
+    try {
+      res.json({ email });
+    } catch (error) {
+      res.status(400).json({
+        message: "Error en la petición",
+      });
+    }
   }
-});
+);
 
-router.post('/changePassword', async (req, res) => {
+router.post("/changePassword", async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await UsersFunctionDb.validationEmail(email);
@@ -532,7 +590,7 @@ router.post('/changePassword', async (req, res) => {
     await user.save();
 
     res.status(201).json({
-      message: 'Cambio de contraseña exitoso',
+      message: "Cambio de contraseña exitoso",
     });
   } catch (error) {
     res.status(400).json({
@@ -545,18 +603,18 @@ router.post('/changePassword', async (req, res) => {
 /* FACEBOOK */
 
 router.get(
-  '/login/facebook',
-  passport.authenticate('auth-facebook', {
-    prompt: 'select_account',
+  "/login/facebook",
+  passport.authenticate("auth-facebook", {
+    prompt: "select_account",
     session: false,
-    scope: ['public_profile', 'email'],
+    scope: ["public_profile", "email"],
   })
 );
 
 router.get(
-  '/login/facebook/callback',
-  passport.authenticate('auth-facebook', {
-    failureRedirect: '/login/facebook',
+  "/login/facebook/callback",
+  passport.authenticate("auth-facebook", {
+    failureRedirect: "/login/facebook",
     session: false,
   }),
   (req, res) => {
@@ -568,7 +626,9 @@ router.get(
     <body>
     </body>
     <script>
-    window.opener.postMessage(${userString}, '${process.env.CLIENT_URL || 'http://localhost:3000'}')
+    window.opener.postMessage(${userString}, '${
+        process.env.CLIENT_URL || "http://localhost:3000"
+      }')
     </script>
     </html>
     `
@@ -579,18 +639,18 @@ router.get(
 /* GOOGLE */
 
 router.get(
-  '/login/google',
-  passport.authenticate('google', {
-    prompt: 'select_account',
+  "/login/google",
+  passport.authenticate("google", {
+    prompt: "select_account",
     session: false,
-    scope: ['email', 'profile'],
+    scope: ["email", "profile"],
   })
 );
 
 router.get(
-  '/login/google/callback',
-  passport.authenticate('google', {
-    failureRedirect: '/login/google',
+  "/login/google/callback",
+  passport.authenticate("google", {
+    failureRedirect: "/login/google",
     session: false,
   }),
   (req, res) => {
@@ -602,7 +662,9 @@ router.get(
     <body>
     </body>
     <script>
-    window.opener.postMessage(${userString}, '${process.env.CLIENT_URL || 'http://localhost:3000'}')
+    window.opener.postMessage(${userString}, '${
+        process.env.CLIENT_URL || "http://localhost:3000"
+      }')
     </script>
     </html>
     `
@@ -612,7 +674,7 @@ router.get(
 
 /* SEND EMAIL FOR SET ORGANIZER */
 
-router.post('/requestToOrganizer/', async (req, res) => {
+router.post("/requestToOrganizer/", async (req, res) => {
   const { user } = req.body;
   try {
     const token = await generateJWTOrganizer(
@@ -627,7 +689,9 @@ router.post('/requestToOrganizer/', async (req, res) => {
     );
     await sendMailToOrganizer(
       user.name,
-      `${process.env.CLIENT_URL || 'http://localhost:3000'}/admin/check-solicitud-organizador/${token}`,
+      `${
+        process.env.CLIENT_URL || "http://localhost:3000"
+      }/admin/check-solicitud-organizador/${token}`,
       user.email
     );
 
@@ -641,13 +705,13 @@ router.post('/requestToOrganizer/', async (req, res) => {
   }
 });
 
-router.put('/editSaldo/:id', async (req, res) => {
+router.put("/editSaldo/:id", async (req, res) => {
   const { id } = req.params;
   const { saldo } = req.body;
   const user = await getUser(id);
   user.availableCredit = saldo;
   await user.save();
-  res.json({ message: 'success' });
+  res.json({ message: "success" });
 });
 
 module.exports = router;
