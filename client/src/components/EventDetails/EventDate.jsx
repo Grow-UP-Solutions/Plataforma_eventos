@@ -4,7 +4,7 @@ import { Calendar } from "react-date-range";
 import * as locales from "react-date-range/dist/locale";
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
-import { AiOutlineClose } from "react-icons/ai";
+import { AiOutlineClose, AiOutlineLoading3Quarters } from "react-icons/ai";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { formatDate } from "../../utils/formatDate";
 import { Link } from "react-router-dom";
@@ -30,8 +30,8 @@ const EventDate = ({ id }) => {
   const { user, logged, logout } = useContext(AuthContext);
   const [checked, setChecked] = useState(false);
   const { carrito, setCarrito } = useContext(stateContext);
-  const [successFormNewDate, setSuccessFormNewDate] = useState(false);
-  console.log("carrito:", carrito);
+  const [resultFormNewDate, setResultFormNewDate] = useState(false);
+  const [isLoadingNewDate, setIsLoadingNewDate] = useState(false);
 
   //   if(eventDetails!==undefined){
   //   eventDetails.dates.map((d)=>{
@@ -53,7 +53,7 @@ const EventDate = ({ id }) => {
   };
 
   const handleFormSolicitudNewDate = () => {
-    setSuccessFormNewDate(false);
+    setResultFormNewDate(false);
     setGetNewDate(!getNewDate);
   };
 
@@ -65,6 +65,8 @@ const EventDate = ({ id }) => {
     if (Object.keys(user).length === 0) {
       return toggleScreenLogin();
     }
+
+    setIsLoadingNewDate(true);
 
     const dataForEmail = {
       user: { name: user.name, email: user.email },
@@ -81,8 +83,16 @@ const EventDate = ({ id }) => {
 
     try {
       await eventsApi.put("/users/sendEmailToEventNewDate", { dataForEmail });
-      setSuccessFormNewDate(true);
+      setIsLoadingNewDate(false);
+      setResultFormNewDate({
+        success: true,
+        message: "Se ha enviado la solicitud",
+      });
     } catch (error) {
+      setResultFormNewDate({
+        success: false,
+        message: "Intentelo de nuevo",
+      });
       console.log({ error: error.message });
     }
   };
@@ -316,9 +326,23 @@ const EventDate = ({ id }) => {
                           Enviar
                         </button>
                       </div>
-                      {successFormNewDate && (
-                        <p className={styles.successSolicitudNewDate}>
-                          Se ha enviado la solicitud
+
+                      {isLoadingNewDate && (
+                        <AiOutlineLoading3Quarters
+                          className={styles.loadingNewDate}
+                        />
+                      )}
+
+                      {resultFormNewDate && (
+                        <p
+                          style={{
+                            color: resultFormNewDate.success
+                              ? "#29aa79"
+                              : "#d53e27",
+                          }}
+                          className={styles.successSolicitudNewDate}
+                        >
+                          {resultFormNewDate.message}
                         </p>
                       )}
                     </form>

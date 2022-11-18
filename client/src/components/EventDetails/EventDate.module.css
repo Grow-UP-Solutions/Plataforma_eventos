@@ -289,3 +289,22 @@
   font-weight: bold;
   color: var(--color-green);
 }
+
+.loadingNewDate {
+  width: 100%;
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 2.4rem;
+  color: var(--color-green);
+  animation: spinner 2s infinite;
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

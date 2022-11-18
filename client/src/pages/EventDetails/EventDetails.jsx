@@ -33,15 +33,14 @@ import { getEvents } from "../../redux/actions";
 import style from "./EventDetails.module.css";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { Hearts } from "react-loader-spinner";
-
+import formatDateToString from "../../utils/formatDateToString";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 const EventDetails = () => {
   const id = useParams().id;
   const dispatch = useDispatch();
   const allEvents = useSelector((state) => state.events);
   const eventDetails = allEvents.filter((event) => event._id === id)[0];
   const [getDanger, setGetDanger] = useState(false);
-  // const [check, setCheck] = useState(null);
-  const [checked] = useState("");
   const [component, setComponent] = useState(null);
   const [description, setDescription] = useState(false);
   const [heart, setHeart] = useState([]);
@@ -54,6 +53,7 @@ const EventDetails = () => {
     getEffectRatingEvent,
     ratingEvent,
     getEventsWithoutFavourites,
+    toggleScreenLogin,
   } = useContext(UIContext);
   const menuRef = useRef();
 
@@ -186,6 +186,74 @@ const EventDetails = () => {
       icon: "success",
       button: "OK",
     });
+  };
+
+  const [reportChecked, setReportChecked] = useState("");
+  const [resultMessageReport, setResultMessageReport] = useState(null);
+  const [isLoadingReport, setIsLoadingReport] = useState(false);
+  const handleChangeCheckboxReport = (e) => {
+    const value = e.target.value;
+    setReportChecked(value);
+  };
+
+  const inputReasonForReport = useRef("");
+
+  const sendReportContent = async () => {
+    if (Object.keys(user).length === 0) {
+      return toggleScreenLogin();
+    }
+
+    let reasonToReport = "";
+
+    if (reportChecked === "Otro") {
+      reasonToReport = inputReasonForReport.current.value;
+    } else {
+      reasonToReport = reportChecked;
+    }
+
+    if (reasonToReport === "") {
+      return setResultMessageReport({
+        success: false,
+        message: "Ingrese una razón al reporte.",
+      });
+    }
+
+    setIsLoadingReport(true);
+
+    const dataForReport = {
+      userReport: { name: user.name, email: user.email },
+      eventReport: {
+        title: eventDetails.title,
+        picture: eventDetails.pictures[0].picture,
+        nameOrganizer: eventDetails.organizer.name,
+        emailOrganizer: eventDetails.organizer.email,
+      },
+      dateReport: formatDateToString(new Date()),
+      reasonToReport,
+    };
+
+    try {
+      await eventsApi.put("/events/reportEvent/sendEmail", {
+        dataForReport,
+      });
+
+      setIsLoadingReport(false);
+      setResultMessageReport({
+        success: true,
+        message: "Reporte enviado.",
+      });
+    } catch (error) {
+      setResultMessageReport({
+        success: false,
+        message: error.message,
+      });
+      console.log({ error });
+    }
+  };
+
+  const handleCloseToMenuReport = async () => {
+    setGetDanger(false);
+    setReportChecked(null);
   };
 
   return (
@@ -384,7 +452,7 @@ const EventDetails = () => {
             {getDanger && (
               <div className={style.containerMenuGetDanger}>
                 <div className={style.closeMenuGetDanger}>
-                  <button onClick={() => setGetDanger(false)}>
+                  <button onClick={handleCloseToMenuReport}>
                     <AiOutlineClose />
                   </button>
                 </div>
@@ -397,74 +465,120 @@ const EventDetails = () => {
                 <div className={style.containerDanger}>
                   <div className={style.containerFormDanger}>
                     <div className={style.menuOptions}>
-                      <form action="">
+                      <form className={style.formReport} action="">
                         <div className={style.formGroup}>
-                          <label htmlFor="check">
+                          <label htmlFor="despectivo">
                             <input
                               type="checkbox"
-                              id="check"
-                              value={checked}
+                              id="despectivo"
+                              value={"Despectivo"}
                               defaultChecked={false}
+                              className={style.checkboxReport}
+                              checked={reportChecked === "Despectivo"}
+                              onChange={handleChangeCheckboxReport}
                             />
                             Despectivo
                           </label>
                         </div>
                         <div className={style.formGroup}>
-                          <label htmlFor="check">
+                          <label htmlFor="racista">
                             <input
                               type="checkbox"
-                              id="check"
-                              value={checked}
+                              id="racista"
+                              value={"Racista"}
                               defaultChecked={false}
+                              className={style.checkboxReport}
+                              checked={reportChecked === "Racista"}
+                              onChange={handleChangeCheckboxReport}
                             />
                             Racista
                           </label>
                         </div>
                         <div className={style.formGroup}>
-                          <label htmlFor="check">
+                          <label htmlFor="violencia">
                             <input
                               type="checkbox"
-                              id="check"
-                              value={checked}
+                              id="violencia"
+                              value={"Violencia"}
                               defaultChecked={false}
+                              className={style.checkboxReport}
+                              checked={reportChecked === "Violencia"}
+                              onChange={handleChangeCheckboxReport}
                             />
                             Incita a la violencia
                           </label>
                         </div>
                         <div className={style.formGroup}>
-                          <label htmlFor="check">
+                          <label htmlFor="sexual">
                             <input
                               type="checkbox"
-                              id="check"
-                              value={checked}
-                              defaultChecked={false}
+                              id="sexual"
+                              value={"Sexual"}
+                              className={style.checkboxReport}
+                              checked={reportChecked === "Sexual"}
+                              onChange={handleChangeCheckboxReport}
                             />
                             Sexual explicito
                           </label>
                         </div>
                         <div className={style.formGroup}>
-                          <label htmlFor="check">
+                          <label htmlFor="otro">
                             <input
                               type="checkbox"
-                              id="check"
-                              value={checked}
+                              id="otro"
+                              value={"Otro"}
                               defaultChecked={false}
+                              className={style.checkboxReport}
+                              checked={reportChecked === "Otro"}
+                              onChange={handleChangeCheckboxReport}
                             />
                             Otro
                           </label>
                         </div>
                         <div className={style.formGroup}>
-                          <label htmlFor="check">Si otro, indicar cual: </label>
-                          <input type="text" id="check" value={checked} />
+                          <label htmlFor="other-reason">
+                            Si otro, indicar cual:{" "}
+                          </label>
+                          <input
+                            ref={inputReasonForReport}
+                            type="text"
+                            id="other-reason"
+                          />
                         </div>
+
                         <div className={style.containerBtn}>
-                          <button type="submit" className={style.btnMenuDanger}>
+                          <button
+                            onClick={sendReportContent}
+                            type="button"
+                            className={style.btnMenuDanger}
+                          >
                             Reportar
                           </button>
-                          <button type="submit" className={style.btnMenuDanger}>
+                          <button
+                            onClick={handleCloseToMenuReport}
+                            type="button"
+                            className={style.btnMenuDanger}
+                          >
                             Cancelar
                           </button>
+                          {isLoadingReport && (
+                            <AiOutlineLoading3Quarters
+                              className={style.iconLoadingReport}
+                            />
+                          )}
                         </div>
+                        {resultMessageReport && (
+                          <p
+                            style={{
+                              color: resultMessageReport.success
+                                ? "#29aa79"
+                                : "#d53e27",
+                            }}
+                            className={style.errorMessageReportEvent}
+                          >
+                            {resultMessageReport.message}
+                          </p>
+                        )}
                       </form>
                     </div>
                   </div>

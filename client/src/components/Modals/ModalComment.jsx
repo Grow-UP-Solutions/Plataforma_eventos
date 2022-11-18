@@ -1,23 +1,25 @@
-
-import React from 'react';
-import style from './ModalComment.module.css';
+import React from "react";
+import style from "./ModalComment.module.css";
 
 const ModalComment = ({ closeModal }) => {
-
   return (
     <div className={style.container}>
-
       <div className={style.container_close}>
         <span className={style.title}>Reportar</span>
         <span className={style.modal_close} onClick={closeModal}>
           X
         </span>
       </div>
-      
+
       <div className={style.line_div}></div>
 
       <div className={style.container_texts}>
-        <p className={style.text}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae, corrupti! Fuga explicabo consequatur provident ab exercitationem nulla autem cumque, distinctio dolores. Nobis vero magni beatae hic incidunt, minus necessitatibus aspernatur!</p>
+        <p className={style.text}>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae,
+          corrupti! Fuga explicabo consequatur provident ab exercitationem nulla
+          autem cumque, distinctio dolores. Nobis vero magni beatae hic
+          incidunt, minus necessitatibus aspernatur!
+        </p>
       </div>
 
       <div className={style.container_select}>
@@ -32,7 +34,13 @@ const ModalComment = ({ closeModal }) => {
 
       <div className={style.container_title}>
         <p>Explique con detalle:</p>
-        <textarea name="" id="" cols="70" rows='10'></textarea>
+        <textarea
+          name=""
+          id=""
+          cols="70"
+          rows="10"
+          className={style.modalTextArea}
+        ></textarea>
       </div>
 
       <div className={style.container_button}>
@@ -42,6 +50,6 @@ const ModalComment = ({ closeModal }) => {
       </div>
     </div>
   );
-}
+};
 
 export default ModalComment;

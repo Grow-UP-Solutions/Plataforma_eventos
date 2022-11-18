@@ -519,19 +519,22 @@ router.put("/sendEmailToEventNewDate/", async (req, res) => {
   const { title, picture } = dataForEmail.event;
   const { start, end, coupons, emailOrganizer, dateFormatted } = dataForEmail;
 
-  await sendEmailToEventNewDate(
-    name,
-    email,
-    title,
-    picture,
-    start,
-    end,
-    coupons,
-    emailOrganizer,
-    dateFormatted
-  );
-
-  res.json({ succes: true });
+  try {
+    await sendEmailToEventNewDate(
+      name,
+      email,
+      title,
+      picture,
+      start,
+      end,
+      coupons,
+      emailOrganizer,
+      dateFormatted
+    );
+    res.json({ succes: true });
+  } catch (error) {
+    res.status(404).json({ succes: false, message: error.message });
+  }
 });
 
 /**/ ///////////////Rutas DELETE/////////////////////////// */
