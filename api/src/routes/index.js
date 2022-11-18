@@ -17,6 +17,6 @@ router.use('/contact', contactContoller);
 router.use('/conversation', conversationContoller);
 router.use('/message', messageContoller);
 router.use('/codeDiscount', codeDiscountController);
-router.use('/pago', pasarelaDePago )
+router.use('/mercadoPago', pasarelaDePago )
 
 module.exports = router;
