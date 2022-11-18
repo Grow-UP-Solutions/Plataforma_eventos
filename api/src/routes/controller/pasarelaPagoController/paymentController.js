@@ -1,9 +1,7 @@
 require("dotenv").config();
-const axios = require("axios");
 const { Router } = require("express");
 const router = Router();
 const mercadopago = require("mercadopago");
-const EventFunctionDb = require("../../../models/util/functionDB/event/index.event");
 const UsersFunctionDb = require("../../../models/util/functionDB/users/index.users");
 const { ACCESS_TOKEN } = process.env;
 
@@ -11,38 +9,52 @@ mercadopago.configure({
    access_token: `${ACCESS_TOKEN}`,
 });
 
-router.post("/orden", async (req, res) => {
-   const {dates, idUser, idEvent} = req.body;
-   console.log(req.query.codigo.split('{}'))
+router.post("/pago", async (req, res) => {
+   const carrito = req.body;
+   const { codigoDescuento } = req.query;
 
-   const userDB = await UsersFunctionDb.oneUser(idUser);
+   // const monto = carrito?.map((e) => {
+   //       const montoTem = e.unit_price * e.quantity;
+   //       return montoTem;
+   //    })
+   //    .reduce((a, b) => a + b);
 
-   const eventDB = await EventFunctionDb.oneEvent(idEvent);
-
-   const dateEvent = eventDB.dates.find((e,i) => e._id == dates[i].id);
-
+   const userDB = await UsersFunctionDb.oneUser(carrito.idUser);
    const telefono = userDB.tel.split(" ").join("");
+   console.log(parseInt(telefono));
+   console.log("Carrito", carrito);
+   //console.log("USERS", userDB);
 
-   if (dateEvent.cupos <= 0) {
-      throw new Error("El evento esta sobrevendido");
-   }
+   // const newOrder = new Orders({
+   //    status: EnumStatus.PENDING,
+   //    fecha: new Date(),
+   //    usuario: userDB._id,
+   //    produt: carrito.map((e) => e.title),
+   //    total: monto,
+   //    payment_id: 0,
+   //    status_order: Enum.CREATED,
+   //    libros: carrito.map((e) => {
+   //       return { title: e.title, quantity: e.quantity };
+   //    }),
+   // });
+
+   //await newOrder.save();
+   // userDB.buyBooks = userDB.buyBooks.concat(newOrder._id);
+   // await userDB.save();
+
    try {
-      const itemsMp = dates;
+      const itemsMp = carrito;
 
       let preference = {
-         items: itemsMp,
+         items: [itemsMp],
          nameUser: userDB.name,
          emailUser: userDB.email,
-         identification: {
-            number: userDB.document,
-            type: "CC",
-         },
-         external_reference: `${idEvent},${idUser}`,
+         external_reference: `${userDB._id}`,
          payer: {
-            name: userDB.firstName,
-            surname: userDB.lastName,
+            name: userDB.name,
+            surname: "user-surname",
             email: userDB.email,
-            date_created: Date.now(),
+            date_created: Date.now,
             phone: {
                area_code: "57",
                number: parseInt(telefono),
@@ -58,8 +70,8 @@ router.post("/orden", async (req, res) => {
          },
 
          back_urls: {
-            success: "http://localhost:3001/mercadoPago/success",
-            failure: "http://localhost:3001/mercadoPago/fail",
+            success: "http://localhost:3001/pago/success",
+            failure: "http://localhost:3001/pago/fail",
             pending: "http://localhost:3001/pago/pending",
          },
          auto_return: "approved",
@@ -70,96 +82,48 @@ router.post("/orden", async (req, res) => {
             },
          ],
       };
+     
 
       const respuesta = await mercadopago.preferences.create(preference);
 
       const globalInitPoint = respuesta.body.init_point;
-
       return res.json({ init_point: globalInitPoint });
    } catch (error) {
       res.status(500).json(error.message);
    }
 });
 
-router.get("/success", async (req, res) => {
-   const { external_reference, payment_id, preference_id } = req.query;
-   const ids = external_reference.split(",");
-   const idEvent = ids[0];
-   
-   const idUser = ids[1];
-
+router.get('/success', async (req, res) => {
+   const algo = req.query
    try {
-      const dataPayments = await axios(
-         `https://api.mercadopago.com/v1/payments/${payment_id}?access_token=${ACCESS_TOKEN}`
-      );
-
-      const response = dataPayments.data;
-      
-      const cuposComprados = response.additional_info.items.map((e) => parseInt(e.quantity));
-       const totalDeCupos = cuposComprados.reduce ((a, b) => a + b);
-      
-      const event = await EventFunctionDb.oneEvent(idEvent);
-
-   
-
-      const user = await UsersFunctionDb.oneUser(idUser);
-
-      if (
-         response.status === "approved" &&
-         response.status_detail === "accredited"
-      ) {
-         
-         event.generalBuyers.push(user._id);
-         event.dates.forEach((e,i)=>{
-            if(e._id == response.additional_info.items[i].id){
-              e.buyers?.push(user._id);
-               
-               e.sells += totalDeCupos
-               e.cupos -= totalDeCupos;
-            }
-         })
-         // const eventoesis= user.myEventsBooked.find(e=>{
-         //    //console.log(e._id)
-         //    return e.title === event.title
-         // })
-         //console.log(user.myEventsBooked.includes(event.title))
-         user.myEventsBooked.push(event._id);
-        
-         if (user.isReferral.code && !user.isReferral.use) {
-            const userReferral = await UsersFunctionDb.codeUser(
-               user.isReferral
-            );
-            userReferral.saldoPendiente -= 5000;
-            userReferral.saldoTotal += 5000;
-            user.isReferral.use = true;
-         }
-
-         await event.save();
-         await user.save();
-      }
-
-      res.json({ response });
+    console.log('/*/*/*//*/',algo)
+     res.json(algo)
+     
    } catch (error) {
-      return res.status(500).json(error.message);
+     return res.json({ msg: 'FALLO SUCCESS ', error: error })
    }
-});
+ })
 
-router.get("/fail", async (req, res) => {
-   const algo = req.query;
+ router.get('/fail', async (req, res) => {
+   const algo = req.query
    try {
-      console.log("/*/*/*//*/", algo);
-      res.json(algo);
+    console.log('/*/*/*//*/',algo)
+     res.json(algo)
+     
    } catch (error) {
-      return res.status(500).json(error.message);
+     return res.json({ msg: 'FALLO SUCCESS ', error: error })
    }
-});
+ })
+
+ router.get('/pending', async (req, res) => {
+   const algo = req.query
+   try {
+    console.log('/*/*/*//*/',algo)
+     res.json(algo)
+     
+   } catch (error) {
+     return res.json({ msg: 'FALLO SUCCESS ', error: error })
+   }
+ })
 
 module.exports = router;
-
-// https://api.mercadopago.com/checkout/preferences/220603994-5eb74901-5a8b-443d-a3c1-9cfc3c24fd5d?access_token=TEST-5290894943630049-070117-211fea6e87d83f8ab0769bbc6f6087b0-220603994#json
-
-/**https://api.mercadopago.com/merchant_orders/6506950463?access_token=TEST-5290894943630049-070117-211fea6e87d83f8ab0769bbc6f6087b0-220603994#json */
-
-// const dataPreference = await axios(
-//    `https://api.mercadopago.com/checkout/preferences/${preference_id}?access_token=${ACCESS_TOKEN}`
-// );
