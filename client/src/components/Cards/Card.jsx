@@ -10,6 +10,7 @@ import { stateContext } from '../../context/state/stateContext';
 import swal from 'sweetalert';
 import eventsApi from '../../axios/eventsApi';
 import { AiOutlineClose } from 'react-icons/ai';
+import { Hearts } from  'react-loader-spinner';
 
 
 const Card = ({ event, listName , orgEvent }) => {
@@ -22,6 +23,7 @@ const Card = ({ event, listName , orgEvent }) => {
   const [allUsers, setAllUsers] = useState([]);
   const [heart, setHeart] = useState([]);
   const [local, setLocal] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const menuRef = useRef();
 
 
@@ -86,6 +88,12 @@ const Card = ({ event, listName , orgEvent }) => {
       document.removeEventListener('mousedown', handler);
     };
   });
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 5000)
+  }, [heart, user]);
 
   const getUsers = async () => {
     try {
@@ -195,8 +203,7 @@ const Card = ({ event, listName , orgEvent }) => {
     e.preventDefault() 
     setGetDates(!getDates)
   }
-
-
+  
 
   return (
     <div className={orgEvent === 'true' ? styles.cardOrg : styles.card }>
@@ -257,47 +264,63 @@ const Card = ({ event, listName , orgEvent }) => {
 
 
           {/* FAVORITO */}
-          {event.organizer._id === user.uid || orgEvent==='true' ? (
-            ''
-          ) : user.uid && !heart ? (
-            <div className={styles.cardAddFav} onClick={handleClickFav}>
-              <input type='checkbox' id={`${event._id}-${listName}`} />
-              <label htmlFor={`${event._id}-${listName}`}>
-                <AddIcon sx={{ fontSize: 30, color: '#868686' }} />
-              </label>
-            </div>
-          ) : user.uid && heart ? (
-            <div className={styles.cardAddFavHeart} onClick={handleClickWithoutFav}>
-              <input type='checkbox' id={`${event._id}-${listName}`} />
-              <label htmlFor={`${event._id}-${listName}`}>
-                <FavoriteIcon sx={{ fontSize: 25, color: 'white' }} />
-              </label>
-            </div>
-          ) : (
-            <div className={styles.cardAddFav} ref={menuRef}>
-              <input type='checkbox' id={`${event._id}-${listName}`} />
-              <label htmlFor={`${event._id}-${listName}`} onClick={handleClickOpenDrop}>
-                <AddIcon sx={{ fontSize: 30, color: '#868686', cursor: 'pointer' }} />
-              </label>
-              {local && (
-                <div className={styles.cardAddFavMenu}>
-                  <p>
-                    Para agregar este evento a tu lista{' '}
-                    <a
-                      onClick={(e) => {
-                        e.preventDefault();
-                        toggleScreenLogin();
-                      }}
-                      href='/'
-                    >
-                      Ingresa
-                    </a>{' '}
-                    o <Link to={'/registrate'}>Registrate</Link>
-                  </p>
+          {
+            isLoading ?
+            <div className={styles.cardAddLoad}>
+              <Hearts 
+                height="40"
+                width="40"
+                color="#d53e27"
+                ariaLabel="hearts-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+                visible={true}
+              />
+            </div> :
+            <div>
+              {event.organizer._id === user.uid || orgEvent==='true' ? (
+                ''
+              ) : user.uid && !heart ? (
+                <div className={styles.cardAddFav} onClick={handleClickFav}>
+                  <input type='checkbox' id={`${event._id}-${listName}`} />
+                  <label htmlFor={`${event._id}-${listName}`}>
+                    <AddIcon sx={{ fontSize: 30, color: '#868686' }} />
+                  </label>
+                </div>
+              ) : user.uid && heart ? (
+                <div className={styles.cardAddFavHeart} onClick={handleClickWithoutFav}>
+                  <input type='checkbox' id={`${event._id}-${listName}`} />
+                  <label htmlFor={`${event._id}-${listName}`}>
+                    <FavoriteIcon sx={{ fontSize: 25, color: 'white' }} />
+                  </label>
+                </div>
+              ) : (
+                <div className={styles.cardAddFav} ref={menuRef}>
+                  <input type='checkbox' id={`${event._id}-${listName}`} />
+                  <label htmlFor={`${event._id}-${listName}`} onClick={handleClickOpenDrop}>
+                    <AddIcon sx={{ fontSize: 30, color: '#868686', cursor: 'pointer' }} />
+                  </label>
+                  {local && (
+                    <div className={styles.cardAddFavMenu}>
+                      <p>
+                        Para agregar este evento a tu lista{' '}
+                        <a
+                          onClick={(e) => {
+                            e.preventDefault();
+                            toggleScreenLogin();
+                          }}
+                          href='/'
+                        >
+                          Ingresa
+                        </a>{' '}
+                        o <Link to={'/registrate'}>Registrate</Link>
+                      </p>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
-          )}
+          }
           </div>
           :''
         }
@@ -468,13 +491,18 @@ const Card = ({ event, listName , orgEvent }) => {
                 {getDates && (              
                     <div className={styles.containerMenuGetDates} ref={menuRef}>
                       <div className={styles.closeMenuGetDate}>
-                        <button onClick={() => setGetDates(false)}>
+                        {/* <button onClick={() => setGetDates(false)}>
                           <AiOutlineClose />
-                        </button>
+                        </button> */}
                       </div> 
-                      <div>
+                      <div className={styles.container_choosedate}>
                         {event.dates.map((date)=>                                                
-                          <p className={styles.choosedate} onClick={(e)=>chooseDate(e, date._id , date.dateFormated , date.price)}>{date.date}</p>                          
+                          <p 
+                            style={{ color: '#868686', fontFamily: 'Raleway', fontSize: '1.5rem', margin: '1rem auto' }} 
+                            onClick={(e)=>chooseDate(e, date._id , date.dateFormated , date.price)}
+                          >
+                            {date.date}
+                          </p>                          
                         ) }   
                       </div>                      
                     </div>

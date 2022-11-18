@@ -80,6 +80,19 @@
   box-shadow: 1px 6px 10px var(--color-grey-3);
 }
 
+.container_icon_heart_l {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  border-radius: 60px;
+  position: relative;
+  bottom: 18px;
+  left: 20px;
+  z-index: 100;
+  background-color: white;
+  cursor: pointer;
+}
+
 .container_icon_heart_p {
   display: flex;
   width: 40px;

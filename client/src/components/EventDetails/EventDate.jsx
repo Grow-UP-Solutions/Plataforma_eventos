@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState ,useEffect } from 'react';
 import styles from './EventDate.module.css';
 import { Calendar } from 'react-date-range';
 import * as locales from 'react-date-range/dist/locale';
@@ -13,6 +13,9 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/auth';
 import { UIContext } from '../../context/ui';
 import EventDateMap from './EventDateMap';
+import { iconArrowLeft, iconArrowRight } from '../../assets/imgs';
+import { stateContext } from '../../context/state/stateContext';
+import swal from 'sweetalert';
 
 const EventDate = ({ id }) => {
 
@@ -25,6 +28,21 @@ const EventDate = ({ id }) => {
   const { toggleScreenLogin } = useContext(UIContext);
   const { user, logged, logout } = useContext(AuthContext);
   const [checked, setChecked] = useState(false);
+  const { carrito, setCarrito } = useContext(stateContext);
+  console.log('carrito:',carrito)
+  
+
+//   if(eventDetails!==undefined){
+//   eventDetails.dates.map((d)=>{
+//   d.checked=false})
+// }
+  useEffect(() => {
+    
+      setCarrito([])
+    
+  },[])
+
+
 
   const fecha = new Date();
   const hora = fecha.getHours();
@@ -36,6 +54,57 @@ const EventDate = ({ id }) => {
     setDateFormatted(formatDate(date));
   };
 
+
+  const [dateId, setDateId] = useState(0);
+
+  const dateSelected = (e,price) => {
+    e.preventDefault()
+    setChecked(true)
+    const fechaElegida = e.target.value
+    if (!e.target.checked) {
+      console.log('No checke')
+        let seleccion = carrito.filter((f)=>f.fechaId !== fechaElegida )
+        setCarrito(seleccion)
+     
+          // for( let i = 0 ; i<eventDetails.dates.length ; i++){
+          //   if(eventDetails.dates[i]._id===e.target.value){
+          //     eventDetails.dates[i].checked=false
+          //     console.log(' eventDetails.dates[i].checked', eventDetails.dates[i].checked)
+          //   }
+          //  }
+         
+     }else{
+      //let fechaCheked = date.buyers.find((buyer) => buyer === buyerId)
+      setCarrito([...carrito, {
+        fechaId:fechaElegida, 
+        cupos:0,
+        price:price,
+        codigoDescuento:'',
+        codigoReferido:'',
+        codigoCorrecto:'',
+        subtotal:'',
+        descuento:''
+      }])
+
+      
+      // for( let i = 0 ; i<eventDetails.dates.length ; i++){
+      //   if(eventDetails.dates[i]._id===e.target.value){
+      //     eventDetails.dates[i].checked=true
+      //     console.log(' eventDetails.dates[i].checked', eventDetails.dates[i].checked)
+      //   }
+      //  }
+      
+
+     }
+    
+
+  }
+
+
+  
+  //COMPRAR
+
+
   const comprar = (e) => {
     if (!logged) {
       toggleScreenLogin();
@@ -44,9 +113,14 @@ const EventDate = ({ id }) => {
       navigate(`/cart/${id}`);
     }
     else if (logged && !checked) {
-      alert('debes seleccionar una fecha del evento');
+      swal('Debes seleccionar al menos una fecha');
     }
   }
+
+  // {`/cart/${id}`}
+
+  //CARRITO
+ 
 
   return (
     <div>
@@ -84,9 +158,8 @@ const EventDate = ({ id }) => {
                       <input
                         type="checkBox"
                         class={styles.checkBox}
-                        value={date.id}
-                        name={date.id}  
-                        onChange={() => setChecked(true)}                
+                        value={date._id}
+                        onChange={(e) => dateSelected(e,date.price)}                
                       />
                     </td>
 
@@ -98,7 +171,43 @@ const EventDate = ({ id }) => {
 
                     <td>{date.cupos}</td>
 
-                    <EventDateMap />
+                    {/* <td className={styles.containerNumberBuyCupos}>
+
+                      <button
+                        onClick={() => handleNumberBuyCupos(date.cuposToBuy - 1, date._id )}
+                      >
+                        <img src={iconArrowLeft} alt="icon-left" />
+                      </button>
+
+                      <span>{date.cuposToBuy}</span>
+
+                      <button
+                        onClick={() => handleNumberBuyCupos(date.cuposToBuy + 1, date._id )}
+                      >
+                        <img src={iconArrowRight} alt="icon-left" />
+                      </button>
+
+                    </td> */}
+                    
+
+                    {carrito.length > 0?
+                     carrito.map((c)=>
+                     c.fechaId === date._id?
+                     <EventDateMap id={date._id}/>
+                     :
+                     ''
+                     )
+                        : <td className={styles.containerNumberBuyCuposDisable}>
+                            <button>
+                              <img src={iconArrowLeft} alt="icon-left" />
+                            </button>           
+                            <span>-</span>               
+                            <button>
+                              <img src={iconArrowRight} alt="icon-left" />
+                            </button>
+                          </td>
+                          }
+                   
 
                   </tr>
                 )}
@@ -108,7 +217,8 @@ const EventDate = ({ id }) => {
         </table>
       </div>
 
-      <button className={styles.button}  onClick={(e) => comprar(e)}>Comprar</button>
+        <button className={styles.button}  onClick={(e) => comprar(e)}>Comprar</button>
+    
 
       {/* <Link to={`/cart/${id}`}>
         <button className={styles.button}  onClick={(e) => comprar(e)}>Comprar</button>

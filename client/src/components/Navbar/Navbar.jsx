@@ -39,7 +39,6 @@ const Navbar = ({ upper }) => {
       setMsg(final);
       setUserData(userResult.data);
     }
-    console.log('userResult', userResult.data);
   };
 
   const handleClick = (e) => {
