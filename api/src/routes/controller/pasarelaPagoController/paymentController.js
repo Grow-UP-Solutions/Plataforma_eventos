@@ -12,8 +12,8 @@ mercadopago.configure({
 });
 
 router.post("/orden", async (req, res) => {
-   const {dates, idUser, idEvent} = req.body;
-   console.log(req.query.codigo.split('{}'))
+   const {dates:{codigo}, idUser, idEvent} = req.body;
+   if(codigo === null) console.log('codigo null')
 
    const userDB = await UsersFunctionDb.oneUser(idUser);
 
