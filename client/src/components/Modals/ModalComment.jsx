@@ -1,8 +1,62 @@
-import React, { useRef } from "react";
+import React, { useContext, useRef, useState } from "react";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import eventsApi from "../../axios/eventsApi";
+import { AuthContext } from "../../context/auth";
+import { UIContext } from "../../context/ui";
+import formatDateToString from "../../utils/formatDateToString";
 import style from "./ModalComment.module.css";
 
-const ModalComment = ({ closeModal }) => {
-  const textAreaDetailsReason = useRef();
+const ModalComment = ({ closeModal, organizer }) => {
+  const { user } = useContext(AuthContext);
+  const { toggleScreenLogin } = useContext(UIContext);
+
+  const selectTitleReport = useRef("");
+  const textAreaDetailsReason = useRef("");
+
+  const [isLoadingReport, setIsLoadingReport] = useState(false);
+  const [resultMessageReport, setResultMessageReport] = useState(false);
+
+  const sendEmailToReportOrganizer = async () => {
+    if (Object.keys(user).length === 0) {
+      return toggleScreenLogin();
+    }
+
+    if (textAreaDetailsReason.current.value === "") {
+      return setResultMessageReport({
+        success: true,
+        message: "Por favor explique en detalle.",
+      });
+    }
+
+    setIsLoadingReport(true);
+
+    const dataForReport = {
+      userFromReport: { name: user.name, email: user.email },
+      organizerReport: {
+        nameOrganizer: organizer.name,
+        emailOrganizer: organizer.email,
+        pictureOrganizer: organizer.userpicture,
+      },
+      titleReport: selectTitleReport.current.value,
+      reasonToReport: textAreaDetailsReason.current.value,
+      dateToReport: formatDateToString(new Date()),
+    };
+
+    try {
+      await eventsApi.put("/users/report/organizer", { dataForReport });
+
+      setResultMessageReport({
+        success: true,
+        message: "Reporte enviado.",
+      });
+      setIsLoadingReport(false);
+    } catch (error) {
+      setResultMessageReport({
+        success: false,
+        message: "Intentelo de nuevo",
+      });
+    }
+  };
 
   return (
     <div className={style.container}>
@@ -25,18 +79,29 @@ const ModalComment = ({ closeModal }) => {
       </div>
 
       <div className={style.container_select}>
-        <select defaultValue="default" className={style.select}>
-          <option value="default">Tiene contenido inapropiado</option>
-          <option value="false">Es una cuenta falsa</option>
-          <option value="otra">Pretende ser otra persona / empresa</option>
-          <option value="notevents">No realizo el evento programado</option>
-          <option value="other">Otro</option>
+        <select
+          ref={selectTitleReport}
+          defaultValue="Contenido inapropiado"
+          className={style.select}
+        >
+          <option value="Contenido inapropiado">
+            Tiene contenido inapropiado
+          </option>
+          <option value="Cuenta falsa">Es una cuenta falsa</option>
+          <option value="Pretende ser otra persona/empresa">
+            Pretende ser otra persona / empresa
+          </option>
+          <option value="No realizo el evento programado">
+            No realizo el evento programado
+          </option>
+          <option value="Otro">Otro</option>
         </select>
       </div>
 
       <div className={style.container_title}>
         <p>Explique con detalle:</p>
         <textarea
+          ref={textAreaDetailsReason}
           name=""
           id=""
           cols="70"
@@ -45,8 +110,28 @@ const ModalComment = ({ closeModal }) => {
         ></textarea>
       </div>
 
+      <div>
+        {isLoadingReport && (
+          <AiOutlineLoading3Quarters className={style.isLoading} />
+        )}
+
+        {resultMessageReport && (
+          <p
+            style={{
+              color: resultMessageReport.success ? "#29aa79" : "#d53e27",
+            }}
+            className={style.resultMessageReport}
+          >
+            {resultMessageReport.message}
+          </p>
+        )}
+      </div>
+
       <div className={style.container_button}>
-        <button className={style.button_confirm} onClick={closeModal}>
+        <button
+          className={style.button_confirm}
+          onClick={sendEmailToReportOrganizer}
+        >
           Enviar
         </button>
       </div>

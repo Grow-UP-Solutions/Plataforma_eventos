@@ -60,6 +60,9 @@ const {
 const {
   sendEmailToEventNewDate,
 } = require("../../models/util/mailer/mailToEventNewDate.js");
+const {
+  sendEmailToReportOrganizer,
+} = require("../../models/util/mailer/mailToReportOrganizer.js");
 
 const router = Router();
 /**/ ///////////////Rutas GET////////////// */
@@ -534,6 +537,31 @@ router.put("/sendEmailToEventNewDate/", async (req, res) => {
     res.json({ succes: true });
   } catch (error) {
     res.status(404).json({ succes: false, message: error.message });
+  }
+});
+
+router.put("/report/organizer", async (req, res) => {
+  const { dataForReport } = req.body;
+  const { titleReport, reasonToReport, dateToReport } = dataForReport;
+  const { name, email } = dataForReport.userFromReport;
+  const { nameOrganizer, emailOrganizer, pictureOrganizer } =
+    dataForReport.organizerReport;
+
+  try {
+    await sendEmailToReportOrganizer(
+      titleReport,
+      reasonToReport,
+      dateToReport,
+      name,
+      email,
+      nameOrganizer,
+      emailOrganizer,
+      pictureOrganizer
+    );
+
+    res.json({ success: true });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
   }
 });
 

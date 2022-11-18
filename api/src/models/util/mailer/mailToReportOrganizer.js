@@ -3,15 +3,15 @@ require("dotenv").config();
 
 const { EMAIL, PASSWORD } = process.env;
 
-const sendEmailToReportEvent = async (
-  dateReport,
+const sendEmailToReportOrganizer = async (
+  titleReport,
   reasonToReport,
+  dateToReport,
   name,
   email,
-  title,
   nameOrganizer,
   emailOrganizer,
-  picture
+  pictureOrganizer
 ) => {
   const transporter = createTransport({
     service: "gmail",
@@ -25,7 +25,7 @@ const sendEmailToReportEvent = async (
   let mail_options = {
     from: "Lo quiero hacer",
     to: email,
-    subject: `Reportaron un evento:, ${title}`,
+    subject: `Reportaron a un organizador, ${nameOrganizer}`,
     html: `<!DOCTYPE html>
     <html lang="en">
       <head>
@@ -160,15 +160,19 @@ const sendEmailToReportEvent = async (
           <div class="container">
             <div class="top-bar"></div>
             <div class="container-info">
-              <h1>Reporte de un evento.</h1>
+              <h1>Reporte a un organizador.</h1>
     
               <div class="container-data">
                 <div class="container-event">
-                  <p class="section-title">El evento:</p>
+                  <p class="section-title">El organizador:</p>
     
-                  <h2 class="title-event">${title}</h2>
+                  <h2 class="title-event">${nameOrganizer}</h2>
     
-                  <img class="img-event" src="${picture}" alt="${title}" />
+                  <img
+                    class="img-event"
+                    src="${pictureOrganizer}"
+                    alt="${nameOrganizer}"
+                  />
                 </div>
     
                 <div class="container-date-user">
@@ -182,17 +186,16 @@ const sendEmailToReportEvent = async (
                   <div class="container-date">
                     <p class="section-title">Detalles del reporte:</p>
     
-                    <p><span class="subtitle">Fecha:</span> ${dateReport}</p>
-    
-                    <p>
-                      <span class="subtitle">Nombre del organizador:</span>
-                      ${nameOrganizer}
-                    </p>
-    
+                    <p><span class="subtitle">Fecha:</span> ${dateToReport}</p>
                     <p>
                       <span class="subtitle">Email del organizador:</span>
                       ${emailOrganizer}
                     </p>
+                    <p>
+                      <span class="subtitle">Motivo de reporte:</span>
+                      ${titleReport}
+                    </p>
+    
                     <p>
                       <span class="subtitle">Razón del reporte</span>
                       ${reasonToReport}
@@ -206,6 +209,7 @@ const sendEmailToReportEvent = async (
         </div>
       </body>
     </html>
+    
     `,
   };
   try {
@@ -216,5 +220,5 @@ const sendEmailToReportEvent = async (
   }
 };
 module.exports = {
-  sendEmailToReportEvent,
+  sendEmailToReportOrganizer,
 };
