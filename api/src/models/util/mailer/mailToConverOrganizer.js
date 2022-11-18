@@ -1,11 +1,11 @@
-const { createTransport } = require('nodemailer');
-require('dotenv').config();
+const { createTransport } = require("nodemailer");
+require("dotenv").config();
 
 const { EMAIL, PASSWORD } = process.env;
 
 const sendMailToOrganizer = async (name, link, email) => {
   const transporter = createTransport({
-    service: 'gmail',
+    service: "gmail",
     secure: true,
     auth: {
       user: EMAIL,
@@ -14,7 +14,7 @@ const sendMailToOrganizer = async (name, link, email) => {
   });
 
   let mail_options = {
-    from: 'Lo quiero hacer',
+    from: "Lo quiero hacer",
     to: email,
     subject: `Solicitud para ser Organizador, ${name}`,
     html: `<!DOCTYPE html>
@@ -44,7 +44,7 @@ const sendMailToOrganizer = async (name, link, email) => {
             scroll-behavior: smooth;
           }
           body {
-            font-family: 'Raleway', sans-serif;
+            font-family: "Raleway", sans-serif;
             font-weight: 400;
             line-height: 1;
           }
@@ -81,11 +81,7 @@ const sendMailToOrganizer = async (name, link, email) => {
     
           .container-info {
             padding: 4rem 2rem;
-    
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2rem;
+            text-align: center;
           }
     
           h1 {
@@ -95,8 +91,14 @@ const sendMailToOrganizer = async (name, link, email) => {
           h1 span {
             color: #d53e27;
           }
-    
+          .container-btn {
+            text-align: center;
+            width: 100%;
+          }
           .btnSuccess {
+            width: max-content;
+            margin: 0 auto;
+            margin-top: 1rem;
             display: block;
             padding: 1rem 4rem;
             border: none;
@@ -105,7 +107,7 @@ const sendMailToOrganizer = async (name, link, email) => {
             font-weight: bold;
             box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.2);
             cursor: pointer;
-            color: #ffffff;
+            color: #ffffff !important;
             background-color: #d53e27;
           }
         </style>
@@ -115,21 +117,26 @@ const sendMailToOrganizer = async (name, link, email) => {
           <div class="container">
             <div class="top-bar"></div>
             <div class="container-info">
-              <h1>El usuario <span>${name}</span> quiere convertirse en organizador.</h1>
-              <a href="${link}" class="btnSuccess">Visualizar sus datos</a>
+              <h1>
+                El usuario <span>${name}</span> quiere convertirse en organizador.
+              </h1>
+              <div class="container-btn">
+                <a href="${link}" class="btnSuccess">Visualizar sus datos</a>
+              </div>
             </div>
             <div class="bottom-bar"></div>
           </div>
         </div>
       </body>
     </html>
+    
     `,
   };
   try {
     const response = await transporter.sendMail(mail_options);
-    return { msg: ('SE ENVIO CON EXITO', response.response) };
+    return { msg: ("SE ENVIO CON EXITO", response.response) };
   } catch (error) {
-    return { msg: ('FALLO EL ENVIO DE EMAIL', error) };
+    return { msg: ("FALLO EL ENVIO DE EMAIL", error) };
   }
 };
 module.exports = {

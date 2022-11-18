@@ -63,6 +63,13 @@ const {
 const {
   sendEmailToReportOrganizer,
 } = require("../../models/util/mailer/mailToReportOrganizer.js");
+const { enviar_mail_contact } = require("../../models/util/mailer/contact.js");
+const {
+  eventCreateAdministrador,
+} = require("../../models/util/mailer/eventCreateAdministrador.js");
+const {
+  eventCreateOrganizer,
+} = require("../../models/util/mailer/eventeCreateOrganizer.js");
 
 const router = Router();
 /**/ ///////////////Rutas GET////////////// */
@@ -743,6 +750,22 @@ router.put("/editSaldo/:id", async (req, res) => {
   user.availableCredit = saldo;
   await user.save();
   res.json({ message: "success" });
+});
+
+router.put("/sendEmailTest/", async (req, res) => {
+  const events = {
+    title: "Tango",
+    _id: "1231839012831729",
+    date: "24/10/2010",
+  };
+  const organizer = {
+    email: "jeanpipoxi@gmail.com",
+    firstName: "Jean Pierre",
+    lastName: "Huaman Gomez",
+  };
+
+  await sendMailUserAccept("Jean Pierre Huaman Gomez", "jeanpipoxi@gmail.com");
+  res.json("success");
 });
 
 module.exports = router;

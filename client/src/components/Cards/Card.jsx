@@ -393,10 +393,7 @@ const Card = ({ event, listName, orgEvent }) => {
         organizer[0].userpicture && organizer[0].name ? (
           <div>
             <div className={styles.cardOrgInfo}>
-              <Link
-                className={styles.link}
-                to={`/sobre-el-organizador/${organizer[0]._id}`}
-              >
+              <Link to={`/sobre-el-organizador/${organizer[0]._id}`}>
                 <img
                   className={styles.cardOrgPicture}
                   src={organizer[0].userpicture}
@@ -405,10 +402,7 @@ const Card = ({ event, listName, orgEvent }) => {
                   height="3px"
                 />
               </Link>
-              <Link
-                className={styles.link}
-                to={`/sobre-el-organizador/${organizer[0]._id}`}
-              >
+              <Link to={`/sobre-el-organizador/${organizer[0]._id}`}>
                 <p className={styles.cardOrgName}>{organizer[0].name}</p>
               </Link>
               <div className={styles.vLine}></div>
