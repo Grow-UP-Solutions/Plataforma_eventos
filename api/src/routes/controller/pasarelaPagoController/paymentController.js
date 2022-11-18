@@ -15,7 +15,7 @@ router.post("/orden", async (req, res) => {
    const {dates, idUser, idEvent} = req.body;
    const {codigo}= dates
    
-   console.log(codigo)
+   console.log(dates)
    const userDB = await UsersFunctionDb.oneUser(idUser);
 
    const eventDB = await EventFunctionDb.oneEvent(idEvent);
