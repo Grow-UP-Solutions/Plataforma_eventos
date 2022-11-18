@@ -30,7 +30,7 @@ import {
   WorkWithUs,
   WorkWithUsForm,
   CheckSolicitudOrganizer,
-  MyEventsAsistentes
+  MyEventsAsistentes,
 } from './pages';
 import EventsOrganizerResult from './pages/EventsOrganizerResult/EventsOrganizerResult';
 import News from './pages/News/News';
@@ -55,7 +55,7 @@ function App() {
 
   useEffect(() => {
     dispatch(getEvents());
-    
+
     getAllEvents();
   }, []);
 
@@ -94,7 +94,6 @@ function App() {
         <Route path='/edita-un-evento' element={<EventEdit />} />
         <Route path='/admin/check-solicitud-organizador/:token' element={<CheckSolicitudOrganizer />} />
         <Route path='/usuario/asistentes-al-evento/:eventId/:dateId' element={<MyEventsAsistentes />} />
-        
       </Routes>
       <div className='container_footer'>
         <Footer />

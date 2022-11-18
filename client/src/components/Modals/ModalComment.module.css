@@ -40,7 +40,7 @@
 
 .text {
   font-family: 'Raleway', sans-serif;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   color: var(--color-grey-3);
   margin-top: .3rem;
   text-align: start;
@@ -53,7 +53,7 @@
 .select {
   width: 100%;
   border: .5px solid var(--color-grey-3);
-  padding: .5rem;
+  padding: .9rem;
   font-size: 1.4rem;
   font-family: 'Raleway', sans-serif;
   color: var(--color-grey-3);
@@ -67,6 +67,10 @@
 .container_title p {
   text-align: start;
   margin-top: 1rem;
+  font-family: 'Raleway', sans-serif;
+  font-size: 1.4rem;
+  color: var(--color-grey-3);
+  font-weight: bold;
 }
 
 .container_title textarea {

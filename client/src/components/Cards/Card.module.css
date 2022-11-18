@@ -78,6 +78,14 @@
   width: 150px;
 }
 
+.cardAddLoad {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border-radius: 50%;
+  box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.2);
+}
+
 .cardAddFav {
   position: absolute;
   top: 10px;
@@ -333,10 +341,10 @@
 
 .containerMenuGetDates {
   position: absolute;
-  top:0;
-  right:0;
-  height: 15rem;
-  width: 15rem;
+  top: .5rem;
+  right: .5rem;
+  /* height: 15rem;
+  width: 15rem; */
   padding: 2rem;
   background-color: white;
   border-radius: 10px;
@@ -382,5 +390,13 @@
   border:none;
   margin-top: -2rem;
   
+}
+
+.container_choosedate {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
 
