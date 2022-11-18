@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useRef } from "react";
 import style from "./ModalComment.module.css";
 
 const ModalComment = ({ closeModal }) => {
+  const textAreaDetailsReason = useRef();
+
   return (
     <div className={style.container}>
       <div className={style.container_close}>
