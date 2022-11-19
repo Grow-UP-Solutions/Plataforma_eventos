@@ -20,7 +20,12 @@
   display: grid;
   justify-items: center;
   grid-template-columns: repeat(5, 1fr);
-  column-gap: 3.2rem;
+}
+
+.footerItemsNav {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 
 .titleList,
@@ -92,6 +97,33 @@
   background-color: var(--color-orange);
   position: absolute;
   top: -3rem;
-  right: .5rem;
+  right: 0.5rem;
   cursor: pointer;
+}
+
+@media screen and (max-width: 1120px) {
+  .footerImg {
+    margin-right: 10rem;
+  }
+}
+
+@media screen and (max-width: 940px) {
+  .footerImg {
+    margin-right: 5rem;
+  }
+}
+
+@media screen and (max-width: 910px) {
+  .footer {
+    flex-direction: column;
+  }
+
+  .footerImg {
+    margin-top: 1rem;
+    width: 100%;
+  }
+
+  .footerItems {
+    margin-top: 4rem;
+  }
 }

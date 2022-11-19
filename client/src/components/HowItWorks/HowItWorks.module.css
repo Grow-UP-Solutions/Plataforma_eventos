@@ -18,6 +18,12 @@
   gap: 20rem;
 }
 
+@media screen and (max-width: 1020px) {
+  .howItWorks {
+    gap: 10rem;
+  }
+}
+
 .items {
   display: flex;
   flex-direction: column;
@@ -51,4 +57,14 @@
   border: 2px solid var(--color-orange);
   padding: 1rem 2rem;
   border-radius: 100%;
+}
+
+@media screen and (max-width: 1160px) {
+  .howItWorks {
+    padding: 0 4rem;
+  }
+
+  .items span {
+    right: 0rem;
+  }
 }

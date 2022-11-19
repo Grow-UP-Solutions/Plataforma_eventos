@@ -6,14 +6,18 @@ import { AuthContext } from '../../context/auth';
 import { stateContext } from '../../context/state/stateContext';
 import Search from '../Search/Search';
 import { GrMail } from 'react-icons/gr';
+import { GiHamburgerMenu } from 'react-icons/gi';
 import { FaUserCircle } from 'react-icons/fa';
-import { IoNotifications, IoCaretDownSharp, IoCaretUpSharp } from 'react-icons/io5';
+import {
+  IoNotifications,
+  IoCaretDownSharp,
+  IoCaretUpSharp,
+} from 'react-icons/io5';
 import logo from '../../assets/imgs/logoNav.svg';
 import eventsApi from '../../axios/eventsApi';
 import ConversationNoti from '../ConversationNoti/ConversationNoti';
 
 const Navbar = ({ upper }) => {
-
   const { toggleScreenLogin } = useContext(UIContext);
   const { user, logged, logout } = useContext(AuthContext);
   const { notes, setNotes, msg, setMsg } = useContext(stateContext);
@@ -84,27 +88,47 @@ const Navbar = ({ upper }) => {
 
   return (
     <div
-      id='navbar'
+      id="navbar"
       style={{ position: pathname === '/' ? 'fixed' : 'sticky' }}
-      className={`${style.container} ${pathname !== '/' || upper === false ? style.customizeNavBar : ''}`}
+      className={`${style.container} ${
+        pathname !== '/' || upper === false ? style.customizeNavBar : ''
+      }`}
     >
       <div className={`${style.containerInfo} container`}>
+        <div className={style.hamburgerIcon}>
+          <GiHamburgerMenu />
+        </div>
+
         <div className={style.containerImgInput}>
-          <img src={logo} alt='LogoNav' onClick={handleClick} />
-          {pathname !== '/' || upper === false ? <Search location={'not-home'} /> : <></>}
+          <img src={logo} alt="LogoNav" onClick={handleClick} />
+          {pathname !== '/' || upper === false ? (
+            <div className={style.searchComponent}>
+              <Search location={'not-home'} />
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
         <div className={style.container_div}>
-          {logged && <Link to='/usuario/mi-lista'>Mi lista</Link>}
+          {logged && (
+            <Link className={style.navMyList} to="/usuario/mi-lista">
+              Mi lista
+            </Link>
+          )}
 
           {user.organizer ? (
-            <Link to='/oganiza-un-evento'>
-              <p className={`${logged ? style.buttonOrganizar : ''}`}>Organiza un evento</p>
+            <Link to="/oganiza-un-evento">
+              <p className={`${logged ? style.buttonOrganizar : ''}`}>
+                Organiza un evento
+              </p>
             </Link>
           ) : userData && userData.isRejected === true ? (
             ''
           ) : (
             <Link to={`organiza-un-evento/beneficios`}>
-              <p className={`${logged ? style.buttonOrganizar : ''}`}>Organiza un evento</p>
+              <p className={`${logged ? style.buttonOrganizar : ''}`}>
+                Organiza un evento
+              </p>
             </Link>
           )}
           {!logged ? (
@@ -117,23 +141,35 @@ const Navbar = ({ upper }) => {
           ) : (
             <>
               <div className={style.containerNotification}>
-                <div className={style.containerMessage} onClick={handleOpenMessages}>
+                <div
+                  className={style.containerMessage}
+                  onClick={handleOpenMessages}
+                >
                   <GrMail className={style.iconNav} />
                   <div className={style.bage}>{msg.length}</div>
                 </div>
                 <div className={style.divisorNotis} />
-                <div className={style.containerNotis} onClick={handleOpenNotifications}>
+                <div
+                  className={style.containerNotis}
+                  onClick={handleOpenNotifications}
+                >
                   <IoNotifications className={style.iconNav} />
                   <div className={style.bage}>{notes.length}</div>
                 </div>
 
-                {openMessages  && (
+                {openMessages && (
                   <div className={style.notifications}>
-                    <span onClick={handleOpenMessages} className={style.close_menu}>
+                    <span
+                      onClick={handleOpenMessages}
+                      className={style.close_menu}
+                    >
                       X
                     </span>
 
-                    <p className={style.link_noti} onClick={handleClickAllReadMessages}>
+                    <p
+                      className={style.link_noti}
+                      onClick={handleClickAllReadMessages}
+                    >
                       Marcar todas como leidas
                     </p>
 
@@ -143,7 +179,10 @@ const Navbar = ({ upper }) => {
                       </div>
                     ))}
 
-                    <p className={style.link_notis} onClick={handleClickMessage}>
+                    <p
+                      className={style.link_notis}
+                      onClick={handleClickMessage}
+                    >
                       Ver todos los mensajes
                     </p>
                   </div>
@@ -151,11 +190,17 @@ const Navbar = ({ upper }) => {
 
                 {openNotifications && (
                   <div className={style.notifications}>
-                    <span onClick={handleOpenNotifications} className={style.close_menu}>
+                    <span
+                      onClick={handleOpenNotifications}
+                      className={style.close_menu}
+                    >
                       X
                     </span>
 
-                    <p className={style.link_noti} onClick={handleClickAllReadNotifications}>
+                    <p
+                      className={style.link_noti}
+                      onClick={handleClickAllReadNotifications}
+                    >
                       Marcar todas como leidas
                     </p>
                     {notes.map((e) => (
@@ -164,7 +209,10 @@ const Navbar = ({ upper }) => {
                         {e.msg}
                       </div>
                     ))}
-                    <p className={style.link_notis} onClick={handleClickNotifications}>
+                    <p
+                      className={style.link_notis}
+                      onClick={handleClickNotifications}
+                    >
                       Ver todas las notificaciones
                     </p>
                   </div>
@@ -174,14 +222,14 @@ const Navbar = ({ upper }) => {
               <div className={style.containerName}>
                 {user.nickname ? (
                   <>
-                    <Link to='/usuario/perfil'>
+                    <Link to="/usuario/perfil">
                       <p>{user.nickname.split(' ')[0]}</p>
                       <p>{user.nickname.split(' ')[1]}</p>
                     </Link>
                   </>
                 ) : (
                   <>
-                    <Link to='/usuario/perfil'>
+                    <Link to="/usuario/perfil">
                       <p>{user.name.split(' ')[0]}</p>
                       <p>{user.name.split(' ')[1]}</p>
                     </Link>
@@ -199,25 +247,44 @@ const Navbar = ({ upper }) => {
               >
                 <div className={style.containerImg}>
                   {user.picture ? (
-                    <img className={style.userImg} src={user.picture} alt='img-user' />
+                    <img
+                      className={style.userImg}
+                      src={user.picture}
+                      alt="img-user"
+                    />
                   ) : (
                     <FaUserCircle className={style.userImg} />
                   )}
                 </div>
-                {
-                  menuOpen ?
-                  <IoCaretUpSharp className={style.iconMenu}/> :
+                {menuOpen ? (
+                  <IoCaretUpSharp className={style.iconMenu} />
+                ) : (
                   <IoCaretDownSharp className={style.iconMenu} />
-                }
-                
+                )}
+
                 {menuOpen && (
                   <div className={style.containerProfileMenu}>
-                    <Link to='/usuario/mi-lista'>Mis eventos</Link>
-                    <Link to='/usuario/perfil'>
+                    <Link to="/usuario/mi-lista">Mis eventos</Link>
+
+                    <Link to="/usuario/perfil">
                       <a>Perfil</a>
                     </Link>
-                    <Link to='/usuario/plan-de-referidos'>Plan de referidos</Link>
-                    <Link to='/usuario/preferencias'>Preferencias</Link>
+                    <Link
+                      className={style.navMyListMenu}
+                      to="/usuario/mi-lista"
+                    >
+                      Mi lista
+                    </Link>
+                    <Link
+                      to="/oganiza-un-evento"
+                      className={style.buttonOrganizarMenu}
+                    >
+                      Organiza un evento
+                    </Link>
+                    <Link to="/usuario/plan-de-referidos">
+                      Plan de referidos
+                    </Link>
+                    <Link to="/usuario/preferencias">Preferencias</Link>
                     <hr />
                     <span
                       onClick={(e) => {

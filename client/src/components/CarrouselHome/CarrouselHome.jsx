@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Autoplay, Navigation, Pagination } from 'swiper';
 import 'swiper/modules/navigation/navigation.min.css';
 import 'swiper/modules/pagination/pagination.min.css';
@@ -13,32 +14,37 @@ const CarrouselHome = () => {
     {
       id: 1,
       title: 'image1',
-      url: 'https://res.cloudinary.com/djsp3n1qy/image/upload/v1663114004/Plataforma_Eventos/gas1_wm6wph.jpg',
+      url:
+        'https://images.unsplash.com/photo-1518528802892-ec2191995c99?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
     },
     {
       id: 2,
       title: 'image2',
-      url: 'https://res.cloudinary.com/djsp3n1qy/image/upload/v1663113988/Plataforma_Eventos/gas2_corxwc.jpg',
+      url:
+        'https://images.unsplash.com/photo-1518528802892-ec2191995c99?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
     },
     {
       id: 3,
       title: 'image3',
-      url: 'https://res.cloudinary.com/djsp3n1qy/image/upload/v1663114004/Plataforma_Eventos/gas1_wm6wph.jpg',
+      url:
+        'https://images.unsplash.com/photo-1518528802892-ec2191995c99?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
     },
     {
       id: 4,
       title: 'image4',
-      url: 'https://res.cloudinary.com/djsp3n1qy/image/upload/v1663113988/Plataforma_Eventos/gas2_corxwc.jpg',
+      url:
+        'https://images.unsplash.com/photo-1518528802892-ec2191995c99?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
     },
     {
       id: 5,
       title: 'image5',
-      url: 'https://res.cloudinary.com/djsp3n1qy/image/upload/v1663114004/Plataforma_Eventos/gas1_wm6wph.jpg',
+      url:
+        'https://images.unsplash.com/photo-1518528802892-ec2191995c99?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
     },
   ];
 
   return (
-    <div id='hero' className={style.container}>
+    <div id="hero" className={style.container}>
       <Swiper
         slidesPerView={1}
         spaceBetween={0}
@@ -56,9 +62,7 @@ const CarrouselHome = () => {
           images.map((e) => {
             return (
               <SwiperSlide key={e.id}>
-                <div>
-                  <img className={style.img} src={e.url} alt={e.title} />
-                </div>
+                <img className={style.img} src={e.url} alt={e.title} />
               </SwiperSlide>
             );
           })
@@ -70,11 +74,16 @@ const CarrouselHome = () => {
       <div className={style.container_p}>
         <p>Aqui va un texto de</p>
         <p>enganche grande</p>
-        <p className={style.item_p}>Aqui un texto que acompañe el titulo de enganche</p>
+        <p className={style.item_p}>
+          Aqui un texto que acompañe el titulo de enganche
+        </p>
       </div>
 
       <div className={style.search}>
         <Search />
+      </div>
+      <div className={style.containerBtnOrganizerEvent}>
+        <Link to={'/oganiza-un-evento'}>Organiza un evento</Link>
       </div>
     </div>
   );
