@@ -11,32 +11,34 @@ mercadopago.configure({
    access_token: `${ACCESS_TOKEN}`,
 });
 
-router.post("/pago", async (req, res) => {
-   const carrito = req.body;
+router.post("/orden", async (req, res) => {
+   const {dates, idUser, idEvent} = req.body;
+   const {codigo}= dates
+   
+   console.log(dates)
+   const userDB = await UsersFunctionDb.oneUser(idUser);
 
-   const userDB = await UsersFunctionDb.oneUser(carrito.idUser);
+   const eventDB = await EventFunctionDb.oneEvent(idEvent);
 
-   const eventDB = await EventFunctionDb.oneEvent(carrito.idEvent);
-
-   const date = eventDB.dates.find((e) => e._id == carrito.idDate);
+   const dateEvent = eventDB.dates.find((e,i) => e._id == dates[i].id);
 
    const telefono = userDB.tel.split(" ").join("");
 
-   if (date.cupos <= 0) {
+   if (dateEvent.cupos <= 0) {
       throw new Error("El evento esta sobrevendido");
    }
    try {
-      const itemsMp = carrito;
+      const itemsMp = dates;
 
       let preference = {
-         items: [itemsMp],
+         items: itemsMp,
          nameUser: userDB.name,
          emailUser: userDB.email,
          identification: {
             number: userDB.document,
             type: "CC",
          },
-         external_reference: `${carrito.idEvent},${carrito.idDate},${carrito.idUser}`,
+         external_reference: `${idEvent},${idUser}`,
          payer: {
             name: userDB.firstName,
             surname: userDB.lastName,
@@ -57,8 +59,8 @@ router.post("/pago", async (req, res) => {
          },
 
          back_urls: {
-            success: "http://localhost:3001/pago/success",
-            failure: "http://localhost:3001/pago/fail",
+            success: "http://localhost:3001/mercadoPago/success",
+            failure: "http://localhost:3001/mercadoPago/fail",
             pending: "http://localhost:3001/pago/pending",
          },
          auto_return: "approved",
@@ -84,8 +86,8 @@ router.get("/success", async (req, res) => {
    const { external_reference, payment_id, preference_id } = req.query;
    const ids = external_reference.split(",");
    const idEvent = ids[0];
-   const idDate = ids[1];
-   const idUser = ids[2];
+   
+   const idUser = ids[1];
 
    try {
       const dataPayments = await axios(
@@ -93,10 +95,13 @@ router.get("/success", async (req, res) => {
       );
 
       const response = dataPayments.data;
-
+      
+      const cuposComprados = response.additional_info.items.map((e) => parseInt(e.quantity));
+       const totalDeCupos = cuposComprados.reduce ((a, b) => a + b);
+      
       const event = await EventFunctionDb.oneEvent(idEvent);
 
-      const date = event.dates.find((e) => e._id == idDate);
+   
 
       const user = await UsersFunctionDb.oneUser(idUser);
 
@@ -104,15 +109,23 @@ router.get("/success", async (req, res) => {
          response.status === "approved" &&
          response.status_detail === "accredited"
       ) {
-         console.log("estoy aqui");
+         
          event.generalBuyers.push(user._id);
-
-         date?.buyers.push(user._id);
-
-         date.cupos -= 1;
-
+         event.dates.forEach((e,i)=>{
+            if(e._id == response.additional_info.items[i].id){
+              e.buyers?.push(user._id);
+               
+               e.sells += totalDeCupos
+               e.cupos -= totalDeCupos;
+            }
+         })
+         // const eventoesis= user.myEventsBooked.find(e=>{
+         //    //console.log(e._id)
+         //    return e.title === event.title
+         // })
+         //console.log(user.myEventsBooked.includes(event.title))
          user.myEventsBooked.push(event._id);
-
+        
          if (user.isReferral.code && !user.isReferral.use) {
             const userReferral = await UsersFunctionDb.codeUser(
                user.isReferral
@@ -133,16 +146,6 @@ router.get("/success", async (req, res) => {
 });
 
 router.get("/fail", async (req, res) => {
-   const algo = req.query;
-   try {
-      console.log("/*/*/*//*/", algo);
-      res.json(algo);
-   } catch (error) {
-      return res.status(500).json(error.message);
-   }
-});
-
-router.get("/pending", async (req, res) => {
    const algo = req.query;
    try {
       console.log("/*/*/*//*/", algo);
