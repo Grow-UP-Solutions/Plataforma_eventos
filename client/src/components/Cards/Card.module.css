@@ -242,13 +242,34 @@
 
 .cardOrgInfo {
   display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+  /* margin-bottom: 2rem; */
+} 
+
+
+
+/* .cardOrgInfo {
+  display: grid;
+  grid-template-columns: 40% 30% 30%;
   align-items: center;
   margin-top: 1rem;
   margin-bottom: 2rem;
+  border: 1px solid green;
 }
 
+.box {
+  border: 1px solid red;
+}
+
+.box {
+  display: flex;
+
+} */
+
 .cardOrgPicture {
-  margin-left: 2rem;
+  margin-left: .4rem;
   width: 4.5rem;
   height: 4.5rem;
   border-radius: 50%;
@@ -381,15 +402,15 @@
   
 }
 
-.link{
+.link {
   font-size: 1.6rem;
-  text-decoration: underline;
+  text-decoration: none;
   cursor: pointer;
-  background-color: white;
+  /* background-color: white; */
   color:#D53E27;
   border:none;
-  margin-top: -2rem;
-  
+  /* margin-top: -2rem; */
+  align-self: center;
 }
 
 .container_choosedate {

@@ -350,8 +350,9 @@ const Card = ({ event, listName , orgEvent }) => {
 
       {organizer.length === 1 ? (
         organizer[0].userpicture && organizer[0].name ? (
-          <div>
+          
             <div className={styles.cardOrgInfo}>
+              
               <Link className={styles.link} to={`/sobre-el-organizador/${organizer[0]._id}`}>
                 <img
                   className={styles.cardOrgPicture}
@@ -365,28 +366,29 @@ const Card = ({ event, listName , orgEvent }) => {
                 <p className={styles.cardOrgName}>{organizer[0].name}</p>
               </Link>
               <div className={styles.vLine}></div>
-               {/* PRICE */}
-                {orgEvent === 'true' && datePrice === undefined ? 
-                <div>
-                  <p className={styles.cardPrice}>${event.dates[0].price}</p>       
-                </div>
-                : orgEvent === 'true' && datePrice !== undefined ?
-                <div>
-                  <p className={styles.cardPrice}>${datePrice}</p> 
-                </div>
-                : orgEvent === undefined && datePrice === undefined && price !=='' ? (
-                  <p className={styles.cardPrice}>${price}</p>
-                 
-                ) : (
-                  <p className={styles.cardPrice}>${event.dates[0].price}</p>
-                )
-                }
+
+              {/* PRICE */}
+              {orgEvent === 'true' && datePrice === undefined ? 
+              <div>
+                <p className={styles.cardPrice}>${event.dates[0].price}</p>       
+              </div>
+              : orgEvent === 'true' && datePrice !== undefined ?
+              <div>
+                <p className={styles.cardPrice}>${datePrice}</p> 
+              </div>
+              : orgEvent === undefined && datePrice === undefined && price !=='' ? (
+                <p className={styles.cardPrice}>${price}</p>
+              
+              ) : (
+                <p className={styles.cardPrice}>${event.dates[0].price}</p>
+              )}
               <div className={styles.vLine}></div>
+
               <Link className={styles.link} to={`/detalles-del-evento/${event._id}`}>
                 <p className={styles.cardDetails}>Ver más</p>
               </Link>
+              
             </div>
-          </div>
         ) : (
           <div className={styles.cardOrgInfo}>
             {/* PRICE */}
