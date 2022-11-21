@@ -12,15 +12,14 @@ mercadopago.configure({
 });
 
 router.post("/orden", async (req, res) => {
-   const {dates, idUser, idEvent} = req.body;
-   const {codigo}= dates
-   
-   console.log(dates)
+   const { dates, idUser, idEvent } = req.body;
+   const { codigo } = dates;
+
    const userDB = await UsersFunctionDb.oneUser(idUser);
 
    const eventDB = await EventFunctionDb.oneEvent(idEvent);
 
-   const dateEvent = eventDB.dates.find((e,i) => e._id == dates[i].id);
+   const dateEvent = eventDB.dates.find((e, i) => e._id == dates[i].id);
 
    const telefono = userDB.tel.split(" ").join("");
 
@@ -34,6 +33,7 @@ router.post("/orden", async (req, res) => {
          items: itemsMp,
          nameUser: userDB.name,
          emailUser: userDB.email,
+         binary_mode: true,
          identification: {
             number: userDB.document,
             type: "CC",
@@ -59,9 +59,10 @@ router.post("/orden", async (req, res) => {
          },
 
          back_urls: {
-            success: "http://localhost:3001/mercadoPago/success",
-            failure: "http://localhost:3001/mercadoPago/fail",
-            pending: "http://localhost:3001/pago/pending",
+            success:
+               "https://plataformaeventos-production.up.railway.app/mercadoPago/success",
+            failure:
+               "https://plataformaeventos-production.up.railway.app/mercadoPago/fail",
          },
          auto_return: "approved",
          taxes: [
@@ -78,6 +79,7 @@ router.post("/orden", async (req, res) => {
 
       return res.json({ init_point: globalInitPoint });
    } catch (error) {
+      console.log(error.message);
       res.status(500).json(error.message);
    }
 });
@@ -86,7 +88,7 @@ router.get("/success", async (req, res) => {
    const { external_reference, payment_id, preference_id } = req.query;
    const ids = external_reference.split(",");
    const idEvent = ids[0];
-   
+
    const idUser = ids[1];
 
    try {
@@ -95,13 +97,13 @@ router.get("/success", async (req, res) => {
       );
 
       const response = dataPayments.data;
-      
-      const cuposComprados = response.additional_info.items.map((e) => parseInt(e.quantity));
-       const totalDeCupos = cuposComprados.reduce ((a, b) => a + b);
-      
-      const event = await EventFunctionDb.oneEvent(idEvent);
 
-   
+      const cuposComprados = response.additional_info.items.map((e) =>
+         parseInt(e.quantity)
+      );
+      const totalDeCupos = cuposComprados.reduce((a, b) => a + b);
+
+      const event = await EventFunctionDb.oneEvent(idEvent);
 
       const user = await UsersFunctionDb.oneUser(idUser);
 
@@ -109,29 +111,40 @@ router.get("/success", async (req, res) => {
          response.status === "approved" &&
          response.status_detail === "accredited"
       ) {
-         
          event.generalBuyers.push(user._id);
-         event.dates.forEach((e,i)=>{
-            if(e._id == response.additional_info.items[i].id){
-              e.buyers?.push(user._id);
-               
-               e.sells += totalDeCupos
+
+         event.overallEarnings +=
+            response.transaction_details.total_paid_amount;
+
+         event.sells += totalDeCupos;
+
+         event.dates.forEach((e, i) => {
+            if (e._id == response.additional_info.items[i].id) {
+               e.buyers?.push(user._id);
+
+               e.sells += totalDeCupos;
+
                e.cupos -= totalDeCupos;
+
+               e.profits += response.transaction_details.total_paid_amount;
             }
-         })
+         });
+
          // const eventoesis= user.myEventsBooked.find(e=>{
          //    //console.log(e._id)
          //    return e.title === event.title
          // })
          //console.log(user.myEventsBooked.includes(event.title))
          user.myEventsBooked.push(event._id);
-        
+
          if (user.isReferral.code && !user.isReferral.use) {
             const userReferral = await UsersFunctionDb.codeUser(
                user.isReferral
             );
             userReferral.saldoPendiente -= 5000;
+
             userReferral.saldoTotal += 5000;
+
             user.isReferral.use = true;
          }
 
@@ -141,6 +154,7 @@ router.get("/success", async (req, res) => {
 
       res.json({ response });
    } catch (error) {
+      console.log(error.message);
       return res.status(500).json(error.message);
    }
 });

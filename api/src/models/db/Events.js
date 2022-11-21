@@ -24,7 +24,7 @@ const EventSchema = new Schema(
       municipio: String,
       direccion: String,
       barrio: String,
-
+      sells: Number,
       specialRequires: String,
 
       dates: [
