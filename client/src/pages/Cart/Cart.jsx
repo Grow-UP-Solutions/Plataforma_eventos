@@ -19,79 +19,54 @@ import { AuthContext } from '../../context/auth';
 
 
 
+
 const Cart = () => {
 
   const id = useParams().id;
-  
   const events = useSelector((state) => state.events);
   const eventDetail = events.filter((e) => e._id === id)[0];
-
+  const { carrito, setCarrito } = useContext(stateContext);
+  const { dateToBuy, setDateToBuy } = useContext(stateContext);
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    scroll.scrollToTop();
+
+    const sTotal = []
+    for(let j = 0; j<dateToBuy.length; j++){
+    
+      for(let i = 0; i<carrito.length; i++){
+        
+        if(carrito[i].idDate===dateToBuy[j]._id){
+         
+        carrito[i].subtotal = carrito[i].quantity * dateToBuy[j].price
+        carrito[i].codigoCorrecto=''
+        carrito[i].codigoDescuento=''
+        carrito[i].descuento=''
+        carrito[i].price=dateToBuy[j].price
+        sTotal.push(carrito[i].subtotal)
+        let total = sTotal.reduce((a, b) => a + b, 0);
+        let iva = total *0.19
+        let administracion = total *0.16
+        let totalValor = iva +administracion+ total
+        setSubTotal(total)
+        setValorTotal(totalValor)
+    }}}
+   
   }, []);
 
-
-  
-
-  // ----- CARD PRODUCT-------//
-
-  const { carrito, setCarrito } = useContext(stateContext);
-
-  // const [carrito , SetCarrito ] = useState([{
-  //   fechaId :'636bab4976757c4e621660eb',
-  //   cupos:3,
-  //   price:10000,
-  //   codigoDescuento:'',
-  //   codigoReferido:'',
-  //   codigoCorrecto:'',
-  //   subtotal:30000 ,
-  //   descuento:''
-  // },
-  // {
-  //   fechaId :'636bab4976757c4e621660ed',
-  //   cupos:2,
-  //   price:30000,
-  //   codigoDescuento:'',
-  //   codigoReferido:'',
-  //   codigoCorrecto:'',
-  //   subtotal: 60000,
-  //   descuento:''
-  // }])
-  
-
-  //fechas seleccionadas para comprar//
-  const datesToBuy = []
-
-    if(carrito.length >0 && carrito !== undefined && eventDetail !== undefined){
-      for(let x = 0 ; x < carrito.length ; x++){
-        for(let j = 0 ; j < eventDetail.dates.length ; j++){
-          if(carrito[x].fechaId === eventDetail.dates[j]._id){
-            const fecha = eventDetail.dates[j]
-            datesToBuy.push(fecha)
-          }
-        }
-
-      }
-
-    }
-
-
-
-  // ----- CARD PRODUCT PAGINCADO-------//
+  //PAGINADO//
 
   const [currentPage, setCurretPage] = useState(1);
   const CardPerPage = 1;
   const indexOfLastCard = currentPage * CardPerPage;
   const indexOfFirstCard = indexOfLastCard - CardPerPage;
-  const currentDate = datesToBuy.slice(indexOfFirstCard, indexOfLastCard);
+  const currentDate = dateToBuy.slice(indexOfFirstCard, indexOfLastCard);
   const paginado = (pageNumber) => setCurretPage(pageNumber);
-  const fechaIn = datesToBuy.length
-  console.log('fechaIn',fechaIn)
+  const fechaIn = dateToBuy.length
 
   const handlePrev = (e)=>{
     if(currentPage===1){
-      setCurretPage(datesToBuy.length)
+      setCurretPage(dateToBuy.length)
     }else{
       setCurretPage(currentPage-1)
     }
@@ -99,259 +74,160 @@ const Cart = () => {
   }
 
   const handleNext = (e)=>{
-    if(currentPage===datesToBuy.length){
+    if(currentPage===dateToBuy.length){
       setCurretPage(1)
     }else{
       setCurretPage(currentPage+1)
     }
   }
 
-
-// ----- VALORES-------//
-  const [subTotal , setSubTotal] = useState(0)
-  const [descuentoTotal , setDescuentoTotal] = useState(0)
+ 
+// ----- carrito-------//
+  const [subTotal , setSubTotal] = useState('')
+  const [descuentoTotal , setDescuentoTotal] = useState('')
   const [administracion , setAdministracion] = useState(subTotal*0.16)
   const [iva , setIva] = useState(subTotal*0.19)
-  const [valorTotal , setValorTotal] = useState(subTotal + iva + administracion - descuentoTotal)
-
+  const [valorTotal , setValorTotal] = useState('')
 
   useEffect(() => {
+    const ivaFinal = subTotal*0.19
+    const adminfinal = subTotal*0.16
       const precioTotal = subTotal + subTotal*0.19 + subTotal*0.16 - descuentoTotal
-      const ivaFinal = subTotal*0.19
-      const adminfinal = subTotal*0.16
+     
 
       setAdministracion(adminfinal)
       setIva(ivaFinal)
       setValorTotal(precioTotal)
-      setPost({
-        ...post,
-        administrationCost:adminfinal,
-        ivaCost:ivaFinal,
-        total:precioTotal,
-        subTotal:subTotal
-      })
+
     }, [subTotal]);
 
 
     useEffect(() => {
       const f = subTotal + iva + administracion - descuentoTotal
-    setValorTotal(f)
-    setPost({
-      ...post,
-      total:f
-
-    })
+      setValorTotal(f)
     }, [descuentoTotal]);
 
 
-
-// -----CUPOS-------//
+// // -----CUPOS-------//
 
   const [numberBuyCupos, setNumberBuyCupos] = useState(0);
 
- 
-//cambiar cantidad de cupos//
-
   const handleNumberBuyCupos = (e,num , id) => {
+  
     //const carritoCupos = [...carrito]
     if (num <= -1) return;
     if (num > 10) return;
-
+    setNumberBuyCupos(num);
 
     const stotal = []
 
-    setNumberBuyCupos(num);
     for( let i = 0 ; i<carrito.length ; i++){
-      if(carrito[i].fechaId === id){
-        carrito[i].cupos = num
-        carrito[i].subtotal = num *   carrito[i].price     
-        setPost({
-          ...post,
-          dates:carrito
-        })
-      }
-      stotal.push(carrito[i].subtotal)
-      let total = stotal.reduce((a, b) => a + b, 0);
-      setSubTotal(total)
-      setPost({
-              ...post,
-              subTotal:total
-            })
-
-    } 
+      if(carrito[i].idDate === id){
+        carrito[i].quantity = num
+        carrito[i].subtotal = num *   carrito[i].price 
+        stotal.push(carrito[i].subtotal) 
+        
+      } 
+    }
   };
+
+
+  useEffect(() => {
+    
+    const sTotal = []
+    for(let i = 0; i<carrito.length; i++){
+      sTotal.push(carrito[i].subtotal)
+      let total = sTotal.reduce((a, b) => a + b, 0);
+      setSubTotal(total)
+    }
+   
+  }, [numberBuyCupos]);
+
+
+  
 
  
 // -----CODIGOS-------//
 // codigo de prueba Zbc1234//
+// codigo de prueba Zac1234//
 
   const [codigo , setCodigo] = useState('')
-  const [codigoCorrecto , setCodigoCorrecto] = useState('')
-  const [refEnter, setRefEnter] = useState('')
-  const [idCarrito, setIdCarrito] = useState('')
+ 
 
-
- // input del codigo//
   const handleCodigo = (e) =>{
     e.preventDefault()
     setCodigo(e.target.value)
   }
 
-  // Boton aplicar y Caso: codigo descuento//
+  const[desc , setDesc] = useState('')
 
   const aplicar = (e , id) =>{
     e.preventDefault()
     for(let d=0; d<currentDate[0].codigos.length; d++){
       if(currentDate[0].codigos[d].codigo === codigo){
+
         const descValor = currentDate[0].codigos[d].descuento
-        
+       
         for(let c = 0 ; c<carrito.length;c++){
-          if(carrito[c].fechaId===id){
-            carrito[c].codigoDescuento=codigo
-            carrito[c].codigoCorrecto=true
-            carrito[c].descuento= descValor * currentDate[0].price / 100
-            const d = descValor * currentDate[0].price / 100
-            const s = post.descuentoTotal + d
-            if(post.descuentoTotal===''){
-          
-              setPost({
-                ...post,
-                dates:carrito,
-                descuentoTotal:d
-              })
-              setDescuentoTotal(d)
+            if(carrito[c].idDate===id){
+
+              carrito[c].codigoDescuento=codigo
+              carrito[c].codigoCorrecto=true
+              carrito[c].descuento= descValor * currentDate[0].price / 100
+              const unitDic = carrito[c].unit_price - descValor * currentDate[0].price / 100
+              carrito[c].unit_price = unitDic
+
+              setDesc(carrito[c].descuento)
               return swal({
                 title: 'Codigo Aplicado',
               })
-            }else{
-            
-              setPost({
-                ...post,
-                dates:carrito,
-                descuentoTotal:s
-              })
-              setDescuentoTotal(s)
-              return swal({
-                title: 'Codigo Aplicado',
-              })
-            }
-          }
-        }
-      }else if(currentDate[0].codigos[d].codigo !== codigo){
-        setRefEnter(codigo)
-        setIdCarrito(id) 
+      }else{
+        carrito[c].codigoCorrecto=false
+         }}
       }
+      return swal({
+        title: 'Codigo Incorrecto',
+        icon: 'warning',
+        dangerMode: true,
+      })
     }
 
   }
 
- 
   useEffect(() => {
-    getReferalCode();
-  }, [refEnter]);
-
-  
-  //Caso: codigo de referido y codigo incorrecto//
-
-  const getReferalCode = async () => {
-      const codeResult = await eventsApi.get(`/codeDiscount/getCodeDiscountByCode/${codigo} `);
-      for(let c = 0 ; c<carrito.length;c++){
-        if(carrito[c].fechaId===idCarrito){
-          if(codeResult.data.codeDiscount.length===1){
-            carrito[c].codigoReferido=codeResult.data.codeDiscount[0].code
-            carrito[c].codigoCorrecto=true
-            carrito[c].descuento=codeResult.data.codeDiscount[0].value
-            if(post.descuentoTotal===''){
-              const r = codeResult.data.codeDiscount[0].value
-              setPost({
-                ...post,
-                dates:carrito,
-                descuentoTotal:r
-                })
-              setDescuentoTotal(r)
-              return swal({
-                title: 'Codigo Aplicado',
-                })
-            }else{
-              const t = post.descuentoTotal + codeResult.data.codeDiscount[0].value
-              setPost({
-                ...post,
-                dates:carrito,
-                descuentoTotal:t
-                })
-                setDescuentoTotal(t)
-              return swal({
-                title: 'Codigo Aplicado',
-                })
-            }
-            
-          }else{
-              carrito[c].codigoCorrecto=false
-              return swal({
-                title: 'Codigo Incorrecto',
-                icon: 'warning',
-                dangerMode: true,
-              })
-            }
-        }
-      }
-  };
-
-  useEffect(() => {
-    const discTotal = []
- 
     
-    for(let i = 0; i<post.dates.length; i++){
-      discTotal.push(post.dates[i].discount)
-      let totalD = discTotal.reduce((a, b) => a + b, 0);
-      setDescuentoTotal(totalD)
-      setPost({
-        ...post,
-        descuentoTotal:totalD
-      })
+    const desTotal = []
+    for(let i = 0; i<carrito.length; i++){
+      desTotal.push(carrito[i].descuento)
+      let total = desTotal.reduce((a, b) => a + b, 0);
+      setDescuentoTotal(total)
     }
-    
-  }, [post]);
+   
+  }, [desc]);
+
+
 
 
   const quitar = (e,id)=>{
     e.preventDefault()
-    for(let c = 0 ; c<carrito.length;c++){
-      if(carrito[c].fechaId===id){
+    for(let i = 0 ; i<carrito.length;i++){
+      if(carrito[i].idDate===id){
 
-        const desc = carrito[c].descuento
-        const resto = post.descuentoTotal-desc
-        const restoTotal = post.total - desc
+        const desc = carrito[i].descuento
+        const resto = descuentoTotal-desc
+        const restoTotal = valorTotal - desc
+
+        carrito[i].unit_price = carrito[i].unit_price  + desc
 
         setValorTotal(restoTotal)
         setDescuentoTotal(resto)
 
+        if(carrito[i].codigoDescuento.length>0){
 
-        if(carrito[c].codigoDescuento.length>0){
-
-          carrito[c].codigoDescuento=''
-          carrito[c].descuento=''
-          carrito[c].codigoDescuento=''
-          carrito[c].codigoCorrecto=''
-
-          setPost({
-            ...post,
-            dates:carrito,
-            descuentoTotal:resto,
-            total:restoTotal
-          })
-        } else if(carrito[c].codigoReferido.length>0){
-
-          carrito[c].codigoReferido=''
-          carrito[c].descuento=''
-          carrito[c].codigoCorrecto=''
-
-          setPost({
-            ...post,
-            dates:carrito,
-            descuentoTotal:resto,
-            total:restoTotal
-          })
+          carrito[i].codigoDescuento=''
+          carrito[i].descuento=''
+          carrito[i].codigoDescuento=''
+          carrito[i].codigoCorrecto=''
         } 
       }
 
@@ -360,78 +236,41 @@ const Cart = () => {
   }
  
 
+  //----USER---///
 
  
-// ----- FORM PRODUCT-------//
-  const[post , setPost] = useState({
-    eventId:'',
-    dates:{
-      fechaId :'',
-      cupos:'',
-      price:'',
-      codigoDescuento:'',
-      codigoReferido:'',
-      codigoCorrecto:'',
-      subtotal:'' ,
-      discount:'',
-    },
-    userId:'',
+  const { user } = useContext(AuthContext);
+
+  const [post,setPost] = useState({
     name:'',
     documentNumber:'',
     address:'',
     city:'',
     phone:'',
-    email:'',
-    card:'',
-    bankSelect:'',
-    bank:'',
-    tipoCliente:'',
-    tipoDeDcomuento:'',
-    payU:'',
-    subTotal:'',
-    descuentoTotal:'',
-    administrationCost:'',
-    ivaCost:'',
-    total:''
+    email:''
   })
-
-  //----USER---///
-
- 
-  const { user } = useContext(AuthContext);
  
   
   useEffect(() => {
-    const stotal = []
     
-    for(let i = 0; i<carrito.length; i++){
-      stotal.push(carrito[i].subtotal)
-      let total = stotal.reduce((a, b) => a + b, 0);
-     setSubTotal(total)
-    }
     getUserData();
-    
+
   }, [user]);
 
   const getUserData = async () => {
     if (user.uid) {
       const userResult = await eventsApi.get(`/users/${user.uid}`);
-    
-    setPost({
-      ...post,
-      eventId:id,
-      userId:userResult.data._id,
-      name:userResult.data.name,
-      documentNumber:userResult.data.document,
-      address:userResult.data.direction,
-      city:userResult.data.name,
-      phone:userResult.data.phone,
-      email:userResult.data.email,
-      total:valorTotal,
-      ivaCost:iva,
-      administrationCost:administracion,
-    })
-  }
+     
+  setPost({
+        ...post,
+        name:userResult.data.name,
+        documentNumber:userResult.data.document,
+        address:userResult.data.direction,
+        city:userResult.data.name,
+        phone:userResult.data.phone,
+        email:userResult.data.email,
+      })
+    }
   };
 
   
@@ -444,54 +283,53 @@ const Cart = () => {
 
 
 
-
-//----
- const [isPayAchpse, setIsPayAchpse] = useState(false);
-
-  const handleChecked = (e) => {
-    if (e.target.checked) {
-      setIsPayAchpse(true);
-      setPost({
-        ...post,
-        bankSelect: true,
-      });
-    } else {
-      setIsPayAchpse(false);
-      setPost({
-        ...post,
-        bankSelect: '',
-      });
-    }
- 
-  };
-
-  const handlePayU = (e) => {
-    if (e.target.checked) {
-      setPost({
-        ...post,
-        payU: true,
-      });
-    } else {
-      setPost({
-        ...post,
-        payU: '',
-      });
-    }
- 
-  };
-
   //---SUBMIT---//
 
-  function handleSubmit(){
-    console.log('submit')
-    console.log('post',post)
+  async function handleSubmit(){
+
+    const f = []
+    const cod= []
+    for (let i = 0 ; i<carrito.length ; i++){
+    const d =   {
+      title: eventDetail.title,
+      quantity:carrito[i].quantity,
+      unit_price: carrito[i].unit_price,
+      id:carrito[i].idDate,
+      codigo:carrito[i].codigoDescuento || null
+      }
+      f.push(d)
+
+      const c = carrito[i].codigoDescuento
+      cod.push(c)
+      console.log('cod:',cod)
+      console.log(`codigo$ {i}`)
+    }
+
+    const payload = {
+      idUser:user.uid ,
+      idEvent: eventDetail._id,
+      dates:f
+    }
+    console.log('payload',payload)
+
+    const json = await eventsApi.post('/mercadoPago/orden', payload)
+    console.log('res:',json.data)
+
+   window.location.assign(json.data.init_point)
+    
+ 
   }
+
+  // // mercadoPago/orden?codigo=xxx
+// // mercadoPago/success
+
 
 
 
   return (
+    
     <div className={`${styles.pageCart} container`}>
-      {currentDate[0] !== undefined ?
+      {dateToBuy.length>0 ?
       <div>
         {carrito.length > 1 ?
         <h1 className={styles.pageCartTitle}>Usted está comprando: {carrito.length} Fechas</h1>
@@ -547,17 +385,19 @@ const Cart = () => {
                 </div>
                 <div className={styles.containerOptions}>
                   <div className={styles.productOptions}>
+
+                     {/*Cantidad de cupos*/}
                     <div className={styles.containerQuantity}>
                       <p className={styles.titleQuantity}>Cantidad</p>
                       
                         {carrito.map(c=>
-                        c.fechaId === currentDate[0]._id ?
+                        c.idDate === currentDate[0]._id ?
                         <div className={styles.quantityBtns}>
-                            <button onClick={(e) => handleNumberBuyCupos(e,c.cupos - 1, c.fechaId)}>
+                            <button onClick={(e) => handleNumberBuyCupos(e,c.quantity - 1, c.idDate)}>
                               <img src={iconArrowLeft} alt="icon-left" />
                             </button>
-                            <span>{c.cupos}</span>
-                            <button onClick={(e) => handleNumberBuyCupos(e, c.cupos + 1, c.fechaId )}>
+                            <span>{c.quantity}</span>
+                            <button onClick={(e) => handleNumberBuyCupos(e, c.quantity + 1, c.idDate )}>
                               <img src={iconArrowRight} alt="icon-right" />
                             </button>
                           </div>
@@ -566,45 +406,51 @@ const Cart = () => {
                         }
                       
                     </div>
+
+                    {/* Precio por cupo */}
                     <div className={styles.containerPriceForBallot}>
                       <p className={styles.titlePriceBallot}>Precio por cupo</p>
                       <span>${currentDate[0].price}</span>
                     </div>
+
+                    {/* Subtotal fecha actual */}
                     {carrito.map((c)=>
-                      c.fechaId===currentDate[0]._id ?
+                      c.idDate===currentDate[0]._id?
                         <div className={styles.containerPriceSubtotal}>
-                        <p className={styles.titleSubtotal}>Subtotal</p>
-                        <span>${c.subtotal}</span>
+                          <p className={styles.titleSubtotal}>Subtotal</p>
+                          <span>${c.subtotal}</span>
                         </div>
                         :''
                         )
                     }
                   
                   </div>
-                  {carrito.map((c)=>
-                    c.fechaId === currentDate[0]._id?
-                    <div className={styles.productDiscount}>
-                      <p className={styles.titleDiscount}>¿Tiene un código de descuento?</p>
-                      <div className={
-                        c.codigoCorrecto === '' ?
-                        styles.containerInputDiscount :
-                        c.codigoCorrecto === true?
-                        styles.containerInputDiscountCorrect:
-                        c.codigoCorrecto === false?
-                        styles.containerInputDiscountIncorrect:
-                        styles.containerInputDiscount}>
-                        <input
-                            name='codigo'
-                            placeholder={c.codigoDescuento? c.codigoDescuento: c.codigoReferido||''}
-                            onChange={(e) => handleCodigo(e)}
-                          />
-                        <div className={styles.btnsDisc}>
-                          <button onClick={(e)=>{aplicar(e,currentDate[0]._id)}}>Aplicar</button>
-                          <button className={styles.quitar} onClick={(e)=>{quitar(e,currentDate[0]._id)}}>Quitar</button>
+                  {carrito.length > 0 &&
+                    carrito.map((v)=>
+                      v.idDate === currentDate[0]._id?
+                      <div className={styles.productDiscount}>
+                        <p className={styles.titleDiscount}>¿Tiene un código de descuento?</p>
+                        <div className={
+                          v.codigoCorrecto === '' ?
+                          styles.containerInputDiscount :
+                          v.codigoCorrecto === true?
+                          styles.containerInputDiscountCorrect:
+                          v.codigoCorrecto === false?
+                          styles.containerInputDiscountIncorrect:
+                          styles.containerInputDiscount}>
+                          <input
+                              name='codigo'
+                              placeholder={v.codigoDescuento ||''}
+                              onChange={(e) => handleCodigo(e)}
+                            />
+                          <div className={styles.btnsDisc}>
+                            <button onClick={(e)=>{aplicar(e,currentDate[0]._id)}}>Aplicar</button>
+                            <button className={styles.quitar} onClick={(e)=>{quitar(e,currentDate[0]._id)}}>Quitar</button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    :'')}
+                    :'')
+                    }
                 </div>
               </div>
               {eventDetail.specialRequires.length>1?
@@ -627,91 +473,76 @@ const Cart = () => {
           {/* FORM PRODUCT */}
           <div className={styles.formPayProduct}>
             <form action="">
-              <div className={styles.formGroup}>
-                <label htmlFor="name">Nombre Completo*</label>
-                <input
-                  name='name'
-                  value={post.name}
-                  onChange={(e) => handleChange(e)}
-                  required
-                />
-              </div>
-              {!isPayAchpse && (
-                <>
-                  <div className={styles.formGroup}>
-                    <label htmlFor="id">Número de cédula*</label>
-                    <input
-                        name='document'
-                        value={post.document}
-                        onChange={(e) => handleChange(e)}
-                        required
-                      />
-                  </div>
-
-                  <div className={styles.formGroup}>
-                    <label htmlFor="address">Dirección</label>
-                    <input
-                        name='address'
-                        value={post.address}
-                        onChange={(e) => handleChange(e)}
-                        required
-                      />
-                  </div>
-                  <div className={styles.formGroup}>
-                    <label htmlFor="city">Ciudad</label>
-                    <input
-                        name='city'
-                        value={post.city}
-                        onChange={(e) => handleChange(e)}
-                        required
-                      />
-                  </div>
-                </>
-              )}
-
-              <div className={styles.formGroup}>
-                <label htmlFor="phone">Télefono*</label>
-                <input
-                    name='phone'
-                    value={post.phone}
+              {/* USUER DATA*/}
+              <div>
+                <div className={styles.formGroup}>
+                  <label htmlFor="name">Nombre Completo*</label>
+                  <input
+                    name='name'
+                    value={post.name}
                     onChange={(e) => handleChange(e)}
                     required
                   />
-              </div>
-              <div className={styles.formGroup}>
-                <label htmlFor="mail">Correo electrónico</label>
-                <input
-                    name='email'
-                    value={post.email}
-                    onChange={(e) => handleChange(e)}
-                    required
-                  />
-              </div>
-
-              {/* CHECKBOX */}
-              <div className={styles.checkContainer}>
-                <input type="checkbox" onChange={handleChecked} />
-                <label htmlFor="">Paga fácil con tu tarjeta débito </label>
-                <img src={iconAchPse} alt="icon-Ach-Pse" />
-              </div>
-              {!isPayAchpse && (
-                <div className={styles.checkContainer}>
-                  <input type="checkbox" onChange={handlePayU} />
-                  <label htmlFor="">Paga fácil, rápido y seguro con Pay U </label>
-                  <img src={iconPayU} alt="icon-payU" />
                 </div>
-              )}
+                <div className={styles.formGroup}>
+                  <label htmlFor="id">Número de cédula*</label>
+                  <input
+                      name='document'
+                      value={post.document}
+                      onChange={(e) => handleChange(e)}
+                      required
+                    />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label htmlFor="address">Dirección</label>
+                  <input
+                      name='address'
+                      value={post.address}
+                      onChange={(e) => handleChange(e)}
+                      required
+                    />
+                </div>
+                <div className={styles.formGroup}>
+                  <label htmlFor="city">Ciudad</label>
+                  <input
+                      name='city'
+                      value={post.city}
+                      onChange={(e) => handleChange(e)}
+                      required
+                    />
+                </div>
+                <div className={styles.formGroup}>
+                  <label htmlFor="phone">Télefono*</label>
+                  <input
+                      name='phone'
+                      value={post.phone}
+                      onChange={(e) => handleChange(e)}
+                      required
+                    />
+                </div>
+                <div className={styles.formGroup}>
+                  <label htmlFor="mail">Correo electrónico</label>
+                  <input
+                      name='email'
+                      value={post.email}
+                      onChange={(e) => handleChange(e)}
+                      required
+                    />
+                </div>
+              </div>
+
+              {/* PAYMENT VALUES */}
 
               <div className={styles.containerDetailsBuy}>
-                {!isPayAchpse ? (
-                  <>
+                 
                     <div className={styles.detailsBuy}>
                       <p>Subtotal</p>
-                      <span>${post.subTotal}</span>
+                      <span>${subTotal}</span>
                     </div>
                     <div className={styles.detailsBuy}>
                       <p>Descuento</p>
-                      <span className={styles.detailDiscount}>-${post.descuentoTotal}</span>
+                      <span className={styles.detailDiscount}>-${descuentoTotal}</span>
                     </div>
                     <div className={styles.detailsBuy}>
                       <p>Administración</p>
@@ -722,35 +553,8 @@ const Cart = () => {
                       <span>${iva}</span>
                     </div>
                     <div className={styles.formDivisor} />
-                  </>
-                ) : (
-                  <>
-                    <div className={styles.formGroup}>
-                      <label htmlFor="back">Seleccione banco*</label>
-                      <select name="bank" id="back">
-                        <option value="Banco colombia">BANCO COLOMBIA</option>
-                      </select>
-                    </div>
-                    <div className={styles.formGroup}>
-                      <label htmlFor="back">Tipo de cliente*</label>
-                      <select name="bank" id="back">
-                        <option value="Banco colombia">Persona natural</option>
-                      </select>
-                    </div>
-                    <div className={styles.formGroup}>
-                      <label htmlFor="back">Tipo de documento*</label>
-                      <select name="bank" id="back">
-                        <option value="Banco colombia">
-                          C.C ( Cédula de ciudadanía)
-                        </option>
-                      </select>
-                    </div>
-                    <div className={styles.formGroup}>
-                      <label htmlFor="id">Número de dócumento*</label>
-                      <input type="text" id="id" required />
-                    </div>
-                  </>
-                )}
+              
+                
                 <div className={`${styles.detailsBuy} ${styles.totalBuy}`}>
                   <p>Valor total Inc IVA</p>
                   <span>${valorTotal}</span>
@@ -766,14 +570,9 @@ const Cart = () => {
               </p>
 
               <div className={styles.containerButtonForm}>
-              <button onClick={handleSubmit} className={styles.btnForm}>
+                  <button onClick={handleSubmit} className={styles.btnForm}>
                     Pagar
                   </button>
-                {/* <Link to={'/payment'}>
-                  <button type="submit" className={styles.btnForm}>
-                    Pagar
-                  </button>
-                </Link> */}
               </div>
             </form>
           </div>

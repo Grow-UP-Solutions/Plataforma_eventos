@@ -85,7 +85,6 @@ const EventDetails = () => {
     const handler = (e) => {
       if (!menuRef.current.contains(e.target)) {
         setIsOpen(false);
-        console.log('dropdown:', menuRef.current);
       }
     };
     document.addEventListener('mousedown', handler);

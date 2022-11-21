@@ -141,7 +141,7 @@ const OrganizerDetails = () => {
           />
           <div className={styles.containerDir}>
             <IoLocationOutline className={styles.icon} />
-            <p className={styles.direction}>{userDetail.organizer.direction}</p>
+            <p className={styles.direction}>{userDetail.organizer.direction} - {userDetail.organizer.city}</p>
           </div>
           <p className={styles.member}>Miembro desde {format(userDetail.organizer.createdAt, 'es_ES')}</p>
           <div className={styles.containerMess}>

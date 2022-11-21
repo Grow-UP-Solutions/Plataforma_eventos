@@ -1,113 +1,139 @@
 .container{
-    text-align: center;
-    justify-content: center;
-    margin-top: 5rem;
+  max-width: 1420px;
+  margin: 0 auto;
+  margin-top: 5rem;
 }
 
 .containerTop{
-    text-align: center;
-    justify-content: center;
+  text-align: center;
 }
 
 .title{
-    color: #585858;
-    font-size: 2.5rem;
-    margin-bottom: 4rem;
-    font-weight: 900;
+  color: #585858;
+  font-size: 2.5rem;
+  margin-bottom: 4rem;
+  font-weight: 900;
 }
 
 .eventTitle{
-    color:#1B3C6A;
-    font-size: 3rem;
-    font-weight: 1000;
-    margin-bottom: 1rem;
+  color:#1B3C6A;
+  font-size: 3rem;
+  font-weight: 1000;
+  margin-bottom: 1rem;
 }
 
 .location{
-    color:#868686;
-    font-size: 1.9rem;
-    font-size: 500;
-    margin-bottom: 1rem;
+  color:#868686;
+  font-size: 1.9rem;
+  font-size: 500;
+  margin-bottom: 1rem;
 }
 
 .date{
-    color:#585858;
-    font-size: 1.9rem;
-    font-size: 500;
-    margin-bottom: 1rem;
+  color:#585858;
+  font-size: 1.9rem;
+  font-size: 500;
+  margin-bottom: 1rem;
 }
 
-
 .flex{
-    display:flex;
-    text-align: center;
+  display:flex;
+  text-align: center;
 }
 
 .containerTable{
-    text-align: center;
-    justify-content: center;
-    margin-top: 10rem;
+  display: grid;
+  text-align: center;
+  justify-content: center;
+  margin-top: 10rem;
+}
+  
+.table td,
+.table th {
+  padding: 2vh 2.5vh 2vh 2.5vh;
+  text-align: center;
+}
+  
+.table th {
+  color: #707070;
+  text-align: center;
+  font-weight: 600;
+  position: sticky;
+  top: 0px;
+  outline: 0;
+  max-height: 98vh;
+  overflow: auto;
+  font-size: 1.8rem;
+}
+  
+.table td {
+  text-align: center;
+  font-size: 1.8rem;
+  padding-left: 1vw;
+  font-weight: 400;
+  width: fit-content;
+  color: rgba(112, 112, 112, 255);
 }
 
-.table {
-    text-align: center;
-    justify-content: center;
-    width: 80%;
-  }
-  
-  .table td,
-  .table th {
-    padding: 2vh 2.5vh 2vh 2.5vh;
-    text-align: center;
-  }
-  
-  .table th {
-    color: #707070;
-    text-align: center;
-    font-weight: 600;
-    position: sticky;
-    top: 0px;
-    outline: 0;
-    max-height: 98vh;
-    overflow: auto;
-    font-size: 1.8rem;
-  }
-  
-  .table td {
-    text-align: center;
-    font-size: 1.8rem;
-    padding-left: 1vw;
-    font-weight: 400;
-    width: fit-content;
-    color: rgba(112, 112, 112, 255);
-  }
-  
-  .table td input:checked {
-    color: brown;
-    background-color: brown;
-  }
-
-  .checkBox {
-    accent-color: var(--color-orange);
-  }
-
-  .btn{
-    margin-right:0;
-    display: flex;
+.table td input:checked {
+  color: brown;
+  background-color: brown;
 }
 
-.btnTop{
-    display: block;
+.input {
+  position: relative;
+}
+
+.checkBox {
+  accent-color: var(--color-orange);
+  height: 2rem;
+  width: 2rem;
+  cursor: pointer;
+}
+
+.input input:hover + p {
+  display: block;
+  background-color: var(--color-grey-6);
+  position: absolute;
+  right: 8rem;
+  padding: 1.1rem;
+  border-radius: 1.5rem;
+  font-size: 1.5;
+  font-weight: bold;
+  font-family: 'Raleway', sans-serif;
+}
+
+.input p {
+  display: none;
+}
+
+.btn{
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.btnTop1, .btnTop2 {
+  margin-left: .3rem;
+  margin-right: .3rem;
+}
+
+.btnTop2 {
+  padding-left: 1rem;
+  border-left: 1px solid #f0f0f0;
 }
 
 .button{
-    margin-left: 0.3rem;
-    display: block;
-    background-color: transparent;
-    border:none;
-    color:#d53e27;
-    text-decoration: underline;
-    cursor: pointer;
+  display: block;
+  background-color: transparent;
+  border: none;
+  color: #d53e27;
+  cursor: pointer;
+}
+
+.button1 {
+  color: #d53e27;
+  cursor: pointer;
 }
 
 .userImg {
@@ -116,5 +142,24 @@
   height: 6.7rem;
 }
 
-  
-  
+.two {
+  display: flex;
+}
+
+.container_exit {
+  display: grid;
+}
+
+.exit {
+  color: #d53e27;
+  font-family: 'Raleway', sans-serif;
+  font-size: 1.8rem;
+  margin: 0 auto;
+  cursor: pointer;
+  margin-top: 2rem;
+}
+
+.hr {
+  border: 0.1px solid rgb(219, 219, 219);
+  width: 100%;
+}
