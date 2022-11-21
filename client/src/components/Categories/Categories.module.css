@@ -1,3 +1,7 @@
+.sectionCategories {
+  margin: 0;
+}
+
 .titleCategories {
   font-size: 2.5rem;
   color: var(--color-grey-3);
@@ -32,6 +36,18 @@
   box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.2);
 }
 
+@media screen and (max-width: 698px) {
+  .listCategories {
+    row-gap: 2rem;
+    grid-template-columns: repeat(2, 1fr);
+    justify-items: center;
+  }
+
+  .categorie {
+    width: 90%;
+  }
+}
+
 .categorie img {
   object-fit: cover;
   height: 15rem;
@@ -52,4 +68,7 @@
 .categorieDescription {
   font-size: 1.4rem;
   color: var(--color-grey-1);
+}
+
+@media screen and (max-width: 768px) {
 }

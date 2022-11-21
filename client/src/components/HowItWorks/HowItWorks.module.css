@@ -62,9 +62,25 @@
 @media screen and (max-width: 1160px) {
   .howItWorks {
     padding: 0 4rem;
+    align-items: flex-start;
   }
 
   .items span {
     right: 0rem;
+  }
+}
+
+@media screen and (max-width: 698px) {
+  .howItWorks {
+    gap: 1rem;
+    padding: 0;
+  }
+
+  .items {
+    width: 22rem;
+  }
+
+  .items img {
+    width: 8rem;
   }
 }

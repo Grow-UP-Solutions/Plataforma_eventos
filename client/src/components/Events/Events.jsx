@@ -86,11 +86,13 @@ const Events = () => {
   const [cardPerView, setCardPerView] = useState(4);
 
   useEffect(() => {
+    if (window.innerWidth <= 692) return setCardPerView(2.3);
     if (window.innerWidth <= 1160) return setCardPerView(2.5);
     if (window.innerWidth <= 1490) return setCardPerView(3.5);
   }, [window.innerWidth]);
 
   window.onresize = function() {
+    if (window.innerWidth <= 692) return setCardPerView(2.3);
     if (window.innerWidth <= 1160) return setCardPerView(2.5);
     if (window.innerWidth <= 1490) return setCardPerView(3.5);
   };
@@ -101,7 +103,9 @@ const Events = () => {
         <div className={styles.cardsCarousel}>
           <Swiper
             slidesPerView={cardPerView}
-            slidesPerGroup={cardPerView === 4 ? 4 : cardPerView - 0.5}
+            slidesPerGroup={
+              cardPerView === 4 ? 4 : Math.trunc(cardPerView - 0.5)
+            }
             navigation
             spaceBetween={0}
             modules={[Navigation]}
@@ -124,7 +128,9 @@ const Events = () => {
         <div className={styles.cardsCarousel}>
           <Swiper
             slidesPerView={cardPerView}
-            slidesPerGroup={cardPerView - 0.5}
+            slidesPerGroup={
+              cardPerView === 4 ? 4 : Math.trunc(cardPerView - 0.5)
+            }
             spaceBetween={0}
             navigation
             modules={[Pagination, Navigation]}
@@ -147,7 +153,9 @@ const Events = () => {
         <div className={styles.cardsCarousel}>
           <Swiper
             slidesPerView={cardPerView}
-            slidesPerGroup={cardPerView - 0.5}
+            slidesPerGroup={
+              cardPerView === 4 ? 4 : Math.trunc(cardPerView - 0.5)
+            }
             spaceBetween={0}
             navigation
             modules={[Pagination, Navigation]}
@@ -170,7 +178,9 @@ const Events = () => {
         <div className={styles.cardsCarousel}>
           <Swiper
             slidesPerView={cardPerView}
-            slidesPerGroup={cardPerView - 0.5}
+            slidesPerGroup={
+              cardPerView === 4 ? 4 : Math.trunc(cardPerView - 0.5)
+            }
             spaceBetween={0}
             navigation
             modules={[Pagination, Navigation]}

@@ -127,3 +127,10 @@
     padding-right: 4rem;
   }
 }
+
+@media screen and (max-width: 584px) {
+  .container_footer {
+    padding: 0;
+    padding-top: 2rem;
+  }
+}

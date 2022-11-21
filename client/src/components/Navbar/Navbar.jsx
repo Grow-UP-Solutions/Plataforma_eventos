@@ -6,7 +6,7 @@ import { AuthContext } from '../../context/auth';
 import { stateContext } from '../../context/state/stateContext';
 import Search from '../Search/Search';
 import { GrMail } from 'react-icons/gr';
-import { GiHamburgerMenu } from 'react-icons/gi';
+import { BiMenu } from 'react-icons/bi';
 import { FaUserCircle } from 'react-icons/fa';
 import {
   IoNotifications,
@@ -96,7 +96,7 @@ const Navbar = ({ upper }) => {
     >
       <div className={`${style.containerInfo} container`}>
         <div className={style.hamburgerIcon}>
-          <GiHamburgerMenu />
+          <BiMenu />
         </div>
 
         <div className={style.containerImgInput}>

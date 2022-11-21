@@ -86,8 +86,20 @@ button {
   }
 }
 
-@media screen and (max-width: 712px) {
+@media screen and (max-width: 696px) {
+  .container {
+    max-width: 680px;
+  }
+}
+
+@media screen and (max-width: 696px) {
   html {
-    font-size: 52.5%;
+    font-size: 52%;
+  }
+}
+
+@media screen and (max-width: 604px) {
+  html {
+    font-size: 50%;
   }
 }
