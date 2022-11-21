@@ -44,11 +44,62 @@ ul {
   list-style: none;
 }
 
+button {
+  cursor: pointer;
+}
+
 .container {
   max-width: 1420px;
   margin: 0 auto;
 }
 
-button {
-  cursor: pointer;
+@media screen and (max-width: 1490px) {
+  .container {
+    max-width: 1200px;
+  }
+}
+
+@media screen and (max-width: 1252px) {
+  .container {
+    max-width: 1150px;
+  }
+}
+
+@media screen and (max-width: 1160px) {
+  .container {
+    max-width: 900px;
+  }
+}
+
+@media screen and (max-width: 910px) {
+  .container {
+    max-width: 800px;
+  }
+}
+
+@media screen and (max-width: 792px) {
+  html {
+    font-size: 56.5%;
+  }
+  .container {
+    padding: 0 2rem;
+  }
+}
+
+@media screen and (max-width: 696px) {
+  .container {
+    max-width: 680px;
+  }
+}
+
+@media screen and (max-width: 696px) {
+  html {
+    font-size: 52%;
+  }
+}
+
+@media screen and (max-width: 604px) {
+  html {
+    font-size: 50%;
+  }
 }

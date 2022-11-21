@@ -15,6 +15,8 @@
 }
 
 .container_p {
+  width: 100%;
+
   font-size: 7rem;
   font-weight: bold;
   position: absolute;
@@ -35,4 +37,43 @@
   bottom: 10rem;
   right: 25rem;
   z-index: 1;
+}
+
+.containerBtnOrganizerEvent {
+  display: none;
+  position: absolute;
+  bottom: 5rem;
+  left: 50%;
+  z-index: 1;
+  transform: translateX(-50%);
+}
+
+.containerBtnOrganizerEvent a {
+  background-color: var(--color-orange);
+  color: white;
+  padding: 1rem 3rem;
+
+  font-size: 1.6rem;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 2rem;
+}
+
+@media screen and (max-width: 1200px) {
+  .container_p {
+    text-align: center;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .search {
+    right: 50%;
+    transform: translateX(50%);
+  }
+}
+
+@media screen and (max-width: 712px) {
+  .containerBtnOrganizerEvent {
+    display: block;
+  }
 }

@@ -1,22 +1,22 @@
-const { createTransport } = require('nodemailer');
-require('dotenv').config();
+const { createTransport } = require("nodemailer");
+require("dotenv").config();
 
 const { EMAIL, PASSWORD } = process.env;
 
- const eventCreateOrganizer = async (events, organizer) => {
-  const {title, _id}= events
+const eventCreateOrganizer = async (events, organizer) => {
+  const { title, _id } = events;
 
   const transporter = createTransport({
-    service: 'gmail',
+    service: "gmail",
     secure: true,
     auth: {
       user: EMAIL,
       pass: PASSWORD,
     },
   });
- 
+
   let mail_options = {
-    from: 'Lo quiero hacer',
+    from: "Lo quiero hacer",
     to: organizer.email,
     subject: `${organizer.firstName} ${organizer.lastName} tu evento ha sido publicado`,
     html: `<!DOCTYPE html>
@@ -57,7 +57,7 @@ const { EMAIL, PASSWORD } = process.env;
             scroll-behavior: smooth;
           }
           body {
-            font-family: 'Raleway', sans-serif;
+            font-family: "Raleway", sans-serif;
             font-weight: 400;
             line-height: 1;
           }
@@ -84,26 +84,17 @@ const { EMAIL, PASSWORD } = process.env;
     
           .container {
             width: 60rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
           }
           .franja-top,
           .franja-bottom {
             display: block;
             height: 5rem;
-            background-color: var(--color-orange);
+            background-color: #d53e27;
           }
     
           .container-data {
             padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-    
-            gap: 2rem;
-    
-            color: var(--color-grey-1);
+            color: #585858;
             font-size: 1.4rem;
           }
     
@@ -111,7 +102,7 @@ const { EMAIL, PASSWORD } = process.env;
             font-size: 1.8rem;
           }
           .event-name {
-            color: var(--color-blue);
+            color: #1b3c6a;
             font-weight: bold;
             font-size: 3.2rem;
           }
@@ -124,27 +115,31 @@ const { EMAIL, PASSWORD } = process.env;
             <div class="container-data">
               <h1>Evento creado</h1>
     
-              <p>Hola, usted ha publicado el siguiente evento, de click para poder visualizar su publicación.</p>
+              <p>
+                Hola, usted ha publicado el siguiente evento, de click en el título para poder
+                visualizar su publicación.
+              </p>
     
-              <a class="event-name" href="https://events-jean.vercel.app/events/${_id}">${title}</a>
+              <a
+                class="event-name"
+                href="https://events-jean.vercel.app/events/${_id}"
+                >${title}</a
+              >
             </div>
             <div class="franja-bottom"></div>
           </div>
         </div>
       </body>
-    </html>
-    
-    
-  `
+    </html>    
+  `,
   };
   try {
     const response = await transporter.sendMail(mail_options);
-    return { msg: ('SE ENVIO CON EXITO', response.response) };
+    return { msg: ("SE ENVIO CON EXITO", response.response) };
   } catch (error) {
-    return { msg: ('FALLO EL ENVIO DE EMAIL', error) };
+    return { msg: ("FALLO EL ENVIO DE EMAIL", error) };
   }
 };
-module.exports={
-  eventCreateOrganizer
-}
-
+module.exports = {
+  eventCreateOrganizer,
+};

@@ -1,25 +1,25 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Rating } from '@mui/material';
-import styles from './Opinions.module.css';
-import eventsApi from '../../axios/eventsApi';
-import { AuthContext } from '../../context/auth/AuthContext';
-import swal from 'sweetalert';
-import CardComments from '../CardComments/CardComments';
-import { UIContext } from '../../context/ui';
+import React, { useContext, useEffect, useState } from "react";
+import { Rating } from "@mui/material";
+import styles from "./Opinions.module.css";
+import eventsApi from "../../axios/eventsApi";
+import { AuthContext } from "../../context/auth/AuthContext";
+import swal from "sweetalert";
+import CardComments from "../CardComments/CardComments";
+import { UIContext } from "../../context/ui";
 
 const Opinions = ({ userDetail }) => {
   const id = userDetail._id;
   const [opinion, setOpinion] = useState([]);
   const [number, setNumber] = useState(0);
   const [value, setValue] = useState(0);
-  const [newOpinion, setNewOpinion] = useState('');
+  const [newOpinion, setNewOpinion] = useState("");
   const { user } = useContext(AuthContext);
   const { getRatingOrganizer } = useContext(UIContext);
 
   useEffect(() => {
     const getAllComments = async () => {
       try {
-        const res = await eventsApi.get('/users/' + id);
+        const res = await eventsApi.get("/users/" + id);
         setOpinion(res.data.opinionsOrg);
         if (userDetail.opinionsOrg.length > 0) {
           setNumber(calcRatingEffect());
@@ -63,9 +63,9 @@ const Opinions = ({ userDetail }) => {
       opinion: newOpinion,
     };
     try {
-      const res = await eventsApi.post('/users/commentOrganizer/' + id, data);
+      const res = await eventsApi.post("/users/commentOrganizer/" + id, data);
       setOpinion([...opinion, res.data]);
-      setNewOpinion('');
+      setNewOpinion("");
       setValue(0);
       setNumber(calcRating(res.data.rating));
       getRatingOrganizer(id, { rating: calcRating(res.data.rating) });
@@ -77,9 +77,9 @@ const Opinions = ({ userDetail }) => {
   const handleAlert = (e) => {
     e.preventDefault();
     swal({
-      title: 'Debes estar registrado para poder enviar un comentario',
-      icon: 'warning',
-      button: 'Cerrar',
+      title: "Debes estar registrado para poder enviar un comentario",
+      icon: "warning",
+      button: "Cerrar",
       dangerMode: true,
     });
   };
@@ -89,7 +89,7 @@ const Opinions = ({ userDetail }) => {
       <div className={styles.containerOpinions}>
         <div className={styles.subTitle}>
           <p className={styles.ratNumber}>
-            {opinion.length} opiniones - {number} de 5 Positivas{' '}
+            {opinion.length} opiniones - {number} de 5 Positivas{" "}
           </p>
         </div>
 
@@ -98,7 +98,7 @@ const Opinions = ({ userDetail }) => {
             <div>
               {opinion.map((o) => (
                 <div key={o._id} className={styles.comment}>
-                  <CardComments o={o} />
+                  <CardComments organizer={userDetail} o={o} />
 
                   <hr className={styles.hr}></hr>
                 </div>
@@ -111,8 +111,8 @@ const Opinions = ({ userDetail }) => {
 
         <textarea
           className={styles.textarea}
-          type='text'
-          placeholder='Escribe un Comentario'
+          type="text"
+          placeholder="Escribe un Comentario"
           value={newOpinion}
           onChange={(e) => setNewOpinion(e.target.value)}
         />
@@ -122,7 +122,7 @@ const Opinions = ({ userDetail }) => {
 
           <Rating
             className={styles.rating}
-            name='half-rating'
+            name="half-rating"
             value={value}
             precision={0.5}
             onChange={(e) => setValue(e.target.value)}
@@ -130,7 +130,10 @@ const Opinions = ({ userDetail }) => {
         </div>
 
         <div className={styles.contBtn}>
-          <button className={styles.button} onClick={user.uid ? handlePostComments : handleAlert}>
+          <button
+            className={styles.button}
+            onClick={user.uid ? handlePostComments : handleAlert}
+          >
             Enviar
           </button>
         </div>

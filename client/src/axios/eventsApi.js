@@ -1,7 +1,7 @@
-import axios from 'axios';
+import axios from "axios";
 
 const eventsApi = axios.create({
-  baseURL: 'https://plataformaeventos-production.up.railway.app',
+  baseURL: "http://localhost:3001",
 });
 
 /* https://plataformaeventos-production-6111.up.railway.app */
@@ -13,9 +13,9 @@ const eventsApi = axios.create({
 eventsApi.interceptors.request.use((config) => {
   config.headers = {
     ...config.headers,
-    'x-token': localStorage.getItem('token'),
-    'x-token-password': localStorage.getItem('token-pass'),
-    'x-token-organizer': localStorage.getItem('token-organizer'),
+    "x-token": localStorage.getItem("token"),
+    "x-token-password": localStorage.getItem("token-pass"),
+    "x-token-organizer": localStorage.getItem("token-organizer"),
   };
 
   return config;
