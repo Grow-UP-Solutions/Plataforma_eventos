@@ -30,11 +30,11 @@ import eventsApi from '../../axios/eventsApi';
 import { AuthContext } from '../../context/auth/AuthContext';
 import { getColombia, getEventsCopy, postEvent, putEvent } from '../../redux/actions';
 import { formatDateForm } from '../../utils/formatDateForm';
-import styles from './EventEdit.module.css';
+import styles from './EventEdit2.module.css';
 import { AiOutlineClose } from 'react-icons/ai';
 import { BsCamera, BsCardImage, BsInfoCircle, BsPencilSquare } from 'react-icons/bs';
 
-const EventEdit = () => {
+const EventEdit2 = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const Swal = require('sweetalert2');
@@ -1381,20 +1381,10 @@ const EventEdit = () => {
   }
   return (
     <div>
-      <div className={`${styles.container} container`}>
-        <div className={styles.container}>
-         <div ref={ref} className={styles.containerForm}>
-          <form  className='containerSwiper' onSubmit={(e) => handleSubmit(e)}>
-          <Swiper
-                slidesPerView={1}
-                direction={'vertical'}
-                navigation={true}
-                spaceBetween={0}
-                modules={[Pagination, Navigation]}
-                className='swiper'
-                autoHeight={true}
-              >
-             <SwiperSlide>
+      <div className={styles.container}>
+        <div ref={ref} className={styles.containerForm}>
+          <form onSubmit={(e) => handleSubmit(e)}>
+            <div>
               {/* SECTION 1: Nombre del Evento */}
               <div className={styles.section1}>
                 {/* linea vertical */}
@@ -1463,9 +1453,7 @@ const EventEdit = () => {
                   {errors.title ? <p className={styles.errors}>{errors.title}</p> : null}
                 </div>
               </div>
-              </SwiperSlide>
 
-              <SwiperSlide>
               {/* SECTION 2: Categorias */}
               <div className={styles.section2}>
                 {/* linea vertical */}
@@ -1566,9 +1554,7 @@ const EventEdit = () => {
                   )}
                 </div>
               </div>
-              </SwiperSlide>
 
-              <SwiperSlide>
               {/* SECTION 3: Descripcion */}
               <div className={styles.section3}>
                 {/* linea vertical */}
@@ -1684,9 +1670,7 @@ const EventEdit = () => {
                   </div>
                 </div>
               </div>
-              </SwiperSlide>
 
-              <SwiperSlide>
               {/* SECTION 4: Pictures */}
               <div className={styles.section4}>
                 {/* linea vertical */}
@@ -1798,9 +1782,7 @@ const EventEdit = () => {
                   ) : null}
                 </div>
               </div>
-              </SwiperSlide>
 
-              <SwiperSlide>
               {/* SECTION 5: Ubicacion */}
               <div className={styles.section5}>
                 {/* linea vertical */}
@@ -2054,9 +2036,7 @@ const EventEdit = () => {
                   {errors.specialRequires ? <p className={styles.errors}>{errors.specialRequires}</p> : null}
                 </div>
               </div>
-              </SwiperSlide>
 
-              <SwiperSlide>
               {/*SECTION 6: Dates */}
               <div className={styles.section6}>
                 {/* linea vertical */}
@@ -2814,15 +2794,41 @@ const EventEdit = () => {
                   </div>
                 </div>
               </div>
-              </SwiperSlide>
-            
-           </Swiper>
+            </div>
           </form>
-         </div>
         </div>
+        {/*SECTIONS BUTTONS - UP AND DOWN*/}
+        {getPreview === false ? (
+          <div className={styles.containerBtnSection}>
+            <button className={styles.btnSectionMove} onClick={() => scrollSections(-1000)}>
+              <KeyboardArrowUpIcon
+                sx={{
+                  fontSize: '40px',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: 10,
+                  backgroundColor: '#D53E27',
+                }}
+              />
+            </button>
+            <button className={styles.btnSectionMove} onClick={() => scrollSections(1000)}>
+              <KeyboardArrowDownRoundedIcon
+                sx={{
+                  fontSize: '40px',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: 10,
+                  backgroundColor: '#D53E27',
+                }}
+              />
+            </button>
+          </div>
+        ) : (
+          ''
+        )}
       </div>
     </div>
   );
 };
 
-export default EventEdit;
+export default EventEdit2;

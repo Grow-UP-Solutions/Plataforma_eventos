@@ -29,7 +29,8 @@ const EventDate = ({ id }) => {
   const { user, logged, logout } = useContext(AuthContext);
   const [checked, setChecked] = useState(false);
   const { carrito, setCarrito } = useContext(stateContext);
-  console.log('carrito:',carrito)
+  const { dateToBuy, setDateToBuy } = useContext(stateContext);
+  
   
 
 //   if(eventDetails!==undefined){
@@ -39,6 +40,7 @@ const EventDate = ({ id }) => {
   useEffect(() => {
     
       setCarrito([])
+      setDateToBuy([])
     
   },[])
 
@@ -58,46 +60,39 @@ const EventDate = ({ id }) => {
   const [dateId, setDateId] = useState(0);
 
   const dateSelected = (e,price) => {
+    const administracion = price*0.16
+    const iva = price*0.19
+    const finalPrice = price + administracion + iva
     e.preventDefault()
     setChecked(true)
     const fechaElegida = e.target.value
     if (!e.target.checked) {
       console.log('No checke')
-        let seleccion = carrito.filter((f)=>f.fechaId !== fechaElegida )
+        let seleccion = carrito.filter((f)=>f.idDate !== fechaElegida )
         setCarrito(seleccion)
-     
-          // for( let i = 0 ; i<eventDetails.dates.length ; i++){
-          //   if(eventDetails.dates[i]._id===e.target.value){
-          //     eventDetails.dates[i].checked=false
-          //     console.log(' eventDetails.dates[i].checked', eventDetails.dates[i].checked)
-          //   }
-          //  }
-         
+        let datesC = dateToBuy.filter((d)=>d._id!==fechaElegida)
+        setDateToBuy(datesC)
      }else{
-      //let fechaCheked = date.buyers.find((buyer) => buyer === buyerId)
       setCarrito([...carrito, {
-        fechaId:fechaElegida, 
-        cupos:0,
-        price:price,
-        codigoDescuento:'',
-        codigoReferido:'',
-        codigoCorrecto:'',
-        subtotal:'',
-        descuento:''
+        idDate:fechaElegida, 
+        quantity:0,
+        unit_price:finalPrice,
+        title:'',
       }])
 
       
-      // for( let i = 0 ; i<eventDetails.dates.length ; i++){
-      //   if(eventDetails.dates[i]._id===e.target.value){
-      //     eventDetails.dates[i].checked=true
-      //     console.log(' eventDetails.dates[i].checked', eventDetails.dates[i].checked)
-      //   }
-      //  }
+      for(let i = 0 ; i<eventDetails.dates.length ; i++){
+        if(eventDetails.dates[i]._id===fechaElegida){
+          const datesChoosen=eventDetails.dates[i]
+          console.log('datesChoosen',datesChoosen)
+          setDateToBuy([
+            ...dateToBuy,datesChoosen
+           
+          ])
+        }
+      }
       
-
      }
-    
-
   }
 
 
@@ -192,7 +187,7 @@ const EventDate = ({ id }) => {
 
                     {carrito.length > 0?
                      carrito.map((c)=>
-                     c.fechaId === date._id?
+                     c.idDate === date._id?
                      <EventDateMap id={date._id}/>
                      :
                      ''
