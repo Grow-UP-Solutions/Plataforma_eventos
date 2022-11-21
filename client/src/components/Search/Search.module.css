@@ -119,3 +119,15 @@
     width: 20rem;
   }
 }
+
+@media screen and (max-width: 592px) {
+  .inputHomeMuni {
+    display: none;
+  }
+
+  .inputHome {
+    border-radius: 25px;
+    max-width: 48rem;
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+}

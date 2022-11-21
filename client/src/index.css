@@ -103,3 +103,15 @@ button {
     font-size: 50%;
   }
 }
+
+@media screen and (max-width: 596px) {
+  html {
+    font-size: 46%;
+  }
+}
+
+@media screen and (max-width: 522px) {
+  html {
+    font-size: 42%;
+  }
+}

@@ -70,6 +70,7 @@
 
 .footerSocial {
   padding-top: 2rem;
+  justify-self: flex-start;
 }
 .listSocial {
   margin-top: 3.2rem;
@@ -163,7 +164,7 @@
 
   .separationBar {
     height: 1px;
-    width: 50rem;
+    width: 100%;
   }
 
   .footerSocial {
@@ -194,5 +195,22 @@
 
   .arrow {
     display: none !important;
+  }
+
+  .footerList p {
+    font-size: 1.8rem;
+  }
+
+  .footerList a {
+    font-size: 1.6rem;
+  }
+
+  .listSocial {
+    gap: 3.2rem;
+  }
+
+  .listSocial .icons {
+    width: 3rem;
+    height: 3rem;
   }
 }

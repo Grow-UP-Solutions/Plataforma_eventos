@@ -86,12 +86,14 @@ const Events = () => {
   const [cardPerView, setCardPerView] = useState(4);
 
   useEffect(() => {
+    if (window.innerWidth <= 623) return setCardPerView(2.1);
     if (window.innerWidth <= 692) return setCardPerView(2.3);
     if (window.innerWidth <= 1160) return setCardPerView(2.5);
     if (window.innerWidth <= 1490) return setCardPerView(3.5);
   }, [window.innerWidth]);
-
+  
   window.onresize = function() {
+    if (window.innerWidth <= 623) return setCardPerView(2.1);
     if (window.innerWidth <= 692) return setCardPerView(2.3);
     if (window.innerWidth <= 1160) return setCardPerView(2.5);
     if (window.innerWidth <= 1490) return setCardPerView(3.5);

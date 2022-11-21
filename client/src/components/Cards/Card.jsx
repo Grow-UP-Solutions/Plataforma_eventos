@@ -310,7 +310,7 @@ const Card = ({ event, listName, orgEvent }) => {
                   <div className={styles.cardAddFav} onClick={handleClickFav}>
                     <input type="checkbox" id={`${event._id}-${listName}`} />
                     <label htmlFor={`${event._id}-${listName}`}>
-                      <AddIcon sx={{ fontSize: 30, color: "#868686" }} />
+                      <AddIcon className={styles.iconAddFavEvent} sx={{ fontSize: 30, color: "#868686" }} />
                     </label>
                   </div>
                 ) : user.uid && heart ? (
@@ -320,7 +320,7 @@ const Card = ({ event, listName, orgEvent }) => {
                   >
                     <input type="checkbox" id={`${event._id}-${listName}`} />
                     <label htmlFor={`${event._id}-${listName}`}>
-                      <FavoriteIcon sx={{ fontSize: 25, color: "white" }} />
+                      <FavoriteIcon className={styles.iconFavEvent} sx={{ fontSize: 25, color: "white" }} />
                     </label>
                   </div>
                 ) : (

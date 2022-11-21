@@ -77,3 +77,17 @@
     display: block;
   }
 }
+
+@media screen and (max-width: 584px) {
+  .container_p {
+    font-size: 4.4rem;
+    text-align: left;
+    top: 20%;
+    left: 55%;
+  }
+
+  .item_p {
+    margin-top: 5rem;
+    padding-right: 4rem;
+  }
+}

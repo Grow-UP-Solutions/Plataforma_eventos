@@ -31,9 +31,8 @@
   color: rgba(134, 134, 134, 255);
   font-size: 1.3rem;
   float: none;
-  width: 150px;
   cursor: pointer;
-  width: 180px;
+  width: 18rem;
 }
 
 /* .cardCupos {
@@ -60,7 +59,7 @@
   color: rgba(134, 134, 134, 255);
   font-size: 1.3rem;
   float: none;
-  width: 180px;
+  width: 18rem;
 }
 
 .cardCuposCurrent {
@@ -248,9 +247,7 @@
   align-items: center;
   margin-top: 2rem;
   /* margin-bottom: 2rem; */
-} 
-
-
+}
 
 /* .cardOrgInfo {
   display: grid;
@@ -271,7 +268,7 @@
 } */
 
 .cardOrgPicture {
-  margin-left: .4rem;
+  margin-left: 0.4rem;
   width: 4.5rem;
   height: 4.5rem;
   border-radius: 50%;
@@ -413,4 +410,64 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
+}
+
+@media screen and (max-width: 692px) {
+  .cardDate {
+    padding: 0.5rem;
+    font-size: 1.2rem;
+  }
+}
+
+@media screen and (max-width: 522px) {
+  .card {
+    width: 26rem;
+  }
+
+  .cardDate {
+    width: 12rem;
+  }
+
+  .cardAddFavHeart {
+    top: 2%;
+    right: 2%;
+  }
+
+  .iconFavEvent {
+    font-size: 3rem !important;
+  }
+
+  .cardAddFav {
+    top: 2%;
+    right: 2%;
+  }
+
+  .iconAddFavEvent {
+    font-size: 4rem !important;
+  }
+}
+
+@media screen and (max-width: 416px) {
+  .card {
+    width: 21.5rem;
+  }
+
+  .cardText {
+    padding: 0.5rem;
+  }
+
+  .cardRating {
+    margin-right: 3rem;
+  }
+
+  .cardOrgInfo {
+  }
+
+  .vLine:nth-child(5) {
+    display: none;
+  }
+
+  .cardDetails {
+    display: none;
+  }
 }

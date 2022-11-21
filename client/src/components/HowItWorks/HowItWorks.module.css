@@ -59,6 +59,12 @@
   border-radius: 100%;
 }
 
+@media screen and (max-width: 416px) {
+  .items p {
+    width: 16rem;
+  }
+}
+
 @media screen and (max-width: 1160px) {
   .howItWorks {
     padding: 0 4rem;
@@ -82,5 +88,30 @@
 
   .items img {
     width: 8rem;
+  }
+}
+
+@media screen and (max-width: 623px) {
+  .howItWorks {
+    gap: 2rem;
+  }
+
+  .items {
+    width: 18rem;
+  }
+}
+
+@media screen and (max-width: 584px) {
+  .howItWorks {
+    gap: 0;
+    justify-content: space-around;
+  }
+}
+
+@media screen and (max-width: 384px) {
+  .items span {
+    right: 2rem;
+    font-size: 2.4rem;
+    padding: 0.5rem 1rem;
   }
 }

@@ -55,6 +55,12 @@
   }
 }
 
+@media screen and (max-width: 584px) {
+  .swiper-pagination-bullets {
+    bottom: 18rem !important;
+  }
+}
+
 .containerSwiper {
   position: relative;
 }

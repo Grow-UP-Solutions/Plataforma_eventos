@@ -301,6 +301,7 @@ const Navbar = ({ upper }) => {
             </>
           )}
         </div>
+        <div className={style.auxDiv} />
       </div>
     </div>
   );
