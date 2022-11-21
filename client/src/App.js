@@ -14,9 +14,10 @@ import {
   ChangePassword,
   Contacto,
   EventCreate,
-  EventCreateForm,
   EventCreateForm2,
+  EventCreateForm,
   EventEdit,
+  EventEdit2,
   EventDetails,
   Faq,
   Home,
@@ -72,8 +73,9 @@ function App() {
         <Route path='/resultados-de-busqueda' element={<SearchResult />} />
         <Route path='/registrate' element={<Register />} />
         <Route path='/organiza-un-evento/beneficios' element={<EventCreate />} />
-        <Route path='/oganiza-un-evento' element={<EventCreateForm />} />
         <Route path='/oganiza-un-evento2' element={<EventCreateForm2 />} />
+        <Route path='/oganiza-un-evento' element={<EventCreateForm />} />
+        <Route path='/oganiza-un-evento-editar2/:id' element={<EventEdit2 />} />
         <Route path='/oganiza-un-evento-editar/:id' element={<EventEdit />} />
         <Route path='/payment' element={<Payment />} />
         <Route path='/categories' element={<CategoriesResult />} />

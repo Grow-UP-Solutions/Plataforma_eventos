@@ -12,15 +12,6 @@ const EventDateMap = ({id}) => {
 
   const [numberBuyCupos, setNumberBuyCupos] = useState(0);
 
-  // useEffect(() => {
-  //   for(let i = 0 ; i<carrito.length; i++){
-  //     if(carrito[i].fechaId === id){
-  //       if(!carrito.includes(carrito[i])){
-  //         setNumberBuyCupos(0)
-  //       }
-  //     }
-  //   }
-  // }, []);
 
   const handleNumberBuyCupos = (num) => {
     const carritoCupos = [...carrito]
@@ -29,10 +20,8 @@ const EventDateMap = ({id}) => {
 
     setNumberBuyCupos(num);
     for( let i = 0 ; i<carritoCupos.length ; i++){
-      if(carritoCupos[i].fechaId === id){
-        carritoCupos[i].cupos = num
-        carritoCupos[i].subtotal= num *  carritoCupos[i].price
-
+      if(carritoCupos[i].idDate === id){
+        carritoCupos[i].quantity = num
         setCarrito(
           carritoCupos
         )
