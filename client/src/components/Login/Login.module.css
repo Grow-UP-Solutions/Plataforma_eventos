@@ -13,9 +13,9 @@
 .contentBox {
   position: relative;
 
-  padding: 4.2rem;
-  width: 61.9rem;
-  height: 80rem;
+  padding: 3rem 4.2rem;
+  width: 62rem;
+  height: 72rem;
   border-radius: 20px;
   background-color: white;
 
@@ -289,5 +289,21 @@
 
   100% {
     transform: scale(1.2);
+  }
+}
+
+@media screen and (max-width: 482px) {
+  .contentBox {
+    width: 48rem;
+  }
+
+  .formGroup {
+    width: 42rem;
+  }
+
+  .providerFacebook,
+  .providerGoogle {
+    width: 32rem;
+    gap: 1.78rem;
   }
 }

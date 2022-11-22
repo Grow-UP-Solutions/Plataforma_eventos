@@ -3,7 +3,16 @@ require("dotenv").config();
 
 const { EMAIL, PASSWORD } = process.env;
 
-const sendMailToOrganizer = async (name, link, email) => {
+const sendEmailToReportOrganizer = async (
+  titleReport,
+  reasonToReport,
+  dateToReport,
+  name,
+  email,
+  nameOrganizer,
+  emailOrganizer,
+  pictureOrganizer
+) => {
   const transporter = createTransport({
     service: "gmail",
     secure: true,
@@ -16,7 +25,7 @@ const sendMailToOrganizer = async (name, link, email) => {
   let mail_options = {
     from: "Lo quiero hacer",
     to: email,
-    subject: `Solicitud para ser Organizador, ${name}`,
+    subject: `Reportaron a un organizador, ${nameOrganizer}`,
     html: `<!DOCTYPE html>
     <html lang="en">
       <head>
@@ -44,6 +53,7 @@ const sendMailToOrganizer = async (name, link, email) => {
             scroll-behavior: smooth;
           }
           body {
+            font-size: 1.6rem;
             font-family: "Raleway", sans-serif;
             font-weight: 400;
             line-height: 1;
@@ -69,7 +79,7 @@ const sendMailToOrganizer = async (name, link, email) => {
           }
     
           .container {
-            max-width: 50rem;
+            max-width: 60rem;
             text-align: center;
           }
     
@@ -81,7 +91,6 @@ const sendMailToOrganizer = async (name, link, email) => {
     
           .container-info {
             padding: 4rem 2rem;
-            text-align: center;
           }
     
           h1 {
@@ -91,14 +100,8 @@ const sendMailToOrganizer = async (name, link, email) => {
           h1 span {
             color: #d53e27;
           }
-          .container-btn {
-            text-align: center;
-            width: 100%;
-          }
+    
           .btnSuccess {
-            width: max-content;
-            margin: 0 auto;
-            margin-top: 1rem;
             display: block;
             padding: 1rem 4rem;
             border: none;
@@ -107,8 +110,48 @@ const sendMailToOrganizer = async (name, link, email) => {
             font-weight: bold;
             box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.2);
             cursor: pointer;
-            color: #ffffff !important;
+            color: #ffffff;
             background-color: #d53e27;
+          }
+    
+          .container-data {
+          }
+    
+          .container-event {
+          }
+    
+          .section-title {
+            font-weight: bold;
+            color: #d53e27;
+            text-align: left;
+          }
+    
+          .title-event {
+            color: #1b3c6a;
+            text-align: left;
+          }
+    
+          .img-event {
+            border-radius: 1rem;
+            height: 20rem;
+          }
+    
+          .container-user,
+          .container-date {
+            text-align: left;
+            color: #585858;
+          }
+    
+          .container-user p,
+          .container-date p {
+            text-align: left;
+          }
+          .subtitle {
+            font-weight: bold;
+          }
+    
+          .container-date-user {
+            gap: 2.4rem;
           }
         </style>
       </head>
@@ -117,11 +160,48 @@ const sendMailToOrganizer = async (name, link, email) => {
           <div class="container">
             <div class="top-bar"></div>
             <div class="container-info">
-              <h1>
-                El usuario <span>${name}</span> quiere convertirse en organizador.
-              </h1>
-              <div class="container-btn">
-                <a href="${link}" class="btnSuccess">Visualizar sus datos</a>
+              <h1>Reporte a un organizador.</h1>
+    
+              <div class="container-data">
+                <div class="container-event">
+                  <p class="section-title">El organizador:</p>
+    
+                  <h2 class="title-event">${nameOrganizer}</h2>
+    
+                  <img
+                    class="img-event"
+                    src="${pictureOrganizer}"
+                    alt="${nameOrganizer}"
+                  />
+                </div>
+    
+                <div class="container-date-user">
+                  <div class="container-user">
+                    <p class="section-title">Usuario que hizo el reporte:</p>
+    
+                    <p><span class="subtitle">Nombre:</span> ${name}</p>
+    
+                    <p><span class="subtitle">Correo:</span> ${email}</p>
+                  </div>
+                  <div class="container-date">
+                    <p class="section-title">Detalles del reporte:</p>
+    
+                    <p><span class="subtitle">Fecha:</span> ${dateToReport}</p>
+                    <p>
+                      <span class="subtitle">Email del organizador:</span>
+                      ${emailOrganizer}
+                    </p>
+                    <p>
+                      <span class="subtitle">Motivo de reporte:</span>
+                      ${titleReport}
+                    </p>
+    
+                    <p>
+                      <span class="subtitle">Razón del reporte</span>
+                      ${reasonToReport}
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="bottom-bar"></div>
@@ -140,5 +220,5 @@ const sendMailToOrganizer = async (name, link, email) => {
   }
 };
 module.exports = {
-  sendMailToOrganizer,
+  sendEmailToReportOrganizer,
 };

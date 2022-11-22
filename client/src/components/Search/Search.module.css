@@ -9,7 +9,7 @@
   border: none;
   box-shadow: 0px 5px 5px 1px rgba(0, 0, 0, 0.5);
   border: 2px solid transparent;
-  padding-left:1rem
+  padding-left: 1rem;
 }
 
 .inputHome:focus {
@@ -57,7 +57,7 @@
   width: 45rem;
   border: 1px solid var(--color-grey-4);
   padding: 1rem 2rem;
-  border-radius:  0px 25px 25px 0px;
+  border-radius: 0px 25px 25px 0px;
   color: var(--color-grey-5);
 }
 
@@ -96,4 +96,38 @@
 
 .iconSearchNotHome {
   color: var(--color-grey-4);
+}
+
+@media screen and (max-width: 1500px) {
+  .inputNotHome {
+    width: 24rem;
+  }
+}
+
+@media screen and (max-width: 1252px) {
+  .inputNotHome {
+    width: 24rem;
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .inputHome {
+    width: 24rem;
+  }
+
+  .inputNotHome {
+    width: 20rem;
+  }
+}
+
+@media screen and (max-width: 592px) {
+  .inputHomeMuni {
+    display: none;
+  }
+
+  .inputHome {
+    border-radius: 25px;
+    max-width: 48rem;
+    background-color: rgba(255, 255, 255, 0.8);
+  }
 }

@@ -1,16 +1,19 @@
-const { Router } = require('express');
-const EventFunctionDb = require('../../models/util/functionDB/event/index.event.js');
+const { Router } = require("express");
+const EventFunctionDb = require("../../models/util/functionDB/event/index.event.js");
+const {
+  sendEmailToReportEvent,
+} = require("../../models/util/mailer/mailToReportEvent.js");
 const {
   getAllEvents,
   createEvents,
   eventsUpdate,
   createOpinionsEvents,
   getOneEvent,
-} = require('../services/events.services.js');
+} = require("../services/events.services.js");
 
 const router = Router();
 
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const allEvents = await getAllEvents();
 
@@ -20,7 +23,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/:id', async (req, res) => {
+router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const event = await getOneEvent(id);
@@ -30,7 +33,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.post('/create', async (req, res) => {
+router.post("/create", async (req, res) => {
   try {
     const event = req.body;
 
@@ -42,7 +45,7 @@ router.post('/create', async (req, res) => {
   }
 });
 
-router.post('/opinionsGenerate/:id', async (req, res) => {
+router.post("/opinionsGenerate/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const comments = req.body;
@@ -53,10 +56,10 @@ router.post('/opinionsGenerate/:id', async (req, res) => {
   }
 });
 
-router.post('/:idEvent/payment/:idDate', async (req, res) => {
+router.post("/:idEvent/payment/:idDate", async (req, res) => {
   const { idEvent, idDate } = req.params;
   const { codigoDescuento } = req.query;
-  console.log('*/*/', codigoDescuento);
+  console.log("*/*/", codigoDescuento);
   try {
     const eventSoldOut = await paymentEvents(idEvent, idDate, codigoDescuento);
 
@@ -66,7 +69,7 @@ router.post('/:idEvent/payment/:idDate', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -80,7 +83,7 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-router.put('/:idEvent/rating', async (req, res) => {
+router.put("/:idEvent/rating", async (req, res) => {
   const { idEvent } = req.params;
   const { rating } = req.body;
   try {
@@ -88,6 +91,31 @@ router.put('/:idEvent/rating', async (req, res) => {
     return res.status(200).json(eventRating);
   } catch (error) {
     return res.status(500).json({ FALLO_UPDATE: error.message });
+  }
+});
+
+router.put("/reportEvent/sendEmail", async (req, res) => {
+  const { dataForReport } = req.body;
+  const { dateReport, reasonToReport } = dataForReport;
+  const { name, email } = dataForReport.userReport;
+  const { title, picture, nameOrganizer, emailOrganizer } =
+    dataForReport.eventReport;
+
+  try {
+    if (reasonToReport === "") throw new Error("Ingrese una razón al reporte.");
+    await sendEmailToReportEvent(
+      dateReport,
+      reasonToReport,
+      name,
+      email,
+      title,
+      nameOrganizer,
+      emailOrganizer,
+      picture
+    );
+    res.json({ success: true });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
   }
 });
 
