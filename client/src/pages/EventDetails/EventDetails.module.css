@@ -200,12 +200,12 @@
   margin-top: 10px;
 }
 
-.report{
+.report {
   cursor: pointer;
 }
 
-.report:hover{
-  color:orange
+.report:hover {
+  color: orange;
 }
 
 /* MENU CHECK */
@@ -243,6 +243,11 @@
   padding: 2rem 4rem;
 }
 
+.formReport {
+  display: flex;
+  flex-direction: column;
+}
+
 .formGroup {
   display: flex;
   flex-direction: column;
@@ -273,6 +278,7 @@
 
 .containerBtn {
   display: flex;
+  align-items: center;
   justify-content: center;
 }
 
@@ -298,4 +304,32 @@
   font-size: 2.4rem;
   color: var(--color-grey-3);
   cursor: pointer;
+}
+
+.checkboxReport {
+  accent-color: var(--color-orange);
+}
+
+.errorMessageReportEvent {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: var(--color-orange);
+  margin-top: 1.2rem;
+}
+
+.iconLoadingReport {
+  margin-left: 1.2rem;
+  font-size: 2.4rem;
+  color: var(--color-green);
+  animation: spinner 2s infinite;
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }

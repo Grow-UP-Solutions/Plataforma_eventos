@@ -24,7 +24,10 @@ const EventSchema = new Schema(
       municipio: String,
       direccion: String,
       barrio: String,
-
+      sells: {
+         type: Number,
+         default: 0,
+      },
       specialRequires: String,
 
       dates: [
@@ -48,12 +51,12 @@ const EventSchema = new Schema(
             buyers: [
                {
                   type: Schema.Types.ObjectId,
-                  ref: 'Users'
+                  ref: "Users",
                },
             ],
-            profits:{
-               type:Number,
-               default: 0
+            profits: {
+               type: Number,
+               default: 0,
             },
             codigos: [
                {
@@ -71,12 +74,12 @@ const EventSchema = new Schema(
       generalBuyers: [
          {
             type: Schema.Types.ObjectId,
-            ref: 'Users'
+            ref: "Users",
          },
       ],
-      overallEarnings:{
-         type:Number,
-         default: 0
+      overallEarnings: {
+         type: Number,
+         default: 0,
       },
       notificaciones: [
          {

@@ -131,8 +131,8 @@
 }
 
 .formGroupReferred {
-  align-self: flex-end;
   display: flex;
+  align-self: flex-end;
   justify-self: flex-end;
   align-items: center;
   gap: 2rem;
@@ -176,7 +176,7 @@
 .containerDescription {
   width: 60%;
   margin: 0 auto;
-
+  line-height: 1.2;
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
@@ -197,6 +197,7 @@
 .containerPromotionAndEmails {
   display: flex;
   align-items: center;
+  padding: 0 2rem;
   gap: 1.2rem;
 
   margin-bottom: 3.2rem;
@@ -205,6 +206,7 @@
 .containerPromotionAndEmails p {
   font-size: 1.6rem;
   color: var(--color-grey-2);
+  min-width: 62rem;
 }
 
 .containerPromotionAndEmails input {
@@ -352,5 +354,41 @@
 
   100% {
     transform: scale(1);
+  }
+}
+
+@media (max-width: 1160px) {
+  .containerDescription {
+    width: 80%;
+  }
+}
+
+@media (max-width: 484px) {
+  .formContainer {
+    padding: 0 2rem;
+  }
+
+  .containerDescription {
+    width: 100%;
+  }
+  .containerPromotionAndEmails {
+    justify-content: center;
+  }
+
+  .containerPromotionAndEmails p {
+    min-width: 60%;
+  }
+
+  .containerPromotionAndEmails input {
+    width: 5rem;
+    height: 5rem;
+  }
+
+  .formGroupReferred {
+    flex-direction: column;
+  }
+
+  .formGroup input {
+    padding-right: 5rem;
   }
 }

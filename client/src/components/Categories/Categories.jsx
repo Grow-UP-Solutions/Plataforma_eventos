@@ -5,21 +5,19 @@ import { UIContext } from '../../context/ui';
 import { useNavigate } from 'react-router-dom';
 
 const Categories = () => {
-
   const { setResult } = useContext(stateContext);
   const { categories } = useContext(UIContext);
   const navigate = useNavigate();
 
-
   const handleClick = (e) => {
     e.preventDefault();
-    const data = e.target.id; 
+    const data = e.target.id;
     setResult(data);
     navigate('/categories/');
   };
 
   return (
-    <div className={styles.sectionCategories}>
+    <div className={`${styles.sectionCategories} container`}>
       <h2 className={styles.titleCategories}>Categorías</h2>
       <ul className={styles.listCategories}>
         {categories.map((categorie) => {

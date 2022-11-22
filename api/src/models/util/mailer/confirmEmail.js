@@ -1,11 +1,11 @@
-const { createTransport } = require('nodemailer');
-const dotenv = require('dotenv').config();
+const { createTransport } = require("nodemailer");
+const dotenv = require("dotenv").config();
 
 const { EMAIL, PASSWORD } = process.env;
 
- const sendVerifyMail = async (email, code) => {
+const sendVerifyMail = async (email, code) => {
   const transporter = createTransport({
-    service: 'gmail',
+    service: "gmail",
     secure: true,
     auth: {
       user: EMAIL,
@@ -14,7 +14,7 @@ const { EMAIL, PASSWORD } = process.env;
   });
 
   let mail_options = {
-    from: 'Lo quiero hacer',
+    from: "Lo quiero hacer",
     to: email,
     subject: `Confirmar Email - Lo que quiero hacer`,
     html: `<html lang="en">
@@ -59,7 +59,7 @@ const { EMAIL, PASSWORD } = process.env;
           display: block;
           height: 4.2rem;
           width: 100%;
-          background-color: #ff922b;
+          background-color: #d53e27;
         }
   
         .container-info {
@@ -120,12 +120,12 @@ const { EMAIL, PASSWORD } = process.env;
   };
   try {
     const response = await transporter.sendMail(mail_options);
-    return { msg: ('SE ENVIO CON EXITO', response.response) };
+    return { msg: ("SE ENVIO CON EXITO", response.response) };
   } catch (error) {
-    return { msg: ('FALLO EL ENVIO DE EMAIL', error) };
+    return { msg: ("FALLO EL ENVIO DE EMAIL", error) };
   }
 };
 
-module.exports= {
-  sendVerifyMail
-}
+module.exports = {
+  sendVerifyMail,
+};
