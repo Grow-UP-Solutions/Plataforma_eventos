@@ -12,6 +12,7 @@ import {
   IoNotifications,
   IoCaretDownSharp,
   IoCaretUpSharp,
+  IoClose,
 } from 'react-icons/io5';
 import logo from '../../assets/imgs/logoNav.svg';
 import eventsApi from '../../axios/eventsApi';
@@ -86,9 +87,27 @@ const Navbar = ({ upper }) => {
     setNotes(res.data.filter((e) => e.read === false));
   };
 
+  const [openMenu, setOpenMenu] = useState(false);
+
+  const handleOpenMenu = (option) => {
+    switch (option) {
+      case 'login':
+        toggleScreenLogin();
+        return setOpenMenu(false);
+      case 'register':
+        navigate('/registrate');
+        return setOpenMenu(false);
+      case 'createEvent':
+        navigate('/organiza-un-evento/beneficios');
+        return setOpenMenu(false);
+      default:
+        setOpenMenu(!openMenu);
+    }
+  };
+
   return (
     <div
-      id="navbar"
+      id='navbar'
       style={{ position: pathname === '/' ? 'fixed' : 'sticky' }}
       className={`${style.container} ${
         pathname !== '/' || upper === false ? style.customizeNavBar : ''
@@ -96,11 +115,41 @@ const Navbar = ({ upper }) => {
     >
       <div className={`${style.containerInfo} container`}>
         <div className={style.hamburgerIcon}>
-          <BiMenu />
+          <BiMenu onClick={handleOpenMenu} />
         </div>
 
+        {openMenu && (
+          <div className={style.menu}>
+            <IoClose onClick={handleOpenMenu} className={style.iconCloseMenu} />
+
+            <ul className={style.listItemsMenu}>
+              <li className={style.itemMenu}>
+                <button
+                  className={style.btnLoginMenu}
+                  onClick={() => handleOpenMenu('login')}
+                >
+                  Iniciar Sesión
+                </button>
+              </li>
+              <li className={style.itemMenu}>
+                <button onClick={() => handleOpenMenu('register')}>
+                  Registrarse
+                </button>
+              </li>
+              <li className={`${style.itemMenu}`}>
+                <button
+                  className={style.btnCreateEvent}
+                  onClick={() => handleOpenMenu('createEvent')}
+                >
+                  Organizar un evento
+                </button>
+              </li>
+            </ul>
+          </div>
+        )}
+
         <div className={style.containerImgInput}>
-          <img src={logo} alt="LogoNav" onClick={handleClick} />
+          <img src={logo} alt='LogoNav' onClick={handleClick} />
           {pathname !== '/' || upper === false ? (
             <div className={style.searchComponent}>
               <Search location={'not-home'} />
@@ -111,13 +160,13 @@ const Navbar = ({ upper }) => {
         </div>
         <div className={style.container_div}>
           {logged && (
-            <Link className={style.navMyList} to="/usuario/mi-lista">
+            <Link className={style.navMyList} to='/usuario/mi-lista'>
               Mi lista
             </Link>
           )}
 
           {user.organizer ? (
-            <Link to="/oganiza-un-evento">
+            <Link to='/oganiza-un-evento'>
               <p className={`${logged ? style.buttonOrganizar : ''}`}>
                 Organiza un evento
               </p>
@@ -222,14 +271,14 @@ const Navbar = ({ upper }) => {
               <div className={style.containerName}>
                 {user.nickname ? (
                   <>
-                    <Link to="/usuario/perfil">
+                    <Link to='/usuario/perfil'>
                       <p>{user.nickname.split(' ')[0]}</p>
                       <p>{user.nickname.split(' ')[1]}</p>
                     </Link>
                   </>
                 ) : (
                   <>
-                    <Link to="/usuario/perfil">
+                    <Link to='/usuario/perfil'>
                       <p>{user.name.split(' ')[0]}</p>
                       <p>{user.name.split(' ')[1]}</p>
                     </Link>
@@ -250,7 +299,7 @@ const Navbar = ({ upper }) => {
                     <img
                       className={style.userImg}
                       src={user.picture}
-                      alt="img-user"
+                      alt='img-user'
                     />
                   ) : (
                     <FaUserCircle className={style.userImg} />
@@ -264,27 +313,27 @@ const Navbar = ({ upper }) => {
 
                 {menuOpen && (
                   <div className={style.containerProfileMenu}>
-                    <Link to="/usuario/mi-lista">Mis eventos</Link>
+                    <Link to='/usuario/mi-lista'>Mis eventos</Link>
 
-                    <Link to="/usuario/perfil">
+                    <Link to='/usuario/perfil'>
                       <a>Perfil</a>
                     </Link>
                     <Link
                       className={style.navMyListMenu}
-                      to="/usuario/mi-lista"
+                      to='/usuario/mi-lista'
                     >
                       Mi lista
                     </Link>
                     <Link
-                      to="/oganiza-un-evento"
+                      to='/oganiza-un-evento'
                       className={style.buttonOrganizarMenu}
                     >
                       Organiza un evento
                     </Link>
-                    <Link to="/usuario/plan-de-referidos">
+                    <Link to='/usuario/plan-de-referidos'>
                       Plan de referidos
                     </Link>
-                    <Link to="/usuario/preferencias">Preferencias</Link>
+                    <Link to='/usuario/preferencias'>Preferencias</Link>
                     <hr />
                     <span
                       onClick={(e) => {
