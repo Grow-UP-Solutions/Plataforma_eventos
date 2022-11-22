@@ -27,7 +27,15 @@ const Cart = () => {
   const eventDetail = events.filter((e) => e._id === id)[0];
   const { carrito, setCarrito } = useContext(stateContext);
   const { dateToBuy, setDateToBuy } = useContext(stateContext);
+  const { code, setCode } = useContext(stateContext);
   const dispatch = useDispatch()
+
+  const [subTotal , setSubTotal] = useState('')
+  const [descuentoTotal , setDescuentoTotal] = useState('')
+  const [administracion , setAdministracion] = useState(subTotal*0.16)
+  const [iva , setIva] = useState(subTotal*0.19)
+  const [valorTotal , setValorTotal] = useState('')
+  //console.log('valorTotal fuera',valorTotal)
 
   useEffect(() => {
 
@@ -43,13 +51,18 @@ const Cart = () => {
         carrito[i].codigoDescuento=''
         carrito[i].descuento=''
         carrito[i].price=dateToBuy[j].price
+
         sTotal.push(carrito[i].subtotal)
         let total = sTotal.reduce((a, b) => a + b, 0);
+
         let iva = total *0.19
         let administracion = total *0.16
         let totalValor = iva +administracion+ total
         setSubTotal(total)
         setValorTotal(totalValor)
+        // console.log('total:',total)
+        // console.log('totalValor:',totalValor)
+        // console.log('valor total []',valorTotal)
     }}}
    
   }, []);
@@ -83,11 +96,7 @@ const Cart = () => {
 
  
 // ----- carrito-------//
-  const [subTotal , setSubTotal] = useState('')
-  const [descuentoTotal , setDescuentoTotal] = useState('')
-  const [administracion , setAdministracion] = useState(subTotal*0.16)
-  const [iva , setIva] = useState(subTotal*0.19)
-  const [valorTotal , setValorTotal] = useState('')
+  
 
   useEffect(() => {
     const ivaFinal = subTotal*0.19
@@ -98,6 +107,7 @@ const Cart = () => {
       setAdministracion(adminfinal)
       setIva(ivaFinal)
       setValorTotal(precioTotal)
+     // console.log('valor total [subTotal]',valorTotal)
 
     }, [subTotal]);
 
@@ -285,8 +295,10 @@ const Cart = () => {
 
   //---SUBMIT---//
 
-  async function handleSubmit(){
-
+  async function handleSubmit(e){
+    e.preventDefault()
+    console.log('handleSubmit:')
+    
     const f = []
     const cod= []
     for (let i = 0 ; i<carrito.length ; i++){
@@ -301,8 +313,15 @@ const Cart = () => {
 
       const c = carrito[i].codigoDescuento
       cod.push(c)
-      console.log('cod:',cod)
-      console.log(`codigo$ {i}`)
+
+      setCode([{
+        idEvent : eventDetail._id,
+        idDate:carrito[i].idDate,
+        code: carrito[i].codigoDescuento
+      }
+      ])
+  
+      
     }
 
     const payload = {
@@ -570,7 +589,7 @@ const Cart = () => {
               </p>
 
               <div className={styles.containerButtonForm}>
-                  <button onClick={handleSubmit} className={styles.btnForm}>
+                  <button onClick={(e)=>handleSubmit(e)} className={styles.btnForm}>
                     Pagar
                   </button>
               </div>

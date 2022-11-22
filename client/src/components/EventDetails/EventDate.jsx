@@ -108,6 +108,7 @@ const EventDate = ({ id }) => {
       let seleccion = carrito.filter((f) => f.fechaId !== fechaElegida);
       setCarrito(seleccion);
 
+<<<<<<< HEAD
       // for( let i = 0 ; i<eventDetails.dates.length ; i++){
       //   if(eventDetails.dates[i]._id===e.target.value){
       //     eventDetails.dates[i].checked=false
@@ -129,6 +130,21 @@ const EventDate = ({ id }) => {
           descuento: "",
         },
       ]);
+=======
+      
+      for(let i = 0 ; i<eventDetails.dates.length ; i++){
+        if(eventDetails.dates[i]._id===fechaElegida){
+          const datesChoosen=eventDetails.dates[i]
+          setDateToBuy([
+            ...dateToBuy,datesChoosen
+           
+          ])
+        }
+      }
+      
+     }
+  }
+>>>>>>> Guille
 
       // for( let i = 0 ; i<eventDetails.dates.length ; i++){
       //   if(eventDetails.dates[i]._id===e.target.value){
