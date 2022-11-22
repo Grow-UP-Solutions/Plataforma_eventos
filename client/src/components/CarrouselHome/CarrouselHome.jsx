@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Autoplay, Navigation, Pagination } from 'swiper';
 import 'swiper/modules/navigation/navigation.min.css';
 import 'swiper/modules/pagination/pagination.min.css';
@@ -38,7 +39,7 @@ const CarrouselHome = () => {
   ];
 
   return (
-    <div id='hero' className={style.container}>
+    <div id="hero" className={style.container}>
       <Swiper
         slidesPerView={1}
         spaceBetween={0}
@@ -56,9 +57,7 @@ const CarrouselHome = () => {
           images.map((e) => {
             return (
               <SwiperSlide key={e.id}>
-                <div>
-                  <img className={style.img} src={e.url} alt={e.title} />
-                </div>
+                <img className={style.img} src={e.url} alt={e.title} />
               </SwiperSlide>
             );
           })
@@ -70,11 +69,16 @@ const CarrouselHome = () => {
       <div className={style.container_p}>
         <p>Aqui va un texto de</p>
         <p>enganche grande</p>
-        <p className={style.item_p}>Aqui un texto que acompañe el titulo de enganche</p>
+        <p className={style.item_p}>
+          Aqui un texto que acompañe el titulo de enganche
+        </p>
       </div>
 
       <div className={style.search}>
         <Search />
+      </div>
+      <div className={style.containerBtnOrganizerEvent}>
+        <Link to={'/oganiza-un-evento'}>Organiza un evento</Link>
       </div>
     </div>
   );

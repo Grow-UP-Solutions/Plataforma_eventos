@@ -3,9 +3,8 @@ import styles from './HowItWorks.module.css';
 import { iconHowIt1, iconHowIt2, iconHowIt3 } from '../../assets/imgs';
 
 const HowItWorks = () => {
-  
   return (
-    <div className={styles.sectionHowItWorks}>
+    <div className={`${styles.sectionHowItWorks}`}>
       <h2 className={styles.titleHowItWorks}>¿Cómo funciona?</h2>
       <div className={styles.howItWorks}>
         <div className={styles.items}>

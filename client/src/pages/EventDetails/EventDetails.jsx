@@ -1,47 +1,46 @@
-import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import LaunchOutlinedIcon from '@mui/icons-material/LaunchOutlined';
-import WarningOutlinedIcon from '@mui/icons-material/WarningOutlined';
-import AddIcon from '@mui/icons-material/Add';
-import { Rating } from '@mui/material';
-import React, { useContext, useState, useEffect, useRef } from 'react';
-import 'react-date-range/dist/styles.css'; // main css file
-import 'react-date-range/dist/theme/default.css'; // theme css file
-import { AiOutlineClose } from 'react-icons/ai';
-import { FaWhatsapp } from 'react-icons/fa';
-import { ImFacebook, ImLinkedin2, ImTwitter } from 'react-icons/im';
-import { IoLinkOutline } from 'react-icons/io5';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { animateScroll as scroll, Element, scroller } from 'react-scroll';
-import swal from 'sweetalert';
-import { Navigation, Pagination } from 'swiper';
-import 'swiper/modules/navigation/navigation.min.css';
-import 'swiper/modules/pagination/pagination.min.css';
-import 'swiper/modules/scrollbar/scrollbar.min.css';
-import { Swiper, SwiperSlide } from 'swiper/react/swiper-react';
-import 'swiper/swiper.min.css';
-import eventsApi from '../../axios/eventsApi';
-import EventComments from '../../components/EventDetails/EventComments';
-import EventLocation from '../../components/EventDetails/EventLocation';
-import EventSideBar from '../../components/EventDetails/EventSideBar';
-import { AuthContext } from '../../context/auth/AuthContext';
-import { stateContext } from '../../context/state/stateContext';
-import { UIContext } from '../../context/ui';
-import { getEvents } from '../../redux/actions';
+import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import LaunchOutlinedIcon from "@mui/icons-material/LaunchOutlined";
+import WarningOutlinedIcon from "@mui/icons-material/WarningOutlined";
+import AddIcon from "@mui/icons-material/Add";
+import { Rating } from "@mui/material";
+import React, { useContext, useState, useEffect, useRef } from "react";
+import "react-date-range/dist/styles.css"; // main css file
+import "react-date-range/dist/theme/default.css"; // theme css file
+import { AiOutlineClose } from "react-icons/ai";
+import { FaWhatsapp } from "react-icons/fa";
+import { ImFacebook, ImLinkedin2, ImTwitter } from "react-icons/im";
+import { IoLinkOutline } from "react-icons/io5";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { animateScroll as scroll, Element, scroller } from "react-scroll";
+import swal from "sweetalert";
+import { Navigation, Pagination } from "swiper";
+import "swiper/modules/navigation/navigation.min.css";
+import "swiper/modules/pagination/pagination.min.css";
+import "swiper/modules/scrollbar/scrollbar.min.css";
+import { Swiper, SwiperSlide } from "swiper/react/swiper-react";
+import "swiper/swiper.min.css";
+import eventsApi from "../../axios/eventsApi";
+import EventComments from "../../components/EventDetails/EventComments";
+import EventLocation from "../../components/EventDetails/EventLocation";
+import EventSideBar from "../../components/EventDetails/EventSideBar";
+import { AuthContext } from "../../context/auth/AuthContext";
+import { stateContext } from "../../context/state/stateContext";
+import { UIContext } from "../../context/ui";
+import { getEvents } from "../../redux/actions";
 // import { formatDate } from '../../utils/formatDate';
-import style from './EventDetails.module.css';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { Hearts } from  'react-loader-spinner';
-
+import style from "./EventDetails.module.css";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import { Hearts } from "react-loader-spinner";
+import formatDateToString from "../../utils/formatDateToString";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 const EventDetails = () => {
   const id = useParams().id;
   const dispatch = useDispatch();
   const allEvents = useSelector((state) => state.events);
   const eventDetails = allEvents.filter((event) => event._id === id)[0];
   const [getDanger, setGetDanger] = useState(false);
-  // const [check, setCheck] = useState(null);
-  const [checked] = useState('');
   const [component, setComponent] = useState(null);
   const [description, setDescription] = useState(false);
   const [heart, setHeart] = useState([]);
@@ -49,7 +48,13 @@ const EventDetails = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { user } = useContext(AuthContext);
   const { notes, setNotes } = useContext(stateContext);
-  const { getEventsFavourites, getEffectRatingEvent, ratingEvent, getEventsWithoutFavourites } = useContext(UIContext);
+  const {
+    getEventsFavourites,
+    getEffectRatingEvent,
+    ratingEvent,
+    getEventsWithoutFavourites,
+    toggleScreenLogin,
+  } = useContext(UIContext);
   const menuRef = useRef();
 
   useEffect(() => {
@@ -62,7 +67,7 @@ const EventDetails = () => {
 
   useEffect(() => {
     const obtenerDatos = async () => {
-      const data = await eventsApi.get('/events/' + id);
+      const data = await eventsApi.get("/events/" + id);
       const json = data.data;
       getEffectRatingEvent(json.rating);
     };
@@ -72,7 +77,7 @@ const EventDetails = () => {
   useEffect(() => {
     const getFav = async () => {
       try {
-        const res = await eventsApi.get('/users/' + user.uid);
+        const res = await eventsApi.get("/users/" + user.uid);
         setHeart(res.data.myFavorites.find((e) => e._id === id));
       } catch (error) {
         console.log(error);
@@ -87,16 +92,16 @@ const EventDetails = () => {
         setIsOpen(false);
       }
     };
-    document.addEventListener('mousedown', handler);
+    document.addEventListener("mousedown", handler);
     return () => {
-      document.removeEventListener('mousedown', handler);
+      document.removeEventListener("mousedown", handler);
     };
   }, []);
 
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
-    }, 5000)
+    }, 5000);
   }, [heart, user]);
 
   /* const handleFormatDate = (check) => {
@@ -107,21 +112,21 @@ const EventDetails = () => {
   const handleClickFav = async (e) => {
     e.preventDefault();
     const fav = {
-      type: 'favoritos',
+      type: "favoritos",
       idUser: user.uid,
     };
     const favorite = {
       idEvent: id,
     };
     try {
-      const json = await eventsApi.post('/users/notifications', fav);
+      const json = await eventsApi.post("/users/notifications", fav);
       getEventsFavourites(user.uid, favorite);
       setNotes([...notes, json.data]);
       setHeart(true);
       swal({
-        text: 'Evento agregado como favorito',
-        icon: 'success',
-        button: 'OK',
+        text: "Evento agregado como favorito",
+        icon: "success",
+        button: "OK",
       });
     } catch (error) {
       console.log(error);
@@ -138,21 +143,21 @@ const EventDetails = () => {
       setHeart(false);
       swal({
         text: 'Evento retirado de "Mi Lista"',
-        icon: 'success',
-        button: 'OK',
+        icon: "success",
+        button: "OK",
       });
-    } 
-    catch (error) {
+    } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const handleAlert = (e) => {
     e.preventDefault();
     swal({
-      title: 'Debes estar registrado para poder agregar un evento como Favorito',
-      icon: 'warning',
-      button: 'Cerrar',
+      title:
+        "Debes estar registrado para poder agregar un evento como Favorito",
+      icon: "warning",
+      button: "Cerrar",
       dangerMode: true,
     });
   };
@@ -160,7 +165,7 @@ const EventDetails = () => {
   const handleClickWatchComments = (e) => {
     e.preventDefault();
     setComponent(<EventComments id={id} />);
-    scroller.scrollTo('comments');
+    scroller.scrollTo("comments");
   };
 
   const handleClickLongDescription = (e) => {
@@ -176,11 +181,79 @@ const EventDetails = () => {
   const handleClickCopy = (e) => {
     e.preventDefault();
     swal({
-      title: 'Enlace copiado',
-      icon: 'success',
-      button: 'OK',
+      title: "Enlace copiado",
+      icon: "success",
+      button: "OK",
     });
-  }
+  };
+
+  const [reportChecked, setReportChecked] = useState("");
+  const [resultMessageReport, setResultMessageReport] = useState(null);
+  const [isLoadingReport, setIsLoadingReport] = useState(false);
+  const handleChangeCheckboxReport = (e) => {
+    const value = e.target.value;
+    setReportChecked(value);
+  };
+
+  const inputReasonForReport = useRef("");
+
+  const sendReportContent = async () => {
+    if (Object.keys(user).length === 0) {
+      return toggleScreenLogin();
+    }
+
+    let reasonToReport = "";
+
+    if (reportChecked === "Otro") {
+      reasonToReport = inputReasonForReport.current.value;
+    } else {
+      reasonToReport = reportChecked;
+    }
+
+    if (reasonToReport === "") {
+      return setResultMessageReport({
+        success: false,
+        message: "Ingrese una razón al reporte.",
+      });
+    }
+
+    setIsLoadingReport(true);
+
+    const dataForReport = {
+      userReport: { name: user.name, email: user.email },
+      eventReport: {
+        title: eventDetails.title,
+        picture: eventDetails.pictures[0].picture,
+        nameOrganizer: eventDetails.organizer.name,
+        emailOrganizer: eventDetails.organizer.email,
+      },
+      dateReport: formatDateToString(new Date()),
+      reasonToReport,
+    };
+
+    try {
+      await eventsApi.put("/events/reportEvent/sendEmail", {
+        dataForReport,
+      });
+
+      setIsLoadingReport(false);
+      setResultMessageReport({
+        success: true,
+        message: "Reporte enviado.",
+      });
+    } catch (error) {
+      setResultMessageReport({
+        success: false,
+        message: error.message,
+      });
+      console.log({ error });
+    }
+  };
+
+  const handleCloseToMenuReport = async () => {
+    setGetDanger(false);
+    setReportChecked(null);
+  };
 
   return (
     <div className={`${style.container} container`}>
@@ -191,7 +264,7 @@ const EventDetails = () => {
               slidesPerView={1}
               spaceBetween={40}
               navigation
-              onSlideChange={() => console.log('slide change')}
+              onSlideChange={() => console.log("slide change")}
               onSwiper={(swiper) => console.log(swiper)}
               modules={[Pagination, Navigation]}
               className={style.mySwipper}
@@ -199,18 +272,25 @@ const EventDetails = () => {
               {eventDetails.pictures.length > 1 ? (
                 eventDetails.pictures.map((picture) => (
                   <SwiperSlide>
-                    <img className={style.img} src={picture.picture} alt='Not Found ):' />
+                    <img
+                      className={style.img}
+                      src={picture.picture}
+                      alt="Not Found ):"
+                    />
                   </SwiperSlide>
                 ))
               ) : (
-                <img className={style.img} src={eventDetails.pictures[0].picture} alt='Not Found ):' />
+                <img
+                  className={style.img}
+                  src={eventDetails.pictures[0].picture}
+                  alt="Not Found ):"
+                />
               )}
             </Swiper>
 
-            {
-              isLoading ?
+            {isLoading ? (
               <div className={style.container_icon_heart_l}>
-                <Hearts 
+                <Hearts
                   height="40"
                   width="40"
                   color="#d53e27"
@@ -219,53 +299,94 @@ const EventDetails = () => {
                   wrapperClass=""
                   visible={true}
                 />
-              </div> :
-              <div>
-                {
-                  eventDetails.organizer._id === user.uid ? (
-                    ''
-                  ) : user.uid && heart ? (
-                  <div className={style.container_icon_heart_p} onClick={handleClickWithoutFav}>
-                    <FavoriteIcon className={style.icon_heart_p} sx={{ fontSize: 25, color: 'white',  margin: 'auto' }} />
-                  </div>
-                  ) :  user.uid && !heart ? (
-                  <div className={style.container_icon_heart} onClick={handleClickFav}>
-                    <AddIcon className={style.icon_heart} sx={{ fontSize: 30, color: '#868686' }} />
-                  </div>
-                  ) : (
-                  <div className={style.container_icon_heart} onClick={handleAlert}>
-                    <AddIcon className={style.icon_heart} sx={{ fontSize: 30, color: '#868686' }} />
-                  </div>)
-                }
               </div>
-            }
+            ) : (
+              <div>
+                {eventDetails.organizer._id === user.uid ? (
+                  ""
+                ) : user.uid && heart ? (
+                  <div
+                    className={style.container_icon_heart_p}
+                    onClick={handleClickWithoutFav}
+                  >
+                    <FavoriteIcon
+                      className={style.icon_heart_p}
+                      sx={{ fontSize: 25, color: "white", margin: "auto" }}
+                    />
+                  </div>
+                ) : user.uid && !heart ? (
+                  <div
+                    className={style.container_icon_heart}
+                    onClick={handleClickFav}
+                  >
+                    <AddIcon
+                      className={style.icon_heart}
+                      sx={{ fontSize: 30, color: "#868686" }}
+                    />
+                  </div>
+                ) : (
+                  <div
+                    className={style.container_icon_heart}
+                    onClick={handleAlert}
+                  >
+                    <AddIcon
+                      className={style.icon_heart}
+                      sx={{ fontSize: 30, color: "#868686" }}
+                    />
+                  </div>
+                )}
+              </div>
+            )}
 
             <div className={style.container_icon_share} ref={menuRef}>
-             
-              <div className={style.label} onClick={handleClickShare} >
-                <LaunchOutlinedIcon className={style.icon_share} sx={{ fontSize: 25 }} />
+              <div className={style.label} onClick={handleClickShare}>
+                <LaunchOutlinedIcon
+                  className={style.icon_share}
+                  sx={{ fontSize: 25 }}
+                />
               </div>
 
               {isOpen && (
                 <div className={style.redes}>
-                  <a href='https://www.facebook.com/' target='_blank' rel='noreferrer noopener'>
+                  <a
+                    href="https://www.facebook.com/"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
                     <ImFacebook className={style.icons} />
                   </a>
 
-                  <a href='https://www.twitter.com/' target='_blank' rel='noreferrer noopener'>
+                  <a
+                    href="https://www.twitter.com/"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
                     <ImTwitter className={style.icons} />
                   </a>
 
-                  <a href='https://www.linkedin.com/' target='_blank' rel='noreferrer noopener'>
+                  <a
+                    href="https://www.linkedin.com/"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
                     <ImLinkedin2 className={style.icons} />
                   </a>
 
-                  <a href='https://web.whatsapp.com/' target='_blank' rel='noreferrer noopener'>
+                  <a
+                    href="https://web.whatsapp.com/"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
                     <FaWhatsapp className={style.icons} />
                   </a>
 
-                  <CopyToClipboard text={`http://localhost:3000/detalles-del-evento/${id}`} >
-                    <IoLinkOutline onClick={handleClickCopy} className={style.icons} />
+                  <CopyToClipboard
+                    text={`http://localhost:3000/detalles-del-evento/${id}`}
+                  >
+                    <IoLinkOutline
+                      onClick={handleClickCopy}
+                      className={style.icons}
+                    />
                   </CopyToClipboard>
                 </div>
               )}
@@ -277,7 +398,7 @@ const EventDetails = () => {
               <div className={style.container_rating}>
                 <Rating
                   className={style.rating}
-                  name='half-rating'
+                  name="half-rating"
                   value={ratingEvent}
                   precision={0.5}
                   readOnly
@@ -295,7 +416,8 @@ const EventDetails = () => {
             </div>
 
             <p className={style.title_description}>
-              <DescriptionOutlinedIcon fontSize='large' /> Descripcion Del Evento
+              <DescriptionOutlinedIcon fontSize="large" /> Descripcion Del
+              Evento
             </p>
 
             <p className={style.description}>{eventDetails.shortDescription}</p>
@@ -304,7 +426,13 @@ const EventDetails = () => {
               <p onClick={handleClickLongDescription}>Ver más</p>
             </div>
 
-            {description ? <p className={style.description}>{eventDetails.longDescription}</p> : ''}
+            {description ? (
+              <p className={style.description}>
+                {eventDetails.longDescription}
+              </p>
+            ) : (
+              ""
+            )}
 
             <div className={style.line}></div>
 
@@ -312,68 +440,144 @@ const EventDetails = () => {
               <WarningOutlinedIcon fontSize="medium"/>   Reportar Contenido Inapropiado
             </p> */}
 
-            <p onClick={() => setGetDanger(!getDanger)} className={style.report}>
-              <WarningOutlinedIcon fontSize='medium' /> Reportar Contenido Inapropiado
+            <p
+              onClick={() => setGetDanger(!getDanger)}
+              className={style.report}
+            >
+              <WarningOutlinedIcon fontSize="medium" /> Reportar Contenido
+              Inapropiado
             </p>
 
             {getDanger && (
               <div className={style.containerMenuGetDanger}>
                 <div className={style.closeMenuGetDanger}>
-                  <button onClick={() => setGetDanger(false)}>
+                  <button onClick={handleCloseToMenuReport}>
                     <AiOutlineClose />
                   </button>
                 </div>
                 <div className={style.containerDescription}>
                   <h2 className={style.menuTitle}>
-                    ¿Por qué consideras que el contenido de esta opinión es inapropiado?{' '}
+                    ¿Por qué consideras que el contenido de esta opinión es
+                    inapropiado?{" "}
                   </h2>
                 </div>
                 <div className={style.containerDanger}>
                   <div className={style.containerFormDanger}>
                     <div className={style.menuOptions}>
-                      <form action=''>
+                      <form className={style.formReport} action="">
                         <div className={style.formGroup}>
-                          <label htmlFor='check'>
-                            <input type='checkbox' id='check' value={checked} defaultChecked={false} />
+                          <label htmlFor="despectivo">
+                            <input
+                              type="checkbox"
+                              id="despectivo"
+                              value={"Despectivo"}
+                              defaultChecked={false}
+                              className={style.checkboxReport}
+                              checked={reportChecked === "Despectivo"}
+                              onChange={handleChangeCheckboxReport}
+                            />
                             Despectivo
                           </label>
                         </div>
                         <div className={style.formGroup}>
-                          <label htmlFor='check'>
-                            <input type='checkbox' id='check' value={checked} defaultChecked={false} />
+                          <label htmlFor="racista">
+                            <input
+                              type="checkbox"
+                              id="racista"
+                              value={"Racista"}
+                              defaultChecked={false}
+                              className={style.checkboxReport}
+                              checked={reportChecked === "Racista"}
+                              onChange={handleChangeCheckboxReport}
+                            />
                             Racista
                           </label>
                         </div>
                         <div className={style.formGroup}>
-                          <label htmlFor='check'>
-                            <input type='checkbox' id='check' value={checked} defaultChecked={false} />
+                          <label htmlFor="violencia">
+                            <input
+                              type="checkbox"
+                              id="violencia"
+                              value={"Violencia"}
+                              defaultChecked={false}
+                              className={style.checkboxReport}
+                              checked={reportChecked === "Violencia"}
+                              onChange={handleChangeCheckboxReport}
+                            />
                             Incita a la violencia
                           </label>
                         </div>
                         <div className={style.formGroup}>
-                          <label htmlFor='check'>
-                            <input type='checkbox' id='check' value={checked} defaultChecked={false} />
+                          <label htmlFor="sexual">
+                            <input
+                              type="checkbox"
+                              id="sexual"
+                              value={"Sexual"}
+                              className={style.checkboxReport}
+                              checked={reportChecked === "Sexual"}
+                              onChange={handleChangeCheckboxReport}
+                            />
                             Sexual explicito
                           </label>
                         </div>
                         <div className={style.formGroup}>
-                          <label htmlFor='check'>
-                            <input type='checkbox' id='check' value={checked} defaultChecked={false} />
+                          <label htmlFor="otro">
+                            <input
+                              type="checkbox"
+                              id="otro"
+                              value={"Otro"}
+                              defaultChecked={false}
+                              className={style.checkboxReport}
+                              checked={reportChecked === "Otro"}
+                              onChange={handleChangeCheckboxReport}
+                            />
                             Otro
                           </label>
                         </div>
                         <div className={style.formGroup}>
-                          <label htmlFor='check'>Si otro, indicar cual: </label>
-                          <input type='text' id='check' value={checked} />
+                          <label htmlFor="other-reason">
+                            Si otro, indicar cual:{" "}
+                          </label>
+                          <input
+                            ref={inputReasonForReport}
+                            type="text"
+                            id="other-reason"
+                          />
                         </div>
+
                         <div className={style.containerBtn}>
-                          <button type='submit' className={style.btnMenuDanger}>
+                          <button
+                            onClick={sendReportContent}
+                            type="button"
+                            className={style.btnMenuDanger}
+                          >
                             Reportar
                           </button>
-                          <button type='submit' className={style.btnMenuDanger}>
+                          <button
+                            onClick={handleCloseToMenuReport}
+                            type="button"
+                            className={style.btnMenuDanger}
+                          >
                             Cancelar
                           </button>
+                          {isLoadingReport && (
+                            <AiOutlineLoading3Quarters
+                              className={style.iconLoadingReport}
+                            />
+                          )}
                         </div>
+                        {resultMessageReport && (
+                          <p
+                            style={{
+                              color: resultMessageReport.success
+                                ? "#29aa79"
+                                : "#d53e27",
+                            }}
+                            className={style.errorMessageReportEvent}
+                          >
+                            {resultMessageReport.message}
+                          </p>
+                        )}
                       </form>
                     </div>
                   </div>
@@ -382,12 +586,12 @@ const EventDetails = () => {
             )}
           </div>
         ) : (
-          ''
+          ""
         )}
 
         <EventLocation id={id} />
 
-        <Element name='comments'>{component ? component : ''}</Element>
+        <Element name="comments">{component ? component : ""}</Element>
       </div>
 
       <div className={style.item2}>

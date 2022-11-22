@@ -21,6 +21,7 @@
 .containerInfo {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
 }
 
@@ -71,7 +72,8 @@
   box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.3);
 }
 
-.buttonOrganizar {
+.buttonOrganizar,
+.buttonOrganizarMenu {
   font-size: 1.4rem;
   border-radius: 18px;
   text-align: center;
@@ -80,6 +82,10 @@
   background-color: transparent;
   color: var(--color-orange);
   border: 1px solid var(--color-orange);
+}
+
+.buttonOrganizarMenu {
+  display: none;
 }
 
 /* USER LOGGED */
@@ -148,6 +154,19 @@
   flex-direction: column;
   gap: 1rem;
 }
+.containerProfileMenu > * {
+  transition: all 0.2s;
+}
+
+.containerProfileMenu > *:hover {
+  color: var(--color-orange);
+}
+
+.buttonOrganizarMenu {
+  padding: 0;
+  border: none;
+  text-align: left;
+}
 
 .notifications {
   position: absolute;
@@ -197,4 +216,154 @@
   display: flex;
   justify-content: center;
   text-decoration: underline;
+}
+
+/* MENU RESPONSIVE */
+
+.hamburgerIcon {
+  display: none;
+  font-size: 5rem;
+  color: var(--color-orange);
+}
+
+.navMyListMenu {
+  display: none;
+}
+
+@media screen and (max-width: 1188px) {
+  .navMyList {
+    display: none;
+  }
+  .navMyListMenu {
+    display: block;
+  }
+  .containerProfileMenu {
+    bottom: -20.5rem;
+  }
+}
+
+@media screen and (max-width: 1160px) {
+  .buttonOrganizar {
+    display: none;
+  }
+
+  .buttonOrganizarMenu {
+    display: block;
+  }
+  .containerProfileMenu {
+    bottom: -24.5rem;
+  }
+}
+
+@media screen and (max-width: 910px) {
+  .container_div {
+    justify-content: center;
+    gap: 2.4rem;
+  }
+
+  .container_div > * {
+    padding: 0;
+  }
+
+  .containerNotification {
+    justify-content: center;
+    gap: 2.8rem;
+  }
+}
+
+@media screen and (max-width: 712px) {
+  .containerNotification {
+    display: none;
+  }
+
+  .containerName {
+    display: none;
+  }
+
+  .iconMenu {
+    display: none;
+  }
+  .searchComponent {
+    display: none;
+  }
+
+  .hamburgerIcon {
+    display: block;
+  }
+}
+
+.menu {
+  position: fixed;
+  width: 70%;
+  top: 0;
+  left: 0;
+
+  height: 100vh;
+  padding: 2rem;
+  background-color: white;
+  animation: menu 0.6s ease-in-out;
+}
+
+.iconCloseMenu {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  font-size: 4.2rem;
+  color: var(--color-orange);
+}
+
+.listItemsMenu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5.2rem;
+  width: 100%;
+  height: 100%;
+  padding: 2rem;
+}
+
+.itemMenu {
+  font-size: 2.4rem;
+  font-weight: bold;
+  color: var(--color-orange);
+}
+
+.itemMenu button {
+  border: none;
+  background: none;
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+}
+
+.btnCreateEvent {
+  text-align: center;
+  background-color: var(--color-orange) !important;
+  color: white !important;
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+}
+
+.auxDiv {
+  display: none;
+}
+
+@media screen and (max-width: 478px) {
+  .container_div {
+    display: none;
+  }
+  .auxDiv {
+    display: block;
+  }
+}
+
+@keyframes menu {
+  0% {
+    left: -100%;
+  }
+
+  100% {
+    left: 0;
+  }
 }

@@ -1,6 +1,8 @@
 .container {
     width: 100%;
     height: 100%;
+  display: flex;
+
   }
   
   .containerForm {
@@ -78,6 +80,14 @@
     margin-top: 5rem;
   }
   
+  .containerFormDate {
+    overflow-y: auto;
+  }
+  
+  .containerFormDate::-webkit-scrollbar {
+    display: none;
+  }
+
   .title {
     color: #1b3c6a;
     font-size: 2.4rem;

@@ -13,25 +13,18 @@ import Card from '../Cards/Card';
 import styles from './Events.module.css';
 
 const Events = () => {
-
   //Fecha actual
   const fecha = new Date();
   const hora = fecha.getHours();
   const minutes = fecha.getMinutes();
-  const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
-
-
+  const dateActual =
+    fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
 
   const todosLosEventos = useSelector((state) => state.events);
 
-
-  const allEvents = todosLosEventos.filter((event) => event.isPublic === true && event.inRevision === false);
-  
-
-
-
-  
-  
+  const allEvents = todosLosEventos.filter(
+    (event) => event.isPublic === true && event.inRevision === false
+  );
 
   //POPULARES//
 
@@ -41,7 +34,6 @@ const Events = () => {
     return 0;
   });
   const mostPopular = orderByRating.slice(0, 20);
-
 
   //ESTA SEMANA//
 
@@ -57,21 +49,20 @@ const Events = () => {
   let weekEvents = [];
 
   for (let a = 1; a <= week.length; a++) {
-    allEvents.map((evento)=>{
-      evento.dates.map((date)=>{
-        if(date.date === week[a]){
+    allEvents.map((evento) => {
+      evento.dates.map((date) => {
+        if (date.date === week[a]) {
           weekEvents.push(evento);
         }
-      })
-    })
+      });
+    });
   }
 
   const eventsWeek = weekEvents.filter((e) => e !== undefined);
 
   //FRESQUITOS//
-  
 
-  const newEvents = allEvents.slice(allEvents.length-18);
+  const newEvents = allEvents.slice(allEvents.length - 18);
   const newEventsReverse = newEvents.reverse();
 
   //USUARIO//
@@ -92,14 +83,31 @@ const Events = () => {
     }
   };
 
+  const [cardPerView, setCardPerView] = useState(4);
+
+  useEffect(() => {
+    if (window.innerWidth <= 623) return setCardPerView(2.1);
+    if (window.innerWidth <= 692) return setCardPerView(2.3);
+    if (window.innerWidth <= 1160) return setCardPerView(2.5);
+    if (window.innerWidth <= 1490) return setCardPerView(3.5);
+  }, [window.innerWidth]);
+  
+  window.onresize = function() {
+    if (window.innerWidth <= 623) return setCardPerView(2.1);
+    if (window.innerWidth <= 692) return setCardPerView(2.3);
+    if (window.innerWidth <= 1160) return setCardPerView(2.5);
+    if (window.innerWidth <= 1490) return setCardPerView(3.5);
+  };
   return (
     <>
-      <div className={styles.cardsSection}>
+      <div className={`${styles.cardsSection} container`}>
         <p className={styles.titleCards}>Populares</p>
         <div className={styles.cardsCarousel}>
           <Swiper
-            slidesPerView={4}
-            slidesPerGroup={4}
+            slidesPerView={cardPerView}
+            slidesPerGroup={
+              cardPerView === 4 ? 4 : Math.trunc(cardPerView - 0.5)
+            }
             navigation
             spaceBetween={0}
             modules={[Navigation]}
@@ -121,8 +129,10 @@ const Events = () => {
         <p className={styles.titleCards}>Esta Semana</p>
         <div className={styles.cardsCarousel}>
           <Swiper
-            slidesPerView={4}
-            slidesPerGroup={4}
+            slidesPerView={cardPerView}
+            slidesPerGroup={
+              cardPerView === 4 ? 4 : Math.trunc(cardPerView - 0.5)
+            }
             spaceBetween={0}
             navigation
             modules={[Pagination, Navigation]}
@@ -144,8 +154,10 @@ const Events = () => {
         <p className={styles.titleCards}>Fresquitos</p>
         <div className={styles.cardsCarousel}>
           <Swiper
-            slidesPerView={4}
-            slidesPerGroup={4}
+            slidesPerView={cardPerView}
+            slidesPerGroup={
+              cardPerView === 4 ? 4 : Math.trunc(cardPerView - 0.5)
+            }
             spaceBetween={0}
             navigation
             modules={[Pagination, Navigation]}
@@ -167,13 +179,15 @@ const Events = () => {
         <p className={styles.titleCards}>Mi Lista</p>
         <div className={styles.cardsCarousel}>
           <Swiper
-            slidesPerView={4}
-            slidesPerGroup={4}
+            slidesPerView={cardPerView}
+            slidesPerGroup={
+              cardPerView === 4 ? 4 : Math.trunc(cardPerView - 0.5)
+            }
             spaceBetween={0}
             navigation
             modules={[Pagination, Navigation]}
             className={styles.mySwipper}
-          >            
+          >
             {userData.myFavorites !== undefined ? (
               userData.myFavorites.map((event) => {
                 return (

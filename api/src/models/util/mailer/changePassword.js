@@ -1,11 +1,11 @@
-const { createTransport } = require('nodemailer');
-const dotenv = require('dotenv').config();
+const { createTransport } = require("nodemailer");
+const dotenv = require("dotenv").config();
 
 const { EMAIL, PASSWORD } = process.env;
 
- const changePasswordMail = async (email, link) => {
+const changePasswordMail = async (email, link) => {
   const transporter = createTransport({
-    service: 'gmail',
+    service: "gmail",
     secure: true,
     auth: {
       user: EMAIL,
@@ -14,7 +14,7 @@ const { EMAIL, PASSWORD } = process.env;
   });
 
   let mail_options = {
-    from: 'Lo quiero hacer',
+    from: "Lo quiero hacer",
     to: email,
     subject: `Cambiar contraseña - Lo que quiero hacer`,
     html: `<html lang="en">
@@ -59,7 +59,7 @@ const { EMAIL, PASSWORD } = process.env;
           display: block;
           height: 4.2rem;
           width: 100%;
-          background-color: #ff922b;
+          background-color: #d53e27;
         }
   
         .container-info {
@@ -91,6 +91,7 @@ const { EMAIL, PASSWORD } = process.env;
           text-align: start;
           font-size: 1.6rem;
           margin-bottom: 2.4rem;
+          color: #d53e27;
         }
       </style>
     </head>
@@ -113,11 +114,11 @@ const { EMAIL, PASSWORD } = process.env;
   };
   try {
     const response = await transporter.sendMail(mail_options);
-    return { msg: ('SE ENVIO CON EXITO', response.response) };
+    return { msg: ("SE ENVIO CON EXITO", response.response) };
   } catch (error) {
-    return { msg: ('FALLO EL ENVIO DE EMAIL', error) };
+    return { msg: ("FALLO EL ENVIO DE EMAIL", error) };
   }
 };
-module.exports={
-  changePasswordMail
-}
+module.exports = {
+  changePasswordMail,
+};

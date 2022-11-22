@@ -189,12 +189,12 @@
   margin-top: 10px;
 }
 
-.report{
+.report {
   cursor: pointer;
 }
 
-.report:hover{
-  color:orange
+.report:hover {
+  color: orange;
 }
 
 /* MENU CHECK */
@@ -288,5 +288,3 @@
   color: var(--color-grey-3);
   cursor: pointer;
 }
-
-

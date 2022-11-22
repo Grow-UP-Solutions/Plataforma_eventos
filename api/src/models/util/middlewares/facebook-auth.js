@@ -7,7 +7,8 @@ passport.use(
     {
       clientID: process.env.FACEBOOK_CLIENT_ID,
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-      callbackURL: 'https://plataformaeventos-production.up.railway.app/users/login/facebook/callback',
+      callbackURL:
+        'https://plataformaeventos-production-e0ed.up.railway.app/users/login/facebook/callback',
       profileFields: ['displayName', 'email', 'photos'],
     },
     function (accessToken, refreshToken, profile, done) {
@@ -17,5 +18,4 @@ passport.use(
 );
 
 /* http://localhost:3001 */
-/* https://plataformaeventos-production-6111.up.railway.app */
-/* https://plataformaeventos-production.up.railway.app */
+/* https://plataformaeventos-production-e0ed.up.railway.app/ */

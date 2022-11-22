@@ -1382,8 +1382,8 @@ const EventEdit = () => {
   return (
     <div>
       <div className={`${styles.container} container`}>
-        <div className={styles.container}>
-         <div ref={ref} className={styles.containerForm}>
+        <div>
+         <div ref={ref}>
           <form  className='containerSwiper' onSubmit={(e) => handleSubmit(e)}>
           <Swiper
                 slidesPerView={1}
@@ -2084,7 +2084,7 @@ const EventEdit = () => {
                 </div>
 
                 {/* form */}
-                <div className={styles.container1}>
+                <div className={`${styles.container1} ${styles.containerFormDate}`} >
                   {/* titulo*/}
                   <div>
                     <p className={styles.title}>Costo y fecha</p>
