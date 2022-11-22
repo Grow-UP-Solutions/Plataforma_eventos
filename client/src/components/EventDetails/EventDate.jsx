@@ -84,7 +84,6 @@ const EventDate = ({ id }) => {
       for(let i = 0 ; i<eventDetails.dates.length ; i++){
         if(eventDetails.dates[i]._id===fechaElegida){
           const datesChoosen=eventDetails.dates[i]
-          console.log('datesChoosen',datesChoosen)
           setDateToBuy([
             ...dateToBuy,datesChoosen
            
