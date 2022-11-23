@@ -28,45 +28,16 @@ const Cart = () => {
   const { carrito, setCarrito } = useContext(stateContext);
   const { dateToBuy, setDateToBuy } = useContext(stateContext);
   const { code, setCode } = useContext(stateContext);
+  const { valorTotal, setValorTotal } = useContext(stateContext);
+  const { subTotal , setSubTotal } = useContext(stateContext);
   const dispatch = useDispatch()
 
-  const [subTotal , setSubTotal] = useState('')
+  
   const [descuentoTotal , setDescuentoTotal] = useState('')
   const [administracion , setAdministracion] = useState(subTotal*0.16)
   const [iva , setIva] = useState(subTotal*0.19)
-  const [valorTotal , setValorTotal] = useState('')
-  //console.log('valorTotal fuera',valorTotal)
-
-  useEffect(() => {
-
-    const sTotal = []
-    for(let j = 0; j<dateToBuy.length; j++){
-    
-      for(let i = 0; i<carrito.length; i++){
-        
-        if(carrito[i].idDate===dateToBuy[j]._id){
-         
-        carrito[i].subtotal = carrito[i].quantity * dateToBuy[j].price
-        carrito[i].codigoCorrecto=''
-        carrito[i].codigoDescuento=''
-        carrito[i].descuento=''
-        carrito[i].price=dateToBuy[j].price
-
-        sTotal.push(carrito[i].subtotal)
-        let total = sTotal.reduce((a, b) => a + b, 0);
-
-        let iva = total *0.19
-        let administracion = total *0.16
-        let totalValor = iva +administracion+ total
-        setSubTotal(total)
-        setValorTotal(totalValor)
-        // console.log('total:',total)
-        // console.log('totalValor:',totalValor)
-        // console.log('valor total []',valorTotal)
-    }}}
-   
-  }, []);
-
+  
+ 
   //PAGINADO//
 
   const [currentPage, setCurretPage] = useState(1);
@@ -99,15 +70,15 @@ const Cart = () => {
   
 
   useEffect(() => {
+    
     const ivaFinal = subTotal*0.19
     const adminfinal = subTotal*0.16
-      const precioTotal = subTotal + subTotal*0.19 + subTotal*0.16 - descuentoTotal
-     
-
+    const precioTotal = subTotal + subTotal*0.19 + subTotal*0.16 - descuentoTotal
+    
       setAdministracion(adminfinal)
       setIva(ivaFinal)
       setValorTotal(precioTotal)
-     // console.log('valor total [subTotal]',valorTotal)
+      
 
     }, [subTotal]);
 
@@ -154,7 +125,6 @@ const Cart = () => {
   }, [numberBuyCupos]);
 
 
-  
 
  
 // -----CODIGOS-------//
@@ -555,25 +525,23 @@ const Cart = () => {
 
               <div className={styles.containerDetailsBuy}>
                  
-                    <div className={styles.detailsBuy}>
-                      <p>Subtotal</p>
-                      <span>${subTotal}</span>
-                    </div>
-                    <div className={styles.detailsBuy}>
-                      <p>Descuento</p>
-                      <span className={styles.detailDiscount}>-${descuentoTotal}</span>
-                    </div>
-                    <div className={styles.detailsBuy}>
-                      <p>Administración</p>
-                      <span>${administracion}</span>
-                    </div>
-                    <div className={styles.detailsBuy}>
-                      <p>Valor IVA</p>
-                      <span>${iva}</span>
-                    </div>
-                    <div className={styles.formDivisor} />
-              
-                
+                <div className={styles.detailsBuy}>
+                  <p>Subtotal</p>
+                  <span>${subTotal}</span>
+                </div>
+                <div className={styles.detailsBuy}>
+                  <p>Descuento</p>
+                  <span className={styles.detailDiscount}>-${descuentoTotal}</span>
+                </div>
+                <div className={styles.detailsBuy}>
+                  <p>Administración</p>
+                  <span>${administracion}</span>
+                </div>
+                <div className={styles.detailsBuy}>
+                  <p>Valor IVA</p>
+                  <span>${iva}</span>
+                </div>
+                <div className={styles.formDivisor} />
                 <div className={`${styles.detailsBuy} ${styles.totalBuy}`}>
                   <p>Valor total Inc IVA</p>
                   <span>${valorTotal}</span>

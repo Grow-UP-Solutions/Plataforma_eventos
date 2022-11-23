@@ -30,6 +30,7 @@ const EventDate = ({ id }) => {
   const { user, logged, logout } = useContext(AuthContext);
   const [checked, setChecked] = useState(false);
   const { carrito, setCarrito } = useContext(stateContext);
+  const { dateToBuy, setDateToBuy} = useContext(stateContext);
   const [resultFormNewDate, setResultFormNewDate] = useState(false);
   const [isLoadingNewDate, setIsLoadingNewDate] = useState(false);
 
@@ -104,8 +105,7 @@ const EventDate = ({ id }) => {
     setChecked(true);
     const fechaElegida = e.target.value;
     if (!e.target.checked) {
-      console.log("No checke");
-      let seleccion = carrito.filter((f) => f.fechaId !== fechaElegida);
+      let seleccion = carrito.filter((f) => f.idDate !== fechaElegida);
       setCarrito(seleccion);
 
       // for( let i = 0 ; i<eventDetails.dates.length ; i++){
@@ -119,8 +119,8 @@ const EventDate = ({ id }) => {
       setCarrito([
         ...carrito,
         {
-          fechaId: fechaElegida,
-          cupos: 0,
+          idDate: fechaElegida,
+          quantity: 0,
           price: price,
           codigoDescuento: "",
           codigoReferido: "",
@@ -237,7 +237,7 @@ const EventDate = ({ id }) => {
 
                         {carrito.length > 0 ? (
                           carrito.map((c) =>
-                            c.fechaId === date._id ? (
+                            c.idDate === date._id ? (
                               <EventDateMap id={date._id} />
                             ) : (
                               ""
