@@ -61,7 +61,7 @@ router.post("/orden", async (req, res) => {
 
          back_urls: {
             success:
-               `https://plataformaeventos-production.up.railway.app/mercadoPago/success?codigo=${codigosPrueba}`,
+               `http://localhost:3001/mercadoPago/success?codigo=${codigosPrueba}`,
             failure:
                "https://plataformaeventos-production.up.railway.app/mercadoPago/fail",
          },
