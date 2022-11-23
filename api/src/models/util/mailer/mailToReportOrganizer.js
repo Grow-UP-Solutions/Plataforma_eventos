@@ -1,5 +1,5 @@
-const { createTransport } = require("nodemailer");
-require("dotenv").config();
+const { createTransport } = require('nodemailer');
+require('dotenv').config();
 
 const { EMAIL, PASSWORD } = process.env;
 
@@ -14,7 +14,7 @@ const sendEmailToReportOrganizer = async (
   pictureOrganizer
 ) => {
   const transporter = createTransport({
-    service: "gmail",
+    service: 'gmail',
     secure: true,
     auth: {
       user: EMAIL,
@@ -23,8 +23,8 @@ const sendEmailToReportOrganizer = async (
   });
 
   let mail_options = {
-    from: "Lo quiero hacer",
-    to: email,
+    from: 'Lo quiero hacer',
+    to: process.env.MAIL_CLIENT,
     subject: `Reportaron a un organizador, ${nameOrganizer}`,
     html: `<!DOCTYPE html>
     <html lang="en">
@@ -214,9 +214,9 @@ const sendEmailToReportOrganizer = async (
   };
   try {
     const response = await transporter.sendMail(mail_options);
-    return { msg: ("SE ENVIO CON EXITO", response.response) };
+    return { msg: ('SE ENVIO CON EXITO', response.response) };
   } catch (error) {
-    return { msg: ("FALLO EL ENVIO DE EMAIL", error) };
+    return { msg: ('FALLO EL ENVIO DE EMAIL', error) };
   }
 };
 module.exports = {
