@@ -30,9 +30,14 @@
   font-weight: normal;
   color: rgba(134, 134, 134, 255);
   font-size: 1.3rem;
+  font-family: inherit;
   float: none;
   cursor: pointer;
   width: 18rem;
+}
+
+.cardDate:focus {
+  outline: none;
 }
 
 /* .cardCupos {
@@ -79,8 +84,8 @@
 
 .cardAddLoad {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 2%;
+  right: 3%;
   border-radius: 50%;
   box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.2);
 }
@@ -412,6 +417,11 @@
   cursor: pointer;
 }
 
+.loadingHearts {
+  width: 3.4rem;
+  height: 3.4rem;
+}
+
 @media screen and (max-width: 692px) {
   .cardDate {
     padding: 0.5rem;
@@ -424,8 +434,25 @@
     width: 26rem;
   }
 
-  .cardDate {
-    width: 12rem;
+  .cardAddLoad {
+    top: 1%;
+    right: 4%;
+    width: 3.4rem;
+    height: 3.4rem;
+  }
+
+  .cardDate,
+  .cardCuposCurrent,
+  .cardDateCurrent {
+    width: 14rem;
+    border-radius: 3px;
+  }
+
+  .cardCuposCurrent,
+  .cardDateCurrent {
+    font-size: 1.2rem;
+    padding: 0.8rem;
+    border-radius: 3px;
   }
 
   .cardAddFavHeart {
@@ -457,10 +484,12 @@
   }
 
   .cardRating {
-    margin-right: 3rem;
+    margin-right: 1rem;
   }
 
-  .cardOrgInfo {
+  .cardRating .numberRating {
+    font-size: 1.6rem;
+    color: var(--color-grey-3);
   }
 
   .vLine:nth-child(5) {

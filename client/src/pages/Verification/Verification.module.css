@@ -28,7 +28,6 @@
 .mail {
   font-size: 2.5rem;
   color: var(--color-grey-2);
-
   margin-bottom: 5rem;
 }
 
@@ -109,4 +108,36 @@
   font-weight: bold;
   color: var(--color-orange);
   margin-bottom: 3rem;
+}
+
+@media screen and (max-width: 640px) {
+  .title {
+    width: 80%;
+    margin-bottom: 0;
+  }
+  .boxContent {
+    margin: 0 4rem;
+  }
+}
+
+@media screen and (max-width: 486px) {
+  .boxContent {
+    margin: 1rem;
+  }
+
+  .title {
+    width: 100%;
+    font-size: 2.4rem;
+  }
+
+  .containerInputs {
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .containerInputs input {
+    width: 6rem;
+    height: 6rem;
+    font-size: 3.2rem;
+  }
 }
