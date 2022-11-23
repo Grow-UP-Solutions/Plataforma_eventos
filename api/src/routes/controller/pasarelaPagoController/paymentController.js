@@ -87,19 +87,19 @@ router.post("/orden", async (req, res) => {
 
 router.get("/success", async (req, res) => {
    const { external_reference, payment_id, preference_id, codigo } = req.query;
-   console.log(req.query)
    const ids = external_reference.split(",");
-
+   console.log('QUERY',req.query)
    const idEvent = ids[0];
-
+   
    const idUser = ids[1];
-
+   
    try {
       const dataPayments = await axios(
          `https://api.mercadopago.com/v1/payments/${payment_id}?access_token=${ACCESS_TOKEN}`
-      );
-
-      const response = dataPayments.data;
+         );
+         
+         const response = dataPayments.data;
+         console.log('RESPONSE',response)
 
       const cuposComprados = response.additional_info.items.map((e) =>
          parseInt(e.quantity)
