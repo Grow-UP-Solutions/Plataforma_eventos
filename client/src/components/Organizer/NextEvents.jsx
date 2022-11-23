@@ -4,6 +4,7 @@ import styles from './NextEvents.module.css';
 import Pagination from '../../components/Pagination/Pagination';
 
 const NextEvent = ({ nextEvent }) => {
+  console.log('nextEvent:',nextEvent)
   const [currentPage, setCurretPage] = useState(1);
   const CardPerPage = 8;
   const indexOfLastCard = currentPage * CardPerPage;
