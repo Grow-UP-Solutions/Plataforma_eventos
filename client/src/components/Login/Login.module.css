@@ -25,6 +25,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  overflow: hidden;
 }
 
 .title {
@@ -242,23 +244,38 @@
   border-bottom: 1px solid var(--color-orange);
 }
 
-.containerModalChangePassword {
+.overlayModalChangePassword {
   position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: grid;
+  place-items: center;
+}
 
+.containerModalChangePassword {
   padding: 3rem 2rem;
-
   border-radius: 10px;
   background-color: white;
   box-shadow: 0px 2px 2px 1px rgba(0, 0, 0, 0.5);
   text-align: center;
-  transform: scale(1.2);
-
   animation: introModal 0.3s;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.containerModalChangePassword h2 {
+  font-size: 3.2rem;
+  color: var(--color-blue);
 }
 
 .containerModalChangePassword p {
-  font-size: 2.4rem;
-  margin-bottom: 2rem;
+  font-size: 2rem;
+  color: var(--color-grey-3);
+  width: 45rem;
 }
 
 .containerModalChangePassword button {
@@ -305,5 +322,23 @@
   .providerGoogle {
     width: 32rem;
     gap: 1.78rem;
+  }
+
+  .containerModalChangePassword {
+    border-radius: 1rem;
+  }
+
+  .containerModalChangePassword h2 {
+    font-size: 2.4rem;
+    color: var(--color-blue);
+  }
+
+  .containerModalChangePassword p {
+    font-size: 1.6rem;
+    color: var(--color-grey-3);
+    width: 42rem;
+  }
+  .containerModalChangePassword button {
+    font-size: 2.4rem;
   }
 }

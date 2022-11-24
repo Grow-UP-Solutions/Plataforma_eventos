@@ -28,10 +28,7 @@ const Register = () => {
     canReceivedInformation: true,
   });
 
-  const [errorsInputs, handleChangeInputValue] = useValidateForm(
-    formData,
-    setFormData
-  );
+  const [errorsInputs, handleChangeInputValue] = useValidateForm(formData, setFormData);
 
   /* FUNCTIONS FOR VISIBLE PASSWORDS */
   const [isPasswordVisible, setIsPasswordVisible] = useState({
@@ -61,11 +58,7 @@ const Register = () => {
   const onRegister = async (e) => {
     e.preventDefault();
 
-    if (
-      formData.name === '' ||
-      formData.password === '' ||
-      formData.confirmPassword === ''
-    ) {
+    if (formData.name === '' || formData.password === '' || formData.confirmPassword === '') {
       return setMessageError({
         error: true,
         message: 'Ingrese los datos correctamente',
@@ -130,13 +123,7 @@ const Register = () => {
           }
 
           if (provider === 'google') {
-            const {
-              sub,
-              name,
-              email,
-              family_name,
-              given_name,
-            } = event.data._json;
+            const { sub, name, email, family_name, given_name } = event.data._json;
 
             user = {
               email,
@@ -174,17 +161,11 @@ const Register = () => {
     <div className={`${styles.pageRegister} container`}>
       <h1 className={styles.title}>Registrate</h1>
       <div className={styles.loginProviders}>
-        <button
-          onClick={() => registerWithProvider('facebook')}
-          className={styles.providerFacebook}
-        >
+        <button onClick={() => registerWithProvider('facebook')} className={styles.providerFacebook}>
           <IconFacebook />
           <span>Ingresa con Facebook</span>
         </button>
-        <button
-          onClick={() => registerWithProvider('google')}
-          className={styles.providerGoogle}
-        >
+        <button onClick={() => registerWithProvider('google')} className={styles.providerGoogle}>
           <IconGoogle />
           <span>Ingresa con Google</span>
         </button>
@@ -201,23 +182,11 @@ const Register = () => {
         <div className={styles.containerInputsForm}>
           <div className={styles.formGroup}>
             <label htmlFor='name'>Nombre(s)</label>
-            <input
-              autoComplete='off'
-              type='text'
-              id='name'
-              onChange={handleChangeInputValue}
-              required
-            />
+            <input autoComplete='off' type='text' id='name' onChange={handleChangeInputValue} required />
           </div>
           <div className={styles.formGroup}>
             <label htmlFor='lastName'>Apellido(s)</label>
-            <input
-              autoComplete='off'
-              type='text'
-              id='lastName'
-              onChange={handleChangeInputValue}
-              required
-            />
+            <input autoComplete='off' type='text' id='lastName' onChange={handleChangeInputValue} required />
           </div>
           <div className={styles.formGroup}>
             <label htmlFor='mail'>Email</label>
@@ -231,17 +200,14 @@ const Register = () => {
               autoComplete='off'
               required
             />
-            {errorsInputs.mail === false && (
-              <span className={styles.errorMessage}>Formato invalido</span>
-            )}
+            {errorsInputs.mail === false && <span className={styles.errorMessage}>Formato invalido</span>}
           </div>
           <div className={styles.formGroup}>
             <label htmlFor='password'>Contraseña</label>
             <div className={styles.containerInputForPassword}>
               <input
                 style={{
-                  border:
-                    errorsInputs.password === false && '1px solid #C34A33',
+                  border: errorsInputs.password === false && '1px solid #C34A33',
                 }}
                 type={isPasswordVisible.password ? 'text' : 'password'}
                 id='password'
@@ -253,10 +219,7 @@ const Register = () => {
               />
 
               {!isPasswordVisible.password ? (
-                <FiEye
-                  onClick={() => handleChangeVisiblePassword('password')}
-                  className={styles.iconVisiblePassword}
-                />
+                <FiEye onClick={() => handleChangeVisiblePassword('password')} className={styles.iconVisiblePassword} />
               ) : (
                 <FiEyeOff
                   onClick={() => handleChangeVisiblePassword('password')}
@@ -264,9 +227,7 @@ const Register = () => {
                 />
               )}
               {errorsInputs.password === false && (
-                <span className={styles.errorMessage}>
-                  Contraseña sin el formato especificado.
-                </span>
+                <span className={styles.errorMessage}>Contraseña sin el formato especificado.</span>
               )}
             </div>
           </div>
@@ -275,9 +236,7 @@ const Register = () => {
             <div className={styles.containerInputForPassword}>
               <input
                 style={{
-                  border:
-                    errorsInputs.confirmPassword === false &&
-                    '1px solid #C34A33',
+                  border: errorsInputs.confirmPassword === false && '1px solid #C34A33',
                 }}
                 type={isPasswordVisible.confirmPassword ? 'text' : 'password'}
                 id='confirmPassword'
@@ -297,9 +256,7 @@ const Register = () => {
                 />
               )}
               {errorsInputs.confirmPassword === false && (
-                <span className={styles.errorMessage}>
-                  Las contraseñas no coinciden
-                </span>
+                <span className={styles.errorMessage}>Las contraseñas no coinciden</span>
               )}
             </div>
           </div>
@@ -307,8 +264,7 @@ const Register = () => {
             <label htmlFor='codeReferred'>¿Tienes un código de Referido?</label>
             <input
               style={{
-                border:
-                  errorsInputs.codeReferred === false && '1px solid #C34A33',
+                border: errorsInputs.codeReferred === false && '1px solid #C34A33',
               }}
               id='codeReferred'
               onChange={handleChangeInputValue}
@@ -316,9 +272,7 @@ const Register = () => {
               type='text'
             />
             {errorsInputs.codeReferred === false && (
-              <span className={styles.errorMessage}>
-                El código no es válido.
-              </span>
+              <span className={styles.errorMessage}>El código no es válido.</span>
             )}
           </div>
           {messageError.error && (
@@ -332,22 +286,15 @@ const Register = () => {
 
         <div className={styles.containerDescription}>
           <p>
-            Tu información esta segura con nosotros y no se comparte con
-            terceros. Todos tus datos serán tratados de conformidad con la
-            normatividad de Políticas de Datos y nuestra política de tratamiento
-            de datos. Información que está disponible&nbsp;{' '}
-            <Link to={'/privacy'}>aquí</Link>.
+            Tu información esta segura con nosotros y no se comparte con terceros. Todos tus datos serán tratados de
+            conformidad con la normatividad de Políticas de Datos y nuestra política de tratamiento de datos.
+            Información que está disponible&nbsp; <Link to={'/privacy'}>aquí</Link>.
           </p>
           <p>
-            Al proceder con la creación de tu cuenta aceptas la Política de
-            &nbsp;
-            <Link to={'/'}>
-              Tratamiento de Datos, la Política de Seguridad y los Términos y
-              Condiciones
-            </Link>
-            &nbsp;de LO QUE QUIERO HACER S.A.S. Aceptas ser contactado por
-            nosotros en relación a los eventos que compres o publiques en la
-            Plataforma y confirmas ser mayor de edad.
+            Al proceder con la creación de tu cuenta aceptas la Política de &nbsp;
+            <Link to={'/'}>Tratamiento de Datos, la Política de Seguridad y los Términos y Condiciones</Link>
+            &nbsp;de LO QUE QUIERO HACER S.A.S. Aceptas ser contactado por nosotros en relación a los eventos que
+            compres o publiques en la Plataforma y confirmas ser mayor de edad.
           </p>
         </div>
 
@@ -358,10 +305,7 @@ const Register = () => {
             type='checkbox'
             onChange={handleChangeInputValue}
           />
-          <p>
-            Quiero recibir información sobre promociones, actualizaciones y
-            eventos que me puedan interesar.
-          </p>
+          <p>Quiero recibir información sobre promociones, actualizaciones y eventos que me puedan interesar.</p>
         </div>
         <div className={styles.btnRegister}>
           <button>Registrate</button>
@@ -377,21 +321,14 @@ const Register = () => {
       {succesData && (
         <div className={styles.overlay}>
           <div className={styles.boxContent}>
-            <MdOutlineClose
-              onClick={() => setSuccesData(false)}
-              className={styles.iconOverlay}
-            />
+            <MdOutlineClose onClick={() => setSuccesData(false)} className={styles.iconOverlay} />
             <div className={styles.containerInfoOverlay}>
               <h2>Ya casi eres parte de 'LO QUE QUIERO HACER'</h2>
               <p>
-                Hemos enviado un código de validación a tu correo electrónico,
-                lo necesitarás para finalizar tu proceso de registro. Recuerda
-                ver la lista de no deseados y agréganos a tu lista de contactos.
+                Hemos enviado un código de validación a tu correo electrónico, lo necesitarás para finalizar tu proceso
+                de registro. Recuerda ver la lista de no deseados y agréganos a tu lista de contactos.
               </p>
-              <button
-                onClick={() => navigateVerificate()}
-                className={styles.btnOverlay}
-              >
+              <button onClick={() => navigateVerificate()} className={styles.btnOverlay}>
                 Listo
               </button>
             </div>

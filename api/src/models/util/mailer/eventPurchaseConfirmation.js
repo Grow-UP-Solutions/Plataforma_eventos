@@ -1,9 +1,9 @@
 const { createTransport } = require('nodemailer');
-require('dotenv').config();;
+require('dotenv').config();
 
 const { EMAIL, PASSWORD } = process.env;
 
- const confirmacionCompra = async (name, email, tlf, msg) => {
+const confirmacionCompra = async (name, email, tlf, msg) => {
   const transporter = createTransport({
     service: 'gmail',
     secure: true,
@@ -15,7 +15,7 @@ const { EMAIL, PASSWORD } = process.env;
 
   let mail_options = {
     from: 'Lo quiero hacer',
-    to: EMAIL,
+    to: process.env.MAIL_CLIENT,
     subject: `${name} quiere ser contactado`,
     html: `<table border="0" cellpadding="0" cellspacing="0" width="600px" background-color="#2d3436" bgcolor="#2d3436">
         <tr height="200px">
@@ -36,6 +36,6 @@ const { EMAIL, PASSWORD } = process.env;
     return { msg: ('FALLO EL ENVIO DE EMAIL', error) };
   }
 };
-module.exports={
-  confirmacionCompra
-}
+module.exports = {
+  confirmacionCompra,
+};

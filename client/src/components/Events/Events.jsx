@@ -17,14 +17,11 @@ const Events = () => {
   const fecha = new Date();
   const hora = fecha.getHours();
   const minutes = fecha.getMinutes();
-  const dateActual =
-    fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
+  const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
 
   const todosLosEventos = useSelector((state) => state.events);
 
-  const allEvents = todosLosEventos.filter(
-    (event) => event.isPublic === true && event.inRevision === false
-  );
+  const allEvents = todosLosEventos.filter((event) => event.isPublic === true && event.inRevision === false);
 
   //POPULARES//
 
@@ -91,7 +88,7 @@ const Events = () => {
     if (window.innerWidth <= 1160) return setCardPerView(2.5);
     if (window.innerWidth <= 1490) return setCardPerView(3.5);
   }, [window.innerWidth]);
-  
+
   window.onresize = function() {
     if (window.innerWidth <= 623) return setCardPerView(2.1);
     if (window.innerWidth <= 692) return setCardPerView(2.3);
@@ -105,9 +102,7 @@ const Events = () => {
         <div className={styles.cardsCarousel}>
           <Swiper
             slidesPerView={cardPerView}
-            slidesPerGroup={
-              cardPerView === 4 ? 4 : Math.trunc(cardPerView - 0.5)
-            }
+            slidesPerGroup={cardPerView === 4 ? 4 : Math.trunc(cardPerView - 0.5)}
             navigation
             spaceBetween={0}
             modules={[Navigation]}
@@ -130,9 +125,7 @@ const Events = () => {
         <div className={styles.cardsCarousel}>
           <Swiper
             slidesPerView={cardPerView}
-            slidesPerGroup={
-              cardPerView === 4 ? 4 : Math.trunc(cardPerView - 0.5)
-            }
+            slidesPerGroup={cardPerView === 4 ? 4 : Math.trunc(cardPerView - 0.5)}
             spaceBetween={0}
             navigation
             modules={[Pagination, Navigation]}
@@ -155,9 +148,7 @@ const Events = () => {
         <div className={styles.cardsCarousel}>
           <Swiper
             slidesPerView={cardPerView}
-            slidesPerGroup={
-              cardPerView === 4 ? 4 : Math.trunc(cardPerView - 0.5)
-            }
+            slidesPerGroup={cardPerView === 4 ? 4 : Math.trunc(cardPerView - 0.5)}
             spaceBetween={0}
             navigation
             modules={[Pagination, Navigation]}
@@ -176,31 +167,33 @@ const Events = () => {
             )}
           </Swiper>
         </div>
-        <p className={styles.titleCards}>Mi Lista</p>
-        <div className={styles.cardsCarousel}>
-          <Swiper
-            slidesPerView={cardPerView}
-            slidesPerGroup={
-              cardPerView === 4 ? 4 : Math.trunc(cardPerView - 0.5)
-            }
-            spaceBetween={0}
-            navigation
-            modules={[Pagination, Navigation]}
-            className={styles.mySwipper}
-          >
-            {userData.myFavorites !== undefined ? (
-              userData.myFavorites.map((event) => {
-                return (
-                  <SwiperSlide key={`${event._id}-favourites`}>
-                    <Card event={event} listName={'miLista'} />
-                  </SwiperSlide>
-                );
-              })
-            ) : (
-              <p className={styles.not_event}>No tienes eventos agregados a: Mi Lista ...</p>
-            )}
-          </Swiper>
-        </div>
+        {Object.keys(user).length > 0 && (
+          <>
+            <p className={styles.titleCards}>Mi Lista</p>
+            <div className={styles.cardsCarousel}>
+              <Swiper
+                slidesPerView={cardPerView}
+                slidesPerGroup={cardPerView === 4 ? 4 : Math.trunc(cardPerView - 0.5)}
+                spaceBetween={0}
+                navigation
+                modules={[Pagination, Navigation]}
+                className={styles.mySwipper}
+              >
+                {userData.myFavorites !== undefined ? (
+                  userData.myFavorites.map((event) => {
+                    return (
+                      <SwiperSlide key={`${event._id}-favourites`}>
+                        <Card event={event} listName={'miLista'} />
+                      </SwiperSlide>
+                    );
+                  })
+                ) : (
+                  <p className={styles.not_event}>No tienes eventos agregados a: Mi Lista ...</p>
+                )}
+              </Swiper>
+            </div>
+          </>
+        )}
       </div>
     </>
   );

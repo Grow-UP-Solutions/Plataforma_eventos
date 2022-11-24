@@ -392,3 +392,9 @@
     padding-right: 5rem;
   }
 }
+
+@media screen and (max-width: 400px) {
+  .boxContent {
+    width: 50rem;
+  }
+}

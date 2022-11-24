@@ -92,7 +92,7 @@ function App() {
         <Route path='/facturas' element={<Bills />} />
         <Route path='/verificarmail/:path' element={<Verification />} />
         <Route path='/resulteventsorganizer' element={<EventsOrganizerResult />} />
-        <Route path='/cambiarContrasenia/:token' element={<ChangePassword />} />
+        <Route path='/cambiar-password/:token' element={<ChangePassword />} />
         <Route path='/edita-un-evento' element={<EventEdit />} />
         <Route path='/admin/check-solicitud-organizador/:token' element={<CheckSolicitudOrganizer />} />
         <Route path='/usuario/asistentes-al-evento/:eventId/:dateId' element={<MyEventsAsistentes />} />
