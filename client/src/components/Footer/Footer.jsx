@@ -9,6 +9,7 @@ import { animateScroll as scroll } from 'react-scroll';
 import { stateContext } from '../../context/state/stateContext';
 
 const Footer = () => {
+
   const { setResult } = useContext(stateContext);
 
   const handleClickToTop = (e) => {
@@ -75,7 +76,7 @@ const Footer = () => {
                 <Link to={'/contactanos'}>Contáctanos</Link>
               </li>
               <li>
-                <Link to={'/faq'}>Preguntas Frecuentes</Link>
+                <Link to={'/preguntas-frecuentes'}>Preguntas Frecuentes</Link>
               </li>
             </ul>
           </div>

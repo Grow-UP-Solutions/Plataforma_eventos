@@ -14,8 +14,8 @@ const MyListUser = ({ myFavorites , myEventsBooked }) => {
     return 0
   })
 
-  console.log('myFavorites',myFavorites)
-  console.log('myEventsBooked',myEventsBooked)
+  /* console.log('myFavorites',myFavorites)
+  console.log('myEventsBooked',myEventsBooked) */
 
   
   const [currentPage, setCurretPage] = useState(1);

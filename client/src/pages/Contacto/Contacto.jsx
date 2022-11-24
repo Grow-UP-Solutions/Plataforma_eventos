@@ -5,6 +5,7 @@ import { mail, phone, pin } from '../../assets/imgs';
 import styles from './Contacto.module.css';
 
 const Contacto = () => {
+
   useEffect(() => {
     scroll.scrollToTop();
   }, []);
@@ -28,7 +29,7 @@ const Contacto = () => {
       </address>
       <div className={styles.containerForm}>
         <p className={styles.info}>
-          ¿Ya visitaste nuestra sección de <Link to={'/faq'}>Preguntas Frecuentes</Link>? En ella podrás encontrar
+          ¿Ya visitaste nuestra sección de <Link to={'/preguntas-frecuentes'}>Preguntas Frecuentes</Link>? En ella podrás encontrar
           respuesta a muchas de las preguntas más comunes.
         </p>
 

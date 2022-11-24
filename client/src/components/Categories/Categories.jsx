@@ -5,6 +5,7 @@ import { UIContext } from '../../context/ui';
 import { useNavigate } from 'react-router-dom';
 
 const Categories = () => {
+  
   const { setResult } = useContext(stateContext);
   const { categories } = useContext(UIContext);
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ const Categories = () => {
     e.preventDefault();
     const data = e.target.id;
     setResult(data);
-    navigate('/categories/');
+    navigate('/resultado-categoria/');
   };
 
   return (

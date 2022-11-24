@@ -1,14 +1,12 @@
 import React from 'react';
-
 import styles from './Payment.module.css';
-
 import { AiOutlineCloseCircle, AiOutlineCheckCircle } from 'react-icons/ai';
 import { BiTime } from 'react-icons/bi';
-
 import { iconAchPse } from '../../assets/imgs';
 import { Link } from 'react-router-dom';
 
 const Payment = () => {
+  
   return (
     <div className={`${styles.pagePayment} container`}>
       <div className={styles.containerLogoPayment}>

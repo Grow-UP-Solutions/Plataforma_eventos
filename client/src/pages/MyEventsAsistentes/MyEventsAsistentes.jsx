@@ -14,35 +14,47 @@ const MyEventsAsistentes = () => {
   const eventid = useParams().eventId;
   const dateid = useParams().dateId;
   const { user } = useContext(AuthContext);
-  const [all , setAll] = useState([]);
-  const [todosEvents , setTodosEvents] = useState([]);
+  //const [all , setAll] = useState([]);
+  //const [todosEvents , setTodosEvents] = useState([]);
   const [event, setEvent] = useState([]);
   const [date , setDate] = useState([]);
   const [buyers , setBuyers] = useState([]);
   const navigate = useNavigate();
 
-  useEffect(() => {
+  /* useEffect(() => {
     const getAllUsers = async () => {
       const res = await eventsApi.get('/users');
       setAll(res.data);
     }
     getAllUsers();
-  }, []);
+  }, []); */
 
   useEffect(() => {
-    const getAllEvents = async () => {
+    const getAll = async () => {
       const json = await eventsApi.get('/events');
-      const event = json.data.filter(e => e._id === eventid);
-      const fecha= event[0].dates.find(d=>d._id===dateid);
-      setTodosEvents(json.data);
-      setEvent(event);
-      setDate(fecha);
+      const res = await eventsApi.get('/users');
 
+      const event = json.data.filter(e => e._id === eventid);
+      const fecha = event[0].dates.find(d => d._id === dateid);
+      const todosUsers = res.data;
+      const idBuyers = fecha.buyers;
+
+      setEvent(event);
+      setDate(fecha);      
+      
+      if (idBuyers !== undefined) {
+        const allBuyers = [];
+        for (let j = 0; j < idBuyers.length; j++) {
+          const buyer = todosUsers.find(a => a._id === idBuyers[j]);
+          allBuyers.push(buyer);
+          setBuyers(allBuyers);
+        }
+      }
     }
-    getAllEvents();
+    getAll();
   }, []);
 
-  useEffect(() => {
+ /*  useEffect(() => {
 
     setTimeout(() => {
       if (date !== undefined) {
@@ -56,15 +68,18 @@ const MyEventsAsistentes = () => {
           }
         }
       }
-    }, 1500);
+      else {
+        alert('hola');
+      }
+    }, 2500);
     
-  }, [date]);
+  }, [date]); */
 
   // SELECCION DE CHECKBOX
   const [seleccionados, setSeleccionados] = useState([]);
   
   const selectBuyer = (e) => {
-    e.preventDefault();
+    
     let buyerId = e.target.value;
     
     if (!e.target.checked) {
@@ -79,8 +94,7 @@ const MyEventsAsistentes = () => {
   }
 
   const selectAll = (e) => {
-    e.preventDefault()
- 
+    
     if(e.target.checked){
       setSeleccionados([]);
       setSeleccionados(date.buyers);
@@ -98,13 +112,6 @@ const MyEventsAsistentes = () => {
   //MENSAJES
   const { setResult, conversa } = useContext(stateContext);
   const [conversation, setConversation] = useState([]);
-
-  useEffect(() => {
-    setConversation({
-      senderId: user.uid,
-      receiverId: '',
-    })
-  }, [user]);
 
   const handleOneMessage = (e, buyerId) => {
     e.preventDefault();
@@ -129,14 +136,14 @@ const MyEventsAsistentes = () => {
   const handleManyMessages = (e) => {
     e.preventDefault();
     const array = conversa.map((e) => e.members).flat();
-    for(let i = 0 ; i <array.length ; i++){
+    for (let i = 0 ; i <array.length ; i++) {
 
       const json = seleccionados.includes(array[i])
 
       setConversation({
         senderId: user.uid,
         receiverId: array[i],
-      })
+      });
 
       if (json === true) {
         navigate('/usuario/mensajes');
@@ -183,7 +190,7 @@ const MyEventsAsistentes = () => {
                             value={buyers._id}
                             class={styles.checkBox}
                           />
-                          <p>Selecciona con doble click</p>
+                          {/* <p>Selecciona con doble click</p> */}
                         </th>
                         <th>Seleccionar Todos</th>
                         <th>Usuario</th>
@@ -224,7 +231,7 @@ const MyEventsAsistentes = () => {
                               className={styles.checkBox}
                               checked={saber(b._id) ? true : false}
                             />
-                            <p>Selecciona con doble click</p>
+                            {/* <p>Selecciona con doble click</p> */}
     
                           </td>
                           <td><img className={styles.userImg} src={b.userpicture} alt='img-user' /></td>
@@ -243,7 +250,7 @@ const MyEventsAsistentes = () => {
                       ))}
                     </tbody>
                   </table>
-                </div> :'no hay buyers'
+                </div> :'LOADING ...'
               }
             </div> : '')
           }

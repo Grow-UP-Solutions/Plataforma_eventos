@@ -303,7 +303,7 @@ const Navbar = ({ upper }) => {
 
                 {menuOpen && (
                   <div className={style.containerProfileMenu}>
-                    <Link to='/usuario/mi-lista'>Mis eventos</Link>
+                    <Link to='/usuario/mis-eventos'>Mis eventos</Link>
 
                     <Link to='/usuario/perfil'>
                       <a>Perfil</a>

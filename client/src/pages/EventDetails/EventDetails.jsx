@@ -35,7 +35,9 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import { Hearts } from "react-loader-spinner";
 import formatDateToString from "../../utils/formatDateToString";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+
 const EventDetails = () => {
+  
   const id = useParams().id;
   const dispatch = useDispatch();
   const allEvents = useSelector((state) => state.events);
@@ -168,10 +170,10 @@ const EventDetails = () => {
     scroller.scrollTo("comments");
   };
 
-  const handleClickLongDescription = (e) => {
+  /* const handleClickLongDescription = (e) => {
     e.preventDefault();
     setDescription(true);
-  };
+  }; */
 
   const handleClickShare = (e) => {
     e.preventDefault();
@@ -420,9 +422,9 @@ const EventDetails = () => {
               Evento
             </p>
 
-            <p className={style.description}>{eventDetails.shortDescription}</p>
+            <p className={style.description}>{eventDetails.longDescription}</p>
 
-            <div className={style.container_plus}>
+            {/* <div className={style.container_plus}>
               <p onClick={handleClickLongDescription}>Ver más</p>
             </div>
 
@@ -432,7 +434,7 @@ const EventDetails = () => {
               </p>
             ) : (
               ""
-            )}
+            )} */}
 
             <div className={style.line}></div>
 

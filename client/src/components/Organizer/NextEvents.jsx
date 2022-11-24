@@ -36,7 +36,7 @@ const NextEvent = ({ nextEvent }) => {
           </div>
         </>
       ) : (
-        <p className={styles.notHaveEvents}>No ha organizado próximos eventos.</p>
+        <p className={styles.notHaveEvents}>No ha organizado próximos eventos ...</p>
       )}
     </div>
   );
