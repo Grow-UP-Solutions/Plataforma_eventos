@@ -94,7 +94,7 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
                       </SwiperSlide>
                     </div>
                   ))
-                : 'No tienes eventos creados'}
+                : <p className={styles.not_event}>No hay eventos ...</p>}
             </Swiper>
           </div>
           <hr className={styles.cardHr}></hr>
@@ -141,14 +141,20 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
                   </div>
                 ))
               ) : (
-                <h5>No Tienes Eventos Por Publicar</h5>
+                <p className={styles.not_event}>No hay eventos por publicar ...</p>
               )}
             </Swiper>
           </div>
         </div>
       ) : (
-        'Aun no tienes eventos publicados o por publicar. Crea tu evento' +
-        '<a href="/oganiza-un-evento" target="_blank">aqui</a> '
+        <div>
+          <p className={styles.not_event}>
+            Aun no tienes eventos publicados o por publicar. Crea tu evento
+          </p>
+          <p className={styles.not_event}>
+            <a href="/oganiza-un-evento" target="_blank">aqui</a>
+          </p>
+        </div>
       )}
     </div>
   );
