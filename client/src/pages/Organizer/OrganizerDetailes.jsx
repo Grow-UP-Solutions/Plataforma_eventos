@@ -14,6 +14,7 @@ import swal from "sweetalert";
 import { UIContext } from "../../context/ui";
 import { stateContext } from "../../context/state/stateContext";
 import { format, register } from "timeago.js";
+import { Loading } from "../../components";
 
 const localeFunc = (number, index, total_sec) => {
   return [
@@ -45,6 +46,7 @@ const OrganizerDetails = () => {
   const [nextEvent, setNextEvent] = useState({});
   const [conversation, setConversation] = useState({});
   const [style, setStyle] = useState("");
+  const [load, setLoad] = useState(true);
   const [userDetail, setUserDetail] = useState({
     organizer: {},
   });
@@ -74,6 +76,7 @@ const OrganizerDetails = () => {
     });
     setComponent(<AboutOrganizer userDetail={json.descriptionOrganizer} />);
     setStyle("aboutOrganizer");
+    setLoad(false);
   };
 
   const handleClickMessages = (e) => {
@@ -128,81 +131,86 @@ const OrganizerDetails = () => {
     }
   };
 
-  if (!userDetail) {
-    return <h1>Cargando...</h1>;
+  if (load) {
+    return <Loading />;
   }
+  else {
+    return (
+      <div className={`${styles.container} `}>
+        {
+          userDetail ? (
+            <div>
+              <div className={styles.top}></div>
+              <img
+                className={styles.img}
+                src={userDetail.organizer.userpicture}
+                alt="organizer"
+              />
+              <p className={styles.name}>{userDetail.organizer.name}</p>
+              <Rating
+                className={styles.rating}
+                name="half-rating"
+                precision={0.5}
+                value={ratingOrg}
+                readOnly
+                sx={{ fontSize: 18 }}
+              />
+              <div className={styles.containerDir}>
+                <IoLocationOutline className={styles.icon} />
+                <p className={styles.direction}>{userDetail.organizer.direction} - {userDetail.organizer.city}</p>
+              </div>
 
-  return (
-    <div className={`${styles.container} `}>
-      {userDetail ? (
-        <div>
-          <div className={styles.top}></div>
-          <img
-            className={styles.img}
-            src={userDetail.organizer.userpicture}
-            alt="organizer"
-          />
-          <p className={styles.name}>{userDetail.organizer.name}</p>
-          <Rating
-            className={styles.rating}
-            name="half-rating"
-            precision={0.5}
-            value={ratingOrg}
-            readOnly
-            sx={{ fontSize: 18 }}
-          />
-          <div className={styles.containerDir}>
-            <IoLocationOutline className={styles.icon} />
-            <p className={styles.direction}>{userDetail.organizer.direction} - {userDetail.organizer.city}</p>
-          </div>
-          <p className={styles.member}>
-            Miembro desde {format(userDetail.organizer.createdAt, "es_ES")}
-          </p>
-          <div className={styles.containerMess}>
-            <LocalPostOfficeIcon
-              sx={{ fontSize: "1.6rem", color: "#d53e27" }}
-            />
-            <button
-              className={styles.message}
-              onClick={logged === true ? handleClickMessages : handleAlert}
-            >
-              Enviar Mensaje
-            </button>
-          </div>
-          <div className={styles.containerButtons}>
-            <button
-              className={style === "aboutOrganizer" ? styles.btn_c : styles.btn}
-              name="AboutOrganizer"
-              onClick={handleInput}
-            >
-              Sobre El Organizador
-            </button>
-            <div className={styles.vLine}></div>
-            <button
-              className={style === "nextEvents" ? styles.btn_c : styles.btn}
-              name="NextEvents"
-              onClick={handleInput}
-            >
-              Próximos Eventos
-            </button>
-            <div className={styles.vLine}></div>
-            <button
-              className={style === "opinions" ? styles.btn_c : styles.btn}
-              name="Opinions"
-              onClick={handleInput}
-            >
-              Opiniones
-            </button>
-          </div>
-          <div>
-            <div className={styles.containerSection}>{component}</div>
-          </div>
-        </div>
-      ) : (
-        ""
-      )}
-    </div>
-  );
+              <p className={styles.member}>
+                Miembro desde {format(userDetail.organizer.createdAt, "es_ES")}
+              </p>
+              
+              <div className={styles.containerMess}>
+                <LocalPostOfficeIcon
+                  sx={{ fontSize: "1.6rem", color: "#d53e27" }}
+                />
+                <button
+                  className={styles.message}
+                  onClick={logged === true ? handleClickMessages : handleAlert}
+                >
+                  Enviar Mensaje
+                </button>
+              </div>
+
+              <div className={styles.containerButtons}>
+                <button
+                  className={style === "aboutOrganizer" ? styles.btn_c : styles.btn}
+                  name="AboutOrganizer"
+                  onClick={handleInput}
+                >
+                  Sobre El Organizador
+                </button>
+                <div className={styles.vLine}></div>
+                <button
+                  className={style === "nextEvents" ? styles.btn_c : styles.btn}
+                  name="NextEvents"
+                  onClick={handleInput}
+                >
+                  Próximos Eventos
+                </button>
+                <div className={styles.vLine}></div>
+                <button
+                  className={style === "opinions" ? styles.btn_c : styles.btn}
+                  name="Opinions"
+                  onClick={handleInput}
+                >
+                  Opiniones
+                </button>
+              </div>
+
+              <div>
+                <div className={styles.containerSection}>{component}</div>
+              </div>
+            </div>) : 
+          ('')
+        }
+      </div>
+    );
+  };
 };
 
 export default OrganizerDetails;

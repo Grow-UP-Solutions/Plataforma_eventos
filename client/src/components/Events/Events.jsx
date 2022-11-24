@@ -122,7 +122,7 @@ const Events = () => {
                 );
               })
             ) : (
-              <h5>No hay eventos</h5>
+              <p className={styles.not_event}>No hay eventos ...</p>
             )}
           </Swiper>
         </div>
@@ -147,7 +147,7 @@ const Events = () => {
                 );
               })
             ) : (
-              <h5>No hay eventos</h5>
+              <p className={styles.not_event}>No hay eventos ...</p>
             )}
           </Swiper>
         </div>
@@ -172,7 +172,7 @@ const Events = () => {
                 );
               })
             ) : (
-              <h5>No hay eventos</h5>
+              <p className={styles.not_event}>No hay eventos ...</p>
             )}
           </Swiper>
         </div>
@@ -197,7 +197,7 @@ const Events = () => {
                 );
               })
             ) : (
-              <h5>No tienes eventos agregados a: Mi Lista</h5>
+              <p className={styles.not_event}>No tienes eventos agregados a: Mi Lista ...</p>
             )}
           </Swiper>
         </div>

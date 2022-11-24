@@ -72,7 +72,7 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
                     </SwiperSlide>
                   </div>
                 ))
-              : 'No tienes eventos creados'}
+              : <p className={styles.not_event}>No tienes eventos creados ...</p>}
           </Swiper>
         </div>
         <hr className={styles.cardHr}></hr>
@@ -105,7 +105,7 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
                 )
               )
             ) : (
-              <h5>No Tienes Eventos Por Publicar</h5>
+              <p className={styles.not_event}>No tienes eventos por publicar ...</p>
             )}
           </Swiper>
         </div>

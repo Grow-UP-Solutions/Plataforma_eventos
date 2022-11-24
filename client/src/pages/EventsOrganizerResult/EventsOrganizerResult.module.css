@@ -24,3 +24,14 @@
 .container_pagination {
   margin-top: 3rem;
 }
+
+.not_event {
+  font-size: 2.2rem;
+  font-weight: bold;
+  font-family: 'Raleway', sans-serif;
+  color: var(--color-blue);
+  text-align: center;
+  width: 100%;
+  margin-top: 1rem;
+}
+

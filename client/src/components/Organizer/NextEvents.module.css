@@ -22,6 +22,11 @@
   margin-top: 5rem;
 }
 .notHaveEvents {
-  font-size: 1.6rem;
-  color: var(--color-grey-3);
+  font-size: 2.2rem;
+  font-weight: bold;
+  font-family: 'Raleway', sans-serif;
+  color: var(--color-blue);
+  text-align: center;
+  width: 100%;
+  margin-top: 1rem;
 }

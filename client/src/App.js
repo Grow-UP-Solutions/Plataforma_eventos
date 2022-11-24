@@ -66,7 +66,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home handleNav={setNavBar} />} />
         <Route path='/contactanos' element={<Contacto />} />
-        <Route path='/faq' element={<Faq />} />
+        <Route path='/preguntas-frecuentes' element={<Faq />} />
         <Route path='/sobre-el-organizador/:id' element={<Organizer />} />
         <Route path='/detalles-del-evento/:id' element={<EventDetails />} />
         <Route path='/cart/:id' element={<Cart />} />
@@ -78,18 +78,18 @@ function App() {
         <Route path='/oganiza-un-evento-editar2/:id' element={<EventEdit2 />} />
         <Route path='/oganiza-un-evento-editar/:id' element={<EventEdit />} />
         <Route path='/payment' element={<Payment />} />
-        <Route path='/categories' element={<CategoriesResult />} />
+        <Route path='/resultado-categoria' element={<CategoriesResult />} />
         <Route path='/empleo' element={<WorkWithUs />} />
         <Route path='/noticias' element={<News />} />
         <Route path='/prensa' element={<Press />} />
-        <Route path='/workWithUs/form/:work' element={<WorkWithUsForm />} />
+        <Route path='/empleo/aplicar/:work' element={<WorkWithUsForm />} />
         <Route path='/usuario/:option' element={<UserPage />} />
         <Route path='/privacidad' element={<PanelPrivacy />} />
         <Route path='/seguridad' element={<PanelPrivacy />} />
         <Route path='/terminos' element={<PanelPrivacy />} />
         <Route path='/usuario/mensajes' element={<Messages />} />
         <Route path='/usuario/notificaciones' element={<Notifications />} />
-        <Route path='/bills' element={<Bills />} />
+        <Route path='/facturas' element={<Bills />} />
         <Route path='/verificarmail/:path' element={<Verification />} />
         <Route path='/resulteventsorganizer' element={<EventsOrganizerResult />} />
         <Route path='/cambiarContrasenia/:token' element={<ChangePassword />} />
