@@ -209,6 +209,7 @@
   justify-content:center;
   align-items: center;
   
+  
 }
 
 .titleDiscount {
@@ -239,7 +240,7 @@
   outline: none;
 }
 
-.containerInputDiscount button {
+/* .containerInputDiscount button {
   background-color: var(--color-grey-3);
   font-weight: bold;
   font-size: 1.2rem;
@@ -249,7 +250,7 @@
   border-radius: 2rem;
 
   cursor: pointer;
-}
+} */
 
 /* codigo correcto */
 
@@ -271,7 +272,7 @@
   outline: none;
 }
 
-.containerInputDiscountCorrect button {
+/* .containerInputDiscountCorrect button {
   background-color: var(--color-grey-3);
   font-weight: bold;
   font-size: 1.2rem;
@@ -281,7 +282,7 @@
   border-radius: 2rem;
 
   cursor: pointer;
-}
+} */
 
 /* codigo incorrecto */
 
@@ -304,7 +305,19 @@
   outline: none;
 }
 
-.containerInputDiscountIncorrect button {
+/* .containerInputDiscountIncorrect button {
+  background-color: var(--color-grey-3);
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: white;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 2rem;
+
+  cursor: pointer;
+} */
+
+.quitar{
   background-color: var(--color-grey-3);
   font-weight: bold;
   font-size: 1.2rem;
