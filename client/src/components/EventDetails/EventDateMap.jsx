@@ -3,10 +3,11 @@ import React, { useState , useContext ,useEffect } from 'react';
 import styles from './EventDateMap.module.css';
 import { iconArrowLeft, iconArrowRight } from '../../assets/imgs';
 import { stateContext } from '../../context/state/stateContext';
+import { administracion } from '../../utils/administracion';
+
+
 
 const EventDateMap = ({id,cupos}) => {
-
- 
 
   const { carrito, setCarrito } = useContext(stateContext);
   const { valorTotal, setValorTotal } = useContext(stateContext);
@@ -26,18 +27,16 @@ const EventDateMap = ({id,cupos}) => {
 
     for( let i = 0 ; i<carrito.length ; i++){
       if(carrito[i].idDate === id){
+
         carrito[i].quantity = num
-        const iva = carrito[i].price * 0.19 // 1900
-        const admin = carrito[i].price * 0.16 //1600 
-        const precioFinal = carrito[i].price + iva + admin // 13500
-        carrito[i].unit_price=precioFinal
+
         carrito[i].subtotal = num * carrito[i].price
         
         sTotal.push(carrito[i].subtotal)
         let total = sTotal.reduce((a, b) => a + b, 0);
         setSubTotal(total)
 
-        let t = total + total* 0.19 + total *0.16
+        let t = total + total* 0.19 + administracion
      
         setValorTotal(t)
       }
