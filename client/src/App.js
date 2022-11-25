@@ -38,8 +38,10 @@ import News from './pages/News/News';
 import PanelPrivacy from './pages/PanelPrivacy/PanelPrivacy';
 import Press from './pages/Press/Press';
 import { getEvents } from './redux/actions';
+import RutaPrivada from './router/RutaPrivada';
 
 function App() {
+
   const [navBar, setNavBar] = useState(false);
   const dispatch = useDispatch();
   const { isMenuLoginOpen, getCategories, getAllEvents } = useContext(UIContext);
@@ -64,38 +66,130 @@ function App() {
     <div className='App'>
       <Navbar upper={navBar} />
       <Routes>
+
+        {/* RUTAS PUBLICAS */}
         <Route path='/' element={<Home handleNav={setNavBar} />} />
         <Route path='/contactanos' element={<Contacto />} />
         <Route path='/preguntas-frecuentes' element={<Faq />} />
         <Route path='/sobre-el-organizador/:id' element={<Organizer />} />
         <Route path='/detalles-del-evento/:id' element={<EventDetails />} />
-        <Route path='/cart/:id' element={<Cart />} />
         <Route path='/resultados-de-busqueda' element={<SearchResult />} />
         <Route path='/registrate' element={<Register />} />
         <Route path='/organiza-un-evento/beneficios' element={<EventCreate />} />
-        <Route path='/oganiza-un-evento2' element={<EventCreateForm2 />} />
-        <Route path='/oganiza-un-evento' element={<EventCreateForm />} />
-        <Route path='/oganiza-un-evento-editar2/:id' element={<EventEdit2 />} />
-        <Route path='/oganiza-un-evento-editar/:id' element={<EventEdit />} />
-        <Route path='/payment' element={<Payment />} />
         <Route path='/resultado-categoria' element={<CategoriesResult />} />
         <Route path='/empleo' element={<WorkWithUs />} />
         <Route path='/noticias' element={<News />} />
         <Route path='/prensa' element={<Press />} />
         <Route path='/empleo/aplicar/:work' element={<WorkWithUsForm />} />
-        <Route path='/usuario/:option' element={<UserPage />} />
         <Route path='/privacidad' element={<PanelPrivacy />} />
         <Route path='/seguridad' element={<PanelPrivacy />} />
         <Route path='/terminos' element={<PanelPrivacy />} />
-        <Route path='/usuario/mensajes' element={<Messages />} />
-        <Route path='/usuario/notificaciones' element={<Notifications />} />
-        <Route path='/facturas' element={<Bills />} />
-        <Route path='/verificarmail/:path' element={<Verification />} />
-        <Route path='/resulteventsorganizer' element={<EventsOrganizerResult />} />
-        <Route path='/cambiar-password/:token' element={<ChangePassword />} />
-        <Route path='/edita-un-evento' element={<EventEdit />} />
+        <Route path='/resultado-eventos-organizador' element={<EventsOrganizerResult />} />
+
+
+        {/* RUTAS PRIVADAS */}
+        <Route path='/oganiza-un-evento' 
+          element={
+            <RutaPrivada>
+              <EventCreateForm />
+            </RutaPrivada>
+          } 
+        />
+        
+        <Route path='/oganiza-un-evento2' 
+          element={
+            <RutaPrivada>
+              <EventCreateForm2 />
+            </RutaPrivada>
+          } 
+        />
+        
+        <Route path='/oganiza-un-evento-editar2/:id' 
+          element={
+            <RutaPrivada>
+              <EventEdit2 />
+            </RutaPrivada>
+          } 
+        />
+        
+        <Route path='/oganiza-un-evento-editar/:id' 
+          element={
+            <RutaPrivada>
+              <EventEdit />
+            </RutaPrivada>
+          } 
+        />
+        
+        <Route path='/cart/:id' 
+          element={
+            <RutaPrivada>
+              <Cart />
+            </RutaPrivada>
+          } 
+        />
+
+        <Route path='/payment' 
+          element={
+            <RutaPrivada>
+              <Payment />
+            </RutaPrivada>
+          } 
+        />
+
+        <Route path='/usuario/:option' 
+          element={
+            <RutaPrivada>
+              <UserPage />
+            </RutaPrivada>
+          }
+        />
+
+        <Route path='/usuario/mensajes' 
+          element={
+            <RutaPrivada>
+              <Messages />
+            </RutaPrivada>
+          }
+        />
+
+        <Route path='/usuario/notificaciones' 
+          element={
+            <RutaPrivada>
+              <Notifications />
+            </RutaPrivada>
+          } 
+        />
+
+        <Route path='/facturas' 
+          element={
+            <RutaPrivada>
+              <Bills />
+            </RutaPrivada>
+          } 
+        />
+
+        <Route path='/edita-un-evento' 
+          element={
+            <RutaPrivada>
+              <EventEdit />
+            </RutaPrivada>
+          } 
+        />
+
+        <Route path='/usuario/asistentes-al-evento/:eventId/:dateId' 
+          element={
+            <RutaPrivada>
+              <MyEventsAsistentes />
+            </RutaPrivada>
+          } 
+        />
+
         <Route path='/admin/check-solicitud-organizador/:token' element={<CheckSolicitudOrganizer />} />
-        <Route path='/usuario/asistentes-al-evento/:eventId/:dateId' element={<MyEventsAsistentes />} />
+        
+        <Route path='/verificarmail/:path' element={<Verification />} />
+
+        <Route path='/cambiar-password/:token' element={<ChangePassword />} />
+
       </Routes>
       <div className='container_footer'>
         <Footer />
