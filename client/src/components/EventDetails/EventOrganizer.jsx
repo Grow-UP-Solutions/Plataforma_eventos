@@ -64,7 +64,7 @@ const EventOrganizer = ({ id }) => {
   const handleClickEventsOrganizer = async (e) => {
     e.preventDefault();
     setResult(eventDetails.organizer._id);
-    navigate('/resulteventsorganizer/');
+    navigate('/resultado-eventos-organizador/');
   };
 
   return (
