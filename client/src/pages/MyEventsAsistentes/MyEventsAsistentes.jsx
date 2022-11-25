@@ -21,14 +21,6 @@ const MyEventsAsistentes = () => {
   const [buyers , setBuyers] = useState([]);
   const navigate = useNavigate();
 
-  /* useEffect(() => {
-    const getAllUsers = async () => {
-      const res = await eventsApi.get('/users');
-      setAll(res.data);
-    }
-    getAllUsers();
-  }, []); */
-
   useEffect(() => {
     const getAll = async () => {
       const json = await eventsApi.get('/events');
@@ -53,27 +45,6 @@ const MyEventsAsistentes = () => {
     }
     getAll();
   }, []);
-
- /*  useEffect(() => {
-
-    setTimeout(() => {
-      if (date !== undefined) {
-        const idBuyers = date.buyers;
-        if (idBuyers!== undefined) {
-          const allBuyers = [];
-          for (let j = 0 ; j < idBuyers.length ; j++) {
-            const buyer = all.find(a=>a._id === idBuyers[j]);
-            allBuyers.push(buyer);
-            setBuyers(allBuyers);
-          }
-        }
-      }
-      else {
-        alert('hola');
-      }
-    }, 2500);
-    
-  }, [date]); */
 
   // SELECCION DE CHECKBOX
   const [seleccionados, setSeleccionados] = useState([]);
