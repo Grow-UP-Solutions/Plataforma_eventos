@@ -18,6 +18,8 @@ import { stateContext } from "../../context/state/stateContext";
 import swal from "sweetalert";
 import { useRef } from "react";
 import eventsApi from "../../axios/eventsApi";
+import { administracion } from '../../utils/administracion';
+import { iva } from '../../utils/administracion';
 
 const EventDate = ({ id }) => {
   const allEvents = useSelector((state) => state.events);
@@ -33,6 +35,8 @@ const EventDate = ({ id }) => {
   const { dateToBuy, setDateToBuy} = useContext(stateContext);
   const [resultFormNewDate, setResultFormNewDate] = useState(false);
   const [isLoadingNewDate, setIsLoadingNewDate] = useState(false);
+
+ 
 
  
   useEffect(() => {
@@ -102,6 +106,12 @@ const EventDate = ({ id }) => {
     
     setChecked(true);
     const fechaElegida = e.target.value;
+
+    const ivaCost = price * iva
+    const adminCost = price + administracion
+    const unit_price = adminCost + ivaCost
+   
+
     if (!e.target.checked) {
       let seleccion = carrito.filter((f) => f.idDate !== fechaElegida);
       let seleccionDate = dateToBuy.filter((d) => d._id!== fechaElegida);
@@ -117,10 +127,11 @@ const EventDate = ({ id }) => {
           idDate: fechaElegida,
           quantity: 1,
           price: price,
+          unit_price: unit_price,
           codigoDescuento: "",
           codigoReferido: "",
           codigoCorrecto: "",
-          subtotal: "",
+          subtotal: price,
           descuento: "",
         },
       ]);

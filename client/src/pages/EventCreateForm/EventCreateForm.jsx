@@ -624,7 +624,7 @@ const EventCreateForm = () => {
       newFechas[i][e.target.name] = e.target.value;
     }
 
-    newFechas[i].precioAlPublico = parseFloat(newFechas[i].price) + parseFloat(costoDeManejo) + parseFloat(a);
+   // newFechas[i].precioAlPublico = parseFloat(newFechas[i].price) + parseFloat(costoDeManejo) + parseFloat(a);
     newFechas[i].gananciaCupo =
       parseFloat(newFechas[i].price) -
       (parseFloat(newFechas[i].price) * parseFloat(comision) +
@@ -1782,9 +1782,9 @@ const EventCreateForm = () => {
                                   </div>
                                 </label>
 
-                                {date.price === '' ? <p>$21.990</p> : <p>{date.precioAlPublico}</p>}
+                                {/* {date.price === '' ? <p>$21.990</p> : <p>{date.precioAlPublico}</p>}
 
-                                <p className={styles.subInfotxt}>Precio al público incluyendo costo de manejo e IVA</p>
+                                <p className={styles.subInfotxt}>Precio al público incluyendo costo de manejo e IVA</p> */}
                               </div>
 
                               {/* ganacia x cupo*/}

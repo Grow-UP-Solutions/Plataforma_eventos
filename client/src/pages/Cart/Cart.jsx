@@ -16,6 +16,8 @@ import { UIContext } from '../../context/ui';
 import { getReferalCode } from '../../redux/actions';
 import eventsApi from '../../axios/eventsApi';
 import { AuthContext } from '../../context/auth';
+import { administracion } from '../../utils/administracion';
+import { iva } from '../../utils/administracion';
 
 
 
@@ -34,7 +36,7 @@ const Cart = () => {
 
   
   const [descuentoTotal , setDescuentoTotal] = useState('0')
-  const [administracion , setAdministracion] = useState(subTotal*0.16)
+ 
   const [iva , setIva] = useState(subTotal*0.19)
   
  
@@ -71,13 +73,14 @@ const Cart = () => {
 
   useEffect(() => {
     
-    const ivaFinal = subTotal*0.19
-    const adminfinal = subTotal*0.16
-    const precioTotal = subTotal + subTotal*0.19 + subTotal*0.16 - descuentoTotal
+    const ivaFinal = subTotal * 0.19
+   
+    const precioTotal = subTotal + subTotal*0.19 + administracion - descuentoTotal
     
-      setAdministracion(adminfinal)
+     
       setIva(ivaFinal)
       setValorTotal(precioTotal)
+
     }, [subTotal]);
 
 
@@ -102,10 +105,10 @@ const Cart = () => {
 
     for( let i = 0 ; i<carrito.length ; i++){
       if(carrito[i].idDate === id){
+
         carrito[i].quantity = num
-        carrito[i].subtotal = num *   carrito[i].price 
+        carrito[i].subtotal = num * carrito[i].price 
       
-        
       } 
     }
   };
@@ -236,6 +239,7 @@ const Cart = () => {
 
         setValorTotal(restoTotal)
         setDescuentoTotal(resto)
+        setCodigo('')
 
        
 

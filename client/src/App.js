@@ -14,10 +14,8 @@ import {
   ChangePassword,
   Contacto,
   EventCreate,
-  EventCreateForm2,
   EventCreateForm,
   EventEdit,
-  EventEdit2,
   EventDetails,
   Faq,
   Home,
@@ -96,21 +94,6 @@ function App() {
           } 
         />
         
-        <Route path='/oganiza-un-evento2' 
-          element={
-            <RutaPrivada>
-              <EventCreateForm2 />
-            </RutaPrivada>
-          } 
-        />
-        
-        <Route path='/oganiza-un-evento-editar2/:id' 
-          element={
-            <RutaPrivada>
-              <EventEdit2 />
-            </RutaPrivada>
-          } 
-        />
         
         <Route path='/oganiza-un-evento-editar/:id' 
           element={
