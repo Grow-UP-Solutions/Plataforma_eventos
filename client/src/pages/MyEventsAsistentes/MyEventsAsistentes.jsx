@@ -8,17 +8,22 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/auth/AuthContext';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
+import ExportExcel from 'react-export-excel';
+import { Loading } from "../../components";
+
+const ExcelFile = ExportExcel.ExcelFile;
+const ExcelSheet = ExportExcel.ExcelSheet;
+const ExcelColumn = ExportExcel.ExcelColumn;
 
 const MyEventsAsistentes = () => {
 
   const eventid = useParams().eventId;
   const dateid = useParams().dateId;
   const { user } = useContext(AuthContext);
-  //const [all , setAll] = useState([]);
-  //const [todosEvents , setTodosEvents] = useState([]);
   const [event, setEvent] = useState([]);
   const [date , setDate] = useState([]);
   const [buyers , setBuyers] = useState([]);
+  const [load, setLoad] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -40,6 +45,7 @@ const MyEventsAsistentes = () => {
           const buyer = todosUsers.find(a => a._id === idBuyers[j]);
           allBuyers.push(buyer);
           setBuyers(allBuyers);
+          setLoad(false);
         }
       }
     }
@@ -133,105 +139,122 @@ const MyEventsAsistentes = () => {
     navigate('/usuario/perfil');
   }  
 
-  return (
-    <div className={styles.container}>
-      {
-        event.length === 1 &&
-        <div className={styles.containerTop}>
-          <p className={styles.title}>Asistentes al evento</p>   
-          <p className={styles.eventTitle}>{event[0].title}</p>
-          <p className={styles.location}>{event[0].municipio} - {event[0].departamento} </p>
-          
-          {
-            event[0].dates.map(d => d._id === dateid ?
-            <div>
-              <p className={styles.date}>{d.dateFormated} - {d.start} - {d.end} </p>
-              {
-                buyers.length > 1 ?                     
-                <div className={styles.containerTable}>
-                  <table className={styles.table}>
-                    <thead>
-                      <tr>
+  if (load) {
+    return <Loading />
+  }
+  else {
+    return (
+      <div className={styles.container}>
+        {
+          event.length === 1 &&
+          <div className={styles.containerTop}>
+            <p className={styles.title}>Asistentes al evento</p>   
+            <p className={styles.eventTitle}>{event[0].title}</p>
+            <p className={styles.location}>{event[0].municipio} - {event[0].departamento} </p>
+            
+            {
+              event[0].dates.map(d => d._id === dateid ?
+              <div>
+                <p className={styles.date}>{d.dateFormated} - {d.start} - {d.end} </p>
+                {
+                  buyers.length > 1 ?                     
+                  <div className={styles.containerTable}>
+                    <table className={styles.table}>
+                      <thead>
+                        <tr>
 
-                        <th className={styles.input}>  
-                          <input
-                            type="checkbox"
-                            onChange={(e) => selectAll(e)}
-                            defaultChecked={false}
-                            value={buyers._id}
-                            class={styles.checkBox}
-                          />
-                          {/* <p>Selecciona con doble click</p> */}
-                        </th>
-                        <th>Seleccionar Todos</th>
-                        <th>Usuario</th>
-                        <th>Cupos Comprados</th>
-                        <th className={styles.two}>
-                          
-                          <div className={styles.btnTop1}>
-                            <DescriptionOutlinedIcon sx={{ fontSize: '3rem', color: '#d53e27' }} />
-                            <button className={styles.button} >
-                              Descargar Lista
-                            </button>
-                          </div>
-                          
-                          <div className={styles.btnTop2}>
-                            <MailOutlineIcon sx={{ fontSize: '3rem', color: '#d53e27' }} />
-                            <button className={styles.button} 
-                              onClick={(e)=>handleManyMessages(e)} 
-                            >
-                              <p>Enviar Mensaje a</p>
-                              <p>seleccionados</p>
-                            </button>
-                            
-                          </div>
-                          
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {buyers.map(b=>(
-                        <tr key={b._id}>
-                          
-                          <td className={styles.input}>
-
+                          <th className={styles.input}>  
                             <input
                               type="checkbox"
-                              onChange={(e) => selectBuyer(e)}
-                              value={b._id}
-                              className={styles.checkBox}
-                              checked={saber(b._id) ? true : false}
+                              onChange={(e) => selectAll(e)}
+                              defaultChecked={false}
+                              value={buyers._id}
+                              class={styles.checkBox}
                             />
                             {/* <p>Selecciona con doble click</p> */}
-    
-                          </td>
-                          <td><img className={styles.userImg} src={b.userpicture} alt='img-user' /></td>
-                          <td>{b.name}</td>
-                          <td>1</td>
-                          <td>
-                            <div className={styles.btn}>
-                              <MailOutlineIcon sx={{ fontSize: '2rem', color: '#d53e27' }} />
-                              <p className={styles.button1}  onClick={(e)=>handleOneMessage(e ,b._id)}  >
-                                Enviar Mensaje
-                              </p>
+                          </th>
+                          <th>Seleccionar Todos</th>
+                          <th>Usuario</th>
+                          <th>Cupos Comprados</th>
+                          <th className={styles.two}>
+                            
+                            <div className={styles.btnTop1}>
+                              <DescriptionOutlinedIcon sx={{ fontSize: '3rem', color: '#d53e27' }} />
+                              <ExcelFile 
+                                element={
+                                  <button className={styles.button} >
+                                    Descargar Lista
+                                  </button>
+                                }
+                                filename='Excel Lista Asistentes'
+                              >
+                                <ExcelSheet data={buyers} name='Asistentes'>
+                                  <ExcelColumn labe='name' value='name' />
+                                  <ExcelColumn labe='email' value='email' />
+                                  <ExcelColumn labe='city' value='city' />
+                                </ExcelSheet>
+                              </ExcelFile>
+                              
                             </div>
-                          </td>
+                            
+                            <div className={styles.btnTop2}>
+                              <MailOutlineIcon sx={{ fontSize: '3rem', color: '#d53e27' }} />
+                              <button className={styles.button} 
+                                onClick={(e)=>handleManyMessages(e)} 
+                              >
+                                <p>Enviar Mensaje a</p>
+                                <p>seleccionados</p>
+                              </button>
+                              
+                            </div>
+                            
+                          </th>
                         </tr>
-                          
-                      ))}
-                    </tbody>
-                  </table>
-                </div> :'LOADING ...'
-              }
-            </div> : '')
-          }
-        </div>      
-      }
-      <div className={styles.container_exit}>
-        <p className={styles.exit} onClick={handleClickExit}>Salir</p>
-      </div>     
-    </div>
-  );
+                      </thead>
+                      <tbody>
+                        {buyers.map(b=>(
+                          <tr key={b._id}>
+                            
+                            <td className={styles.input}>
+
+                              <input
+                                type="checkbox"
+                                onChange={(e) => selectBuyer(e)}
+                                value={b._id}
+                                className={styles.checkBox}
+                                checked={saber(b._id) ? true : false}
+                              />
+                              {/* <p>Selecciona con doble click</p> */}
+      
+                            </td>
+                            <td><img className={styles.userImg} src={b.userpicture} alt='img-user' /></td>
+                            <td>{b.name}</td>
+                            <td>1</td>
+                            <td>
+                              <div className={styles.btn}>
+                                <MailOutlineIcon sx={{ fontSize: '2rem', color: '#d53e27' }} />
+                                <p className={styles.button1}  onClick={(e)=>handleOneMessage(e ,b._id)}  >
+                                  Enviar Mensaje
+                                </p>
+                              </div>
+                            </td>
+                          </tr>
+                            
+                        ))}
+                      </tbody>
+                    </table>
+                  </div> :'LOADING ...'
+                }
+              </div> : '')
+            }
+          </div>      
+        }
+        <div className={styles.container_exit}>
+          <p className={styles.exit} onClick={handleClickExit}>Salir</p>
+        </div>     
+      </div>
+    );
+  }
 }
 
 export default MyEventsAsistentes;
