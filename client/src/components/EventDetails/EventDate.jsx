@@ -35,6 +35,7 @@ const EventDate = ({ id }) => {
   const { dateToBuy, setDateToBuy} = useContext(stateContext);
   const [resultFormNewDate, setResultFormNewDate] = useState(false);
   const [isLoadingNewDate, setIsLoadingNewDate] = useState(false);
+  const { valorTotal, setValorTotal } = useContext(stateContext);
 
  
 
@@ -107,9 +108,8 @@ const EventDate = ({ id }) => {
     setChecked(true);
     const fechaElegida = e.target.value;
 
-    const ivaCost = price * iva
-    const adminCost = price + administracion
-    const unit_price = adminCost + ivaCost
+    const unit_price = price + administracion + iva
+    
    
 
     if (!e.target.checked) {
