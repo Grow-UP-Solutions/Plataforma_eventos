@@ -37,8 +37,6 @@ const Cart = () => {
   
   const [descuentoTotal , setDescuentoTotal] = useState('0')
  
-  const [iva , setIva] = useState(subTotal*0.19)
-  
  
   //PAGINADO//
 
@@ -72,13 +70,9 @@ const Cart = () => {
   
 
   useEffect(() => {
+  
+    const precioTotal = subTotal + iva + administracion - descuentoTotal
     
-    const ivaFinal = subTotal * 0.19
-   
-    const precioTotal = subTotal + subTotal*0.19 + administracion - descuentoTotal
-    
-     
-      setIva(ivaFinal)
       setValorTotal(precioTotal)
 
     }, [subTotal]);
