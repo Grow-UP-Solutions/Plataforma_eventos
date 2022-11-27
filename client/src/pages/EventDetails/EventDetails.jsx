@@ -81,7 +81,8 @@ const EventDetails = () => {
       try {
         const res = await eventsApi.get("/users/" + user.uid);
         setHeart(res.data.myFavorites.find((e) => e._id === id));
-      } catch (error) {
+      } 
+      catch (error) {
         console.log(error);
       }
     };
@@ -292,7 +293,8 @@ const EventDetails = () => {
 
             {isLoading ? (
               <div className={style.container_icon_heart_l}>
-                <Hearts
+                ''
+                {/* <Hearts
                   height="40"
                   width="40"
                   color="#d53e27"
@@ -300,7 +302,7 @@ const EventDetails = () => {
                   wrapperStyle={{}}
                   wrapperClass=""
                   visible={true}
-                />
+                /> */}
               </div>
             ) : (
               <div>

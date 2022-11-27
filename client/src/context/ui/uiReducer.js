@@ -16,10 +16,12 @@ export const uiReducer = (state, action) => {
         if(a.name > b.name) { return 1; }
         return 0;
       });
+      let nuevoArreglo = orden;
+      nuevoArreglo.push(nuevoArreglo.shift());
 
       return {
         ...state,
-        categories: orden,
+        categories: nuevoArreglo,
       };
 
     case 'GET_ALL_EVENTS':

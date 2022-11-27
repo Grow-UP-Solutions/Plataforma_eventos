@@ -47,6 +47,7 @@
 .categorie img {
   object-fit: cover;
   height: 15rem;
+  cursor: pointer;
 }
 
 .categorieText {

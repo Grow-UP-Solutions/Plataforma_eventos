@@ -49,6 +49,7 @@ const Search = ({ location = 'home' }) => {
         type='text'
         placeholder='Municipio'
       />
+
       <input
         onChange={(e)=>handleChange(e)}
         onKeyPress={handleKeyPress}
@@ -57,6 +58,7 @@ const Search = ({ location = 'home' }) => {
         type='text'
         placeholder='Buscar un evento'
       />
+
       <button
         onClick={handleSubmit}
         className={`${location !== 'home' ? style.searchBtnNotHome : style.searchBtnHome}`}

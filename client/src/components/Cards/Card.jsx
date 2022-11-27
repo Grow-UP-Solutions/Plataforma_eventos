@@ -255,7 +255,8 @@ const Card = ({ event, listName, orgEvent }) => {
             {/* FAVORITO */}
             {isLoading ? (
               <div className={styles.cardAddLoad}>
-                <Hearts
+                ''
+                {/* <Hearts
                   height='40'
                   width='40'
                   color='#d53e27'
@@ -263,7 +264,7 @@ const Card = ({ event, listName, orgEvent }) => {
                   wrapperStyle={{}}
                   wrapperClass=''
                   visible={true}
-                />
+                /> */}
               </div>
             ) : (
               <div>
