@@ -4,6 +4,7 @@ import styles from './EventDateMap.module.css';
 import { iconArrowLeft, iconArrowRight } from '../../assets/imgs';
 import { stateContext } from '../../context/state/stateContext';
 import { administracion } from '../../utils/administracion';
+import { iva } from '../../utils/administracion';
 
 
 
@@ -33,10 +34,13 @@ const EventDateMap = ({id,cupos}) => {
         carrito[i].subtotal = num * carrito[i].price
         
         sTotal.push(carrito[i].subtotal)
+
         let total = sTotal.reduce((a, b) => a + b, 0);
+
         setSubTotal(total)
 
-        let t = total + total* 0.19 + administracion
+        let t = total + iva + administracion
+        console.log(t)
      
         setValorTotal(t)
       }
