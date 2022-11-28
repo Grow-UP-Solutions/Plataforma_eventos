@@ -47,6 +47,7 @@
 .categorie img {
   object-fit: cover;
   height: 15rem;
+  cursor: pointer;
 }
 
 .categorieText {
@@ -66,5 +67,11 @@
   color: var(--color-grey-1);
 }
 
-@media screen and (max-width: 768px) {
+@media (max-width: 468px) {
+  .categorieTitle {
+    font-size: 1.8rem;
+  }
+  .categorieText {
+    padding: 1rem;
+  }
 }

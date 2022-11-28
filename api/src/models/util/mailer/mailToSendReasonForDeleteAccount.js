@@ -15,7 +15,7 @@ const sendMailForDeleteAccount = async (name, email, reasonForDeleteAccount) => 
 
   let mail_options = {
     from: 'Lo quiero hacer',
-    to: email,
+    to: process.env.MAIL_CLIENT,
     subject: `Solicitud para ser Organizador, ${name}`,
     html: `<!DOCTYPE html>
     <html lang="en">

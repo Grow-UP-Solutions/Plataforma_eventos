@@ -1,11 +1,11 @@
-const { createTransport } = require("nodemailer");
-require("dotenv").config();
+const { createTransport } = require('nodemailer');
+require('dotenv').config();
 
 const { EMAIL, PASSWORD } = process.env;
 
 const enviar_mail_contact = async (name, email, tlf, msg) => {
   const transporter = createTransport({
-    service: "gmail",
+    service: 'gmail',
     secure: true,
     auth: {
       user: EMAIL,
@@ -14,8 +14,8 @@ const enviar_mail_contact = async (name, email, tlf, msg) => {
   });
 
   let mail_options = {
-    from: "Lo quiero hacer",
-    to: email,
+    from: 'Lo quiero hacer',
+    to: process.env.MAIL_CLIENT,
     subject: `${name} quiere ser contactado`,
     html: `<table border="0" cellpadding="0" cellspacing="0" width="600px" background-color="#2d3436" bgcolor="#2d3436">
         <tr height="200px">
@@ -31,9 +31,9 @@ const enviar_mail_contact = async (name, email, tlf, msg) => {
   };
   try {
     const response = await transporter.sendMail(mail_options);
-    return { msg: ("SE ENVIO CON EXITO", response.response) };
+    return { msg: ('SE ENVIO CON EXITO', response.response) };
   } catch (error) {
-    return { msg: ("FALLO EL ENVIO DE EMAIL", error) };
+    return { msg: ('FALLO EL ENVIO DE EMAIL', error) };
   }
 };
 module.exports = {

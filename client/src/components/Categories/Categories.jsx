@@ -5,6 +5,7 @@ import { UIContext } from '../../context/ui';
 import { useNavigate } from 'react-router-dom';
 
 const Categories = () => {
+  
   const { setResult } = useContext(stateContext);
   const { categories } = useContext(UIContext);
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ const Categories = () => {
     e.preventDefault();
     const data = e.target.id;
     setResult(data);
-    navigate('/categories/');
+    navigate('/resultado-categoria/');
   };
 
   return (
@@ -23,7 +24,7 @@ const Categories = () => {
         {categories.map((categorie) => {
           return (
             <li key={categorie.name} className={styles.categorie}>
-              <img src={categorie.img} alt={categorie.name} />
+              <img src={categorie.img} alt={categorie.name} onClick={handleClick} id={categorie.name}/>
               <div className={styles.categorieText}>
                 <p
                   id={categorie.name}

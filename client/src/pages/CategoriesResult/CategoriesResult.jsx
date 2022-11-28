@@ -39,7 +39,7 @@ const CategoriesResult = () => {
             );
           })
         ) : (
-          <h5>No hay eventos</h5>
+          <p className={style.not_event}>No hay eventos ...</p>
         )}
       </div>
 

@@ -47,8 +47,6 @@ const ChangePassword = () => {
   };
 
   useEffect(() => {
-    console.log({ logged, user });
-
     if (logged || Object.keys(user).length > 0) {
       return navigate('/');
     }
@@ -101,7 +99,7 @@ const ChangePassword = () => {
     <div className={`${styles.page} container`}>
       <div className={styles.container}>
         <div className={styles.containerImg}>
-          <IconChangePassword />
+          <IconChangePassword styles={styles.imgCandado} />
         </div>
 
         <div className={styles.containerInfo}>

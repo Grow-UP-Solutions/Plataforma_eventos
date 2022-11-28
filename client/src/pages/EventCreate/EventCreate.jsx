@@ -8,7 +8,6 @@ import icon3 from '../../assets/imgs/icon-eventcreate3.svg';
 import icon4 from '../../assets/imgs/icon-eventcreate4.svg';
 import icon5 from '../../assets/imgs/icon-eventcreate5.svg';
 import icon6 from '../../assets/imgs/icon-eventcreate6.svg';
-import foto from '../../assets/imgs/orgEvento.png';
 import eventsApi from '../../axios/eventsApi';
 import { AuthContext } from '../../context/auth';
 import { UIContext } from '../../context/ui';
@@ -114,17 +113,29 @@ const EventCreate = () => {
 
   return (
     <div className={styles.container}>
-      <img src={foto} alt='n' />
+      <div className={styles.containerPortada}>
+        <img
+          src={
+            'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80'
+          }
+          alt='Creacion de un evento'
+          className={styles.imgPortada}
+        />
 
-      <div className={styles.containerBtn}>
-        <button className={styles.btn} onClick={(e) => ingreso(e)}>
-          Comenzar
-        </button>
+        <div className={styles.containerTextPortada}>
+          <h1 className={styles.titlePortada}>Gana dinero con tu talento</h1>
+          <h2 className={styles.subTitlePortada}>
+            Comparte tu talento con otros mientras ganas dinero haciendo lo que más disfrutas
+          </h2>
+          <button className={styles.btn} onClick={(e) => ingreso(e)}>
+            Comenzar
+          </button>
+        </div>
       </div>
 
       <div className={styles.containerContent}>
         <div className={styles.header}>
-          <p className={styles.title}>Beneficios de Organizar un evento</p>
+          <p>Beneficios de Organizar un evento</p>
         </div>
 
         <div className={styles.containerItems}>

@@ -33,6 +33,7 @@ import { formatDateForm } from '../../utils/formatDateForm';
 import styles from './EventCreateForm.module.css';
 import { AiOutlineClose } from 'react-icons/ai';
 import { BsCamera, BsCardImage, BsInfoCircle, BsPencilSquare } from 'react-icons/bs';
+import { stateContext } from '../../context/state/stateContext';
 
 const EventCreateForm = () => {
   const dispatch = useDispatch();
@@ -623,7 +624,7 @@ const EventCreateForm = () => {
       newFechas[i][e.target.name] = e.target.value;
     }
 
-    newFechas[i].precioAlPublico = parseFloat(newFechas[i].price) + parseFloat(costoDeManejo) + parseFloat(a);
+   // newFechas[i].precioAlPublico = parseFloat(newFechas[i].price) + parseFloat(costoDeManejo) + parseFloat(a);
     newFechas[i].gananciaCupo =
       parseFloat(newFechas[i].price) -
       (parseFloat(newFechas[i].price) * parseFloat(comision) +
@@ -955,9 +956,10 @@ const EventCreateForm = () => {
   //--------------------------------------------------//
   //                  SUBMIT              //
 
-  function handleSubmit(e) {
+  const { notes, setNotes } = useContext(stateContext);
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('estoy en sumbt');
     setPost({
       ...post,
       isPublic: true,
@@ -978,10 +980,17 @@ const EventCreateForm = () => {
       }).then((publicar) => {
         if (publicar) {
           dispatch(postEvent(post));
+
+          const create = {
+            type: "create",
+            idUser: user.uid,
+          };
+          const json = eventsApi.post("/users/notifications", create)
+          .then(setNotes([...notes, json.data]));
+
           swal('Tu evento ha sido publicado. Recibirás un correo con los detalles. ', {
             icon: 'success',
           });
-          console.log('postEnviado:', post);
           navigate('/user/perfil/datos');
         }
       });
@@ -1773,9 +1782,9 @@ const EventCreateForm = () => {
                                   </div>
                                 </label>
 
-                                {date.price === '' ? <p>$21.990</p> : <p>{date.precioAlPublico}</p>}
+                                {/* {date.price === '' ? <p>$21.990</p> : <p>{date.precioAlPublico}</p>}
 
-                                <p className={styles.subInfotxt}>Precio al público incluyendo costo de manejo e IVA</p>
+                                <p className={styles.subInfotxt}>Precio al público incluyendo costo de manejo e IVA</p> */}
                               </div>
 
                               {/* ganacia x cupo*/}

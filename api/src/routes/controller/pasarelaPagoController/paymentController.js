@@ -175,7 +175,7 @@ router.get("/success", async (req, res) => {
 router.get("/fail", async (req, res) => {
    const algo = req.query;
    try {
-      console.log("/*/*/*//*/", algo);
+      console.log("//////", algo);
       res.json(algo);
    } catch (error) {
       return res.status(500).json(error.message);

@@ -16,6 +16,8 @@ import { UIContext } from '../../context/ui';
 import { getReferalCode } from '../../redux/actions';
 import eventsApi from '../../axios/eventsApi';
 import { AuthContext } from '../../context/auth';
+import { administracion } from '../../utils/administracion';
+import { iva } from '../../utils/administracion';
 
 
 
@@ -33,10 +35,8 @@ const Cart = () => {
   const dispatch = useDispatch()
 
   
-  const [descuentoTotal , setDescuentoTotal] = useState('')
-  const [administracion , setAdministracion] = useState(subTotal*0.16)
-  const [iva , setIva] = useState(subTotal*0.19)
-  
+  const [descuentoTotal , setDescuentoTotal] = useState('0')
+ 
  
   //PAGINADO//
 
@@ -70,15 +70,10 @@ const Cart = () => {
   
 
   useEffect(() => {
+  
+    const precioTotal = subTotal + iva + administracion - descuentoTotal
     
-    const ivaFinal = subTotal*0.19
-    const adminfinal = subTotal*0.16
-    const precioTotal = subTotal + subTotal*0.19 + subTotal*0.16 - descuentoTotal
-    
-      setAdministracion(adminfinal)
-      setIva(ivaFinal)
       setValorTotal(precioTotal)
-      
 
     }, [subTotal]);
 
@@ -93,21 +88,21 @@ const Cart = () => {
 
   const [numberBuyCupos, setNumberBuyCupos] = useState(0);
 
-  const handleNumberBuyCupos = (e,num , id) => {
+  const handleNumberBuyCupos = (e,num , id , cupos) => {
   
     //const carritoCupos = [...carrito]
     if (num <= -1) return;
-    if (num > 10) return;
+    if (num > cupos) return;
     setNumberBuyCupos(num);
 
-    const stotal = []
+    
 
     for( let i = 0 ; i<carrito.length ; i++){
       if(carrito[i].idDate === id){
+
         carrito[i].quantity = num
-        carrito[i].subtotal = num *   carrito[i].price 
-        stotal.push(carrito[i].subtotal) 
-        
+        carrito[i].subtotal = num * carrito[i].price 
+      
       } 
     }
   };
@@ -132,6 +127,8 @@ const Cart = () => {
 // codigo de prueba Zac1234//
 
   const [codigo , setCodigo] = useState('')
+  const [desc , setDesc] = useState('')
+ 
  
 
   const handleCodigo = (e) =>{
@@ -139,43 +136,76 @@ const Cart = () => {
     setCodigo(e.target.value)
   }
 
-  const[desc , setDesc] = useState('')
 
-  const aplicar = (e , id) =>{
+    const aplicar = async (e , id) =>{
     e.preventDefault()
-    for(let d=0; d<currentDate[0].codigos.length; d++){
-      if(currentDate[0].codigos[d].codigo === codigo){
 
-        const descValor = currentDate[0].codigos[d].descuento
-       
-        for(let c = 0 ; c<carrito.length;c++){
-            if(carrito[c].idDate===id){
+    for(let c = 0 ; c<carrito.length;c++){
+      if(carrito[c].idDate===id){
+    
+        for(let d=0; d<currentDate[0].codigos.length; d++){
+          if(currentDate[0].codigos[d].codigo === codigo){
 
-              carrito[c].codigoDescuento=codigo
-              carrito[c].codigoCorrecto=true
-              carrito[c].descuento= descValor * currentDate[0].price / 100
-              const unitDic = carrito[c].unit_price - descValor * currentDate[0].price / 100
-              carrito[c].unit_price = unitDic
+            const descValor = currentDate[0].codigos[d].descuento //10%
+            carrito[c].codigoDescuento=codigo
+            carrito[c].codigoCorrecto=true
 
-              setDesc(carrito[c].descuento)
+            const valorDescuento = descValor * currentDate[0].price / 100 //$1000
+            const valorDescuentoCupos = valorDescuento *carrito[c].quantity //$2000
+
+            carrito[c].descuento= valorDescuentoCupos //$2000
+
+            const unitDic = carrito[c].unit_price - valorDescuento
+            carrito[c].unit_price = unitDic
+
+            setDesc(carrito[c].descuento)
+            return swal({
+              title: 'Codigo Aplicado',
+            })
+     
+          }else if(currentDate[0].codigos[d].codigo !== codigo){
+            console.log('en referal')
+            
+            const codeResult = await eventsApi.get(`/codeDiscount/getCodeDiscountByCode/${codigo} `)
+           
+      
+            if(codeResult.data.codeDiscount.length===1){
+
+              carrito[c].codigoReferido = codeResult.data.codeDiscount[0].code
+              carrito[c].codigoCorrecto = true
+              carrito[c].descuento = codeResult.data.codeDiscount[0].value
+
+              const refUnit = codeResult.data.codeDiscount[0].value / carrito[c].quantity
+
+              //const descuentoUnit = carrito[c].unit_price - codeResult.data.codeDiscount[0].value
+
+              const descuentoUnit = carrito[c].unit_price - refUnit
+
+              carrito[c].unit_price = descuentoUnit
+
+              setDesc(codeResult.data.codeDiscount[0].value)
+              
               return swal({
-                title: 'Codigo Aplicado',
-              })
-      }else{
-        carrito[c].codigoCorrecto=false
-         }}
+                    title: 'Codigo Aplicado',
+                    })
+            }else{
+              carrito[c].codigoCorrecto=false
+              return swal({
+                title: 'Codigo Incorrecto',
+                icon: 'warning',
+                dangerMode: true,
+              }) 
+            }
+          }
+        }
       }
-      return swal({
-        title: 'Codigo Incorrecto',
-        icon: 'warning',
-        dangerMode: true,
-      })
     }
-
   }
 
+
+
   useEffect(() => {
-    
+  
     const desTotal = []
     for(let i = 0; i<carrito.length; i++){
       desTotal.push(carrito[i].descuento)
@@ -187,28 +217,31 @@ const Cart = () => {
 
 
 
-
   const quitar = (e,id)=>{
-    e.preventDefault()
+  
     for(let i = 0 ; i<carrito.length;i++){
       if(carrito[i].idDate===id){
 
-        const desc = carrito[i].descuento
+        const desc = carrito[i].descuento 
+
+        const descUnit = carrito[i].descuento / carrito[i].quantity
+
         const resto = descuentoTotal-desc
         const restoTotal = valorTotal - desc
 
-        carrito[i].unit_price = carrito[i].unit_price  + desc
+        carrito[i].unit_price = carrito[i].unit_price  + descUnit
 
         setValorTotal(restoTotal)
         setDescuentoTotal(resto)
+        setCodigo('')
 
-        if(carrito[i].codigoDescuento.length>0){
+       
 
           carrito[i].codigoDescuento=''
+          carrito[i].codigoReferido= ''
           carrito[i].descuento=''
-          carrito[i].codigoDescuento=''
           carrito[i].codigoCorrecto=''
-        } 
+        
       }
 
     }
@@ -267,7 +300,7 @@ const Cart = () => {
 
   async function handleSubmit(e){
     e.preventDefault()
-    console.log('handleSubmit:')
+   
     
     const f = []
     const cod= []
@@ -382,11 +415,11 @@ const Cart = () => {
                         {carrito.map(c=>
                         c.idDate === currentDate[0]._id ?
                         <div className={styles.quantityBtns}>
-                            <button onClick={(e) => handleNumberBuyCupos(e,c.quantity - 1, c.idDate)}>
+                            <button onClick={(e) => handleNumberBuyCupos(e,c.quantity - 1, c.idDate,currentDate[0].cupos)}>
                               <img src={iconArrowLeft} alt="icon-left" />
                             </button>
                             <span>{c.quantity}</span>
-                            <button onClick={(e) => handleNumberBuyCupos(e, c.quantity + 1, c.idDate )}>
+                            <button onClick={(e) => handleNumberBuyCupos(e, c.quantity + 1, c.idDate, currentDate[0].cupos )}>
                               <img src={iconArrowRight} alt="icon-right" />
                             </button>
                           </div>
@@ -415,28 +448,47 @@ const Cart = () => {
                   
                   </div>
                   {carrito.length > 0 &&
-                    carrito.map((v)=>
-                      v.idDate === currentDate[0]._id?
+                    carrito.map((c)=>
+                      c.idDate === currentDate[0]._id?
                       <div className={styles.productDiscount}>
                         <p className={styles.titleDiscount}>¿Tiene un código de descuento?</p>
-                        <div className={
-                          v.codigoCorrecto === '' ?
-                          styles.containerInputDiscount :
-                          v.codigoCorrecto === true?
-                          styles.containerInputDiscountCorrect:
-                          v.codigoCorrecto === false?
-                          styles.containerInputDiscountIncorrect:
-                          styles.containerInputDiscount}>
-                          <input
+                        {c.codigoCorrecto === '' ? 
+                        <div className={styles.containerInputDiscount}>
+                           <input
                               name='codigo'
-                              placeholder={v.codigoDescuento ||''}
+                              placeholder={''}
                               onChange={(e) => handleCodigo(e)}
                             />
+                        </div> : 
+                        c.codigoCorrecto === true ?
+                        <div className={ styles.containerInputDiscountCorrect}>
+                           <input
+                              name='codigo'
+                              placeholder={c.codigoDescuento || c.codigoReferido}
+                              disabled
+                            /> 
+                        </div> :
+                         c.codigoCorrecto === false ?
+                         <div className={styles.containerInputDiscountIncorrect}>
+                           <input
+                              name='codigo'
+                              placeholder={c.codigoDescuento ||''}
+                              onChange={(e) => handleCodigo(e)}
+                            />
+                        </div> :
+                        <div className={styles.containerInputDiscount}>
+                        <input
+                           name='codigo'
+                           placeholder={c.codigoDescuento ||''}
+                           onChange={(e) => handleCodigo(e)}
+                         />
+                        </div>
+                        }
                           <div className={styles.btnsDisc}>
-                            <button onClick={(e)=>{aplicar(e,currentDate[0]._id)}}>Aplicar</button>
+                            <button className={styles.quitar} onClick={(e)=>{aplicar(e,currentDate[0]._id)}}>Aplicar</button>
                             <button className={styles.quitar} onClick={(e)=>{quitar(e,currentDate[0]._id)}}>Quitar</button>
                           </div>
-                        </div>
+                        
                       </div>
                     :'')
                     }

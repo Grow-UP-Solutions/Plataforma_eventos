@@ -5,6 +5,7 @@ import basquet from '../../assets/imgs/basquet.svg';
 import { Link } from 'react-router-dom';
 
 const Finance = () => {
+  
   /*   const opcionesEliminar = [
         'Tengo otra cuenta de Lo que quiero hacer',
         'Mala experiencia con eventos/organizador',
@@ -25,7 +26,7 @@ const Finance = () => {
             Cifras mostradas son netas, es decir el monto indicado ya ha sido depositado en tu cuenta bancaria o esta
             proximo a ser liquidado.
           </p>
-          <Link to={'/bills'}>
+          <Link to={'/facturas'}>
             <button className={styles.btn}>Detalles</button>
           </Link>
         </div>
