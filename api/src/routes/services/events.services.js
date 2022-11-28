@@ -73,17 +73,19 @@ async function eventsUpdate(id, newEvent) {
   const { categories } = newEvent;
   try {
     if (categories.length > 0) {
-      const temp = categories.map(async (e) => {
+      const tempCategory = categories.map(async (e) => {
         let temp = await OneCategoryDb(e);
         return temp;
       });
 
-      const category = await Promise.all(temp);
+      const category = await Promise.all(tempCategory);
       newEvent.categories = category.map((e) => {
         return e._id;
       });
     }
     const newEvents = await EventFunctionDb.updateEvent(id, newEvent);
+    const allBuyer = await UsersFunctionDb.allBuyerUsers(id)
+    if(allBuyer.length> 0) console.log('hay comprador')
     return newEvents;
   } catch (error) {
     throw new Error(error.message);

@@ -6,6 +6,7 @@ const {
   allConversationDB,
   lockedConversation,
   pinupConversation,
+  createConversationAllBuyer,
 } = require('../../models/util/functionDB/ConversationDb.js');
 
 const router = Router();
@@ -28,6 +29,18 @@ router.post('/create', async (req, res) => {
 
   try {
     const newConversaton = await createConversation(menbers);
+
+    res.status(200).json(newConversaton);
+  } catch (error) {
+    return res.status(500).json({ faill: error.message });
+  }
+});
+
+router.post('/buyer/create', async (req, res) => {
+  const menbers = req.body;
+
+  try {
+    const newConversaton = await createConversationAllBuyer(menbers);
 
     res.status(200).json(newConversaton);
   } catch (error) {

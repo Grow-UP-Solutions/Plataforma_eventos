@@ -37,6 +37,27 @@ async function createConversation(menbers) {
    } catch (error) {
       throw new Error(error.message);
    }
+   
+}
+
+async function createConversationAllBuyer(menbers) {
+
+
+   const { senderId, receiverId } = menbers;
+   try {
+      let newConversation = new Conversation({
+         members: [senderId],
+      });
+      receiverId.forEach((idReciver) => {
+         newConversation.members.push(idReciver)
+      });
+      await newConversation.save();
+      return newConversation 
+   } catch (error) {
+      throw new Error(error.message);
+   }
+   
+   
 }
 
 async function lockedConversation(idConversation) {
@@ -72,4 +93,5 @@ module.exports = {
    createConversation,
    lockedConversation,
    pinupConversation,
+   createConversationAllBuyer,
 };
