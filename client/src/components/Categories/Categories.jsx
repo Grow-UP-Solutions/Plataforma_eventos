@@ -24,7 +24,7 @@ const Categories = () => {
         {categories.map((categorie) => {
           return (
             <li key={categorie.name} className={styles.categorie}>
-              <img src={categorie.img} alt={categorie.name} />
+              <img src={categorie.img} alt={categorie.name} onClick={handleClick} id={categorie.name}/>
               <div className={styles.categorieText}>
                 <p
                   id={categorie.name}

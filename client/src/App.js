@@ -56,7 +56,6 @@ function App() {
 
   useEffect(() => {
     dispatch(getEvents());
-
     getAllEvents();
   }, []);
 
@@ -82,7 +81,7 @@ function App() {
         <Route path='/privacidad' element={<PanelPrivacy />} />
         <Route path='/seguridad' element={<PanelPrivacy />} />
         <Route path='/terminos' element={<PanelPrivacy />} />
-        <Route path='/resultado-eventos-organizador' element={<EventsOrganizerResult />} />
+        <Route path='/resultado-eventos-organizador/:id' element={<EventsOrganizerResult />} />
 
 
         {/* RUTAS PRIVADAS */}
@@ -93,7 +92,6 @@ function App() {
             </RutaPrivada>
           } 
         />
-        
         
         <Route path='/oganiza-un-evento-editar/:id' 
           element={

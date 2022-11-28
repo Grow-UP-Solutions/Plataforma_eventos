@@ -9,6 +9,7 @@ import { stateContext } from '../../context/state/stateContext';
 import swal from 'sweetalert';
 
 const EventOrganizer = ({ id }) => {
+  
   const [conversation, setConversation] = useState({});
   const { user } = useContext(AuthContext);
   const { setResult, conversa } = useContext(stateContext);
@@ -64,7 +65,7 @@ const EventOrganizer = ({ id }) => {
   const handleClickEventsOrganizer = async (e) => {
     e.preventDefault();
     setResult(eventDetails.organizer._id);
-    navigate('/resultado-eventos-organizador/');
+    navigate('/resultado-eventos-organizador/' + id);
   };
 
   return (
