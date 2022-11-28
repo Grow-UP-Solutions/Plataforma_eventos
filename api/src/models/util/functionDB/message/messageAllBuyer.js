@@ -14,13 +14,16 @@ module.exports = async function messageAllBuyer(message) {
       const newMessage = new Message(message);
 
       for (let i = 0; i <= user.length - 1; i++) {
+
          for (let j = 0; j <= resiver.length; j++) {
+
             if (user[i]?._id == resiver[j]) {
+                
                user[i].message.push(newMessage._id);
-               await user.save();
             }
          }
       }
+      
 
       await newMessage.save();
 
