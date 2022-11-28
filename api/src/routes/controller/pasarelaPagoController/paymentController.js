@@ -22,7 +22,7 @@ router.post("/orden", async (req, res) => {
 
    const dateEvent = eventDB.dates.find((e, i) => e._id == dates[i].id);
 
-   const telefono = userDB.tel.split(" ").join("");
+   const telefono = userDB.tel?.split(" ").join("");
 
    if (dateEvent.cupos <= 0) {
       throw new Error("El evento esta sobrevendido");
@@ -191,3 +191,6 @@ module.exports = router;
 // const dataPreference = await axios(
 //    `https://api.mercadopago.com/checkout/preferences/${preference_id}?access_token=${ACCESS_TOKEN}`
 // );
+
+
+

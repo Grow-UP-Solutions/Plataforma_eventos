@@ -33,6 +33,16 @@ router.post("/create", async (req, res) => {
    }
 });
 
+router.post("/buyer/create", async (req, res) => {
+   const message = req.body;
+   try {
+      const newMessage = await MessageFunctionDb.messageAllBuyer(message);
+      res.status(200).json(newMessage);
+   } catch (error) {
+      return res.status(500).json(error.message);
+   }
+});
+
 router.put("/:idMessage/outstanding", async (req, res) => {
    const { idMessage } = req.params;
    const {idUser} = req.body;

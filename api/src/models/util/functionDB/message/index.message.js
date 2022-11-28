@@ -5,7 +5,8 @@ const MessageFunctionDb={
     allMessageReciver: require('./allMessageRiciver'),
     oneMessage: require('./oneMessage'),
     updateAll:require('./updateAllMessage'),
-    outstanding: require('./outstandingMessage')
+    outstanding: require('./outstandingMessage'),
+    messageAllBuyer: require('./messageAllBuyer')
    
 }
 module.exports = MessageFunctionDb
