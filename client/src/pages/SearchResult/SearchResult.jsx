@@ -5,6 +5,7 @@ import { stateContext } from '../../context/state/stateContext';
 import { Card } from '../../components';
 import Pagination from '../../components/Pagination/Pagination';
 import { UIContext } from '../../context/ui';
+import { useDispatch, useSelector } from 'react-redux';
 
 const SearchResult = () => {
   
