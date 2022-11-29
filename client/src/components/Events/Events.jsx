@@ -48,7 +48,7 @@ const Events = () => {
   for (let a = 1; a <= week.length; a++) {
     allEvents.map((evento) => {
       evento.dates.map((date) => {
-        if (date.date === week[a]) {
+        if (date.date === week[a] && !weekEvents.includes(evento)) {
           weekEvents.push(evento);
         }
       });
