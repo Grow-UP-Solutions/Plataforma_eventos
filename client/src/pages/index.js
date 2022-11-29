@@ -21,3 +21,4 @@ export { default as Messages } from './Messages/Messages';
 export { default as Verification } from './Verification/Verification';
 export { default as ChangePassword } from './ChangePassword/ChangePassword';
 export { default as CheckSolicitudOrganizer } from './CheckSolicitudOrganizer/CheckSolicitudOrganizer';
+export { default as MercadoPago } from './MercadoPago/MercadoPago';

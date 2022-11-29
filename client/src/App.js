@@ -30,6 +30,7 @@ import {
   WorkWithUsForm,
   CheckSolicitudOrganizer,
   MyEventsAsistentes,
+  MercadoPago
 } from './pages';
 import EventsOrganizerResult from './pages/EventsOrganizerResult/EventsOrganizerResult';
 import News from './pages/News/News';
@@ -82,6 +83,7 @@ function App() {
         <Route path='/seguridad' element={<PanelPrivacy />} />
         <Route path='/terminos' element={<PanelPrivacy />} />
         <Route path='/resultado-eventos-organizador/:id' element={<EventsOrganizerResult />} />
+        <Route path={'/mercadoPago/success'} element={<MercadoPago />} />
 
 
         {/* RUTAS PRIVADAS */}
