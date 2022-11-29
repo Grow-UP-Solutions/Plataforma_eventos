@@ -13,9 +13,9 @@ mercadopago.configure({
 
 router.post("/orden", async (req, res) => {
    const { dates, idUser, idEvent } = req.body;
-   
-   const codigosPrueba = dates.map(e => e.codigo)
-   console.log(codigosPrueba)
+
+   const codigosPrueba = dates.map((e) => e.codigo);
+   console.log(codigosPrueba);
    const userDB = await UsersFunctionDb.oneUser(idUser);
 
    const eventDB = await EventFunctionDb.oneEvent(idEvent);
@@ -60,10 +60,8 @@ router.post("/orden", async (req, res) => {
          },
 
          back_urls: {
-            success:
-               `https://plataformaeventos-production-e0ed.up.railway.app/mercadoPago/success?codigo=${codigosPrueba}`,
-            failure:
-               "https://plataformaeventos-production-e0ed.up.railway.app/mercadoPago/fail",
+            success: `https://events-jean.vercel.app/mercadoPago/success`,
+            failure: `https://events-jean.vercel.app/mercadoPago/success`,
          },
          auto_return: "approved",
          taxes: [
@@ -88,18 +86,18 @@ router.post("/orden", async (req, res) => {
 router.get("/success", async (req, res) => {
    const { external_reference, payment_id, preference_id, codigo } = req.query;
    const ids = external_reference.split(",");
-   console.log('QUERY',req.query)
+   console.log("QUERY", req.query);
    const idEvent = ids[0];
-   
+
    const idUser = ids[1];
-   
+
    try {
       const dataPayments = await axios(
          `https://api.mercadopago.com/v1/payments/${payment_id}?access_token=${ACCESS_TOKEN}`
-         );
-         
-         const response = dataPayments.data;
-         console.log('RESPONSE',response)
+      );
+
+      const response = dataPayments.data;
+      console.log("RESPONSE", response);
 
       const cuposComprados = response.additional_info.items.map((e) =>
          parseInt(e.quantity)
@@ -156,14 +154,13 @@ router.get("/success", async (req, res) => {
       }
 
       const resultTransaccion = {
-         codigoDeLaTransaccion : payment_id,
-         DestinoDePago:response.statement_descriptor,
+         codigoDeLaTransaccion: payment_id,
+         DestinoDePago: response.statement_descriptor,
          fechaDePago: response.date_created,
          valorDeLaTransaccion: response.net_amount,
          costoDeLaTransaccion: response.net_amount,
-          referencia: response.payer.identification.number
-
-      }
+         referencia: response.payer.identification.number,
+      };
 
       res.json(resultTransaccion);
    } catch (error) {
@@ -191,6 +188,3 @@ module.exports = router;
 // const dataPreference = await axios(
 //    `https://api.mercadopago.com/checkout/preferences/${preference_id}?access_token=${ACCESS_TOKEN}`
 // );
-
-
-
