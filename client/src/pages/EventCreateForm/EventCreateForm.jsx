@@ -107,7 +107,7 @@ const EventCreateForm = () => {
     'Villavicencio',
     'Barranquilla',
     'Cartagena de Indias',
-    'Manizales',
+    'Manisales',
     'Florencia',
     'Popayán',
     'Valledupar',
