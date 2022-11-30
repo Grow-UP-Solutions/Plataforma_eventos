@@ -9,7 +9,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const SearchResult = () => {
   
-  const { result, muni } = useContext(stateContext);
+  const { result } = useContext(stateContext);
+  const { muni } = useContext(stateContext);
   const { events } = useContext(UIContext);
   const [local, setLocal] = useState([]);
   const [currentPage, setCurretPage] = useState(1);
@@ -19,21 +20,27 @@ const SearchResult = () => {
   const currentCard = local.slice(indexOfFirstCard, indexOfLastCard);
   const paginado = (pageNumber) => setCurretPage(pageNumber);
 
+
   useEffect(() => {
     scroll.scrollToTop();
     const localEvents = events.filter((event)=>event.municipio.toLowerCase().includes(muni.toLowerCase()))
-    if(result){
+    if(result && muni){
     const getSearch = () => {
       setLocal(localEvents.filter((event) => event.title.toLowerCase().includes(result.toLowerCase())));
     }
     getSearch();
-    }else{
+    }else if(muni && result===''){
       const getSearch = () => {
         setLocal(localEvents);
       }
       getSearch();
+    }else if(result && muni===''){
+      const getSearch = () => {
+        setLocal(events.filter((event) => event.title.toLowerCase().includes(result.toLowerCase())));
+      }
+      getSearch();
     }
-  }, [result]);
+  }, [events]);
 
   return (
     <div className={style.container}>
