@@ -60,8 +60,8 @@ router.post("/orden", async (req, res) => {
          },
 
          back_urls: {
-            success: `http://localhost:3001/mercadoPago/success`,
-            failure: `http://localhost:3001/mercadoPago/success`,
+            success: `http://localhost:3000/mercadoPago/success`,
+            failure: `http://localhost:3000/mercadoPago/success`,
          },
          auto_return: "approved",
          taxes: [
@@ -120,16 +120,18 @@ router.get("/success", async (req, res) => {
          event.sells += totalDeCupos;
 
          event.dates.forEach((e, i) => {
-            if (e._id == response.additional_info.items[i].id) {
-               e.buyers?.push(user._id);
-
-               e.sells += totalDeCupos;
-
-               e.cupos -= totalDeCupos;
-
-               e.profits += response.transaction_details.total_paid_amount;
+            for (let j = 0; j < response.additional_info.items.length; ++j) {
+              if (e._id === response.additional_info.items[j].id) {
+                e.buyers?.push(user._id);
+    
+                e.sells += totalDeCupos;
+    
+                e.cupos -= totalDeCupos;
+    
+                e.profits += response.transaction_details.total_paid_amount;
+              }
             }
-         });
+          });
 
          // const eventoesis= user.myEventsBooked.find(e=>{
          //    //console.log(e._id)
