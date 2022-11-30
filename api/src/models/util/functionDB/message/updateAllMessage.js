@@ -6,7 +6,7 @@ module.exports = async function findAndUpdateMessage(idUser, conversationId) {
     try {
        const userAndMessage = await Users.findOne({_id:idUser});
        const messageConversation = userAndMessage.message.filter((e) => {
-          return e.conversationId === conversationId;
+          return e.conversationId == conversationId;
        });
  
        messageConversation.forEach(async (e) => {
