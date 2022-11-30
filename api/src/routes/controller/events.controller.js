@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const EventFunctionDb = require("../../models/util/functionDB/event/index.event.js");
+const UsersFunctionDb = require("../../models/util/functionDB/users/index.users.js");
 const {
   sendEmailToReportEvent,
 } = require("../../models/util/mailer/mailToReportEvent.js");
@@ -32,6 +33,18 @@ router.get("/:id", async (req, res) => {
     res.status(500).json(error.message);
   }
 });
+
+router.get('/:id/buyer', async(req,res)=>{
+  const {id}= req.params;
+
+  try{
+    const buyerEvent = await UsersFunctionDb.allBuyerUsers(id)
+    return res.status(200).json(buyerEvent)
+  }catch{
+    return res.status(500).json({ ERROR_EVENT_BUYER: error.message });
+  }
+
+})
 
 router.post("/create", async (req, res) => {
   try {

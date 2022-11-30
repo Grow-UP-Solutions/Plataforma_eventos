@@ -124,8 +124,13 @@ const EventEdit = () => {
     compras: 10,
   });
 
+  
+
   useEffect(() => {
+    console.log('entre al effect:')
     if(eventDetails){
+      console.log('entre al if:')
+      console.log('eventDetails en effect',eventDetails)
       const auxCategories = eventDetails.categories.map((categorie) => categorie.name)
       setPost({
         ...post,
@@ -148,6 +153,7 @@ const EventEdit = () => {
         inRevision: eventDetails.inRevision,
         compras: 10,
       })
+      console.log('post', post)
     }}, [eventDetails]);
 
 
