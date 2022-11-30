@@ -156,6 +156,8 @@ const EventEdit = () => {
       console.log('post', post)
     }}, [eventDetails]);
 
+    console.log('post despues effect', post)
+
 
 
   //              para comparar            //

@@ -25,7 +25,12 @@ const MercadoPago = () => {
     console.log('MercadoPago useEffect')
     axios
       .get(`https://plataformaeventos-production-e0ed.up.railway.app/mercadoPago/success?${url}`)
-      .then((res) => setSucessInfo(res.data))
+      .then((res) => {
+      setSucessInfo(res.data) 
+      console.log('res,',res)
+      }
+      )
+      
   }, [])
 
   console.log('successInfo:',successInfo)
