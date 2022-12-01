@@ -19,7 +19,7 @@ const PreferencesUser = ({ userData }) => {
 
   const navigate = useNavigate();
   const [userConfigs, setUserConfigs] = useState({
-    canReceiveInformation: userData.canReceiveInformation,
+    canReceivedInformation: userData.canReceivedInformation,
     canNotificationMyEvents: userData.canNotificationMyEvents,
     reasonForElimination: '',
   });
@@ -41,12 +41,12 @@ const PreferencesUser = ({ userData }) => {
 
     setUserConfigs({
       ...userConfigs,
-      canReceiveInformation: !userConfigs.canReceiveInformation,
+      canReceivedInformation: !userConfigs.canReceivedInformation,
     });
 
     try {
       await eventsApi.put(`/users/updateCanReceiveInformation/${userData._id}`, {
-        canReceiveInformation: isChecked,
+        canReceivedInformation: isChecked,
       });
     } catch (error) {
       console.log(error);

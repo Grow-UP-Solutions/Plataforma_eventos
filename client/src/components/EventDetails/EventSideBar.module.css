@@ -1,54 +1,82 @@
-.container{
-    background-color: rgba(244,244,244,255);
-    display: inline-block;
-    padding: 3rem;
-    width:100%;
-    margin-left: 3rem;
-    margin-right: 3rem;
+.container {
+  width: min-content;
+  background-color: rgba(244, 244, 244, 255);
+  padding: 3rem;
 }
 
-.container2{
-   margin-top:3rem;
-   margin-bottom: 3rem;
-   display: inline-block;
-   align-items: center;
-   justify-content: center;
+.container2 {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
 }
 
-.c2title{
-    width: 100%;
-    display: flex;
-    color:rgba(88,88,88,255);
-    font-weight: bold;
-    font-size: 1.3rem;
-    letter-spacing: 1px;
-    margin-bottom: 0.5rem;
-    text-align: center;
-    margin-bottom: 1.5rem;
+.c2title {
+  width: 100%;
+  display: flex;
+  color: var(--color-grey-1);
+  font-weight: bold;
+  font-size: 1.3rem;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
 }
 
-.subcontainer2{
-    display : flex;
+.subcontainer2 {
+  display: flex;
 }
 
-.c2subtitle{
-    color:rgba(112,112,112,255);
-    width: 100%;
-    display: flex;
-    font-size: 1.25rem;
-    letter-spacing: 1.2px;
-    margin-bottom: 0.5rem;
-    line-height: 1.3rem;
+.c2subtitle {
+  color: rgba(112, 112, 112, 255);
+  width: 100%;
+  display: flex;
+  font-size: 1.25rem;
+  letter-spacing: 1.2px;
+  margin-bottom: 0.5rem;
+  line-height: 1.3rem;
 }
 
-.icon{
-    color:red;
-    height: 22px;
-    width: 20px;
-    font-size: 2.5rem;
+.icon {
+  color: red;
+  height: 22px;
+  width: 20px;
+  font-size: 2.5rem;
 }
 
 .cardHr {
-    border: 0.1px solid rgb(219, 219, 219);
+  border: 0.1px solid rgb(219, 219, 219);
+
+  width: 100%;
+}
+
+@media screen and (max-width: 1300px) {
+  .container {
+    width: 90%;
+  }
+}
+
+@media screen and (max-width: 1160px) {
+  .container {
+    width: 95%;
+    padding: 3rem 2rem;
+  }
+}
+
+@media screen and (max-width: 756px) {
+  .containerEventDate {
+    display: none;
+  }
+
+  .container {
+    background: none;
+    padding: 2rem 0;
     width: 100%;
   }
+  .container2 {
+    padding: 0.5rem 3rem;
+  }
+
+  .cardHr {
+    width: 95%;
+    margin: 0 auto;
+  }
+}

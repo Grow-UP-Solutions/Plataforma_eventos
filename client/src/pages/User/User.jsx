@@ -65,10 +65,20 @@ const UserPage = () => {
           setComponent(<UserForm userData={userResult.data} />);
           break;
         case 'mi-lista':
-          setComponent(<MyListUser myFavorites={userResult.data.myFavorites} myEventsBooked={userResult.data.myEventsBooked} />);
+          setIsMenuOpen(true);
+          setOptionChecked('events');
+          setOptionSubMenuChecked('myListEvents');
+          setComponent(
+            <MyListUser myFavorites={userResult.data.myFavorites} myEventsBooked={userResult.data.myEventsBooked} />
+          );
           break;
         case 'mis-eventos':
-          setComponent(<MyEventsOrganizer userData={userResult.data} myEventsCreated={userResult.data.myEventsCreated} />);
+          setIsMenuOpen(true);
+          setOptionChecked('events');
+          setOptionSubMenuChecked('myEvents');
+          setComponent(
+            <MyEventsOrganizer userData={userResult.data} myEventsCreated={userResult.data.myEventsCreated} />
+          );
           break;
         case 'plan-de-referidos':
           setComponent(<ReferralPlan userData={userResult.data} />);
@@ -127,6 +137,7 @@ const UserPage = () => {
     const name = e.target.name;
 
     setOptionSubMenuChecked(e.target.value);
+
     if (name === 'Mi lista') setComponent(<MyListUser myFavorites={userData.myFavorites} />);
     if (name === 'Pendientes por Asistir')
       setComponent(<ExpectToAttendUser myEvenstBooked={userData.myEvenstBooked} />);
@@ -136,8 +147,7 @@ const UserPage = () => {
 
   if (load) {
     return <Loading />;
-  }
-  else {
+  } else {
     return (
       <div className={`${styles.pageUser} container`}>
         <div className={styles.sideMenu}>
