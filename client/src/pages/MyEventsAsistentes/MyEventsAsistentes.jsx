@@ -65,7 +65,6 @@ const MyEventsAsistentes = () => {
     } 
     else {
       let buyerCheck = date.buyers.find((buyer) => buyer === buyerId);
-      console.log('buyerCheck',buyerCheck);
       setSeleccionados([...seleccionados, buyerCheck]);
     }
   }
@@ -112,25 +111,23 @@ const MyEventsAsistentes = () => {
 
   const handleManyMessages = (e) => {
     e.preventDefault();
-    const array = conversa.map((e) => e.members).flat();
-    for (let i = 0 ; i <array.length ; i++) {
+    /* const array = conversa.map((e) => e.members).flat();
+    for (let i = 0 ; i < array.length ; i++) {
 
-      const json = seleccionados.includes(array[i])
+      const json = seleccionados.includes(array[i]) */
 
-      setConversation({
-        senderId: user.uid,
-        receiverId: array[i],
-      });
+    setConversation({
+      senderId: user.uid,
+      receiverId: seleccionados,
+    });
 
-      if (json === true) {
+      /* if (json === true) {
         navigate('/usuario/mensajes');
-      } 
-      else {
-        eventsApi.post('/conversation/create', conversation).then((response) => {
-          navigate('/usuario/mensajes');
-        });
-      }
-    }
+      }  */
+      
+    eventsApi.post('/conversation/buyer/create', conversation).then((response) => {
+      navigate('/usuario/mensajes');
+    });
   };
 
   //SALIR

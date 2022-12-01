@@ -84,7 +84,9 @@ function App() {
         <Route path='/terminos' element={<PanelPrivacy />} />
         <Route path='/resultado-eventos-organizador/:id' element={<EventsOrganizerResult />} />
         <Route path={'/mercadoPago/success'} element={<MercadoPago />} />
-
+        <Route path='/admin/check-solicitud-organizador/:token' element={<CheckSolicitudOrganizer />} />
+        <Route path='/verificarmail/:path' element={<Verification />} />
+        <Route path='/cambiar-password/:token' element={<ChangePassword />} />
 
         {/* RUTAS PRIVADAS */}
         <Route path='/oganiza-un-evento' 
@@ -167,13 +169,8 @@ function App() {
           } 
         />
 
-        <Route path='/admin/check-solicitud-organizador/:token' element={<CheckSolicitudOrganizer />} />
-        
-        <Route path='/verificarmail/:path' element={<Verification />} />
-
-        <Route path='/cambiar-password/:token' element={<ChangePassword />} />
-
       </Routes>
+
       <div className='container_footer'>
         <Footer />
       </div>
