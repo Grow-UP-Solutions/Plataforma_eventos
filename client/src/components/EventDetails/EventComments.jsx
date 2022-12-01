@@ -124,6 +124,7 @@ const EventComments = ({ id }) => {
             placeholder='Escribe un Comentario'
             value={newOpinion}
             onChange={(e) => setNewOpinion(e.target.value)}
+            cols={80}
           />
 
           <div className={styles.contRate}>

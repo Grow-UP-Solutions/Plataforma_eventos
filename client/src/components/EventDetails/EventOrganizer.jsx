@@ -9,7 +9,6 @@ import { stateContext } from '../../context/state/stateContext';
 import swal from 'sweetalert';
 
 const EventOrganizer = ({ id }) => {
-  
   const [conversation, setConversation] = useState({});
   const { user } = useContext(AuthContext);
   const { setResult, conversa } = useContext(stateContext);

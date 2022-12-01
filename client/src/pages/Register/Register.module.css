@@ -136,6 +136,8 @@
   justify-self: flex-end;
   align-items: center;
   gap: 2rem;
+
+  position: relative;
 }
 .formGroupReferred label {
   font-size: 1.6rem;

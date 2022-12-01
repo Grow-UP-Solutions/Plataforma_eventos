@@ -10,15 +10,15 @@ module.exports = async function createOneUserDb(user, codeReferral) {
 
     userCreated.nickname = `${userCreated.firstName.split(' ')[0]} ${userCreated.lastName.split(' ')[0]}`;
 
-    userCreated.canReceiveInformation = user.canReceiveInformation;
-    userCreated.canNotificationMyEvents = user.canReceiveInformation;
+    userCreated.canReceivedInformation = user.canReceivedInformation;
+    userCreated.canNotificationMyEvents = user.canReceivedInformation;
     userCreated.referralCode = referralCode;
     userCreated.password = bcrypt.hashSync(user.password, salt);
 
     if (codeReferral) {
       const user = await Users.findOne({ referralCode: codeReferral });
       if (user) {
-        userCreated.isReferral = codeReferral;
+        userCreated.isReferral.code = codeReferral;
         user.referrals.push(userCreated._id);
         user.saldoPendiente += 5000;
         await user.save();
