@@ -18,7 +18,7 @@ module.exports = async function createOneUserDb(user, codeReferral) {
     if (codeReferral) {
       const user = await Users.findOne({ referralCode: codeReferral });
       if (user) {
-        userCreated.isReferral = codeReferral;
+        userCreated.isReferral.code = codeReferral;
         user.referrals.push(userCreated._id);
         user.saldoPendiente += 5000;
         await user.save();
