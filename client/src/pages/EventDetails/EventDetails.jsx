@@ -282,12 +282,10 @@ const EventDetails = () => {
               ) : (
                 <img className={style.img} src={eventDetails.pictures[0].picture} alt='Not Found ):' />
               )}
-              <div className={style.auxDivSwiper}></div>
-            </div>
-            <div className={style.containerEventInformation}>
-              {isLoading ? (
-                <div className={style.container_icon_heart_l}>
-                  {/* <Hearts
+              <div className={style.containerIconFavAndShare}>
+                {isLoading ? (
+                  <div className={style.container_icon_heart_l}>
+                    {/* <Hearts
                     height='40'
                     width='40'
                     color='#d53e27'
@@ -296,60 +294,63 @@ const EventDetails = () => {
                     wrapperClass=''
                     visible={true}
                   /> */}
-                </div>
-              ) : (
-                <div>
-                  {eventDetails.organizer._id === user.uid ? (
-                    ''
-                  ) : user.uid && heart ? (
-                    <div className={style.container_icon_heart_p} onClick={handleClickWithoutFav}>
-                      <FavoriteIcon
-                        className={style.icon_heart_p}
-                        sx={{ fontSize: 25, color: 'white', margin: 'auto' }}
-                      />
-                    </div>
-                  ) : user.uid && !heart ? (
-                    <div className={style.container_icon_heart} onClick={handleClickFav}>
-                      <AddIcon className={style.icon_heart} sx={{ fontSize: 30, color: '#868686' }} />
-                    </div>
-                  ) : (
-                    <div className={style.container_icon_heart} onClick={handleAlert}>
-                      <AddIcon className={style.icon_heart} sx={{ fontSize: 30, color: '#868686' }} />
+                  </div>
+                ) : (
+                  <>
+                    {eventDetails.organizer._id === user.uid ? (
+                      ''
+                    ) : user.uid && heart ? (
+                      <div className={style.container_icon_heart_p} onClick={handleClickWithoutFav}>
+                        <FavoriteIcon
+                          className={style.icon_heart_p}
+                          sx={{ fontSize: 25, color: 'white', margin: 'auto' }}
+                        />
+                      </div>
+                    ) : user.uid && !heart ? (
+                      <div className={style.container_icon_heart} onClick={handleClickFav}>
+                        <AddIcon className={style.icon_heart} sx={{ fontSize: 30, color: '#868686' }} />
+                      </div>
+                    ) : (
+                      <div className={style.container_icon_heart} onClick={handleAlert}>
+                        <AddIcon className={style.icon_heart} sx={{ fontSize: 30, color: '#868686' }} />
+                      </div>
+                    )}
+                  </>
+                )}
+
+                <div className={style.container_icon_share} ref={menuRef}>
+                  <div className={style.label} onClick={handleClickShare}>
+                    <LaunchOutlinedIcon className={style.icon_share} sx={{ fontSize: 25 }} />
+                  </div>
+
+                  {isOpen && (
+                    <div className={style.redes}>
+                      <a href='https://www.facebook.com/' target='_blank' rel='noreferrer noopener'>
+                        <ImFacebook className={style.icons} />
+                      </a>
+
+                      <a href='https://www.twitter.com/' target='_blank' rel='noreferrer noopener'>
+                        <ImTwitter className={style.icons} />
+                      </a>
+
+                      <a href='https://www.linkedin.com/' target='_blank' rel='noreferrer noopener'>
+                        <ImLinkedin2 className={style.icons} />
+                      </a>
+
+                      <a href='https://web.whatsapp.com/' target='_blank' rel='noreferrer noopener'>
+                        <FaWhatsapp className={style.icons} />
+                      </a>
+
+                      <CopyToClipboard text={`https://events-jean.vercel.app//detalles-del-evento/${id}`}>
+                        <IoLinkOutline onClick={handleClickCopy} className={style.icons} />
+                      </CopyToClipboard>
                     </div>
                   )}
                 </div>
-              )}
-
-              <div className={style.container_icon_share} ref={menuRef}>
-                <div className={style.label} onClick={handleClickShare}>
-                  <LaunchOutlinedIcon className={style.icon_share} sx={{ fontSize: 25 }} />
-                </div>
-
-                {isOpen && (
-                  <div className={style.redes}>
-                    <a href='https://www.facebook.com/' target='_blank' rel='noreferrer noopener'>
-                      <ImFacebook className={style.icons} />
-                    </a>
-
-                    <a href='https://www.twitter.com/' target='_blank' rel='noreferrer noopener'>
-                      <ImTwitter className={style.icons} />
-                    </a>
-
-                    <a href='https://www.linkedin.com/' target='_blank' rel='noreferrer noopener'>
-                      <ImLinkedin2 className={style.icons} />
-                    </a>
-
-                    <a href='https://web.whatsapp.com/' target='_blank' rel='noreferrer noopener'>
-                      <FaWhatsapp className={style.icons} />
-                    </a>
-
-                    <CopyToClipboard text={`https://events-jean.vercel.app//detalles-del-evento/${id}`}>
-                      <IoLinkOutline onClick={handleClickCopy} className={style.icons} />
-                    </CopyToClipboard>
-                  </div>
-                )}
               </div>
-
+              <div className={style.auxDivSwiper}></div>
+            </div>
+            <div className={style.containerEventInformation}>
               <div className={style.title}>
                 <p>{eventDetails.title}</p>
 
@@ -393,10 +394,6 @@ const EventDetails = () => {
 
               <div className={style.line}></div>
 
-              {/* <p className={style.report}>
-              <WarningOutlinedIcon fontSize="medium"/>   Reportar Contenido Inapropiado
-            </p> */}
-
               <p onClick={() => setGetDanger(!getDanger)} className={style.report}>
                 <WarningOutlinedIcon fontSize='medium' /> Reportar Contenido Inapropiado
               </p>
@@ -418,75 +415,65 @@ const EventDetails = () => {
                       <div className={style.menuOptions}>
                         <form className={style.formReport} action=''>
                           <div className={style.formGroup}>
-                            <label htmlFor='despectivo'>
-                              <input
-                                type='checkbox'
-                                id='despectivo'
-                                value={'Despectivo'}
-                                defaultChecked={false}
-                                className={style.checkboxReport}
-                                checked={reportChecked === 'Despectivo'}
-                                onChange={handleChangeCheckboxReport}
-                              />
-                              Despectivo
-                            </label>
+                            <input
+                              type='checkbox'
+                              id='despectivo'
+                              value={'Despectivo'}
+                              defaultChecked={false}
+                              className={style.checkboxReport}
+                              checked={reportChecked === 'Despectivo'}
+                              onChange={handleChangeCheckboxReport}
+                            />
+                            <label htmlFor='despectivo'>Dispectivo</label>
                           </div>
                           <div className={style.formGroup}>
-                            <label htmlFor='racista'>
-                              <input
-                                type='checkbox'
-                                id='racista'
-                                value={'Racista'}
-                                defaultChecked={false}
-                                className={style.checkboxReport}
-                                checked={reportChecked === 'Racista'}
-                                onChange={handleChangeCheckboxReport}
-                              />
-                              Racista
-                            </label>
+                            <input
+                              type='checkbox'
+                              id='racista'
+                              value={'Racista'}
+                              defaultChecked={false}
+                              className={style.checkboxReport}
+                              checked={reportChecked === 'Racista'}
+                              onChange={handleChangeCheckboxReport}
+                            />
+                            <label htmlFor='racista'>Racista</label>
                           </div>
                           <div className={style.formGroup}>
-                            <label htmlFor='violencia'>
-                              <input
-                                type='checkbox'
-                                id='violencia'
-                                value={'Violencia'}
-                                defaultChecked={false}
-                                className={style.checkboxReport}
-                                checked={reportChecked === 'Violencia'}
-                                onChange={handleChangeCheckboxReport}
-                              />
-                              Incita a la violencia
-                            </label>
+                            <input
+                              type='checkbox'
+                              id='violencia'
+                              value={'Violencia'}
+                              defaultChecked={false}
+                              className={style.checkboxReport}
+                              checked={reportChecked === 'Violencia'}
+                              onChange={handleChangeCheckboxReport}
+                            />
+                            <label htmlFor='violencia'>Incita a la violencia</label>
                           </div>
                           <div className={style.formGroup}>
-                            <label htmlFor='sexual'>
-                              <input
-                                type='checkbox'
-                                id='sexual'
-                                value={'Sexual'}
-                                className={style.checkboxReport}
-                                checked={reportChecked === 'Sexual'}
-                                onChange={handleChangeCheckboxReport}
-                              />
-                              Sexual explicito
-                            </label>
+                            <input
+                              type='checkbox'
+                              id='sexual'
+                              value={'Sexual'}
+                              className={style.checkboxReport}
+                              checked={reportChecked === 'Sexual'}
+                              onChange={handleChangeCheckboxReport}
+                            />
+                            <label htmlFor='sexual'>Sexual explicito</label>
                           </div>
                           <div className={style.formGroup}>
-                            <label htmlFor='otro'>
-                              <input
-                                type='checkbox'
-                                id='otro'
-                                value={'Otro'}
-                                defaultChecked={false}
-                                className={style.checkboxReport}
-                                checked={reportChecked === 'Otro'}
-                                onChange={handleChangeCheckboxReport}
-                              />
-                              Otro
-                            </label>
+                            <input
+                              type='checkbox'
+                              id='otro'
+                              value={'Otro'}
+                              defaultChecked={false}
+                              className={style.checkboxReport}
+                              checked={reportChecked === 'Otro'}
+                              onChange={handleChangeCheckboxReport}
+                            />
+                            <label htmlFor='otro'>Otro</label>
                           </div>
-                          <div className={style.formGroup}>
+                          <div className={`${style.formGroupOtherReason} ${style.formGroup}`}>
                             <label htmlFor='other-reason'>Si otro, indicar cual: </label>
                             <input ref={inputReasonForReport} type='text' id='other-reason' />
                           </div>
