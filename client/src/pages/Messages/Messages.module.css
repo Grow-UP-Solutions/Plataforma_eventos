@@ -1,5 +1,4 @@
-.pageMessage {
-}
+
 
 .containerMessage {
   margin: 10rem auto;
@@ -32,6 +31,7 @@
 .containerChats {
   display: flex;
   flex-direction: column;
+  /* overflow-y: auto; */
 }
 
 .containerOptions {

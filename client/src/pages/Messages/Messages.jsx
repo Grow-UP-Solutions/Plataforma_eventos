@@ -1,8 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { FiArchive, FiMail, FiStar } from 'react-icons/fi';
 import { animateScroll as scroll } from 'react-scroll';
 import swal from 'sweetalert';
-import avatar from '../../assets/imgs/no-avatar.png';
 import eventsApi from '../../axios/eventsApi';
 import Conversations from '../../components/Conversations/Conversations';
 import Message from '../../components/Message/Message';
@@ -15,15 +14,15 @@ import { UIContext } from '../../context/ui';
 import { useModal } from '../../hooks/useModal';
 import styles from './Messages.module.css';
 import { Loading } from "../../components";
+import CurrentMessage from '../../components/CurrentMessage/CurrentMessage';
 
 const validate = (form) => {
   let errors = {};
 
-  // let letras = /^[a-zA-Z]*$/g;
   let mail = /[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}/gim;
   let webSite = /\b(http|https|www)\b/i;
   let offensiveWord = /\b(puta|hijieputa|pirobo|pirovo|piroba|pirova|marica|maricon|maricona|malparido|malparida|caremonda|chimba|chimbo|gurrupleta|gonorrea|gonorriento|gonorrienta|gueva|guevon|guevona|zuripanta|pichurria)\b/i;
-  let numbers = /\b[0-9]{7,11}\b/gim;
+  let numbers = /\b[\s0-9]{8,11}\b/gim;
 
   if (!form.text) {
     errors.text = true;
@@ -67,6 +66,7 @@ const Messages = () => {
   const [errors, setErrors] = useState({ text: '' });
   const [isOpenModal, openModal, closeModal] = useModal(false);
   const [load, setLoad] = useState(true);
+  const scrollRef = useRef(null);
 
   useEffect(() => {
     const getConversations = async () => {
@@ -111,6 +111,18 @@ const Messages = () => {
     scroll.scrollToTop();
   }, []);
 
+  useEffect(() => {
+    console.log('ref:', scrollRef);
+    
+    if (scrollRef.current === null) {
+      console.log('no hay ref');
+    }
+    else {
+      const lastItem = scrollRef.current.lastElementChild;
+      lastItem.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  }, [messages]);
+
   const handleChangeNewMessages = (e) => {
     e.preventDefault();
     setNewMessage(e.target.value);
@@ -139,7 +151,6 @@ const Messages = () => {
       const res = await eventsApi.post('/message/create', message);
       setMessages([...messages, res.data]);
       setNewMessage('');
-      scroll.scrollToTop();
     } catch (err) {
       console.log(err);
     }
@@ -162,14 +173,13 @@ const Messages = () => {
       const res = await eventsApi.post('/message/buyer/create', message);
       setMessages([...messages, res.data]);
       setNewMessage('');
-      scroll.scrollToTop();
     } 
     catch (err) {
       console.log(err);
     }
   };
 
-  const handleClickConversation = async (c) => {
+  const handleClickConversation = (c) => {
     setCurrentChat(c);
     setStar(false);
   };
@@ -314,33 +324,36 @@ const Messages = () => {
 
             <div className={styles.containerChat}>
               <div className={styles.chatHeader}>
-                <img src={result.userpicture ? result.userpicture : avatar} alt='user' />
-                <span>{user.name}</span>
+                {
+                  currentChat === null ?
+                  <div></div> :
+                  <CurrentMessage conversation={currentChat} id={id}/>
+                }
               </div>
 
-              <div className={styles.containerChatMessage}>
+              <div className={styles.containerChatMessage} ref={scrollRef}>
                 {currentChat && star === false ? (
                   <>
                     {messages
                       .map((m, i) => (
-                        <div key={i}>
+                        <div key={i} >
                           <Message message={m} own={m.sender === id} />
                         </div>
                       ))
-                      .reverse()}
+                    }
                   </>
                 ) : currentChat && star === true ? (
                   <>
                     {msgStar
                       .map((m, i) => (
-                        <div key={i}>
+                        <div key={i} >
                           <MessageFav message={m} own={m.idUser === id} />
                         </div>
                       ))
-                      .reverse()}
+                    }
                   </>
                 ) : (
-                  <span className={styles.noMsg}>Inicia una conversación.</span>
+                  <span className={styles.noMsg}></span>
                 )}
               </div>
             </div>

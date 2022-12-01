@@ -13,9 +13,9 @@ const ModalMsg = ({ closeModal }) => {
       <p className={style.title}>Su mensaje no fue enviado</p>
 
       <div className={style.container_texts}>
-        <p className={style.text}>Este mensaje contiene cierta informacion que no esta permitida, como por</p>
-        <p className={style.text}>ejemplo números de teléfono, direcciones de correo, enlaces web, redes</p>
-        <p className={style.text}>sociales, etc. Por favor elimina esta información e inténtalo nuevamente.</p>
+        <p className={style.text}>Este mensaje contiene cierta informacion que no esta permitida, como por ejemplo</p>
+        <p className={style.text}>números de teléfono, direcciones de correo, enlaces web, palabras inadecuadas,</p>
+        <p className={style.text}>redes sociales, etc. Por favor elimina esta información e inténtalo nuevamente.</p>
       </div>
 
       <div className={style.container_button}>
