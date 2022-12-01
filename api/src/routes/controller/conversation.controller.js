@@ -7,6 +7,7 @@ const {
   lockedConversation,
   pinupConversation,
   createConversationAllBuyer,
+  deleteConversation,
 } = require('../../models/util/functionDB/ConversationDb.js');
 const MessageFunctionDb = require('../../models/util/functionDB/message/index.message.js');
 
