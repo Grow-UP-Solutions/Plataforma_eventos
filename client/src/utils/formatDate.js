@@ -1,33 +1,20 @@
 const months = {
-  Jan: 'Enero',
-  Feb: 'Febrero',
-  Mar: 'Marzo',
-  Apr: 'Abril',
-  May: 'Mayo',
-  Jun: 'Junio',
-  Jul: 'Julio',
-  Aug: 'Agosto',
-  Sep: 'Setiembre',
-  Oct: 'Octubre',
-  Nov: 'Noviembre',
-  Dec: 'Diciembre',
+  1: 'Enero',
+  2: 'Febrero',
+  3: 'Marzo',
+  4: 'Abril',
+  5: 'Mayo',
+  6: 'Junio',
+  7: 'Julio',
+  8: 'Agosto',
+  9: 'Setiembre',
+  10: 'Octubre',
+  11: 'Noviembre',
+  12: 'Diciembre',
 };
-/* 
-const day = {
-  Mon: 'Lunes',
-  Tue: 'Martes',
-  Wed: 'Miercoles',
-  Thu: 'Jueves',
-  Wed: 'Viernes',
-  Sat: 'Sabado',
-  Sun: 'Domingo',
-};
- */
+
 export const formatDate = (date) => {
-  const aux = date.toString();
-  let dateFormatted = aux.split(' ');
-  dateFormatted = `${months[dateFormatted[1]]} ${dateFormatted[2]} de ${
-    dateFormatted[3]
-  }`;
+  const { day, month, year } = date;
+  const dateFormatted = `${day} ${months[month]} del ${year}`;
   return dateFormatted;
 };

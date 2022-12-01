@@ -15,7 +15,7 @@ const sendMailToOrganizer = async (name, link, email) => {
 
   let mail_options = {
     from: 'Lo quiero hacer',
-    to: process.env.MAIL_CLIENT,
+    to: email,
     subject: `Solicitud para ser Organizador, ${name}`,
     html: `<!DOCTYPE html>
     <html lang="en">

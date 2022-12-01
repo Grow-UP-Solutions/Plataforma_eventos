@@ -1,25 +1,30 @@
 import { useState } from 'react';
+import eventsApi from '../axios/eventsApi';
+import { checkMalasPalabras } from '../utils/checkMalasPalabras';
 import { isValidEmail } from '../utils/validateEmail';
 
 const useValidateForm = (formData, setFormData) => {
   const [errorsInputs, setErrorsInputs] = useState({
+    name: '',
+    lastName: '',
     mail: '',
     password: '',
     confirmPassword: '',
     codeReferred: '',
   });
 
-  const handleChangeInputValue = (e) => {
+  const handleChangeInputValue = async (e) => {
     const id = e.target.id;
     const value = e.target.value;
     const regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[().#?!@$%^&*-]).{12,20}$/;
     let checkValidate = false;
 
-    if (id === 'codeReferred') {
-      return setFormData({
-        ...formData,
-        [id]: value,
-      });
+    setErrorsInputs({ ...errorsInputs, [id]: true });
+
+    if (id === 'name' || id === 'lastName') {
+      if (checkMalasPalabras(value)) {
+        return setErrorsInputs({ ...errorsInputs, [id]: false });
+      }
     }
 
     if (id === 'canReceivedInformation') {

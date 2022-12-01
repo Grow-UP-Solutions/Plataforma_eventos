@@ -10,8 +10,8 @@ module.exports = async function createOneUserDb(user, codeReferral) {
 
     userCreated.nickname = `${userCreated.firstName.split(' ')[0]} ${userCreated.lastName.split(' ')[0]}`;
 
-    userCreated.canReceiveInformation = user.canReceiveInformation;
-    userCreated.canNotificationMyEvents = user.canReceiveInformation;
+    userCreated.canReceivedInformation = user.canReceivedInformation;
+    userCreated.canNotificationMyEvents = user.canReceivedInformation;
     userCreated.referralCode = referralCode;
     userCreated.password = bcrypt.hashSync(user.password, salt);
 

@@ -21,84 +21,51 @@ const bcrypt = require('bcryptjs');
 const { check } = require('express-validator');
 const validateFields = require('../../models/util/middlewares/validate-fields.js');
 const { generateJWT } = require('../../models/util/helpers/jwt.js');
-const {
-  generateJWTPassword,
-} = require('../../models/util/helpers/jwtPassword.js');
-const {
-  validateJWT,
-} = require('../../models/util/middlewares/validate-jwt.js');
-const {
-  validateJWTPassword,
-} = require('../../models/util/middlewares/validate-jwt-password.js');
+const { generateJWTPassword } = require('../../models/util/helpers/jwtPassword.js');
+const { validateJWT } = require('../../models/util/middlewares/validate-jwt.js');
+const { validateJWTPassword } = require('../../models/util/middlewares/validate-jwt-password.js');
 const { sendVerifyMail } = require('../../models/util/mailer/confirmEmail.js');
-const {
-  sendMailToOrganizer,
-} = require('../../models/util/mailer/mailToConverOrganizer');
-const {
-  changePasswordMail,
-} = require('../../models/util/mailer/changePassword.js');
+const { sendMailToOrganizer } = require('../../models/util/mailer/mailToConverOrganizer');
+const { changePasswordMail } = require('../../models/util/mailer/changePassword.js');
 const {
   createCodeVerifyMail,
   deleteCodeVerifyMail,
   getCodeVerifyEmail,
 } = require('../../models/util/functionDB/CodeVerifyMailDb.js');
-const {
-  generateJWTOrganizer,
-} = require('../../models/util/helpers/jwtOrganizer.js');
-const {
-  validateJWTOrganizer,
-} = require('../../models/util/middlewares/validate-organizer.js');
-const {
-  allMessageReciverUserDB,
-} = require('../../models/util/functionDB/message/messageDb.js');
-const {
-  sendMailUserAccept,
-} = require('../../models/util/mailer/mailUserAccept.js');
-const {
-  sendMailUserRejected,
-} = require('../../models/util/mailer/mailUserRejected.js');
-const {
-  sendEmailToEventNewDate,
-} = require('../../models/util/mailer/mailToEventNewDate.js');
-const {
-  sendEmailToReportOrganizer,
-} = require('../../models/util/mailer/mailToReportOrganizer.js');
+const { generateJWTOrganizer } = require('../../models/util/helpers/jwtOrganizer.js');
+const { validateJWTOrganizer } = require('../../models/util/middlewares/validate-organizer.js');
+const { allMessageReciverUserDB } = require('../../models/util/functionDB/message/messageDb.js');
+const { sendMailUserAccept } = require('../../models/util/mailer/mailUserAccept.js');
+const { sendMailUserRejected } = require('../../models/util/mailer/mailUserRejected.js');
+const { sendEmailToEventNewDate } = require('../../models/util/mailer/mailToEventNewDate.js');
+const { sendEmailToReportOrganizer } = require('../../models/util/mailer/mailToReportOrganizer.js');
 const { enviar_mail_contact } = require('../../models/util/mailer/contact.js');
-const {
-  eventCreateAdministrador,
-} = require('../../models/util/mailer/eventCreateAdministrador.js');
-const {
-  eventCreateOrganizer,
-} = require('../../models/util/mailer/eventeCreateOrganizer.js');
+const { eventCreateAdministrador } = require('../../models/util/mailer/eventCreateAdministrador.js');
+const { eventCreateOrganizer } = require('../../models/util/mailer/eventeCreateOrganizer.js');
 
 const router = Router();
 /**/ ///////////////Rutas GET////////////// */
 
-router.get(
-  '/checkValidateTokenOrganizer/',
-  validateJWTOrganizer,
-  async (req, res) => {
-    const { name, phone, document, tel, email, referenciaU, referenciaZ, id } =
-      req;
+router.get('/checkValidateTokenOrganizer/', validateJWTOrganizer, async (req, res) => {
+  const { name, phone, document, tel, email, referenciaU, referenciaZ, id } = req;
 
-    try {
-      res.status(200).json({
-        name,
-        phone,
-        document,
-        tel,
-        email,
-        referenciaU,
-        referenciaZ,
-        id,
-      });
-    } catch (error) {
-      res.status(404).json({
-        message: error.message,
-      });
-    }
+  try {
+    res.status(200).json({
+      name,
+      phone,
+      document,
+      tel,
+      email,
+      referenciaU,
+      referenciaZ,
+      id,
+    });
+  } catch (error) {
+    res.status(404).json({
+      message: error.message,
+    });
   }
-);
+});
 
 router.get('/', async (req, res) => {
   try {
@@ -250,9 +217,7 @@ router.put('/notifications', async (req, res) => {
 router.put('/:idUser/notifications', async (req, res) => {
   const { idUser } = req.params;
   try {
-    const notificacionesRead = await UsersFunctionDb.readAllNotification(
-      idUser
-    );
+    const notificacionesRead = await UsersFunctionDb.readAllNotification(idUser);
     return res.status(200).json(notificacionesRead);
   } catch (error) {
     res.status(500).json(error.Menssage);
@@ -272,9 +237,7 @@ router.put('/:idUser/rating', async (req, res) => {
 router.delete('/notifications', async (req, res) => {
   const newDelete = req.body;
   try {
-    const notificacionesDelete = await UsersFunctionDb.deleteNotification(
-      newDelete
-    );
+    const notificacionesDelete = await UsersFunctionDb.deleteNotification(newDelete);
     return res.status(200).json(notificacionesDelete);
   } catch (error) {
     res.status(500).json(error.Menssage);
@@ -463,11 +426,11 @@ router.put('/update/:id', async (req, res) => {
 
 router.put('/updateCanReceiveInformation/:id', async (req, res) => {
   const { id } = req.params;
-  const { canReceiveInformation } = req.body;
+  const { canReceivedInformation } = req.body;
 
   try {
     const userModel = await getUser(id);
-    userModel.canReceiveInformation = canReceiveInformation;
+    userModel.canReceivedInformation = canReceivedInformation;
     await userModel.save();
     res.json({ success: true });
   } catch (error) {
@@ -530,17 +493,7 @@ router.put('/sendEmailToEventNewDate/', async (req, res) => {
   const { start, end, coupons, emailOrganizer, dateFormatted } = dataForEmail;
 
   try {
-    await sendEmailToEventNewDate(
-      name,
-      email,
-      title,
-      picture,
-      start,
-      end,
-      coupons,
-      emailOrganizer,
-      dateFormatted
-    );
+    await sendEmailToEventNewDate(name, email, title, picture, start, end, coupons, emailOrganizer, dateFormatted);
     res.json({ succes: true });
   } catch (error) {
     res.status(404).json({ succes: false, message: error.message });
@@ -551,8 +504,7 @@ router.put('/report/organizer', async (req, res) => {
   const { dataForReport } = req.body;
   const { titleReport, reasonToReport, dateToReport } = dataForReport;
   const { name, email } = dataForReport.userFromReport;
-  const { nameOrganizer, emailOrganizer, pictureOrganizer } =
-    dataForReport.organizerReport;
+  const { nameOrganizer, emailOrganizer, pictureOrganizer } = dataForReport.organizerReport;
 
   try {
     await sendEmailToReportOrganizer(
@@ -604,20 +556,16 @@ router.post('/sendMailChangePassword', async (req, res) => {
   });
 });
 
-router.get(
-  '/mail/validateTokenPassword',
-  validateJWTPassword,
-  async (req, res) => {
-    const email = req.email;
-    try {
-      res.json({ email });
-    } catch (error) {
-      res.status(400).json({
-        message: 'Error en la petición',
-      });
-    }
+router.get('/mail/validateTokenPassword', validateJWTPassword, async (req, res) => {
+  const email = req.email;
+  try {
+    res.json({ email });
+  } catch (error) {
+    res.status(400).json({
+      message: 'Error en la petición',
+    });
   }
-);
+});
 
 router.post('/changePassword', async (req, res) => {
   const { email, password } = req.body;
@@ -664,9 +612,7 @@ router.get(
     <body>
     </body>
     <script>
-    window.opener.postMessage(${userString}, '${
-        process.env.CLIENT_URL || 'http://localhost:3000'
-      }')
+    window.opener.postMessage(${userString}, '${process.env.CLIENT_URL || 'http://localhost:3000'}')
     </script>
     </html>
     `
@@ -700,9 +646,7 @@ router.get(
     <body>
     </body>
     <script>
-    window.opener.postMessage(${userString}, '${
-        process.env.CLIENT_URL || 'http://localhost:3000'
-      }')
+    window.opener.postMessage(${userString}, '${process.env.CLIENT_URL || 'http://localhost:3000'}')
     </script>
     </html>
     `
@@ -727,9 +671,7 @@ router.post('/requestToOrganizer/', async (req, res) => {
     );
     await sendMailToOrganizer(
       user.name,
-      `${
-        process.env.CLIENT_URL || 'http://localhost:3000'
-      }/admin/check-solicitud-organizador/${token}`,
+      `${process.env.CLIENT_URL || 'http://localhost:3000'}/admin/check-solicitud-organizador/${token}`,
       user.email
     );
 
