@@ -276,7 +276,9 @@ const EventDate = ({ id, openMenu }) => {
                   })}
                 </tbody>
               </table>
-              <button className={styles.btnMenuBuy}>Comprar</button>
+              <button className={styles.btnMenuBuy} onClick={(e) => comprar(e)}>
+                Comprar
+              </button>
             </div>
           </div>
 
