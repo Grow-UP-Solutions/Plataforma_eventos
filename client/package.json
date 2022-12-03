@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
+    "@amir04lm26/react-modern-calendar-date-picker": "^1.0.1",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@mui/icons-material": "^5.10.3",
@@ -30,6 +31,7 @@
     "react-images-uploading": "^3.1.7",
     "react-intersection-observer": "^9.4.0",
     "react-loader-spinner": "^5.3.4",
+    "react-modern-calendar-datepicker": "^3.1.6",
     "react-pin-field": "^3.0.16",
     "react-redux": "^8.0.2",
     "react-router-dom": "^6.3.0",

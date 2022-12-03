@@ -1,5 +1,7 @@
 .pageCart {
   margin-top: 3.2rem;
+
+  position: relative;
 }
 
 .pageCartTitle {
@@ -13,14 +15,14 @@
 .containerPageCart {
   display: grid;
   gap: 9.6rem;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr 1fr;
 }
 
 .containerCardProduct {
   padding-top: 5rem;
 }
 
-.containerDescription{
+.containerDescription {
   width: 18rem;
 }
 
@@ -51,6 +53,7 @@
 .cartProduct {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 13.5rem;
   margin-bottom: 7rem;
 }
@@ -58,7 +61,6 @@
 .containerProductDetails {
   display: flex;
   gap: 3.4rem;
-  width: 80%;
 }
 
 .imgContainer img {
@@ -82,12 +84,10 @@
   margin-bottom: 1rem;
 }
 
-.fechaIn{
+.fechaIn {
   font-size: 1.8rem;
   margin-top: 1rem;
-  
 }
-
 
 .productDateBtn {
   /* Center */
@@ -133,11 +133,17 @@
   font-weight: bold;
 }
 
-
 .productOptions {
   display: flex;
   gap: 6.5rem;
   margin-bottom: 2.4rem;
+}
+
+.productDiscount {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0 auto;
 }
 
 .titleQuantity,
@@ -199,17 +205,15 @@
   color: var(--color-grey-3);
 }
 
-
-.quitar{
+.quitar {
   margin-top: 0.5rem;
 }
 
-.btnsDisc{
-  display: block;
-  justify-content:center;
+.btnsDisc {
+  margin-top: 1.2rem;
+  display: flex;
   align-items: center;
-  
-  
+  gap: 2rem;
 }
 
 .titleDiscount {
@@ -219,20 +223,16 @@
   margin-bottom: 1.2rem;
 }
 
-
 /* sin codigo */
 
 .containerInputDiscount {
-  display: flex;
-  align-items: center;
-  gap: 10rem;
 }
 
 .containerInputDiscount input {
   height: 2.7rem;
   border-radius: 5px;
   padding: 0 1rem;
-  border: 2px solid rgb(48, 47, 47);
+  border: 2px solid var(--color-blue);
   color: var(--color-grey-3);
 }
 
@@ -264,7 +264,7 @@
   height: 2.7rem;
   border-radius: 5px;
   padding: 0 1rem;
-  border: 2px solid  var(--color-green);
+  border: 2px solid var(--color-green);
   color: var(--color-grey-3);
 }
 
@@ -285,7 +285,6 @@
 } */
 
 /* codigo incorrecto */
-
 
 .containerInputDiscountIncorrect {
   display: flex;
@@ -317,7 +316,7 @@
   cursor: pointer;
 } */
 
-.quitar{
+.quitar {
   background-color: var(--color-grey-3);
   font-weight: bold;
   font-size: 1.2rem;
@@ -329,13 +328,12 @@
   cursor: pointer;
 }
 
-
 /* FORM PRODUCT */
 
 .formPayProduct {
   background-color: var(--color-grey-6);
   padding: 4rem 3rem;
-  width: 46rem;
+  max-width: 46rem;
 }
 
 .formGroup {
@@ -416,6 +414,70 @@
   margin: 3rem 0;
 }
 
+.containerResponsiveDetailBuy {
+  display: none;
+
+  padding: 2rem;
+  border-radius: 2rem;
+  border: 1px solid var(--color-grey-4);
+}
+
+.titleResponsiveDetailBuy {
+  font-size: 2.4rem;
+  color: var(--color-grey-1);
+}
+
+.containerResponsiveDetailBuy .detailsBuy span {
+  font-size: 2rem;
+}
+
+.containerResponsiveBtnPagar {
+  display: none;
+  text-align: center;
+  margin-top: 3rem;
+}
+
+.containerResponsiveBtnPagar button {
+  padding: 1rem 6rem;
+  font-size: 2.4rem;
+  font-weight: bold;
+  border-radius: 2rem;
+  color: white;
+  background-color: var(--color-orange);
+  border: none;
+  box-shadow: 0px 2px 10px 0.5px rgba(0, 0, 0, 0.2);
+}
+
+.containerResponsiveForm .formGroup label,
+.containerResponsiveForm .formGroup input {
+  font-size: 2rem;
+}
+
+.containerIconReturn {
+  margin-bottom: 2rem;
+}
+
+.containerResponsiveForm .detailsBuy {
+  margin-top: 3rem;
+}
+
+.containerResponsiveForm .detailsBuy * {
+  font-size: 2.4rem;
+}
+
+.iconReturn {
+  width: 3.2rem;
+  height: 3.2rem;
+  color: var(--color-orange);
+  cursor: pointer;
+}
+
+.containerResponsiveForm .textTerms {
+  margin-top: 4rem;
+  font-size: 1.8rem;
+  text-align: center;
+}
+
 .detailsBuy {
   display: flex;
   justify-content: space-between;
@@ -479,4 +541,117 @@
   cursor: pointer;
 }
 
+@media screen and (max-width: 1490px) {
+  .cartProduct {
+    gap: 6rem;
+  }
+}
 
+@media screen and (max-width: 1200px) {
+  .cartProduct {
+    flex-direction: column;
+  }
+
+  .containerProductDetails {
+    justify-content: center;
+  }
+  .containerDescription {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 756px) {
+  .formGroup input {
+    font-size: 1.4rem;
+  }
+
+  .containerInputDiscount input {
+    padding: 2rem 1rem;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .pageCart {
+    padding: 0 1.5rem;
+  }
+  .containerPageCart {
+    grid-template-columns: none;
+    justify-items: center;
+    gap: 0;
+  }
+  .containerCardProduct {
+    padding: 0;
+    font-size: 2.4rem;
+  }
+
+  .imgContainer img {
+    width: 15rem;
+    height: 15rem;
+  }
+
+  .quantityBtns span,
+  .productTime,
+  .productLocation,
+  .productCupos,
+  .titleQuantity,
+  .titlePriceBallot,
+  .containerPriceForBallot span,
+  .titleSubtotal,
+  .containerPriceSubtotal span,
+  .titleDiscount,
+  .containerInputDiscount input,
+  .quitar {
+    font-size: 2.2rem;
+  }
+
+  .productName {
+    margin-bottom: 2rem;
+  }
+
+  .containerOptions {
+    width: 100%;
+  }
+
+  .productOptions {
+    justify-content: center;
+    gap: 9rem;
+  }
+
+  .containerInputBtnsDiscount {
+    margin-top: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.2rem;
+  }
+
+  .btnsDisc {
+    margin-top: 0;
+  }
+
+  .formPayProduct {
+    display: none;
+  }
+
+  .containerResponsiveDetailBuy {
+    display: block;
+  }
+
+  .containerResponsiveBtnPagar {
+    display: block;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .containerInputBtnsDiscount {
+    margin-top: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  .btnsDisc {
+    margin-top: 1.2rem;
+  }
+}

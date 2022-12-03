@@ -1,19 +1,26 @@
 .container {
-  max-width: 1420px;
-  margin: 0 auto;
   display: grid;
   grid-template-columns: 50% 50%;
+  align-items: flex-start;
+  gap: 2rem;
+
+  max-width: 142rem;
+  margin: 0 auto;
 }
 
-.containers {
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
+.item1 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.containerSwiper {
+  position: relative;
+  margin-bottom: 3rem;
 }
 
 .img {
-  width: 100%;
-  height: 44rem;
+  height: 100%;
 }
 
 .title {
@@ -69,15 +76,15 @@
 
 .container_icon_heart {
   display: flex;
+  justify-content: center;
+  align-items: center;
   width: 40px;
   height: 40px;
   background-color: white;
   border-radius: 60px;
-  position: relative;
-  bottom: 18px;
-  left: 20px;
   z-index: 100;
   box-shadow: 1px 6px 10px var(--color-grey-3);
+  cursor: pointer;
 }
 
 .container_icon_heart_l {
@@ -85,9 +92,6 @@
   width: 40px;
   height: 40px;
   border-radius: 60px;
-  position: relative;
-  bottom: 18px;
-  left: 20px;
   z-index: 100;
   background-color: white;
   cursor: pointer;
@@ -99,46 +103,22 @@
   height: 40px;
   background-color: var(--color-orange);
   border-radius: 60px;
-  position: relative;
-  bottom: 18px;
-  left: 20px;
   z-index: 100;
   box-shadow: 1px 6px 10px var(--color-grey-3);
   cursor: pointer;
 }
 
-.icon_hear_p {
-  margin: auto;
-  color: white;
-  cursor: pointer;
-}
-
-.icon_heart {
-  margin: auto;
-  color: var(--color-grey-6);
-  cursor: pointer;
-}
-
 .container_icon_share {
-  display: flex;
   position: relative;
+  z-index: 100;
 }
-
-/*.container_icon_share input:checked ~ .redes {
-  display: flex;
-  justify-content: center;
-  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.3);
-}*/
 
 .label {
   display: flex;
-  width: 4rem;
-  height: 4rem;
   background-color: white;
+  width: 40px;
+  height: 40px;
   border-radius: 60px;
-  position: relative;
-  bottom: 57px;
-  left: 70px;
   z-index: 100;
   box-shadow: 1px 6px 10px var(--color-grey-3);
 }
@@ -157,8 +137,8 @@
   background-color: var(--color-grey-6);
   position: absolute;
   border-radius: 10px;
-  bottom: 103px;
-  left: 60px;
+  bottom: 7rem;
+  left: 0;
   z-index: 100;
   margin-top: 3.2rem;
   display: flex;
@@ -216,6 +196,7 @@
   background-color: white;
   border-radius: 10px;
   box-shadow: 0px 10px 20px 2px rgba(0, 0, 0, 0.2);
+  z-index: 999;
 }
 
 .containerDescription {
@@ -250,13 +231,14 @@
 
 .formGroup {
   display: flex;
-  flex-direction: column;
-  margin-bottom: 1.2rem;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1.6rem;
 }
+
 .formGroup label {
   font-size: 1.6rem;
   color: var(--color-grey-3);
-  margin-bottom: 0.5rem;
 }
 
 .formGroup input {
@@ -274,6 +256,12 @@
 
 .formGroup div {
   display: flex;
+}
+
+.formGroupOtherReason {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .containerBtn {
@@ -324,6 +312,72 @@
   animation: spinner 2s infinite;
 }
 
+.containerEventInformation {
+  padding: 0 2rem;
+}
+
+.containerCommentsEvents {
+  display: none;
+}
+
+.containerMenuOpenEvent {
+  display: none;
+  position: relative;
+  width: 98%;
+  z-index: 999;
+}
+
+.containerTableBuy {
+  position: fixed;
+  background-color: rgba(255, 255, 255, 0.9);
+  bottom: -17rem;
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
+  padding: 2rem 1rem;
+  transition: all 0.2s;
+}
+
+.containerIconOpenMenu {
+  position: fixed;
+  bottom: 7.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+
+  background-color: rgba(255, 255, 255, 0.9);
+
+  padding: 1rem 5rem;
+  padding-bottom: 2rem;
+  border-top-left-radius: 55%;
+  border-top-right-radius: 55%;
+  transition: all 0.2s;
+
+  cursor: pointer;
+}
+
+.containerIconOpenMenu input {
+  display: none;
+}
+
+.iconMenu {
+  width: 4.8rem;
+  height: 4.8rem;
+  color: var(--color-grey-3);
+  cursor: pointer;
+}
+
+.checkOpenMenu {
+  display: none;
+}
+/* function open Menu */
+
+.checkOpenMenu:checked ~ .containerTableBuy {
+  bottom: 0;
+}
+
+.checkOpenMenu:checked ~ .containerIconOpenMenu {
+  bottom: 24.5rem;
+}
+
 @keyframes spinner {
   0% {
     transform: rotate(0deg);
@@ -331,5 +385,132 @@
 
   100% {
     transform: rotate(360deg);
+  }
+}
+
+.containerMenuBuyEvent {
+  display: none;
+}
+
+.containerIconFavAndShare {
+  position: absolute;
+  display: flex;
+  gap: 1.2rem;
+  bottom: -2rem;
+  left: 2rem;
+}
+
+@media screen and (max-width: 1300px) {
+  .container {
+    padding-left: 4rem;
+    gap: 2rem;
+  }
+}
+
+@media screen and (max-width: 1160px) {
+  .container {
+    padding-left: 1rem;
+  }
+}
+
+@media screen and (max-width: 756px) {
+  .container {
+    padding: 0;
+    grid-template-columns: none;
+    justify-items: center;
+    margin: 0;
+  }
+
+  .containerSwiper {
+    height: 55rem;
+  }
+
+  .containerSwiperGeneral {
+    position: absolute;
+    left: 0;
+    right: 0;
+  }
+
+  .container_opinions {
+    display: none;
+  }
+  .containerCommentsEventsScreenHigh {
+    display: none;
+  }
+  .containerCommentsEvents {
+    display: block;
+  }
+  .containerMenuOpenEvent {
+    display: block;
+  }
+
+  .containerTableBuy {
+    bottom: -25rem;
+  }
+  .containerIconOpenMenu {
+    bottom: 8rem;
+  }
+
+  .checkOpenMenu:checked ~ .containerIconOpenMenu {
+    bottom: 33.2rem;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .containerSwiper {
+    height: 52rem;
+  }
+  .containerMenuGetDanger {
+    left: 0.5rem;
+  }
+}
+
+@media screen and (max-width: 433px) {
+  .containerSwiper {
+    height: 43rem;
+  }
+
+  .checkOpenMenu:checked ~ .containerIconOpenMenu {
+    bottom: 34rem;
+  }
+}
+
+.calendar_responsive {
+  font-size: 2px !important;
+}
+
+@media screen and (max-width: 422px) {
+  .containerTableBuy {
+    bottom: -26rem;
+  }
+  .checkOpenMenu:checked ~ .containerIconOpenMenu {
+    bottom: 34.5rem;
+  }
+}
+
+@media screen and (max-width: 382px) {
+  .containerTableBuy {
+    bottom: -28.6rem;
+  }
+  .containerIconOpenMenu {
+    bottom: 6rem;
+  }
+
+  .checkOpenMenu:checked ~ .containerIconOpenMenu {
+  }
+  .containerSwiper {
+    height: 37rem;
+  }
+}
+
+@media screen and (max-width: 335px) {
+  .containerSwiper {
+    height: 33rem;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .containerSwiper {
+    height: 28rem;
   }
 }

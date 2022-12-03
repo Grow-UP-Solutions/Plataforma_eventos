@@ -4,6 +4,7 @@ import styles from './Conversations.module.css';
 import { BiBlock, BiPin } from 'react-icons/bi';
 import { FiMail, FiArchive } from 'react-icons/fi';
 import avatar from '../../assets/imgs/no-avatar.png';
+import avatar_group from '../../assets/imgs/avatar-grupal.png';
 import eventsApi from '../../axios/eventsApi';
 import { stateContext } from '../../context/state/stateContext';
 import swal from 'sweetalert';
@@ -15,18 +16,24 @@ const Conversations = ({ conversation, id }) => {
   const [messages, setMessages] = useState([]);
   const [click, setClick] = useState(null);
   const [blocked, setBlocked] = useState(false);
+  const [group, setGroup] = useState(false);
 
   useEffect(() => {
-    const friendId = conversation.members.find((m) => m !== id);
-    const getUser = async () => {
-      try {
-        const res = await eventsApi.get("/users/" + friendId);
-        setUser(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    getUser();
+    if (conversation.members.length < 3) {
+      const friendId = conversation.members.find((m) => m !== id);
+      const getUser = async () => {
+        try {
+          const res = await eventsApi.get("/users/" + friendId);
+          setUser(res.data);
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      getUser();
+    }
+    else {
+      setGroup(true);
+    }
   }, [id, conversation]);
 
   useEffect(() => {
@@ -90,74 +97,83 @@ const Conversations = ({ conversation, id }) => {
   return (
     <div className={blocked === true ? styles.listChatC : styles.listChats} >
 
-      <div className={styles.itemChat} >
-        <img src={user.userpicture ? user.userpicture : avatar} 
-          alt="imageAvatar" 
-          onClick={hanldeClickMsg}
-        />
-        <span>{user.name}</span>
+      {
+        group ? 
+        <div className={styles.itemChat}>
+          <img src={avatar_group} alt="imageAvatar" onClick={hanldeClickMsg}/>
 
-        <div className={styles.itemChatDivisor} />
+          <span><p className={styles.texto_p}>Grupo Evento</p></span>
 
-        {
-          conversation.locked === false ?
-          
-          <div className={styles.itemOptionsChat}>
+          <div className={styles.itemChatDivisor} />
+        </div> :
 
-            <div className={styles.itemChatNumberMessage}>
+        <div className={styles.itemChat} >
+
+          <img src={user.userpicture ? user.userpicture : avatar} 
+            alt="imageAvatar" 
+            onClick={hanldeClickMsg}
+          />
+          <span>{user.name}</span>
+
+          <div className={styles.itemChatDivisor} />
+
+          {
+            conversation.locked === false ?
+            
+            <div className={styles.itemOptionsChat}>
+
+              <div className={styles.itemChatNumberMessage}>
+                {
+                  messages.length
+                }
+              </div>
+
+              <div className={styles.containerItemMenu} onClick={hanldeClickMsg}>
+                <FiMail className={styles.itemMenuIcon} />
+                <div className={styles.helperMenu} >
+                  <p>Marcar como leído</p>
+                </div>
+              </div>
+
+              <div className={styles.containerItemMenu} onClick={handleClickFile}>
+                <FiArchive className={styles.itemMenuIcon} />
+                <div className={styles.helperMenu}>
+                  <p>Archivar conversación</p>
+                </div>
+              </div>
+
               {
-                messages.length
-              }
-            </div>
-
-            <div className={styles.containerItemMenu} onClick={hanldeClickMsg}>
-              <FiMail className={styles.itemMenuIcon} />
-              <div className={styles.helperMenu} >
-                <p>Marcar como leído</p>
-              </div>
-            </div>
-
-            <div className={styles.containerItemMenu} onClick={handleClickFile}>
-              <FiArchive className={styles.itemMenuIcon} />
-              <div className={styles.helperMenu}>
-                <p>Archivar conversación</p>
-              </div>
-            </div>
-
-            {
-              click === true ?
-              (<div className={styles.containerItemMenu} onClick={handleClickPinUp}>
-                
-                <BiPin className={styles.itemMenuIcon} style={{color: '#d53e27'}}/>
-                <div className={styles.helperMenu}>
-                  <p>Fijar conversacion</p>
-                </div> 
+                click === true ?
+                (<div className={styles.containerItemMenu} onClick={handleClickPinUp}>
                   
-              </div>) : 
-               
-              (<div className={styles.containerItemMenu} onClick={handleClickPinUp}>
+                  <BiPin className={styles.itemMenuIcon} style={{color: '#d53e27'}}/>
+                  <div className={styles.helperMenu}>
+                    <p>Fijar conversacion</p>
+                  </div> 
+                    
+                </div>) : 
                 
-                <BiPin className={styles.itemMenuIcon} />
+                (<div className={styles.containerItemMenu} onClick={handleClickPinUp}>
+                  
+                  <BiPin className={styles.itemMenuIcon} />
+                  <div className={styles.helperMenu}>
+                    <p>Fijar conversacion</p>
+                  </div> 
+                  
+                </div>) 
+              }
+
+              <div className={styles.containerItemMenu} onClick={handleClickBlock}>
+                <BiBlock className={styles.itemMenuIcon} />
                 <div className={styles.helperMenu}>
-                  <p>Fijar conversacion</p>
-                </div> 
-                 
-              </div>) 
-            }
-              
-
-            <div className={styles.containerItemMenu} onClick={handleClickBlock}>
-              <BiBlock className={styles.itemMenuIcon} />
-              <div className={styles.helperMenu}>
-                <p>Bloquear usuario</p>
+                  <p>Bloquear usuario</p>
+                </div>
               </div>
-            </div>
 
-          </div> : ''
-
-        }
-
-      </div>     
+            </div> : ''
+          }
+        </div>   
+      }   
     </div>
   );
 }

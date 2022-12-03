@@ -53,7 +53,7 @@ const UserSchema = new Schema(
       },
       email: String,
       password: String,
-      canReceiveInformation: {
+      canReceivedInformation: {
          type: Boolean,
          default: true,
       },

@@ -58,6 +58,17 @@ const Register = () => {
   const onRegister = async (e) => {
     e.preventDefault();
 
+    if (formData.codeReferred.length === 0) {
+      setIsValidCodeReferred(true);
+    }
+
+    const hasError = Object.values(errorsInputs).includes(false);
+    if (hasError || !isValidCodeReferred)
+      return setMessageError({
+        error: true,
+        message: 'Ingrese los datos correctamente',
+      });
+
     if (formData.name === '' || formData.password === '' || formData.confirmPassword === '') {
       return setMessageError({
         error: true,
@@ -157,6 +168,32 @@ const Register = () => {
     scroll.scrollToTop();
   }, []);
 
+  const [isValidCodeReferred, setIsValidCodeReferred] = useState(true);
+
+  const handleCodeReferred = async (e) => {
+    const id = e.target.id;
+    const value = e.target.value;
+
+    setFormData({
+      ...formData,
+      [id]: value,
+    });
+
+    setIsValidCodeReferred(false);
+
+    if (value.length === 8) {
+      try {
+        await eventsApi.post('/users/checkValidateCodeReferred', {
+          code: value,
+        });
+
+        setIsValidCodeReferred(true);
+      } catch (error) {
+        setIsValidCodeReferred(false);
+      }
+    }
+  };
+
   return (
     <div className={`${styles.pageRegister} container`}>
       <h1 className={styles.title}>Registrate</h1>
@@ -183,10 +220,16 @@ const Register = () => {
           <div className={styles.formGroup}>
             <label htmlFor='name'>Nombre(s)</label>
             <input autoComplete='off' type='text' id='name' onChange={handleChangeInputValue} required />
+            {errorsInputs.name === false && (
+              <span className={styles.errorMessage}>No ingresar palabras ofensivas.</span>
+            )}
           </div>
           <div className={styles.formGroup}>
             <label htmlFor='lastName'>Apellido(s)</label>
             <input autoComplete='off' type='text' id='lastName' onChange={handleChangeInputValue} required />
+            {errorsInputs.lastName === false && (
+              <span className={styles.errorMessage}>No ingresar palabras ofensivas.</span>
+            )}
           </div>
           <div className={styles.formGroup}>
             <label htmlFor='mail'>Email</label>
@@ -211,7 +254,7 @@ const Register = () => {
                 }}
                 type={isPasswordVisible.password ? 'text' : 'password'}
                 id='password'
-                placeholder='Entre 12 y 20 caracteres que idealmente incluya combinación de letras, números y caracteres especiales (* / - _ & @^)'
+                placeholder='Entre 12 y 20 caracteres que idealmente incluya combinación de una mayúscula, números y caracteres especiales (* / - _ & @^)'
                 required
                 onChange={handleChangeInputValue}
                 autoComplete='off'
@@ -267,13 +310,11 @@ const Register = () => {
                 border: errorsInputs.codeReferred === false && '1px solid #C34A33',
               }}
               id='codeReferred'
-              onChange={handleChangeInputValue}
+              onChange={handleCodeReferred}
               value={formData.codeReferred}
               type='text'
             />
-            {errorsInputs.codeReferred === false && (
-              <span className={styles.errorMessage}>El código no es válido.</span>
-            )}
+            {!isValidCodeReferred && <span className={styles.errorMessage}>El código no es válido.</span>}
           </div>
           {messageError.error && (
             <div className={styles.messageError}>
@@ -288,11 +329,11 @@ const Register = () => {
           <p>
             Tu información esta segura con nosotros y no se comparte con terceros. Todos tus datos serán tratados de
             conformidad con la normatividad de Políticas de Datos y nuestra política de tratamiento de datos.
-            Información que está disponible&nbsp; <Link to={'/privacy'}>aquí</Link>.
+            Información que está disponible&nbsp; <Link to={'/privacidad'}>aquí</Link>.
           </p>
           <p>
             Al proceder con la creación de tu cuenta aceptas la Política de &nbsp;
-            <Link to={'/'}>Tratamiento de Datos, la Política de Seguridad y los Términos y Condiciones</Link>
+            <Link to={'/privacidad'}>Tratamiento de Datos, la Política de Seguridad y los Términos y Condiciones</Link>
             &nbsp;de LO QUE QUIERO HACER S.A.S. Aceptas ser contactado por nosotros en relación a los eventos que
             compres o publiques en la Plataforma y confirmas ser mayor de edad.
           </p>

@@ -39,8 +39,14 @@ const Login = () => {
 
   const onLogin = async (e) => {
     e.preventDefault();
-
+    const regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[().#?!@$%^&*-]).{12,20}$/;
     if (errorLogin) setErrorLogin(false);
+
+    if (!regex.test(formData.password))
+      return setErrorLogin({
+        result: true,
+        message: 'Contraseña incorrecta',
+      });
 
     const user = {
       email: formData.mail,
@@ -123,10 +129,13 @@ const Login = () => {
   const [modalForgetPassword, setModalForgetPassword] = useState(false);
 
   const navigateToChangePassword = async (option) => {
-    toggleScreenLogin();
+    if (!formData.mail)
+      return setErrorLogin({
+        result: true,
+        message: 'Por favor ingrese su correo.',
+      });
 
-    if (option === 'forgetPassword') {
-    }
+    setModalForgetPassword(true);
 
     await eventsApi.post('/users/sendMailChangePassword', {
       email: formData.mail,
@@ -179,7 +188,7 @@ const Login = () => {
                 type='button'
                 onClick={(e) => {
                   e.preventDefault();
-                  setModalForgetPassword(true);
+                  navigateToChangePassword('forgetPassword');
                 }}
               >
                 ¿Olvidaste tu contraseña?
@@ -215,7 +224,7 @@ const Login = () => {
                   !Haz olvidado tu contraseña! No te preocupes, hemos enviado tu correo un link para que puedas
                   cambiarla.
                 </p>
-                <button onClick={() => navigateToChangePassword('forgetPassword')}>Listo</button>
+                <button onClick={() => setModalForgetPassword(false)}>Listo</button>
               </div>
             </div>
           </>

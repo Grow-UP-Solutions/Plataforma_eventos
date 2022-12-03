@@ -99,7 +99,6 @@ router.get("/success", async (req, res) => {
       );
 
       const response = dataPayments.data;
-      console.log("RESPONSE", response);
 
       const cuposComprados = response.additional_info.items.map((e) =>
          parseInt(e.quantity)
@@ -137,11 +136,6 @@ router.get("/success", async (req, res) => {
             }
          });
 
-         // const eventoesis= user.myEventsBooked.find(e=>{
-         //    //console.log(e._id)
-         //    return e.title === event.title
-         // })
-         //console.log(user.myEventsBooked.includes(event.title))
          user.myEventsBooked.push(event._id);
 
          if (user.isReferral.code && !user.isReferral.use) {
@@ -166,9 +160,9 @@ router.get("/success", async (req, res) => {
             referencia: response.payer.identification.number,
             estatus: response.status,
          };
-         
-         user.ordenes.push(resultTransaccion)
-         
+
+         user.ordenes.push(resultTransaccion);
+
          await user.save();
          res.json(resultTransaccion);
       }
