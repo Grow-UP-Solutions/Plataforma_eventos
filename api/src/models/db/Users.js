@@ -175,6 +175,51 @@ const UserSchema = new Schema(
             ref: Message,
          },
       ],
+      earnings: {
+         type: Number,
+         default: 0,
+      },
+
+      pendingEarnings: {
+         type: Number,
+         default: 0,
+      },
+      ordenes: [
+         {
+            Motivo: {
+               type: String,
+               default: "",
+            },
+            codigoDeLaTransaccion: {
+               type: String,
+               default: "",
+            },
+            DestinoDePago: {
+               type: String,
+               default: "",
+            },
+            fechaDePago: {
+               type: String,
+               default: "",
+            },
+            valorDeLaTransaccion: {
+               type: String,
+               default: "",
+            },
+            costoDeLaTransaccion: {
+               type: String,
+               default: "",
+            },
+            referencia: {
+               type: String,
+               default: "",
+            },
+            estatus: {
+               type: String,
+               default: "",
+            },
+         },
+      ],
    },
    { timestamps: true }
 );
