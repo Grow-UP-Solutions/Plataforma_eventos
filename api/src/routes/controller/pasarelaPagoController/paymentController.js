@@ -151,6 +151,7 @@ router.get("/success", async (req, res) => {
 
          await event.save();
          resultTransaccion = {
+            thumbnail: event.pictures[0].picture,
             motivo: event.title,
             codigoDeLaTransaccion: payment_id,
             DestinoDePago: response.statement_descriptor,

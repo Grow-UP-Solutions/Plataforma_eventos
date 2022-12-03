@@ -186,7 +186,11 @@ const UserSchema = new Schema(
       },
       ordenes: [
          {
-            Motivo: {
+            thumbnail: {
+               type: String,
+               default: "",
+            },
+            motivo: {
                type: String,
                default: "",
             },
