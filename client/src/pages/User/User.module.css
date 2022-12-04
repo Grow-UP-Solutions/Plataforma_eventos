@@ -81,13 +81,8 @@
   margin-bottom: 2rem;
 }
 
-.myCalendar {
-  margin-bottom: 2rem;
-  box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.1);
-  border-radius: 2rem;
-}
-
 .calendarDetails {
+  margin-top: 2rem;
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
@@ -161,6 +156,8 @@
 .iconMenu {
   order: -1;
   stroke: var(--color-grey-3);
+  width: 2.1rem;
+  height: 2.1rem;
 }
 
 /* MENU EVENTS */
@@ -182,4 +179,75 @@
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
+}
+
+.menuResponsiveContainer {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 0;
+  z-index: 9999999;
+  transform: translateY(-50%);
+  background-color: var(--color-grey-6);
+
+  padding: 3rem 1.5rem;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.menuResponsiveContainer .containerListOptionsMenu {
+  border: none;
+  padding-bottom: 0;
+  transition: all 0.2s;
+}
+
+.menuResponsiveContainer .menuEvent > div,
+.menuResponsiveContainer .optionMenu > div {
+  order: -1;
+}
+
+.menuResponsiveContainer .perfilStatus {
+  order: 1 !important;
+}
+
+.menuResponsiveContainer .btn:checked ~ div .iconMenu,
+.menuResponsiveContainer .btn:checked ~ div .iconArrow {
+  stroke: var(--color-orange) !important;
+  color: var(--color-orange) !important;
+  visibility: visible;
+}
+
+.containerButtonOpenMenuResponsive {
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  transform: translateY(-50%);
+}
+
+.containerButtonOpenMenuResponsive input {
+  display: none;
+}
+
+.containerButtonOpenMenuResponsive label {
+  font-size: 2rem;
+  color: var(--color-grey-2);
+  cursor: pointer;
+}
+
+@media screen and (max-width: 756px) {
+  .pageUser {
+    grid-template-columns: none;
+  }
+
+  .sideMenu {
+    display: none;
+  }
+
+  .menuResponsiveContainer {
+    display: block;
+  }
+
+  .containerComponentActive {
+    margin-left: 3rem;
+  }
 }

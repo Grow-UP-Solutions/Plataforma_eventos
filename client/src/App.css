@@ -137,6 +137,13 @@
     padding-right: 4rem;
   }
 }
+
+@media screen and (max-width: 1252px) {
+  .calendar-user {
+    font-size: 9px !important;
+  }
+}
+
 @media screen and (max-width: 756px) {
   .mySwipperEventDetails {
     height: 100% !important;
@@ -145,7 +152,8 @@
 }
 
 @media screen and (max-width: 648px) {
-  .calendar-eventDetail {
+  .calendar-eventDetail,
+  .calendar-user {
     font-size: 1rem !important;
   }
 }
