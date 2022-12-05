@@ -19,7 +19,7 @@ export const formatDateForm = (date) => {
   const _month_ = date.slice(5, 7);
   let _mes_ = '';
 
-  if (_month_ === '1') {
+  if (_month_ === '01') {
     _mes_ = 'Enero ';
   } else if (_month_ === '02') {
     _mes_ = 'Febrero';
