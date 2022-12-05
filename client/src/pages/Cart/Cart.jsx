@@ -85,6 +85,7 @@ const Cart = () => {
       if (carrito[i].idDate === id) {
         carrito[i].quantity = num;
         carrito[i].subtotal = num * carrito[i].price;
+        carrito[i].unit_price = carrito[i].price + carrito[i].costos/num;
       }
     }
   };
