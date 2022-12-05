@@ -150,6 +150,7 @@ const UserForm = ({ userData }) => {
 
   const [canWriteInput, setCanWriteInput] = useState({
     name: true,
+    lastName: true,
     nickname: true,
     email: true,
     direction: true,
@@ -852,34 +853,46 @@ const UserForm = ({ userData }) => {
       <div className={styles.containerForm}>
         <form>
           <div className={`${styles.formGroup} ${styles.formGroupNames}`}>
-            <div className={styles.subFormGroup}>
+            <div className={`${styles.subFormGroup} ${styles.containerNames}`}>
               <div className={styles.inputsContainer}>
                 <label htmlFor='firstName'>Nombre(s)</label>
-                <input
-                  onChange={handleInputChange}
-                  disabled={canWriteInput.name}
-                  value={formData.firstName}
-                  type='text'
-                  id='firstName'
-                  name='firstName'
-                  ref={txtName}
-                />
+                <div className={styles.containerInput_Button}>
+                  <input
+                    onChange={handleInputChange}
+                    disabled={canWriteInput.name}
+                    value={formData.firstName}
+                    type='text'
+                    id='firstName'
+                    name='firstName'
+                    ref={txtName}
+                  />
+                  <button className={styles.btnEditAuxResponsive} onClick={(e) => editFields(e, 'name')}>
+                    <BsPencilSquare className={styles.iconEdit} />
+                    <span>Editar</span>
+                  </button>
+                </div>
 
                 <span>Como aparece en la cedula</span>
               </div>
               <div className={styles.inputsContainer}>
                 <label htmlFor='lastname'>Apellido(s)</label>
-                <input
-                  onChange={handleInputChange}
-                  disabled={canWriteInput.name}
-                  value={formData.lastName}
-                  type='text'
-                  id='lastName'
-                  name='lastName'
-                />
+                <div className={styles.containerInput_Button}>
+                  <input
+                    onChange={handleInputChange}
+                    disabled={canWriteInput.name || canWriteInput.lastName}
+                    value={formData.lastName}
+                    type='text'
+                    id='lastName'
+                    name='lastName'
+                  />
+                  <button className={styles.btnEditAuxResponsive} onClick={(e) => editFields(e, 'lastName')}>
+                    <BsPencilSquare className={styles.iconEdit} />
+                    <span>Editar</span>
+                  </button>
+                </div>
                 <span>Como aparece en la cedula</span>
               </div>
-              <button onClick={(e) => editFields(e, 'name')}>
+              <button className={styles.btnEditNames} onClick={(e) => editFields(e, 'name')}>
                 <BsPencilSquare className={styles.iconEdit} />
                 <span>Editar</span>
               </button>
@@ -1193,10 +1206,6 @@ const UserForm = ({ userData }) => {
                   }}
                   ref={txtDocument}
                 />
-                <span>
-                  El número y foto de tu cédula son requeridos para efectos de seguridad y cumplimiento de la normativa
-                  tributaria.
-                </span>
               </div>
               <button onClick={(e) => editFields(e, 'document')}>
                 <BsPencilSquare className={styles.iconEdit} />

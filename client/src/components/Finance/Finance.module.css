@@ -1,175 +1,144 @@
-.container{
-    margin-top: 4rem;
-    width: 100%; 
+.container {
+  margin-top: 4rem;
+  width: 100%;
 }
 
-.containerSub{
-    margin: auto 0;
-    margin-bottom: 4rem;
-    width: 90%; 
-    height: 26rem;
-    box-shadow:rgb(127, 125, 125) ;
-    border:1px solid rgb(127, 125, 125);
-    border-radius: 1rem;
-    margin-left: 10rem;
-    display: flex;
+.containerSub {
+  margin: auto 0;
+  margin-bottom: 4rem;
+  height: 26rem;
+  box-shadow: rgb(127, 125, 125);
+  border: 1px solid var(--color-grey-4);
+  border-radius: 1rem;
+
+  padding: 3rem 4rem;
 }
 
-.containerSub1{
-    flex: 1 1 auto;
+.containerSub1 {
 }
 
-
-
-.title{
-    color:#1B3C6A;
-    font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 1.5rem;
-    margin-left: 5rem;
-    margin-top: 3rem;
+.title {
+  color: #1b3c6a;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
 }
 
-
-.texto{
-    color:#585858;
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
-    margin-left: 5rem;
-    margin-top: 3rem;
-    font-weight: 600;
+.texto {
+  color: #585858;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
 }
 
-.subtexto{
-    color:#868686;
-    font-size: 1.3rem;
-    margin-bottom: 1.5rem;
-    margin-left: 5rem;
-    margin-top: 3rem;
+.subtexto {
+  color: #868686;
+  font-size: 1.3rem;
+  margin-bottom: 1.5rem;
 }
 
-.btn{
-    width: 100%;
-    font-size: 1.6rem;
-    text-decoration: underline;
-    cursor: pointer;
-    color:#D53E27;
-    border:none; 
-    height: 1rem;
-    text-align: right;
-    background-color: #29aa7900;
-    margin-left: -10rem;
-    margin-top: 2.5rem;
+.btn {
+  width: 100%;
+  font-size: 1.6rem;
+  text-decoration: underline;
+  cursor: pointer;
+  color: #d53e27;
+  border: none;
+  height: 1rem;
+  text-align: right;
+  background-color: #29aa7900;
 }
 
-
-.containerBankAccount{
-    display: flex;
+.containerBankAccount {
+  display: flex;
 }
 
-
-.containerSub2{
-    display: block;
+.containerSub2 {
+  display: block;
 }
 
-.containerBankAccount{
-    display: flex;
-    margin-left: 5rem;
-    margin-bottom: 3rem;
-    margin-top: 3rem;
-   
+.containerBankAccount {
+  display: flex;
+  margin-bottom: 3rem;
 }
 
-.containerBankAccount div{
-    flex: 1 1 auto
+.containerBankAccount {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.containerBankAccount div label{
-    color:#868686;
-    font-size: 1.7rem;
-    margin-left: 2rem;
+.containerBankAccount > div {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
 }
 
-.containerBankAccount div p{
-    color:#868686;
-    font-size: 1.7rem;
+.containerBankAccount div label {
+  color: #868686;
+  font-size: 1.7rem;
 }
 
-
-.check{
-    accent-color:#29AA79;
-    height: 2rem;
-    width: 2rem;
-    color:white;
-    cursor: pointer;
+.containerBankAccount div p {
+  color: #868686;
+  font-size: 1.7rem;
 }
 
-.containerBtnAccount{
-    text-align: left;
-    display: flex;
-    margin-right: 2rem;
+.check {
+  accent-color: #29aa79;
+  height: 2rem;
+  width: 2rem;
+  color: white;
+  cursor: pointer;
 }
 
-
-.btnEdit{
-    display: flex;
+.containerBtnAccount {
+  display: flex;
+  align-items: center;
 }
 
-.btnDelete{
-    display: flex;
+.btnEdit {
 }
 
-.btnAccount{
-    flex: 1 1 auto;
-    width: 100%;
-    font-size: 1.6rem;
-    text-decoration: underline;
-    cursor: pointer;
-    color:#D53E27;
-    border:none; 
-    height: 1rem;
-    text-align: right;
-    background-color: #29aa7900;
-    margin-left: -5rem;
+.btnDelete {
+  display: flex;
+  align-items: flex-start;
 }
 
-
-.basquet{
-    height: 1.5rem;
-    width:1.5rem;
-    cursor: pointer;
-    margin-left: 1rem;
-    margin-right: 1rem;
+.btnAccount {
+  width: 100%;
+  font-size: 1.6rem;
+  text-decoration: underline;
+  cursor: pointer;
+  color: #d53e27;
+  border: none;
+  background-color: #29aa7900;
 }
 
+.basquet {
+  height: 1.5rem;
+  width: 1.5rem;
+  cursor: pointer;
+}
 
 .vLine {
-    margin-left: 3rem;
-    border: 1px solid rgb(219, 219, 219);
-    height: 2rem;
-  }
+  border: 1px solid rgb(219, 219, 219);
+  height: 2rem;
+}
 
 .hr {
-    border: 0.1px solid rgb(219, 219, 219);
-    width: 100%;
-  }
+  border: 0.1px solid rgb(219, 219, 219);
+  width: 100%;
+}
 
-  .btnAdd{
-    margin-top: 3rem;
-    width: 100%;
-    font-size: 1.6rem;
-    cursor: pointer;
-    color:#D53E27;
-    border:none; 
-    height: 1rem;
-    text-align: center;
-    background-color: #29aa7900;
-
-  }
-
-
-
-
-
-
-
+.btnAdd {
+  margin-top: 3rem;
+  width: 100%;
+  font-size: 1.6rem;
+  cursor: pointer;
+  color: #d53e27;
+  border: none;
+  height: 1rem;
+  text-align: center;
+  background-color: #29aa7900;
+}

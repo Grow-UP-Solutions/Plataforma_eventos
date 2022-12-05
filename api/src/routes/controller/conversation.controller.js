@@ -44,6 +44,7 @@ router.delete('/delete', async (req, res) => {
 
     if (messages.length > 0) return res.json({ message: 'No eliminado' });
     await deleteConversation(idLastConversation);
+    res.json({ message: 'Eliminado correctamente' });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
