@@ -547,7 +547,7 @@ router.post('/sendMailChangePassword', async (req, res) => {
 
   const token = await generateJWTPassword(email);
 
-  const link = `http://localhost:3000/cambiarcontrasenia/${token}`;
+  const link = `https://events-jean.vercel.app/cambiar-password/${token}`;
 
   const response = await changePasswordMail(email, link);
 
