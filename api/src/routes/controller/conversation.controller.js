@@ -36,7 +36,7 @@ router.post('/create', async (req, res) => {
   }
 });
 
-router.delete('/delete', async (req, res) => {
+router.put('/delete', async (req, res) => {
   const { idLastConversation } = req.body;
 
   try {
