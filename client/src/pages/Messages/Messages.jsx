@@ -135,18 +135,6 @@ const Messages = () => {
     } 
   },[last]);
 
-  /* const handleMensajes = async (e) => {
-    e.preventDefault();
-    const data = {
-      idLastConversation: last,
-    }
-    console.log(data);
-    const res = await eventsApi.delete('/conversation/delete', data);
-    const json = res.data;
-    console.log('response', json);
-    alert('chau');
-  } */
-
   const handleChangeNewMessages = (e) => {
     e.preventDefault();
     setNewMessage(e.target.value);
@@ -296,7 +284,7 @@ const Messages = () => {
     return (
       <div className={`${styles.pageMessage} container`}>
         <div className={styles.containerMessage}>
-          <div className={styles.containerTitle} /* onClick={handleMensajes} */>
+          <div className={styles.containerTitle} >
             <h1 className={styles.title}>Mensajes</h1>
           </div>
 

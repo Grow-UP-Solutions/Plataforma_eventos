@@ -77,10 +77,8 @@ export const UIProvider = ({ children }) => {
   }
 
   const deleteConversation = async (data) => {
-    console.log('data', data);
-    const res = await eventsApi.delete('/conversation/delete', data);
+    const res = await eventsApi.put('/conversation/delete', data);
     const json = res.data;
-    console.log('response', res.data);
     dispatch({ type: 'DELETE_CONVERSATION', payload: json });
   }
 

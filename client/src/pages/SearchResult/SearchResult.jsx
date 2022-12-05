@@ -13,8 +13,8 @@ const SearchResult = () => {
   const search = useParams().data;
   const { muni } = useContext(stateContext);
   const { events } = useContext(UIContext);
-  const [load, setLoad] = useState(true);
   const [local, setLocal] = useState([]);
+  const [load, setLoad] = useState(true);
   const [currentPage, setCurretPage] = useState(1);
   const CardPerPage = 8;
   const indexOfLastCard = currentPage * CardPerPage;
