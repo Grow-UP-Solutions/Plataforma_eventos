@@ -39,15 +39,13 @@ const EventDate = ({ id, openMenu }) => {
   const [resultFormNewDate, setResultFormNewDate] = useState(false);
   const [isLoadingNewDate, setIsLoadingNewDate] = useState(false);
   const { valorTotal, setValorTotal } = useContext(stateContext);
+  const moment = require('moment')
 
-<<<<<<< HEAD
-=======
-  console.log('eventDetails:',eventDetails)
-
- 
+  console.log('eventDetails fecha:',eventDetails.dates)
 
  
->>>>>>> Guille
+
+ 
   useEffect(() => {
     setCarrito([]);
     setDateToBuy([]);
@@ -196,51 +194,92 @@ const EventDate = ({ id, openMenu }) => {
               </tr>
             </thead>
             <tbody>
-              {eventDetails.dates.map((date) => {
-                if (date.date > dateActual) {
-                  return (
-                    <tr>
-                      <td>
-                        <input
-                          type='checkBox'
-                          class={styles.checkBox}
-                          value={date._id}
-                          onChange={(e) => dateSelected(e, date.price)}
-                        />
-                      </td>
+            {eventDetails.dates.map(date=>
+              moment(date.date) > moment(dateActual) ?
+              <tr>
+                <td>
+                  <input
+                    type='checkBox'
+                    class={styles.checkBox}
+                    value={date._id}
+                    onChange={(e) => dateSelected(e, date.price)}
+                  />
+                </td>
 
-                      <td>{date.date}</td>
+                <td>{date.date}</td>
 
-                      <td>
-                        {date.start}-{date.end}
-                      </td>
+                <td>
+                  {date.start}-{date.end}
+                </td>
 
-                      <td>{date.price}</td>
+                <td>{date.price}</td>
 
-                      <td>{date.cupos}</td>
+                <td>{date.cupos}</td>
 
-                      {carrito.length > 0 ? (
-                        carrito.map((c) =>
-                          c.idDate === date._id ? <EventDateMap id={date._id} cupos={date.cupos} /> : ''
-                        )
-                      ) : (
-                        <td className={styles.containerNumberBuyCuposDisable}>
-                          <button>
-                            <img src={iconArrowLeft} alt='icon-left' />
-                          </button>
-                          <span>-</span>
-                          <button>
-                            <img src={iconArrowRight} alt='icon-left' />
-                          </button>
-                        </td>
-                      )}
-                    </tr>
-                  );
-                } else {
-                  return '';
-                }
-              })}
+                {carrito.length > 0 ? (
+                  carrito.map((c) =>
+                    c.idDate === date._id ? <EventDateMap id={date._id} cupos={date.cupos} /> : ''
+                  )
+                ) : (
+                  <td className={styles.containerNumberBuyCuposDisable}>
+                    <button>
+                      <img src={iconArrowLeft} alt='icon-left' />
+                    </button>
+                    <span>-</span>
+                    <button>
+                      <img src={iconArrowRight} alt='icon-left' />
+                    </button>
+                  </td>
+                )}
+              </tr>             
+              : 'no')}
             </tbody>
+           
+              {/* {eventDetails.dates.map((date) => {
+                date.date > dateActual ?
+               ' Si'
+                // <tbody>
+                //     <tr>
+                //       <td>
+                //         <input
+                //           type='checkBox'
+                //           class={styles.checkBox}
+                //           value={date._id}
+                //           onChange={(e) => dateSelected(e, date.price)}
+                //         />
+                //       </td>
+
+                //       <td>{date.date}</td>
+
+                //       <td>
+                //         {date.start}-{date.end}
+                //       </td>
+
+                //       <td>{date.price}</td>
+
+                //       <td>{date.cupos}</td>
+
+                //       {carrito.length > 0 ? (
+                //         carrito.map((c) =>
+                //           c.idDate === date._id ? <EventDateMap id={date._id} cupos={date.cupos} /> : ''
+                //         )
+                //       ) : (
+                //         <td className={styles.containerNumberBuyCuposDisable}>
+                //           <button>
+                //             <img src={iconArrowLeft} alt='icon-left' />
+                //           </button>
+                //           <span>-</span>
+                //           <button>
+                //             <img src={iconArrowRight} alt='icon-left' />
+                //           </button>
+                //         </td>
+                //       )}
+                //     </tr>
+                // </tbody>
+                :'NO'
+                }
+              )} */}
+            
           </table>
           <div className={styles.containerBtnBuy}>
             <button className={styles.button} onClick={(e) => comprar(e)}>
@@ -260,6 +299,7 @@ const EventDate = ({ id, openMenu }) => {
                   </tr>
                 </thead>
                 <tbody>
+
                   {eventDetails.dates.map((date) => {
                     if (date.date > dateActual) {
                       return (
@@ -284,6 +324,7 @@ const EventDate = ({ id, openMenu }) => {
                       return '';
                     }
                   })}
+
                 </tbody>
               </table>
               <button className={styles.btnMenuBuy} onClick={(e) => comprar(e)}>
