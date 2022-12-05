@@ -5,7 +5,6 @@ import basquet from '../../assets/imgs/basquet.svg';
 import { Link } from 'react-router-dom';
 
 const Finance = () => {
-  
   /*   const opcionesEliminar = [
         'Tengo otra cuenta de Lo que quiero hacer',
         'Mala experiencia con eventos/organizador',
@@ -53,8 +52,8 @@ const Finance = () => {
                 <button className={styles.btnAccount}>
                   <img className={styles.basquet} src={basquet} alt='n' /> Editar
                 </button>
-                <div className={styles.vLine}></div>
               </div>
+              <div className={styles.vLine}></div>
               <div className={styles.btnDelete}>
                 <img className={styles.basquet} src={basquet} alt='n' />
                 <button className={styles.btnAccount}>Eliminar</button>

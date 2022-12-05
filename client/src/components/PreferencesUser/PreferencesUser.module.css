@@ -4,20 +4,23 @@
 }
 
 .containerSub {
-  margin: auto 0;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  padding: 3rem;
+
   margin-bottom: 4rem;
-  width: 90%;
   height: 22rem;
   box-shadow: rgb(127, 125, 125);
   border: 1px solid #d6d6d6;
   border-radius: 1rem;
-  margin-left: 10rem;
-  display: flex;
-  position: relative;
 }
 
-.containerSub1 {
-  flex: 1 1 auto;
+.containerCheckBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
 }
 
 .title {
@@ -25,16 +28,13 @@
   font-size: 2rem;
   font-weight: bold;
   margin-bottom: 1.5rem;
-  margin-left: 5rem;
-  margin-top: 3rem;
 }
 
 .texto {
   color: #868686;
   font-size: 1.8rem;
   margin-bottom: 1.5rem;
-  margin-left: 5rem;
-  margin-top: 3rem;
+  width: auto;
 }
 
 .cont_txt_btn {
@@ -48,25 +48,18 @@
   background-color: white;
   color: #d53e27;
   border: none;
-  margin-left: 1rem;
   height: 1rem;
-  margin-top: 3rem;
 }
 
 .titleOpcion {
   color: #585858;
   font-size: 2rem;
   font-weight: bold;
-  margin-bottom: 1.5rem;
-  margin-right: 5rem;
-  margin-top: 3rem;
   text-align: right;
 }
 
 .cont_check {
-  margin-top: 3rem;
   text-align: right;
-  margin-right: 7rem;
 }
 
 .check {
@@ -82,14 +75,11 @@
 }
 
 .containerSub2 {
-  flex: 1 1 auto;
 }
 
 .select {
   font-size: 2rem;
   margin-bottom: 1.5rem;
-  margin-left: 5rem;
-  margin-top: 3rem;
   cursor: pointer;
   background-color: white;
   border: 1px solid #d6d6d6;
@@ -98,6 +88,7 @@
   padding: 1rem;
   color: #868686;
   font-size: 1.8rem;
+  width: 100%;
 }
 
 .select:focus {
@@ -106,7 +97,8 @@
 }
 
 .contbutton {
-  flex: 1 1 auto;
+  justify-self: center;
+  align-self: center;
 }
 
 .button {
@@ -119,13 +111,10 @@
   color: #868686;
   box-shadow: none;
   border: none;
-  margin-top: 12rem;
-  margin-left: 15rem;
 }
 
 .containerSub3 {
-  width: 50%;
-  margin-left: 15rem;
+  width: 100%;
 }
 
 .titleOptionSelect {
@@ -156,6 +145,7 @@
   padding: 1rem 1.5rem;
   font-size: 1.6rem;
   resize: none;
+  width: 100%;
 }
 
 .textarea:focus {
@@ -166,7 +156,7 @@
 .containerVerifyPassword {
   position: absolute;
   background-color: white;
-  bottom: -70%;
+  bottom: -40%;
   right: 0;
   padding: 2rem;
   box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.2);
@@ -275,4 +265,45 @@
   border-bottom: 1px solid var(--color-orange);
   cursor: pointer;
   font-size: 1.6rem;
+}
+
+@media screen and (max-width: 1160px) {
+  .containerSub {
+  }
+
+  .containerDeleteAccount {
+    flex-direction: column;
+  }
+
+  .containerCheckBox {
+    gap: 2rem;
+  }
+}
+
+@media screen and (max-width: 1020px) {
+  .containerSub,
+  .containerSub3 {
+  }
+
+  .containerDeleteAccount {
+    flex-direction: column;
+  }
+
+  .containerCheckBox {
+    gap: 2rem;
+  }
+}
+
+@media screen and (max-width: 751px) {
+  .containerCheckBox {
+  }
+
+  .texto {
+  }
+}
+
+@media screen and (max-width: 605px) {
+  .container {
+    height: 48vh;
+  }
 }
