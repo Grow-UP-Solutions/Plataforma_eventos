@@ -1,20 +1,17 @@
 import React, { useContext } from 'react';
 import styles from './Categories.module.css';
-import { stateContext } from '../../context/state/stateContext';
 import { UIContext } from '../../context/ui';
 import { useNavigate } from 'react-router-dom';
 
 const Categories = () => {
   
-  const { setResult } = useContext(stateContext);
   const { categories } = useContext(UIContext);
   const navigate = useNavigate();
 
   const handleClick = (e) => {
     e.preventDefault();
     const data = e.target.id;
-    setResult(data);
-    navigate('/resultado-categoria/');
+    navigate('/resultado-categoria/' + data);
   };
 
   return (

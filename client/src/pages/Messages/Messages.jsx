@@ -50,7 +50,7 @@ const validate = (form) => {
 const Messages = () => {
 
   const { user } = useContext(AuthContext);
-  const { getMessagesStar, msgStar } = useContext(UIContext);
+  const { getMessagesStar, msgStar, deleteConversation } = useContext(UIContext);
   const { setMsg } = useContext(stateContext);
   const id = user.uid;
   const [conversations, setConversations] = useState([]);
@@ -66,6 +66,7 @@ const Messages = () => {
   const [errors, setErrors] = useState({ text: '' });
   const [isOpenModal, openModal, closeModal] = useModal(false);
   const [load, setLoad] = useState(true);
+  const [last, setLast] = useState();
   const scrollRef = useRef(null);
 
   useEffect(() => {
@@ -75,6 +76,8 @@ const Messages = () => {
         setConversations(res.data.filter((e) => e.locked === false));
         setBlock(res.data.filter((e) => e.locked === true));
         setLoad(false);
+        const ubication = res.data.length - 1;
+        setLast(res.data[ubication]._id);
       } 
       catch (err) {
         console.log(err);
@@ -122,6 +125,27 @@ const Messages = () => {
       lastItem.scrollIntoView({ behavior: "smooth", block: "nearest" });
     }
   }, [messages]);
+
+  useEffect(() => {
+    return () => {
+      deleteConversation({
+        idLastConversation: last,
+      });
+      console.log('desmonte mensajes');
+    } 
+  },[last]);
+
+  /* const handleMensajes = async (e) => {
+    e.preventDefault();
+    const data = {
+      idLastConversation: last,
+    }
+    console.log(data);
+    const res = await eventsApi.delete('/conversation/delete', data);
+    const json = res.data;
+    console.log('response', json);
+    alert('chau');
+  } */
 
   const handleChangeNewMessages = (e) => {
     e.preventDefault();
@@ -272,7 +296,7 @@ const Messages = () => {
     return (
       <div className={`${styles.pageMessage} container`}>
         <div className={styles.containerMessage}>
-          <div className={styles.containerTitle}>
+          <div className={styles.containerTitle} /* onClick={handleMensajes} */>
             <h1 className={styles.title}>Mensajes</h1>
           </div>
 

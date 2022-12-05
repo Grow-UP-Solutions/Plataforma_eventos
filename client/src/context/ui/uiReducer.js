@@ -84,6 +84,11 @@ export const uiReducer = (state, action) => {
         msgStar: action.payload,
       };
 
+    case 'DELETE_CONVERSATION':
+      return {
+        ...state,
+        deleteConversation: action.payload,
+      };
 
 
     default:
