@@ -40,14 +40,11 @@ const EventDate = ({ id, openMenu }) => {
   const [isLoadingNewDate, setIsLoadingNewDate] = useState(false);
   const { valorTotal, setValorTotal } = useContext(stateContext);
 
-<<<<<<< HEAD
-=======
   console.log('eventDetails:',eventDetails)
 
  
 
  
->>>>>>> Guille
   useEffect(() => {
     setCarrito([]);
     setDateToBuy([]);
