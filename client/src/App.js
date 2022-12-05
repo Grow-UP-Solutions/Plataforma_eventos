@@ -71,10 +71,10 @@ function App() {
         <Route path='/preguntas-frecuentes' element={<Faq />} />
         <Route path='/sobre-el-organizador/:id' element={<Organizer />} />
         <Route path='/detalles-del-evento/:id' element={<EventDetails />} />
-        <Route path='/resultados-de-busqueda' element={<SearchResult />} />
+        <Route path='/resultados-de-busqueda/:data' element={<SearchResult />} />
         <Route path='/registrate' element={<Register />} />
         <Route path='/organiza-un-evento/beneficios' element={<EventCreate />} />
-        <Route path='/resultado-categoria' element={<CategoriesResult />} />
+        <Route path='/resultado-categoria/:data' element={<CategoriesResult />} />
         <Route path='/empleo' element={<WorkWithUs />} />
         <Route path='/noticias' element={<News />} />
         <Route path='/prensa' element={<Press />} />

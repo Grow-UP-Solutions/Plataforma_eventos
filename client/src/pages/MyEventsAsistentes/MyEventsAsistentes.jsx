@@ -10,6 +10,7 @@ import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import ExportExcel from 'react-export-excel';
 import { Loading } from "../../components";
+import { animateScroll as scroll } from 'react-scroll';
 
 const ExcelFile = ExportExcel.ExcelFile;
 const ExcelSheet = ExportExcel.ExcelSheet;
@@ -25,6 +26,10 @@ const MyEventsAsistentes = () => {
   const [buyers , setBuyers] = useState([]);
   const [load, setLoad] = useState(true);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    scroll.scrollToTop();
+  }, []);
 
   useEffect(() => {
     const getAll = async () => {
@@ -111,21 +116,11 @@ const MyEventsAsistentes = () => {
 
   const handleManyMessages = (e) => {
     e.preventDefault();
-    /* const array = conversa.map((e) => e.members).flat();
-    for (let i = 0 ; i < array.length ; i++) {
-
-      const json = seleccionados.includes(array[i]) */
-
-    setConversation({
+    const data = {
       senderId: user.uid,
       receiverId: seleccionados,
-    });
-
-      /* if (json === true) {
-        navigate('/usuario/mensajes');
-      }  */
-      
-    eventsApi.post('/conversation/buyer/create', conversation).then((response) => {
+    } 
+    eventsApi.post('/conversation/buyer/create', data).then((response) => {
       navigate('/usuario/mensajes');
     });
   };
@@ -168,7 +163,6 @@ const MyEventsAsistentes = () => {
                               value={buyers._id}
                               class={styles.checkBox}
                             />
-                            {/* <p>Selecciona con doble click</p> */}
                           </th>
                           <th>Seleccionar Todos</th>
                           <th>Usuario</th>
@@ -213,7 +207,6 @@ const MyEventsAsistentes = () => {
                           <tr key={b._id}>
                             
                             <td className={styles.input}>
-
                               <input
                                 type="checkbox"
                                 onChange={(e) => selectBuyer(e)}
@@ -221,8 +214,6 @@ const MyEventsAsistentes = () => {
                                 className={styles.checkBox}
                                 checked={saber(b._id) ? true : false}
                               />
-                              {/* <p>Selecciona con doble click</p> */}
-      
                             </td>
                             <td><img className={styles.userImg} src={b.userpicture} alt='img-user' /></td>
                             <td>{b.name}</td>
@@ -255,3 +246,29 @@ const MyEventsAsistentes = () => {
 }
 
 export default MyEventsAsistentes;
+
+
+
+
+/* 
+const handleManyMessages = (e) => {
+    e.preventDefault();
+    const array = conversa.map((e) => e.members).flat();
+    for (let i = 0 ; i < array.length ; i++) {
+
+    const json = seleccionados.includes(array[i])
+
+    const data = {
+      senderId: user.uid,
+      receiverId: seleccionados,
+    }
+
+    if (json === true) {
+      navigate('/usuario/mensajes');
+    }
+      
+    eventsApi.post('/conversation/buyer/create', data).then((response) => {
+      navigate('/usuario/mensajes');
+    });
+  };
+*/

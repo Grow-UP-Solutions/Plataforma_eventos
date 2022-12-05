@@ -7,6 +7,7 @@ import eventsApi from '../../axios/eventsApi';
 import swal from 'sweetalert';
 import Pagination from '../../components/Pagination/Pagination';
 import { Loading } from "../../components";
+import { animateScroll as scroll } from 'react-scroll';
 
 const Notifications = () => {
 
@@ -23,6 +24,7 @@ const Notifications = () => {
 
   useEffect(() => {
     getUserData();
+    scroll.scrollToTop();
   }, [user]);
 
   const getUserData = async () => {
