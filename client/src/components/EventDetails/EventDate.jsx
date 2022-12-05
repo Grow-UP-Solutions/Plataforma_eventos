@@ -40,6 +40,14 @@ const EventDate = ({ id, openMenu }) => {
   const [isLoadingNewDate, setIsLoadingNewDate] = useState(false);
   const { valorTotal, setValorTotal } = useContext(stateContext);
 
+<<<<<<< HEAD
+=======
+  console.log('eventDetails:',eventDetails)
+
+ 
+
+ 
+>>>>>>> Guille
   useEffect(() => {
     setCarrito([]);
     setDateToBuy([]);
@@ -49,6 +57,8 @@ const EventDate = ({ id, openMenu }) => {
   const hora = fecha.getHours();
   const minutes = fecha.getMinutes();
   const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
+
+    console.log('dateActual:',dateActual)
 
   const handleFormatDate = (date) => {
     setDate(date);
@@ -160,7 +170,7 @@ const EventDate = ({ id, openMenu }) => {
 
   return (
     <div>
-      {eventDetails ? (
+      {eventDetails  ? (
         <div className={styles.container}>
           <div className={styles.containerIconOpenMenuDate}></div>
 
