@@ -53,7 +53,7 @@ const UserSchema = new Schema(
       },
       email: String,
       password: String,
-      canReceiveInformation: {
+      canReceivedInformation: {
          type: Boolean,
          default: true,
       },
@@ -173,6 +173,55 @@ const UserSchema = new Schema(
          {
             type: Schema.Types.ObjectId,
             ref: Message,
+         },
+      ],
+      earnings: {
+         type: Number,
+         default: 0,
+      },
+
+      pendingEarnings: {
+         type: Number,
+         default: 0,
+      },
+      ordenes: [
+         {
+            thumbnail: {
+               type: String,
+               default: "",
+            },
+            motivo: {
+               type: String,
+               default: "",
+            },
+            codigoDeLaTransaccion: {
+               type: String,
+               default: "",
+            },
+            DestinoDePago: {
+               type: String,
+               default: "",
+            },
+            fechaDePago: {
+               type: String,
+               default: "",
+            },
+            valorDeLaTransaccion: {
+               type: String,
+               default: "",
+            },
+            costoDeLaTransaccion: {
+               type: String,
+               default: "",
+            },
+            referencia: {
+               type: String,
+               default: "",
+            },
+            estatus: {
+               type: String,
+               default: "",
+            },
          },
       ],
    },

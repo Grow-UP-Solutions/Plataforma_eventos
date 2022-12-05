@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import style from './Navbar.module.css';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { UIContext } from '../../context/ui';
@@ -14,6 +14,7 @@ import eventsApi from '../../axios/eventsApi';
 import ConversationNoti from '../ConversationNoti/ConversationNoti';
 
 const Navbar = ({ upper }) => {
+
   const { toggleScreenLogin } = useContext(UIContext);
   const { user, logged, logout } = useContext(AuthContext);
   const { notes, setNotes, msg, setMsg } = useContext(stateContext);
@@ -22,10 +23,25 @@ const Navbar = ({ upper }) => {
   const [openMessages, setOpenMessages] = useState(false);
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const menuRef = useRef();
 
   useEffect(() => {
     getUserData();
   }, [user]);
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (menuRef.current === null || menuRef.current === undefined) {
+      } 
+      else if (!menuRef.current.contains(e.target)) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => {
+      document.removeEventListener('mousedown', handler);
+    };
+  });
 
   const [userData, setUserData] = useState({});
 
@@ -252,7 +268,7 @@ const Navbar = ({ upper }) => {
                     {notes.map((e) => (
                       <div className={style.noty}>
                         <IoNotifications className={style.iconNav} />
-                        {e.msg}
+                        <p onClick={handleClickNotifications}>{e.msg}</p> 
                       </div>
                     ))}
                     <p className={style.link_notis} onClick={handleClickNotifications}>
@@ -302,8 +318,12 @@ const Navbar = ({ upper }) => {
                 )}
 
                 {menuOpen && (
-                  <div className={style.containerProfileMenu}>
-                    <Link to='/usuario/mis-eventos'>Mis eventos</Link>
+                  <div className={style.containerProfileMenu} ref={menuRef} >
+                    {
+                      userData.isOrganizer === true ?
+                      <Link to='/usuario/mis-eventos'>Mis eventos</Link> :
+                      <Link to='/usuario/mi-lista'>Mis eventos</Link>
+                    }
 
                     <Link to='/usuario/perfil'>
                       <a>Perfil</a>
@@ -324,7 +344,7 @@ const Navbar = ({ upper }) => {
                         navigate('/');
                       }}
                     >
-                      Cerrar
+                      Cerrar sesión
                     </span>
                   </div>
                 )}

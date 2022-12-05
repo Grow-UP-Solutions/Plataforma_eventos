@@ -61,7 +61,7 @@ router.post("/orden", async (req, res) => {
 
          back_urls: {
             success: `http://localhost:3000/mercadoPago/success`,
-            failure: `http://localhost:3000/mercadoPago/success`,
+            failure: `http://localhost:3000/mercadoPago/fail`,
          },
          auto_return: "approved",
          taxes: [
@@ -85,11 +85,13 @@ router.post("/orden", async (req, res) => {
 
 router.get("/success", async (req, res) => {
    const { external_reference, payment_id, preference_id, codigo } = req.query;
-   const ids = external_reference.split(",");
-   console.log("QUERY", req.query);
-   const idEvent = ids[0];
 
+   const ids = external_reference.split(",");
+
+   const idEvent = ids[0];
    const idUser = ids[1];
+
+   const resultTransaccion = {};
 
    try {
       const dataPayments = await axios(
@@ -97,7 +99,6 @@ router.get("/success", async (req, res) => {
       );
 
       const response = dataPayments.data;
-      console.log("RESPONSE", response);
 
       const cuposComprados = response.additional_info.items.map((e) =>
          parseInt(e.quantity)
@@ -117,27 +118,24 @@ router.get("/success", async (req, res) => {
          event.overallEarnings +=
             response.transaction_details.total_paid_amount;
 
+         user.pendingEarnings += response.transaction_details.total_paid_amount;
+
          event.sells += totalDeCupos;
 
          event.dates.forEach((e, i) => {
             for (let j = 0; j < response.additional_info.items.length; ++j) {
-              if (e._id === response.additional_info.items[j].id) {
-                e.buyers?.push(user._id);
-    
-                e.sells += totalDeCupos;
-    
-                e.cupos -= totalDeCupos;
-    
-                e.profits += response.transaction_details.total_paid_amount;
-              }
-            }
-          });
+               if (e._id === response.additional_info.items[j].id) {
+                  e.buyers?.push(user._id);
 
-         // const eventoesis= user.myEventsBooked.find(e=>{
-         //    //console.log(e._id)
-         //    return e.title === event.title
-         // })
-         //console.log(user.myEventsBooked.includes(event.title))
+                  e.sells += totalDeCupos;
+
+                  e.cupos -= totalDeCupos;
+
+                  e.profits += response.transaction_details.total_paid_amount;
+               }
+            }
+         });
+
          user.myEventsBooked.push(event._id);
 
          if (user.isReferral.code && !user.isReferral.use) {
@@ -152,31 +150,37 @@ router.get("/success", async (req, res) => {
          }
 
          await event.save();
-         await user.save();
-      }
+         resultTransaccion = {
+            thumbnail: event.pictures[0].picture,
+            motivo: event.title,
+            codigoDeLaTransaccion: payment_id,
+            DestinoDePago: response.statement_descriptor,
+            fechaDePago: response.date_created,
+            valorDeLaTransaccion: response.net_amount,
+            costoDeLaTransaccion: response.net_amount,
+            referencia: response.payer.identification.number,
+            estatus: response.status,
+         };
 
-      const resultTransaccion = {
+         user.ordenes.push(resultTransaccion);
+
+         await user.save();
+         res.json(resultTransaccion);
+      }
+      resultTransaccion = {
+         Motivo: event.title,
          codigoDeLaTransaccion: payment_id,
          DestinoDePago: response.statement_descriptor,
          fechaDePago: response.date_created,
          valorDeLaTransaccion: response.net_amount,
          costoDeLaTransaccion: response.net_amount,
          referencia: response.payer.identification.number,
+         estatus: response.status,
       };
 
       res.json(resultTransaccion);
    } catch (error) {
       console.log(error.message);
-      return res.status(500).json(error.message);
-   }
-});
-
-router.get("/fail", async (req, res) => {
-   const algo = req.query;
-   try {
-      console.log("//////", algo);
-      res.json(algo);
-   } catch (error) {
       return res.status(500).json(error.message);
    }
 });

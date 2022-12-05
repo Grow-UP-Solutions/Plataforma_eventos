@@ -40,7 +40,6 @@
   align-items: center;
   padding: 1rem 2rem;
   border-top: 1px solid var(--color-grey-4);
-  overflow-y: auto;
 }
 
 .itemChat:last-child {

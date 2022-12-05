@@ -7,6 +7,7 @@ import Pagination from '../../components/Pagination/Pagination';
 import { animateScroll as scroll } from 'react-scroll';
 import eventsApi from "../../axios/eventsApi";
 import { useParams } from 'react-router-dom';
+import { Loading } from "../../components";
 
 const EventsOrganizerResult = () => {
 
@@ -14,6 +15,7 @@ const EventsOrganizerResult = () => {
   const { result } = useContext(stateContext);
   const [local, setLocal] = useState([]);
   const [name, setName] = useState('');
+  const [load, setLoad] = useState(true);
   const [currentPage, setCurretPage] = useState(1);
   const CardPerPage = 8;
   const indexOfLastCard = currentPage * CardPerPage;
@@ -23,43 +25,53 @@ const EventsOrganizerResult = () => {
 
   useEffect(() => {
     scroll.scrollToTop();
+  }, []);
+
+  useEffect(() => {
+    
     const getEventsOrganizer = async () => {
       const res = await eventsApi.get('/users/' + result);
       const filtro = res.data.myEventsCreated.filter((e) => e._id !== id);
       setLocal(filtro);
-      setName(res.data.name)
+      setName(res.data.name);
+      setLoad(false);
     }
     getEventsOrganizer();
   }, []);
 
-  return (
-    <div className={style.container}>
-      <p className={style.title}>Otros eventos de {name}</p>
-      <div className={style.containerCard}>
-        {currentCard.length ? (
-          currentCard.map((event, index) => {
-            return (
-              <div key={index} className={style.card}>
-                <Card event={event} />
-              </div>
-            );
-          })
-        ) : (
-          <p className={style.not_event}>No hay eventos ...</p>
-        )}
+  if (load) {
+    return <Loading />;
+  }
+  else {
+    return (
+      <div className={style.container}>
+        <p className={style.title}>Otros eventos de {name}</p>
+        <div className={style.containerCard}>
+          {currentCard.length ? (
+            currentCard.map((event, index) => {
+              return (
+                <div key={index} className={style.card}>
+                  <Card event={event} />
+                </div>
+              );
+            })
+          ) : (
+            <p className={style.not_event}>No hay eventos ...</p>
+          )}
+        </div>
+        
+        <div className={style.container_pagination}>
+          <Pagination 
+            billsPerPage={CardPerPage}
+            state={local.length}
+            paginado={paginado}
+            page={currentPage}
+          />
+        </div>
+        
       </div>
-      
-      <div className={style.container_pagination}>
-        <Pagination 
-          billsPerPage={CardPerPage}
-          state={local.length}
-          paginado={paginado}
-          page={currentPage}
-        />
-      </div>
-      
-    </div>
-  );
+    );
+  }
 }
 
 export default EventsOrganizerResult;

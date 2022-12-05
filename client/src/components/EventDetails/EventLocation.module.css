@@ -15,7 +15,8 @@
   color: var(--color-grey-2);
 }
 
-.city, .state {
+.city,
+.state {
   font-size: 1.6rem;
   color: var(--color-grey-2);
 }
@@ -43,4 +44,10 @@
 .line {
   border: 0.1px solid rgb(219, 219, 219);
   margin-top: 18px;
+}
+
+@media screen and (max-width: 756px) {
+  .line {
+    display: none;
+  }
 }

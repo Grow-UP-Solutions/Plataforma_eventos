@@ -71,10 +71,10 @@ function App() {
         <Route path='/preguntas-frecuentes' element={<Faq />} />
         <Route path='/sobre-el-organizador/:id' element={<Organizer />} />
         <Route path='/detalles-del-evento/:id' element={<EventDetails />} />
-        <Route path='/resultados-de-busqueda' element={<SearchResult />} />
+        <Route path='/resultados-de-busqueda/:data' element={<SearchResult />} />
         <Route path='/registrate' element={<Register />} />
         <Route path='/organiza-un-evento/beneficios' element={<EventCreate />} />
-        <Route path='/resultado-categoria' element={<CategoriesResult />} />
+        <Route path='/resultado-categoria/:data' element={<CategoriesResult />} />
         <Route path='/empleo' element={<WorkWithUs />} />
         <Route path='/noticias' element={<News />} />
         <Route path='/prensa' element={<Press />} />
@@ -84,7 +84,9 @@ function App() {
         <Route path='/terminos' element={<PanelPrivacy />} />
         <Route path='/resultado-eventos-organizador/:id' element={<EventsOrganizerResult />} />
         <Route path={'/mercadoPago/success'} element={<MercadoPago />} />
-
+        <Route path='/admin/check-solicitud-organizador/:token' element={<CheckSolicitudOrganizer />} />
+        <Route path='/verificarmail/:path' element={<Verification />} />
+        <Route path='/cambiar-password/:token' element={<ChangePassword />} />
 
         {/* RUTAS PRIVADAS */}
         <Route path='/oganiza-un-evento' 
@@ -167,13 +169,8 @@ function App() {
           } 
         />
 
-        <Route path='/admin/check-solicitud-organizador/:token' element={<CheckSolicitudOrganizer />} />
-        
-        <Route path='/verificarmail/:path' element={<Verification />} />
-
-        <Route path='/cambiar-password/:token' element={<ChangePassword />} />
-
       </Routes>
+
       <div className='container_footer'>
         <Footer />
       </div>

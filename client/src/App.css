@@ -87,7 +87,7 @@
 .containerSwiper .swiper .swiper-button-prev {
   position: absolute !important;
   top: 45rem !important ;
-  left: 135rem !important ;
+  left: 94.2% !important ;
   transform: rotate(90deg);
   /* position: absolute;
   bottom: -50px !important;
@@ -125,12 +125,36 @@
   background-color: var(--color-orange) !important;
 }
 
+/* .mySwipperEventDetails .swiper-wrapper .swiper-slide img {
+  max-width: 100% !important;
+} */
+
 /* MEDIA QUERIES */
 
 @media screen and (max-width: 1490px) {
   .container_footer {
     padding-left: 4rem;
     padding-right: 4rem;
+  }
+}
+
+@media screen and (max-width: 1252px) {
+  .calendar-user {
+    font-size: 9px !important;
+  }
+}
+
+@media screen and (max-width: 756px) {
+  .mySwipperEventDetails {
+    height: 100% !important;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 648px) {
+  .calendar-eventDetail,
+  .calendar-user {
+    font-size: 1rem !important;
   }
 }
 

@@ -5,14 +5,16 @@ import { stateContext } from '../../context/state/stateContext';
 import { Card } from '../../components';
 import Pagination from '../../components/Pagination/Pagination';
 import { UIContext } from '../../context/ui';
-import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { Loading } from "../../components";
 
 const SearchResult = () => {
   
-  const { result } = useContext(stateContext);
+  const search = useParams().data;
   const { muni } = useContext(stateContext);
   const { events } = useContext(UIContext);
   const [local, setLocal] = useState([]);
+  const [load, setLoad] = useState(true);
   const [currentPage, setCurretPage] = useState(1);
   const CardPerPage = 8;
   const indexOfLastCard = currentPage * CardPerPage;
@@ -20,56 +22,67 @@ const SearchResult = () => {
   const currentCard = local.slice(indexOfFirstCard, indexOfLastCard);
   const paginado = (pageNumber) => setCurretPage(pageNumber);
 
-
   useEffect(() => {
     scroll.scrollToTop();
+  }, []);
+
+  useEffect(() => {
+    
     const localEvents = events.filter((event)=>event.municipio.toLowerCase().includes(muni.toLowerCase()))
-    if(result && muni){
+    if(search && muni){
     const getSearch = () => {
-      setLocal(localEvents.filter((event) => event.title.toLowerCase().includes(result.toLowerCase())));
+      setLocal(localEvents.filter((event) => event.title.toLowerCase().includes(search.toLowerCase())));
+      setLoad(false);
     }
     getSearch();
-    }else if(muni && result===''){
+    }else if(muni && search===''){
       const getSearch = () => {
         setLocal(localEvents);
+        setLoad(false);
       }
       getSearch();
-    }else if(result && muni===''){
+    }else if(search && muni===''){
       const getSearch = () => {
-        setLocal(events.filter((event) => event.title.toLowerCase().includes(result.toLowerCase())));
+        setLocal(events.filter((event) => event.title.toLowerCase().includes(search.toLowerCase())));
+        setLoad(false);
       }
       getSearch();
     }
   }, [events]);
 
-  return (
-    <div className={style.container}>
-      <p className={style.title}>Resultado de búsqueda: {result}</p>
-      <div className={style.containerCard}>
-        {currentCard.length ? (
-          currentCard.map((event, index) => {
-            return (
-              <div key={index} className={style.card}>
-                <Card event={event} />
-              </div>
-            );
-          })
-        ) : (
-          <p className={style.not_event}>No hay eventos ...</p>
-        )}
+  if (load) {
+    return <Loading />;
+  }
+  else {
+    return (
+      <div className={style.container}>
+        <p className={style.title}>Resultado de búsqueda: {search}</p>
+        <div className={style.containerCard}>
+          {currentCard.length ? (
+            currentCard.map((event, index) => {
+              return (
+                <div key={index} className={style.card}>
+                  <Card event={event} />
+                </div>
+              );
+            })
+          ) : (
+            <p className={style.not_event}>No hay eventos ...</p>
+          )}
+        </div>
+        
+        <div className={style.container_pagination}>
+          <Pagination 
+            billsPerPage={CardPerPage}
+            state={local.length}
+            paginado={paginado}
+            page={currentPage}
+          />
+        </div>
+        
       </div>
-      
-      <div className={style.container_pagination}>
-        <Pagination 
-          billsPerPage={CardPerPage}
-          state={local.length}
-          paginado={paginado}
-          page={currentPage}
-        />
-      </div>
-      
-    </div>
-  );
+    );
+  }
 };
 
 export default SearchResult;
