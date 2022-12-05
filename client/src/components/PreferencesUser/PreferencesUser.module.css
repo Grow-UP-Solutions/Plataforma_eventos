@@ -296,10 +296,14 @@
 
 @media screen and (max-width: 751px) {
   .containerCheckBox {
-    gap: 2.8rem;
   }
 
   .texto {
-    font-size: 1.4rem;
+  }
+}
+
+@media screen and (max-width: 605px) {
+  .container {
+    height: 48vh;
   }
 }

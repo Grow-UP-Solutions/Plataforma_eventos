@@ -108,6 +108,7 @@ const UserPage = () => {
 
     if (e.target.name === 'eventos' || iconValue === 'eventos') {
       setIsMenuOpen(!isOpenMenu);
+      setOpenMenuResponsive(true);
     } else {
       setIsMenuOpen(false);
     }
@@ -154,13 +155,14 @@ const UserPage = () => {
 
   const handleChangeOpenMenuResponsive = () => {
     setOpenMenuResponsive(!openMenuResponsive);
+    setIsMenuOpen(false);
   };
 
   if (load) {
     return <Loading />;
   } else {
     return (
-      <div className={`${styles.pageUser} container`}>
+      <div className={`${styles.pageUser}`}>
         <div className={styles.sideMenu}>
           <ul className={styles.containerListOptionsMenu}>
             {user.organizer && (

@@ -2,6 +2,9 @@
   display: grid;
   gap: 4.8rem;
   grid-template-columns: 0.5fr 2fr;
+
+  max-width: 142rem;
+  margin: 0 auto;
 }
 
 .sideMenu {
@@ -234,6 +237,12 @@
   cursor: pointer;
 }
 
+@media screen and (max-width: 1420px) {
+  .pageUser {
+    max-width: 1200px;
+  }
+}
+
 @media screen and (max-width: 756px) {
   .pageUser {
     grid-template-columns: none;
@@ -248,6 +257,6 @@
   }
 
   .containerComponentActive {
-    margin-left: 3rem;
+    margin-left: 5rem;
   }
 }
