@@ -13,7 +13,7 @@ import { stateContext } from '../../context/state/stateContext';
 import { UIContext } from '../../context/ui';
 import { useModal } from '../../hooks/useModal';
 import styles from './Messages.module.css';
-import { Loading } from "../../components";
+import { Loading } from '../../components';
 import CurrentMessage from '../../components/CurrentMessage/CurrentMessage';
 
 const validate = (form) => {
@@ -48,7 +48,6 @@ const validate = (form) => {
 };
 
 const Messages = () => {
-
   const { user } = useContext(AuthContext);
   const { getMessagesStar, msgStar, deleteConversation } = useContext(UIContext);
   const { setMsg } = useContext(stateContext);
@@ -78,8 +77,7 @@ const Messages = () => {
         setLoad(false);
         const ubication = res.data.length - 1;
         setLast(res.data[ubication]._id);
-      } 
-      catch (err) {
+      } catch (err) {
         console.log(err);
       }
     };
@@ -116,13 +114,12 @@ const Messages = () => {
 
   useEffect(() => {
     console.log('ref:', scrollRef);
-    
+
     if (scrollRef.current === null) {
       console.log('no hay ref');
-    }
-    else {
+    } else {
       const lastItem = scrollRef.current.lastElementChild;
-      lastItem.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      lastItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
   }, [messages]);
 
@@ -132,20 +129,22 @@ const Messages = () => {
         idLastConversation: last,
       });
       console.log('desmonte mensajes');
-    } 
-  },[last]);
+    };
+  }, [last]);
 
-  /* const handleMensajes = async (e) => {
-    e.preventDefault();
+  /*   const handleMensajes = async (e) => {
     const data = {
       idLastConversation: last,
-    }
+    };
+
+    console.log({ last });
+
     console.log(data);
-    const res = await eventsApi.delete('/conversation/delete', data);
+    const res = await eventsApi.put('/conversation/delete', data);
     const json = res.data;
     console.log('response', json);
     alert('chau');
-  } */
+  }; */
 
   const handleChangeNewMessages = (e) => {
     e.preventDefault();
@@ -197,8 +196,7 @@ const Messages = () => {
       const res = await eventsApi.post('/message/buyer/create', message);
       setMessages([...messages, res.data]);
       setNewMessage('');
-    } 
-    catch (err) {
+    } catch (err) {
       console.log(err);
     }
   };
@@ -291,8 +289,7 @@ const Messages = () => {
 
   if (load) {
     return <Loading />;
-  }
-  else {
+  } else {
     return (
       <div className={`${styles.pageMessage} container`}>
         <div className={styles.containerMessage}>
@@ -348,33 +345,25 @@ const Messages = () => {
 
             <div className={styles.containerChat}>
               <div className={styles.chatHeader}>
-                {
-                  currentChat === null ?
-                  <div></div> :
-                  <CurrentMessage conversation={currentChat} id={id}/>
-                }
+                {currentChat === null ? <div></div> : <CurrentMessage conversation={currentChat} id={id} />}
               </div>
 
               <div className={styles.containerChatMessage} ref={scrollRef}>
                 {currentChat && star === false ? (
                   <>
-                    {messages
-                      .map((m, i) => (
-                        <div key={i} >
-                          <Message message={m} own={m.sender === id} />
-                        </div>
-                      ))
-                    }
+                    {messages.map((m, i) => (
+                      <div key={i}>
+                        <Message message={m} own={m.sender === id} />
+                      </div>
+                    ))}
                   </>
                 ) : currentChat && star === true ? (
                   <>
-                    {msgStar
-                      .map((m, i) => (
-                        <div key={i} >
-                          <MessageFav message={m} own={m.idUser === id} />
-                        </div>
-                      ))
-                    }
+                    {msgStar.map((m, i) => (
+                      <div key={i}>
+                        <MessageFav message={m} own={m.idUser === id} />
+                      </div>
+                    ))}
                   </>
                 ) : (
                   <span className={styles.noMsg}></span>
@@ -418,16 +407,16 @@ const Messages = () => {
 
               <div className={styles.wrapperBtnInputMessage}>
                 <p>
-                  No se permite el envío de números de teléfono, direcciones de correo electrónico, enlaces a sitios web o
-                  enlaces a redes sociales.
+                  No se permite el envío de números de teléfono, direcciones de correo electrónico, enlaces a sitios web
+                  o enlaces a redes sociales.
                 </p>
-                { 
-                  currentChat === null ?
-                  <button disable>Enviar</button> :
-                  currentChat.members.length < 3 ? 
-                  <button onClick={handleSubmit}>Enviar</button> :
+                {currentChat === null ? (
+                  <button disable>Enviar</button>
+                ) : currentChat.members.length < 3 ? (
+                  <button onClick={handleSubmit}>Enviar</button>
+                ) : (
                   <button onClick={handleSubmitGroup}>Enviar</button>
-                }
+                )}
               </div>
             </div>
           </div>
