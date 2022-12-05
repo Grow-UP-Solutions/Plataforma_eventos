@@ -293,7 +293,7 @@ const Messages = () => {
     return (
       <div className={`${styles.pageMessage} container`}>
         <div className={styles.containerMessage}>
-          <div className={styles.containerTitle} /* onClick={handleMensajes} */>
+          <div className={styles.containerTitle}>
             <h1 className={styles.title}>Mensajes</h1>
           </div>
 
