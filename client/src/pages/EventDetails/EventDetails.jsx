@@ -357,7 +357,7 @@ const EventDetails = () => {
                 <div className={style.container_rating}>
                   <Rating
                     className={style.rating}
-                    name='half-rating'
+                    name="half-rating"
                     value={ratingEvent}
                     precision={0.5}
                     readOnly
