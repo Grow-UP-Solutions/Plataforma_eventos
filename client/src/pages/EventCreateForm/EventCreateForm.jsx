@@ -898,13 +898,17 @@ const EventCreateForm = () => {
   //--------------------------------------------------//
   //                 SAVE           //
 
-  async function handleSave(e) {
+  function chagnePublic(){
+    setPost({
+      ...post,
+      isPublic: false,
+    });
+  }
+
+  function handleSave(e) {
     e.preventDefault();
-    try {
-      await setPost({
-        ...post,
-        isPublic: false,
-      });
+    
+    chagnePublic()
       console.log('estoy en save');
       console.log('is public:', post.isPublic);
       if (Object.values(errors).length > 0) {
@@ -932,9 +936,7 @@ const EventCreateForm = () => {
           }
         });
       }
-    } catch (error) {
-      console.log('error');
-    }
+   
   }
 
   //--------------------------------------------------//

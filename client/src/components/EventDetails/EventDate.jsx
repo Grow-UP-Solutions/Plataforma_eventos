@@ -37,6 +37,8 @@ const EventDate = ({ id }) => {
   const [isLoadingNewDate, setIsLoadingNewDate] = useState(false);
   const { valorTotal, setValorTotal } = useContext(stateContext);
 
+  console.log('eventDetails:',eventDetails)
+
  
 
  
@@ -50,6 +52,8 @@ const EventDate = ({ id }) => {
   const minutes = fecha.getMinutes();
   const dateActual =
     fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate();
+
+    console.log('dateActual:',dateActual)
 
   const handleFormatDate = (date) => {
     setDate(date);
@@ -169,7 +173,7 @@ const EventDate = ({ id }) => {
 
   return (
     <div>
-      {eventDetails ? (
+      {eventDetails  ? (
         <div className={styles.container}>
           <div className={styles.containerTitle}>
             <CalendarMonthIcon
