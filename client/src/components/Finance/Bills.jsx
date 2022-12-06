@@ -3,7 +3,11 @@ import style from './Bills.module.css';
 import useFetch from '../../hooks/useFetch';
 import Pagination from '../Pagination/Pagination';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import eventsApi from '../../axios/eventsApi';
+import { AiOutlineConsoleSql } from 'react-icons/ai';
+import {fechaActual} from '../../utils/fechaActual'
+
 
 const Bills = () => {
 
@@ -13,6 +17,21 @@ const Bills = () => {
   const billsPerPage = 5;
   const indexOfLastBills = currentPage * billsPerPage;
   const indexOfFirstBills = indexOfLastBills - billsPerPage; 
+  const id = useParams().id;
+  console.log('id:',id)
+  const [userData, setUserData] = useState({});
+
+  useEffect(() => {
+    getUserData();
+  }, [id]);
+
+  const getUserData = async () => {
+    if (id) {
+      const userResult = await eventsApi.get(`/users/${id}`)
+      setUserData(userResult.data)
+    }}
+
+  console.log('data:',userData)
   
   const paginado = (pageNumber) => setCurretPage(pageNumber);
 
@@ -40,8 +59,8 @@ const Bills = () => {
 
         <div className={style.container_titles}>
           <h1>Histórico de facturas</h1>
-          <h3>Nombre del organizador</h3>
-          <h5>Fecha</h5>
+          <h3>{userData.name}</h3>
+          <h5>{fechaActual}</h5>
         </div>
 
         <div className={style.container_table}>
@@ -62,7 +81,7 @@ const Bills = () => {
                 state.data.data.slice(indexOfFirstBills, indexOfLastBills).map((e) => (
                   <tr key={e.id} className={style.tbody}>
                     <td className={style.tbody_name}>
-                      <img src={e.avatar} alt={e.first_name} 
+                      <img src={userData.userpicture} alt={e.first_name} 
                         style={{maxWidth: '20%', borderRadius: '100px'}}
                       />
                       <p>Hiking with my dog</p> 

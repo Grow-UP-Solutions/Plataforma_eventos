@@ -152,7 +152,7 @@ const UserPage = () => {
 
     const name = e.target.name;
     /* ORGANIZER */
-    if (name === 'Finance' || iconValue === 'Finance') setComponent(<Finance />);
+    if (name === 'Finance' || iconValue === 'Finance') setComponent(<Finance userData={userData} />);
     if (name === 'Guia Del Organizador' || iconValue === 'Guia del Organizador') setComponent(<GoodPracticeOrg />);
 
     /* USER */
@@ -311,7 +311,7 @@ const UserPage = () => {
                     <>
                       <li className={styles.optionMenu}>
                         <button className={styles.btn} name='Mis Eventos' onClick={handleInputSubMenu}>
-                          Mis Eventos
+                          Organizados por mí
                         </button>
 
                         <input
@@ -324,7 +324,7 @@ const UserPage = () => {
                           checked={optionSubMenuChecked === 'myEvents' ? true : false}
                         />
                         <label className={styles.labelOption} htmlFor='myEvents'>
-                          Mis Eventos
+                        Organizados por mí
                         </label>
 
                         <IconEvents className={styles.iconMenu} />

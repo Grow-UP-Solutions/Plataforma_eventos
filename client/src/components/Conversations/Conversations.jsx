@@ -148,7 +148,7 @@ const Conversations = ({ conversation, id }) => {
                   
                   <BiPin className={styles.itemMenuIcon} style={{color: '#d53e27'}}/>
                   <div className={styles.helperMenu}>
-                    <p>Fijar conversacion</p>
+                    <p>Mensajes prioritarios</p>
                   </div> 
                     
                 </div>) : 
@@ -157,7 +157,7 @@ const Conversations = ({ conversation, id }) => {
                   
                   <BiPin className={styles.itemMenuIcon} />
                   <div className={styles.helperMenu}>
-                    <p>Fijar conversacion</p>
+                    <p>Mensajes prioritarios</p>
                   </div> 
                   
                 </div>) 
