@@ -6,7 +6,9 @@ import Pagination from '../../components/Pagination/Pagination';
 import { useState } from 'react';
 
 const MyListUser = ({ myFavorites, myEventsBooked }) => {
-  const orderByDate = myFavorites.sort((a, b) => {
+
+  const eventos =  myFavorites.concat(myEventsBooked)
+  const orderByDate = eventos.sort((a, b) => {
     if (a.dates[0].date < b.dates[0].date) return -1;
     if (b.dates[0].date < a.dates[0].date) return 1;
     return 0;
@@ -22,6 +24,11 @@ const MyListUser = ({ myFavorites, myEventsBooked }) => {
   const currentCard = orderByDate.slice(indexOfFirstCard, indexOfLastCard);
   const paginado = (pageNumber) => setCurretPage(pageNumber);
 
+  
+  
+
+
+  
   return (
     <div className={styles.container}>
       <p className={styles.title}>Mi Lista</p>
@@ -46,7 +53,7 @@ const MyListUser = ({ myFavorites, myEventsBooked }) => {
       </div>
 
       <div className={styles.container_pagination}>
-        <Pagination billsPerPage={CardPerPage} state={myFavorites.length} paginado={paginado} page={currentPage} />
+        <Pagination billsPerPage={CardPerPage} state={eventos.length} paginado={paginado} page={currentPage} />
       </div>
     </div>
   );

@@ -115,7 +115,7 @@ const UserPage = () => {
 
     const name = e.target.name;
     /* ORGANIZER */
-    if (name === 'Finance' || iconValue === 'Finance') setComponent(<Finance />);
+    if (name === 'Finance' || iconValue === 'Finance') setComponent(<Finance userData={userData} />);
     if (name === 'Guia Del Organizador' || iconValue === 'Guia del Organizador') setComponent(<GoodPracticeOrg />);
 
     /* USER */

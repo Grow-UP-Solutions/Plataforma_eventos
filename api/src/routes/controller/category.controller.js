@@ -1,5 +1,11 @@
 const { Router } = require('express');
-const { getCategory, createCategory, categoryUpdate, getAllCategory } = require('../services/category.service.js');
+const {
+  getCategory,
+  createCategory,
+  categoryUpdate,
+  getAllCategory,
+  deleteCategory,
+} = require('../services/category.service.js');
 
 const router = Router();
 
@@ -40,6 +46,16 @@ router.put('/update/:id', async (req, res) => {
     return res.status(200).json(categoryUpdates);
   } catch (error) {
     return res.status(400).json({ ERROR_CATEGORY_UPDATE: error });
+  }
+});
+
+router.delete('/delete/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    await deleteCategory(id);
+    res.json('Eliminado correctamente.');
+  } catch (error) {
+    res.status(404).json({ message: error.message });
   }
 });
 

@@ -17,6 +17,7 @@
     "bootstrap": "^5.2.2",
     "cloudinary-react": "^1.8.1",
     "dotenv": "^16.0.3",
+    "moment": "^2.29.4",
     "node-code-generator": "^1.0.3",
     "node-sass": "^7.0.3",
     "react": "^18.2.0",

@@ -3,6 +3,7 @@ const {
   OneCategoryDb,
   updateOneCategoryDb,
   createCategoryDb,
+  deleteOneCategoryDb,
 } = require('../../models/util/functionDB/CategoryDb.js');
 
 async function getAllCategory() {
@@ -33,9 +34,15 @@ async function categoryUpdate(id, newCategory) {
   return newCategorys;
 }
 
+async function deleteCategory(id) {
+  const category = await deleteOneCategoryDb(id);
+  return category;
+}
+
 module.exports = {
   getAllCategory,
   getCategory,
   createCategory,
   categoryUpdate,
+  deleteCategory,
 };
