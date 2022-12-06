@@ -264,15 +264,6 @@ const EventEdit = () => {
   //--------------------------------------------------//
   //               POST Y ERROR            //
 
-  //   useEffect(() => {
-  //   if (user) {
-  //     setPost({
-  //       ...post,
-  //       idOrganizer: userData._id,
-  //     });
-  //   }
-  // }, [userData]);
-
   
 
   const [errors, setErrors] = useState({
@@ -603,17 +594,17 @@ const EventEdit = () => {
     });
   }
 
-  useEffect(() => {
-    let checkeds = document.getElementsByClassName('checkbox');
-    for (let i = 0; i < checkeds.length; i++) {
-      checkeds[i].checked = false;
-    }
-    setSeleccionados([]);
-    setPost({
-      ...post,
-      categories: [],
-    });
-  }, [changed]);
+  // useEffect(() => {
+  //   let checkeds = document.getElementsByClassName('checkbox');
+  //   for (let i = 0; i < checkeds.length; i++) {
+  //     checkeds[i].checked = false;
+  //   }
+  //   setSeleccionados([]);
+  //   setPost({
+  //     ...post,
+  //     categories: [],
+  //   });
+  // }, [changed]);
 
   function handleOtherCategorie(e) {
     setPost({
