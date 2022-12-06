@@ -107,7 +107,7 @@ const EventCreateForm = () => {
     'Villavicencio',
     'Barranquilla',
     'Cartagena de Indias',
-    'Manizales',
+    'Manisales',
     'Florencia',
     'Popayán',
     'Valledupar',
@@ -898,13 +898,17 @@ const EventCreateForm = () => {
   //--------------------------------------------------//
   //                 SAVE           //
 
-  async function handleSave(e) {
+  function chagnePublic(){
+    setPost({
+      ...post,
+      isPublic: false,
+    });
+  }
+
+  function handleSave(e) {
     e.preventDefault();
-    try {
-      await setPost({
-        ...post,
-        isPublic: false,
-      });
+    
+    chagnePublic()
       console.log('estoy en save');
       console.log('is public:', post.isPublic);
       if (Object.values(errors).length > 0) {
@@ -928,13 +932,11 @@ const EventCreateForm = () => {
               icon: 'success',
             });
             console.log('is public:', post.isPublic);
-            navigate('user/perfil/datos');
+            navigate('/usuario/mis-eventos');
           }
         });
       }
-    } catch (error) {
-      console.log('error');
-    }
+   
   }
 
   //--------------------------------------------------//
@@ -957,6 +959,15 @@ const EventCreateForm = () => {
   //                  SUBMIT              //
 
   const { notes, setNotes } = useContext(stateContext);
+
+  const notifications = async () => {
+    const create = {
+      type: "create",
+      idUser: user.uid,
+    };
+    const json = await eventsApi.post("/users/notifications", create)
+    setNotes([...notes, json.data]);
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -981,17 +992,12 @@ const EventCreateForm = () => {
         if (publicar) {
           dispatch(postEvent(post));
 
-          const create = {
-            type: "create",
-            idUser: user.uid,
-          };
-          const json = eventsApi.post("/users/notifications", create)
-          .then(setNotes([...notes, json.data]));
+          notifications();
 
           swal('Tu evento ha sido publicado. Recibirás un correo con los detalles. ', {
             icon: 'success',
           });
-          navigate('/user/perfil/datos');
+          navigate('/usuario/mis-eventos');
         }
       });
     }

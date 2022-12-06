@@ -10,7 +10,8 @@ const UI_INITIAL_STATE = {
   ratingOrg: 0,
   ratingEvent: 0,
   msgStar: [],
-  codeReferal:[]
+  codeReferal: [],
+  deleteConversation: '',
 };
 
 export const UIProvider = ({ children }) => {
@@ -75,7 +76,11 @@ export const UIProvider = ({ children }) => {
     dispatch({type: 'GET_MESSAGES_STAR', payload: json});
   }
 
- 
+  const deleteConversation = async (data) => {
+    const res = await eventsApi.put('/conversation/delete', data);
+    const json = res.data;
+    dispatch({ type: 'DELETE_CONVERSATION', payload: json });
+  }
 
   return (
     <UIContext.Provider
@@ -95,7 +100,7 @@ export const UIProvider = ({ children }) => {
         getEffectRatingEvent,
         /* getMsgStar, */
         getMessagesStar,
-        
+        deleteConversation,
       }}
     >
       {children}

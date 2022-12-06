@@ -5,25 +5,29 @@ import { Link } from 'react-router-dom';
 import Pagination from '../../components/Pagination/Pagination';
 import { useState } from 'react';
 
-const MyListUser = ({ myFavorites , myEventsBooked }) => {
+const MyListUser = ({ myFavorites, myEventsBooked }) => {
 
-
-  const orderByDate = myFavorites.sort((a,b)=>{
-    if (a.dates[0].date < b.dates[0].date) return -1
-    if (b.dates[0].date < a.dates[0].date) return 1
-    return 0
-  })
+  const eventos =  myFavorites.concat(myEventsBooked)
+  const orderByDate = eventos.sort((a, b) => {
+    if (a.dates[0].date < b.dates[0].date) return -1;
+    if (b.dates[0].date < a.dates[0].date) return 1;
+    return 0;
+  });
 
   /* console.log('myFavorites',myFavorites)
   console.log('myEventsBooked',myEventsBooked) */
 
-  
   const [currentPage, setCurretPage] = useState(1);
-  const CardPerPage = 24;
+  const CardPerPage = 6;
   const indexOfLastCard = currentPage * CardPerPage;
-  const indexOfFirstCard = indexOfLastCard - CardPerPage; 
+  const indexOfFirstCard = indexOfLastCard - CardPerPage;
   const currentCard = orderByDate.slice(indexOfFirstCard, indexOfLastCard);
   const paginado = (pageNumber) => setCurretPage(pageNumber);
+
+  
+  
+
+
   
   return (
     <div className={styles.container}>
@@ -49,12 +53,7 @@ const MyListUser = ({ myFavorites , myEventsBooked }) => {
       </div>
 
       <div className={styles.container_pagination}>
-        <Pagination 
-          billsPerPage={CardPerPage}
-          state={myFavorites.length}
-          paginado={paginado}
-          page={currentPage}
-        />
+        <Pagination billsPerPage={CardPerPage} state={eventos.length} paginado={paginado} page={currentPage} />
       </div>
     </div>
   );

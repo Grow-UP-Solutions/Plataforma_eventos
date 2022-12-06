@@ -120,6 +120,23 @@ router.get('/existsEmail/:email', async (req, res) => {
   }
 });
 
+router.get('/getBankAccount/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await UsersFunctionDb.oneUser(id);
+
+    if (!user) throw new Error('Usuario con ese id no existe');
+
+    const bankName = user.bank.bankName;
+    const bankAccount = user.bank.bankAccount;
+
+    res.json({ bankName, bankAccount });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+});
+
 /**/ //////////////Rutas POST/////////////// */
 
 router.post('/acceptOrRejectedOrganizer', async (req, res) => {
@@ -524,6 +541,23 @@ router.put('/report/organizer', async (req, res) => {
   }
 });
 
+router.put('/setBankAccount/:id', async (req, res) => {
+  const { id } = req.params;
+  const { bankName, bankAccount } = req.body;
+
+  try {
+    const user = await UsersFunctionDb.oneUser(id);
+    if (!user) throw new Error('Usuario con ese id no existe');
+    user.bank.bankName = bankName;
+    user.bank.bankAccount = bankAccount;
+    user.save();
+
+    res.json({ success: true, message: 'Numero de cuenta guardado.' });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+});
+
 /**/ ///////////////Rutas DELETE/////////////////////////// */
 router.delete('/delete/:id', async (req, res) => {
   try {
@@ -547,7 +581,7 @@ router.post('/sendMailChangePassword', async (req, res) => {
 
   const token = await generateJWTPassword(email);
 
-  const link = `http://localhost:3000/cambiarcontrasenia/${token}`;
+  const link = `https://events-jean.vercel.app/cambiar-password/${token}`;
 
   const response = await changePasswordMail(email, link);
 
@@ -692,6 +726,20 @@ router.put('/editSaldo/:id', async (req, res) => {
   user.availableCredit = saldo;
   await user.save();
   res.json({ message: 'success' });
+});
+
+router.post('/checkValidateCodeReferred', async (req, res) => {
+  const { code } = req.body;
+  try {
+    const hasCode = await UsersFunctionDb.codeUser(code);
+    if (!hasCode) {
+      throw new Error('No existe el código.');
+    }
+
+    res.json({ success: true });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
 });
 
 router.put('/sendEmailTest/', async (req, res) => {

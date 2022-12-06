@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import eventsApi from '../../axios/eventsApi';
 import { AuthContext } from '../../context/auth/AuthContext';
@@ -80,7 +80,7 @@ const PreferencesUser = ({ userData }) => {
   };
 
   const openModalVerifyPassword = async () => {
-    setModalVerifyPassword(true);
+    setModalVerifyPassword(!modalVerifyPassword);
   };
 
   const verifyPassword = async () => {
@@ -126,24 +126,21 @@ const PreferencesUser = ({ userData }) => {
           <p className={styles.title}>Opciones de notificación</p>
           <p className={styles.texto}>Promociones o eventos que pueden ser de mi interés</p>
           <div className={styles.cont_txt_btn}>
-            <p className={styles.texto}>Recordatorio de fechas de eventos en</p>
-            <button
-              onClick={() => {
-                navigate('/usuario/mi-lista');
-              }}
-              className={styles.btn}
-            >
-              Mi lista
-            </button>
+            <p className={styles.texto}>
+              Recordatorio de fechas de eventos en{' '}
+              <Link to='/usuario/mi-lista' className={styles.btn}>
+                Mi lista.
+              </Link>{' '}
+            </p>
           </div>
         </div>
 
-        <div className={styles.containerSub1}>
+        <div className={styles.containerCheckBox}>
           <p className={styles.titleOpcion}>Correo</p>
           <div className={styles.cont_check}>
             <input
               onChange={handleCheckPromotionEvents}
-              checked={userConfigs.canReceiveInformation}
+              checked={userConfigs.canReceivedInformation}
               type='checkbox'
               className={styles.check}
             />
@@ -159,7 +156,7 @@ const PreferencesUser = ({ userData }) => {
         </div>
       </div>
 
-      <div className={styles.containerSub}>
+      <div className={`${styles.containerSub} ${styles.containerDeleteAccount} `}>
         <div className={styles.containerSub2}>
           <p className={styles.title}>Eliminar Cuenta</p>
           <p className={styles.texto}>Quiero eliminar mi cuenta</p>
@@ -213,8 +210,6 @@ const PreferencesUser = ({ userData }) => {
             onChange={handleOnChangeOtherReason}
             name='other-option'
             id='other-option'
-            cols='60'
-            rows='10'
             className={styles.textarea}
           />
         </div>

@@ -201,6 +201,12 @@
 .noty {
   border-top: 0.5px solid var(--color-grey-3);
   padding: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.noty p {
+  padding: 0 1rem;
 }
 
 .link_noti {

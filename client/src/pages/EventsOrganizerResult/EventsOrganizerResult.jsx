@@ -25,6 +25,10 @@ const EventsOrganizerResult = () => {
 
   useEffect(() => {
     scroll.scrollToTop();
+  }, []);
+
+  useEffect(() => {
+    
     const getEventsOrganizer = async () => {
       const res = await eventsApi.get('/users/' + result);
       const filtro = res.data.myEventsCreated.filter((e) => e._id !== id);

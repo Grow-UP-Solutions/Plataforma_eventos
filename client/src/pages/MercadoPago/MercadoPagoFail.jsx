@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
 import axios from 'axios'
-import styles from './MercadoPago.module.css';
+import styles from './MercadoPagoFail.module.css';
 import { AiOutlineCloseCircle, AiOutlineCheckCircle } from 'react-icons/ai';
 import { BiTime } from 'react-icons/bi';
 import { iconAchPse } from '../../assets/imgs';
@@ -11,7 +11,7 @@ import { stateContext } from '../../context/state/stateContext';
 // import { BsFillCheckCircleFill } from 'react-icons/bs'
 
 
-const MercadoPago = () => {
+const MercadoPagoFail = () => {
   const [successInfo, setSucessInfo] = useState(null)
   const url = window.location.href.split('?')[1]
   const { code , setCode } = useContext(stateContext);
@@ -48,14 +48,14 @@ const MercadoPago = () => {
           <img src={iconAchPse} alt="icon-pse" />
         </div> */}
         <div className={styles.containerListOptions}>
-          {/* <div className={`${styles.containerOption} ${styles.optionReject} `}>
+          <div className={`${styles.containerOption} ${styles.optionReject} `}>
             <AiOutlineCloseCircle className={styles.optionIcon} />
             <p>Transacción Rechazada</p>
-          </div> */}
-          <div className={`${styles.containerOption}  ${styles.optionAprobed}`}>
+          </div>
+          {/* <div className={`${styles.containerOption}  ${styles.optionAprobed}`}>
             <AiOutlineCheckCircle className={styles.optionIcon} />
             <p>Transacción Aprobada</p>
-          </div>
+          </div> */}
           {/* <div className={`${styles.containerOption} ${styles.optionPending}`}>
             <BiTime className={styles.optionIcon} />
             <p>Transacción pendiente</p>
@@ -125,6 +125,4 @@ const MercadoPago = () => {
   }
 
 
-export default MercadoPago
-
-//http://localhost:8080/feedback?collection_id=1290273508&collection_status=approved&payment_id=1290273508&status=approved&external_reference=a59b17&payment_type=credit_card&merchant_order_id=5143913058&preference_id=1152954796-49f441b2-e9d1-494f-8bdc-571a606e2a63&site_id=MCO&processing_mode=aggregator&merchant_account_id=null
+export default MercadoPagoFail

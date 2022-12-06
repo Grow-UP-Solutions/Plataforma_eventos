@@ -29,18 +29,18 @@ const Search = ({ location = 'home' }) => {
   const handleKeyPress = (e) => {
     if (e.charCode === 13) {
       e.preventDefault();
-      setResult(input);
+      
       setMuni(municipio)
-      navigate('/resultados-de-busqueda/');
+      navigate('/resultados-de-busqueda/' + input);
       setInput('');
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setResult(input);
+    
     setMuni(municipio)
-    navigate('/resultados-de-busqueda/');
+    navigate('/resultados-de-busqueda/' + input);
     setInput('');
   };
 
@@ -51,30 +51,22 @@ const Search = ({ location = 'home' }) => {
   const departamentosAll = useSelector((state) => state.departamentos);
 
   const departamentosFilter = departamentosAll.map((departamento) => {
-    const municipios = []
+    const municipios = [];
     return {
       municipio: departamento.municipio,
     };
   });
 
-  const municipios = []
-    for(let i = 0; i<departamentosFilter.length;i++){
-      municipios.push(departamentosFilter[i].municipio)
-    }
+  const municipios = [];
+  for(let i = 0; i<departamentosFilter.length;i++){
+    municipios.push(departamentosFilter[i].municipio);
+  }
 
   const municipiosOrdered = municipios.sort((a, b) => {
     if (a > b) return 1;
     if (b > a) return -1;
     return 0;
-  });
-
-
-  
-
- 
-
-
-  
+  }); 
 
   return (
     <div className={style.container}>
