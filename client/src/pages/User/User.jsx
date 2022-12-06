@@ -77,6 +77,14 @@ const UserPage = () => {
             <MyListUser myFavorites={userResult.data.myFavorites} myEventsBooked={userResult.data.myEventsBooked} />
           );
           break;
+        case 'pendientes-por-asistir':
+          setIsMenuOpen(true);
+          setOptionChecked('events');
+          setOptionSubMenuChecked('eventsForAssist');
+          setComponent(
+            <ExpectToAttendUser myEventsBooked={userResult.data.myEventsBooked} />
+          );
+          break;
         case 'mis-eventos':
           setIsMenuOpen(true);
           setOptionChecked('events');
@@ -120,8 +128,13 @@ const UserPage = () => {
 
     /* USER */
     if (name === 'Mi lista' || iconValue === 'Mi lista') {
-      setComponent(<MyListUser myFavorites={userData.myFavorites} />);
+      setComponent(<MyListUser myFavorites={userData.myFavorites} myEventsBooked={userData.myEventsBooked} />);
       navigate('/usuario/mi-lista');
+    }
+
+    if (name === 'Pendientes por Asistir' || iconValue === 'Pendientes por Asistir') {
+      setComponent(<ExpectToAttendUser myFavorites={userData.myFavorites} myEventsBooked={userData.myEventsBooked} />);
+      navigate('/usuario/pendientes-por-asistir');
     }
 
     if (name === 'Perfil' || iconValue === 'Perfil') {
@@ -144,11 +157,9 @@ const UserPage = () => {
 
     setOptionSubMenuChecked(e.target.value);
 
-    if (name === 'Mi lista') setComponent(<MyListUser myFavorites={userData.myFavorites} />);
-    if (name === 'Pendientes por Asistir')
-      setComponent(<ExpectToAttendUser myEvenstBooked={userData.myEvenstBooked} />);
-    if (name === 'Mis Eventos')
-      setComponent(<MyEventsOrganizer userData={userData} myEventsCreated={userData.myEventsCreated} />);
+    if (name === 'Mi lista') setComponent(<MyListUser myFavorites={userData.myFavorites}  myEventsBooked={userData.myEventsBooked}/>);
+    if (name === 'Pendientes por Asistir') setComponent(<ExpectToAttendUser myEventsBooked={userData.myEventsBooked} />);
+    if (name === 'Mis Eventos') setComponent(<MyEventsOrganizer userData={userData} myEventsCreated={userData.myEventsCreated} />);
   };
 
   const [openMenuResponsive, setOpenMenuResponsive] = useState(false);
