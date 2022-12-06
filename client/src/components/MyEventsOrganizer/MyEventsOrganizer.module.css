@@ -1,50 +1,52 @@
-.container{
-    margin-top: 4rem;
-   max-width: 1000px;
-    margin-left: 3rem;
+.container {
+  padding: 4rem 0;
 }
 
-.title{
-    justify-content: start;
-    color:#1B3C6A;
-    font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 1.5rem;
+.title {
+  justify-content: start;
+  color: #1b3c6a;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
 }
 
-.containercard{
-    margin-bottom:6rem
+.containerCard {
+  width: min-content;
+  display: grid;
+  justify-items: flex-start;
+  gap: 2rem;
+  margin-bottom: 6rem;
 }
 
-.card{
-    margin-bottom: 3rem;
-    text-align: left;
+.containerCard > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-
 
 .mySwipper {
-   position: relative;
-  }
+}
 
 .cardHr {
   border: 0.1px solid rgb(219, 219, 219);
-  width: 100%;
+  width: 50%;
   margin-bottom: 5rem;
 }
 
-
 .btn {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
   font-size: 1.6rem;
   text-decoration: underline;
   cursor: pointer;
   background-color: white;
-  color:#D53E27;
-  border:none;
-  margin-top: 2rem;  
-  margin-left: 5rem;
+  color: #d53e27;
+  border: none;
   text-align: center;
+  margin-top: 2rem;
 }
-  
+
 .btn span {
   color: var(--color-orange);
 }
@@ -53,8 +55,11 @@
   color: var(--color-orange);
 }
 
-.btns{
+.btns {
   display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
 }
 
 .not_event {
@@ -62,9 +67,26 @@
   font-family: 'Raleway', sans-serif;
   color: var(--color-blue);
   text-align: center;
-  width: 100%;
+  width: 50%;
   margin-top: 1rem;
 }
 
-  
-  
+@media screen and (max-width: 1010px) {
+  .containerCard {
+    grid-template-columns: none !important;
+  }
+}
+
+@media screen and (max-width: 756px) {
+  .containerCard {
+    width: 100%;
+    justify-items: center;
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .containerCard {
+    grid-template-columns: none !important;
+  }
+}

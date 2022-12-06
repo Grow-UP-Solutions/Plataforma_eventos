@@ -1,5 +1,5 @@
-const { createTransport } = require("nodemailer");
-require("dotenv").config();
+const { createTransport } = require('nodemailer');
+require('dotenv').config();
 
 const { EMAIL, PASSWORD } = process.env;
 
@@ -7,7 +7,7 @@ const eventCreateOrganizer = async (events, organizer) => {
   const { title, _id } = events;
 
   const transporter = createTransport({
-    service: "gmail",
+    service: 'gmail',
     secure: true,
     auth: {
       user: EMAIL,
@@ -16,7 +16,7 @@ const eventCreateOrganizer = async (events, organizer) => {
   });
 
   let mail_options = {
-    from: "Lo quiero hacer",
+    from: 'Lo quiero hacer',
     to: organizer.email,
     subject: `${organizer.firstName} ${organizer.lastName} tu evento ha sido publicado`,
     html: `<!DOCTYPE html>
@@ -122,7 +122,7 @@ const eventCreateOrganizer = async (events, organizer) => {
     
               <a
                 class="event-name"
-                href="https://events-jean.vercel.app/events/${_id}"
+                href="https://events-jean.vercel.app/detalles-del-evento/${_id}"
                 >${title}</a
               >
             </div>
@@ -135,9 +135,9 @@ const eventCreateOrganizer = async (events, organizer) => {
   };
   try {
     const response = await transporter.sendMail(mail_options);
-    return { msg: ("SE ENVIO CON EXITO", response.response) };
+    return { msg: ('SE ENVIO CON EXITO', response.response) };
   } catch (error) {
-    return { msg: ("FALLO EL ENVIO DE EMAIL", error) };
+    return { msg: ('FALLO EL ENVIO DE EMAIL', error) };
   }
 };
 module.exports = {

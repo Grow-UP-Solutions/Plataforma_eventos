@@ -9,7 +9,7 @@ const ExpectToAttendUser = ({ myEventsBooked }) => {
       <p className={styles.title}>Pendientes por asistir</p>
 
       <div className={styles.containercard}>
-        {myEventsBooked ? (
+        {myEventsBooked && (
           <>
             {myEventsBooked.map((event) => (
               <div className={styles.card}>
@@ -17,19 +17,19 @@ const ExpectToAttendUser = ({ myEventsBooked }) => {
               </div>
             ))}
           </>
-        ) : (
-          <>
-            <div className={styles.containerSeeEvents}>
-              <hr className={styles.hr}></hr>
+        )}
+
+        {!myEventsBooked && (
+          <div className={styles.containerSeeEvents}>
+            <div>
               <p className={styles.text}>
                 Aún no tienes eventos en “Pendientes por Asistir”. ¡Alistate a un evento con “LO QUE QUIERO HACER”!
               </p>
               <button className={styles.btn}>
                 <Link to='/'>Ver eventos</Link>
               </button>
-              <hr className={styles.hr}></hr>
             </div>
-          </>
+          </div>
         )}
       </div>
     </div>
