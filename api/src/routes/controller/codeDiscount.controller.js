@@ -94,4 +94,14 @@ router.delete('/deleteCodeDiscountById/:id', async (req, res) => {
   }
 });
 
+router.put('/redimeedCodeDiscount', async (req, res) => {
+  const { idCode, idUser } = req.body;
+  try {
+    await redimeedCodeDiscount(idCode, idUser);
+    res.json({ message: 'Codigo reedimido exitosamente' });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+});
+
 module.exports = router;
