@@ -35,6 +35,8 @@ const Navbar = ({ upper }) => {
       } 
       else if (!menuRef.current.contains(e.target)) {
         setMenuOpen(false);
+        setOpenNotifications(false);
+        setOpenMessages(false);
       }
     };
     document.addEventListener('mousedown', handler);
@@ -235,7 +237,7 @@ const Navbar = ({ upper }) => {
                 </div>
 
                 {openMessages && (
-                  <div className={style.notifications}>
+                  <div className={style.notifications} ref={menuRef}>
                     <span onClick={handleOpenMessages} className={style.close_menu}>
                       X
                     </span>
@@ -257,7 +259,7 @@ const Navbar = ({ upper }) => {
                 )}
 
                 {openNotifications && (
-                  <div className={style.notifications}>
+                  <div className={style.notifications} ref={menuRef}>
                     <span onClick={handleOpenNotifications} className={style.close_menu}>
                       X
                     </span>
