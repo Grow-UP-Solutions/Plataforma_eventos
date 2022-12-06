@@ -3,6 +3,7 @@ const axios = require("axios");
 const { Router } = require("express");
 const router = Router();
 const mercadopago = require("mercadopago");
+const calculoDeComicion = require("../../../models/util/calculoDeComiciones/calculoDeComicion");
 const EventFunctionDb = require("../../../models/util/functionDB/event/index.event");
 const UsersFunctionDb = require("../../../models/util/functionDB/users/index.users");
 const { ACCESS_TOKEN } = process.env;
@@ -109,6 +110,8 @@ router.get("/success", async (req, res) => {
 
       const user = await UsersFunctionDb.oneUser(idUser);
 
+      
+
       if (
          response.status === "approved" &&
          response.status_detail === "accredited"
@@ -118,20 +121,21 @@ router.get("/success", async (req, res) => {
          event.overallEarnings +=
             response.transaction_details.total_paid_amount;
 
-         user.pendingEarnings += response.transaction_details.total_paid_amount;
-
-         event.sells += totalDeCupos;
-
-         event.dates.forEach((e, i) => {
-            for (let j = 0; j < response.additional_info.items.length; ++j) {
-               if (e._id === response.additional_info.items[j].id) {
-                  e.buyers?.push(user._id);
-
-                  e.sells += totalDeCupos;
-
-                  e.cupos -= totalDeCupos;
-
-                  e.profits += response.transaction_details.total_paid_amount;
+            
+            event.sells += totalDeCupos;
+            
+            event.dates.forEach((e, i) => {
+               for (let j = 0; j < response.additional_info.items.length; ++j) {
+                  if (e._id === response.additional_info.items[j].id) {
+                     e.buyers?.push(user._id);
+                     
+                     e.sells += totalDeCupos;
+                     
+                     e.cupos -= totalDeCupos;
+                     
+                     e.profits += response.transaction_details.total_paid_amount;
+                     
+                     user.pendingEarnings += calculoDeComicion(e.price)
                }
             }
          });
