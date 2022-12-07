@@ -98,11 +98,15 @@
 }
 
 .btnEdit {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
 }
 
 .btnDelete {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
+  padding: 1rem;
 }
 
 .btnAccount {
@@ -113,12 +117,15 @@
   color: #d53e27;
   border: none;
   background-color: #29aa7900;
+  padding: 0 1rem;
 }
 
 .basquet {
   height: 1.5rem;
   width: 1.5rem;
   cursor: pointer;
+  color: var(--color-orange);
+  margin-left: .5rem;
 }
 
 .vLine {
@@ -129,6 +136,7 @@
 .hr {
   border: 0.1px solid rgb(219, 219, 219);
   width: 100%;
+  margin-top: 2rem;
 }
 
 .btnAdd {
@@ -141,4 +149,16 @@
   height: 1rem;
   text-align: center;
   background-color: #29aa7900;
+}
+
+.container_nocta {
+  margin-top: 3rem;
+  text-align: center;
+}
+
+.nocta {
+  font-size: 2rem;
+  /* font-weight: bold; */
+  font-family: 'Raleway', sans-serif;
+  color: var(--color-blue);
 }

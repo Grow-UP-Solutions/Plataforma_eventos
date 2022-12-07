@@ -113,6 +113,7 @@ const EventCreate = () => {
 
   return (
     <div className={styles.container}>
+      
       <div className={styles.containerPortada}>
         <img
           src={
@@ -123,15 +124,20 @@ const EventCreate = () => {
         />
 
         <div className={styles.containerTextPortada}>
-          <h1 className={styles.titlePortada}>Gana dinero con tu talento</h1>
-          <h2 className={styles.subTitlePortada}>
-            Comparte tu talento con otros mientras ganas dinero haciendo lo que más disfrutas
-          </h2>
+          <p className={styles.titlePortada}>Gana dinero</p>
+          <p className={styles.titlePortada}>con tu talento</p>
+
+          <div>
+            <p className={styles.subTitlePortada}>Comparte tu talento con otros mientras ganas dinero</p>
+            <p className={styles.subTitlePortada}>haciendo lo que más disfrutas</p>
+          </div>
+          
           <button className={styles.btn} onClick={(e) => ingreso(e)}>
             Comenzar
           </button>
         </div>
       </div>
+      
 
       <div className={styles.containerContent}>
         <div className={styles.header}>

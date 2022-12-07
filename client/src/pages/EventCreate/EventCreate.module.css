@@ -3,13 +3,16 @@
 }
 
 .containerPortada {
+  height: 95vh;
+  overflow: hidden;
   position: relative;
 }
 
 .imgPortada {
-  height: 60rem;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  background-color: red;
+  /* background-color: red; */
 }
 
 .containerTextPortada {
@@ -17,7 +20,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 4rem;
+  
   top: 50%;
   left: 5%;
   transform: translateY(-50%);
@@ -26,10 +29,16 @@
 
 .titlePortada {
   font-size: 8.2rem;
+  font-weight: bold;
+}
+
+.containerTextPortada div {
+  margin-top: 6em;
 }
 
 .subTitlePortada {
   font-size: 3rem;
+  padding: .1rem;
 }
 
 .btn {
@@ -42,6 +51,7 @@
   padding: 8px 30px;
   cursor: pointer;
   border: 1px solid transparent;
+  margin-top: 6rem;
 }
 
 .btn:hover {
