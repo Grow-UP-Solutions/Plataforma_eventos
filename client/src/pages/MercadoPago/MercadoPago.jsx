@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useContext } from 'react'
-import axios from 'axios'
+import React, { useEffect, useState, useContext } from 'react';
+import axios from 'axios';
 import styles from './MercadoPago.module.css';
 import { AiOutlineCloseCircle, AiOutlineCheckCircle } from 'react-icons/ai';
 import { BiTime } from 'react-icons/bi';
@@ -7,41 +7,32 @@ import { iconAchPse } from '../../assets/imgs';
 import { Link } from 'react-router-dom';
 import { formatDateForm } from '../../utils/formatDateForm';
 import { stateContext } from '../../context/state/stateContext';
+import { useSelector } from 'react-redux';
+import eventsApi from '../../axios/eventsApi';
 // import { Box, Typography, Stack, Grid, Button, Container } from '@mui/material'
 // import { BsFillCheckCircleFill } from 'react-icons/bs'
 
-
 const MercadoPago = () => {
-  const [successInfo, setSucessInfo] = useState(null)
-  const url = window.location.href.split('?')[1]
-  const { code , setCode } = useContext(stateContext);
-  console.log('url:',url)
-  console.log('MercadoPago')
-  console.log('code',code)
+  const [successInfo, setSucessInfo] = useState(null);
+  const url = window.location.href.split('?')[1];
+  const { code, setCode } = useContext(stateContext);
+
+  console.log('url:', url);
+  console.log('MercadoPago');
+  console.log('code', code);
 
   useEffect(() => {
-    console.log('MercadoPago useEffect')
-   
-  }, [])
+    if (!successInfo) {
+      eventsApi.get(`/mercadoPago/success?${url}`).then((res) => {
+        setSucessInfo(res.data);
+      });
+    }
+  }, [successInfo]);
 
+  console.log({ successInfo });
 
-  useEffect(() => {
-    console.log('MercadoPago useEffect')
-    axios
-      .get(`https://plataformaeventos-production-e0ed.up.railway.app/mercadoPago/success?${url}`)
-      .then((res) => {
-      setSucessInfo(res.data) 
-      console.log('res,',res)
-      }
-      )
-      
-  }, [])
-
-  console.log('successInfo:',successInfo)
-
-  if(successInfo !== null){
+  if (successInfo !== null) {
     return (
-   
       <div className={`${styles.pagePayment} container`}>
         {/* <div className={styles.containerLogoPayment}>
           <span>Pago PSE </span>
@@ -84,19 +75,19 @@ const MercadoPago = () => {
             <li>
               <p>
                 <span>Fecha de pago:</span>
-               {successInfo.fechaDePago.slice(0,10)}
+                {successInfo.fechaDePago.slice(0, 10)}
               </p>
             </li>
             <li>
               <p>
                 <span>Valor de transacción:</span>
-               {successInfo.valorDeLaTransaccion}$
+                {successInfo.valorDeLaTransaccion}$
               </p>
             </li>
             <li>
               <p>
                 <span>Costo de la transacción:</span>
-               {successInfo.costoDeLaTransaccion}$
+                {successInfo.costoDeLaTransaccion}$
               </p>
             </li>
             <li>
@@ -113,18 +104,12 @@ const MercadoPago = () => {
           </Link>
         </div>
       </div>
-     
-    )}else{
-      return(
-        <div>
-        Loading
-        </div>
-      )
-    }
-
+    );
+  } else {
+    return <div>Loading</div>;
   }
+};
 
-
-export default MercadoPago
+export default MercadoPago;
 
 //http://localhost:8080/feedback?collection_id=1290273508&collection_status=approved&payment_id=1290273508&status=approved&external_reference=a59b17&payment_type=credit_card&merchant_order_id=5143913058&preference_id=1152954796-49f441b2-e9d1-494f-8bdc-571a606e2a63&site_id=MCO&processing_mode=aggregator&merchant_account_id=null

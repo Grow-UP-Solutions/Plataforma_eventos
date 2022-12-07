@@ -6,7 +6,7 @@ const contactContoller = require('../routes/controller/contact.controller.js');
 const conversationContoller = require('../routes/controller/conversation.controller.js');
 const messageContoller = require('../routes/controller/message.controller.js');
 const codeDiscountController = require('../routes/controller/codeDiscount.controller.js');
-const pasarelaDePago = require('../routes/controller/pasarelaPagoController/paymentController')
+const pasarelaDePago = require('../routes/controller/pasarelaPagoController/paymentController');
 
 const router = Router();
 
@@ -17,6 +17,6 @@ router.use('/contact', contactContoller);
 router.use('/conversation', conversationContoller);
 router.use('/message', messageContoller);
 router.use('/codeDiscount', codeDiscountController);
-router.use('/mercadoPago', pasarelaDePago )
+router.use('/mercadoPago', pasarelaDePago);
 
 module.exports = router;
