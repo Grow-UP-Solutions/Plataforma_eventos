@@ -11,12 +11,14 @@ import { Link } from 'react-router-dom';
 
 
 
+
 const OrganizerBills = () => {
 
   const [state, fetchUsers] = useFetch();
   const navigate = useNavigate();
   const id = useParams().id;
   const [userData, setUserData] = useState({});
+  const [billNumber , setBillNumber] = useState()
 
   useEffect(() => {
     getUserData();
@@ -52,21 +54,37 @@ const OrganizerBills = () => {
     [fetchUsers]
   );
 
-  const pagar = async(e,idOrg ,idFactura ,ganancia,numeroDeFactura)=>{
+
+  function handleChange(e) {
+    e.preventDefault();
+    setBillNumber(e.target.value);
+  }
+
+  const pagar = async(e , eventId , dateId , pendingEarnigs)=>{
     e.preventDefault()
     console.log('pagar')
-    console.log(id)
-    console.log(ganancia)
-    console.log(numeroDeFactura)
+    // console.log(id)
+    // console.log(ganancia)
+    // console.log(numeroDeFactura)
 
-    const payload={
-        idOrg:idOrg,
-        idFactura: idFactura,
-        ganancia: ganancia,
-        numeroDeFactura: numeroDeFactura
+    const payload = {
+      datePay : fechaActual,
+      billNumber: billNumber,
+      idEvent: eventId,
+      idDate : dateId,
+      idOrg: id,
+      ganancia: pendingEarnigs
+
     }
 
-    console.log('payload',payload)
+    // const payload={
+    //     idOrg:idOrg,
+    //     idFactura: idFactura,
+    //     ganancia: ganancia,
+    //     numeroDeFactura: numeroDeFactura
+    // }
+
+     console.log('payload',payload)
 
     //const json = await eventsApi.post('/mercadoPago/orden', payload);
   }
@@ -96,6 +114,7 @@ const OrganizerBills = () => {
             <thead className={style.thead}>
               <tr className={style.tr}>
                 <th className={style.th_first}>Nombre del evento</th>
+                <th>Fecha del evento</th>
                 <th>Fecha de facturacion</th>
                 <th>Número de factura</th>
                 <th>A pagar</th>
@@ -123,28 +142,47 @@ const OrganizerBills = () => {
               }
             </tbody> */}
 
-             <tbody>
-              {userData.factura !== undefined &&
+            <tbody>
+              {userData.myEventsCreated !== undefined &&
                 
-                userData.factura.slice(indexOfFirstBill, indexOfLastBill).map((factura) => (
-                  <tr key={factura._id} className={style.tbody}>
+                userData.myEventsCreated.slice(indexOfFirstBill, indexOfLastBill).map((event) => (
+
+                  event.dates.map(date=>(
+                    date.sells > 0 ?
+                  <tr key={event._id} className={style.tbody}>
                     <td className={style.tbody_name}>
-                      <img src={userData.userpicture} alt={userData.first_name} 
+                      <img src={event.pictures[0].picture} alt={''} 
                         style={{maxWidth: '20%', borderRadius: '100px'}}
                       />
-                      <p>{factura.evento}</p> 
+                      <p>{event.title}</p> 
                     </td>
-                    <td>{factura.isPay===false? 'PENDIENTE': factura.fechaDeFacturacion }</td>
-                    <td>{factura.isPay===false? 'PENDIENTE': factura.numeroDeFactura }</td>
-                    <td>{factura.ganancia}</td>
-                    {/* <td><input type="checkbox" /></td> */}
+                    {/* <td>{e.isPay===false? 'PENDIENTE': e.fechaDeFacturacion }</td>
+                    <td>{e.isPay===false? 'PENDIENTE': e.numeroDeFactura }</td>
+                    <td>{e.ganancia}</td> */}
+                    <td>{date.date}</td>
+                    <td>PENDIENTE</td>
                     <td>
-                        <button onClick={(e)=>pagar(e, userData._id, factura._id , factura.ganancia, factura.numeroDeFactura )}>Pagar</button>
+                      <input
+                        type='text'
+                        placeholder='Numero de factura'
+                        name='billNumber'
+                        value={billNumber}
+                        onChange={(e) => handleChange(e)}
+                        required
+                      />
+                    </td>
+                    <td>0</td>
+                    <td>
+                        <button onClick={(e)=>pagar(e, event._id , date._id , date.pendingEarnigs)}>Pagar</button>
                     </td>
                   </tr>
+                  :''
+                  ))
                 ))
               }
             </tbody>
+
+          
 
 
           </div>
@@ -160,11 +198,11 @@ const OrganizerBills = () => {
               <p>Descargar reporte de páginas (EXCEL)</p>
             </div>
           </div>
-          {userData.factura !== undefined &&
+          {userData.myEventsCreated  !== undefined &&
           <div className={style.container_pagination}>
             <Pagination 
               billsPerPage={billsPerPage}
-              state={userData.factura.length}
+              state={userData.myEventsCreated .length}
               paginado={paginado}
             />
           </div>
