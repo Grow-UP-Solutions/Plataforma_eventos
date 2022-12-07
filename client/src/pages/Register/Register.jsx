@@ -182,6 +182,7 @@ const Register = () => {
     setIsValidCodeReferred(false);
 
     if (value.length === 8) {
+      setIsValidCodeReferred(true);
       try {
         await eventsApi.post('/users/checkValidateCodeReferred', {
           code: value,

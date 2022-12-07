@@ -3,50 +3,46 @@ import styles from './User.module.css';
 
 import { AuthContext } from '../../context/auth';
 
-// import { Calendar } from 'react-date-range';
-/* import * as locales from 'react-date-range/dist/locale';
-import 'react-date-range/dist/styles.css'; // main css file
-import 'react-date-range/dist/theme/default.css'; // theme css file
- */
-
-import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 import { Calendar } from '@amir04lm26/react-modern-calendar-date-picker';
+import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 import { myCustomLocale } from '../../utils/customLocaleDate';
 
 import {
   ExpectToAttendUser,
+  Finance,
   GoodPracticeOrg,
+  Loading,
+  MessagesResponsive,
   MyEventsOrganizer,
   MyListUser,
   PreferencesUser,
-  Finance,
   ReferralPlan,
   UserForm,
-  Loading,
 } from '../../components';
 
 import {
-  IconFinances,
   IconEvents,
+  IconFinances,
   IconGuide,
   IconPreferences,
   IconReferred,
-  IconUser,
   IconShield,
+  IconUser,
   IconWarning,
 } from '../../assets/Icons';
 
-import { IoIosArrowForward, IoIosArrowUp, IoIosArrowDown, IoIosArrowBack } from 'react-icons/io';
 import { useEffect } from 'react';
-import eventsApi from '../../axios/eventsApi';
+import { AiOutlineMail } from 'react-icons/ai';
+import { IoIosArrowBack, IoIosArrowDown, IoIosArrowForward, IoIosArrowUp } from 'react-icons/io';
 import { useNavigate, useParams } from 'react-router-dom';
 import { animateScroll as scroll } from 'react-scroll';
-import { AiOutlineMail } from 'react-icons/ai';
+import eventsApi from '../../axios/eventsApi';
+import eventDateToCalendarFormat from '../../utils/checkDatesInCalendar';
 
 const UserPage = () => {
   const { option } = useParams();
   const { user } = useContext(AuthContext);
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState(null);
   const [date, setDate] = useState();
   const [component, setComponent] = useState();
   const [isOpenMenu, setIsMenuOpen] = useState(false);
@@ -54,11 +50,33 @@ const UserPage = () => {
   const [optionChecked, setOptionChecked] = useState(option);
   const [optionSubMenuChecked, setOptionSubMenuChecked] = useState(option);
   const [load, setLoad] = useState(true);
+  const [datesForCalendar, setDatesForCalendar] = useState([]);
 
   useEffect(() => {
     getUserData();
     scroll.scrollToTop();
   }, [user]);
+
+  useEffect(() => {
+    if (userData) formatDatesToCalendarComponent();
+  }, [userData]);
+
+  const [widthScreen, setWidthScreen] = useState(window.innerWidth);
+
+  useEffect(() => {
+    if (window.innerWidth <= 756) return setWidthScreen(756);
+  }, [window.innerWidth]);
+
+  window.onresize = function() {
+    if (window.innerWidth <= 756) return setWidthScreen(756);
+  };
+
+  const formatDatesToCalendarComponent = () => {
+    const totalDatesToCalendar = eventDateToCalendarFormat(userData);
+    setDatesForCalendar(totalDatesToCalendar);
+  };
+
+  console.log({ datesForCalendar });
 
   const getUserData = async () => {
     if (user.uid) {
@@ -67,12 +85,21 @@ const UserPage = () => {
 
       switch (option) {
         case 'perfil':
+          setOptionChecked('perfil');
           setComponent(<UserForm userData={userResult.data} />);
           break;
         case 'mi-lista':
-          setIsMenuOpen(true);
-          setOptionChecked('events');
-          setOptionSubMenuChecked('myListEvents');
+          if (widthScreen <= 756) {
+            console.log({ widthTest: widthScreen });
+            setOptionChecked('eventos');
+          } else {
+            console.log({ widthTestElse: widthScreen });
+
+            setOptionChecked('eventos');
+            setIsMenuOpen(true);
+            setOptionSubMenuChecked('myListEvents');
+          }
+
           setComponent(
             <MyListUser myFavorites={userResult.data.myFavorites} myEventsBooked={userResult.data.myEventsBooked} />
           );
@@ -86,17 +113,25 @@ const UserPage = () => {
           );
           break;
         case 'mis-eventos':
-          setIsMenuOpen(true);
-          setOptionChecked('events');
-          setOptionSubMenuChecked('myEvents');
+          if (widthScreen <= 756) {
+            setOptionChecked('eventos');
+          } else {
+            setOptionChecked('eventos');
+            setIsMenuOpen(true);
+            setOptionSubMenuChecked('myEvents');
+          }
           setComponent(
             <MyEventsOrganizer userData={userResult.data} myEventsCreated={userResult.data.myEventsCreated} />
           );
           break;
         case 'plan-de-referidos':
+          setOptionChecked('plan de referidos');
+
           setComponent(<ReferralPlan userData={userResult.data} />);
           break;
         case 'preferencias':
+          setOptionChecked('preferencias');
+
           setComponent(<PreferencesUser userData={userResult.data} />);
           break;
         default:
@@ -116,10 +151,12 @@ const UserPage = () => {
 
     if (e.target.name === 'eventos' || iconValue === 'eventos') {
       setIsMenuOpen(!isOpenMenu);
-      setOpenMenuResponsive(true);
+      return setOpenMenuResponsive(true);
     } else {
       setIsMenuOpen(false);
     }
+
+    setOpenMenuResponsive(false);
 
     const name = e.target.name;
     /* ORGANIZER */
@@ -141,7 +178,9 @@ const UserPage = () => {
       setComponent(<UserForm userData={userData} />);
       navigate('/usuario/perfil');
     }
-
+    if (name === 'Mensajes' || iconValue === 'Mensajes') {
+      setComponent(<MessagesResponsive />);
+    }
     if (name === 'Plan de Referidos' || iconValue === 'Plan de Referidos') {
       setComponent(<ReferralPlan userData={userData} />);
       navigate('/usuario/plan-de-referidos');
@@ -154,8 +193,14 @@ const UserPage = () => {
 
   const handleInputSubMenu = (e) => {
     const name = e.target.name;
+    if (widthScreen <= 756) {
+      setOptionSubMenuChecked('');
+      setIsMenuOpen(false);
+    } else {
+      setOptionSubMenuChecked(e.target.value);
+    }
 
-    setOptionSubMenuChecked(e.target.value);
+    setOpenMenuResponsive(false);
 
     if (name === 'Mi lista') setComponent(<MyListUser myFavorites={userData.myFavorites}  myEventsBooked={userData.myEventsBooked}/>);
     if (name === 'Pendientes por Asistir') setComponent(<ExpectToAttendUser myEventsBooked={userData.myEventsBooked} />);
@@ -391,6 +436,7 @@ const UserPage = () => {
               value={date}
               onChange={(item) => setDate(item)}
               locale={myCustomLocale}
+              customDaysClassName={datesForCalendar}
             />
             <div className={styles.calendarDetails}>
               <div className={styles.pendingEvents}>
@@ -662,6 +708,7 @@ const UserPage = () => {
                 value={date}
                 onChange={(item) => setDate(item)}
                 locale={myCustomLocale}
+                customDaysClassName={datesForCalendar}
               />
               <div className={styles.calendarDetails}>
                 <div className={styles.pendingEvents}>

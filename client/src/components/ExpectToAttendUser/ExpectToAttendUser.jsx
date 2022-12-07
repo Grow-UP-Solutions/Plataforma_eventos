@@ -5,11 +5,7 @@ import styles from './ExpectToAttendUser.module.css';
 import Pagination from '../../components/Pagination/Pagination';
 import { useState } from 'react';
 
-
 const ExpectToAttendUser = ({ myEventsBooked }) => {
-
-  
-
   const orderByDate = myEventsBooked.sort((a, b) => {
     if (a.dates[0].date < b.dates[0].date) return -1;
     if (b.dates[0].date < a.dates[0].date) return 1;
@@ -22,7 +18,6 @@ const ExpectToAttendUser = ({ myEventsBooked }) => {
   const indexOfFirstCard = indexOfLastCard - CardPerPage;
   const currentCard = orderByDate.slice(indexOfFirstCard, indexOfLastCard);
   const paginado = (pageNumber) => setCurretPage(pageNumber);
-
 
   return (
     <div className={styles.container}>
@@ -37,7 +32,12 @@ const ExpectToAttendUser = ({ myEventsBooked }) => {
               </div>
             ))}
             <div className={styles.container_pagination}>
-              <Pagination billsPerPage={CardPerPage} state={myEventsBooked.length} paginado={paginado} page={currentPage} />
+              <Pagination
+                billsPerPage={CardPerPage}
+                state={myEventsBooked.length}
+                paginado={paginado}
+                page={currentPage}
+              />
             </div>
           </>
         ) : (

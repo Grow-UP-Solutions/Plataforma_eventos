@@ -12,7 +12,7 @@ import { generarCodigo } from '../../utils/generateCodeDiscount';
 import { inputKeyDown } from '../../utils/inputOnlyNumbers';
 
 import { GoTriangleDown, GoTriangleUp } from 'react-icons/go';
-
+import { FaUserCircle } from 'react-icons/fa';
 const ReferralPlan = ({ userData }) => {
   const txtValueCodeDiscount = useRef();
   const [availableCredit, setAvailableCredit] = useState(userData.availableCredit);
@@ -183,6 +183,20 @@ const ReferralPlan = ({ userData }) => {
   };
   return (
     <div className={styles.containerReferralPlan}>
+      <Helmet>
+        <title>Plan de referidos</title>
+
+        <meta property='og:title' content='Mi código de referido.' />
+        <meta
+          property='og:description'
+          content='Usalo y tendrás grandes descuentos en los eventos que quieras participar!'
+        />
+        <meta
+          property='og:image'
+          content='https://ahrefs.com/blog/wp-content/uploads/2019/12/fb-how-to-become-an-seo-expert.png'
+        />
+      </Helmet>
+
       <div className={styles.containerCurrentReferred}>
         <h2 className={styles.titleCurrentReferred}>Tu código de referido es</h2>
 
@@ -263,11 +277,10 @@ const ReferralPlan = ({ userData }) => {
             <div className={styles.containerListCodeDiscount}>
               {listCodeDiscount.length > 0 && listCodeDiscount.find((code) => code.isRedimeed === false) ? (
                 <table className={styles.tableCodeDiscount}>
-                  <colgroup span={4}></colgroup>
+                  <colgroup span={3}></colgroup>
                   <tr>
                     <th>Código</th>
                     <th>Valor</th>
-                    <th></th>
                     <th></th>
                   </tr>
                   {listCodeDiscount
@@ -394,7 +407,11 @@ const ReferralPlan = ({ userData }) => {
                 {usersReferred.map((user) => (
                   <tr className={styles.userReferred}>
                     <td className={styles.userReferredInfo}>
-                      <img src={user.userpicture} alt='img-user' />
+                      {user.userpicture ? (
+                        <img src={user.userpicture} alt='img-user' />
+                      ) : (
+                        <FaUserCircle className={styles.avatarUserReferred} />
+                      )}
                       <span>{user.nickname}</span>
                     </td>
                     <td>5000$</td>

@@ -129,6 +129,11 @@
   max-width: 100% !important;
 } */
 
+.calendar-user .blueDay:not(.-selectedStart):not(.-selectedBetween):not(.-selectedEnd):not(.-selected) {
+  background: var(--color-blue) !important;
+  color: white;
+}
+
 /* MEDIA QUERIES */
 
 @media screen and (max-width: 1490px) {

@@ -18,3 +18,4 @@ export { default as ExpectToAttendUser } from './ExpectToAttendUser/ExpectToAtte
 export { default as MyEventsOrganizer } from './MyEventsOrganizer/MyEventsOrganizer';
 export { default as Login } from './Login/Login';
 export { default as Loading } from './Loading/Loading';
+export { default as MessagesResponsive } from './MessagesResponsive/MessagesResponsive.jsx';
