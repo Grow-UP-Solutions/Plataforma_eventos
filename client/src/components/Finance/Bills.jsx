@@ -104,6 +104,7 @@ const Bills = () => {
             <thead className={style.thead}>
               <tr className={style.tr}>
                 <th className={style.th_first}>Nombre del evento</th>
+                <th>Fecha del evento</th>
                 <th>Fecha de facturacion</th>
                 <th>Número de factura</th>
                 <th>Tu ganancia</th>
@@ -132,21 +133,30 @@ const Bills = () => {
             </tbody> */}
 
              <tbody>
-              {userData.factura !== undefined &&
+              {userData.myEventsCreated !== undefined &&
                 
-                userData.factura.slice(indexOfFirstBill, indexOfLastBill).map((e) => (
-                  <tr key={e.id} className={style.tbody}>
+                userData.myEventsCreated.slice(indexOfFirstBill, indexOfLastBill).map((event) => (
+
+                  event.dates.map(date=>(
+                  date.sells > 0 ?
+                  <tr key={event._id} className={style.tbody}>
                     <td className={style.tbody_name}>
-                      <img src={userData.userpicture} alt={e.first_name} 
+                      <img src={event.pictures[0].picture} alt={''} 
                         style={{maxWidth: '20%', borderRadius: '100px'}}
                       />
-                      <p>{e.evento}</p> 
+                      <p>{event.title}</p> 
                     </td>
-                    <td>{e.isPay===false? 'PENDIENTE': e.fechaDeFacturacion }</td>
+                    {/* <td>{e.isPay===false? 'PENDIENTE': e.fechaDeFacturacion }</td>
                     <td>{e.isPay===false? 'PENDIENTE': e.numeroDeFactura }</td>
-                    <td>{e.ganancia}</td>
+                    <td>{e.ganancia}</td> */}
+                    <td>{date.date}</td>
+                    <td>PENDIENTE</td>
+                    <td>PENDIENTE'</td>
+                    <td>0</td>
                     <td><input type="checkbox" /></td>
                   </tr>
+                  :''          
+                  ))
                 ))
               }
             </tbody>
@@ -165,11 +175,11 @@ const Bills = () => {
               <p>Descargar reporte de páginas (EXCEL)</p>
             </div>
           </div>
-          {userData.factura !== undefined &&
+          {userData.myEventsCreated !== undefined &&
           <div className={style.container_pagination}>
             <Pagination 
               billsPerPage={billsPerPage}
-              state={userData.factura.length}
+              state={userData.myEventsCreated.length}
               paginado={paginado}
             />
           </div>
