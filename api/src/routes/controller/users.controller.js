@@ -567,15 +567,13 @@ router.put('/editBankAccount/:id/:numAccount', async (req, res) => {
     for (let x = 0; x < user.bank.length; x++) {
       if (user.bank[x].bankAccount === numAccount) {
         isExistNumAccount = true;
-
         user.bank[x].bankAccount = newBankAccount;
         user.bank[x].bankName = newBankName;
+        await user.save();
       }
     }
 
     if (!isExistNumAccount) throw new Error('No existe el numero de cuenta ingresado');
-
-    await user.save();
 
     res.json({ success: true, bankAccounts: user.bank });
   } catch (error) {
