@@ -4,6 +4,7 @@ import styles from './MyListUser.module.css';
 import { Link } from 'react-router-dom';
 import Pagination from '../../components/Pagination/Pagination';
 import { useState } from 'react';
+import { FaCaretSquareRight } from 'react-icons/fa';
 
 const MyListUser = ({ myFavorites, myEventsBooked }) => {
 
@@ -59,4 +60,6 @@ const MyListUser = ({ myFavorites, myEventsBooked }) => {
 };
 
 export default MyListUser;
+
+
 

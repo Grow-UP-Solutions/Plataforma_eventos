@@ -249,6 +249,11 @@ const Cart = () => {
   async function handleSubmit(e) {
     e.preventDefault();
 
+    console.log('valorTotal',valorTotal)
+
+    const ganancia = valorTotal - (valorTotal*0.16) - (valorTotal*0.16*0.19)
+    console.log('ganancia',valorTotal)
+
     const f = [];
     const cod = [];
     for (let i = 0; i < carrito.length; i++) {
@@ -276,6 +281,7 @@ const Cart = () => {
     const payload = {
       idUser: user.uid,
       idEvent: eventDetail._id,
+      ganancia:ganancia,
       dates: f,
     };
     console.log('payload', payload);
@@ -645,3 +651,6 @@ const Cart = () => {
 };
 
 export default Cart;
+
+
+

@@ -5,6 +5,9 @@ import { animateScroll as scroll } from 'react-scroll';
 import './App.css';
 import { Footer, Login, Navbar } from './components';
 import Bills from './components/Finance/Bills';
+import Admin from './components/Admin/Admin';
+import OrganizerList from './components/Admin/OrganizerList';
+import OrganizerBills from './components/Admin/OrganizerBills';
 import Notifications from './components/Notifications/Notifications';
 import { AuthContext } from './context/auth';
 import { UIContext } from './context/ui';
@@ -89,6 +92,9 @@ function App() {
         <Route path='/verificarmail/:path' element={<Verification />} />
         <Route path='/cambiar-password/:token' element={<ChangePassword />} />
         <Route path={'/mercadoPago/fail'} element={<MercadoPagoFail />} />
+        <Route path={'/admin'} element={<Admin />} />
+        <Route path={'/lista-de-organizadores'} element={<OrganizerList />} />
+        <Route path={'/organizador-facturas-pagar/:id'} element={<OrganizerBills />} />
 
 
         {/* RUTAS PRIVADAS */}
