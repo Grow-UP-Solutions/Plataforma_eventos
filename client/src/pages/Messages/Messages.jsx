@@ -132,20 +132,6 @@ const Messages = () => {
     };
   }, [last]);
 
-  /*   const handleMensajes = async (e) => {
-    const data = {
-      idLastConversation: last,
-    };
-
-    console.log({ last });
-
-    console.log(data);
-    const res = await eventsApi.put('/conversation/delete', data);
-    const json = res.data;
-    console.log('response', json);
-    alert('chau');
-  }; */
-
   const handleChangeNewMessages = (e) => {
     e.preventDefault();
     setNewMessage(e.target.value);
