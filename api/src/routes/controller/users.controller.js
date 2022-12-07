@@ -558,9 +558,6 @@ router.put('/setBankAccount/:id', async (req, res) => {
 router.put('/editBankAccount/:id/:numAccount', async (req, res) => {
   const { id, numAccount } = req.params;
   const { newBankName, newBankAccount } = req.body;
-  let isExistNumAccount = false;
-
-  console.log({ id, numAccount });
 
   try {
     const user = await UsersFunctionDb.oneUser(id);
@@ -568,7 +565,7 @@ router.put('/editBankAccount/:id/:numAccount', async (req, res) => {
 
     const newBank = user.bank.filter((bank) => bank.bankAccount !== numAccount);
 
-    newBank.push({ newBankName, newBankAccount });
+    newBank.push({ bankName: newBankName, bankAccount: newBankAccount });
 
     user.bank = newBank;
 
