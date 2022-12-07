@@ -22,18 +22,10 @@ const UserSchema = new Schema(
       type: String,
       default: '',
     },
-    bank: [
-      {
-        bankName: {
-          type: String,
-          default: '',
-        },
-        bankAccount: {
-          type: String,
-          default: '',
-        },
-      },
-    ],
+    bank: {
+      type: Array,
+      default: [],
+    },
     saldoPendiente: {
       type: Number,
       default: 0,
