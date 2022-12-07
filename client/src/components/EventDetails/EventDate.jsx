@@ -15,7 +15,7 @@ import eventsApi from '../../axios/eventsApi';
 import { AuthContext } from '../../context/auth';
 import { stateContext } from '../../context/state/stateContext';
 import { UIContext } from '../../context/ui';
-import { administracion, iva } from '../../utils/administracion';
+import { administracion, iva , comision , ivaOrg } from '../../utils/administracion';
 import { formatDate } from '../../utils/formatDate';
 import styles from './EventDate.module.css';
 import EventDateMap from './EventDateMap';
@@ -113,6 +113,10 @@ const EventDate = ({ id, openMenu }) => {
 
     const costos = administracion + iva;
 
+  
+
+    const priceOrg =price - (price * comision) - (price * comision * ivaOrg)
+    
     // const unit_price = price + administracion + iva;
 
     if (!e.target.checked) {
@@ -122,6 +126,9 @@ const EventDate = ({ id, openMenu }) => {
       setChecked(false);
       setDateToBuy(seleccionDate);
     } else {
+      
+     
+
       setCarrito([
         ...carrito,
         {
@@ -135,6 +142,8 @@ const EventDate = ({ id, openMenu }) => {
           codigoCorrecto: '',
           subtotal: price,
           descuento: '',
+          priceOrg: priceOrg,
+          ganancias:  priceOrg 
         },
       ]);
 
