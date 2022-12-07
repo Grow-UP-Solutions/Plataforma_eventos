@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { stateContext } from './stateContext';
 
-export const Data = ({children}) => {
+export const Data = ({ children }) => {
 
   const [result, setResult] = useState('');
   const [search, setSearch] = useState([]);
@@ -14,6 +14,7 @@ export const Data = ({children}) => {
   const [code, setCode] = useState([]);
   const [valorTotal , setValorTotal] = useState(0);
   const [subTotal , setSubTotal] = useState(0);
+  const [bank, setBank] = useState([]);
   
   return (
     <stateContext.Provider value={{ 
@@ -26,8 +27,9 @@ export const Data = ({children}) => {
       carrito, setCarrito,
       dateToBuy, setDateToBuy,
       code, setCode,
-      valorTotal , setValorTotal,
-      subTotal , setSubTotal,
+      valorTotal, setValorTotal,
+      subTotal, setSubTotal,
+      bank, setBank
     }}>
       { children }
     </stateContext.Provider>

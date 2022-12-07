@@ -22,6 +22,30 @@ const UserSchema = new Schema(
       type: String,
       default: '',
     },
+    factura: [
+      {
+        evento: {
+          type: String,
+          default: '',
+        },
+        fechaDeFacturacion: {
+          type: String,
+          default: '',
+        },
+        numeroDeFactura: {
+          type: String,
+          default: '',
+        },
+        ganancia: {
+          type: Number,
+          default: 0,
+        },
+        isPay: {
+          type: Boolean,
+          default: false,
+        },
+      },
+    ],
     bank: {
       type: Array,
       default: [],

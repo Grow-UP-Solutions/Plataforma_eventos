@@ -16,7 +16,7 @@ router.post("/orden", async (req, res) => {
    const { dates, idUser, idEvent } = req.body;
 
    const codigosPrueba = dates.map((e) => e.codigo);
-   
+
    const userDB = await UsersFunctionDb.oneUser(idUser);
 
    const eventDB = await EventFunctionDb.oneEvent(idEvent);
@@ -29,8 +29,6 @@ router.post("/orden", async (req, res) => {
             dateEvent.push(eventDB.dates[j]);
       }
    }
-
-   
 
    const telefono = userDB.tel?.split(" ").join("");
 
@@ -108,6 +106,7 @@ router.get("/success", async (req, res) => {
    const idUser = ids[1];
 
    let resultTransaccion = {};
+   let factura = {};
 
    try {
       const dataPayments = await axios(
@@ -122,9 +121,10 @@ router.get("/success", async (req, res) => {
       const totalDeCupos = cuposComprados.reduce((a, b) => a + b);
 
       const event = await EventFunctionDb.oneEvent(idEvent);
-
+      const organizerEvent = await UsersFunctionDb.oneUser(event.organizer);
+      console.log(organizerEvent.factura);
       const user = await UsersFunctionDb.oneUser(idUser);
-
+      let ganancia = 0;
       if (
          response.status === "approved" &&
          response.status_detail === "accredited"
@@ -138,7 +138,7 @@ router.get("/success", async (req, res) => {
 
          event.dates.forEach((e, i) => {
             for (let j = 0; j < response.additional_info.items.length; ++j) {
-               if (e._id === response.additional_info.items[j].id) {
+               if (e._id == response.additional_info.items[j].id) {
                   e.buyers?.push(user._id);
 
                   e.sells += totalDeCupos;
@@ -146,8 +146,10 @@ router.get("/success", async (req, res) => {
                   e.cupos -= totalDeCupos;
 
                   e.profits += response.transaction_details.total_paid_amount;
-
-                  user.pendingEarnings += calculoDeComicion(e.price);
+                  console.log(e.price)
+                  ganancia = calculoDeComicion(e.price);
+                  console.log(ganancia);
+                  organizerEvent.pendingEarnings += ganancia;
                }
             }
          });
@@ -178,10 +180,19 @@ router.get("/success", async (req, res) => {
             estatus: response.status,
          };
 
-         user.ordenes.push(resultTransaccion);
+         factura = {
+            evento: event.title,
+            fechaDeFacturacion: response.date_created,
+            numeroDeFactura: payment_id,
+            ganancia: ganancia,
+            isPay: false,
+         };
+         organizerEvent.factura.push(factura)
 
+         user.ordenes.push(resultTransaccion);
+         await organizerEvent.save()
          await user.save();
-         
+
          return res.json(resultTransaccion);
       }
       resultTransaccion = {

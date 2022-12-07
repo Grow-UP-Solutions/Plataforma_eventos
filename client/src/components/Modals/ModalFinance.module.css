@@ -1,0 +1,83 @@
+.container {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal_close {
+  font-size: 2rem;
+  color: var(--color-grey-3);
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+.line_div {
+  border: 0.1px solid rgb(219, 219, 219);
+  margin: 4.5rem 2rem;
+}
+
+.container_bank {
+  
+}
+
+.container_select {
+  width: 5rem;
+}
+
+.container_select input {
+  border-radius: 5px;
+  width: 25rem;
+  height: 3rem;
+  border: none;
+  box-shadow: 0px 5px 5px 1px rgba(0, 0, 0, 0.5);
+  border: 2px solid transparent;
+  padding-left: 1rem;
+}
+
+.container_input {
+  margin-top: 2rem;
+}
+
+.container_input input {
+  border-radius: 5px;
+  width: 25rem;
+  height: 3rem;
+  border: none;
+  box-shadow: 0px 5px 5px 1px rgba(0, 0, 0, 0.5);
+  border: 2px solid transparent;
+  padding-left: 1rem;
+}
+
+.container_new {
+  display: flex;
+}
+
+.new {
+  margin-top: 2rem;
+  background-color: var(--color-grey-3);
+  border-radius: 5px;
+  padding: 1rem 3rem;
+  margin: 3rem auto;
+  border: none;
+  color: var(--color-grey-6);
+  font-weight: bold;
+  cursor: pointer;
+  font-family: 'Raleway', sans-serif;
+}
+
+.container_button {
+  display: flex;
+}
+
+.button_confirm {
+  background-color: var(--color-orange);
+  border-radius: 15px;
+  padding: 1rem 3rem;
+  margin: 3rem auto;
+  border: none;
+  color: var(--color-grey-6);
+  font-weight: bold;
+  cursor: pointer;
+  font-family: 'Raleway', sans-serif;
+}

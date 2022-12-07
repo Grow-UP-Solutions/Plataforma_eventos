@@ -4,18 +4,18 @@ import styles from './MyListUser.module.css';
 import { Link } from 'react-router-dom';
 import Pagination from '../../components/Pagination/Pagination';
 import { useState } from 'react';
+import { FaCaretSquareRight } from 'react-icons/fa';
 
 const MyListUser = ({ myFavorites, myEventsBooked }) => {
 
-  const eventos =  myFavorites.concat(myEventsBooked)
+  const eventos = myFavorites.concat(myEventsBooked)
+
   const orderByDate = eventos.sort((a, b) => {
     if (a.dates[0].date < b.dates[0].date) return -1;
     if (b.dates[0].date < a.dates[0].date) return 1;
     return 0;
   });
 
-  /* console.log('myFavorites',myFavorites)
-  console.log('myEventsBooked',myEventsBooked) */
 
   const [currentPage, setCurretPage] = useState(1);
   const CardPerPage = 6;
@@ -60,3 +60,6 @@ const MyListUser = ({ myFavorites, myEventsBooked }) => {
 };
 
 export default MyListUser;
+
+
+
