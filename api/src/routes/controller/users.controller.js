@@ -128,10 +128,7 @@ router.get('/getBankAccount/:id', async (req, res) => {
 
     if (!user) throw new Error('Usuario con ese id no existe');
 
-    const bankName = user.bank.bankName;
-    const bankAccount = user.bank.bankAccount;
-
-    res.json({ bankName, bankAccount });
+    res.json({ bankAccounts: user.bank });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
@@ -548,10 +545,8 @@ router.put('/setBankAccount/:id', async (req, res) => {
   try {
     const user = await UsersFunctionDb.oneUser(id);
     if (!user) throw new Error('Usuario con ese id no existe');
-    user.bank.bankName = bankName;
-    user.bank.bankAccount = bankAccount;
-    user.save();
-
+    user.bank.push({ bankName, bankAccount });
+    await user.save();
     res.json({ success: true, message: 'Numero de cuenta guardado.' });
   } catch (error) {
     res.status(404).json({ message: error.message });
