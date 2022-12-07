@@ -203,12 +203,15 @@ const UserSchema = new Schema(
         ref: Message,
       },
     ],
-    earnings: {
+    payedEarnings: {
       type: Number,
       default: 0,
     },
-
     pendingEarnings: {
+      type: Number,
+      default: 0,
+    },
+    overallEarnings: {
       type: Number,
       default: 0,
     },

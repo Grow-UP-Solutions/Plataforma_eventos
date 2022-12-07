@@ -141,6 +141,7 @@ router.get('/success', async (req, res) => {
       event.generalBuyers.push(user._id);
 
       organizerEvent.pendingEarnings += auxBody[0].ganancia;
+      organizerEvent.overallEarnings += auxBody[0].ganancia;
       event.pendingEarnings += auxBody[0].ganancia;
       event.overallEarnings += auxBody[0].ganancia;
       event.sells += totalCupos;
@@ -225,7 +226,47 @@ router.get('/success', async (req, res) => {
   }
 });
 
-router.put('/adminPaymentOrganizer/', async (req, res) => {});
+router.put('/adminPaymentOrganizer/', async (req, res) => {
+  const { billNumber, datePay, ganancia, idDate, idEvent, idOrg } = req.body;
+
+  try {
+    const organizer = await UsersFunctionDb.oneUser(idOrg);
+    const event = await EventFunctionDb.oneEvent(idEvent);
+
+    if (!organizer) throw new Error('Usuario no existe');
+    if (!event) throw new Error('Evento no existe');
+
+    /* EVENT */
+
+    event.pendingEarnings = event.pendingEarnings - ganancia;
+    event.payedEarnings = event.payedEarnings + ganancia;
+
+    for (let x = 0; x < event.dates.length; x++) {
+      if (event.dates[x]._id == idDate) {
+        event.dates[x].pendingEarnings = event.dates[x].pendingEarnings - ganancia;
+        event.dates[x].payedEarnings = event.dates[x].payedEarnings + ganancia;
+        event.dates[x].datePay = datePay;
+        event.dates[x].billNumber = billNumber;
+        event.dates[x].isPay = true;
+        await event.save();
+      }
+    }
+
+    /* ORGANIZER */
+    organizer.pendingEarnings = organizer.pendingEarnings - Number(ganancia);
+    organizer.payedEarnings = organizer.payedEarnings + Number(ganancia);
+
+    await event.save();
+    await organizer.save();
+
+    console.log({ pendingEarnings: event.pendingEarnings });
+    console.log({ payedEarnings: event.payedEarnings });
+
+    res.json({ message: 'Pagado exitosamente' });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+});
 
 module.exports = router;
 

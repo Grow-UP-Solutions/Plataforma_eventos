@@ -6,11 +6,9 @@ import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import { useNavigate, useParams } from 'react-router-dom';
 import eventsApi from '../../axios/eventsApi';
 import { AiOutlineConsoleSql } from 'react-icons/ai';
-import {fechaActual} from '../../utils/fechaActual'
-
+import { fechaActual } from '../../utils/fechaActual';
 
 const Bills = () => {
-
   const [state, fetchUsers] = useFetch();
   const navigate = useNavigate();
   const id = useParams().id;
@@ -22,37 +20,27 @@ const Bills = () => {
 
   const getUserData = async () => {
     if (id) {
-      const userResult = await eventsApi.get(`/users/${id}`)
-      setUserData(userResult.data)
-    }}
+      const userResult = await eventsApi.get(`/users/${id}`);
+      setUserData(userResult.data);
+    }
+  };
 
-    console.log('userData:',userData)
+  console.log('userData:', userData);
 
+  const [currentPage, setCurretPage] = useState(1);
+  const billsPerPage = 6;
+  const indexOfLastBill = currentPage * billsPerPage;
+  const indexOfFirstBill = indexOfLastBill - billsPerPage;
+  //const currentBill = userData.factura.slice(indexOfFirstBill, indexOfLastBill);
+  const paginado = (pageNumber) => setCurretPage(pageNumber);
 
-    
-    const [currentPage, setCurretPage] = useState(1);
-    const billsPerPage = 6;
-    const indexOfLastBill = currentPage * billsPerPage;
-    const indexOfFirstBill = indexOfLastBill - billsPerPage;
-    //const currentBill = userData.factura.slice(indexOfFirstBill, indexOfLastBill);
-    const paginado = (pageNumber) => setCurretPage(pageNumber);
-  
-  
-    
- 
+  // const facturas = userData.factura
 
-
-
-    // const facturas = userData.factura
-
-    // const orderByDate = facturas.sort((a, b) => {
-    //   if (a.fechaDeFacturacion < b.fechaDeFacturacion) return -1;
-    //   if (b.fechaDeFacturacion < a.fechaDeFacturacion) return 1;
-    //   return 0;
-    // });
-  
-
-  
+  // const orderByDate = facturas.sort((a, b) => {
+  //   if (a.fechaDeFacturacion < b.fechaDeFacturacion) return -1;
+  //   if (b.fechaDeFacturacion < a.fechaDeFacturacion) return 1;
+  //   return 0;
+  // });
 
   // useEffect(() => {
   //   console.log('userData en effect:',userData)
@@ -62,20 +50,15 @@ const Bills = () => {
   //     return 0;
   //   });
 
-    
   // console.log('orderByDate:',orderByDate)
 
   // }, [userData]);
-  
-
- 
-  
 
   useEffect(
-    function () {
+    function() {
       fetchUsers({
-        url: "https://reqres.in/api/users",
-        method: "GET"
+        url: 'https://reqres.in/api/users',
+        method: 'GET',
       });
     },
     [fetchUsers]
@@ -92,7 +75,6 @@ const Bills = () => {
   if (state.isSuccess) {
     return (
       <div className={style.container}>
-
         <div className={style.container_titles}>
           <h1>Histórico de facturas</h1>
           <h3>{userData.name}</h3>
@@ -132,71 +114,67 @@ const Bills = () => {
               }
             </tbody> */}
 
-             <tbody>
+            <tbody>
               {userData.myEventsCreated !== undefined &&
-                
-                userData.myEventsCreated.slice(indexOfFirstBill, indexOfLastBill).map((event) => (
-
-                  event.dates.map(date=>(
-                  date.sells > 0 ?
-                  <tr key={event._id} className={style.tbody}>
-                    <td className={style.tbody_name}>
-                      <img src={event.pictures[0].picture} alt={''} 
-                        style={{maxWidth: '20%', borderRadius: '100px'}}
-                      />
-                      <p>{event.title}</p> 
-                    </td>
-                    {/* <td>{e.isPay===false? 'PENDIENTE': e.fechaDeFacturacion }</td>
-                    <td>{e.isPay===false? 'PENDIENTE': e.numeroDeFactura }</td>
-                    <td>{e.ganancia}</td> */}
-                    <td>{date.date}</td>
+                userData.myEventsCreated.slice(indexOfFirstBill, indexOfLastBill).map((event) =>
+                  event.dates.map((date) =>
+                    date.sells > 0 ? (
+                      <tr key={event._id} className={style.tbody}>
+                        <td className={style.tbody_name}>
+                          <img
+                            src={event.pictures[0].picture}
+                            alt={''}
+                            style={{ maxWidth: '20%', borderRadius: '100px' }}
+                          />
+                          <p>{event.title}</p>
+                        </td>
+                        <td>{date.date}</td>
+                        <td>{date.isPay === false ? 'PENDIENTE' : date.datePay}</td>
+                        <td>{date.isPay === false ? 'PENDIENTE' : date.billNumber}</td>
+                        <td>{date.overallEarnings}</td>
+                        {/* <td>{date.date}</td>
                     <td>PENDIENTE</td>
                     <td>PENDIENTE'</td>
-                    <td>0</td>
-                    <td><input type="checkbox" /></td>
-                  </tr>
-                  :''          
-                  ))
-                ))
-              }
+                    <td>0</td> */}
+                        <td>
+                          <input type='checkbox' />
+                        </td>
+                      </tr>
+                    ) : (
+                      ''
+                    )
+                  )
+                )}
             </tbody>
-
-
           </div>
 
           <div className={style.container_download}>
             <div className={style.container_one}>
-              <DescriptionOutlinedIcon fontSize="large" color='#d53e27'/>
+              <DescriptionOutlinedIcon fontSize='large' color='#d53e27' />
               <p>Descargar factura de selecionados (PDF)</p>
             </div>
 
             <div className={style.container_two}>
-              <DescriptionOutlinedIcon fontSize="large" />
+              <DescriptionOutlinedIcon fontSize='large' />
               <p>Descargar reporte de páginas (EXCEL)</p>
             </div>
           </div>
-          {userData.myEventsCreated !== undefined &&
-          <div className={style.container_pagination}>
-            <Pagination 
-              billsPerPage={billsPerPage}
-              state={userData.myEventsCreated.length}
-              paginado={paginado}
-            />
-          </div>
-          }
+          {userData.myEventsCreated !== undefined && (
+            <div className={style.container_pagination}>
+              <Pagination billsPerPage={billsPerPage} state={userData.myEventsCreated.length} paginado={paginado} />
+            </div>
+          )}
 
           <div className={style.container_exit}>
             <p className={style.exit} onClick={() => navigate('/user/profile')}>
               Salir
             </p>
           </div>
-      
         </div>
-        
       </div>
     );
   }
   return null;
-}
+};
 
 export default Bills;
