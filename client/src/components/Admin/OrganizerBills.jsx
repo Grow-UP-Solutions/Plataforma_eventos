@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import style from './Bills.module.css';
+import style from './OrganizerBills.module.css';
 import useFetch from '../../hooks/useFetch';
 import Pagination from '../Pagination/Pagination';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
@@ -7,9 +7,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import eventsApi from '../../axios/eventsApi';
 import { AiOutlineConsoleSql } from 'react-icons/ai';
 import {fechaActual} from '../../utils/fechaActual'
+import { Link } from 'react-router-dom';
 
 
-const Bills = () => {
+
+const OrganizerBills = () => {
 
   const [state, fetchUsers] = useFetch();
   const navigate = useNavigate();
@@ -38,37 +40,6 @@ const Bills = () => {
     const paginado = (pageNumber) => setCurretPage(pageNumber);
   
   
-    
- 
-
-
-
-    // const facturas = userData.factura
-
-    // const orderByDate = facturas.sort((a, b) => {
-    //   if (a.fechaDeFacturacion < b.fechaDeFacturacion) return -1;
-    //   if (b.fechaDeFacturacion < a.fechaDeFacturacion) return 1;
-    //   return 0;
-    // });
-  
-
-  
-
-  // useEffect(() => {
-  //   console.log('userData en effect:',userData)
-  //   const orderByDate = userData.factura.sort((a, b) => {
-  //     if (a.fechaDeFacturacion < b.fechaDeFacturacion) return -1;
-  //     if (b.fechaDeFacturacion < a.fechaDeFacturacion) return 1;
-  //     return 0;
-  //   });
-
-    
-  // console.log('orderByDate:',orderByDate)
-
-  // }, [userData]);
-  
-
- 
   
 
   useEffect(
@@ -80,6 +51,27 @@ const Bills = () => {
     },
     [fetchUsers]
   );
+
+  const pagar = async(e,idOrg ,idFactura ,ganancia,numeroDeFactura)=>{
+    e.preventDefault()
+    console.log('pagar')
+    console.log(id)
+    console.log(ganancia)
+    console.log(numeroDeFactura)
+
+    const payload={
+        idOrg:idOrg,
+        idFactura: idFactura,
+        ganancia: ganancia,
+        numeroDeFactura: numeroDeFactura
+    }
+
+    console.log('payload',payload)
+
+    //const json = await eventsApi.post('/mercadoPago/orden', payload);
+  }
+
+
 
   if (state.isLoading) {
     return <div>Cargando usuarios...</div>;
@@ -106,7 +98,7 @@ const Bills = () => {
                 <th className={style.th_first}>Nombre del evento</th>
                 <th>Fecha de facturacion</th>
                 <th>Número de factura</th>
-                <th>Tu ganancia</th>
+                <th>A pagar</th>
               </tr>
             </thead>
 
@@ -134,18 +126,21 @@ const Bills = () => {
              <tbody>
               {userData.factura !== undefined &&
                 
-                userData.factura.slice(indexOfFirstBill, indexOfLastBill).map((e) => (
-                  <tr key={e.id} className={style.tbody}>
+                userData.factura.slice(indexOfFirstBill, indexOfLastBill).map((factura) => (
+                  <tr key={factura._id} className={style.tbody}>
                     <td className={style.tbody_name}>
-                      <img src={userData.userpicture} alt={e.first_name} 
+                      <img src={userData.userpicture} alt={userData.first_name} 
                         style={{maxWidth: '20%', borderRadius: '100px'}}
                       />
-                      <p>{e.evento}</p> 
+                      <p>{factura.evento}</p> 
                     </td>
-                    <td>{e.isPay===false? 'PENDIENTE': e.fechaDeFacturacion }</td>
-                    <td>{e.isPay===false? 'PENDIENTE': e.numeroDeFactura }</td>
-                    <td>{e.ganancia}</td>
-                    <td><input type="checkbox" /></td>
+                    <td>{factura.isPay===false? 'PENDIENTE': factura.fechaDeFacturacion }</td>
+                    <td>{factura.isPay===false? 'PENDIENTE': factura.numeroDeFactura }</td>
+                    <td>{factura.ganancia}</td>
+                    {/* <td><input type="checkbox" /></td> */}
+                    <td>
+                        <button onClick={(e)=>pagar(e, userData._id, factura._id , factura.ganancia, factura.numeroDeFactura )}>Pagar</button>
+                    </td>
                   </tr>
                 ))
               }
@@ -189,4 +184,4 @@ const Bills = () => {
   return null;
 }
 
-export default Bills;
+export default OrganizerBills;
