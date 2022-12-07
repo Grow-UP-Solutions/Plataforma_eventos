@@ -27,6 +27,10 @@
 .mySwipper {
 }
 
+.card {
+  width: min-content;
+}
+
 .cardHr {
   border: 0.1px solid rgb(219, 219, 219);
   width: 50%;
@@ -69,6 +73,12 @@
   text-align: center;
   width: 50%;
   margin-top: 1rem;
+}
+
+@media screen and (max-width: 1420px) {
+  .containerCard {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
 }
 
 @media screen and (max-width: 1010px) {

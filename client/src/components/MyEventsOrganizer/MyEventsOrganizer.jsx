@@ -92,7 +92,7 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
           ) : eventsPublic.length > 3 ? (
             <Swiper
               slidesPerView={cardPerView}
-              slidesPerGroup={cardPerView === 3 ? 3 : Math.trunc(cardPerView - 0.5)}
+              slidesPerGroup={cardPerView}
               navigation
               spaceBetween={0}
               modules={[Navigation]}

@@ -76,8 +76,6 @@ const UserPage = () => {
     setDatesForCalendar(totalDatesToCalendar);
   };
 
-  console.log({ datesForCalendar });
-
   const getUserData = async () => {
     if (user.uid) {
       const userResult = await eventsApi.get(`/users/${user.uid}`);
@@ -108,9 +106,7 @@ const UserPage = () => {
           setIsMenuOpen(true);
           setOptionChecked('events');
           setOptionSubMenuChecked('eventsForAssist');
-          setComponent(
-            <ExpectToAttendUser myEventsBooked={userResult.data.myEventsBooked} />
-          );
+          setComponent(<ExpectToAttendUser myEventsBooked={userResult.data.myEventsBooked} />);
           break;
         case 'mis-eventos':
           if (widthScreen <= 756) {
@@ -126,7 +122,6 @@ const UserPage = () => {
           break;
         case 'plan-de-referidos':
           setOptionChecked('plan de referidos');
-
           setComponent(<ReferralPlan userData={userResult.data} />);
           break;
         case 'preferencias':
@@ -143,7 +138,7 @@ const UserPage = () => {
 
   useEffect(() => {
     getUserData();
-  }, [option]);
+  }, [option, userData]);
 
   const handleInput = (e, iconValue) => {
     setOptionChecked(e.target.value || iconValue.toLowerCase());
@@ -202,9 +197,12 @@ const UserPage = () => {
 
     setOpenMenuResponsive(false);
 
-    if (name === 'Mi lista') setComponent(<MyListUser myFavorites={userData.myFavorites}  myEventsBooked={userData.myEventsBooked}/>);
-    if (name === 'Pendientes por Asistir') setComponent(<ExpectToAttendUser myEventsBooked={userData.myEventsBooked} />);
-    if (name === 'Mis Eventos') setComponent(<MyEventsOrganizer userData={userData} myEventsCreated={userData.myEventsCreated} />);
+    if (name === 'Mi lista')
+      setComponent(<MyListUser myFavorites={userData.myFavorites} myEventsBooked={userData.myEventsBooked} />);
+    if (name === 'Pendientes por Asistir')
+      setComponent(<ExpectToAttendUser myEventsBooked={userData.myEventsBooked} />);
+    if (name === 'Mis Eventos')
+      setComponent(<MyEventsOrganizer userData={userData} myEventsCreated={userData.myEventsCreated} />);
   };
 
   const [openMenuResponsive, setOpenMenuResponsive] = useState(false);
@@ -335,7 +333,7 @@ const UserPage = () => {
                           checked={optionSubMenuChecked === 'myEvents' ? true : false}
                         />
                         <label className={styles.labelOption} htmlFor='myEvents'>
-                        Organizados por mí
+                          Organizados por mí
                         </label>
 
                         <IconEvents className={styles.iconMenu} />
@@ -380,18 +378,14 @@ const UserPage = () => {
             </li>
             <li className={styles.containerItemOptionMenu}>
               <div className={styles.optionMenu}>
-                <button className={styles.btn} name='Plan de Referidos' onClick={handleInput}>
-                  Plan de Referidos
-                </button>
-
                 <input
                   type={'checkbox'}
-                  value={'plan-de-referidos'}
+                  value={'plan de referidos'}
                   className={styles.btn}
                   name='Plan de Referidos'
                   id='plan-de-referidos'
                   onChange={handleInput}
-                  checked={optionChecked === 'plan-de-referidos' ? true : false}
+                  checked={optionChecked === 'plan de referidos' ? true : false}
                 />
                 <label className={styles.labelOption} htmlFor='plan-de-referidos'>
                   Plan de Referidos
@@ -403,10 +397,6 @@ const UserPage = () => {
             </li>
             <li className={styles.containerItemOptionMenu}>
               <div className={styles.optionMenu}>
-                <button className={styles.btn} name='Preferencias' onClick={handleInput}>
-                  Preferencias
-                </button>
-
                 <input
                   type={'checkbox'}
                   value={'preferencias'}
