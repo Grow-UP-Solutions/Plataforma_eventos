@@ -577,7 +577,7 @@ router.put('/editBankAccount/:id/:numAccount', async (req, res) => {
 
     await user.save();
 
-    res.json({ success: true, message: 'Cuenta bancaria actualizada correctamente' });
+    res.json({ success: true, bankAccounts: user.bank });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
