@@ -6,15 +6,12 @@ import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import { useNavigate, useParams } from 'react-router-dom';
 import eventsApi from '../../axios/eventsApi';
 import { AiOutlineConsoleSql } from 'react-icons/ai';
-import {fechaActual} from '../../utils/fechaActual'
+import { fechaActual } from '../../utils/fechaActual';
 import { Link } from 'react-router-dom';
 
-
 const OrganizerList = () => {
-
   const [state, fetchUsers] = useFetch();
   const navigate = useNavigate();
-
 
   const [userData, setUserData] = useState([]);
 
@@ -23,26 +20,23 @@ const OrganizerList = () => {
   }, []);
 
   const getUserData = async () => {
-      const userResult = await eventsApi.get(`/users`)
-      setUserData(userResult.data)
-    }
+    const userResult = await eventsApi.get(`/users`);
+    setUserData(userResult.data);
+  };
 
-    console.log('userData:',userData)
+  console.log('userData:', userData);
 
+  const [currentPage, setCurretPage] = useState(1);
+  const organizerPerPage = 10;
+  const indexOfLastOrg = currentPage * organizerPerPage;
+  const indexOfFirstOrg = indexOfLastOrg - organizerPerPage;
+  const paginado = (pageNumber) => setCurretPage(pageNumber);
 
-    const [currentPage, setCurretPage] = useState(1);
-    const organizerPerPage = 10;
-    const indexOfLastOrg = currentPage * organizerPerPage;
-    const indexOfFirstOrg = indexOfLastOrg - organizerPerPage; 
-    const paginado = (pageNumber) => setCurretPage(pageNumber);
-
-    
- 
   useEffect(
-    function () {
+    function() {
       fetchUsers({
-        url: "https://reqres.in/api/users",
-        method: "GET"
+        url: 'https://reqres.in/api/users',
+        method: 'GET',
       });
     },
     [fetchUsers]
@@ -59,7 +53,6 @@ const OrganizerList = () => {
   if (state.isSuccess) {
     return (
       <div className={style.container}>
-
         <div className={style.container_titles}>
           <h1>Lista de organizadores</h1>
           <h5>{fechaActual}</h5>
@@ -74,61 +67,54 @@ const OrganizerList = () => {
               </tr>
             </thead>
 
-           
-             <tbody>
+            <tbody>
               {userData !== undefined &&
-                
                 userData.slice(indexOfFirstOrg, indexOfLastOrg).map((e) => (
                   <tr key={e.id} className={style.tbody}>
                     <td className={style.tbody_name}>
-                      <img src={userData.userpicture} alt={e.first_name} 
-                        style={{maxWidth: '20%', borderRadius: '100px'}}
+                      <img
+                        src={userData.userpicture}
+                        alt={e.first_name}
+                        style={{ maxWidth: '20%', borderRadius: '100px' }}
                       />
-                      <Link  to={'/organizador-facturas-pagar/' + e._id}>{e.name}</Link>
+                      <Link to={'/organizador-facturas-pagar/' + e._id}>{e.name}</Link>
                     </td>
                     <td>{e.email}</td>
-                    <td><input type="checkbox" /></td>
+                    <td>
+                      <input type='checkbox' />
+                    </td>
                   </tr>
-                ))
-              }
+                ))}
             </tbody>
-
-
           </div>
 
           <div className={style.container_download}>
             <div className={style.container_one}>
-              <DescriptionOutlinedIcon fontSize="large" color='#d53e27'/>
+              <DescriptionOutlinedIcon fontSize='large' color='#d53e27' />
               <p>Descargar factura de selecionados (PDF)</p>
             </div>
 
             <div className={style.container_two}>
-              <DescriptionOutlinedIcon fontSize="large" />
+              <DescriptionOutlinedIcon fontSize='large' />
               <p>Descargar reporte de páginas (EXCEL)</p>
             </div>
           </div>
-          {userData !== undefined &&
-          <div className={style.container_pagination}>
-            <Pagination 
-              organizerPerPage={organizerPerPage}
-              state={userData.length}
-              paginado={paginado}
-            />
-          </div>
-          }
+          {userData !== undefined && (
+            <div className={style.container_pagination}>
+              <Pagination organizerPerPage={organizerPerPage} state={userData.length} paginado={paginado} />
+            </div>
+          )}
 
           <div className={style.container_exit}>
             <p className={style.exit} onClick={() => navigate('/admin')}>
               Salir
             </p>
           </div>
-      
         </div>
-        
       </div>
     );
   }
   return null;
-}
+};
 
 export default OrganizerList;

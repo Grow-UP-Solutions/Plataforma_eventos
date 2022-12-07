@@ -3,6 +3,7 @@ const axios = require('axios');
 const { Router } = require('express');
 const router = Router();
 const mercadopago = require('mercadopago');
+const SuccessPayment = require('../../../models/DB/SuccessPayment');
 const calculoDeComicion = require('../../../models/util/calculoDeComiciones/calculoDeComicion');
 const EventFunctionDb = require('../../../models/util/functionDB/event/index.event');
 const UsersFunctionDb = require('../../../models/util/functionDB/users/index.users');
@@ -12,8 +13,12 @@ mercadopago.configure({
   access_token: `${ACCESS_TOKEN}`,
 });
 
+let auxBody = [];
+
 router.post('/orden', async (req, res) => {
   const { dates, idUser, idEvent, ganancia } = req.body;
+
+  auxBody.push({ dates, idUser, idEvent, ganancia });
 
   const codigosPrueba = dates.map((e) => e.codigo);
 
@@ -98,6 +103,8 @@ router.post('/orden', async (req, res) => {
 router.get('/success', async (req, res) => {
   const { external_reference, payment_id, preference_id, codigo } = req.query;
 
+  console.log({ auxBody });
+
   const ids = external_reference.split(',');
 
   const idEvent = ids[0];
@@ -113,36 +120,50 @@ router.get('/success', async (req, res) => {
 
     const response = dataPayments.data;
 
-    const cuposComprados = response.additional_info.items.map((e) => parseInt(e.quantity));
-    const totalDeCupos = cuposComprados.reduce((a, b) => a + b);
+    /* const cuposComprados = response.additional_info.items.map((e) => parseInt(e.quantity));
+    const totalDeCupos = cuposComprados.reduce((a, b) => a + b); */
+
+    let totalCupos = 0;
+
+    auxBody[0].dates.forEach((date) => {
+      totalCupos = totalCupos + date.quantity;
+    });
+
+    console.log({ totalCupos });
 
     const event = await EventFunctionDb.oneEvent(idEvent);
     const organizerEvent = await UsersFunctionDb.oneUser(event.organizer);
-
-    console.log(organizerEvent.factura);
     const user = await UsersFunctionDb.oneUser(idUser);
+
     let ganancia = 0;
+
     if (response.status === 'approved' && response.status_detail === 'accredited') {
       event.generalBuyers.push(user._id);
 
-      event.overallEarnings += response.transaction_details.total_paid_amount;
+      organizerEvent.pendingEarnings += auxBody[0].ganancia;
+      organizerEvent.overallEarnings += auxBody[0].ganancia;
+      event.pendingEarnings += auxBody[0].ganancia;
+      event.overallEarnings += auxBody[0].ganancia;
+      event.sells += totalCupos;
 
-      event.sells += totalDeCupos;
+      console.log({ overallEarnings: event.overallEarnings });
+      console.log({ sells: event.sells });
 
       event.dates.forEach((e, i) => {
-        for (let j = 0; j < response.additional_info.items.length; ++j) {
-          if (e._id == response.additional_info.items[j].id) {
+        for (let j = 0; j < auxBody[0].dates.length; ++j) {
+          if (e._id == auxBody[0].dates[j].id) {
+            for (let x = 0; x < e.codigos.length; x++) {
+              if (e.codigos[x].codigo === auxBody[0].dates[j].codigo) {
+                e.codigos[x].cantidad = e.codigos[x].cantidad - 1;
+                e.codigos[x].uses = e.codigos[x].uses + 1;
+              }
+            }
+
             e.buyers?.push(user._id);
-
-            e.sells += totalDeCupos;
-
-            e.cupos -= totalDeCupos;
-
-            e.profits += response.transaction_details.total_paid_amount;
-            console.log(e.price);
-            ganancia = calculoDeComicion(e.price);
-            console.log(ganancia);
-            organizerEvent.pendingEarnings += ganancia;
+            e.cupos = e.cupos - auxBody[0].dates[j].quantity;
+            e.sells = e.sells + auxBody[0].dates[j].quantity;
+            e.pendingEarnings = e.pendingEarnings + auxBody[0].dates[j].ganancias;
+            e.overallEarnings = e.overallEarnings + auxBody[0].dates[j].ganancias;
           }
         }
       });
@@ -202,6 +223,48 @@ router.get('/success', async (req, res) => {
   } catch (error) {
     console.log(error.message);
     return res.status(500).json(error.message);
+  }
+});
+
+router.put('/adminPaymentOrganizer/', async (req, res) => {
+  const { billNumber, datePay, ganancia, idDate, idEvent, idOrg } = req.body;
+
+  try {
+    const organizer = await UsersFunctionDb.oneUser(idOrg);
+    const event = await EventFunctionDb.oneEvent(idEvent);
+
+    if (!organizer) throw new Error('Usuario no existe');
+    if (!event) throw new Error('Evento no existe');
+
+    /* EVENT */
+
+    event.pendingEarnings = event.pendingEarnings - ganancia;
+    event.payedEarnings = event.payedEarnings + ganancia;
+
+    for (let x = 0; x < event.dates.length; x++) {
+      if (event.dates[x]._id == idDate) {
+        event.dates[x].pendingEarnings = event.dates[x].pendingEarnings - ganancia;
+        event.dates[x].payedEarnings = event.dates[x].payedEarnings + ganancia;
+        event.dates[x].datePay = datePay;
+        event.dates[x].billNumber = billNumber;
+        event.dates[x].isPay = true;
+        await event.save();
+      }
+    }
+
+    /* ORGANIZER */
+    organizer.pendingEarnings = organizer.pendingEarnings - Number(ganancia);
+    organizer.payedEarnings = organizer.payedEarnings + Number(ganancia);
+
+    await event.save();
+    await organizer.save();
+
+    console.log({ pendingEarnings: event.pendingEarnings });
+    console.log({ payedEarnings: event.payedEarnings });
+
+    res.json({ message: 'Pagado exitosamente' });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
   }
 });
 

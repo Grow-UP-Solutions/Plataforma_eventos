@@ -43,6 +43,7 @@ const EventSchema = new Schema(
         precioAlPublico: Number,
         gananciaCupo: Number,
         gananciaEvento: Number,
+
         inRevision: {
           type: Boolean,
           default: false,
@@ -54,7 +55,15 @@ const EventSchema = new Schema(
             ref: 'Users',
           },
         ],
-        profits: {
+        pendingEarnings: {
+          type: Number,
+          default: 0,
+        },
+        payedEarnings: {
+          type: Number,
+          default: 0,
+        },
+        overallEarnings: {
           type: Number,
           default: 0,
         },
@@ -90,6 +99,14 @@ const EventSchema = new Schema(
       },
     ],
     overallEarnings: {
+      type: Number,
+      default: 0,
+    },
+    pendingEarnings: {
+      type: Number,
+      default: 0,
+    },
+    payedEarnings: {
       type: Number,
       default: 0,
     },

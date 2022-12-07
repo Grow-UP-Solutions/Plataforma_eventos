@@ -558,22 +558,18 @@ router.put('/setBankAccount/:id', async (req, res) => {
 router.put('/editBankAccount/:id/:numAccount', async (req, res) => {
   const { id, numAccount } = req.params;
   const { newBankName, newBankAccount } = req.body;
-  let isExistNumAccount = false;
 
   try {
     const user = await UsersFunctionDb.oneUser(id);
     if (!user) throw new Error('No existe el usuario');
 
-    for (let x = 0; x < user.bank.length; x++) {
-      if (user.bank[x].bankAccount === numAccount) {
-        isExistNumAccount = true;
-        user.bank[x].bankAccount = newBankAccount;
-        user.bank[x].bankName = newBankName;
-        await user.save();
-      }
-    }
+    const newBank = user.bank.filter((bank) => bank.bankAccount !== numAccount);
 
-    if (!isExistNumAccount) throw new Error('No existe el numero de cuenta ingresado');
+    newBank.push({ bankName: newBankName, bankAccount: newBankAccount });
+
+    user.bank = newBank;
+
+    await user.save();
 
     res.json({ success: true, bankAccounts: user.bank });
   } catch (error) {
