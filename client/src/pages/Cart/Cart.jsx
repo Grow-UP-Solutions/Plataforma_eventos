@@ -86,6 +86,7 @@ const Cart = () => {
         carrito[i].quantity = num;
         carrito[i].subtotal = num * carrito[i].price;
         carrito[i].unit_price = carrito[i].price + carrito[i].costos/num;
+        carrito[i].ganancias = carrito[i].priceOrg * carrito[i].quantity ;
       }
     }
   };
@@ -262,6 +263,7 @@ const Cart = () => {
         quantity: carrito[i].quantity,
         unit_price: carrito[i].unit_price,
         id: carrito[i].idDate,
+        ganancias: carrito[i].ganancias,
         codigo: carrito[i].codigoDescuento || null,
       };
       f.push(d);
@@ -286,10 +288,10 @@ const Cart = () => {
     };
     console.log('payload', payload);
 
-    const json = await eventsApi.post('/mercadoPago/orden', payload);
-    console.log('res:', json.data);
+    // const json = await eventsApi.post('/mercadoPago/orden', payload);
+    // console.log('res:', json.data);
 
-    window.location.assign(json.data.init_point);
+    // window.location.assign(json.data.init_point);
   }
 
   // // mercadoPago/orden?codigo=xxx

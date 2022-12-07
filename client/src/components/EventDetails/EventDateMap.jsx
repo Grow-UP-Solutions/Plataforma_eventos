@@ -30,6 +30,8 @@ const EventDateMap = ({ id, cupos }) => {
 
         carrito[i].unit_price = carrito[i].price + carrito[i].costos/num;
 
+        carrito[i].ganancias = carrito[i].priceOrg * carrito[i].quantity ;
+
         sTotal.push(carrito[i].subtotal);
 
         let total = sTotal.reduce((a, b) => a + b, 0);
