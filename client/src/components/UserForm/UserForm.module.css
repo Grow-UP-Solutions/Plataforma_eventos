@@ -115,6 +115,29 @@
   color: var(--color-grey-3);
 }
 
+.modalHoverMoreInfo {
+  display: none;
+  position: absolute;
+  top: 11rem;
+  right: -10rem;
+
+  background-color: white;
+  color: var(--color-grey-1);
+  width: 20rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.modalHoverMoreInfo {
+  font-size: 1.2rem;
+  line-height: 1.2;
+}
+
+.containerIconMoreInfo:hover ~ .modalHoverMoreInfo {
+  display: block;
+}
+
 .containerMoreInfo {
   position: absolute;
   bottom: -150%;
@@ -529,6 +552,7 @@
 }
 
 .containerAboutMeInput {
+  position: relative;
   margin-top: 2rem;
   display: flex;
   align-items: center;
@@ -834,5 +858,11 @@
 
   .btnEditNames {
     display: none !important;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .modalHoverMoreInfo {
+    right: 0rem;
   }
 }

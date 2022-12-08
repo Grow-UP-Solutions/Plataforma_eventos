@@ -54,7 +54,10 @@ const Verification = () => {
       const result = await eventsApi.post('/users/confirmEmail', userBody);
 
       if (path === 'profile') {
-        return window.opener.postMessage({ confirm: result.data.success }, 'http://localhost:3000/user/profile');
+        return window.opener.postMessage(
+          { confirm: result.data.success },
+          'https://events-jean.vercel.app/user/profile'
+        );
       }
 
       if (result.data.success) {
