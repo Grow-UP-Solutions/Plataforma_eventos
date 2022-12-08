@@ -261,3 +261,17 @@
     margin-left: 5rem;
   }
 }
+
+@media screen and (max-height: 781px) {
+  .sideMenu {
+    padding: 1rem 2rem;
+  }
+
+  .containerListOptionsMenu {
+    padding-bottom: 1rem;
+    gap: 0.8rem;
+  }
+  .sideMenu .labelOption {
+    font-size: 1.2rem;
+  }
+}
