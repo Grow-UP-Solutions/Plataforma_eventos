@@ -55,6 +55,26 @@ router.post('/create', async (req, res) => {
   }
 });
 
+router.post('/createAndNotPublic', async (req, res) => {
+  try {
+    const event = req.body;
+
+    const eventCreat = await createEvents(event);
+
+    eventCreat.isPublic = false;
+
+    eventCreat.dates.forEach((date) => {
+      date.isPublic = false;
+    });
+
+    await eventCreat.save();
+
+    return res.status(200).json(eventCreat);
+  } catch (error) {
+    return res.status(500).json({ ERROR_EVENT_CREATE: error.message });
+  }
+});
+
 router.post('/opinionsGenerate/:id', async (req, res) => {
   try {
     const { id } = req.params;
