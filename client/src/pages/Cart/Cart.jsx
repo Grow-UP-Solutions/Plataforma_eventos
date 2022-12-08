@@ -16,9 +16,10 @@ import { UIContext } from '../../context/ui';
 import { getReferalCode } from '../../redux/actions';
 import eventsApi from '../../axios/eventsApi';
 import { AuthContext } from '../../context/auth';
-import { administracion } from '../../utils/administracion';
-import { iva } from '../../utils/administracion';
+import { administracion, iva } from '../../utils/administracion';
 import { MdOutlineArrowBackIos } from 'react-icons/md';
+import { postPayment } from '../../redux/actions';
+
 const Cart = () => {
   const id = useParams().id;
   const events = useSelector((state) => state.events);
@@ -85,7 +86,8 @@ const Cart = () => {
       if (carrito[i].idDate === id) {
         carrito[i].quantity = num;
         carrito[i].subtotal = num * carrito[i].price;
-        carrito[i].unit_price = carrito[i].price + carrito[i].costos/num;
+        carrito[i].unit_price = carrito[i].price + carrito[i].costos / num;
+        carrito[i].ganancias = carrito[i].priceOrg * carrito[i].quantity;
       }
     }
   };
@@ -249,19 +251,23 @@ const Cart = () => {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    console.log('valorTotal',valorTotal)
+    console.log('valorTotal', valorTotal);
 
-    const ganancia = valorTotal - (valorTotal*0.16) - (valorTotal*0.16*0.19)
-    console.log('ganancia',valorTotal)
-
+    console.log({ carrito });
+    const ganancia = [];
     const f = [];
     const cod = [];
     for (let i = 0; i < carrito.length; i++) {
+      // const gananciaFechaOrg = carrito[i].priceOrg * carrito[i].quantity;
+
+      ganancia.push(carrito[i].ganancias);
+
       const d = {
         title: eventDetail.title,
         quantity: carrito[i].quantity,
-        unit_price: carrito[i].unit_price,
+        unit_price: Math.trunc(carrito[i].unit_price),
         id: carrito[i].idDate,
+        ganancias: carrito[i].ganancias,
         codigo: carrito[i].codigoDescuento || null,
       };
       f.push(d);
@@ -278,12 +284,18 @@ const Cart = () => {
       ]);
     }
 
+    console.log('ganancia', ganancia);
+    const gananciaTotalOrg = ganancia.reduce((a, b) => a + b);
+
+    console.log({ gananciaTotalOrg });
+
     const payload = {
       idUser: user.uid,
       idEvent: eventDetail._id,
-      ganancia:ganancia,
+      ganancia: gananciaTotalOrg,
       dates: f,
     };
+
     console.log('payload', payload);
 
     const json = await eventsApi.post('/mercadoPago/orden', payload);
@@ -651,6 +663,3 @@ const Cart = () => {
 };
 
 export default Cart;
-
-
-

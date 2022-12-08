@@ -128,6 +128,8 @@ router.get('/getBankAccount/:id', async (req, res) => {
 
     if (!user) throw new Error('Usuario con ese id no existe');
 
+    console.log({ bank: user.bank });
+
     res.json({ bankAccounts: user.bank });
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -553,6 +555,28 @@ router.put('/setBankAccount/:id', async (req, res) => {
   }
 });
 
+router.put('/editBankAccount/:id/:numAccount', async (req, res) => {
+  const { id, numAccount } = req.params;
+  const { newBankName, newBankAccount } = req.body;
+
+  try {
+    const user = await UsersFunctionDb.oneUser(id);
+    if (!user) throw new Error('No existe el usuario');
+
+    const newBank = user.bank.filter((bank) => bank.bankAccount !== numAccount);
+
+    newBank.push({ bankName: newBankName, bankAccount: newBankAccount });
+
+    user.bank = newBank;
+
+    await user.save();
+
+    res.json({ success: true, bankAccounts: user.bank });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+});
+
 /**/ ///////////////Rutas DELETE/////////////////////////// */
 router.delete('/delete/:id', async (req, res) => {
   try {
@@ -566,6 +590,21 @@ router.delete('/delete/:id', async (req, res) => {
     });
   } catch (error) {
     return res.status(500).json({ FALLO_USER_DELETE: error.message });
+  }
+});
+
+router.delete('/deleteBankAccount/:id/:numAccount', async (req, res) => {
+  const { id, numAccount } = req.params;
+
+  try {
+    const user = await UsersFunctionDb.oneUser(id);
+    if (!user) throw new Error('No existe el usuario');
+    const bankAccountsUser = user.bank;
+    user.bank = bankAccountsUser.filter((bank) => bank.bankAccount !== numAccount);
+    await user.save();
+    res.json({ bankAccounts: user.bank });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
   }
 });
 

@@ -1,7 +1,7 @@
 .loadingContainer {
   display: grid;
   place-items: center;
-  height: 60rem;
+  height: 50vh;
 }
 
 .iconLoading {

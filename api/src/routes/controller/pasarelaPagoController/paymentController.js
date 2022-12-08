@@ -1,216 +1,271 @@
-require("dotenv").config();
-const axios = require("axios");
-const { Router } = require("express");
+require('dotenv').config();
+const axios = require('axios');
+const { Router } = require('express');
 const router = Router();
-const mercadopago = require("mercadopago");
-const calculoDeComicion = require("../../../models/util/calculoDeComiciones/calculoDeComicion");
-const EventFunctionDb = require("../../../models/util/functionDB/event/index.event");
-const UsersFunctionDb = require("../../../models/util/functionDB/users/index.users");
+const mercadopago = require('mercadopago');
+const SuccessPayment = require('../../../models/DB/SuccessPayment');
+const calculoDeComicion = require('../../../models/util/calculoDeComiciones/calculoDeComicion');
+const EventFunctionDb = require('../../../models/util/functionDB/event/index.event');
+const UsersFunctionDb = require('../../../models/util/functionDB/users/index.users');
 const { ACCESS_TOKEN } = process.env;
 
 mercadopago.configure({
-   access_token: `${ACCESS_TOKEN}`,
+  access_token: `${ACCESS_TOKEN}`,
 });
 
-router.post("/orden", async (req, res) => {
-   const { dates, idUser, idEvent } = req.body;
+let auxBody = [];
 
-   const codigosPrueba = dates.map((e) => e.codigo);
+router.post('/orden', async (req, res) => {
+  const { dates, idUser, idEvent, ganancia } = req.body;
 
-   const userDB = await UsersFunctionDb.oneUser(idUser);
+  auxBody.push({ dates, idUser, idEvent, ganancia });
 
-   const eventDB = await EventFunctionDb.oneEvent(idEvent);
+  const codigosPrueba = dates.map((e) => e.codigo);
 
-   const dateEvent = [];
+  const userDB = await UsersFunctionDb.oneUser(idUser);
+  const eventDB = await EventFunctionDb.oneEvent(idEvent);
 
-   for (let i = 0; i < dates.length; ++i) {
-      for (let j = 0; j < eventDB.dates.length; j++) {
-         if (dates[i].id == eventDB.dates[j]._id)
-            dateEvent.push(eventDB.dates[j]);
-      }
-   }
+  const dateEvent = [];
 
-   const telefono = userDB.tel?.split(" ").join("");
+  for (let i = 0; i < dates.length; ++i) {
+    for (let j = 0; j < eventDB.dates.length; j++) {
+      if (dates[i].id == eventDB.dates[j]._id) dateEvent.push(eventDB.dates[j]);
+    }
+  }
 
-   const isCuposLlenos = false;
+  const telefono = userDB.tel?.split(' ').join('');
 
-   dateEvent.forEach((date) => {
-      if (date.cupos <= 0) isCuposLlenos = true;
-   });
+  const isCuposLlenos = false;
 
-   if (isCuposLlenos) {
-      throw new Error("El evento esta sobrevendido");
-   }
-   try {
-      const itemsMp = dates;
+  dateEvent.forEach((date) => {
+    if (date.cupos <= 0) isCuposLlenos = true;
+  });
 
-      let preference = {
-         items: itemsMp,
-         nameUser: userDB.name,
-         emailUser: userDB.email,
-         binary_mode: true,
-         identification: {
-            number: userDB.document,
-            type: "CC",
-         },
-         external_reference: `${idEvent},${idUser}`,
-         payer: {
-            name: userDB.firstName,
-            surname: userDB.lastName,
-            email: userDB.email,
-            date_created: Date.now(),
-            phone: {
-               area_code: "57",
-               number: parseInt(telefono),
-            },
-         },
-         payment_methods: {
-            excluded_payment_type: [
-               {
-                  id: "atm",
-               },
-            ],
-            installments: 4,
-         },
+  if (isCuposLlenos) {
+    throw new Error('El evento esta sobrevendido');
+  }
+  try {
+    const itemsMp = dates;
 
-         back_urls: {
-            success: `http://localhost:3000/mercadoPago/success`,
-            failure: `http://localhost:3000/mercadoPago/fail`,
-         },
-         auto_return: "approved",
-         taxes: [
-            {
-               type: "IVA",
-               value: 19,
-            },
-         ],
-      };
+    let preference = {
+      items: itemsMp,
+      nameUser: userDB.name,
+      emailUser: userDB.email,
+      binary_mode: true,
+      identification: {
+        number: userDB.document,
+        type: 'CC',
+      },
+      external_reference: `${idEvent},${idUser}`,
+      payer: {
+        name: userDB.firstName,
+        surname: userDB.lastName,
+        email: userDB.email,
+        date_created: Date.now(),
+        phone: {
+          area_code: '57',
+          number: parseInt(telefono),
+        },
+      },
+      payment_methods: {
+        excluded_payment_type: [
+          {
+            id: 'atm',
+          },
+        ],
+        installments: 4,
+      },
 
-      const respuesta = await mercadopago.preferences.create(preference);
+      back_urls: {
+        success: `http://localhost:3000/mercadoPago/success`,
+        failure: `http://localhost:3000/mercadoPago/fail`,
+      },
+      auto_return: 'approved',
+      taxes: [
+        {
+          type: 'IVA',
+          value: 19,
+        },
+      ],
+    };
 
-      const globalInitPoint = respuesta.body.init_point;
+    const respuesta = await mercadopago.preferences.create(preference);
 
-      return res.json({ init_point: globalInitPoint });
-   } catch (error) {
-      console.log(error.message);
-      res.status(500).json(error.message);
-   }
+    const globalInitPoint = respuesta.body.init_point;
+
+    return res.json({ init_point: globalInitPoint });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json(error.message);
+  }
 });
 
-router.get("/success", async (req, res) => {
-   const { external_reference, payment_id, preference_id, codigo } = req.query;
+router.get('/success', async (req, res) => {
+  const { external_reference, payment_id, preference_id, codigo } = req.query;
 
-   const ids = external_reference.split(",");
+  console.log({ auxBody });
 
-   const idEvent = ids[0];
-   const idUser = ids[1];
+  const ids = external_reference.split(',');
 
-   let resultTransaccion = {};
-   let factura = {};
+  const idEvent = ids[0];
+  const idUser = ids[1];
 
-   try {
-      const dataPayments = await axios(
-         `https://api.mercadopago.com/v1/payments/${payment_id}?access_token=${ACCESS_TOKEN}`
-      );
+  let resultTransaccion = {};
+  let factura = {};
 
-      const response = dataPayments.data;
+  try {
+    const dataPayments = await axios(
+      `https://api.mercadopago.com/v1/payments/${payment_id}?access_token=${ACCESS_TOKEN}`
+    );
 
-      const cuposComprados = response.additional_info.items.map((e) =>
-         parseInt(e.quantity)
-      );
-      const totalDeCupos = cuposComprados.reduce((a, b) => a + b);
+    const response = dataPayments.data;
 
-      const event = await EventFunctionDb.oneEvent(idEvent);
-      const organizerEvent = await UsersFunctionDb.oneUser(event.organizer);
-      console.log(organizerEvent.factura);
-      const user = await UsersFunctionDb.oneUser(idUser);
-      let ganancia = 0;
-      if (
-         response.status === "approved" &&
-         response.status_detail === "accredited"
-      ) {
-         event.generalBuyers.push(user._id);
+    /* const cuposComprados = response.additional_info.items.map((e) => parseInt(e.quantity));
+    const totalDeCupos = cuposComprados.reduce((a, b) => a + b); */
 
-         event.overallEarnings +=
-            response.transaction_details.total_paid_amount;
+    let totalCupos = 0;
 
-         event.sells += totalDeCupos;
+    auxBody[0].dates.forEach((date) => {
+      totalCupos = totalCupos + date.quantity;
+    });
 
-         event.dates.forEach((e, i) => {
-            for (let j = 0; j < response.additional_info.items.length; ++j) {
-               if (e._id == response.additional_info.items[j].id) {
-                  e.buyers?.push(user._id);
+    console.log({ totalCupos });
 
-                  e.sells += totalDeCupos;
+    const event = await EventFunctionDb.oneEvent(idEvent);
+    const organizerEvent = await UsersFunctionDb.oneUser(event.organizer);
+    const user = await UsersFunctionDb.oneUser(idUser);
 
-                  e.cupos -= totalDeCupos;
+    let ganancia = 0;
 
-                  e.profits += response.transaction_details.total_paid_amount;
-                  console.log(e.price)
-                  ganancia = calculoDeComicion(e.price);
-                  console.log(ganancia);
-                  organizerEvent.pendingEarnings += ganancia;
-               }
+    if (response.status === 'approved' && response.status_detail === 'accredited') {
+      event.generalBuyers.push(user._id);
+
+      organizerEvent.pendingEarnings += auxBody[0].ganancia;
+      organizerEvent.overallEarnings += auxBody[0].ganancia;
+      event.pendingEarnings += auxBody[0].ganancia;
+      event.overallEarnings += auxBody[0].ganancia;
+      event.sells += totalCupos;
+
+      console.log({ overallEarnings: event.overallEarnings });
+      console.log({ sells: event.sells });
+
+      event.dates.forEach((e, i) => {
+        for (let j = 0; j < auxBody[0].dates.length; ++j) {
+          if (e._id == auxBody[0].dates[j].id) {
+            for (let x = 0; x < e.codigos.length; x++) {
+              if (e.codigos[x].codigo === auxBody[0].dates[j].codigo) {
+                e.codigos[x].cantidad = e.codigos[x].cantidad - 1;
+                e.codigos[x].uses = e.codigos[x].uses + 1;
+              }
             }
-         });
 
-         user.myEventsBooked.push(event._id);
+            e.buyers?.push(user._id);
+            e.cupos = e.cupos - auxBody[0].dates[j].quantity;
+            e.sells = e.sells + auxBody[0].dates[j].quantity;
+            e.pendingEarnings = e.pendingEarnings + auxBody[0].dates[j].ganancias;
+            e.overallEarnings = e.overallEarnings + auxBody[0].dates[j].ganancias;
+          }
+        }
+      });
 
-         if (user.isReferral.code && !user.isReferral.use) {
-            const userReferral = await UsersFunctionDb.codeUser(
-               user.isReferral
-            );
-            userReferral.saldoPendiente -= 5000;
+      user.myEventsBooked.push(event._id);
 
-            userReferral.saldoTotal += 5000;
+      if (user.isReferral.code && !user.isReferral.use) {
+        const userReferral = await UsersFunctionDb.codeUser(user.isReferral);
+        userReferral.saldoPendiente -= 5000;
 
-            user.isReferral.use = true;
-         }
+        userReferral.saldoTotal += 5000;
 
-         await event.save();
-         resultTransaccion = {
-            thumbnail: event.pictures[0].picture,
-            motivo: event.title,
-            codigoDeLaTransaccion: payment_id,
-            DestinoDePago: response.statement_descriptor,
-            fechaDePago: response.date_created,
-            valorDeLaTransaccion: response.net_amount,
-            costoDeLaTransaccion: response.net_amount,
-            referencia: response.payer.identification.number,
-            estatus: response.status,
-         };
-
-         factura = {
-            evento: event.title,
-            fechaDeFacturacion: response.date_created,
-            numeroDeFactura: payment_id,
-            ganancia: ganancia,
-            isPay: false,
-         };
-         organizerEvent.factura.push(factura)
-
-         user.ordenes.push(resultTransaccion);
-         await organizerEvent.save()
-         await user.save();
-
-         return res.json(resultTransaccion);
+        user.isReferral.use = true;
       }
+
+      await event.save();
       resultTransaccion = {
-         Motivo: event.title,
-         codigoDeLaTransaccion: payment_id,
-         DestinoDePago: response.statement_descriptor,
-         fechaDePago: response.date_created,
-         valorDeLaTransaccion: response.net_amount,
-         costoDeLaTransaccion: response.net_amount,
-         referencia: response.payer.identification.number,
-         estatus: response.status,
+        thumbnail: event.pictures[0].picture,
+        motivo: event.title,
+        codigoDeLaTransaccion: payment_id,
+        DestinoDePago: response.statement_descriptor,
+        fechaDePago: response.date_created,
+        valorDeLaTransaccion: response.net_amount,
+        costoDeLaTransaccion: response.net_amount,
+        referencia: response.payer.identification.number,
+        estatus: response.status,
       };
+
+      factura = {
+        evento: event.title,
+        fechaDeFacturacion: response.date_created,
+        numeroDeFactura: payment_id,
+        ganancia: ganancia,
+        isPay: false,
+      };
+      organizerEvent.factura.push(factura);
+
+      user.ordenes.push(resultTransaccion);
+      await organizerEvent.save();
+      await user.save();
 
       return res.json(resultTransaccion);
-   } catch (error) {
-      console.log(error.message);
-      return res.status(500).json(error.message);
-   }
+    }
+
+    resultTransaccion = {
+      Motivo: event.title,
+      codigoDeLaTransaccion: payment_id,
+      DestinoDePago: response.statement_descriptor,
+      fechaDePago: response.date_created,
+      valorDeLaTransaccion: response.net_amount,
+      costoDeLaTransaccion: response.net_amount,
+      referencia: response.payer.identification.number,
+      estatus: response.status,
+    };
+
+    return res.json(resultTransaccion);
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json(error.message);
+  }
+});
+
+router.put('/adminPaymentOrganizer/', async (req, res) => {
+  const { billNumber, datePay, ganancia, idDate, idEvent, idOrg } = req.body;
+
+  try {
+    const organizer = await UsersFunctionDb.oneUser(idOrg);
+    const event = await EventFunctionDb.oneEvent(idEvent);
+
+    if (!organizer) throw new Error('Usuario no existe');
+    if (!event) throw new Error('Evento no existe');
+
+    /* EVENT */
+
+    event.pendingEarnings = event.pendingEarnings - ganancia;
+    event.payedEarnings = event.payedEarnings + ganancia;
+
+    for (let x = 0; x < event.dates.length; x++) {
+      if (event.dates[x]._id == idDate) {
+        event.dates[x].pendingEarnings = event.dates[x].pendingEarnings - ganancia;
+        event.dates[x].payedEarnings = event.dates[x].payedEarnings + ganancia;
+        event.dates[x].datePay = datePay;
+        event.dates[x].billNumber = billNumber;
+        event.dates[x].isPay = true;
+        await event.save();
+      }
+    }
+
+    /* ORGANIZER */
+    organizer.pendingEarnings = organizer.pendingEarnings - Number(ganancia);
+    organizer.payedEarnings = organizer.payedEarnings + Number(ganancia);
+
+    await event.save();
+    await organizer.save();
+
+    console.log({ pendingEarnings: event.pendingEarnings });
+    console.log({ payedEarnings: event.payedEarnings });
+
+    res.json({ message: 'Pagado exitosamente' });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
 });
 
 module.exports = router;

@@ -1,62 +1,59 @@
-.container{
-    margin-top: 4rem;
-    width: 100%; 
-    margin-left: 5rem;
+.container {
+  margin-top: 4rem;
+  width: 100%;
+  height: 50vh;
 }
 
-.title{
-    width: 50%;
-    justify-content: start;
-    color:#1B3C6A;
-    font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 1.5rem;
+.title {
+  justify-content: start;
+  color: #1b3c6a;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
 }
 
-.containercard{
-    display: grid;
-    grid-template-columns: 1fr 1fr  1fr ;
-    margin: 0 auto;
+.containercard {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin: 0 auto;
 }
 
-.card{
-    margin-bottom: 3rem;
-    text-align: left;
+.card {
+  margin-bottom: 3rem;
+  text-align: left;
 }
 
-.hr{
-    border: 0.1px solid rgb(219, 219, 219);
-    width: 100%;
-    margin-bottom: 5rem;
-    margin-top: 5rem;
+.hr {
+  border: 0.1px solid rgb(219, 219, 219);
+  width: 100%;
+  margin-bottom: 5rem;
+  margin-top: 5rem;
 }
 
-.containerSeeEvents{
-    width:100%;
-    text-align: center;
+.containerSeeEvents {
+  width: 100%;
+  text-align: center;
 }
 
-.text{
-    color:rgb(194, 193, 193);
-    margin-bottom: 3rem;
-    font-size: 2rem;
-    font-style: italic;
-    text-align: center;
+.text {
+  color: rgb(194, 193, 193);
+  margin-bottom: 3rem;
+  font-size: 2rem;
+  font-style: italic;
+  text-align: center;
 }
 
-.btn{
-    font-size: 1.4rem;
-    border-radius: 18px;
-    margin: auto;
-    padding: 8px 30px;
-    cursor: pointer;
-    background-color:var(--color-orange);
-    color: white;
-    border: none;
+.btn {
+  font-size: 1.4rem;
+  border-radius: 18px;
+  margin: auto;
+  padding: 8px 30px;
+  cursor: pointer;
+  background-color: var(--color-orange);
+  color: white;
+  border: none;
 }
 
 .container_pagination {
-    margin-top: 5rem;
-  }
-  
-
+  margin-top: 5rem;
+}
