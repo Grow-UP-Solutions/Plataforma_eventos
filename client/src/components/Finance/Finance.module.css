@@ -6,7 +6,7 @@
 .containerSub {
   margin: auto 0;
   margin-bottom: 4rem;
-  height: 26rem;
+  /* height: 26rem; */
   box-shadow: rgb(127, 125, 125);
   border: 1px solid var(--color-grey-4);
   border-radius: 1rem;
