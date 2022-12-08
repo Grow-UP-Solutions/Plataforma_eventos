@@ -73,7 +73,18 @@ const Messages = () => {
       try {
         const res = await eventsApi.get('/conversation/' + id);
         const json = res.data.filter((e) => e.locked === false);
-        setConversations(json);
+        const orden = json.sort((e) => {
+          if (e.pinup === true) {
+            return -1;
+          }
+          else if (e.pinup === false) {
+            return 1;
+          }
+          else {
+            return 0;
+          }
+        });
+        setConversations(orden);
         setBlock(res.data.filter((e) => e.locked === true));
         setLoad(false);
         const ubication = res.data.length - 1;

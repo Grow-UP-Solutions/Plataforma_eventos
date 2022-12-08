@@ -12,6 +12,7 @@ import {
 } from "../../components";
 
 const Home = ({ handleNav }) => {
+
   const { user } = useContext(AuthContext);
   const { setNotes, setMsg, setConversa } = useContext(stateContext);
 

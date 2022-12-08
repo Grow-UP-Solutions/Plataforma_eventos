@@ -48,21 +48,21 @@ function App() {
   const [navBar, setNavBar] = useState(false);
   const dispatch = useDispatch();
   const { isMenuLoginOpen, getCategories, getAllEvents } = useContext(UIContext);
-  const { checkAuthToken } = useContext(AuthContext);
+  const { checkAuthToken, user } = useContext(AuthContext);
 
   useEffect(() => {
     checkAuthToken();
   }, []);
 
   useEffect(() => {
-    getCategories();
     scroll.scrollToTop();
   }, []);
 
   useEffect(() => {
     dispatch(getEvents());
     getAllEvents();
-  }, []);
+    getCategories();
+  }, [user]);
 
   return (
     <div className='App'>
