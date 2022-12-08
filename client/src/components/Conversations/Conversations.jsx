@@ -77,14 +77,12 @@ const Conversations = ({ conversation, id }) => {
     e.preventDefault();
     setClick(!click);
     const res = await eventsApi.put(`/conversation/${conversation._id}/pinup`);
-    console.log(res.data);
   }
   
   const handleClickBlock = async (e) => {
     e.preventDefault();
     setBlocked(true);
     const res = await eventsApi.put('/conversation/' + conversation._id);
-    console.log(res);
     swal({
       title: 'Conversación Bloqueada',
       icon: 'info',
