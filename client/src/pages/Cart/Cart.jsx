@@ -86,7 +86,6 @@ const Cart = () => {
       if (carrito[i].idDate === id) {
         carrito[i].quantity = num;
         carrito[i].subtotal = num * carrito[i].price;
-        carrito[i].unit_price = carrito[i].price + carrito[i].costos / num;
         carrito[i].ganancias = carrito[i].priceOrg * carrito[i].quantity;
       }
     }
@@ -251,14 +250,19 @@ const Cart = () => {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    console.log('valorTotal', valorTotal);
+    const costos = administracion + iva;
 
-    console.log({ carrito });
+    
     const ganancia = [];
     const f = [];
     const cod = [];
     for (let i = 0; i < carrito.length; i++) {
-      // const gananciaFechaOrg = carrito[i].priceOrg * carrito[i].quantity;
+
+      const costoCarrito = costos/carrito.length
+
+      carrito[i].costos = costoCarrito/carrito[i].quantity 
+      carrito[i].unit_price = carrito[i].price+carrito[i].costos
+      
 
       ganancia.push(carrito[i].ganancias);
 
@@ -284,7 +288,6 @@ const Cart = () => {
       ]);
     }
 
-    console.log('ganancia', ganancia);
     const gananciaTotalOrg = ganancia.reduce((a, b) => a + b);
 
     console.log({ gananciaTotalOrg });
@@ -303,9 +306,6 @@ const Cart = () => {
 
     window.location.assign(json.data.init_point);
   }
-
-  // // mercadoPago/orden?codigo=xxx
-  // // mercadoPago/success
 
   const [nextPageForm, setNextPageForm] = useState(false);
 
