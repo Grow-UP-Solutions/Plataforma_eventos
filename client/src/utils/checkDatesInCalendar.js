@@ -1,43 +1,45 @@
 const eventDateToCalendarFormat = (userDates) => {
-//   let created = userDates.myEventsCreated
-//     .map((event) => {
-//       return event.dates.map((date) => {
-//         if (date.isPublic) return date;
-//       });
-//     })
-//     .flat();
+  /*   console.log({ userDates });
 
-//   let pendingToAssist = userDates.myEventsBooked
-//     .map((event) => {
-//       return event.dates.map((date) => {
-//         if (date.isPublic) return date;
-//       });
-//     })
-//     .flat();
+  let created = userDates.myEventsCreated
+    .map((event) => {
+      return event.dates.map((date) => {
+        if (date.isPublic) return date;
+      });
+    })
+    .flat();
 
-//   created = created.map((date) => {
-//     const datesData = date.date.split('-');
+  let pendingToAssist = userDates.myEventsBooked
+    .map((event) => {
+      return event.dates.map((date) => {
+        if (date.isPublic) return date;
+      });
+    })
+    .flat();
 
-//     const year = +datesData[0];
-//     const month = +datesData[1][0] === 0 ? +datesData[1][1] : +datesData[1];
-//     const day = +datesData[2][0] === 0 ? +datesData[2][1] : +datesData[2];
+  created = created.map((date) => {
+    const datesData = date.date.split('-');
 
-//     return { year, month, day, className: 'blueDay' };
-//   });
+    const year = +datesData[0];
+    const month = +datesData[1][0] === 0 ? +datesData[1][1] : +datesData[1];
+    const day = +datesData[2][0] === 0 ? +datesData[2][1] : +datesData[2];
 
-//   pendingToAssist = pendingToAssist.map((date) => {
-//     const datesData = date.date.split('-');
+    return { year, month, day, className: 'blueDay' };
+  });
 
-//     const year = +datesData[0];
-//     const month = +datesData[1].length === 2 ? +datesData[1][1] : +datesData[1];
-//     const day = +datesData[2].length === 2 ? +datesData[2][1] : +datesData[2];
+  pendingToAssist = pendingToAssist.map((date) => {
+    const datesData = date.date.split('-');
 
-//     return { year, month, day, className: 'orangeDay' };
-//   });
+    const year = +datesData[0];
+    const month = +datesData[1].length === 2 ? +datesData[1][1] : +datesData[1];
+    const day = +datesData[2].length === 2 ? +datesData[2][1] : +datesData[2];
 
-//   const totalDatesToCalendar = [...created, ...pendingToAssist];
+    return { year, month, day, className: 'orangeDay' };
+  });
 
-//   return totalDatesToCalendar;
+  const totalDatesToCalendar = [...created, ...pendingToAssist];
+
+  return totalDatesToCalendar; */
 };
 
 export default eventDateToCalendarFormat;

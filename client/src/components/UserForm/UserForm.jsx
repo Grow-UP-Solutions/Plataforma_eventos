@@ -41,6 +41,7 @@ const UserForm = ({ userData }) => {
   });
 
   const editor = useRef();
+
   const [propertysImageUser, setPropertysImageUser] = useState({
     image: formData.userpicture || '',
     position: { x: 0.5, y: 0.5 },
@@ -391,6 +392,14 @@ const UserForm = ({ userData }) => {
       });
     }
 
+    if (nameInput === 'firstName' && valueInput.split(' ').length === 1) {
+      return setFormData({
+        ...formData,
+        [nameInput]: valueInput,
+        ['nickname']: `${valueInput} ${formData.lastName.split(' ')[0]}`,
+      });
+    }
+
     setFormData({
       ...formData,
       [nameInput]: valueInput,
@@ -685,6 +694,7 @@ const UserForm = ({ userData }) => {
     });
   };
 
+  /* VERIFICAR EMAIL */
   const verifyEmail = async (e) => {
     e.preventDefault();
     const email = changeEmail.email;
@@ -697,7 +707,7 @@ const UserForm = ({ userData }) => {
     localStorage.setItem('user', JSON.stringify({ email }));
 
     const popup = window.open(
-      `http://localhost:3000/verificarmail/profile`,
+      `https://events-jean.vercel.app/verificarmail/profile`,
       'targetWindow',
       `toolbar=no, location=no, status=no,menubar=no, scrollbars=yes, resizable=yes,width=800, height=600`
     );
@@ -1114,7 +1124,7 @@ const UserForm = ({ userData }) => {
                     {errorPassword.currentPassword === false && (
                       <span className={styles.errorMessage}>
                         Has ingresado una contraseña que no coincide con la registrada,intenta <br /> de nuevo o
-                        comunicate con nosotros <Link to='/'>aquí.</Link>
+                        <Link to={'/contactanos'}>comunicate con nosotros</Link>.
                       </span>
                     )}
                   </div>
@@ -1355,7 +1365,16 @@ const UserForm = ({ userData }) => {
               disabled={canWriteInput.descriptionOrganizer}
               ref={txtAreaDescription}
             ></textarea>
-            <BsInfoCircle className={styles.btnIconMoreInfo} />
+            <div className={styles.containerIconMoreInfo}>
+              <BsInfoCircle className={styles.btnIconMoreInfo} />
+            </div>
+
+            <div className={styles.modalHoverMoreInfo}>
+              <p>
+                Por favor no ingresar datos como redes sociales, números de contacto, ni cualquier información de
+                contacto.
+              </p>
+            </div>
           </div>
         </div>
         {errorFields.descriptionOrganizer && (
