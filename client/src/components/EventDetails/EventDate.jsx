@@ -109,15 +109,10 @@ const EventDate = ({ id, openMenu }) => {
 
   const dateSelected = (e, price) => {
     setChecked(true);
+
     const fechaElegida = e.target.value;
 
-    const costos = administracion + iva;
-
-  
-
     const priceOrg =price - (price * comision) - (price * comision * ivaOrg)
-    
-    // const unit_price = price + administracion + iva;
 
     if (!e.target.checked) {
       let seleccion = carrito.filter((f) => f.idDate !== fechaElegida);
@@ -126,17 +121,13 @@ const EventDate = ({ id, openMenu }) => {
       setChecked(false);
       setDateToBuy(seleccionDate);
     } else {
-      
-     
-
       setCarrito([
         ...carrito,
         {
           idDate: fechaElegida,
           quantity: 1,
           price: price,
-          costos: costos,
-          unit_price: price + costos,
+          unit_price: price ,
           codigoDescuento: '',
           codigoReferido: '',
           codigoCorrecto: '',

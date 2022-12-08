@@ -35,6 +35,8 @@ const Finance = ({ userData }) => {
     getBankAccount();
   }, [closeModal]);
 
+  console.log('userData',userData)
+
   /*console.log('userData',userData._id);
     const opcionesEliminar = [
       'Tengo otra cuenta de Lo que quiero hacer',
@@ -79,7 +81,7 @@ const Finance = ({ userData }) => {
     <div className={styles.container}>
       <div className={styles.containerSub}>
         <div className={styles.containerSub1}>
-          <p className={styles.texto}>Ganancias totales en facturas ya emitidas: {userData.earnings} </p>
+          <p className={styles.texto}>Ganancias totales en facturas ya emitidas: {userData.payedEarnings} </p>
           <p className={styles.texto}>Ganancias pendientes en facturas por emitir: {userData.pendingEarnings} </p>
           <p className={styles.subtexto}>
             Cifras mostradas son netas, es decir el monto indicado ya ha sido depositado en tu cuenta bancaria o esta

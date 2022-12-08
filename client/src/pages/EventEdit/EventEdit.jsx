@@ -1341,7 +1341,7 @@ const EventEdit = () => {
           swal('Tu evento ha sido publicado ', {
             icon: 'success',
           });
-          navigate('/user/perfil/datos');
+          navigate('/usuario/mis-eventos')
         }
       });
     } else if (eventDetails === post) {
@@ -1373,7 +1373,7 @@ const EventEdit = () => {
           swal('Tu evento ha sido publicado ', {
             icon: 'success',
           });
-          navigate('/user/perfil/datos');
+          navigate('/usuario/mis-eventos')
         }
       });
     }
@@ -2799,7 +2799,7 @@ const EventEdit = () => {
                       <div>
                         <button className={styles.viewBtn} onClick={(e)=>handleSubmit(e)}>
                           {' '}
-                          Publicar Evento
+                          Guardar Cambios
                         </button>
                       </div>
                     </div>
