@@ -302,11 +302,15 @@ const UserForm = ({ userData }) => {
     txtAreaDescription.current.focus();
   }, [canWriteInput.descriptionOrganizer]);
 
+  const [canSave, setCanSave] = useState(false);
+
   const editFields = (e, inputName) => {
     e.preventDefault();
 
     if (inputName === 'name' || inputName === 'lastName') {
     }
+
+    setCanSave(true);
 
     setCanWriteInput({
       ...canWriteInput,
@@ -567,6 +571,8 @@ const UserForm = ({ userData }) => {
       document: '',
       descriptionOrganizer: '',
     });
+
+    setCanSave(false);
   };
 
   const handleImageBackDocument = async (e) => {
@@ -1393,12 +1399,16 @@ const UserForm = ({ userData }) => {
           </span>
         )}
 
-        <button onClick={updateUserData} className={styles.btnSave}>
-          Guardar
-        </button>
-        <button onClick={() => setModalCancel(true)} className={styles.btnCancel}>
-          Cancelar
-        </button>
+        {canSave && (
+          <>
+            <button onClick={updateUserData} className={styles.btnSave}>
+              Guardar
+            </button>
+            <button onClick={() => setModalCancel(true)} className={styles.btnCancel}>
+              Cancelar
+            </button>
+          </>
+        )}
       </div>
 
       {/* MODAL DE "CANCELAR FORM" */}
