@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom';
 const Admin = () => {
 
     return(
-    <div>
+    <div className={style.Link}>
         <Link to='/lista-de-organizadores'>Pagar Facturas</Link>
     </div>
     )

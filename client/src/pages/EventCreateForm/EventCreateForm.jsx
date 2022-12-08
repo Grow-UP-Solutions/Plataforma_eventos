@@ -28,7 +28,7 @@ import iconExclamacion2 from '../../assets/imgs/iconExclamacion2.svg';
 import mapa from '../../assets/imgs/mapa2.png';
 import eventsApi from '../../axios/eventsApi';
 import { AuthContext } from '../../context/auth/AuthContext';
-import { getColombia, postEvent } from '../../redux/actions';
+import { getColombia, postEvent , postEventSave } from '../../redux/actions';
 import { formatDateForm } from '../../utils/formatDateForm';
 import styles from './EventCreateForm.module.css';
 import { AiOutlineClose } from 'react-icons/ai';
@@ -443,7 +443,7 @@ const EventCreateForm = () => {
   }
 
   //--------------------------------------------------//
-  //               POST - TITLE,DESCRIPTION       //
+   //             POST - TITLE,DESCRIPTION       //
 
   function handleChange(e) {
     e.preventDefault();
@@ -898,19 +898,10 @@ const EventCreateForm = () => {
   //--------------------------------------------------//
   //                 SAVE           //
 
-  function chagnePublic(){
-    setPost({
-      ...post,
-      isPublic: false,
-    });
-  }
 
-  function handleSave(e) {
+   function handleSave(e) {
     e.preventDefault();
-    
-    chagnePublic()
-      console.log('estoy en save');
-      console.log('is public:', post.isPublic);
+
       if (Object.values(errors).length > 0) {
         setFailedSubmit(true);
         return swal({
@@ -926,12 +917,10 @@ const EventCreateForm = () => {
           dangerMode: true,
         }).then((guardar) => {
           if (guardar) {
-            console.log('post:', post.isPublic);
-            dispatch(postEvent(post));
+            dispatch(postEventSave(post));
             swal('Tu evento ha sido guardado ', {
               icon: 'success',
             });
-            console.log('is public:', post.isPublic);
             navigate('/usuario/mis-eventos');
           }
         });
