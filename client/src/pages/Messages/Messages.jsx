@@ -72,7 +72,8 @@ const Messages = () => {
     const getConversations = async () => {
       try {
         const res = await eventsApi.get('/conversation/' + id);
-        setConversations(res.data.filter((e) => e.locked === false));
+        const json = res.data.filter((e) => e.locked === false);
+        setConversations(json);
         setBlock(res.data.filter((e) => e.locked === true));
         setLoad(false);
         const ubication = res.data.length - 1;
@@ -130,7 +131,7 @@ const Messages = () => {
       });
       console.log('desmonte mensajes');
     };
-  }, [last]);
+  }, [last]); 
 
   const handleChangeNewMessages = (e) => {
     e.preventDefault();

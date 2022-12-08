@@ -141,7 +141,6 @@ const eventCreateAdministrador = async (events, organizer) => {
         </div>
       </body>
     </html>
-    
   `,
   };
   try {

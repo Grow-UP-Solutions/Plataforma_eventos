@@ -3,14 +3,14 @@ import React, { useContext, useState } from 'react';
 import eventsApi from '../../axios/eventsApi';
 import style from './ModalFinance.module.css';
 import { stateContext } from '../../context/state/stateContext';
+import swal from 'sweetalert';
 
 const banco = ['Banco Frances', 'Banco ICBC', 'Banco Colombia', 'Banco Alianza', 'Banco JP Morgan'];
 
-const ModalFinance = ({ closeModal, idUser }) => {
+const ModalFinance = ({ closeModal, idUser, num }) => {
 
   const [state, setState] = useState('');
-  const [data, setData] = useState('');
-  const [cta, setCta] = useState(false);
+  const [data, setData] = useState(num);
   const { bank, setBank } = useContext(stateContext);
 
   const handleChangeBank = (e) => {
@@ -25,21 +25,47 @@ const ModalFinance = ({ closeModal, idUser }) => {
 
   const handleClickNew = async (e) => {
     e.preventDefault();
-
     const json = {
       bankName: state,
       bankAccount: data,
     };
-    
     try {
       const res = await eventsApi.put(`/users/setBankAccount/${idUser}`, json);
       setBank(...bank, res.data);
       setState('');
       setData('');
-      setCta(true);
+      swal({
+        title: 'Cuenta bancaria agregada correctamente',
+        icon: 'success',
+        button: 'OK',
+      });
     } 
     catch (error) {
       console.log(error)
+    }
+  }
+
+  const handleClickChange = async (e) => {
+    e.preventDefault();
+    const json = {
+      newBankName: state,
+      newBankAccount: data,
+    };
+    try {
+      const res = await eventsApi.put(`/users/editBankAccount/${idUser}/${num}`, json);
+      console.log('res.data', res.data);
+      console.log('json', json) 
+      setBank(res.data);
+      setState('');
+      setData('');
+      swal({
+        title: 'Cuenta bancaria actualizada correctamente',
+        icon: 'success',
+        button: 'OK',
+      });
+    } 
+    catch (error) {
+      console.log(error);
     }
   }
 
@@ -47,6 +73,10 @@ const ModalFinance = ({ closeModal, idUser }) => {
     <div className={style.container}>
       <p className={style.modal_close} onClick={closeModal}>
         X
+      </p>
+
+      <p className={style.title}>
+        Completa los campos con los datos correctos
       </p>
 
       <div className={style.line_div}></div>
@@ -59,7 +89,6 @@ const ModalFinance = ({ closeModal, idUser }) => {
             id='miBanco'
             name='bancos'
             onChange={handleChangeBank}
-            /* onKeyPress={handleKeyPress} */
             value={state}
             className={style.data}
             placeholder='Banco'
@@ -82,19 +111,20 @@ const ModalFinance = ({ closeModal, idUser }) => {
           />
         </div>
 
-        <div className={style.container_new}>
-          <button className={style.new} onClick={handleClickNew}>Agregar</button>
-        </div>
+        {
+          num ?
+          <div className={style.container_new}>
+            <button className={style.new} onClick={handleClickChange}>Actualizar</button>
+          </div> :
+          <div className={style.container_new}>
+            <button className={style.new} onClick={handleClickNew}>Agregar</button>
+          </div>
+        }
 
       </div>
 
-      {
-        cta &&
-        <div><p>Cuenta bancaria agregada</p></div>
-      }
-
-      <div className={style.container_button}>
-        <button className={style.button_confirm} onClick={closeModal}>
+      <div className={style.container_button} >
+        <button className={style.button_confirm} onClick={closeModal} >
           Listo
         </button>
       </div>
@@ -103,11 +133,3 @@ const ModalFinance = ({ closeModal, idUser }) => {
 }
 
 export default ModalFinance;
-
-/* 
-<select defaultValue={state} onChange={handleChangeBank}>
-  <option value='default' disabled>Banco</option>
-  <option value="Frances">Banco Frances</option>
-  <option value="ICBC">Banco ICBC</option>
-</select>
-*/

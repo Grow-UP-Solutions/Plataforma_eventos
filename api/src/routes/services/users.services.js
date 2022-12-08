@@ -96,7 +96,7 @@ async function eventesFavorites(idUser, idEvent) {
     if (!eventeFavorite) {
       user.myFavorites.push(idEvent);
       await user.save();
-      return { msg: 'Exito' };
+      return { favorites: user.myFavorites };
     }
 
     return { msg: 'el evento existe en favoritos', eventeFavorite };
@@ -113,7 +113,7 @@ async function eventesDeleteFavorites(idUser, idEvent) {
     if (eventeFavorite) {
       user.myFavorites = user.myFavorites.filter((e) => e._id !== eventeFavorite._id);
       await user.save();
-      return { msg: 'Exito' };
+      return { favorites: user.myFavorites };
     }
 
     return { msg: 'el evento no existe en favoritos', eventeFavorite };

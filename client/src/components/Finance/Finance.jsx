@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styles from './Finance.module.css';
 // import users from '../../api/users';
 import basquet from '../../assets/imgs/basquet.svg';
@@ -9,11 +9,18 @@ import { useModal } from '../../hooks/useModal';
 import Modal from '../../components/Modal/Modal';
 import ModalFinance from '../Modals/ModalFinance';
 import { stateContext } from '../../context/state/stateContext';
+import swal from 'sweetalert';
+import { animateScroll as scroll } from 'react-scroll';
 
 const Finance = ({ userData }) => {
 
   const { bank, setBank } = useContext(stateContext);
   const [isOpenModal, openModal, closeModal] = useModal(false);
+  const [link, setLink] = useState(undefined);
+
+  useEffect(() => {
+    scroll.scrollToTop();
+  }, []);
 
   useEffect(() => {
     const getBankAccount = async () => {
@@ -42,7 +49,32 @@ const Finance = ({ userData }) => {
 
   const handleClickNewAccount = (e) => {
     e.preventDefault();
-    return openModal();
+    setLink(undefined);
+    return setTimeout(() => {
+      openModal();
+    }, 1000);
+  }
+
+  const handleClickEdit = (num) => {
+    setLink(num);
+    return setTimeout(() => {
+      openModal();
+    }, 1000);
+  }
+
+  const handleClickDelete = async (num) => {
+    try {
+      const res = await eventsApi.delete(`/users/deleteBankAccount/${userData._id}/${num}`);
+      setBank(res.data);
+      swal({
+        title: 'Cuenta bancaria eliminada',
+        icon: 'success',
+        button: 'OK',
+      });
+    } 
+    catch (error) {
+      console.log(error);  
+    }
   }
 
   return (
@@ -62,7 +94,7 @@ const Finance = ({ userData }) => {
       </div>
 
       <Modal isOpen={isOpenModal} closeModal={closeModal}>
-        <ModalFinance closeModal={closeModal} idUser={userData._id}/>
+        <ModalFinance closeModal={closeModal} idUser={userData._id} num={link} />
       </Modal>
 
       <div className={styles.containerSub}>
@@ -86,24 +118,28 @@ const Finance = ({ userData }) => {
                 </div>
 
                 <div className={styles.containerBtnAccount}>
-                  <div className={styles.btnEdit}>
-                      <img className={styles.basquet} src={edit} style={{color: 'red'}} alt='nw' /> 
+                  <div className={styles.btnEdit} onClick={() => handleClickEdit(c.bankAccount)}>
+                      <img className={styles.basquet} src={edit} alt='nw' /> 
                       <button className={styles.btnAccount}>Editar</button>
                   </div>
 
                   <div className={styles.vLine}></div>
 
-                  <div className={styles.btnDelete}>
+                  <div className={styles.btnDelete} onClick={() => handleClickDelete(c.bankAccount)}>
                     <img className={styles.basquet} src={basquet} alt='nx' />
                     <button className={styles.btnAccount}>Eliminar</button>
                   </div>
                 </div>
               </div> 
             )) :
-            <div className={styles.container_nocta}><p className={styles.nocta}>Todavia no agregaste ninguna cuenta bancaria</p></div>
+            <div className={styles.container_nocta}>
+              <p className={styles.nocta}>
+                Todavia no agregaste ninguna cuenta bancaria
+              </p>
+            </div>
           }       
 
-          <hr className={styles.hr}></hr>
+          {/* <hr className={styles.hr}></hr> */}
 
           <button className={styles.btnAdd} onClick={handleClickNewAccount}>+ Agregar cuenta</button>
         </div>
@@ -113,25 +149,3 @@ const Finance = ({ userData }) => {
 };
 
 export default Finance;
-
-{/* <div className={styles.containerBankAccount}>
-  <div>
-    <input type='checkbox' className={styles.check} />
-    <label>Ahorros Bancolombias</label>
-  </div>
-  <div>
-    <p>Xxxx-xxxx-xxxx-2367</p>
-  </div>
-  <div className={styles.containerBtnAccount}>
-    <div className={styles.btnEdit}>
-      <button className={styles.btnAccount}>
-        <img className={styles.basquet} src={basquet} alt='n' /> Editar
-      </button>
-    </div>
-    <div className={styles.vLine}></div>
-    <div className={styles.btnDelete}>
-      <img className={styles.basquet} src={basquet} alt='n' />
-      <button className={styles.btnAccount}>Eliminar</button>
-    </div>
-  </div>
-</div> */}
