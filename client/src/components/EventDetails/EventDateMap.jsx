@@ -22,13 +22,10 @@ const EventDateMap = ({ id, cupos }) => {
 
     for (let i = 0; i < carrito.length; i++) {
       if (carrito[i].idDate === id) {
+        
         carrito[i].quantity = num;
 
         carrito[i].subtotal = num * carrito[i].price;
-
-        
-
-        carrito[i].unit_price = carrito[i].price + carrito[i].costos/num;
 
         carrito[i].ganancias = carrito[i].priceOrg * carrito[i].quantity ;
 

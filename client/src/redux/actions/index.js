@@ -38,6 +38,20 @@ export function postEvent(payload) {
   };
 }
 
+export function postEventSave(payload) {
+  return async function(dispatch) {
+    console.log('payload,', payload);
+
+    const json = await eventsApi.post('/events/createAndNotPublic', payload);
+    console.log('res:', json.data);
+
+    return dispatch({
+      type: 'POST_EVENT',
+      payload: json.data,
+    });
+  };
+}
+
 export function putEvent(payload, id) {
   return async function(dispatch) {
     const json = await eventsApi.put(`/events/${id}`, payload);
