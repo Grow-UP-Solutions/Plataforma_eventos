@@ -134,6 +134,11 @@
   color: white;
 }
 
+.calendar-user .orangeDay:not(.-selectedStart):not(.-selectedBetween):not(.-selectedEnd):not(.-selected) {
+  background: var(--color-orange) !important;
+  color: white;
+}
+
 /* MEDIA QUERIES */
 
 @media screen and (max-width: 1490px) {

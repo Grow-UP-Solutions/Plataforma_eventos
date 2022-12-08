@@ -138,7 +138,7 @@ const UserPage = () => {
 
   useEffect(() => {
     getUserData();
-  }, [option, userData]);
+  }, [option]);
 
   const handleInput = (e, iconValue) => {
     setOptionChecked(e.target.value || iconValue.toLowerCase());
@@ -456,12 +456,12 @@ const UserPage = () => {
                   value={'perfil'}
                   className={styles.btn}
                   name='Perfil'
-                  id='perfil'
+                  id='perfilR'
                   onChange={handleInput}
                   checked={optionChecked === 'perfil' ? true : false}
                 />
                 {openMenuResponsive && (
-                  <label className={styles.labelOption} htmlFor='perfil'>
+                  <label className={styles.labelOption} htmlFor='perfilR'>
                     Perfil
                   </label>
                 )}
@@ -495,12 +495,12 @@ const UserPage = () => {
                       value={'guia del organizador'}
                       className={styles.btn}
                       name='Guia Del Organizador'
-                      id='guia del organizador'
+                      id='guia del organizadorR'
                       onChange={handleInput}
                       checked={optionChecked === 'guia del organizador' ? true : false}
                     />
                     {openMenuResponsive && (
-                      <label className={styles.labelOption} htmlFor='guia del organizador'>
+                      <label className={styles.labelOption} htmlFor='guia del organizadorR'>
                         Guia Del Organizador
                       </label>
                     )}
@@ -520,13 +520,13 @@ const UserPage = () => {
                   value={'eventos'}
                   className={styles.btn}
                   name='eventos'
-                  id='eventos'
+                  id='eventosR'
                   onChange={handleInput}
                   checked={optionChecked === 'eventos' ? true : false}
                 />
 
                 {openMenuResponsive && (
-                  <label className={styles.labelOption} htmlFor='eventos'>
+                  <label className={styles.labelOption} htmlFor='eventosR'>
                     Eventos
                   </label>
                 )}
@@ -545,11 +545,11 @@ const UserPage = () => {
                       value={'myListEvents'}
                       className={styles.btn}
                       name='Mi lista'
-                      id='miList'
+                      id='miListR'
                       onChange={handleInputSubMenu}
                       checked={optionSubMenuChecked === 'myListEvents' ? true : false}
                     />
-                    <label className={styles.labelOption} htmlFor='miList'>
+                    <label className={styles.labelOption} htmlFor='miListR'>
                       Mi lista
                     </label>
                     <IconEvents className={styles.iconMenu} />
@@ -560,11 +560,11 @@ const UserPage = () => {
                       value={'eventsForAssist'}
                       className={styles.btn}
                       name='Pendientes por Asistir'
-                      id='pendientes'
+                      id='pendientesR'
                       onChange={handleInputSubMenu}
                       checked={optionSubMenuChecked === 'eventsForAssist' ? true : false}
                     />
-                    <label className={styles.labelOption} htmlFor='pendientes'>
+                    <label className={styles.labelOption} htmlFor='pendientesR'>
                       Pendientes por Asistir
                     </label>
 
@@ -582,11 +582,11 @@ const UserPage = () => {
                           value={'myEvents'}
                           className={styles.btn}
                           name='Mis Eventos'
-                          id='myEvents'
+                          id='myEventsR'
                           onChange={handleInputSubMenu}
                           checked={optionSubMenuChecked === 'myEvents' ? true : false}
                         />
-                        <label className={styles.labelOption} htmlFor='myEvents'>
+                        <label className={styles.labelOption} htmlFor='myEventsR'>
                           Mis Eventos
                         </label>
 
@@ -628,12 +628,12 @@ const UserPage = () => {
                       value={'finance'}
                       className={styles.btn}
                       name='Finance'
-                      id='finance'
+                      id='financeR'
                       onChange={handleInput}
                       checked={optionChecked === 'finance' ? true : false}
                     />
                     {openMenuResponsive && (
-                      <label className={styles.labelOption} htmlFor='finance'>
+                      <label className={styles.labelOption} htmlFor='financeR'>
                         Finanzas
                       </label>
                     )}
@@ -652,12 +652,12 @@ const UserPage = () => {
                   value={'preferencias'}
                   className={styles.btn}
                   name='Preferencias'
-                  id='preferencias'
+                  id='preferenciasR'
                   checked={optionChecked === 'preferencias' ? true : false}
                   onChange={handleInput}
                 />
                 {openMenuResponsive && (
-                  <label className={styles.labelOption} htmlFor='preferencias'>
+                  <label className={styles.labelOption} htmlFor='preferenciasR'>
                     Preferencias
                   </label>
                 )}
@@ -674,12 +674,12 @@ const UserPage = () => {
                   value={'plan de referidos'}
                   className={styles.btn}
                   name='Plan de Referidos'
-                  id='plan de referidos'
+                  id='plan de referidosR'
                   onChange={handleInput}
                   checked={optionChecked === 'plan de referidos' ? true : false}
                 />
                 {openMenuResponsive && (
-                  <label className={styles.labelOption} htmlFor='plan de referidos'>
+                  <label className={styles.labelOption} htmlFor='plan de referidosR'>
                     Plan de Referidos
                   </label>
                 )}
