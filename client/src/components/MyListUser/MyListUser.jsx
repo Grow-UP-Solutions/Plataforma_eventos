@@ -1,14 +1,13 @@
-import React from 'react';
-import { Card } from '..';
+import React, { useContext, useEffect, useState } from 'react';
+import { Card, UserForm } from '..';
 import styles from './MyListUser.module.css';
 import { Link } from 'react-router-dom';
 import Pagination from '../../components/Pagination/Pagination';
-import { useState } from 'react';
 import { FaCaretSquareRight } from 'react-icons/fa';
 
 const MyListUser = ({ myFavorites, myEventsBooked }) => {
 
-  const eventos = myFavorites.concat(myEventsBooked)
+  const eventos = myFavorites.concat(myEventsBooked);
 
   const orderByDate = eventos.sort((a, b) => {
     if (a.dates[0].date < b.dates[0].date) return -1;
@@ -16,18 +15,12 @@ const MyListUser = ({ myFavorites, myEventsBooked }) => {
     return 0;
   });
 
-
   const [currentPage, setCurretPage] = useState(1);
   const CardPerPage = 6;
   const indexOfLastCard = currentPage * CardPerPage;
   const indexOfFirstCard = indexOfLastCard - CardPerPage;
   const currentCard = orderByDate.slice(indexOfFirstCard, indexOfLastCard);
   const paginado = (pageNumber) => setCurretPage(pageNumber);
-
-  
-  
-
-
   
   return (
     <div className={styles.container}>
@@ -53,13 +46,52 @@ const MyListUser = ({ myFavorites, myEventsBooked }) => {
       </div>
 
       <div className={styles.container_pagination}>
-        <Pagination billsPerPage={CardPerPage} state={eventos.length} paginado={paginado} page={currentPage} />
+        <Pagination 
+          billsPerPage={CardPerPage} 
+          state={eventos.length} 
+          paginado={paginado} 
+          page={currentPage} 
+        />
       </div>
     </div>
   );
 };
 
 export default MyListUser;
+
+/* 
+
+useEffect(() => {
+    const getfav = async () => {
+      try {
+        const res = await eventsApi.get(`/users/${user.uid}`);
+        const json = res.data.myFavorites;
+        const event = json.concat(myEventsBooked);
+        const orden = event.sort((a, b) => {
+          if (a.dates[0].date < b.dates[0].date) return -1;
+          if (b.dates[0].date < a.dates[0].date) return 1;
+          return 0;
+        });
+        setGetFav(json);
+        setState(orden);
+      } 
+      catch (error) {
+        console.log(error);
+      }
+    }
+    getfav();
+  }, [user]);
+
+
+  const { user } = useContext(AuthContext);
+  const { setGetFav } = useContext(UIContext);
+  const [state, setState] = useState([]);
+
+import eventsApi from '../../axios/eventsApi';
+import { AuthContext } from '../../context/auth';
+import { UIContext } from '../../context/ui';
+
+*/
 
 
 

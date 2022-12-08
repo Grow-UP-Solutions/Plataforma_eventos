@@ -82,6 +82,10 @@ export const UIProvider = ({ children }) => {
     dispatch({ type: 'DELETE_CONVERSATION', payload: json });
   }
 
+  const setGetFav = (json) => {
+    dispatch({type: 'SET_GET_FAV', payload: json});
+  }
+
   return (
     <UIContext.Provider
       value={{

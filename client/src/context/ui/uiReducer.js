@@ -39,13 +39,13 @@ export const uiReducer = (state, action) => {
     case 'GET_EVENTS_FAVOURITES':
       return {
         ...state,
-        eventsFavourites: action.payload,
+        eventsFavourites: action.payload.favorites,
       };
 
     case 'GET_EVENTS_WITHOUT_FAVOURITES':
       return {
         ...state,
-        eventsFavourites: action.payload,
+        eventsFavourites: action.payload.favorites,
       };
 
     case 'GET_RATING_ORGANIZER':
@@ -90,6 +90,11 @@ export const uiReducer = (state, action) => {
         deleteConversation: action.payload,
       };
 
+    case 'SET_GET_FAV':
+      return {
+        ...state,
+        eventsFavourites: action.payload,
+      };
 
     default:
     return state;
