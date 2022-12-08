@@ -77,7 +77,7 @@ const Cart = () => {
   const [numberBuyCupos, setNumberBuyCupos] = useState(0);
 
   const handleNumberBuyCupos = (e, num, id, cupos) => {
-    //const carritoCupos = [...carrito]
+   
     if (num <= -1) return;
     if (num > cupos) return;
     setNumberBuyCupos(num);
@@ -86,17 +86,28 @@ const Cart = () => {
       if (carrito[i].idDate === id) {
         carrito[i].quantity = num;
         carrito[i].subtotal = num * carrito[i].price;
-        carrito[i].ganancias = carrito[i].priceOrg * carrito[i].quantity;
+        carrito[i].ganancias = carrito[i].priceOrg * num;
+
+        if(carrito[i].codigoDescuento.length>1){
+        carrito[i].descuento = carrito[i].unit_disc * num
+          }
+        
       }
     }
   };
 
   useEffect(() => {
     const sTotal = [];
+    const dTotal = [];
     for (let i = 0; i < carrito.length; i++) {
+
       sTotal.push(carrito[i].subtotal);
       let total = sTotal.reduce((a, b) => a + b, 0);
       setSubTotal(total);
+
+      dTotal.push(carrito[i].descuento);
+      let dtotal = dTotal.reduce((a, b) => a + b, 0);
+      setSubTotal(dtotal);
     }
   }, [numberBuyCupos]);
 
@@ -124,19 +135,23 @@ const Cart = () => {
             carrito[c].codigoCorrecto = true;
 
             const valorDescuento = (descValor * currentDate[0].price) / 100; //$1000
+            carrito[c].unit_disc = valorDescuento
+
             const valorDescuentoCupos = valorDescuento * carrito[c].quantity; //$2000
 
             carrito[c].descuento = valorDescuentoCupos; //$2000
 
-            const unitDic = carrito[c].unit_price - valorDescuento;
-            carrito[c].unit_price = unitDic;
+            //const unitDic = carrito[c].unit_price - valorDescuento;
+            carrito[c].unit_price = carrito[c].unit_price - valorDescuento;
+            carrito[c].priceOrg = carrito[c].priceOrg - valorDescuento
+            carrito[c].ganancias = carrito[c].ganancias - valorDescuentoCupos
 
             setDesc(carrito[c].descuento);
             return swal({
               title: 'Codigo Aplicado',
             });
           } else if (currentDate[0].codigos[d].codigo !== codigo) {
-            console.log('en referal');
+            
 
             const codeResult = await eventsApi.get(`/codeDiscount/getCodeDiscountByCode/${codigo} `);
 
@@ -149,9 +164,11 @@ const Cart = () => {
 
               //const descuentoUnit = carrito[c].unit_price - codeResult.data.codeDiscount[0].value
 
-              const descuentoUnit = carrito[c].unit_price - refUnit;
+              carrito[c].unit_price = carrito[c].unit_price - refUnit;
 
-              carrito[c].unit_price = descuentoUnit;
+              carrito[c].priceOrg = carrito[c].priceOrg - refUnit;
+
+              carrito[c].ganancias = carrito[c].ganancias - codeResult.data.codeDiscount[0].value;
 
               setDesc(codeResult.data.codeDiscount[0].value);
 
@@ -192,6 +209,8 @@ const Cart = () => {
         const restoTotal = valorTotal - desc;
 
         carrito[i].unit_price = carrito[i].unit_price + descUnit;
+        carrito[i].priceOrg = carrito[i].priceOrg + descUnit;
+        carrito[i].ganacias = carrito[i].ganacias + desc;
 
         setValorTotal(restoTotal);
         setDescuentoTotal(resto);
@@ -251,19 +270,15 @@ const Cart = () => {
     e.preventDefault();
 
     const costos = administracion + iva;
-
-    
     const ganancia = [];
     const f = [];
     const cod = [];
+
     for (let i = 0; i < carrito.length; i++) {
-
       const costoCarrito = costos/carrito.length
-
       carrito[i].costos = costoCarrito/carrito[i].quantity 
-      carrito[i].unit_price = carrito[i].price+carrito[i].costos
+      carrito[i].unit_price = carrito[i].price + carrito[i].costos 
       
-
       ganancia.push(carrito[i].ganancias);
 
       const d = {
@@ -273,7 +288,8 @@ const Cart = () => {
         id: carrito[i].idDate,
         ganancias: carrito[i].ganancias,
         codigo: carrito[i].codigoDescuento || null,
-      };
+      }
+
       f.push(d);
 
       const c = carrito[i].codigoDescuento;
