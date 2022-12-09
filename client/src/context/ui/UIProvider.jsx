@@ -105,6 +105,7 @@ export const UIProvider = ({ children }) => {
         /* getMsgStar, */
         getMessagesStar,
         deleteConversation,
+        setGetFav,
       }}
     >
       {children}

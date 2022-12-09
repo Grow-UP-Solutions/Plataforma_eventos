@@ -38,6 +38,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { animateScroll as scroll } from 'react-scroll';
 import eventsApi from '../../axios/eventsApi';
 import eventDateToCalendarFormat from '../../utils/checkDatesInCalendar';
+import { UIContext } from '../../context/ui';
 
 const UserPage = () => {
   const { option } = useParams();
@@ -51,6 +52,7 @@ const UserPage = () => {
   const [optionSubMenuChecked, setOptionSubMenuChecked] = useState(option);
   const [load, setLoad] = useState(true);
   const [datesForCalendar, setDatesForCalendar] = useState([]);
+  const { setGetFav } = useContext(UIContext);
 
   useEffect(() => {
     getUserData();
@@ -80,6 +82,7 @@ const UserPage = () => {
     if (user.uid) {
       const userResult = await eventsApi.get(`/users/${user.uid}`);
       setUserData(userResult.data);
+      const json = userResult.data.myFavorites;
 
       switch (option) {
         case 'perfil':
@@ -90,12 +93,14 @@ const UserPage = () => {
           if (widthScreen <= 756) {
             console.log({ widthTest: widthScreen });
             setOptionChecked('eventos');
+            setGetFav(json);
           } else {
             console.log({ widthTestElse: widthScreen });
 
             setOptionChecked('eventos');
             setIsMenuOpen(true);
             setOptionSubMenuChecked('myListEvents');
+            setGetFav(json);
           }
 
           setComponent(

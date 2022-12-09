@@ -1,32 +1,16 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Card, UserForm } from '..';
 import styles from './MyListUser.module.css';
 import { Link } from 'react-router-dom';
 import Pagination from '../../components/Pagination/Pagination';
 import { FaCaretSquareRight } from 'react-icons/fa';
-import eventsApi from '../../axios/eventsApi';
-import { AuthContext } from '../../context/auth';
+import { UIContext } from '../../context/ui';
 
 const MyListUser = ({ myFavorites, myEventsBooked }) => {
 
-  const { user } = useContext(AuthContext);
-  const [hola, setHola] = useState([]);
+  const { eventsFavourites } = useContext(UIContext);
 
-  useEffect(() => {
-    const getUser = async () => {
-      try {
-        const res = await eventsApi.get(`/users/${user.uid}`);
-        const json = res.data.myFavorites;
-        setHola(json);
-      } 
-      catch (error) {
-        console.log(error)
-      }
-    }
-    getUser();
-  }, []);
-
-  const eventos = myFavorites.concat(myEventsBooked);
+  const eventos = eventsFavourites.concat(myEventsBooked);
 
   const orderByDate = eventos.sort((a, b) => {
     if (a.dates[0].date < b.dates[0].date) return -1;
