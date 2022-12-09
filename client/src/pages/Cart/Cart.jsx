@@ -22,6 +22,7 @@ import { postPayment } from '../../redux/actions';
 
 const Cart = () => {
   const id = useParams().id;
+  const dispatch = useDispatch();
   const events = useSelector((state) => state.events);
   const eventDetail = events.filter((e) => e._id === id)[0];
   const { carrito, setCarrito } = useContext(stateContext);
@@ -29,18 +30,18 @@ const Cart = () => {
   const { code, setCode } = useContext(stateContext);
   const { valorTotal, setValorTotal } = useContext(stateContext);
   const { subTotal, setSubTotal } = useContext(stateContext);
-  const dispatch = useDispatch();
-
   const [descuentoTotal, setDescuentoTotal] = useState('0');
 
+  
   //PAGINADO//
 
   const [currentPage, setCurretPage] = useState(1);
   const CardPerPage = 1;
   const indexOfLastCard = currentPage * CardPerPage;
   const indexOfFirstCard = indexOfLastCard - CardPerPage;
-  const currentDate = dateToBuy.slice(indexOfFirstCard, indexOfLastCard);
   const paginado = (pageNumber) => setCurretPage(pageNumber);
+
+  const currentDate = dateToBuy.slice(indexOfFirstCard, indexOfLastCard);
   const fechaIn = dateToBuy.length;
 
   const handlePrev = (e) => {
@@ -61,16 +62,16 @@ const Cart = () => {
 
   // ----- carrito-------//
 
-  useEffect(() => {
-    const precioTotal = subTotal + iva + administracion - descuentoTotal;
+  // useEffect(() => {
+  //   const precioTotal = subTotal + iva + administracion - descuentoTotal;
 
-    setValorTotal(precioTotal);
-  }, [subTotal]);
+  //   setValorTotal(precioTotal);
+  // }, [subTotal]);
 
-  useEffect(() => {
-    const f = subTotal + iva + administracion - descuentoTotal;
-    setValorTotal(f);
-  }, [descuentoTotal]);
+  // useEffect(() => {
+  //   const f = subTotal + iva + administracion - descuentoTotal;
+  //   setValorTotal(f);
+  // }, [descuentoTotal]);
 
   // // -----CUPOS-------//
 
@@ -84,12 +85,15 @@ const Cart = () => {
 
     for (let i = 0; i < carrito.length; i++) {
       if (carrito[i].idDate === id) {
+
         carrito[i].quantity = num;
         carrito[i].subtotal = num * carrito[i].price;
         carrito[i].ganancias = carrito[i].priceOrg * num;
 
         if(carrito[i].codigoDescuento.length>1){
-        carrito[i].descuento = carrito[i].unit_disc * num
+
+          carrito[i].descuento = carrito[i].unit_disc * num
+
           }
         
       }
@@ -101,14 +105,21 @@ const Cart = () => {
     const dTotal = [];
     for (let i = 0; i < carrito.length; i++) {
 
-      sTotal.push(carrito[i].subtotal);
-      let total = sTotal.reduce((a, b) => a + b, 0);
-      setSubTotal(total);
+     sTotal.push(carrito[i].subtotal);
+     dTotal.push(carrito[i].descuento);
 
-      dTotal.push(carrito[i].descuento);
-      let dtotal = dTotal.reduce((a, b) => a + b, 0);
-      setSubTotal(dtotal);
     }
+
+    let total = sTotal.reduce((a, b) => a + b, 0);
+    setSubTotal(total);
+
+    let t = total + iva + administracion;
+    setValorTotal(t);
+
+    let dtotal = dTotal.reduce((a, b) => a + b, 0);
+    setDescuentoTotal(dtotal)
+
+
   }, [numberBuyCupos]);
 
   // -----CODIGOS-------//
@@ -264,6 +275,16 @@ const Cart = () => {
     });
   }
 
+  // const quitarFecha = (e, id)=>{
+
+  //   let seleccion = carrito.filter((c) => c.idDate !== id);
+  //   let seleccionDate = dateToBuy.filter((d) => d._id !== id);
+
+  //   setCarrito(seleccion);
+  //   setDateToBuy(seleccionDate);
+
+  // }
+
   //---SUBMIT---//
 
   async function handleSubmit(e) {
@@ -306,8 +327,6 @@ const Cart = () => {
 
     const gananciaTotalOrg = ganancia.reduce((a, b) => a + b);
 
-    console.log({ gananciaTotalOrg });
-
     const payload = {
       idUser: user.uid,
       idEvent: eventDetail._id,
@@ -326,6 +345,7 @@ const Cart = () => {
   const [nextPageForm, setNextPageForm] = useState(false);
 
   return (
+    
     <div className={`${styles.pageCart} container`}>
       {dateToBuy.length > 0 && !nextPageForm && (
         <>
@@ -349,7 +369,7 @@ const Cart = () => {
                         <div className={styles.containercard}>
                           <div>
                             <div className={styles.productDate}>
-                              {carrito.length === 1 ? (
+                              {carrito.length === 1 && currentDate[0] !== undefined ? (
                                 <div className={styles.quantityBtns}>
                                   <span>{currentDate[0].dateFormated.replace('/', ' de ')}</span>
                                 </div>
@@ -358,13 +378,14 @@ const Cart = () => {
                                   <button onClick={(e) => handlePrev(e)}>
                                     <img src={iconArrowLeft} alt='icon-left' />
                                   </button>
-                                  <span>{currentDate[0].dateFormated.replace('/', ' de ')}</span>
+                                  <span>{currentDate[0] !== undefined ? currentDate[0].dateFormated.replace('/', ' de '):''}</span>
                                   <button onClick={(e) => handleNext(e)}>
                                     <img src={iconArrowRight} alt='icon-right' />
                                   </button>
                                 </div>
                               )}
                             </div>
+                            {currentDate[0] !== undefined &&
                             <div>
                               <p className={styles.productTime}>
                                 {currentDate[0].start} a {currentDate[0].end}
@@ -380,7 +401,16 @@ const Cart = () => {
                               ) : (
                                 ''
                               )}
+                               {/* {carrito.length >1 &&
+                               carrito.map((c) =>
+                                c.idDate === currentDate[0]._id ? (
+                                  <div>
+                                    <button onClick={(e)=>quitarFecha(e, c.idDate)}>Quitar Fecha</button>
+                                  </div>):
+                                  '')} */}
                             </div>
+}
+
                           </div>
                         </div>
                       </div>
@@ -391,8 +421,9 @@ const Cart = () => {
                         <div className={styles.containerQuantity}>
                           <p className={styles.titleQuantity}>Cantidad</p>
 
-                          {carrito.map((c) =>
-                            c.idDate === currentDate[0]._id ? (
+                        {carrito[0] !== undefined ?
+                          carrito.map((c) =>
+                            c.idDate === currentDate[0]._id  ? (
                               <div className={styles.quantityBtns}>
                                 <button
                                   onClick={(e) =>
@@ -413,7 +444,7 @@ const Cart = () => {
                             ) : (
                               ''
                             )
-                          )}
+                          ):''}
                         </div>
 
                         {/* Precio por cupo */}
@@ -675,6 +706,7 @@ const Cart = () => {
         </div>
       )}
     </div>
+     
   );
 };
 
