@@ -13,6 +13,7 @@ const EventDateMap = ({ id, cupos }) => {
   const [numberBuyCupos, setNumberBuyCupos] = useState(1);
 
   const handleNumberBuyCupos = (num) => {
+
     if (num <= -1) return;
     if (num > cupos) return;
 
@@ -22,25 +23,23 @@ const EventDateMap = ({ id, cupos }) => {
 
     for (let i = 0; i < carrito.length; i++) {
       if (carrito[i].idDate === id) {
-        
+      
         carrito[i].quantity = num;
 
         carrito[i].subtotal = num * carrito[i].price;
 
         carrito[i].ganancias = carrito[i].priceOrg * carrito[i].quantity ;
-
-        sTotal.push(carrito[i].subtotal);
-
-        let total = sTotal.reduce((a, b) => a + b, 0);
-
-        setSubTotal(total);
-
-        let t = total + iva + administracion;
-        console.log(t);
-
-        setValorTotal(t);
       }
+
+      sTotal.push(carrito[i].subtotal);
     }
+
+    let total = sTotal.reduce((a, b) => a + b, 0);
+    setSubTotal(total);
+
+    let t = total + iva + administracion;
+    setValorTotal(t);
+    
   };
 
   return (
