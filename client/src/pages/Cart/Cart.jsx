@@ -62,16 +62,16 @@ const Cart = () => {
 
   // ----- carrito-------//
 
-  // useEffect(() => {
-  //   const precioTotal = subTotal + iva + administracion - descuentoTotal;
+  useEffect(() => {
+    const precioTotal = subTotal + iva + administracion - descuentoTotal;
 
-  //   setValorTotal(precioTotal);
-  // }, [subTotal]);
+    setValorTotal(precioTotal);
+  }, [subTotal]);
 
-  // useEffect(() => {
-  //   const f = subTotal + iva + administracion - descuentoTotal;
-  //   setValorTotal(f);
-  // }, [descuentoTotal]);
+  useEffect(() => {
+    const f = subTotal + iva + administracion - descuentoTotal;
+    setValorTotal(f);
+  }, [descuentoTotal]);
 
   // // -----CUPOS-------//
 
