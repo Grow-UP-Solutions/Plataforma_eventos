@@ -35,24 +35,24 @@ const EventDate = ({ id, openMenu }) => {
   const navigate = useNavigate();
   const { toggleScreenLogin } = useContext(UIContext);
   const { user, logged, logout } = useContext(AuthContext);
-  const [checked, setChecked] = useState(false);
   const { carrito, setCarrito } = useContext(stateContext);
   const { dateToBuy, setDateToBuy } = useContext(stateContext);
   const [resultFormNewDate, setResultFormNewDate] = useState(false);
   const [isLoadingNewDate, setIsLoadingNewDate] = useState(false);
   const { valorTotal, setValorTotal } = useContext(stateContext);
+  const { subTotal, setSubTotal } = useContext(stateContext);
+
 
   useEffect(() => {
     setCarrito([]);
     setDateToBuy([]);
+    setValorTotal(0)
   }, []);
 
   const fecha = new Date();
   const hora = fecha.getHours();
   const minutes = fecha.getMinutes();
   const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
-
-  console.log('dateActual:', dateActual);
 
   const handleFormatDate = (date) => {
     setDate(date);
@@ -108,18 +108,32 @@ const EventDate = ({ id, openMenu }) => {
   const [dateId, setDateId] = useState(0);
 
   const dateSelected = (e, price) => {
-    setChecked(true);
-
+   
     const fechaElegida = e.target.value;
 
     const priceOrg =price - (price * comision) - (price * comision * ivaOrg)
 
     if (!e.target.checked) {
+
       let seleccion = carrito.filter((f) => f.idDate !== fechaElegida);
+      let carritoElegido = carrito.filter((f) => f.idDate === fechaElegida);
       let seleccionDate = dateToBuy.filter((d) => d._id !== fechaElegida);
       setCarrito(seleccion);
-      setChecked(false);
+      
       setDateToBuy(seleccionDate);
+     
+      if(carrito.length > 1){
+        const valorT = valorTotal - carritoElegido[0].subtotal
+        setValorTotal(valorT)
+        setSubTotal(subTotal - carritoElegido[0].subtotal)
+      }else{
+        setValorTotal(0)
+        setSubTotal(0)
+      }
+      
+
+
+
     } else {
       setCarrito([
         ...carrito,
@@ -138,10 +152,24 @@ const EventDate = ({ id, openMenu }) => {
         },
       ]);
 
+    
+      // const total = fechaElegida.price + administracion + iva
+      // setValorTotal(total)
+
       for (let i = 0; i < eventDetails.dates.length; i++) {
         if (eventDetails.dates[i]._id === fechaElegida) {
           const datesChoosen = eventDetails.dates[i];
           setDateToBuy([...dateToBuy, datesChoosen]);
+          const total = eventDetails.dates[i].price + administracion + iva
+          if(valorTotal === 0){
+          setValorTotal(total)
+          setSubTotal(eventDetails.dates[i].price)
+          }else{
+            const totalVariasFecchas = valorTotal + eventDetails.dates[i].price
+            setValorTotal(totalVariasFecchas)
+            setSubTotal(subTotal + eventDetails.dates[i].price)
+          }
+
         }
       }
     }
@@ -152,9 +180,9 @@ const EventDate = ({ id, openMenu }) => {
   const comprar = (e) => {
     if (!logged) {
       toggleScreenLogin();
-    } else if (logged && checked) {
+    } else if (logged && carrito.length>0) {
       navigate(`/cart/${id}`);
-    } else if (logged && !checked) {
+    } else if (logged && carrito.length===0) {
       swal('Debes seleccionar al menos una fecha');
     }
   };
