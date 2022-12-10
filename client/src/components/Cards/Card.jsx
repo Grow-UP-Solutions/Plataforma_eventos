@@ -51,6 +51,8 @@ const Card = ({ event, listName, orgEvent }) => {
     });
   }
 
+  console.log('event',event)
+
   useEffect(() => {
     getUsers();
   }, []);
