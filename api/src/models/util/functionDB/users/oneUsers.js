@@ -1,4 +1,4 @@
-require('../../../../DB')
+require('../../../../DB');
 const Users = require('../../../db/Users');
 
 module.exports = async function oneUserDb(id) {

@@ -49,7 +49,6 @@ router.get('/getCodeDiscountById/:id', async (req, res) => {
 
 router.get('/getCodeDiscountByCode/:code', async (req, res) => {
   const { code } = req.params;
-
   try {
     const codeDiscount = await getCodeDiscountByCode(code);
     res.json({ codeDiscount });

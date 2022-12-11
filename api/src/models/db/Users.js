@@ -50,14 +50,6 @@ const UserSchema = new Schema(
       type: Array,
       default: [],
     },
-    saldoPendiente: {
-      type: Number,
-      default: 0,
-    },
-    saldoTotal: {
-      type: Number,
-      default: 0,
-    },
     availableCredit: {
       type: Number,
       default: 0,
@@ -68,7 +60,7 @@ const UserSchema = new Schema(
     },
     isDeclarant: {
       type: Boolean,
-      default: false,
+      default: null,
     },
     isProfileCompleted: {
       type: Boolean,
@@ -129,12 +121,10 @@ const UserSchema = new Schema(
       type: String,
       default: '',
     },
-    referrals: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Users',
-      },
-    ],
+    referrals: {
+      type: Array,
+      default: [],
+    },
     isLogged: {
       type: Boolean,
       default: false,
