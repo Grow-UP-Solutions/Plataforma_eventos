@@ -53,6 +53,15 @@ const Card = ({ event, listName, orgEvent, datePublic }) => {
 
   
 
+  if(event.dates.length === 1 && event.dates[0].isPublic === false  ){
+    event.isPublic = false
+    console.log('event.ispublic', event.isPublic)
+  }
+
+  
+
+  
+
   const datesPublic = event.dates.filter(date=>date.isPublic===true)
   const datesNotPublic = event.dates.filter(date=>date.isPublic===false)
   
@@ -221,7 +230,7 @@ const Card = ({ event, listName, orgEvent, datePublic }) => {
 
         <div className={styles.cardText}>
           {orgEvent === 'true' && datePublic === 'true' && selectedDate === '' ? (
-            <p className={styles.cardDateCurrent}>{firstPublicDate.dateFormated.replace('de', '/')}</p>
+            <p className={styles.cardDateCurrent}>{firstPublicDate!==undefined ? firstPublicDate.dateFormated.replace('de', '/') :'' }</p>
           ) : orgEvent === 'true' && datePublic === 'true' && selectedDate !== '' ? (
             <p className={styles.cardDateCurrent}>{selectedDate.replace('de', '/')}</p>
           ) : orgEvent === 'true' && datePublic === 'false' && selectedDate === '' ? (
