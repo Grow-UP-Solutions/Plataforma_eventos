@@ -42,8 +42,27 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
   }
 
   const eventsPublic = myEventsCreated.filter((e) => e.isPublic === true);
-  const eventsNoPublic = myEventsCreated.filter((e) => e.isPublic === false);
+ 
+  const eventsNoPublicDuplicate = []
 
+  for(let i =0;i < myEventsCreated.length ; i++){
+    for(let j = 0; j < myEventsCreated[i].dates.length ; j++ ){
+      if(myEventsCreated[i].dates[j].isPublic===false){
+        eventsNoPublicDuplicate.push(myEventsCreated[i])
+      }
+    }
+  }
+
+
+    const eventsNoPublic = [];
+
+    eventsNoPublicDuplicate.forEach(function (item) {
+      if(!eventsNoPublic.includes(item)){
+        eventsNoPublic.push(item);
+      }
+    });
+
+ 
   const deleteEvent = (e) => {
     console.log('borrar evento');
   };
@@ -79,7 +98,7 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
             >
               {eventsPublic.map((event) => (
                 <div>
-                  <Card userData={userData} event={event} listName={'published'} orgEvent={'true'} />
+                  <Card userData={userData} event={event} listName={'published'} orgEvent={'true'} datePublic={'true'} />
                   <Link className={styles.btn} to={'/oganiza-un-evento-editar/' + event._id}>
                     <BsPencilSquare className={styles.iconEdit} />
                     <span>Editar</span>
@@ -99,7 +118,7 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
               {eventsPublic.map((event) => (
                 <div className={styles.card}>
                   <SwiperSlide>
-                    <Card userData={userData} event={event} listName={'published'} orgEvent={'true'} />
+                    <Card userData={userData} event={event} listName={'published'} orgEvent={'true'} datePublic={'true'} />
                     <Link className={styles.btn} to={'/oganiza-un-evento-editar/' + event._id}>
                       <BsPencilSquare className={styles.iconEdit} />
                       <span>Editar</span>
@@ -124,7 +143,7 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
             >
               {eventsNoPublic.map((event, index) => (
                 <div>
-                  <Card userData={userData} event={event} listName={'to-publish'} orgEvent={''} />
+                  <Card userData={userData} event={event} listName={'to-publish'} orgEvent={'true'} datePublic={'false'} />
                   <div className={styles.btns}>
                     <Link className={styles.btn} to={'/oganiza-un-evento-editar/' + event._id}>
                       <BsPencilSquare className={styles.iconEdit} />
@@ -150,7 +169,7 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
                 <div className={styles.card}>
                   <SwiperSlide>
                     <div>
-                      <Card userData={userData} event={event} listName={'to-publish'} orgEvent={''} />
+                      <Card userData={userData} event={event} listName={'to-publish'} orgEvent={'true'} datePublic={'false'} />
                     </div>
                     <div className={styles.btns}>
                       <Link className={styles.btn} to={'/oganiza-un-evento-editar/' + event._id}>
