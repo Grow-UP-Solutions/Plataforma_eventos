@@ -13,6 +13,7 @@ import { AiOutlineClose } from 'react-icons/ai';
 import { Hearts } from 'react-loader-spinner';
 
 const Card = ({ event, listName, orgEvent, datePublic }) => {
+  console.log('card')
   const { toggleScreenLogin, getEventsFavourites, getEventsWithoutFavourites } = useContext(UIContext);
   const { notes, setNotes } = useContext(stateContext);
   const currentYear = new Date().getFullYear();
@@ -569,7 +570,17 @@ const Card = ({ event, listName, orgEvent, datePublic }) => {
               </div>
               <div className={styles.subDatos}>
                 <p>Ganancias:</p>
-                <h4>{event.overallEarnings}</h4>
+                {event.dates.map((date) =>
+                 date._id === selectedDateId ? (
+
+                  <h4>{date.overallEarnings}</h4>
+                 )
+                 : (
+                  ''
+                )
+                
+                )}
+               
                 <button onClick={(e) => handleEarns(e)}>Ver</button>
               </div>
             </div>
