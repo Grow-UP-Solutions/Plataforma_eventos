@@ -51,6 +51,8 @@ const Card = ({ event, listName, orgEvent }) => {
     });
   }
 
+  console.log('event',event)
+
   useEffect(() => {
     getUsers();
   }, []);
@@ -521,7 +523,7 @@ const Card = ({ event, listName, orgEvent }) => {
             </div>
             <div className={styles.subDatos}>
               <p>Ganancias:</p>
-              <h4>{event.dates.length}</h4>
+              <h4>{event.overallEarnings}</h4>
               <button onClick={(e) => handleEarns(e)}>Ver</button>
             </div>
           </div>

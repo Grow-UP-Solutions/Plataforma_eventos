@@ -65,7 +65,7 @@
   }
   
   .tbody input {
-    width: 1.8rem;
+    width: 6.8rem;
     height: 1.8rem;
   }
   
@@ -119,5 +119,15 @@
     font-family: 'Raleway', sans-serif;
     border-bottom: 1px solid var(--color-orange);
     cursor: pointer;
+  }
+
+  .pagar{
+    display: inline-block;
+    color: var(--color-orange);
+    font-size: 1.6rem;
+    font-family: 'Raleway', sans-serif;
+    cursor: pointer;
+    background-color: white;
+    border: white;
   }
   

@@ -38,7 +38,15 @@ const EventDateMap = ({ id, cupos }) => {
 
         setValorTotal(t);
       }
+
+      sTotal.push(carrito[i].subtotal);
     }
+
+    let total = sTotal.reduce((a, b) => a + b, 0);
+    setSubTotal(total);
+
+    let t = total + iva + administracion;
+    setValorTotal(t);
   };
 
   return (

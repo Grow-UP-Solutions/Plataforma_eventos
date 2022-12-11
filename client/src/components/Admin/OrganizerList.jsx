@@ -8,11 +8,12 @@ import eventsApi from '../../axios/eventsApi';
 import { AiOutlineConsoleSql } from 'react-icons/ai';
 import { fechaActual } from '../../utils/fechaActual';
 import { Link } from 'react-router-dom';
+import Loading from '../Loading/Loading';
 
 const OrganizerList = () => {
   const [state, fetchUsers] = useFetch();
   const navigate = useNavigate();
-
+  const [load, setLoad] = useState(true);
   const [userData, setUserData] = useState([]);
 
   useEffect(() => {
@@ -22,9 +23,9 @@ const OrganizerList = () => {
   const getUserData = async () => {
     const userResult = await eventsApi.get(`/users`);
     setUserData(userResult.data);
+    setLoad(false)
   };
 
-  console.log('userData:', userData);
 
   const [currentPage, setCurretPage] = useState(1);
   const organizerPerPage = 10;
@@ -32,25 +33,12 @@ const OrganizerList = () => {
   const indexOfFirstOrg = indexOfLastOrg - organizerPerPage;
   const paginado = (pageNumber) => setCurretPage(pageNumber);
 
-  useEffect(
-    function() {
-      fetchUsers({
-        url: 'https://reqres.in/api/users',
-        method: 'GET',
-      });
-    },
-    [fetchUsers]
-  );
 
-  if (state.isLoading) {
-    return <div>Cargando usuarios...</div>;
-  }
-
-  if (state.isFailed) {
-    return <div>Fallo recuperando los usuarios</div>;
-  }
-
-  if (state.isSuccess) {
+  if(load){
+    return(
+      <Loading />
+    )
+   }else{
     return (
       <div className={style.container}>
         <div className={style.container_titles}>
@@ -70,6 +58,7 @@ const OrganizerList = () => {
             <tbody>
               {userData !== undefined &&
                 userData.slice(indexOfFirstOrg, indexOfLastOrg).map((e) => (
+                  e.isOrganizer===true ?
                   <tr key={e.id} className={style.tbody}>
                     <td className={style.tbody_name}>
                       <img
@@ -84,6 +73,7 @@ const OrganizerList = () => {
                       <input type='checkbox' />
                     </td>
                   </tr>
+                  :''
                 ))}
             </tbody>
           </div>
@@ -114,7 +104,6 @@ const OrganizerList = () => {
       </div>
     );
   }
-  return null;
 };
 
 export default OrganizerList;
