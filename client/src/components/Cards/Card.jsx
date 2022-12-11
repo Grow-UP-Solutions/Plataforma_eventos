@@ -569,7 +569,17 @@ const Card = ({ event, listName, orgEvent, datePublic }) => {
               </div>
               <div className={styles.subDatos}>
                 <p>Ganancias:</p>
-                <h4>{event.overallEarnings}</h4>
+                {event.dates.map((date) =>
+                 date._id === selectedDateId ? (
+
+                  <h4>{date.overallEarnings}</h4>
+                 )
+                 : (
+                  ''
+                )
+                
+                )}
+               
                 <button onClick={(e) => handleEarns(e)}>Ver</button>
               </div>
             </div>
