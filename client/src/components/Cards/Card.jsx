@@ -13,6 +13,7 @@ import { AiOutlineClose } from 'react-icons/ai';
 import { Hearts } from 'react-loader-spinner';
 
 const Card = ({ event, listName, orgEvent, datePublic }) => {
+  console.log('card')
   const { toggleScreenLogin, getEventsFavourites, getEventsWithoutFavourites } = useContext(UIContext);
   const { notes, setNotes } = useContext(stateContext);
   const currentYear = new Date().getFullYear();
