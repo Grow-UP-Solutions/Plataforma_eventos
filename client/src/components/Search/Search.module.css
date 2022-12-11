@@ -127,7 +127,7 @@
 
   .inputHome {
     border-radius: 25px;
-    max-width: 48rem;
+    width: 40rem;
     background-color: rgba(255, 255, 255, 0.8);
   }
 }
