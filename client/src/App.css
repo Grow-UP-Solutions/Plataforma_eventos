@@ -173,6 +173,10 @@
     padding: 0;
     padding-top: 2rem;
   }
+
+  .calendar-user {
+    font-size: 1px !important;
+  }
 }
 
 @media screen and (max-height: 781px) {

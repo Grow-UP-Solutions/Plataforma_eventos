@@ -15,13 +15,13 @@ import eventsApi from '../../axios/eventsApi';
 import { AuthContext } from '../../context/auth';
 import { stateContext } from '../../context/state/stateContext';
 import { UIContext } from '../../context/ui';
-import { administracion, iva , comision , ivaOrg } from '../../utils/administracion';
+import { comision, ivaOrg } from '../../utils/administracion';
 import { formatDate } from '../../utils/formatDate';
 import styles from './EventDate.module.css';
 import EventDateMap from './EventDateMap';
 
-import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 import { Calendar } from '@amir04lm26/react-modern-calendar-date-picker';
+import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 import { myCustomLocale } from '../../utils/customLocaleDate';
 
 import moment from 'moment';
@@ -40,7 +40,6 @@ const EventDate = ({ id, openMenu }) => {
   const { dateToBuy, setDateToBuy } = useContext(stateContext);
   const [resultFormNewDate, setResultFormNewDate] = useState(false);
   const [isLoadingNewDate, setIsLoadingNewDate] = useState(false);
-  const { valorTotal, setValorTotal } = useContext(stateContext);
 
   useEffect(() => {
     setCarrito([]);
@@ -48,8 +47,8 @@ const EventDate = ({ id, openMenu }) => {
   }, []);
 
   const fecha = new Date();
-  const hora = fecha.getHours();
-  const minutes = fecha.getMinutes();
+  // const hora = fecha.getHours();
+  // const minutes = fecha.getMinutes();
   const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
 
   console.log('dateActual:', dateActual);
@@ -105,14 +104,12 @@ const EventDate = ({ id, openMenu }) => {
     }
   };
 
-  const [dateId, setDateId] = useState(0);
-
   const dateSelected = (e, price) => {
     setChecked(true);
 
     const fechaElegida = e.target.value;
 
-    const priceOrg =price - (price * comision) - (price * comision * ivaOrg)
+    const priceOrg = price - price * comision - price * comision * ivaOrg;
 
     if (!e.target.checked) {
       let seleccion = carrito.filter((f) => f.idDate !== fechaElegida);
@@ -127,14 +124,14 @@ const EventDate = ({ id, openMenu }) => {
           idDate: fechaElegida,
           quantity: 1,
           price: price,
-          unit_price: price ,
+          unit_price: price,
           codigoDescuento: '',
           codigoReferido: '',
           codigoCorrecto: '',
           subtotal: price,
           descuento: '',
           priceOrg: priceOrg,
-          ganancias:  priceOrg 
+          ganancias: priceOrg,
         },
       ]);
 

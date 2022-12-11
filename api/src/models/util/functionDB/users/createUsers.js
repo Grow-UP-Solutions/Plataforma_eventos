@@ -19,8 +19,13 @@ module.exports = async function createOneUserDb(user, codeReferral) {
       const user = await Users.findOne({ referralCode: codeReferral });
       if (user) {
         userCreated.isReferral.code = codeReferral;
-        user.referrals.push(userCreated._id);
-        user.saldoPendiente += 5000;
+        user.referrals.push({
+          id: userCreated._id,
+          picture: userCreated.userpicture,
+          name: userCreated.nickname,
+          pending: 5000,
+          total: 0,
+        });
         await user.save();
       } else throw new Error('El codigo no es valido');
     }

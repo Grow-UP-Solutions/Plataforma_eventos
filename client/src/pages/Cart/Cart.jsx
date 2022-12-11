@@ -112,6 +112,66 @@ const Cart = () => {
     setCodigo(e.target.value);
   };
 
+  // const aplicar = async (e, id) => {
+  //   e.preventDefault();
+
+  //   for (let c = 0; c < carrito.length; c++) {
+  //     if (carrito[c].idDate === id) {
+  //       for (let d = 0; d < currentDate[0].codigos.length; d++) {
+  //         if (currentDate[0].codigos[d].codigo === codigo) {
+  //           const descValor = currentDate[0].codigos[d].descuento; //10%
+  //           carrito[c].codigoDescuento = codigo;
+  //           carrito[c].codigoCorrecto = true;
+
+  //           const valorDescuento = (descValor * currentDate[0].price) / 100; //$1000
+  //           const valorDescuentoCupos = valorDescuento * carrito[c].quantity; //$2000
+
+  //           carrito[c].descuento = valorDescuentoCupos; //$2000
+
+  //           const unitDic = carrito[c].unit_price - valorDescuento;
+  //           carrito[c].unit_price = unitDic;
+
+  //           setDesc(carrito[c].descuento);
+  //           return swal({
+  //             title: 'Codigo Aplicado',
+  //           });
+  //         } else if (currentDate[0].codigos[d].codigo !== codigo) {
+  //           /* Codigo de descuento de Usuario  */
+
+  //           const codeResult = await eventsApi.get(`/codeDiscount/getCodeDiscountByCode/${codigo}`);
+
+  //           if (codeResult.data.codeDiscount.length === 1 && codeResult.data.codeDiscount.isRedimeed === false) {
+  //             carrito[c].codigoReferido = codeResult.data.codeDiscount.code;
+  //             carrito[c].codigoCorrecto = true;
+  //             carrito[c].descuento = codeResult.data.codeDiscount.value;
+
+  //             const refUnit = codeResult.data.codeDiscount.value / carrito[c].quantity;
+  //             /* U583 WTQ4 */
+  //             //const descuentoUnit = carrito[c].unit_price - codeResult.data.codeDiscount.value
+
+  //             const descuentoUnit = carrito[c].unit_price - refUnit;
+
+  //             carrito[c].unit_price = descuentoUnit;
+
+  //             setDesc(codeResult.data.codeDiscount.value);
+
+  //             return swal({
+  //               title: 'Codigo Aplicado',
+  //             });
+  //           } else {
+  //             carrito[c].codigoCorrecto = false;
+  //             return swal({
+  //               title: 'Codigo Incorrecto',
+  //               icon: 'warning',
+  //               dangerMode: true,
+  //             });
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  // };
+
   const aplicar = async (e, id) => {
     e.preventDefault();
 
@@ -124,23 +184,25 @@ const Cart = () => {
             carrito[c].codigoCorrecto = true;
 
             const valorDescuento = (descValor * currentDate[0].price) / 100; //$1000
+            carrito[c].unit_disc = valorDescuento;
+
             const valorDescuentoCupos = valorDescuento * carrito[c].quantity; //$2000
 
             carrito[c].descuento = valorDescuentoCupos; //$2000
 
-            const unitDic = carrito[c].unit_price - valorDescuento;
-            carrito[c].unit_price = unitDic;
+            //const unitDic = carrito[c].unit_price - valorDescuento;
+            carrito[c].unit_price = carrito[c].unit_price - valorDescuento;
+            carrito[c].priceOrg = carrito[c].priceOrg - valorDescuento;
+            carrito[c].ganancias = carrito[c].ganancias - valorDescuentoCupos;
 
             setDesc(carrito[c].descuento);
             return swal({
               title: 'Codigo Aplicado',
             });
           } else if (currentDate[0].codigos[d].codigo !== codigo) {
-            console.log('en referal');
-
             const codeResult = await eventsApi.get(`/codeDiscount/getCodeDiscountByCode/${codigo} `);
 
-            if (codeResult.data.codeDiscount.length === 1) {
+            if (codeResult.data.codeDiscount.length === 1 && codeResult.data.codeDiscount[0].isRedimeed === false) {
               carrito[c].codigoReferido = codeResult.data.codeDiscount[0].code;
               carrito[c].codigoCorrecto = true;
               carrito[c].descuento = codeResult.data.codeDiscount[0].value;
@@ -149,9 +211,11 @@ const Cart = () => {
 
               //const descuentoUnit = carrito[c].unit_price - codeResult.data.codeDiscount[0].value
 
-              const descuentoUnit = carrito[c].unit_price - refUnit;
+              carrito[c].unit_price = carrito[c].unit_price - refUnit;
 
-              carrito[c].unit_price = descuentoUnit;
+              carrito[c].priceOrg = carrito[c].priceOrg - refUnit;
+
+              carrito[c].ganancias = carrito[c].ganancias - codeResult.data.codeDiscount[0].value;
 
               setDesc(codeResult.data.codeDiscount[0].value);
 
@@ -252,17 +316,14 @@ const Cart = () => {
 
     const costos = administracion + iva;
 
-    
     const ganancia = [];
     const f = [];
     const cod = [];
     for (let i = 0; i < carrito.length; i++) {
+      const costoCarrito = costos / carrito.length;
 
-      const costoCarrito = costos/carrito.length
-
-      carrito[i].costos = costoCarrito/carrito[i].quantity 
-      carrito[i].unit_price = carrito[i].price+carrito[i].costos
-      
+      carrito[i].costos = costoCarrito / carrito[i].quantity;
+      carrito[i].unit_price = carrito[i].price + carrito[i].costos;
 
       ganancia.push(carrito[i].ganancias);
 
@@ -272,8 +333,10 @@ const Cart = () => {
         unit_price: Math.trunc(carrito[i].unit_price),
         id: carrito[i].idDate,
         ganancias: carrito[i].ganancias,
-        codigo: carrito[i].codigoDescuento || null,
+        codigoDescuento: carrito[i].codigoDescuento || null,
+        codigoUsuario: carrito[i].codigoReferido || null,
       };
+
       f.push(d);
 
       const c = carrito[i].codigoDescuento;

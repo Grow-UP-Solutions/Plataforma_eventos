@@ -190,6 +190,7 @@ const Register = () => {
 
         setIsValidCodeReferred(true);
       } catch (error) {
+        console.log({ error });
         setIsValidCodeReferred(false);
       }
     }

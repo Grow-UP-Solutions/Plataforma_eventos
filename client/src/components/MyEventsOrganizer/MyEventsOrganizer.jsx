@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { BsPencilSquare } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import { Navigation } from 'swiper';
 import 'swiper/modules/navigation/navigation.min.css';
@@ -6,12 +7,9 @@ import 'swiper/modules/pagination/pagination.min.css';
 import 'swiper/modules/scrollbar/scrollbar.min.css';
 import { Swiper, SwiperSlide } from 'swiper/react/swiper-react';
 import 'swiper/swiper.min.css';
+import basquet from '../../assets/imgs/basquet.svg';
 import Card from '../Cards/Card';
 import styles from './MyEventsOrganizer.module.css';
-import { BsCamera, BsCardImage, BsInfoCircle, BsPencilSquare } from 'react-icons/bs';
-import basquet from '../../assets/imgs/basquet.svg';
-import { AiOutlineClose } from 'react-icons/ai';
-import { useContext, useState, useEffect, useRef } from 'react';
 
 const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
   const fecha = new Date();

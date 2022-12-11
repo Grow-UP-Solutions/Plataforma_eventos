@@ -3,8 +3,10 @@ const axios = require('axios');
 const { Router } = require('express');
 const router = Router();
 const mercadopago = require('mercadopago');
+const CodeDiscount = require('../../../models/DB/CodeDiscount');
 const SuccessPayment = require('../../../models/DB/SuccessPayment');
 const calculoDeComicion = require('../../../models/util/calculoDeComiciones/calculoDeComicion');
+const { getCodeDiscountByCode } = require('../../../models/util/functionDB/CodeDiscountDb');
 const EventFunctionDb = require('../../../models/util/functionDB/event/index.event');
 const UsersFunctionDb = require('../../../models/util/functionDB/users/index.users');
 const { ACCESS_TOKEN } = process.env;
@@ -100,10 +102,12 @@ router.post('/orden', async (req, res) => {
   }
 });
 
+/* FECHA ACTUAL */
+const fecha = new Date();
+const fechaActual = fecha.getDate() + '/' + (fecha.getMonth() + 1) + '/' + fecha.getFullYear();
+
 router.get('/success', async (req, res) => {
   const { external_reference, payment_id, preference_id, codigo } = req.query;
-
-  console.log({ auxBody });
 
   const ids = external_reference.split(',');
 
@@ -129,8 +133,6 @@ router.get('/success', async (req, res) => {
       totalCupos = totalCupos + date.quantity;
     });
 
-    console.log({ totalCupos });
-
     const event = await EventFunctionDb.oneEvent(idEvent);
     const organizerEvent = await UsersFunctionDb.oneUser(event.organizer);
     const user = await UsersFunctionDb.oneUser(idUser);
@@ -146,16 +148,24 @@ router.get('/success', async (req, res) => {
       event.overallEarnings += auxBody[0].ganancia;
       event.sells += totalCupos;
 
-      console.log({ overallEarnings: event.overallEarnings });
-      console.log({ sells: event.sells });
-
-      event.dates.forEach((e, i) => {
+      event.dates.forEach(async (e, i) => {
         for (let j = 0; j < auxBody[0].dates.length; ++j) {
           if (e._id == auxBody[0].dates[j].id) {
             for (let x = 0; x < e.codigos.length; x++) {
-              if (e.codigos[x].codigo === auxBody[0].dates[j].codigo) {
+              if (
+                auxBody[0].dates[j].codigoDescuento !== null &&
+                e.codigos[x].codigo === auxBody[0].dates[j].codigoDescuento
+              ) {
                 e.codigos[x].cantidad = e.codigos[x].cantidad - 1;
                 e.codigos[x].uses = e.codigos[x].uses + 1;
+              } else if (auxBody[0].dates[j].codigoUsuario !== null) {
+                const codigo = await CodeDiscount.findOne({ code: auxBody[0].dates[j].codigoUsuario });
+
+                codigo.isRedimeed = true;
+                codigo.userRedimeed = user.nickname;
+                codigo.dateRedimeed = fechaActual;
+
+                codigo.save();
               }
             }
 
@@ -171,11 +181,22 @@ router.get('/success', async (req, res) => {
       user.myEventsBooked.push(event._id);
 
       if (user.isReferral.code && !user.isReferral.use) {
-        const userReferral = await UsersFunctionDb.codeUser(user.isReferral);
-        userReferral.saldoPendiente -= 5000;
+        const userReferral = await UsersFunctionDb.codeUser(user.isReferral.code);
 
-        userReferral.saldoTotal += 5000;
+        let referredAux = [...userReferral.referrals];
 
+        referredAux = referredAux.map((referred) => {
+          if (referred.id.toString() === user._id.toString()) {
+            referred.pending = 0;
+            referred.total = 5000;
+          }
+          return referred;
+        });
+
+        userReferral.referrals = [];
+        userReferral.referrals.push(...referredAux);
+        userReferral.availableCredit += 5000;
+        userReferral.save();
         user.isReferral.use = true;
       }
 
@@ -258,9 +279,6 @@ router.put('/adminPaymentOrganizer/', async (req, res) => {
 
     await event.save();
     await organizer.save();
-
-    console.log({ pendingEarnings: event.pendingEarnings });
-    console.log({ payedEarnings: event.payedEarnings });
 
     res.json({ message: 'Pagado exitosamente' });
   } catch (error) {

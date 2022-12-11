@@ -1,14 +1,13 @@
-import React, { useState, useContext, useEffect } from 'react';
-import styles from './EventDateMap.module.css';
+import React, { useContext, useState } from 'react';
 import { iconArrowLeft, iconArrowRight } from '../../assets/imgs';
 import { stateContext } from '../../context/state/stateContext';
-import { administracion } from '../../utils/administracion';
-import { iva } from '../../utils/administracion';
+import { administracion, iva } from '../../utils/administracion';
+import styles from './EventDateMap.module.css';
 
 const EventDateMap = ({ id, cupos }) => {
-  const { carrito, setCarrito } = useContext(stateContext);
-  const { valorTotal, setValorTotal } = useContext(stateContext);
-  const { subTotal, setSubTotal } = useContext(stateContext);
+  const { carrito } = useContext(stateContext);
+  const { setValorTotal } = useContext(stateContext);
+  const { setSubTotal } = useContext(stateContext);
 
   const [numberBuyCupos, setNumberBuyCupos] = useState(1);
 
@@ -22,12 +21,11 @@ const EventDateMap = ({ id, cupos }) => {
 
     for (let i = 0; i < carrito.length; i++) {
       if (carrito[i].idDate === id) {
-        
         carrito[i].quantity = num;
 
         carrito[i].subtotal = num * carrito[i].price;
 
-        carrito[i].ganancias = carrito[i].priceOrg * carrito[i].quantity ;
+        carrito[i].ganancias = carrito[i].priceOrg * carrito[i].quantity;
 
         sTotal.push(carrito[i].subtotal);
 

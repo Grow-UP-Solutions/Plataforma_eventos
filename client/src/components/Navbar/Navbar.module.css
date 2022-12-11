@@ -23,6 +23,8 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
+
+  position: relative;
 }
 
 .containerImgInput {
@@ -168,6 +170,75 @@
   text-align: left;
 }
 
+/* MENU PROFILE RESPONSVE */
+
+.containerProfileMenuResponsive {
+  display: none;
+  position: absolute;
+  right: -2rem;
+  top: 10rem;
+  background-color: white;
+  padding: 2rem;
+  border-top-left-radius: 2rem;
+  border-bottom-left-radius: 2rem;
+  box-shadow: 0px 1px 1px 2px rgba(0, 0, 0, 0.2);
+
+  flex-direction: column;
+  gap: 1rem;
+
+  animation: menuRight 0.2s;
+}
+
+.menuUserName {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--color-blue);
+  text-align: center;
+}
+
+.listNavMenuResponsive {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.itemNavMenuResponsive {
+  position: relative;
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.badgeMenuProfileResponsive {
+  position: absolute;
+
+  top: 0;
+  left: 1.6rem;
+
+  display: block;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background-color: var(--color-orange);
+}
+
+.iconMenuResponsive {
+  margin-right: 1rem;
+  font-size: 2.2rem;
+}
+
+.itemNavMenuResponsive a {
+  font-size: 1.8rem;
+  font-weight: normal;
+}
+
+.btnCloseSesionProfileMenuResponsive {
+  text-align: left;
+  font-size: 1.8rem;
+  color: var(--color-grey-3);
+}
+
 .notifications {
   position: absolute;
   top: 5rem;
@@ -230,6 +301,7 @@
   display: none;
   font-size: 5rem;
   color: var(--color-orange);
+  cursor: pointer;
 }
 
 .navMyListMenu {
@@ -277,6 +349,16 @@
   }
 }
 
+@media screen and (max-width: 756px) {
+  .containerProfileMenu {
+    display: none;
+  }
+
+  .containerProfileMenuResponsive {
+    display: flex;
+  }
+}
+
 @media screen and (max-width: 712px) {
   .containerNotification {
     display: none;
@@ -299,23 +381,16 @@
 }
 
 .menu {
-  position: fixed;
-  width: 70%;
-  top: 0;
+  position: absolute;
+  top: 9.3rem;
   left: 0;
 
-  height: 100vh;
-  padding: 2rem;
+  border-top-right-radius: 2rem;
+  border-bottom-right-radius: 2rem;
+  padding: 3rem 0;
   background-color: white;
-  animation: menu 0.6s ease-in-out;
-}
-
-.iconCloseMenu {
-  position: absolute;
-  top: 2rem;
-  right: 2rem;
-  font-size: 4.2rem;
-  color: var(--color-orange);
+  animation: menu 0.2s ease-in-out;
+  box-shadow: 0px 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .listItemsMenu {
@@ -323,16 +398,14 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 5.2rem;
-  width: 100%;
-  height: 100%;
+  gap: 4.8rem;
   padding: 2rem;
 }
 
 .itemMenu {
   font-size: 2.4rem;
-  font-weight: bold;
-  color: var(--color-orange);
+  color: var(--color-grey-3);
+  font-weight: 500;
 }
 
 .itemMenu button {
@@ -343,38 +416,43 @@
   color: inherit;
 }
 
-.btnCreateEvent {
+.menuBtnRegister {
   text-align: center;
   background-color: var(--color-orange) !important;
   color: white !important;
-  padding: 1rem 1.5rem;
-  border-radius: 0.5rem;
+  padding: 1.5rem 6rem;
+  border-radius: 3rem;
+  transition: all 0.2s;
+  box-shadow: 0px 1px 10px 2px rgba(0, 0, 0, 0.2);
 }
 
-.auxDiv {
-  display: none;
+.menuBtnRegister:hover {
+  transform: scale(1.1);
 }
 
-.containerUserNav {
-  height: 100%;
+.listSocial {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
   gap: 3.2rem;
 }
-.containerUserNav button {
-  font-size: 3.2rem;
+
+.iconRedSocialMenu {
+  font-size: 2.4rem;
+  color: var(--color-grey-3);
+  transition: all 0.2s;
+}
+
+.iconRedSocialMenu:hover {
+  transform: scale(1.1);
+  color: var(--color-orange);
+}
+
+.btnLoginNav {
+  display: none;
+  font-size: 2rem;
   font-weight: bold;
   color: var(--color-orange);
   background: none;
   border: none;
-}
-
-.containerUserNav hr {
-  width: 100%;
-  height: 1px;
-  border: 1px solid var(--color-grey-4);
 }
 
 .btnOrganizeEvent {
@@ -391,7 +469,7 @@
   .containerBtnOrganizer {
     display: none;
   }
-  .auxDiv {
+  .btnLoginNav {
     display: block;
   }
   .btnLogin {
@@ -409,5 +487,15 @@
 
   100% {
     left: 0;
+  }
+}
+
+@keyframes menuRight {
+  0% {
+    right: -100%;
+  }
+
+  100% {
+    right: 0;
   }
 }

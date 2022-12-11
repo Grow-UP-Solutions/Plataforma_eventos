@@ -8,13 +8,15 @@ import Search from '../Search/Search';
 import { GrMail } from 'react-icons/gr';
 import { BiMenu } from 'react-icons/bi';
 import { FaUserCircle } from 'react-icons/fa';
-import { IoNotifications, IoCaretDownSharp, IoCaretUpSharp, IoClose } from 'react-icons/io5';
+import { IoNotifications, IoCaretDownSharp, IoCaretUpSharp, IoClose, IoHeartCircle } from 'react-icons/io5';
 import logo from '../../assets/imgs/logoNav.svg';
 import eventsApi from '../../axios/eventsApi';
 import ConversationNoti from '../ConversationNoti/ConversationNoti';
 
-const Navbar = ({ upper }) => {
+import { ImFacebook, ImLinkedin2, ImTwitter, ImYoutube } from 'react-icons/im';
+import { FaInstagram, FaTiktok } from 'react-icons/fa';
 
+const Navbar = ({ upper }) => {
   const { toggleScreenLogin } = useContext(UIContext);
   const { user, logged, logout } = useContext(AuthContext);
   const { notes, setNotes, msg, setMsg } = useContext(stateContext);
@@ -29,11 +31,11 @@ const Navbar = ({ upper }) => {
     getUserData();
   }, [user]);
 
-  useEffect(() => {
+  /* useEffect(() => {
     const handler = (e) => {
       if (menuRef.current === null || menuRef.current === undefined) {
-      } 
-      else if (!menuRef.current.contains(e.target)) {
+      } else if (!menuRef.current.contains(e.target)) {
+        setOpenMenu(false);
         setMenuOpen(false);
         setOpenNotifications(false);
         setOpenMessages(false);
@@ -43,7 +45,7 @@ const Navbar = ({ upper }) => {
     return () => {
       document.removeEventListener('mousedown', handler);
     };
-  });
+  }); */
 
   const [userData, setUserData] = useState({});
 
@@ -113,6 +115,9 @@ const Navbar = ({ upper }) => {
       case 'createEvent':
         navigate('/organiza-un-evento/beneficios');
         return setOpenMenu(false);
+      case 'home':
+        navigate('/');
+        return setOpenMenu(false);
       default:
         setOpenMenu(!openMenu);
     }
@@ -135,48 +140,113 @@ const Navbar = ({ upper }) => {
         </div>
 
         {openMenu && (
-          <div className={style.menu}>
-            <IoClose onClick={handleOpenMenu} className={style.iconCloseMenu} />
+          <div className={style.menu} ref={menuRef}>
             {Object.keys(user).length > 0 ? (
-              <div className={style.containerUserNav}>
-                <button onClick={() => handleClickUserOptionMenu('/usuario/mi-lista')}>Mis eventos</button>
-                <button onClick={() => handleClickUserOptionMenu('/usuario/perfil')}>Perfil</button>
-                <button onClick={() => handleClickUserOptionMenu('/usuario/mi-lista')}>Mi Lista</button>
-                <button onClick={() => handleClickUserOptionMenu('/usuario/plan-de-referidos')}>
-                  Plan de referidos
-                </button>
-                <button onClick={() => handleClickUserOptionMenu('/usuario/preferencias')}>Preferencias</button>
-                <button
-                  className={style.btnOrganizeEvent}
-                  onClick={() => handleClickUserOptionMenu('/oganiza-un-evento')}
-                >
-                  Organiza un evento
-                </button>
-                <hr />
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    logout();
-                    navigate('/');
-                  }}
-                >
-                  Cerrar
-                </button>
-              </div>
+              <ul className={style.listItemsMenu}>
+                <li className={style.itemMenu}>
+                  <button
+                    className={style.btnOrganizeEvent}
+                    onClick={() => handleClickUserOptionMenu('/oganiza-un-evento')}
+                  >
+                    Organiza un evento
+                  </button>
+                </li>
+
+                <li className={style.itemMenu}>
+                  <button onClick={() => handleClickUserOptionMenu('/usuario/perfil')}>Categorías</button>
+                </li>
+                <li className={style.itemMenu}>
+                  <button onClick={() => handleClickUserOptionMenu('/')}>Home</button>
+                </li>
+                <li>
+                  <ul className={style.listSocial}>
+                    <li>
+                      <a href='https://www.facebook.com/' target='_blank' rel='noreferrer noopener'>
+                        <ImFacebook className={style.iconRedSocialMenu} />
+                      </a>
+                    </li>
+                    <li>
+                      <a href='https://www.instagram.com/' target='_blank' rel='noreferrer noopener'>
+                        <FaInstagram className={style.iconRedSocialMenu} />
+                      </a>
+                    </li>
+                    <li>
+                      <a href='https://www.twitter.com/' target='_blank' rel='noreferrer noopener'>
+                        <ImTwitter className={style.iconRedSocialMenu} />
+                      </a>
+                    </li>
+                    <li>
+                      <a href='https://www.tiktok.com/' target='_blank' rel='noreferrer noopener'>
+                        <FaTiktok className={style.iconRedSocialMenu} />
+                      </a>
+                    </li>
+                    <li>
+                      <a href='https://www.youtube.com/' target='_blank' rel='noreferrer noopener'>
+                        <ImYoutube className={style.iconRedSocialMenu} />
+                      </a>
+                    </li>
+                    <li>
+                      <a href='https://www.linkedin.com/' target='_blank' rel='noreferrer noopener'>
+                        <ImLinkedin2 className={style.iconRedSocialMenu} />
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
             ) : (
               <ul className={style.listItemsMenu}>
                 <li className={style.itemMenu}>
+                  <button className={style.menuBtnRegister} onClick={() => handleOpenMenu('register')}>
+                    Registrate
+                  </button>
+                </li>
+
+                <li className={style.itemMenu}>
                   <button className={style.btnLoginMenu} onClick={() => handleOpenMenu('login')}>
-                    Iniciar Sesión
+                    Ingresa
                   </button>
                 </li>
                 <li className={style.itemMenu}>
-                  <button onClick={() => handleOpenMenu('register')}>Registrarse</button>
+                  <button onClick={() => handleOpenMenu('register')}>Categorías</button>
                 </li>
+
                 <li className={`${style.itemMenu}`}>
-                  <button className={style.btnCreateEvent} onClick={() => handleOpenMenu('createEvent')}>
-                    Organizar un evento
-                  </button>
+                  <button onClick={() => handleOpenMenu('home')}>Home</button>
+                </li>
+
+                <li>
+                  <ul className={style.listSocial}>
+                    <li>
+                      <a href='https://www.facebook.com/' target='_blank' rel='noreferrer noopener'>
+                        <ImFacebook className={style.iconRedSocialMenu} />
+                      </a>
+                    </li>
+                    <li>
+                      <a href='https://www.instagram.com/' target='_blank' rel='noreferrer noopener'>
+                        <FaInstagram className={style.iconRedSocialMenu} />
+                      </a>
+                    </li>
+                    <li>
+                      <a href='https://www.twitter.com/' target='_blank' rel='noreferrer noopener'>
+                        <ImTwitter className={style.iconRedSocialMenu} />
+                      </a>
+                    </li>
+                    <li>
+                      <a href='https://www.tiktok.com/' target='_blank' rel='noreferrer noopener'>
+                        <FaTiktok className={style.iconRedSocialMenu} />
+                      </a>
+                    </li>
+                    <li>
+                      <a href='https://www.youtube.com/' target='_blank' rel='noreferrer noopener'>
+                        <ImYoutube className={style.iconRedSocialMenu} />
+                      </a>
+                    </li>
+                    <li>
+                      <a href='https://www.linkedin.com/' target='_blank' rel='noreferrer noopener'>
+                        <ImLinkedin2 className={style.iconRedSocialMenu} />
+                      </a>
+                    </li>
+                  </ul>
                 </li>
               </ul>
             )}
@@ -193,6 +263,7 @@ const Navbar = ({ upper }) => {
             <></>
           )}
         </div>
+
         <div className={style.container_div}>
           {logged && (
             <Link className={style.navMyList} to='/usuario/mi-lista'>
@@ -270,7 +341,7 @@ const Navbar = ({ upper }) => {
                     {notes.map((e) => (
                       <div className={style.noty}>
                         <IoNotifications className={style.iconNav} />
-                        <p onClick={handleClickNotifications}>{e.msg}</p> 
+                        <p onClick={handleClickNotifications}>{e.msg}</p>
                       </div>
                     ))}
                     <p className={style.link_notis} onClick={handleClickNotifications}>
@@ -320,41 +391,75 @@ const Navbar = ({ upper }) => {
                 )}
 
                 {menuOpen && (
-                  <div className={style.containerProfileMenu} ref={menuRef} >
-                    {
-                      userData.isOrganizer === true ?
-                      <Link to='/usuario/mis-eventos'>Mis eventos</Link> :
-                      <Link to='/usuario/mi-lista'>Mis eventos</Link>
-                    }
+                  <>
+                    <div className={style.containerProfileMenu} ref={menuRef}>
+                      {userData.isOrganizer === true ? (
+                        <Link to='/usuario/mis-eventos'>Mis eventos</Link>
+                      ) : (
+                        <Link to='/usuario/mi-lista'>Mis eventos</Link>
+                      )}
 
-                    <Link to='/usuario/perfil'>
-                      <a>Perfil</a>
-                    </Link>
-                    <Link className={style.navMyListMenu} to='/usuario/mi-lista'>
-                      Mi lista
-                    </Link>
-                    <Link to='/oganiza-un-evento' className={style.buttonOrganizarMenu}>
-                      Organiza un evento
-                    </Link>
-                    <Link to='/usuario/plan-de-referidos'>Plan de referidos</Link>
-                    <Link to='/usuario/preferencias'>Preferencias</Link>
-                    <hr />
-                    <span
-                      onClick={(e) => {
-                        e.preventDefault();
-                        logout();
-                        navigate('/');
-                      }}
-                    >
-                      Cerrar sesión
-                    </span>
-                  </div>
+                      <Link to='/usuario/perfil'>
+                        <a>Perfil</a>
+                      </Link>
+                      <Link className={style.navMyListMenu} to='/usuario/mi-lista'>
+                        Mi lista
+                      </Link>
+                      <Link to='/oganiza-un-evento' className={style.buttonOrganizarMenu}>
+                        Organiza un evento
+                      </Link>
+                      <Link to='/usuario/plan-de-referidos'>Plan de referidos</Link>
+                      <Link to='/usuario/preferencias'>Preferencias</Link>
+                      <hr />
+                      <span
+                        onClick={(e) => {
+                          e.preventDefault();
+                          logout();
+                          navigate('/');
+                        }}
+                      >
+                        Cerrar sesión
+                      </span>
+                    </div>
+
+                    <div className={style.containerProfileMenuResponsive} ref={menuRef}>
+                      <p className={style.menuUserName}>{user.nickname}</p>
+                      <hr />
+                      <ul className={style.listNavMenuResponsive}>
+                        <li className={style.itemNavMenuResponsive}>
+                          <FaUserCircle className={style.iconMenuResponsive} />
+                          <Link to={'/usuario/perfil'}>Mi cuenta</Link>
+                        </li>
+                        <li className={style.itemNavMenuResponsive}>
+                          {msg.length > 0 && <span className={style.badgeMenuProfileResponsive} />}
+                          <GrMail className={style.iconMenuResponsive} />
+                          <Link to={'/usuario/mensajes'}>Mensajes</Link>
+                        </li>
+                        <li className={style.itemNavMenuResponsive}>
+                          {notes.length > 0 && <span className={style.badgeMenuProfileResponsive} />}
+                          <IoNotifications className={style.iconMenuResponsive} />
+                          <Link to={'/usuario/notificaciones'}>Notificaciones</Link>
+                        </li>
+                        <li className={style.itemNavMenuResponsive}>
+                          <IoHeartCircle className={style.iconMenuResponsive} />
+                          <Link to={'/usuario/mi-lista'}>Mi Lista</Link>
+                        </li>
+                      </ul>
+                      <hr />
+                      <button className={style.btnCloseSesionProfileMenuResponsive}>Cerrar sesión</button>
+                    </div>
+                  </>
                 )}
               </div>
             </>
           )}
         </div>
-        {!user && <div className={style.auxDiv} />}
+
+        {Object.keys(user).length <= 0 && (
+          <button type='button' onClick={() => toggleScreenLogin()} className={style.btnLoginNav}>
+            Ingresa
+          </button>
+        )}
       </div>
     </div>
   );

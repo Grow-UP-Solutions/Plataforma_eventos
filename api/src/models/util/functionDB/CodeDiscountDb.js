@@ -45,7 +45,7 @@ const getListCodeDiscountByCreator = async (id) => {
 
 const getCodeDiscountByCode = async (code) => {
   try {
-    const codeDiscount = await CodeDiscountModel.find({ code }).lean();
+    const codeDiscount = await CodeDiscountModel.find({ code });
     if (!codeDiscount) throw new Error('No existe el código de descuento.');
     return codeDiscount;
   } catch (error) {

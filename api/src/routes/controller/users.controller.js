@@ -47,7 +47,7 @@ const router = Router();
 /**/ ///////////////Rutas GET////////////// */
 
 router.get('/checkValidateTokenOrganizer/', validateJWTOrganizer, async (req, res) => {
-  const { name, phone, document, tel, email, referenciaU, referenciaZ, id } = req;
+  const { name, phone, document, tel, email, description, image, referenciaU, referenciaZ, id } = req;
 
   try {
     res.status(200).json({
@@ -56,6 +56,8 @@ router.get('/checkValidateTokenOrganizer/', validateJWTOrganizer, async (req, re
       document,
       tel,
       email,
+      description,
+      image,
       referenciaU,
       referenciaZ,
       id,
@@ -729,6 +731,8 @@ router.post('/requestToOrganizer/', async (req, res) => {
       user.document,
       user.tel,
       user.phone,
+      user.description,
+      user.image,
       user.referenciaU,
       user.referenciaZ,
       user.id
@@ -762,6 +766,9 @@ router.post('/checkValidateCodeReferred', async (req, res) => {
   const { code } = req.body;
   try {
     const hasCode = await UsersFunctionDb.codeUser(code);
+
+    console.log({ hasCode });
+
     if (!hasCode) {
       throw new Error('No existe el código.');
     }
