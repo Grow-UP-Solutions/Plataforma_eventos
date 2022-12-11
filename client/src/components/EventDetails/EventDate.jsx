@@ -15,7 +15,7 @@ import eventsApi from '../../axios/eventsApi';
 import { AuthContext } from '../../context/auth';
 import { stateContext } from '../../context/state/stateContext';
 import { UIContext } from '../../context/ui';
-import { comision, ivaOrg } from '../../utils/administracion';
+import { administracion, comision, iva, ivaOrg } from '../../utils/administracion';
 import { formatDate } from '../../utils/formatDate';
 import styles from './EventDate.module.css';
 import EventDateMap from './EventDateMap';

@@ -290,6 +290,20 @@ router.post(
   }
 );
 
+router.post('/verifyEmailNotUsing', async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await UsersFunctionDb.validationEmail(email);
+
+    if (user) throw new Error('Correo ya registrado.');
+
+    res.json('No existe el usuario');
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+});
+
 router.post('/commentOrganizer/:id', async (req, res) => {
   try {
     const opinion = req.body;

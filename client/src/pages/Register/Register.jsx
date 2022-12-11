@@ -12,12 +12,13 @@ import useValidateForm from '../../hooks/useValidateForm';
 import { UIContext } from '../../context/ui';
 import eventsApi from '../../axios/eventsApi';
 import { animateScroll as scroll } from 'react-scroll';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
 const Register = () => {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
   const { toggleScreenLogin } = useContext(UIContext);
-
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     lastName: '',
@@ -86,15 +87,19 @@ const Register = () => {
       codeReferred: formData.codeReferred,
     };
 
+    setIsLoading(true);
+
     try {
       setMessageError({
         error: false,
         message: '',
       });
-
+      await eventsApi.post('/users/verifyEmailNotUsing', { email: userData.email });
       localStorage.setItem('user', JSON.stringify(userData));
+      setIsLoading(false);
       setSuccesData(true);
     } catch (error) {
+      setIsLoading(false);
       setMessageError({
         error: true,
         message: error.response.data.message,
@@ -351,7 +356,7 @@ const Register = () => {
           <p>Quiero recibir información sobre promociones, actualizaciones y eventos que me puedan interesar.</p>
         </div>
         <div className={styles.btnRegister}>
-          <button>Registrate</button>
+          {isLoading ? <AiOutlineLoading3Quarters className={styles.isLoading} /> : <button>Registrate</button>}
         </div>
       </form>
       <div className={styles.divisorWithoutO} />

@@ -446,7 +446,9 @@ const Navbar = ({ upper }) => {
                         </li>
                       </ul>
                       <hr />
-                      <button className={style.btnCloseSesionProfileMenuResponsive}>Cerrar sesión</button>
+                      <button onClick={() => logout()} className={style.btnCloseSesionProfileMenuResponsive}>
+                        Cerrar sesión
+                      </button>
                     </div>
                   </>
                 )}

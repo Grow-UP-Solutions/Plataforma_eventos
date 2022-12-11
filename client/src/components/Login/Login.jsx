@@ -10,11 +10,13 @@ import { IconFacebook, IconGoogle } from '../../assets/Icons';
 import { useNavigate } from 'react-router-dom';
 import eventsApi from '../../axios/eventsApi';
 import useValidateForm from '../../hooks/useValidateForm';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
 const Login = () => {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
   const { toggleScreenLogin } = useContext(UIContext);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [modalChangePassword, setModalChangePassword] = useState({
     attemps: 0,
@@ -53,6 +55,8 @@ const Login = () => {
       password: formData.password,
       rememberMe: saveSession,
     };
+
+    setIsLoading(true);
 
     try {
       const result = await eventsApi.post('/users/login', user);
@@ -196,7 +200,11 @@ const Login = () => {
             </div>
           </div>
 
-          <button className={styles.btnLogin}>Ingresar</button>
+          {isLoading ? (
+            <AiOutlineLoading3Quarters className={styles.isLoading} />
+          ) : (
+            <button className={styles.btnLogin}>Ingresar</button>
+          )}
         </form>
         <div className={styles.divisorWithoutO} />
 
