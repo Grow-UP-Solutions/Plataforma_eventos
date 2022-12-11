@@ -240,6 +240,8 @@ router.get('/success', async (req, res) => {
       estatus: response.status,
     };
 
+    auxBody = [];
+
     return res.json(resultTransaccion);
   } catch (error) {
     console.log(error.message);
