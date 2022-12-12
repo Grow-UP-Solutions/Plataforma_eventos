@@ -156,7 +156,12 @@ router.get('/success', async (req, res) => {
 
       event.dates.forEach(async (e, i) => {
         for (let j = 0; j < auxBody[0].dates.length; ++j) {
-          const auxUsuariosComprados = { id: auxBody[0].dates[j].id, cantidad: auxBody[0].dates[j].quantity };
+          const auxUsuariosComprados = {
+            idDate: auxBody[0].dates[j].id,
+            idEvent: auxBody[0].idEvent,
+            cantidad: auxBody[0].dates[j].quantity,
+          };
+
           usuariosComprados.push(auxUsuariosComprados);
 
           if (e._id == auxBody[0].dates[j].id) {
