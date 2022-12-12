@@ -39,7 +39,7 @@ const CarrouselHome = () => {
   ];
 
   return (
-    <div id="hero" className={style.container}>
+    <div id='hero' className={style.container}>
       <Swiper
         slidesPerView={1}
         spaceBetween={0}
@@ -69,9 +69,7 @@ const CarrouselHome = () => {
       <div className={style.container_p}>
         <p>Aqui va un texto de</p>
         <p>enganche grande</p>
-        <p className={style.item_p}>
-          Aqui un texto que acompañe el titulo de enganche
-        </p>
+        <p className={style.item_p}>Aqui un texto que acompañe el titulo de enganche</p>
       </div>
 
       <div className={style.search}>

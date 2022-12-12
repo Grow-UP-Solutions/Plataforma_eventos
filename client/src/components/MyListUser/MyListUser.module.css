@@ -57,11 +57,13 @@
 
 @media screen and (max-width: 1490px) {
   .containercard {
-    grid-template-columns: repeat(2, min-content);
+    margin: 0 auto;
+    width: min-content;
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media screen and (max-width: 1160px) {
+@media screen and (max-width: 986px) {
   .containercard {
     grid-template-columns: none;
   }
@@ -70,5 +72,11 @@
 @media screen and (max-width: 756px) {
   .containercard {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 362px) {
+  .containercard {
+    grid-template-columns: none;
   }
 }

@@ -26,7 +26,7 @@ const ReferralPlan = ({ userData }) => {
 
   const [listCodeDiscount, setListCodeDiscount] = useState([]);
   const [errorMessageCode, setErrorMessageCode] = useState('');
-  const [usersReferred, setUsersReferred] = useState([]);
+  // const [usersReferred, setUsersReferred] = useState([]);
   const [showRefferred, setShowRefferred] = useState('Mostrar');
   const [showCodeDiscountRedeemed, setShowCodeDiscountRedeemed] = useState(false);
   const [showCodeDiscount, setShowCodeDiscount] = useState('Mostrar');
@@ -74,19 +74,7 @@ const ReferralPlan = ({ userData }) => {
   const getUsersReferred = async (isOpen) => {
     if (isOpen === 'Mostrar') {
       setShowRefferred('Ocultar');
-
-      const usersReferredMap = await userData.referrals.map(async (id) => {
-        const { data } = await eventsApi.get(`/users/${id}`);
-        return data;
-      });
-
-      Promise.all(usersReferredMap)
-        .then((success) => {
-          setUsersReferred(success);
-        })
-        .catch((error) => console.log(error));
     } else if (isOpen === 'Ocultar') {
-      setUsersReferred([]);
       setShowRefferred('Mostrar');
     }
   };
@@ -395,27 +383,27 @@ const ReferralPlan = ({ userData }) => {
             </button>
           </div>
 
-          {usersReferred.length > 0 ? (
+          {userData.referrals.length > 0 && showRefferred === 'Ocultar' ? (
             <>
               <table className={styles.tableReferred}>
                 <colgroup span='3'></colgroup>
                 <tr className={styles.tableReferredHeader}>
-                  <th>Tus referidos ({usersReferred.length})</th>
+                  <th>Tus referidos ({userData.referrals.length})</th>
                   <th>Total saldo pendiente</th>
                   <th>Total Saldo</th>
                 </tr>
-                {usersReferred.map((user) => (
+                {userData.referrals.map((user) => (
                   <tr className={styles.userReferred}>
                     <td className={styles.userReferredInfo}>
-                      {user.userpicture ? (
+                      {user.picture ? (
                         <img src={user.userpicture} alt='img-user' />
                       ) : (
                         <FaUserCircle className={styles.avatarUserReferred} />
                       )}
-                      <span>{user.nickname}</span>
+                      <span>{user.name}</span>
                     </td>
-                    <td>5000$</td>
-                    <td>0$</td>
+                    <td>${user.pending}</td>
+                    <td>${user.total}</td>
                   </tr>
                 ))}
               </table>

@@ -1,6 +1,5 @@
-const Users = require('../../../db/Users')
+const Users = require('../../../db/Users');
 
 module.exports = async function codeUser(code) {
-    
-    return await Users.findOne({referralCode: code})    
-}
+  return await Users.findOne({ referralCode: code });
+};

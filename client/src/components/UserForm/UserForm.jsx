@@ -605,6 +605,8 @@ const UserForm = ({ userData }) => {
         ...formData,
         backDocument: result.data.secure_url,
       });
+
+      setCanSave(true);
     } catch (error) {
       console.log(error);
     }
@@ -640,6 +642,8 @@ const UserForm = ({ userData }) => {
         ...formData,
         frontDocument: result.data.secure_url,
       });
+
+      setCanSave(true);
     } catch (error) {
       console.log(error);
     }
@@ -676,6 +680,7 @@ const UserForm = ({ userData }) => {
         ...formData,
         imageRent: result.data.secure_url,
       });
+      setCanSave(true);
     } catch (error) {
       console.log(error);
     }
@@ -701,6 +706,7 @@ const UserForm = ({ userData }) => {
   };
 
   /* VERIFICAR EMAIL */
+
   const verifyEmail = async (e) => {
     e.preventDefault();
     const email = changeEmail.email;
@@ -729,9 +735,21 @@ const UserForm = ({ userData }) => {
 
   const cancelChangeEmail = (e) => {
     e.preventDefault();
+
+    setFormData({
+      ...formData,
+      ['email']: userData.email,
+    });
+
+    setCanSave(false);
+
     setCheckVerifyEmail(false);
     setChangeEmail({ email: '' });
     setErrorChangeEmail('');
+    setCanWriteInput({
+      ...canWriteInput,
+      ['email']: true,
+    });
   };
 
   /* CONVERT TO ORGANIZER */
@@ -749,6 +767,8 @@ const UserForm = ({ userData }) => {
       document: formData.document,
       tel: formData.tel,
       phone: formData.phone,
+      description: formData.descriptionOrganizer,
+      image: formData.userpicture,
       referenciaU: 'U123',
       referenciaZ: '',
     };
@@ -983,10 +1003,16 @@ const UserForm = ({ userData }) => {
 
                   {checkVerifyEmail && <AiOutlineCheck className={styles.iconCheckPassword} />}
                 </div>
-                <div className={styles.containerButtonsChangeMail}>
-                  <button onClick={verifyEmail}>Verificar</button>
-                  <button onClick={cancelChangeEmail}>Cancelar</button>
-                </div>
+                {checkVerifyEmail ? (
+                  <div className={styles.containerButtonsChangeMail}>
+                    <button onClick={() => updateUserData()}>Guardar</button>
+                  </div>
+                ) : (
+                  <div className={styles.containerButtonsChangeMail}>
+                    <button onClick={verifyEmail}>Verificar</button>
+                    <button onClick={cancelChangeEmail}>Cancelar</button>
+                  </div>
+                )}
               </div>
             </>
           )}
@@ -1292,7 +1318,7 @@ const UserForm = ({ userData }) => {
       </div>
       <div className={styles.divisor} />
       <div className={styles.containerPeopleRent}>
-        <p>¿Eres persona natural declarante del impuesto a la Renta?</p>
+        <p>¿Eres persona natural declarante del impuesto a la renta?</p>
         <div className={styles.containerCheckBoxRent}>
           <div className={styles.checkbox}>
             <input
@@ -1314,40 +1340,45 @@ const UserForm = ({ userData }) => {
             />
             <label htmlFor='no'>No</label>
           </div>
-          <div className={styles.containerDrag}>
-            {formData.imageRent && formData.isDeclarant ? (
-              <>
-                <img src={formData.imageRent} alt='rent' className={styles.imageRent} />
-              </>
-            ) : (
-              <>
-                <div className={styles.dragRent}>
-                  <input
-                    disabled={!formData.isDeclarant}
-                    onChange={handleImageRent}
-                    type='file'
-                    className={styles.inputFile}
-                  />
-                  <BsCamera className={styles.iconCameraFile} />
-                  <span>Arrastra una imagen</span>
-                </div>
-              </>
-            )}
-            <p>Formatos: Jpg o png. Max. 100kb</p>
+          {formData.isDeclarant && (
+            <div className={styles.containerDrag}>
+              <p className={styles.anexRut}>Anexa el RUT:</p>
+              {formData.imageRent && formData.isDeclarant ? (
+                <>
+                  <img src={formData.imageRent} alt='rent' className={styles.imageRent} />
+                </>
+              ) : (
+                <>
+                  <div className={styles.dragRent}>
+                    <input
+                      disabled={!formData.isDeclarant}
+                      onChange={handleImageRent}
+                      type='file'
+                      className={styles.inputFile}
+                    />
+                    <BsCamera className={styles.iconCameraFile} />
+                    <span>Arrastra una imagen</span>
+                  </div>
+                </>
+              )}
+              <p>Formatos: Jpg o png. Max. 100kb</p>
 
-            {errorMessagePhoto.imageRent && <span className={styles.errorMessage}>{errorMessagePhoto.imageRent}</span>}
+              {errorMessagePhoto.imageRent && (
+                <span className={styles.errorMessage}>{errorMessagePhoto.imageRent}</span>
+              )}
 
-            <button className={styles.btnAddPhoto}>
-              <input
-                disabled={!formData.isDeclarant}
-                onChange={handleImageRent}
-                type='file'
-                className={styles.inputFile}
-              />
-              <BsCardImage className={styles.btnAddPhotoIcon} />
-              <span>Agregar Imagen</span>
-            </button>
-          </div>
+              <button className={styles.btnAddPhoto}>
+                <input
+                  disabled={!formData.isDeclarant}
+                  onChange={handleImageRent}
+                  type='file'
+                  className={styles.inputFile}
+                />
+                <BsCardImage className={styles.btnAddPhotoIcon} />
+                <span>Agregar Imagen</span>
+              </button>
+            </div>
+          )}
         </div>
       </div>
       <div className={styles.divisor} />

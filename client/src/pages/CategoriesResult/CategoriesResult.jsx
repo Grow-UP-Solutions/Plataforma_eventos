@@ -5,10 +5,9 @@ import { animateScroll as scroll } from 'react-scroll';
 import Pagination from '../../components/Pagination/Pagination';
 import { UIContext } from '../../context/ui';
 import { useParams } from 'react-router-dom';
-import { Loading } from "../../components";
+import { Loading } from '../../components';
 
 const CategoriesResult = () => {
-
   const name = useParams().data;
   const { events } = useContext(UIContext);
   const [local, setLocal] = useState([]);
@@ -16,7 +15,7 @@ const CategoriesResult = () => {
   const [currentPage, setCurretPage] = useState(1);
   const CardPerPage = 8;
   const indexOfLastCard = currentPage * CardPerPage;
-  const indexOfFirstCard = indexOfLastCard - CardPerPage; 
+  const indexOfFirstCard = indexOfLastCard - CardPerPage;
   const currentCard = local.slice(indexOfFirstCard, indexOfLastCard);
   const paginado = (pageNumber) => setCurretPage(pageNumber);
 
@@ -25,20 +24,18 @@ const CategoriesResult = () => {
   }, []);
 
   useEffect(() => {
-    
     const getCategories = () => {
-      setLocal(events.filter((event) => event.categories.find((e) => e.name === name)));  
+      setLocal(events.filter((event) => event.categories.find((e) => e.name === name)));
       setLoad(false);
-    }
+    };
     getCategories();
   }, [currentCard]);
 
   if (load) {
     return <Loading />;
-  }
-  else {
+  } else {
     return (
-      <div className={style.container}>
+      <div className={`${style.container}`}>
         <p className={style.title}>{name}</p>
         <div className={style.containerCard}>
           {currentCard.length ? (
@@ -55,14 +52,8 @@ const CategoriesResult = () => {
         </div>
 
         <div className={style.container_pagination}>
-          <Pagination 
-            billsPerPage={CardPerPage}
-            state={local.length}
-            paginado={paginado}
-            page={currentPage}
-          />
+          <Pagination billsPerPage={CardPerPage} state={local.length} paginado={paginado} page={currentPage} />
         </div>
-
       </div>
     );
   }

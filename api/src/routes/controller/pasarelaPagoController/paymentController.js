@@ -3,8 +3,10 @@ const axios = require('axios');
 const { Router } = require('express');
 const router = Router();
 const mercadopago = require('mercadopago');
+const CodeDiscount = require('../../../models/DB/CodeDiscount');
 const SuccessPayment = require('../../../models/DB/SuccessPayment');
 const calculoDeComicion = require('../../../models/util/calculoDeComiciones/calculoDeComicion');
+const { getCodeDiscountByCode } = require('../../../models/util/functionDB/CodeDiscountDb');
 const EventFunctionDb = require('../../../models/util/functionDB/event/index.event');
 const UsersFunctionDb = require('../../../models/util/functionDB/users/index.users');
 const { ACCESS_TOKEN } = process.env;
@@ -19,6 +21,9 @@ router.post('/orden', async (req, res) => {
   const { dates, idUser, idEvent, ganancia } = req.body;
 
   auxBody.push({ dates, idUser, idEvent, ganancia });
+
+  console.log({ auxBody });
+  console.log({ auxBodyDates: auxBody[0].dates });
 
   const codigosPrueba = dates.map((e) => e.codigo);
 
@@ -77,8 +82,8 @@ router.post('/orden', async (req, res) => {
       },
 
       back_urls: {
-        success: `http://localhost:3000/mercadoPago/success`,
-        failure: `http://localhost:3000/mercadoPago/fail`,
+        success: `https://events-jean.vercel.app/mercadoPago/success`,
+        failure: `https://events-jean.vercel.app/mercadoPago/fail`,
       },
       auto_return: 'approved',
       taxes: [
@@ -100,10 +105,12 @@ router.post('/orden', async (req, res) => {
   }
 });
 
+/* FECHA ACTUAL */
+const fecha = new Date();
+const fechaActual = fecha.getDate() + '/' + (fecha.getMonth() + 1) + '/' + fecha.getFullYear();
+
 router.get('/success', async (req, res) => {
   const { external_reference, payment_id, preference_id, codigo } = req.query;
-
-  console.log({ auxBody });
 
   const ids = external_reference.split(',');
 
@@ -124,12 +131,9 @@ router.get('/success', async (req, res) => {
     const totalDeCupos = cuposComprados.reduce((a, b) => a + b); */
 
     let totalCupos = 0;
-
     auxBody[0].dates.forEach((date) => {
       totalCupos = totalCupos + date.quantity;
     });
-
-    console.log({ totalCupos });
 
     const event = await EventFunctionDb.oneEvent(idEvent);
     const organizerEvent = await UsersFunctionDb.oneUser(event.organizer);
@@ -140,46 +144,82 @@ router.get('/success', async (req, res) => {
     if (response.status === 'approved' && response.status_detail === 'accredited') {
       event.generalBuyers.push(user._id);
 
+      console.log({ auxBody });
+
       organizerEvent.pendingEarnings += auxBody[0].ganancia;
       organizerEvent.overallEarnings += auxBody[0].ganancia;
       event.pendingEarnings += auxBody[0].ganancia;
       event.overallEarnings += auxBody[0].ganancia;
       event.sells += totalCupos;
 
-      console.log({ overallEarnings: event.overallEarnings });
-      console.log({ sells: event.sells });
+      const usuariosComprados = [];
 
-      event.dates.forEach((e, i) => {
+      event.dates.forEach(async (e, i) => {
         for (let j = 0; j < auxBody[0].dates.length; ++j) {
+          const auxUsuariosComprados = {
+            idDate: auxBody[0].dates[j].id,
+            idEvent: auxBody[0].idEvent,
+            cantidad: auxBody[0].dates[j].quantity,
+          };
+
+          usuariosComprados.push(auxUsuariosComprados);
+
           if (e._id == auxBody[0].dates[j].id) {
+            console.log('Id auxbody === Id eventDate');
             for (let x = 0; x < e.codigos.length; x++) {
-              if (e.codigos[x].codigo === auxBody[0].dates[j].codigo) {
+              if (
+                auxBody[0].dates[j].codigoDescuento !== null &&
+                e.codigos[x].codigo === auxBody[0].dates[j].codigoDescuento
+              ) {
                 e.codigos[x].cantidad = e.codigos[x].cantidad - 1;
                 e.codigos[x].uses = e.codigos[x].uses + 1;
+              } else if (auxBody[0].dates[j].codigoUsuario !== null) {
+                const codigo = await CodeDiscount.findOne({ code: auxBody[0].dates[j].codigoUsuario });
+
+                codigo.isRedimeed = true;
+                codigo.userRedimeed = user.nickname;
+                codigo.dateRedimeed = fechaActual;
+
+                codigo.save();
               }
             }
-
+            console.log({ eSinActualizar: e });
             e.buyers?.push(user._id);
             e.cupos = e.cupos - auxBody[0].dates[j].quantity;
             e.sells = e.sells + auxBody[0].dates[j].quantity;
             e.pendingEarnings = e.pendingEarnings + auxBody[0].dates[j].ganancias;
             e.overallEarnings = e.overallEarnings + auxBody[0].dates[j].ganancias;
+            console.log({ eActualizado: e });
           }
         }
       });
 
+      auxBody = [];
+
       user.myEventsBooked.push(event._id);
 
       if (user.isReferral.code && !user.isReferral.use) {
-        const userReferral = await UsersFunctionDb.codeUser(user.isReferral);
-        userReferral.saldoPendiente -= 5000;
+        const userReferral = await UsersFunctionDb.codeUser(user.isReferral.code);
 
-        userReferral.saldoTotal += 5000;
+        let referredAux = [...userReferral.referrals];
 
+        referredAux = referredAux.map((referred) => {
+          if (referred.id.toString() === user._id.toString()) {
+            referred.pending = 0;
+            referred.total = 5000;
+          }
+          return referred;
+        });
+
+        userReferral.referrals = [];
+        userReferral.referrals.push(...referredAux);
+        userReferral.availableCredit += 5000;
+        userReferral.save();
         user.isReferral.use = true;
       }
 
       await event.save();
+
       resultTransaccion = {
         thumbnail: event.pictures[0].picture,
         motivo: event.title,
@@ -190,6 +230,7 @@ router.get('/success', async (req, res) => {
         costoDeLaTransaccion: response.net_amount,
         referencia: response.payer.identification.number,
         estatus: response.status,
+        cuposComprados: usuariosComprados,
       };
 
       factura = {
@@ -199,11 +240,14 @@ router.get('/success', async (req, res) => {
         ganancia: ganancia,
         isPay: false,
       };
+
       organizerEvent.factura.push(factura);
 
       user.ordenes.push(resultTransaccion);
       await organizerEvent.save();
       await user.save();
+
+      usuariosComprados = [];
 
       return res.json(resultTransaccion);
     }
@@ -258,9 +302,6 @@ router.put('/adminPaymentOrganizer/', async (req, res) => {
 
     await event.save();
     await organizer.save();
-
-    console.log({ pendingEarnings: event.pendingEarnings });
-    console.log({ payedEarnings: event.payedEarnings });
 
     res.json({ message: 'Pagado exitosamente' });
   } catch (error) {

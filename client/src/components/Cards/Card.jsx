@@ -12,7 +12,7 @@ import eventsApi from '../../axios/eventsApi';
 import { AiOutlineClose } from 'react-icons/ai';
 import { Hearts } from 'react-loader-spinner';
 
-const Card = ({ event, listName, orgEvent }) => {
+const Card = ({ event, listName, orgEvent, datePublic }) => {
   const { toggleScreenLogin, getEventsFavourites, getEventsWithoutFavourites } = useContext(UIContext);
   const { notes, setNotes } = useContext(stateContext);
   const currentYear = new Date().getFullYear();
@@ -28,6 +28,8 @@ const Card = ({ event, listName, orgEvent }) => {
   const hora = fecha.getHours();
   const minutes = fecha.getMinutes();
   const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
+
+  console.log({ event });
 
   if (dateActual && orgEvent !== 'true') {
     event.dates.map((date) => {
@@ -50,6 +52,14 @@ const Card = ({ event, listName, orgEvent }) => {
       }
     });
   }
+
+  if (event.dates.length === 1 && event.dates[0].isPublic === false) {
+    event.isPublic = false;
+    console.log('event.ispublic', event.isPublic);
+  }
+
+  const datesPublic = event.dates.filter((date) => date.isPublic === true);
+  const datesNotPublic = event.dates.filter((date) => date.isPublic === false);
 
   useEffect(() => {
     getUsers();
@@ -152,6 +162,7 @@ const Card = ({ event, listName, orgEvent }) => {
   //PRECIO FECHA HOME//
 
   const firstPublicDate = event.dates.find((date) => date.isPublic === true);
+  const firstNotPublicDate = event.dates.find((date) => date.isPublic === false);
 
   const [price, setPrice] = useState(firstPublicDate !== undefined ? firstPublicDate.price : '');
 
@@ -213,9 +224,15 @@ const Card = ({ event, listName, orgEvent }) => {
         )}
 
         <div className={styles.cardText}>
-          {orgEvent === 'true' && selectedDate === '' ? (
-            <p className={styles.cardDateCurrent}>{event.dates[0].dateFormated.replace('de', '/')}</p>
-          ) : orgEvent === 'true' && selectedDate !== '' ? (
+          {orgEvent === 'true' && datePublic === 'true' && selectedDate === '' ? (
+            <p className={styles.cardDateCurrent}>
+              {firstPublicDate !== undefined ? firstPublicDate.dateFormated.replace('de', '/') : ''}
+            </p>
+          ) : orgEvent === 'true' && datePublic === 'true' && selectedDate !== '' ? (
+            <p className={styles.cardDateCurrent}>{selectedDate.replace('de', '/')}</p>
+          ) : orgEvent === 'true' && datePublic === 'false' && selectedDate === '' ? (
+            <p className={styles.cardDateCurrent}>{firstNotPublicDate.dateFormated.replace('de', '/')}</p>
+          ) : orgEvent === 'true' && datePublic === 'false' && selectedDate !== '' ? (
             <p className={styles.cardDateCurrent}>{selectedDate.replace('de', '/')}</p>
           ) : orgEvent !== 'true' ? (
             <div>
@@ -477,53 +494,83 @@ const Card = ({ event, listName, orgEvent }) => {
       {orgEvent === 'true' && (
         <div className={styles.containerDatos}>
           <div className={styles.datos}>
-            {event.dates.length > 1 && (
-              <div className={styles.subDatos}>
-                <p>Fechas:</p>
-                <h4>{event.dates.length}</h4>
-                <button onClick={(e) => handleDates(e)}>Ver</button>
-                {getDates && (
-                  <div className={styles.containerMenuGetDates} ref={menuRef}>
-                    <div className={styles.closeMenuGetDate}>
-                      {/* <button onClick={() => setGetDates(false)}>
-                          <AiOutlineClose />
-                        </button> */}
-                    </div>
-                    <div className={styles.container_choosedate}>
-                      {event.dates.map((date) => (
-                        <p onClick={(e) => chooseDate(e, date._id, date.dateFormated, date.price)}>{date.date}</p>
-                      ))}
-                    </div>
+            {datePublic === 'true'
+              ? datesPublic.length > 1 && (
+                  <div className={styles.subDatos}>
+                    <p>Fechas:</p>
+                    <h4>{datesPublic.length}</h4>
+                    <button onClick={(e) => handleDates(e)}>Ver</button>
+                    {getDates && (
+                      <div className={styles.containerMenuGetDates} ref={menuRef}>
+                        <div className={styles.closeMenuGetDate}>
+                          {/* <button onClick={() => setGetDates(false)}>
+                              <AiOutlineClose />
+                            </button> */}
+                        </div>
+                        <div className={styles.container_choosedate}>
+                          {event.dates.map((date) =>
+                            date.isPublic === true ? (
+                              <p onClick={(e) => chooseDate(e, date._id, date.dateFormated, date.price)}>{date.date}</p>
+                            ) : (
+                              ''
+                            )
+                          )}
+                        </div>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-            )}
-            <div className={styles.subDatos}>
-              <p>Asistentes:</p>
-              {event.dates.map((date) =>
-                date._id === selectedDateId ? (
-                  date.buyers.length > 1 ? (
-                    <h4>{date.buyers.length}</h4>
-                  ) : date.buyers.length === 0 ? (
-                    <h4>0</h4>
-                  ) : date.buyers !== undefined ? (
-                    <h4>0</h4>
-                  ) : (
-                    <h4>0</h4>
-                  )
-                ) : (
-                  ''
                 )
-              )}
-              <Link to={`/usuario/asistentes-al-evento/${event._id}/${selectedDateId}`}>
-                <button>Ver</button>
-              </Link>
-            </div>
-            <div className={styles.subDatos}>
-              <p>Ganancias:</p>
-              <h4>{event.overallEarnings}</h4>
-              <button onClick={(e) => handleEarns(e)}>Ver</button>
-            </div>
+              : datePublic === 'false'
+              ? datesNotPublic.length > 1 && (
+                  <div className={styles.subDatos}>
+                    <p>Fechas:</p>
+                    <h4>{datesNotPublic.length}</h4>
+                    <button onClick={(e) => handleDates(e)}>Ver</button>
+                    {getDates && (
+                      <div className={styles.containerMenuGetDates} ref={menuRef}>
+                        <div className={styles.closeMenuGetDate}></div>
+                        <div className={styles.container_choosedate}>
+                          {event.dates.map((date) =>
+                            date.isPublic === false ? (
+                              <p onClick={(e) => chooseDate(e, date._id, date.dateFormated, date.price)}>{date.date}</p>
+                            ) : (
+                              ''
+                            )
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )
+              : ''}
+            {datePublic === 'true' ? (
+              <div>
+                <div className={styles.subDatos}>
+                  <p>Asistentes:</p>
+                  {event.dates.map((date) =>
+                    date._id === selectedDateId ? (
+                      date.sells > 1 ? (
+                        <h4>{date.sells}</h4>
+                      ) : (
+                        date.sells === 0 && <h4>0</h4>
+                      )
+                    ) : (
+                      ''
+                    )
+                  )}
+                  <Link to={`/usuario/asistentes-al-evento/${event._id}/${selectedDateId}`}>
+                    <button>Ver</button>
+                  </Link>
+                </div>
+                <div className={styles.subDatos}>
+                  <p>Ganancias:</p>
+                  {event.dates.map((date) => (date._id === selectedDateId ? <h4>{date.overallEarnings}</h4> : ''))}
+                  <button onClick={(e) => handleEarns(e)}>Ver</button>
+                </div>
+              </div>
+            ) : (
+              ''
+            )}
           </div>
         </div>
       )}

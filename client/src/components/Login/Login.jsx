@@ -10,11 +10,13 @@ import { IconFacebook, IconGoogle } from '../../assets/Icons';
 import { useNavigate } from 'react-router-dom';
 import eventsApi from '../../axios/eventsApi';
 import useValidateForm from '../../hooks/useValidateForm';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
 const Login = () => {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
   const { toggleScreenLogin } = useContext(UIContext);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [modalChangePassword, setModalChangePassword] = useState({
     attemps: 0,
@@ -54,6 +56,8 @@ const Login = () => {
       rememberMe: saveSession,
     };
 
+    setIsLoading(true);
+
     try {
       const result = await eventsApi.post('/users/login', user);
 
@@ -66,6 +70,8 @@ const Login = () => {
         result: true,
         message: error.response.data.message,
       });
+
+      setIsLoading(false);
 
       if (formData.mail && formData.password) {
         setModalChangePassword({
@@ -196,7 +202,11 @@ const Login = () => {
             </div>
           </div>
 
-          <button className={styles.btnLogin}>Ingresar</button>
+          {isLoading ? (
+            <AiOutlineLoading3Quarters className={styles.isLoading} />
+          ) : (
+            <button className={styles.btnLogin}>Ingresar</button>
+          )}
         </form>
         <div className={styles.divisorWithoutO} />
 
@@ -216,18 +226,23 @@ const Login = () => {
         )}
 
         {modalForgetPassword && (
-          <>
-            <div className={styles.overlayModalChangePassword}>
-              <div className={styles.containerModalChangePassword}>
-                <h2>Restaurar contraseña</h2>
-                <p>
-                  !Haz olvidado tu contraseña! No te preocupes, hemos enviado tu correo un link para que puedas
-                  cambiarla.
-                </p>
-                <button onClick={() => setModalForgetPassword(false)}>Listo</button>
-              </div>
+          <div className={styles.overlayModalChangePassword}>
+            <div className={styles.containerModalChangePassword}>
+              <h2>Restaurar contraseña</h2>
+              <p>
+                !Haz olvidado tu contraseña! No te preocupes, hemos enviado tu correo un link para que puedas cambiarla.
+              </p>
+              <button
+                onClick={() => {
+                  setModalChangePassword(false);
+                  setModalForgetPassword(false);
+                  setErrorLogin({ message: '', result: false });
+                }}
+              >
+                Listo
+              </button>
             </div>
-          </>
+          </div>
         )}
       </div>
     </div>

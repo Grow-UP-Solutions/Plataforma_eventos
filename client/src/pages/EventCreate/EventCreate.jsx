@@ -15,7 +15,7 @@ import styles from './EventCreate.module.css';
 
 const EventCreate = () => {
   const { toggleScreenLogin } = useContext(UIContext);
-  const { user, logged, logout } = useContext(AuthContext);
+  const { user, logged } = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,7 +26,6 @@ const EventCreate = () => {
     getUserData();
   }, [user]);
 
-  const id = user.uid;
   const [userData, setUserData] = useState({});
 
   useEffect(() => {}, [userData]);
@@ -113,7 +112,6 @@ const EventCreate = () => {
 
   return (
     <div className={styles.container}>
-      
       <div className={styles.containerPortada}>
         <img
           src={
@@ -131,13 +129,12 @@ const EventCreate = () => {
             <p className={styles.subTitlePortada}>Comparte tu talento con otros mientras ganas dinero</p>
             <p className={styles.subTitlePortada}>haciendo lo que más disfrutas</p>
           </div>
-          
+
           <button className={styles.btn} onClick={(e) => ingreso(e)}>
             Comenzar
           </button>
         </div>
       </div>
-      
 
       <div className={styles.containerContent}>
         <div className={styles.header}>

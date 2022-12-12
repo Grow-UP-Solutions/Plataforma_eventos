@@ -254,6 +254,7 @@
 }
 
 .containerModalChangePassword {
+  position: absolute;
   padding: 3rem 2rem;
   border-radius: 10px;
   background-color: white;
@@ -287,6 +288,24 @@
   color: white;
   padding: 1rem 4rem;
   cursor: pointer;
+}
+
+.isLoading {
+  height: 3.2rem;
+  width: 3.2rem;
+  color: var(--color-orange);
+  animation: spinner 1.6s infinite;
+  margin-bottom: 2rem;
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes introLogin {

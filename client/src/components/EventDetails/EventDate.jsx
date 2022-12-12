@@ -15,13 +15,13 @@ import eventsApi from '../../axios/eventsApi';
 import { AuthContext } from '../../context/auth';
 import { stateContext } from '../../context/state/stateContext';
 import { UIContext } from '../../context/ui';
-import { administracion, iva , comision , ivaOrg } from '../../utils/administracion';
+import { administracion, comision, iva, ivaOrg } from '../../utils/administracion';
 import { formatDate } from '../../utils/formatDate';
 import styles from './EventDate.module.css';
 import EventDateMap from './EventDateMap';
 
-import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 import { Calendar } from '@amir04lm26/react-modern-calendar-date-picker';
+import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 import { myCustomLocale } from '../../utils/customLocaleDate';
 
 import moment from 'moment';
@@ -42,16 +42,15 @@ const EventDate = ({ id, openMenu }) => {
   const { valorTotal, setValorTotal } = useContext(stateContext);
   const { subTotal, setSubTotal } = useContext(stateContext);
 
-
   useEffect(() => {
     setCarrito([]);
     setDateToBuy([]);
-    setValorTotal(0)
+    setValorTotal(0);
   }, []);
 
   const fecha = new Date();
-  const hora = fecha.getHours();
-  const minutes = fecha.getMinutes();
+  // const hora = fecha.getHours();
+  // const minutes = fecha.getMinutes();
   const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
 
   const handleFormatDate = (date) => {
@@ -105,35 +104,27 @@ const EventDate = ({ id, openMenu }) => {
     }
   };
 
-  const [dateId, setDateId] = useState(0);
-
   const dateSelected = (e, price) => {
-   
     const fechaElegida = e.target.value;
 
-    const priceOrg =price - (price * comision) - (price * comision * ivaOrg)
+    const priceOrg = price - price * comision - price * comision * ivaOrg;
 
     if (!e.target.checked) {
-
       let seleccion = carrito.filter((f) => f.idDate !== fechaElegida);
       let carritoElegido = carrito.filter((f) => f.idDate === fechaElegida);
       let seleccionDate = dateToBuy.filter((d) => d._id !== fechaElegida);
       setCarrito(seleccion);
-      
+
       setDateToBuy(seleccionDate);
-     
-      if(carrito.length > 1){
-        const valorT = valorTotal - carritoElegido[0].subtotal
-        setValorTotal(valorT)
-        setSubTotal(subTotal - carritoElegido[0].subtotal)
-      }else{
-        setValorTotal(0)
-        setSubTotal(0)
+
+      if (carrito.length > 1) {
+        const valorT = valorTotal - carritoElegido[0].subtotal;
+        setValorTotal(valorT);
+        setSubTotal(subTotal - carritoElegido[0].subtotal);
+      } else {
+        setValorTotal(0);
+        setSubTotal(0);
       }
-      
-
-
-
     } else {
       setCarrito([
         ...carrito,
@@ -141,18 +132,17 @@ const EventDate = ({ id, openMenu }) => {
           idDate: fechaElegida,
           quantity: 1,
           price: price,
-          unit_price: price ,
+          unit_price: price,
           codigoDescuento: '',
           codigoReferido: '',
           codigoCorrecto: '',
           subtotal: price,
           descuento: '',
           priceOrg: priceOrg,
-          ganancias:  priceOrg 
+          ganancias: priceOrg,
         },
       ]);
 
-    
       // const total = fechaElegida.price + administracion + iva
       // setValorTotal(total)
 
@@ -160,16 +150,15 @@ const EventDate = ({ id, openMenu }) => {
         if (eventDetails.dates[i]._id === fechaElegida) {
           const datesChoosen = eventDetails.dates[i];
           setDateToBuy([...dateToBuy, datesChoosen]);
-          const total = eventDetails.dates[i].price + administracion + iva
-          if(valorTotal === 0){
-          setValorTotal(total)
-          setSubTotal(eventDetails.dates[i].price)
-          }else{
-            const totalVariasFecchas = valorTotal + eventDetails.dates[i].price
-            setValorTotal(totalVariasFecchas)
-            setSubTotal(subTotal + eventDetails.dates[i].price)
+          const total = eventDetails.dates[i].price + administracion + iva;
+          if (valorTotal === 0) {
+            setValorTotal(total);
+            setSubTotal(eventDetails.dates[i].price);
+          } else {
+            const totalVariasFecchas = valorTotal + eventDetails.dates[i].price;
+            setValorTotal(totalVariasFecchas);
+            setSubTotal(subTotal + eventDetails.dates[i].price);
           }
-
         }
       }
     }
@@ -180,9 +169,9 @@ const EventDate = ({ id, openMenu }) => {
   const comprar = (e) => {
     if (!logged) {
       toggleScreenLogin();
-    } else if (logged && carrito.length>0) {
+    } else if (logged && carrito.length > 0) {
       navigate(`/cart/${id}`);
-    } else if (logged && carrito.length===0) {
+    } else if (logged && carrito.length === 0) {
       swal('Debes seleccionar al menos una fecha');
     }
   };
