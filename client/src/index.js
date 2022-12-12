@@ -12,17 +12,15 @@ import { Data } from './context/state/stateProvider';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
-  <React.StrictMode>
-    <AuthProvider>
-      <UIProvider>
-        <Provider store={store}>
-          <Data>
-            <BrowserRouter>
-              <App />
-            </BrowserRouter>
-          </Data>
-        </Provider>
-      </UIProvider>
-    </AuthProvider>
-  </React.StrictMode>
+  <AuthProvider>
+    <UIProvider>
+      <Provider store={store}>
+        <Data>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </Data>
+      </Provider>
+    </UIProvider>
+  </AuthProvider>
 );

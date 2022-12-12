@@ -23,7 +23,7 @@ router.post('/orden', async (req, res) => {
   auxBody.push({ dates, idUser, idEvent, ganancia });
 
   console.log({ auxBody });
-  console.log({ auxBodyDates: auxBody.dates });
+  console.log({ auxBodyDates: auxBody[0].dates });
 
   const codigosPrueba = dates.map((e) => e.codigo);
 
@@ -131,7 +131,6 @@ router.get('/success', async (req, res) => {
     const totalDeCupos = cuposComprados.reduce((a, b) => a + b); */
 
     let totalCupos = 0;
-
     auxBody[0].dates.forEach((date) => {
       totalCupos = totalCupos + date.quantity;
     });
@@ -184,6 +183,8 @@ router.get('/success', async (req, res) => {
           }
         }
       });
+
+      auxBody = [];
 
       user.myEventsBooked.push(event._id);
 
@@ -246,8 +247,6 @@ router.get('/success', async (req, res) => {
       referencia: response.payer.identification.number,
       estatus: response.status,
     };
-
-    auxBody = [];
 
     return res.json(resultTransaccion);
   } catch (error) {
