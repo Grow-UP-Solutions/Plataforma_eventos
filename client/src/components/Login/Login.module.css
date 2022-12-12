@@ -254,6 +254,7 @@
 }
 
 .containerModalChangePassword {
+  position: absolute;
   padding: 3rem 2rem;
   border-radius: 10px;
   background-color: white;

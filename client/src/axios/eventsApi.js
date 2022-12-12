@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const eventsApi = axios.create({
-  baseURL: 'https://plataformaeventos-production-e0ed.up.railway.app',
+  baseURL: 'plataformaeventos-production.up.railway.app',
 });
 
 /* http://localhost:3001 */

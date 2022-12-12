@@ -71,6 +71,8 @@ const Login = () => {
         message: error.response.data.message,
       });
 
+      setIsLoading(false);
+
       if (formData.mail && formData.password) {
         setModalChangePassword({
           attemps: modalChangePassword.attemps + 1,
@@ -224,18 +226,23 @@ const Login = () => {
         )}
 
         {modalForgetPassword && (
-          <>
-            <div className={styles.overlayModalChangePassword}>
-              <div className={styles.containerModalChangePassword}>
-                <h2>Restaurar contraseña</h2>
-                <p>
-                  !Haz olvidado tu contraseña! No te preocupes, hemos enviado tu correo un link para que puedas
-                  cambiarla.
-                </p>
-                <button onClick={() => setModalForgetPassword(false)}>Listo</button>
-              </div>
+          <div className={styles.overlayModalChangePassword}>
+            <div className={styles.containerModalChangePassword}>
+              <h2>Restaurar contraseña</h2>
+              <p>
+                !Haz olvidado tu contraseña! No te preocupes, hemos enviado tu correo un link para que puedas cambiarla.
+              </p>
+              <button
+                onClick={() => {
+                  setModalChangePassword(false);
+                  setModalForgetPassword(false);
+                  setErrorLogin({ message: '', result: false });
+                }}
+              >
+                Listo
+              </button>
             </div>
-          </>
+          </div>
         )}
       </div>
     </div>
