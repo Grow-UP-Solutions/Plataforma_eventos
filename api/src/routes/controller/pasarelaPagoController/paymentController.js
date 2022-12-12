@@ -22,6 +22,9 @@ router.post('/orden', async (req, res) => {
 
   auxBody.push({ dates, idUser, idEvent, ganancia });
 
+  console.log({ auxBody });
+  console.log({ auxBodyDates: auxBody[0].dates });
+
   const codigosPrueba = dates.map((e) => e.codigo);
 
   const userDB = await UsersFunctionDb.oneUser(idUser);
@@ -128,7 +131,6 @@ router.get('/success', async (req, res) => {
     const totalDeCupos = cuposComprados.reduce((a, b) => a + b); */
 
     let totalCupos = 0;
-
     auxBody[0].dates.forEach((date) => {
       totalCupos = totalCupos + date.quantity;
     });
@@ -142,15 +144,28 @@ router.get('/success', async (req, res) => {
     if (response.status === 'approved' && response.status_detail === 'accredited') {
       event.generalBuyers.push(user._id);
 
+      console.log({ auxBody });
+
       organizerEvent.pendingEarnings += auxBody[0].ganancia;
       organizerEvent.overallEarnings += auxBody[0].ganancia;
       event.pendingEarnings += auxBody[0].ganancia;
       event.overallEarnings += auxBody[0].ganancia;
       event.sells += totalCupos;
 
+      const usuariosComprados = [];
+
       event.dates.forEach(async (e, i) => {
         for (let j = 0; j < auxBody[0].dates.length; ++j) {
+          const auxUsuariosComprados = {
+            idDate: auxBody[0].dates[j].id,
+            idEvent: auxBody[0].idEvent,
+            cantidad: auxBody[0].dates[j].quantity,
+          };
+
+          usuariosComprados.push(auxUsuariosComprados);
+
           if (e._id == auxBody[0].dates[j].id) {
+            console.log('Id auxbody === Id eventDate');
             for (let x = 0; x < e.codigos.length; x++) {
               if (
                 auxBody[0].dates[j].codigoDescuento !== null &&
@@ -168,15 +183,18 @@ router.get('/success', async (req, res) => {
                 codigo.save();
               }
             }
-
+            console.log({ eSinActualizar: e });
             e.buyers?.push(user._id);
             e.cupos = e.cupos - auxBody[0].dates[j].quantity;
             e.sells = e.sells + auxBody[0].dates[j].quantity;
             e.pendingEarnings = e.pendingEarnings + auxBody[0].dates[j].ganancias;
             e.overallEarnings = e.overallEarnings + auxBody[0].dates[j].ganancias;
+            console.log({ eActualizado: e });
           }
         }
       });
+
+      auxBody = [];
 
       user.myEventsBooked.push(event._id);
 
@@ -201,6 +219,7 @@ router.get('/success', async (req, res) => {
       }
 
       await event.save();
+
       resultTransaccion = {
         thumbnail: event.pictures[0].picture,
         motivo: event.title,
@@ -211,6 +230,7 @@ router.get('/success', async (req, res) => {
         costoDeLaTransaccion: response.net_amount,
         referencia: response.payer.identification.number,
         estatus: response.status,
+        cuposComprados: usuariosComprados,
       };
 
       factura = {
@@ -220,11 +240,14 @@ router.get('/success', async (req, res) => {
         ganancia: ganancia,
         isPay: false,
       };
+
       organizerEvent.factura.push(factura);
 
       user.ordenes.push(resultTransaccion);
       await organizerEvent.save();
       await user.save();
+
+      usuariosComprados = [];
 
       return res.json(resultTransaccion);
     }
@@ -239,8 +262,6 @@ router.get('/success', async (req, res) => {
       referencia: response.payer.identification.number,
       estatus: response.status,
     };
-
-    auxBody = [];
 
     return res.json(resultTransaccion);
   } catch (error) {

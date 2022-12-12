@@ -1,6 +1,4 @@
 .container {
-  max-width: 1420px;
-  margin: 0 auto;
 }
 
 .title {
@@ -13,12 +11,12 @@
 }
 
 .containerCard {
+  margin: 0 auto;
+  width: min-content;
   margin-top: 20px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 2rem;
-  align-content: flex-start;
 }
 
 .container_pagination {
@@ -33,4 +31,20 @@
   text-align: center;
   width: 100%;
   margin-top: 1rem;
+}
+
+@media screen and (max-width: 1272px) {
+  .containerCard {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media screen and (max-width: 953px) {
+  .containerCard {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media screen and (max-width: 315px) {
+  .containerCard {
+    grid-template-columns: none;
+  }
 }

@@ -480,6 +480,9 @@
   }
 }
 
+@media screen and (max-height: 900px) {
+}
+
 @keyframes menu {
   0% {
     left: -100%;
