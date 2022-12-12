@@ -243,6 +243,10 @@ const UserSchema = new Schema(
           type: String,
           default: '',
         },
+        cuposComprados: {
+          type: Array,
+          default: [],
+        },
       },
     ],
   },

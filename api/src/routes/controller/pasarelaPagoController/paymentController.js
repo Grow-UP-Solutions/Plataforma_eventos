@@ -152,8 +152,13 @@ router.get('/success', async (req, res) => {
       event.overallEarnings += auxBody[0].ganancia;
       event.sells += totalCupos;
 
+      const usuariosComprados = [];
+
       event.dates.forEach(async (e, i) => {
         for (let j = 0; j < auxBody[0].dates.length; ++j) {
+          const auxUsuariosComprados = { id: auxBody[0].dates[j].id, cantidad: auxBody[0].dates[j].quantity };
+          usuariosComprados.push(auxUsuariosComprados);
+
           if (e._id == auxBody[0].dates[j].id) {
             console.log('Id auxbody === Id eventDate');
             for (let x = 0; x < e.codigos.length; x++) {
@@ -209,6 +214,7 @@ router.get('/success', async (req, res) => {
       }
 
       await event.save();
+
       resultTransaccion = {
         thumbnail: event.pictures[0].picture,
         motivo: event.title,
@@ -219,6 +225,7 @@ router.get('/success', async (req, res) => {
         costoDeLaTransaccion: response.net_amount,
         referencia: response.payer.identification.number,
         estatus: response.status,
+        cuposComprados: usuariosComprados,
       };
 
       factura = {
@@ -228,11 +235,14 @@ router.get('/success', async (req, res) => {
         ganancia: ganancia,
         isPay: false,
       };
+
       organizerEvent.factura.push(factura);
 
       user.ordenes.push(resultTransaccion);
       await organizerEvent.save();
       await user.save();
+
+      usuariosComprados = [];
 
       return res.json(resultTransaccion);
     }

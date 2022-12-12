@@ -549,14 +549,10 @@ const Card = ({ event, listName, orgEvent, datePublic }) => {
                   <p>Asistentes:</p>
                   {event.dates.map((date) =>
                     date._id === selectedDateId ? (
-                      date.buyers.length > 1 ? (
-                        <h4>{date.buyers.length}</h4>
-                      ) : date.buyers.length === 0 ? (
-                        <h4>0</h4>
-                      ) : date.buyers !== undefined ? (
-                        <h4>0</h4>
+                      date.sells > 1 ? (
+                        <h4>{date.sells}</h4>
                       ) : (
-                        <h4>0</h4>
+                        date.sells === 0 && <h4>0</h4>
                       )
                     ) : (
                       ''
