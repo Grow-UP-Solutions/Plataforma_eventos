@@ -41,7 +41,7 @@
 /*SECTION 1 */
 
 .container1 {
-  height: 90rem;
+  height: 90vh;
   margin-bottom: 6rem;
   width: 50%;
   margin-top: 5rem;
@@ -56,6 +56,14 @@
 }
 
 .title {
+  color: #1b3c6a;
+  font-size: 2.4rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+.titleResponsive {
+  display: none;
   color: #1b3c6a;
   font-size: 2.4rem;
   font-weight: bold;
@@ -108,6 +116,7 @@
 /*SECTION 2 */
 
 .containerChecks {
+  margin-top: 3rem;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 1.2rem;
@@ -143,17 +152,10 @@
 }
 
 .checkOther {
-  margin-top: -3rem;
-  margin-left: 1rem;
 }
 
 .otherCategorie {
-  display: none;
-  margin-top: 1rem;
-}
-
-.checkOther input:checked ~ .otherCategorie {
-  display: flex;
+  margin-top: 2rem;
 }
 
 .input2 {
@@ -162,10 +164,12 @@
   border-radius: 10px;
   background-color: white;
   color: var(--color-grey-2);
-  width: 60%;
   margin-top: 1rem;
-  margin-bottom: 1rem;
-  margin-left: 2rem;
+}
+
+.input2:focus {
+  outline: none;
+  border: 1px solid var(--color-orange);
 }
 
 /*SECTION 3: Description */
@@ -186,6 +190,7 @@
   margin-bottom: 1rem;
   font-size: 1.7rem;
   resize: none;
+  font-family: inherit;
 }
 
 .textareaShort::placeholder {
@@ -193,6 +198,12 @@
   color: #707070;
   margin-bottom: 1.5rem;
   font-size: 1.5rem;
+  font-family: inherit;
+}
+
+.textareaShort:focus {
+  outline: none;
+  border: 1px solid var(--color-orange);
 }
 
 .textareaLong {
@@ -206,6 +217,8 @@
   margin-top: 1rem;
   margin-bottom: 1rem;
   font-size: 1.7rem;
+  font-family: inherit;
+  resize: none;
 }
 
 .textareaLong::placeholder {
@@ -213,8 +226,13 @@
   color: #707070;
   margin-bottom: 1.5rem;
   font-size: 1.5rem;
+  font-family: inherit;
 }
 
+.textareaLong:focus {
+  outline: none;
+  border: 1px solid var(--color-orange);
+}
 /*SECTION 4: Pictures */
 
 .subTitle4 {
@@ -324,7 +342,6 @@
 
 .checkBox4 {
   accent-color: #d53e27;
-  margin-right: 1rem;
   height: 2rem;
   width: 2rem;
   border-radius: 10px;
@@ -342,15 +359,20 @@
   margin-bottom: 2rem;
 }
 
+.containerCheckBoxOnline {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .containerOnLine label {
   color: #707070;
-  font-size: 1.3rem;
+  font-size: 1.4rem;
 }
 
 /*5:Si En Linea */
 
 .online {
-  display: none;
   margin-top: 1rem;
 }
 
@@ -363,19 +385,9 @@
   margin-top: 1rem;
 }
 
-.checkBox4:checked ~ .online {
-  display: block;
-}
-
-/*5:notOnline */
-
-.notOnline {
-  display: block;
-  margin-top: 1rem;
-}
-
-.checkBox4:checked ~ .notOnline {
-  display: none;
+.online input:focus {
+  outline: none;
+  border: 1px solid var(--color-orange);
 }
 
 /*5:Dpto - Municipio - Direccion - Barrio */
@@ -493,18 +505,28 @@
   margin-bottom: 1rem;
 }
 
+.especialRequires input:focus {
+  outline: none;
+  border: 1px solid var(--color-orange);
+}
 /*SECTION 6: Prices and Dates */
 
 /*6: cupos and prices*/
 
 .containerInfo {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: flex-start;
+  margin-bottom: 5rem;
   width: 100%;
 }
 
 .containerSubInfo {
-  display: block;
-  width: 25%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.2rem;
   padding: 1rem;
 }
 
@@ -512,7 +534,7 @@
   color: #585858;
   font-size: 1.4rem;
   font-weight: bold;
-  height: 2rem;
+  height: 3rem;
 }
 
 .subInfoInput {
@@ -522,16 +544,23 @@
   background-color: white;
   color: var(--color-grey-2);
   width: 11rem;
-  margin-bottom: 1rem;
   text-align: center;
   justify-content: center;
 }
 
+.subInfoInput:focus {
+  outline: none;
+  border: 1px solid var(--color-orange);
+}
+
 .labelS {
   display: flex;
-  justify-content: left;
   align-items: center;
-  text-align: center;
+  gap: 0.5rem;
+}
+
+.labelS p {
+  font-size: 1.4rem;
 }
 
 .subInfotxt {
@@ -556,20 +585,39 @@
   margin: 1rem;
 }
 
+.hrAsistentes {
+  border: 0.1px solid rgb(219, 219, 219);
+  width: 100%;
+  margin: 1rem;
+}
+
+.hrAsistentesResposive {
+  display: none;
+  border: 0.1px solid rgb(219, 219, 219);
+  width: 100%;
+  margin: 1rem;
+}
+
 /*DATE*/
 
 .contTimeAndDate {
   display: flex;
   justify-content: space-around;
-  align-items: center;
+  align-items: flex-start;
   margin-top: 2rem;
   margin-bottom: 6rem;
+}
+
+.contTimeAndDate > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.8rem;
 }
 
 .contDate {
   display: block;
   width: 25%;
-  margin-left: 2rem;
 }
 
 .contDate label {
@@ -581,66 +629,13 @@
 
 .contDate input {
   cursor: pointer;
-}
-
-/* 
-
-.contInputDate {
-  display: flex;
-}
-
-.contInputDate input {
-  font-size: 1.6rem;
-  padding: 0.5rem 1rem;
   border-radius: 5px;
-  border: 1px solid var(--color-grey-4);
-  color: var(--color-grey-1);
-  margin-right: 2rem;
 }
-
-.contInputDate input:focus {
-  outline: none;
-  border: 1px solid var(--color-grey-4);
-}
-
-.containerDate {
-  display: block;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 2rem;
-  position: relative;
-}
-
-.containerDate input {
-  display: none;
-}
-
-.containerDate label {
-  height: 2rem;
-  width: 2rem;
-  cursor: pointer;
-}
-
-.containerDate label img {
-  height: 2rem;
-  width: 2rem;
-  cursor: pointer;
-}
-
-.calendar {
-
-  margin-top: 1rem;
-}
-
-.containerDate input:checked ~ .calendar {
-  display: block;
-} */
 
 /*TIME*/
 .contStart {
   display: block;
   width: 25%;
-  margin-left: 2rem;
 }
 
 .contStart label {
@@ -648,7 +643,6 @@
   font-size: 1.4rem;
   font-weight: bold;
   height: 2rem;
-  margin-bottom: 2rem;
 }
 
 .contStart input {
@@ -656,7 +650,6 @@
   border-radius: 5px;
   border: 1px solid var(--color-grey-4);
   color: var(--color-grey-1);
-  margin-right: 2rem;
   width: 15rem;
   height: 4.5rem;
 }
@@ -670,7 +663,6 @@
 }
 
 .contStart input::-webkit-datetime-edit-hour-field {
-  background-color: #f2f4f5;
   border-radius: 15%;
   padding: 19px 13px;
 }
@@ -697,6 +689,7 @@
 }
 
 .addDelete {
+  align-self: center;
   border: none;
   background-color: transparent;
 }
@@ -1068,6 +1061,15 @@
   border-color: #c00000;
 }
 
+.notOnline {
+  margin-top: 2rem;
+}
+
+.notOnline input:focus {
+  outline: none;
+  border: 1px solid var(--color-orange);
+}
+
 .containerDirection input:required {
   border: 3px solid red;
   background-color: white;
@@ -1172,8 +1174,8 @@
 
 .containerBono {
   display: none;
-  margin-top: 1rem;
-  background-color: #f5f5f5;
+  margin-top: 2rem;
+  background-color: var(--color-grey-6);
 }
 
 .toShow {
@@ -1182,26 +1184,49 @@
   background-color: #f5f5f5;
 }
 
+.toShow > div {
+  display: flex;
+  justify-content: center;
+}
+
+.toShow button {
+  margin: 0;
+  padding: 1rem 0;
+  width: 100%;
+}
+
 .checkBono {
   margin-top: -3rem;
   margin-left: 1rem;
 }
 
+.containerIsCheckedBono {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.containerIsCheckedBono input {
+}
+
 .opcionesBonos {
   display: flex;
-  height: 10rem;
+  padding: 2rem 0;
   justify-content: space-around;
-  text-align: center;
-  margin: auto;
+  align-items: center;
 }
 
 .descuentoCantidad {
   display: flex;
+  align-items: center;
+  gap: 2rem;
 }
 
 .descuento {
-  display: inline-block;
-  margin-right: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .descuento label {
@@ -1209,7 +1234,6 @@
   font-size: 1.4rem;
   font-weight: bold;
   height: 2rem;
-  margin-bottom: 2rem;
 }
 
 .descuento input {
@@ -1219,24 +1243,25 @@
   background-color: white;
   color: var(--color-grey-2);
   width: 11rem;
-  margin-bottom: 1rem;
   text-align: center;
 }
 
 .descuento p {
-  height: 5rem;
   border: 1px solid var(--color-grey-4);
   border-radius: 10px;
-  background-color: rgb(243, 243, 243);
-  color: var(--color-grey-2);
-  width: 11rem;
-  margin-bottom: 1rem;
   text-align: center;
+  color: var(--color-orange);
+  font-size: 2rem;
+  font-weight: bold;
+  padding: 1rem 2rem;
+  background-color: white;
 }
 
 .codigoAble {
-  display: inline-block;
-  margin-right: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .codigoAble label {
@@ -1244,18 +1269,17 @@
   font-size: 1.4rem;
   font-weight: bold;
   height: 2rem;
-  margin-bottom: 2rem;
 }
 
 .codigoAble p {
-  height: 5rem;
   border: 1px solid var(--color-grey-4);
   border-radius: 10px;
-  background-color: white;
-  color: var(--color-grey-2);
-  width: 11rem;
-  margin-bottom: 1rem;
   text-align: center;
+  color: var(--color-orange);
+  font-size: 1.8rem;
+  font-weight: bold;
+  background-color: white;
+  padding: 1rem 2rem;
 }
 
 .inputCodigo::placeholder {
@@ -1314,8 +1338,7 @@
 }
 
 .checkBoxBono {
-  accent-color: #5ed527;
-  margin-right: 1rem;
+  accent-color: #45a618;
   height: 2rem;
   width: 2rem;
   border-radius: 10px;
@@ -1425,20 +1448,18 @@
   margin: 0 auto;
 }
 
+.containerButtonGenerateCode {
+}
+
 .generarCodigo {
   font-size: 1.6rem;
   border-radius: 18px;
   text-align: center;
-  padding: 8px 30px;
+  padding: 1rem 2rem;
   cursor: pointer;
   background-color: #29aa79;
   color: white;
   border: none;
-  text-decoration: bold;
-}
-
-.generarCodigo:hover {
-  font-weight: bolder;
 }
 
 .editarCodigo {
@@ -1450,6 +1471,19 @@
   border: none;
   text-align: center;
   margin-left: 1rem;
+}
+
+.containerEditResetDltButtons {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.containerEditReset {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 /* .editarResetear{
@@ -2125,3 +2159,61 @@
 }  */
 
 /* //SWIPER */
+
+@media screen and (max-width: 1160px) {
+  .containerLine {
+    margin-right: 10rem;
+  }
+
+  .container1 {
+    width: 80%;
+  }
+}
+
+@media screen and (max-width: 916px) {
+  .containerLine {
+    margin-right: 5rem;
+    margin-left: 5rem;
+  }
+
+  .container1 {
+  }
+}
+
+@media screen and (max-width: 756px) {
+  .contTimeAndDate,
+  .checkBono,
+  .flex,
+  .containerBtnsPublishEvent,
+  .title,
+  .hrAsistentes {
+    display: none;
+  }
+
+  .titleResponsive {
+    display: block;
+  }
+
+  .containerInfo {
+    grid-template-columns: none;
+    justify-content: start;
+  }
+  .containerSubInfo {
+    gap: 2rem;
+    align-items: flex-start;
+  }
+
+  .subInfoTitle {
+    height: 0;
+  }
+
+  .hrAsistentesResposive {
+    display: block;
+  }
+}
+
+@media screen and (max-width: 476px) {
+  .containerChecks {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
