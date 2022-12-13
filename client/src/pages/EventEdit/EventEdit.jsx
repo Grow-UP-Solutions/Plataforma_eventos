@@ -2098,7 +2098,7 @@ const EventEdit = () => {
                   {/* Dates*/}
                   <div>
                     {post.dates.map((date, index) => (
-                      new Date(date.date)<new Date(dateActual) || date.date === dateActual && date.end.slice(0,2) <= hora && date.end.slice(3,5) <= minutes+2 ?
+                      new Date(date.date)<new Date(dateActual) || date.date === dateActual && date.end.slice(0,2) <= hora && date.end.slice(3,5) <= minutes+2 || date.inRevision === true ?
                       (''):(
                       <div>
                         {/* cupos-precios*/}
@@ -2267,7 +2267,7 @@ const EventEdit = () => {
                           </div>
 
                           {/* Public*/}
-                          {date.isPublic === true ? (
+                          {date.isPublic === true  ? (
                             <button
                               className={styles.removePublic}
                               type='button'

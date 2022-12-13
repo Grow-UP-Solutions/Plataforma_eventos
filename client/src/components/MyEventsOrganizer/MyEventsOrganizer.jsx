@@ -99,10 +99,20 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
               {eventsPublic.map((event) => (
                 <div>
                   <Card userData={userData} event={event} listName={'published'} orgEvent={'true'} datePublic={'true'} />
-                  <Link className={styles.btn} to={'/oganiza-un-evento-editar/' + event._id}>
-                    <BsPencilSquare className={styles.iconEdit} />
-                    <span>Editar</span>
-                  </Link>
+                  {event.inRevision === false ? 
+                      <div className={styles.btns}>
+                        <Link className={styles.btn} to={'/oganiza-un-evento-editar/' + event._id}>
+                          <BsPencilSquare className={styles.iconEdit} />
+                          <span>Editar</span>
+                        </Link>
+                      </div>
+                    :
+                      <div className={styles.btns}>
+                      <Link className={styles.btn}>
+                        <span>Evento En Revision</span>
+                      </Link>
+                      </div>
+                    }
                 </div>
               ))}
             </div>
@@ -119,10 +129,20 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
                 <div className={styles.card}>
                   <SwiperSlide>
                     <Card userData={userData} event={event} listName={'published'} orgEvent={'true'} datePublic={'true'} />
-                    <Link className={styles.btn} to={'/oganiza-un-evento-editar/' + event._id}>
-                      <BsPencilSquare className={styles.iconEdit} />
-                      <span>Editar</span>
-                    </Link>
+                    {event.inRevision === false ? 
+                      <div className={styles.btns}>
+                        <Link className={styles.btn} to={'/oganiza-un-evento-editar/' + event._id}>
+                          <BsPencilSquare className={styles.iconEdit} />
+                          <span>Editar</span>
+                        </Link>
+                      </div>
+                    :
+                      <div className={styles.btns}>
+                      <Link className={styles.btn}>
+                        <span>Evento En Revision</span>
+                      </Link>
+                      </div>
+                    }
                   </SwiperSlide>
                 </div>
               ))}
@@ -144,15 +164,23 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
               {eventsNoPublic.map((event, index) => (
                 <div>
                   <Card userData={userData} event={event} listName={'to-publish'} orgEvent={'true'} datePublic={'false'} />
-                  <div className={styles.btns}>
-                    <Link className={styles.btn} to={'/oganiza-un-evento-editar/' + event._id}>
-                      <BsPencilSquare className={styles.iconEdit} />
-                      <span>Editar</span>
-                    </Link>
-                    <button className={styles.btn} onClick={(e) => deleteEvent(e)}>
-                      <img src={basquet} alt='n' />
-                    </button>
-                  </div>
+                  {event.inRevision === false ? 
+                      <div className={styles.btns}>
+                        <Link className={styles.btn} to={'/oganiza-un-evento-editar/' + event._id}>
+                          <BsPencilSquare className={styles.iconEdit} />
+                          <span>Editar</span>
+                        </Link>
+                        <button className={styles.btn} onClick={(e) => deleteEvent(e)}>
+                          <img src={basquet} alt='n' />
+                        </button>
+                      </div>
+                    :
+                      <div className={styles.revisionS}>
+                      
+                        <span className={styles.revision}>Evento En Revision</span>
+                      
+                      </div>
+                    }
                 </div>
               ))}
             </div>
@@ -171,15 +199,23 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
                     <div>
                       <Card userData={userData} event={event} listName={'to-publish'} orgEvent={'true'} datePublic={'false'} />
                     </div>
-                    <div className={styles.btns}>
-                      <Link className={styles.btn} to={'/oganiza-un-evento-editar/' + event._id}>
-                        <BsPencilSquare className={styles.iconEdit} />
-                        <span>Editar</span>
+                    {event.inRevision === false ? 
+                      <div className={styles.btns}>
+                        <Link className={styles.btn} to={'/oganiza-un-evento-editar/' + event._id}>
+                          <BsPencilSquare className={styles.iconEdit} />
+                          <span>Editar</span>
+                        </Link>
+                        <button className={styles.btn} onClick={(e) => deleteEvent(e)}>
+                          <img src={basquet} alt='n' />
+                        </button>
+                      </div>
+                    :
+                      <div className={styles.btns}>
+                      <Link className={styles.btn}>
+                        <span>Evento En Revision</span>
                       </Link>
-                      <button className={styles.btn} onClick={(e) => deleteEvent(e)}>
-                        <img src={basquet} alt='n' />
-                      </button>
-                    </div>
+                      </div>
+                    }
                   </SwiperSlide>
                 </div>
               ))}
