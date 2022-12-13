@@ -13,9 +13,11 @@ import { UIContext } from '../../context/ui';
 import eventsApi from '../../axios/eventsApi';
 import { animateScroll as scroll } from 'react-scroll';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { stateContext } from '../../context/state/stateContext';
 
 const Register = () => {
-  const { login } = useContext(AuthContext);
+  const { setResult } = useContext(stateContext);
+  const { login, user } = useContext(AuthContext);
   const navigate = useNavigate();
   const { toggleScreenLogin } = useContext(UIContext);
   const [isLoading, setIsLoading] = useState(false);
@@ -28,6 +30,10 @@ const Register = () => {
     codeReferred: '',
     canReceivedInformation: true,
   });
+
+  useEffect(() => {
+    if (Object.keys(user).length > 0) navigate('/');
+  }, [user]);
 
   const [errorsInputs, handleChangeInputValue] = useValidateForm(formData, setFormData);
 
@@ -261,7 +267,7 @@ const Register = () => {
                 }}
                 type={isPasswordVisible.password ? 'text' : 'password'}
                 id='password'
-                placeholder='Entre 12 y 20 caracteres que idealmente incluya combinación de una mayúscula, números y caracteres especiales (* / - _ & @^)'
+                placeholder='Entre 12 y 20 caracteres con número(s), letra(s), y alguno(s) de estos especiales (* / - _ & @^)'
                 required
                 onChange={handleChangeInputValue}
                 autoComplete='off'
@@ -340,7 +346,15 @@ const Register = () => {
           </p>
           <p>
             Al proceder con la creación de tu cuenta aceptas la Política de &nbsp;
-            <Link to={'/privacidad'}>Tratamiento de Datos, la Política de Seguridad y los Términos y Condiciones</Link>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('/privacidad');
+                setResult('tyc');
+              }}
+            >
+              Tratamiento de Datos, la Política de Seguridad y los Términos y Condiciones
+            </button>
             &nbsp;de LO QUE QUIERO HACER S.A.S. Aceptas ser contactado por nosotros en relación a los eventos que
             compres o publiques en la Plataforma y confirmas ser mayor de edad.
           </p>
