@@ -188,7 +188,7 @@ router.put('/inRevision/acceptOrReject', async (req, res) => {
           return date;
         });
 
-        const hasFalse = false;
+        let hasFalse = false;
 
         for (let x = 0; x < auxDates.length; x++) {
           if (auxDates[x].inRevision === false) hasFalse = true;
