@@ -19,7 +19,7 @@ import { administracion, comision, iva, ivaOrg } from '../../utils/administracio
 import { formatDate } from '../../utils/formatDate';
 import styles from './EventDate.module.css';
 import EventDateMap from './EventDateMap';
-import { administracion, iva } from '../../utils/administracion';
+
 
 import { Calendar } from '@amir04lm26/react-modern-calendar-date-picker';
 import 'react-modern-calendar-datepicker/lib/DatePicker.css';
@@ -210,7 +210,7 @@ const EventDate = ({ id, openMenu }) => {
             </thead>
             <tbody>
               {eventDetails.dates.map((date) =>
-                moment(date.date) > moment(dateActual) ? (
+                moment(date.date) > moment(dateActual)  && date.isPublic === true ? (
                   <tr>
                     <td>
                       <input
@@ -248,7 +248,7 @@ const EventDate = ({ id, openMenu }) => {
                     )}
                   </tr>
                 ) : (
-                  'no'
+                  ''
                 )
               )}
             </tbody>
