@@ -39,9 +39,32 @@ const malasPalabras = [
   'prostitua',
   'malparido',
   'mal parido',
+  'puta',
+  'hijieputa',
+  'pirobo',
+  'pirovo',
+  'piroba',
+  'pirova',
+  'marica',
+  'maricon',
+  'maricona',
+  'malparido',
+  'malparida',
+  'caremonda',
+  'chimba',
+  'chimbo',
+  'gurrupleta',
+  'gonorrea',
+  'gonorriento',
+  'gonorrienta',
+  'gueva',
+  'guevon',
+  'guevona',
+  'zuripanta',
+  'pichurria',
 ];
 
 export const checkMalasPalabras = (palabra) => {
-  const rgx = new RegExp(malasPalabras.join('|') + '|' + '/gi');
+  const rgx = new RegExp(malasPalabras.join('/') + '|' + '/gi');
   return rgx.test(palabra);
 };

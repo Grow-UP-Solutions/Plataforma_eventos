@@ -196,6 +196,13 @@
   color: var(--color-orange);
 }
 
+.containerDescription button {
+  font-size: inherit;
+  font-family: inherit;
+  font-style: italic;
+  color: var(--color-orange);
+}
+
 .containerPromotionAndEmails {
   display: flex;
   align-items: center;
