@@ -112,6 +112,7 @@ const OrganizerBills = () => {
                         <td>{date.isPay === false ? 'PENDIENTE' : 'PAGADO'}</td>
                         <td>
                           <input
+                          id={date._id}
                             type='text'
                             name='billNumber'
                             value={billNumber}

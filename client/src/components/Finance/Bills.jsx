@@ -31,7 +31,7 @@ const Bills = () => {
   console.log('userData:', userData);
 
   const [currentPage, setCurretPage] = useState(1);
-  const billsPerPage = 6;
+  const billsPerPage = 25;
   const indexOfLastBill = currentPage * billsPerPage;
   const indexOfFirstBill = indexOfLastBill - billsPerPage;
   const paginado = (pageNumber) => setCurretPage(pageNumber);

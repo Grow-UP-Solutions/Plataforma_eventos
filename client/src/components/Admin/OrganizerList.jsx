@@ -69,26 +69,14 @@ const OrganizerList = () => {
                       <Link to={'/organizador-facturas-pagar/' + e._id}>{e.name}</Link>
                     </td>
                     <td>{e.email}</td>
-                    <td>
-                      <input type='checkbox' />
-                    </td>
+                    
                   </tr>
                   :''
                 ))}
             </tbody>
           </div>
 
-          <div className={style.container_download}>
-            <div className={style.container_one}>
-              <DescriptionOutlinedIcon fontSize='large' color='#d53e27' />
-              <p>Descargar factura de selecionados (PDF)</p>
-            </div>
-
-            <div className={style.container_two}>
-              <DescriptionOutlinedIcon fontSize='large' />
-              <p>Descargar reporte de páginas (EXCEL)</p>
-            </div>
-          </div>
+       
           {userData !== undefined && (
             <div className={style.container_pagination}>
               <Pagination organizerPerPage={organizerPerPage} state={userData.length} paginado={paginado} />
