@@ -1,8 +1,6 @@
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import LaunchOutlinedIcon from '@mui/icons-material/LaunchOutlined';
 import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
 import WarningOutlinedIcon from '@mui/icons-material/WarningOutlined';
@@ -10,7 +8,8 @@ import { Rating } from '@mui/material';
 import axios from 'axios';
 import 'bootstrap';
 import dotenv from 'dotenv';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { BsPencilSquare } from 'react-icons/bs';
 import { IoLocationOutline } from 'react-icons/io5';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -25,15 +24,12 @@ import categories from '../../api/categories';
 import basquet from '../../assets/imgs/basquet.svg';
 import iconEditar from '../../assets/imgs/iconEditar.svg';
 import iconExclamacion2 from '../../assets/imgs/iconExclamacion2.svg';
-import mapa from '../../assets/imgs/mapa2.png';
 import eventsApi from '../../axios/eventsApi';
 import { AuthContext } from '../../context/auth/AuthContext';
-import { getColombia, postEvent , postEventSave } from '../../redux/actions';
+import { stateContext } from '../../context/state/stateContext';
+import { getColombia, postEvent, postEventSave } from '../../redux/actions';
 import { formatDateForm } from '../../utils/formatDateForm';
 import styles from './EventCreateForm.module.css';
-import { AiOutlineClose } from 'react-icons/ai';
-import { BsCamera, BsCardImage, BsInfoCircle, BsPencilSquare } from 'react-icons/bs';
-import { stateContext } from '../../context/state/stateContext';
 
 const EventCreateForm = () => {
   const dispatch = useDispatch();
@@ -443,7 +439,7 @@ const EventCreateForm = () => {
   }
 
   //--------------------------------------------------//
-   //             POST - TITLE,DESCRIPTION       //
+  //             POST - TITLE,DESCRIPTION       //
 
   function handleChange(e) {
     e.preventDefault();
@@ -624,7 +620,7 @@ const EventCreateForm = () => {
       newFechas[i][e.target.name] = e.target.value;
     }
 
-   // newFechas[i].precioAlPublico = parseFloat(newFechas[i].price) + parseFloat(costoDeManejo) + parseFloat(a);
+    // newFechas[i].precioAlPublico = parseFloat(newFechas[i].price) + parseFloat(costoDeManejo) + parseFloat(a);
     newFechas[i].gananciaCupo =
       parseFloat(newFechas[i].price) -
       (parseFloat(newFechas[i].price) * parseFloat(comision) +
@@ -898,34 +894,32 @@ const EventCreateForm = () => {
   //--------------------------------------------------//
   //                 SAVE           //
 
-
-   function handleSave(e) {
+  function handleSave(e) {
     e.preventDefault();
 
-      if (Object.values(errors).length > 0) {
-        setFailedSubmit(true);
-        return swal({
-          title: 'Completa los campos faltantes',
-          icon: 'warning',
-          button: 'Completar',
-          dangerMode: true,
-        });
-      } else {
-        swal({
-          title: 'Tu evento será guardado',
-          buttons: ['Cerrar', 'Guardar'],
-          dangerMode: true,
-        }).then((guardar) => {
-          if (guardar) {
-            dispatch(postEventSave(post));
-            swal('Tu evento ha sido guardado ', {
-              icon: 'success',
-            });
-            navigate('/usuario/mis-eventos');
-          }
-        });
-      }
-   
+    if (Object.values(errors).length > 0) {
+      setFailedSubmit(true);
+      return swal({
+        title: 'Completa los campos faltantes',
+        icon: 'warning',
+        button: 'Completar',
+        dangerMode: true,
+      });
+    } else {
+      swal({
+        title: 'Tu evento será guardado',
+        buttons: ['Cerrar', 'Guardar'],
+        dangerMode: true,
+      }).then((guardar) => {
+        if (guardar) {
+          dispatch(postEventSave(post));
+          swal('Tu evento ha sido guardado ', {
+            icon: 'success',
+          });
+          navigate('/usuario/mis-eventos');
+        }
+      });
+    }
   }
 
   //--------------------------------------------------//
@@ -951,12 +945,12 @@ const EventCreateForm = () => {
 
   const notifications = async () => {
     const create = {
-      type: "create",
+      type: 'create',
       idUser: user.uid,
     };
-    const json = await eventsApi.post("/users/notifications", create)
+    const json = await eventsApi.post('/users/notifications', create);
     setNotes([...notes, json.data]);
-  }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -990,17 +984,10 @@ const EventCreateForm = () => {
         }
       });
     }
-  }
+  };
 
   //--------------------------------------------------//
   //                  swwper              //
-
-  const pagination = {
-    clickable: true,
-    renderBullet: function(index, className) {
-      return '<span class="' + className + '">' + (index + 1) + '</span>';
-    },
-  };
 
   return (
     <div>
@@ -1124,16 +1111,14 @@ const EventCreateForm = () => {
                       <div className={styles.containerChecks}>
                         {categories.map((categorie) => (
                           <div className={styles.checks}>
-                            <label className={styles.labelsChecks}>
-                              <input
-                                className={styles.checkBox}
-                                type='checkbox'
-                                value={categorie.name}
-                                onChange={(e) => handleCategories(e)}
-                                defaultChecked={false}
-                              />
-                              {categorie.name}
-                            </label>
+                            <input
+                              className={styles.checkBox}
+                              type='checkbox'
+                              value={categorie.name}
+                              onChange={(e) => handleCategories(e)}
+                              defaultChecked={false}
+                            />
+                            <label className={styles.labelsChecks}>{categorie.name}</label>{' '}
                           </div>
                         ))}
                       </div>

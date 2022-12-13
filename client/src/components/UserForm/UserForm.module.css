@@ -198,6 +198,23 @@
   color: var(--color-orange);
 }
 
+.auxEditName {
+  display: block;
+  width: 109px;
+}
+
+.auxEditCedula {
+  display: block;
+  height: 1rem;
+  width: 50px;
+}
+
+.auxEditNameResponsive {
+  display: none;
+  height: 1rem;
+  width: 50px;
+}
+
 .inputsContainer {
   width: 100%;
 
@@ -846,6 +863,14 @@
   box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.2);
 }
 
+.moveMouse {
+  cursor: pointer !important;
+}
+
+.notMouseMove {
+  cursor: default !important;
+}
+
 @media screen and (max-width: 1176px) {
   .containerPhotosCedula {
     flex-direction: column;
@@ -871,6 +896,10 @@
 
   .btnEditNames {
     display: none !important;
+  }
+
+  .auxEditNameResponsive {
+    display: block;
   }
 }
 

@@ -114,7 +114,7 @@ const ChangePassword = () => {
                   }}
                   type={isPasswordVisible.password ? 'text' : 'password'}
                   id='password'
-                  placeholder='Entre 12 y 20 caracteres que idealmente incluya combinación de una mayúscula, números y caracteres especiales (* / - _ & @^)'
+                  placeholder='Entre 12 y 20 caracteres con número(s), letra(s), y alguno(s) de estos especiales (* / - _ & @^)'
                   required
                   onChange={handleChangeInputValue}
                   autoComplete='off'
