@@ -189,19 +189,19 @@ router.put('/inRevision/', async (req, res) => {
         event.dates = [];
         event.dates.push(auxDates);
       }
+    } else {
+      event.inRevision = !event.inRevision;
+
+      let auxDates = [...event.dates];
+
+      auxDates = auxDates.map((date) => {
+        date.inRevision = event.inRevision;
+        return date;
+      });
+
+      event.dates = [];
+      event.dates.push(auxDates);
     }
-
-    event.inRevision = !event.inRevision;
-
-    let auxDates = [...event.dates];
-
-    auxDates = auxDates.map((date) => {
-      date.inRevision = event.inRevision;
-      return date;
-    });
-
-    event.dates = [];
-    event.dates.push(auxDates);
 
     event.save();
   } catch (error) {
