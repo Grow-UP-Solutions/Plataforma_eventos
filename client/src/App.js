@@ -8,6 +8,8 @@ import Bills from './components/Finance/Bills';
 import Admin from './components/Admin/Admin';
 import OrganizerList from './components/Admin/OrganizerList';
 import OrganizerBills from './components/Admin/OrganizerBills';
+import OtherCategories from './components/Admin/OtherCategories';
+import InRevision from './components/Admin/InRevision';
 import Notifications from './components/Notifications/Notifications';
 import { AuthContext } from './context/auth';
 import { UIContext } from './context/ui';
@@ -95,6 +97,8 @@ function App() {
         <Route path={'/admin'} element={<Admin />} />
         <Route path={'/lista-de-organizadores'} element={<OrganizerList />} />
         <Route path={'/organizador-facturas-pagar/:id'} element={<OrganizerBills />} />
+        <Route path={'/otras-categorias'} element={<OtherCategories />} />
+        <Route path={'/eventos-revision'} element={<InRevision />} />
 
 
         {/* RUTAS PRIVADAS */}
