@@ -169,8 +169,6 @@ router.put('/reportEvent/sendEmail', async (req, res) => {
 router.put('/inRevision/acceptOrReject', async (req, res) => {
   const { idEvent, idDate } = req.body;
 
-  console.log({ idEvent, idDate });
-
   try {
     const event = await EventFunctionDb.oneEvent(idEvent);
 
@@ -189,6 +187,15 @@ router.put('/inRevision/acceptOrReject', async (req, res) => {
           }
           return date;
         });
+
+        const hasFalse = false;
+
+        for (let x = 0; x < auxDates.length; x++) {
+          if (auxDates[x].inRevision === false) hasFalse = true;
+        }
+
+        if (hasFalse) event.inRevision = false;
+        else event.inRevision = true;
 
         event.dates = [];
         event.dates.push(...auxDates);
