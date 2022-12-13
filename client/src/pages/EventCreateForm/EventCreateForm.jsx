@@ -2444,82 +2444,86 @@ const EventCreateForm = () => {
                               {/* fecha*/}
                               <div className={styles.contDate}>
                                 <label>Fecha</label>
-                                {failedSubmit && errors.dates ? (
-                                  <input
-                                    classname={styles.errors}
-                                    type='date'
-                                    name='date'
-                                    value={date.date || ''}
-                                    onChange={(e) => handleChanges(e, index)}
-                                    min={fechaMinima}
-                                    required
-                                  />
-                                ) : (
-                                  <input
-                                    id='fecha'
-                                    type='date'
-                                    name='date'
-                                    value={date.date}
-                                    onChange={(e) => handleChanges(e, index)}
-                                    min={fechaMinima}
-                                  />
-                                )}
-                                <p>{date.dateFormated}</p>
+                                <div className={styles.containerCalendarAndDeleteButton}>
+                                  {' '}
+                                  {failedSubmit && errors.dates ? (
+                                    <input
+                                      classname={styles.errors}
+                                      type='date'
+                                      name='date'
+                                      value={date.date || ''}
+                                      onChange={(e) => handleChanges(e, index)}
+                                      min={fechaMinima}
+                                      required
+                                    />
+                                  ) : (
+                                    <input
+                                      id='fecha'
+                                      type='date'
+                                      name='date'
+                                      value={date.date}
+                                      onChange={(e) => handleChanges(e, index)}
+                                      min={fechaMinima}
+                                    />
+                                  )}
+                                  {index ? (
+                                    <button
+                                      className={styles.addDelete}
+                                      type='button'
+                                      onClick={() => removeFormFields(index)}
+                                    >
+                                      <img className={styles.basquet} src={basquet} alt='n' />
+                                    </button>
+                                  ) : null}
+                                </div>
                               </div>
 
                               {/* hora inicio*/}
-                              <div className={styles.contStart}>
-                                <label>Comienza</label>
-                                {failedSubmit && errors.dates ? (
-                                  <input
-                                    type='time'
-                                    name='start'
-                                    value={date.start}
-                                    onChange={(e) => handleChanges(e, index)}
-                                    required
-                                  />
-                                ) : (
-                                  <input
-                                    type='time'
-                                    name='start'
-                                    value={date.start}
-                                    onChange={(e) => handleChanges(e, index)}
-                                    step='900'
-                                  />
-                                )}
-                              </div>
+                              <div className={styles.containerTimerResponsive}>
+                                <div className={styles.contStart}>
+                                  <label>Comienza</label>
+                                  {failedSubmit && errors.dates ? (
+                                    <input
+                                      type='time'
+                                      name='start'
+                                      value={date.start}
+                                      onChange={(e) => handleChanges(e, index)}
+                                      required
+                                    />
+                                  ) : (
+                                    <input
+                                      type='time'
+                                      name='start'
+                                      value={date.start}
+                                      onChange={(e) => handleChanges(e, index)}
+                                      step='900'
+                                    />
+                                  )}
+                                </div>
 
-                              {/* hora fin*/}
-                              <div className={styles.contStart}>
-                                <label>Termina</label>
-                                {failedSubmit && errors.dates ? (
-                                  <input
-                                    type='time'
-                                    name='end'
-                                    value={date.end}
-                                    onChange={(e) => handleChanges(e, index)}
-                                    required
-                                  />
-                                ) : (
-                                  <input
-                                    type='time'
-                                    name='end'
-                                    value={date.end}
-                                    onChange={(e) => handleChanges(e, index)}
-                                  />
-                                )}
+                                {/* hora fin*/}
+                                <div className={styles.contStart}>
+                                  <label>Termina</label>
+                                  {failedSubmit && errors.dates ? (
+                                    <input
+                                      type='time'
+                                      name='end'
+                                      value={date.end}
+                                      onChange={(e) => handleChanges(e, index)}
+                                      required
+                                    />
+                                  ) : (
+                                    <input
+                                      type='time'
+                                      name='end'
+                                      value={date.end}
+                                      onChange={(e) => handleChanges(e, index)}
+                                    />
+                                  )}
+                                </div>
                               </div>
 
                               {/* Remove date*/}
-                              {index ? (
-                                <button
-                                  className={styles.addDelete}
-                                  type='button'
-                                  onClick={() => removeFormFields(index)}
-                                >
-                                  <img className={styles.basquet} src={basquet} alt='n' />
-                                </button>
-                              ) : null}
                             </div>
 
                             {/* bono*/}
