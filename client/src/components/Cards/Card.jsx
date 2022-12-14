@@ -29,8 +29,6 @@ const Card = ({ event, listName, orgEvent, datePublic }) => {
   const minutes = fecha.getMinutes();
   const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
 
-  console.log({ event });
-
   if (dateActual && orgEvent !== 'true') {
     event.dates.map((date) => {
       if (new Date(date.date) < new Date(dateActual)) {
