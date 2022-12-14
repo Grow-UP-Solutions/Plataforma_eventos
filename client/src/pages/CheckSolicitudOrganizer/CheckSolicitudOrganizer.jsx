@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useNavigate, useParams } from 'react-router-dom';
 import eventsApi from '../../axios/eventsApi';
 import styles from './CheckSolicitudOrganizer.module.css';
@@ -7,6 +8,7 @@ const CheckSolicitudOrganizer = () => {
   const { token } = useParams();
   const [userData, setUserData] = useState({});
   const [modalResultMessage, setModalResultMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   localStorage.setItem('token-organizer', token);
 
@@ -26,6 +28,7 @@ const CheckSolicitudOrganizer = () => {
 
   const acceptOrReject = async (option) => {
     try {
+      setIsLoading(true);
       const { data } = await eventsApi.post('/users/acceptOrRejectedOrganizer', { option, id: userData.id });
       const message = data.message;
       if (message === 'Aceptado') {
@@ -33,7 +36,9 @@ const CheckSolicitudOrganizer = () => {
       } else if (message === 'Rechazado') {
         setModalResultMessage(`Usted ha rechazado la solicitud de organizador a ${userData.name}.`);
       }
+      setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       console.log(error);
     }
   };
@@ -79,12 +84,18 @@ const CheckSolicitudOrganizer = () => {
       )}
 
       <div className={styles.containerButton}>
-        <button onClick={() => acceptOrReject('accept')} className={styles.btnSuccess}>
-          Aceptar
-        </button>
-        <button onClick={() => acceptOrReject('reject')} className={styles.btnCancel}>
-          Rechazar
-        </button>
+        {isLoading ? (
+          <AiOutlineLoading3Quarters className={styles.iconLoading} />
+        ) : (
+          <>
+            <button onClick={() => acceptOrReject('accept')} className={styles.btnSuccess}>
+              Aceptar
+            </button>
+            <button onClick={() => acceptOrReject('reject')} className={styles.btnCancel}>
+              Rechazar
+            </button>
+          </>
+        )}
       </div>
     </div>
   );
