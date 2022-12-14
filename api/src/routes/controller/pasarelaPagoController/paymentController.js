@@ -94,6 +94,10 @@ router.post('/orden', async (req, res) => {
       ],
     };
 
+    /* API: https://events-jean.vercel.app
+      LOCAL: http://localhost:3000
+    */
+
     const respuesta = await mercadopago.preferences.create(preference);
 
     const globalInitPoint = respuesta.body.init_point;
@@ -152,7 +156,7 @@ router.get('/success', async (req, res) => {
       event.overallEarnings += auxBody[0].ganancia;
       event.sells += totalCupos;
 
-      const usuariosComprados = [];
+      let usuariosComprados = [];
 
       event.dates.forEach(async (e, i) => {
         for (let j = 0; j < auxBody[0].dates.length; ++j) {
@@ -160,7 +164,15 @@ router.get('/success', async (req, res) => {
             idDate: auxBody[0].dates[j].id,
             idEvent: auxBody[0].idEvent,
             cantidad: auxBody[0].dates[j].quantity,
+            codigo: auxBody[0].dates[j].codigoUsuario || auxBody[0].dates[j].codigoDescuento || null,
+            date: '',
+            dateFormated: '',
           };
+
+          if (e._id.toString() === auxBody[0].dates[j].id) {
+            auxUsuariosComprados.date = e.date;
+            auxUsuariosComprados.dateFormated = e.dateFormated;
+          }
 
           usuariosComprados.push(auxUsuariosComprados);
 
@@ -183,8 +195,15 @@ router.get('/success', async (req, res) => {
                 codigo.save();
               }
             }
-            console.log({ eSinActualizar: e });
-            e.buyers?.push(user._id);
+
+            e.buyers.push({
+              id: user._id,
+              cupos: auxBody[0].dates[j].quantity,
+              codigo: auxBody[0].dates[j].codigoUsuario || auxBody[0].dates[j].codigoDescuento || null,
+            });
+
+            console.log({ buyers: e.buyers });
+
             e.cupos = e.cupos - auxBody[0].dates[j].quantity;
             e.sells = e.sells + auxBody[0].dates[j].quantity;
             e.pendingEarnings = e.pendingEarnings + auxBody[0].dates[j].ganancias;
