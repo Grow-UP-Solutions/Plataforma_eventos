@@ -227,7 +227,7 @@ const EventDate = ({ id, openMenu }) => {
                       {date.start}-{date.end}
                     </td>
 
-                    <td>{date.price}</td>
+                    <td>${new Intl.NumberFormat('de-DE').format(date.price)}</td>
 
                     <td>{date.cupos}</td>
 

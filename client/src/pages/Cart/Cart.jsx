@@ -124,7 +124,7 @@ const Cart = () => {
     setCodigo(e.target.value);
   };
 
-  // const aplicar = async (e, id) => {
+  
   //   e.preventDefault();
 
   //   for (let c = 0; c < carrito.length; c++) {
@@ -323,20 +323,51 @@ const Cart = () => {
     });
   }
 
-  // const quitarFecha = (e, id)=>{
+//---SUBMIT---//
 
-  //   let seleccion = carrito.filter((c) => c.idDate !== id);
-  //   let seleccionDate = dateToBuy.filter((d) => d._id !== id);
+  // function format(2000)
+  //   {
+  //   var num = input.value.replace(/\./g,'');
+  //   if(!isNaN(num)){
+  //   num = num.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g,'$1.');
+  //   num = num.split('').reverse().join('').replace(/^[\.]/,'');
+  //   input.value = num;
+  //   }
+    
+  //   else{ alert('Solo se permiten numeros');
+  //   input.value = input.value.replace(/[^\d\.]*/g,'');
+  //   }
+  //   }
 
-  //   setCarrito(seleccion);
-  //   setDateToBuy(seleccionDate);
+  const n = 2000.56
 
-  // }
+  // const num = n.replace(/\./g,'')
+
+  // const numero = num.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g,'$1.');
+  // const Numero = num.split('').reverse().join('').replace(/^[\.]/,'')
+     
+  // console.log('num:',num)
+  // console.log('numero:',numero)
+  // console.log('Numero:',Numero)
+
+  console.log(new Intl.NumberFormat('de-DE').format(n));
+
+
 
   //---SUBMIT---//
 
+  const [acepted, setAcepted] = useState(false)
+
+  const handleChangeCehck = () => {
+    setAcepted(true)
+  }
+
+
+ 
   async function handleSubmit(e) {
     e.preventDefault();
+
+    if(acepted){
 
     const costos = administracion + iva;
     const ganancia = [];
@@ -390,6 +421,14 @@ const Cart = () => {
     console.log('res:', json.data);
 
     window.location.assign(json.data.init_point);
+    }else{
+      return swal({
+        title: 'Debe haceptar el ACUERDO DE EXONERACIÓN DE RESPONSABILIDAD LEGAL (USUARIO) ',
+        icon: 'warning',
+        buttons: ['Continuar'],
+        dangerMode: true,
+      })
+    }
   }
 
   const [nextPageForm, setNextPageForm] = useState(false);
@@ -629,32 +668,46 @@ const Cart = () => {
                 <div className={styles.containerDetailsBuy}>
                   <div className={styles.detailsBuy}>
                     <p>Subtotal</p>
-                    <span>${subTotal}</span>
+                    <span>${new Intl.NumberFormat('de-DE').format(subTotal)}</span>
                   </div>
                   <div className={styles.detailsBuy}>
                     <p>Descuento</p>
-                    <span className={styles.detailDiscount}>-${descuentoTotal}</span>
+                    <span className={styles.detailDiscount}>-${new Intl.NumberFormat('de-DE').format(descuentoTotal)}</span>
                   </div>
                   <div className={styles.detailsBuy}>
                     <p>Administración</p>
-                    <span>${administracion}</span>
+                    <span>${new Intl.NumberFormat('de-DE').format(administracion)}</span>
                   </div>
                   <div className={styles.detailsBuy}>
                     <p>Valor IVA</p>
-                    <span>${iva}</span>
+                    <span>${new Intl.NumberFormat('de-DE').format(iva)}</span>
                   </div>
                   <div className={styles.formDivisor} />
                   <div className={`${styles.detailsBuy} ${styles.totalBuy}`}>
                     <p>Valor total Inc IVA</p>
-                    <span>${valorTotal}</span>
+                    <span>${new Intl.NumberFormat('de-DE').format(valorTotal)}</span>
                   </div>
                 </div>
 
-                <p className={styles.textTerms}>
-                  Al hacer clic en ‘Pagar,’ confirmas que has leído y aceptas la Política de privacidad, la Políticas de
-                  seguridad y los Términos y condiciones de LO QUE QUIERO HACER S.A.S. También confirmas que eres mayor
-                  de edad y que aceptas ser contactado por Nosotros en relación a los eventos que compres.
-                </p>
+                <div className={styles.containerTerm}>
+                  <input
+                    type='checkbox'
+                    class={styles.checkBox}
+                    value={acepted}
+                    defaultChecked={false}
+                    onChange = {handleChangeCehck}
+                  ></input>
+                  <label className={styles.textTerms}>Confirmo que he leído el ACUERDO DE EXONERACIÓN DE RESPONSABILIDAD LEGAL (USUARIO). <a className={styles.enlace} href="/seguridad" target="_blank">Leer aqui</a> </label>
+                </div>
+
+                <div className={styles.containerTerm} >
+                  <p className={styles.textTerms}>
+                    Al hacer clic en ‘Pagar,’ confirmas que has leído y aceptas la <a className={styles.enlace}  href="/privacidad" target="_blank">Politica de Privacidad</a>, 
+                    la <a className={styles.enlace} href="/seguridad" target="_blank">Politica de Seguridad</a> 
+                    y los <a className={styles.enlace}  href="/terminos" target="_blank">Termino y Condiciones</a> de LO QUE QUIERO HACER S.A.S. También confirmas que eres mayor
+                    de edad y que aceptas ser contactado por Nosotros en relación a los eventos que compres.
+                  </p>
+                </div>
 
                 <div className={styles.containerButtonForm}>
                   <button onClick={(e) => handleSubmit(e)} className={styles.btnForm}>
@@ -670,24 +723,24 @@ const Cart = () => {
             <div className={styles.containerDetailsBuy}>
               <div className={styles.detailsBuy}>
                 <p>Subtotal</p>
-                <span>${subTotal}</span>
+                <span>${new Intl.NumberFormat('de-DE').format(subTotal)}</span>
               </div>
               <div className={styles.detailsBuy}>
                 <p>Descuento</p>
-                <span className={styles.detailDiscount}>-${descuentoTotal}</span>
+                <span className={styles.detailDiscount}>-${new Intl.NumberFormat('de-DE').format(descuentoTotal)}</span>
               </div>
               <div className={styles.detailsBuy}>
                 <p>Administración</p>
-                <span>${administracion}</span>
+                <span>${new Intl.NumberFormat('de-DE').format(administracion)}</span>
               </div>
               <div className={styles.detailsBuy}>
                 <p>Valor IVA</p>
-                <span>${iva}</span>
+                <span>${new Intl.NumberFormat('de-DE').format(iva)}</span>
               </div>
               <div className={styles.formDivisor} />
               <div className={`${styles.detailsBuy} ${styles.totalBuy}`}>
                 <p>Valor total Inc IVA</p>
-                <span>${valorTotal}</span>
+                <span>${new Intl.NumberFormat('de-DE').format(new Intl.NumberFormat('de-DE').format(valorTotal))}</span>
               </div>
             </div>
           </div>
@@ -745,12 +798,17 @@ const Cart = () => {
 
           <div className={`${styles.detailsBuy} ${styles.totalBuy}`}>
             <p>Valor total Inc IVA</p>
-            <span>${valorTotal}</span>
+            <span>${new Intl.NumberFormat('de-DE').format(valorTotal)}</span>
           </div>
 
           <p className={styles.textTerms}>
-            Al hacer clic en ‘Pagar’ confirma que ha leído y entendido nuestros Términos y Condiciones, Notas legales de
-            privacidad y Seguridad.
+            Al hacer clic en ‘Pagar’ confirma que ha leído y entendido nuestros
+            <a href="/user/perfil/datos" target="_blank">Términos y Condiciones.</a>,
+            Notas legales de <a href="/user/perfil/datos" target="_blank">privacidad</a>
+            y <a href="/user/perfil/datos" target="_blank">Seguridad</a>.
+            
+            
+    
           </p>
 
           <div className={styles.containerResponsiveBtnPagar}>

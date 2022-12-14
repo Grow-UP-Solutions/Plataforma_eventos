@@ -15,7 +15,7 @@ const OrganizerBills = () => {
   const navigate = useNavigate();
   const id = useParams().id;
   const [userData, setUserData] = useState({});
-  const [billNumber, setBillNumber] = useState();
+  const [billNumber, setBillNumber] = useState({});
   const [load, setLoad] = useState(true);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ const OrganizerBills = () => {
 
       userResult.data.myEventsCreated.forEach((event) => {
         event.dates.forEach((date) => {
-          billsInputs[date._id] = 0;
+          billsInputs[date._id] = '';
         });
       });
       setBillNumber(billsInputs);
@@ -58,9 +58,11 @@ const OrganizerBills = () => {
   const pagar = async (e, eventId, dateId, pendingEarnigs) => {
     e.preventDefault();
 
+
+
     const payload = {
       datePay: fechaActual,
-      billNumber: billNumber,
+      billNumber: billNumber[dateId],
       idEvent: eventId,
       idDate: dateId,
       idOrg: id,
@@ -128,7 +130,7 @@ const OrganizerBills = () => {
                           />
                         </td>
 
-                        <td>{date.overallEarnings}</td>
+                        <td>${new Intl.NumberFormat('de-DE').format(date.overallEarnings)}</td>
                         { date.isPay === false ?
                           <td>
                             <button className={style.pagar} onClick={(e) => pagar(e, event._id, date._id, date.overallEarnings)}>Pagar</button>

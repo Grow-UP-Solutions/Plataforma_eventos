@@ -18,6 +18,8 @@ const Orders = () => {
 
   const [load, setLoad] = useState(true);
 
+  const [orden, setOrden] = useState(true);
+
   
   useEffect(() => {
     getUsers();
@@ -28,6 +30,16 @@ const Orders = () => {
       const userResult = await eventsApi.get(`/users`);
       setUserData(userResult.data);
       setLoad(false)
+
+      const ordenesTotal = []
+      
+
+      const ordenes = userResult.data.map(u => u.ordenes.map(orden=>
+
+        ordenesTotal.push(orden)
+      ))
+
+      setOrden(ordenesTotal)
     
   };
 
@@ -40,6 +52,9 @@ const Orders = () => {
   const indexOfLastOrder = currentPage * ordersPerPage;
   const indexOfFirsOrder = indexOfLastOrder - ordersPerPage;
   const paginado = (pageNumber) => setCurretPage(pageNumber);
+
+
+
 
  
 
@@ -66,8 +81,10 @@ const Orders = () => {
             <thead className={style.thead}>
               <tr className={style.tr}>
                 <th className={style.th_first}>Nombre</th>
+                <th className={style.th_first}>Apellido</th>
                 <th>Email</th>
                 <th>Fecha</th>
+                <th>Evento</th>
                 <th>Nº</th>
                
               </tr>
@@ -78,11 +95,13 @@ const Orders = () => {
                 userData.slice(indexOfFirsOrder, indexOfLastOrder).map((user) =>
                 user.ordenes.map(order =>
                     <tr key={user._id} className={style.tbody}>
-                        <td className={style.tbody_name}>
-                          <p>{user.name}</p>
+                        <td>
+                          {user.firstName}
                         </td>
+                        <td>{user.lastName}</td>
                         <td>{user.email}</td>
                         <td>{order.fechaDePago.slice(0,10)}</td>
+                        <td>{order.motivo}</td>
                         <td>
                         <Link to={`/detalle-de-orden/${order._id}/${user._id}`}>{order._id}</Link>
                         </td>
@@ -93,11 +112,16 @@ const Orders = () => {
             </tbody>
           </div>
 
+          {orden !== undefined &&
+            
+                  <div className={style.container_pagination}>
+                    <Pagination ordersPerPage={ordersPerPage} state={orden.length} paginado={paginado} />
+                  </div>
+          }
+
          
          
-            <div className={style.container_pagination}>
-              <Pagination ordersPerPage={ordersPerPage} state={userData.length} paginado={paginado} />
-            </div>
+            
           
 
           <div className={style.container_exit}>

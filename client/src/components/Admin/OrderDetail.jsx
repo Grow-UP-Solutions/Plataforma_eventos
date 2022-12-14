@@ -72,8 +72,8 @@ const OrderDetail = () => {
             <p className={style.h2}>Codigo de La Transaccion: {order.codigoDeLaTransaccion}</p>
             <p className={style.h2}>Destino de Pago: {order.DestinoDePago}</p>
             <p className={style.h2}>Fecha de Pago: {order.fechaDePago.slice(0,10)}</p>
-            <p className={style.h2}>Valor de la Transaccion: {order.valorDeLaTransaccion}</p>
-            <p className={style.h2}>Costo de la Transaccion: {order.costoDeLaTransaccion}</p>
+            <p className={style.h2}>Valor de la Transaccion: ${new Intl.NumberFormat('de-DE').format(order.valorDeLaTransaccion)}</p>
+            <p className={style.h2}>Costo de la Transaccion: ${new Intl.NumberFormat('de-DE').format(order.costoDeLaTransaccion)}</p>
             <p className={style.h2}>Referencia: {order.referencia}</p>
             
             {order.cuposComprados.map(cupo => 
