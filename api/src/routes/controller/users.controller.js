@@ -46,6 +46,21 @@ const { eventCreateOrganizer } = require('../../models/util/mailer/eventeCreateO
 const router = Router();
 /**/ ///////////////Rutas GET////////////// */
 
+router.put('/changeProcessingOrganizer/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await UsersFunctionDb.oneUser(id);
+
+    user.isProccessingToOrganizer = false;
+    user.save();
+
+    res.json({ message: 'hecho' });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+});
+
 router.get('/checkValidateTokenOrganizer/', validateJWTOrganizer, async (req, res) => {
   const { name, phone, document, tel, email, description, image, referenciaU, referenciaZ, id } = req;
 
@@ -149,14 +164,12 @@ router.post('/acceptOrRejectedOrganizer', async (req, res) => {
       user.isOrganizer = true;
       user.isProccessingToOrganizer = false;
       user.isRejected = false;
-      user.referenceZ = user.referenceU.replace('U', 'Z');
       await sendMailUserAccept(user.name, user.email);
       message = 'Aceptado';
     } else if (option === 'reject') {
       user.isRejected = true;
       user.isOrganizer = false;
       user.isProccessingToOrganizer = false;
-      user.referenceZ = '';
       await sendMailUserRejected(user.name, user.email);
       message = 'Rechazado';
     } else {
