@@ -27,15 +27,16 @@ const OrganizerBills = () => {
       const userResult = await eventsApi.get(`/users/${id}`);
       setUserData(userResult.data);
       let billsInputs = {};
-      userResult.data.myEventsCreated.forEach((date) => {
-        billsInputs[date._id] = 0;
+
+      userResult.data.myEventsCreated.forEach((event) => {
+        event.dates.forEach((date) => {
+          billsInputs[date._id] = 0;
+        });
       });
       setBillNumber(billsInputs);
       setLoad(false);
     }
   };
-
-  console.log('userData:', userData);
 
   const [currentPage, setCurretPage] = useState(1);
   const billsPerPage = 6;
@@ -119,7 +120,7 @@ const OrganizerBills = () => {
                             id={date._id}
                             type='text'
                             name={date._id}
-                            value={billNumber}
+                            value={billNumber[date._id]}
                             onChange={(e) => handleChange(e)}
                             required
                           />
