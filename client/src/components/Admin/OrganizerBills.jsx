@@ -130,7 +130,7 @@ const OrganizerBills = () => {
                           />
                         </td>
 
-                        <td>{date.overallEarnings}</td>
+                        <td>${new Intl.NumberFormat('de-DE').format(date.overallEarnings)}</td>
                         { date.isPay === false ?
                           <td>
                             <button className={style.pagar} onClick={(e) => pagar(e, event._id, date._id, date.overallEarnings)}>Pagar</button>

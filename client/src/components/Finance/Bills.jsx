@@ -80,7 +80,7 @@ const Bills = () => {
                       <td>{date.date}</td>
                       <td>{date.isPay === false ? 'PENDIENTE' : date.datePay}</td>
                       <td>{date.isPay === false ? 'PENDIENTE' : date.billNumber}</td>
-                      <td>{date.overallEarnings}</td>
+                      <td>${new Intl.NumberFormat('de-DE').format(date.overallEarnings)}</td>
                       <td>
                         <input type='checkbox' />
                       </td>

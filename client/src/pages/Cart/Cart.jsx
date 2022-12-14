@@ -323,6 +323,36 @@ const Cart = () => {
     });
   }
 
+//---SUBMIT---//
+
+  // function format(2000)
+  //   {
+  //   var num = input.value.replace(/\./g,'');
+  //   if(!isNaN(num)){
+  //   num = num.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g,'$1.');
+  //   num = num.split('').reverse().join('').replace(/^[\.]/,'');
+  //   input.value = num;
+  //   }
+    
+  //   else{ alert('Solo se permiten numeros');
+  //   input.value = input.value.replace(/[^\d\.]*/g,'');
+  //   }
+  //   }
+
+  const n = 2000.56
+
+  // const num = n.replace(/\./g,'')
+
+  // const numero = num.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g,'$1.');
+  // const Numero = num.split('').reverse().join('').replace(/^[\.]/,'')
+     
+  // console.log('num:',num)
+  // console.log('numero:',numero)
+  // console.log('Numero:',Numero)
+
+  console.log(new Intl.NumberFormat('de-DE').format(n));
+
+
 
   //---SUBMIT---//
 
@@ -638,24 +668,24 @@ const Cart = () => {
                 <div className={styles.containerDetailsBuy}>
                   <div className={styles.detailsBuy}>
                     <p>Subtotal</p>
-                    <span>${subTotal}</span>
+                    <span>${new Intl.NumberFormat('de-DE').format(subTotal)}</span>
                   </div>
                   <div className={styles.detailsBuy}>
                     <p>Descuento</p>
-                    <span className={styles.detailDiscount}>-${descuentoTotal}</span>
+                    <span className={styles.detailDiscount}>-${new Intl.NumberFormat('de-DE').format(descuentoTotal)}</span>
                   </div>
                   <div className={styles.detailsBuy}>
                     <p>Administración</p>
-                    <span>${administracion}</span>
+                    <span>${new Intl.NumberFormat('de-DE').format(administracion)}</span>
                   </div>
                   <div className={styles.detailsBuy}>
                     <p>Valor IVA</p>
-                    <span>${iva}</span>
+                    <span>${new Intl.NumberFormat('de-DE').format(iva)}</span>
                   </div>
                   <div className={styles.formDivisor} />
                   <div className={`${styles.detailsBuy} ${styles.totalBuy}`}>
                     <p>Valor total Inc IVA</p>
-                    <span>${valorTotal}</span>
+                    <span>${new Intl.NumberFormat('de-DE').format(valorTotal)}</span>
                   </div>
                 </div>
 
@@ -693,24 +723,24 @@ const Cart = () => {
             <div className={styles.containerDetailsBuy}>
               <div className={styles.detailsBuy}>
                 <p>Subtotal</p>
-                <span>${subTotal}</span>
+                <span>${new Intl.NumberFormat('de-DE').format(subTotal)}</span>
               </div>
               <div className={styles.detailsBuy}>
                 <p>Descuento</p>
-                <span className={styles.detailDiscount}>-${descuentoTotal}</span>
+                <span className={styles.detailDiscount}>-${new Intl.NumberFormat('de-DE').format(descuentoTotal)}</span>
               </div>
               <div className={styles.detailsBuy}>
                 <p>Administración</p>
-                <span>${administracion}</span>
+                <span>${new Intl.NumberFormat('de-DE').format(administracion)}</span>
               </div>
               <div className={styles.detailsBuy}>
                 <p>Valor IVA</p>
-                <span>${iva}</span>
+                <span>${new Intl.NumberFormat('de-DE').format(iva)}</span>
               </div>
               <div className={styles.formDivisor} />
               <div className={`${styles.detailsBuy} ${styles.totalBuy}`}>
                 <p>Valor total Inc IVA</p>
-                <span>${valorTotal}</span>
+                <span>${new Intl.NumberFormat('de-DE').format(new Intl.NumberFormat('de-DE').format(valorTotal))}</span>
               </div>
             </div>
           </div>
@@ -768,7 +798,7 @@ const Cart = () => {
 
           <div className={`${styles.detailsBuy} ${styles.totalBuy}`}>
             <p>Valor total Inc IVA</p>
-            <span>${valorTotal}</span>
+            <span>${new Intl.NumberFormat('de-DE').format(valorTotal)}</span>
           </div>
 
           <p className={styles.textTerms}>
