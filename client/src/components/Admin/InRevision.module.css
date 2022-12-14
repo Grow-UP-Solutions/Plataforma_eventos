@@ -121,7 +121,17 @@
     cursor: pointer;
   }
 
-  .pagar{
+  .aRevision{
+    display: inline-block;
+    color: green;
+    font-size: 1.6rem;
+    font-family: 'Raleway', sans-serif;
+    cursor: pointer;
+    background-color: white;
+    border: white;
+  }
+
+  .activar{
     display: inline-block;
     color: var(--color-orange);
     font-size: 1.6rem;
@@ -129,5 +139,6 @@
     cursor: pointer;
     background-color: white;
     border: white;
+
   }
   

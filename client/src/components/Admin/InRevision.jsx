@@ -97,7 +97,7 @@ const InRevision = () => {
     return (
       <div className={style.container}>
         <div className={style.container_titles}>
-          <h1>Revision de Eventes</h1>
+          <h1>Revision de Eventos</h1>
           <h5>{fechaActual}</h5>
         </div>
 
@@ -132,16 +132,29 @@ const InRevision = () => {
                         <td>{event.organizer.name}</td>
                         <td>{date.inRevision === false ? 'ACTIVO' : 'EN REVISION'}</td>
                         <td>
-                          <button className={style.pagar} onClick={(e) => setRevisionDate(e, event._id, date._id )}>{
-                            date.inRevision === false ? 'Agregar fecha a Revision' : 'Activar Fecha'
-                            }
-                          </button>
+                          {
+                             date.inRevision === false ?
+                              <button className={style.aRevision} onClick={(e) => setRevisionDate(e, event._id, date._id )}>
+                                Agregar fecha a Revision
+                              </button>
+                             :
+
+                             <button className={style.activar} onClick={(e) => setRevisionDate(e, event._id, date._id )}>
+                              Activar
+                             </button>
+                          }
                         </td>
                         <td>
-                          <button className={style.pagar} onClick={(e) => setRevisionEvent(e, event._id )}>{
-                            event.inRevision === false ? 'Agregar evento a Revision' : 'Activar Evento'
-                            }
-                          </button>
+                          {event.inRevision === false ?
+                            <button className={style.aRevision} onClick={(e) => setRevisionEvent(e, event._id )}>
+                              Agregar evento a Revision
+                            </button>
+                            :
+                            <button className={style.activar} onClick={(e) => setRevisionEvent(e, event._id )}>
+                              Activar Evento'
+                            </button>
+                          }
+                    
                         </td>
                       </tr>
                     

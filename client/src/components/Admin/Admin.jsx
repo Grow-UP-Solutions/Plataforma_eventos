@@ -14,6 +14,9 @@ const Admin = () => {
       <div className={style.Link}>
       <Link to='/eventos-revision'>Revision de Eventos</Link>
       </div>
+      <div className={style.Link}>
+      <Link to='/ordenes'>Lista de Ordenes</Link>
+      </div>
     </div>
   );
 };

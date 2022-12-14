@@ -30,7 +30,6 @@ const OrganizerBills = () => {
     }
   };
 
-  console.log('userData:', userData);
 
   const [currentPage, setCurretPage] = useState(1);
   const billsPerPage = 6;
@@ -57,7 +56,7 @@ const OrganizerBills = () => {
       ganancia: pendingEarnigs,
     };
 
-    console.log('payload', payload);
+    
 
     try {
       const { data } = await eventsApi.put('/mercadoPago/adminPaymentOrganizer', payload);
@@ -110,9 +109,10 @@ const OrganizerBills = () => {
                         </td>
                         <td>{date.date}</td>
                         <td>{date.isPay === false ? 'PENDIENTE' : 'PAGADO'}</td>
+
                         <td>
                           <input
-                          id={date._id}
+                            id={date._id}
                             type='text'
                             name='billNumber'
                             value={billNumber}
@@ -120,10 +120,17 @@ const OrganizerBills = () => {
                             required
                           />
                         </td>
+
                         <td>{date.overallEarnings}</td>
-                        <td>
-                          <button className={style.pagar} onClick={(e) => pagar(e, event._id, date._id, date.overallEarnings)}>Pagar</button>
-                        </td>
+                        { date.isPay === false ?
+                          <td>
+                            <button className={style.pagar} onClick={(e) => pagar(e, event._id, date._id, date.overallEarnings)}>Pagar</button>
+                          </td>
+                        : 
+                          <td>
+                            <p className={style.pagado} >PAGADO</p>
+                          </td>
+                        }
                       </tr>
                     ) : (
                       ''
