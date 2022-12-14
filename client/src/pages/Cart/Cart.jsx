@@ -124,7 +124,7 @@ const Cart = () => {
     setCodigo(e.target.value);
   };
 
-  // const aplicar = async (e, id) => {
+  
   //   e.preventDefault();
 
   //   for (let c = 0; c < carrito.length; c++) {
@@ -323,20 +323,21 @@ const Cart = () => {
     });
   }
 
-  // const quitarFecha = (e, id)=>{
-
-  //   let seleccion = carrito.filter((c) => c.idDate !== id);
-  //   let seleccionDate = dateToBuy.filter((d) => d._id !== id);
-
-  //   setCarrito(seleccion);
-  //   setDateToBuy(seleccionDate);
-
-  // }
 
   //---SUBMIT---//
 
+  const [acepted, setAcepted] = useState(false)
+
+  const handleChangeCehck = () => {
+    setAcepted(true)
+  }
+
+
+ 
   async function handleSubmit(e) {
     e.preventDefault();
+
+    if(acepted){
 
     const costos = administracion + iva;
     const ganancia = [];
@@ -390,6 +391,14 @@ const Cart = () => {
     console.log('res:', json.data);
 
     window.location.assign(json.data.init_point);
+    }else{
+      return swal({
+        title: 'Debe haceptar el ACUERDO DE EXONERACIÓN DE RESPONSABILIDAD LEGAL (USUARIO) ',
+        icon: 'warning',
+        buttons: ['Continuar'],
+        dangerMode: true,
+      })
+    }
   }
 
   const [nextPageForm, setNextPageForm] = useState(false);
@@ -650,11 +659,25 @@ const Cart = () => {
                   </div>
                 </div>
 
-                <p className={styles.textTerms}>
-                  Al hacer clic en ‘Pagar,’ confirmas que has leído y aceptas la Política de privacidad, la Políticas de
-                  seguridad y los Términos y condiciones de LO QUE QUIERO HACER S.A.S. También confirmas que eres mayor
-                  de edad y que aceptas ser contactado por Nosotros en relación a los eventos que compres.
-                </p>
+                <div className={styles.containerTerm}>
+                  <input
+                    type='checkbox'
+                    class={styles.checkBox}
+                    value={acepted}
+                    defaultChecked={false}
+                    onChange = {handleChangeCehck}
+                  ></input>
+                  <label className={styles.textTerms}>Confirmo que he leído el ACUERDO DE EXONERACIÓN DE RESPONSABILIDAD LEGAL (USUARIO). <a className={styles.enlace} href="/seguridad" target="_blank">Leer aqui</a> </label>
+                </div>
+
+                <div className={styles.containerTerm} >
+                  <p className={styles.textTerms}>
+                    Al hacer clic en ‘Pagar,’ confirmas que has leído y aceptas la <a className={styles.enlace}  href="/privacidad" target="_blank">Politica de Privacidad</a>, 
+                    la <a className={styles.enlace} href="/seguridad" target="_blank">Politica de Seguridad</a> 
+                    y los <a className={styles.enlace}  href="/terminos" target="_blank">Termino y Condiciones</a> de LO QUE QUIERO HACER S.A.S. También confirmas que eres mayor
+                    de edad y que aceptas ser contactado por Nosotros en relación a los eventos que compres.
+                  </p>
+                </div>
 
                 <div className={styles.containerButtonForm}>
                   <button onClick={(e) => handleSubmit(e)} className={styles.btnForm}>
@@ -749,8 +772,13 @@ const Cart = () => {
           </div>
 
           <p className={styles.textTerms}>
-            Al hacer clic en ‘Pagar’ confirma que ha leído y entendido nuestros Términos y Condiciones, Notas legales de
-            privacidad y Seguridad.
+            Al hacer clic en ‘Pagar’ confirma que ha leído y entendido nuestros
+            <a href="/user/perfil/datos" target="_blank">Términos y Condiciones.</a>,
+            Notas legales de <a href="/user/perfil/datos" target="_blank">privacidad</a>
+            y <a href="/user/perfil/datos" target="_blank">Seguridad</a>.
+            
+            
+    
           </p>
 
           <div className={styles.containerResponsiveBtnPagar}>
