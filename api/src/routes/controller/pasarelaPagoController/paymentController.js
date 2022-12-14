@@ -160,6 +160,7 @@ router.get('/success', async (req, res) => {
             idDate: auxBody[0].dates[j].id,
             idEvent: auxBody[0].idEvent,
             cantidad: auxBody[0].dates[j].quantity,
+            codigo: auxBody[0].dates[j].codigoUsuario || auxBody[0].dates[j].codigoDescuento || null,
           };
 
           usuariosComprados.push(auxUsuariosComprados);

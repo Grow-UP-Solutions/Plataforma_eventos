@@ -2522,8 +2522,6 @@ const EventCreateForm = () => {
                                   )}
                                 </div>
                               </div>
-
-                              {/* Remove date*/}
                             </div>
 
                             {/* bono*/}
@@ -2803,6 +2801,18 @@ const EventCreateForm = () => {
 
                           {/*vistaprevia-publicar-guardar*/}
                           <div className={styles.btnContainer}>
+                            {/*publicar*/}
+                            <div>
+                              <button className={styles.viewBtn} onClick={(e) => handleSubmit(e)}>
+                                Publicar Evento
+                              </button>
+                            </div>
+                            {/*guardar*/}
+                            <div>
+                              <button className={styles.viewBtn} onClick={(e) => handleSave(e)}>
+                                Guardar
+                              </button>
+                            </div>
                             {/*vista previa*/}
                             <div className={styles.btnVista}>
                               <p onClick={() => setGetPreview(!getPreview)} className={styles.viewBtn}>
@@ -3016,20 +3026,6 @@ const EventCreateForm = () => {
                                   </div>
                                 </div>
                               )}
-                            </div>
-
-                            {/*publicar*/}
-                            <div>
-                              <button className={styles.viewBtn} onClick={(e) => handleSubmit(e)}>
-                                Publicar Evento
-                              </button>
-                            </div>
-
-                            {/*guardar*/}
-                            <div>
-                              <button className={styles.viewBtn} onClick={(e) => handleSave(e)}>
-                                Guardar y Publicar Luego
-                              </button>
                             </div>
                           </div>
 
