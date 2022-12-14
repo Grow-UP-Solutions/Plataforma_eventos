@@ -382,16 +382,16 @@ const Card = ({ event, listName, orgEvent, datePublic }) => {
               {/* PRICE */}
               {orgEvent === 'true' && datePrice === undefined ? (
                 <div>
-                  <p className={styles.cardPrice}>${event.dates[0].price}</p>
+                  <p className={styles.cardPrice}>${new Intl.NumberFormat('de-DE').format(event.dates[0].price)}</p>
                 </div>
               ) : orgEvent === 'true' && datePrice !== undefined ? (
                 <div>
-                  <p className={styles.cardPrice}>${datePrice}</p>
+                  <p className={styles.cardPrice}>${new Intl.NumberFormat('de-DE').format(datePrice)}</p>
                 </div>
               ) : orgEvent === undefined && datePrice === undefined && price !== '' ? (
-                <p className={styles.cardPrice}>${price}</p>
+                <p className={styles.cardPrice}>${new Intl.NumberFormat('de-DE').format(price)}</p>
               ) : (
-                <p className={styles.cardPrice}>${event.dates[0].price}</p>
+                <p className={styles.cardPrice}>${new Intl.NumberFormat('de-DE').format(event.dates[0].price)}</p>
               )}
               <div className={styles.vLine}></div>
               <Link className={styles.link} to={`/detalles-del-evento/${event._id}`}>
@@ -403,16 +403,16 @@ const Card = ({ event, listName, orgEvent, datePublic }) => {
               {/* PRICE */}
               {orgEvent === 'true' && datePrice === undefined ? (
                 <div>
-                  <p className={styles.cardPrice}>${event.dates[0].price}</p>
+                  <p className={styles.cardPrice}>${new Intl.NumberFormat('de-DE').format(event.dates[0].price)}</p>
                 </div>
               ) : orgEvent === 'true' && datePrice !== undefined ? (
                 <div>
-                  <p className={styles.cardPrice}>${datePrice}</p>
+                  <p className={styles.cardPrice}>${new Intl.NumberFormat('de-DE').format(datePrice)}</p>
                 </div>
               ) : orgEvent === undefined && datePrice === undefined && price !== '' ? (
-                <p className={styles.cardPrice}>${price}</p>
+                <p className={styles.cardPrice}>${new Intl.NumberFormat('de-DE').format(price)}</p>
               ) : (
-                <p className={styles.cardPrice}>${event.dates[0].price}</p>
+                <p className={styles.cardPrice}>${new Intl.NumberFormat('de-DE').format(event.dates[0].price)}</p>
               )}
               <div className={styles.vLine}></div>
 
@@ -447,16 +447,16 @@ const Card = ({ event, listName, orgEvent, datePublic }) => {
               {/* PRICE */}
               {orgEvent === 'true' && datePrice === undefined ? (
                 <div>
-                  <p className={styles.cardPrice}>${event.dates[0].price}</p>
+                  <p className={styles.cardPrice}>${new Intl.NumberFormat('de-DE').format(event.dates[0].price)}</p>
                 </div>
               ) : orgEvent === 'true' && datePrice !== undefined ? (
                 <div>
-                  <p className={styles.cardPrice}>${datePrice}</p>
+                  <p className={styles.cardPrice}>${new Intl.NumberFormat('de-DE').format(datePrice)}</p>
                 </div>
               ) : orgEvent === undefined && datePrice === undefined && price !== '' ? (
-                <p className={styles.cardPrice}>${price}</p>
+                <p className={styles.cardPrice}>${new Intl.NumberFormat('de-DE').format(price)}</p>
               ) : (
-                <p className={styles.cardPrice}>${event.dates[0].price}</p>
+                <p className={styles.cardPrice}>${new Intl.NumberFormat('de-DE').format(event.dates[0].price)}</p>
               )}
 
               <div className={styles.vLine}></div>
@@ -470,16 +470,16 @@ const Card = ({ event, listName, orgEvent, datePublic }) => {
             {/* PRICE */}
             {orgEvent === 'true' && datePrice === undefined ? (
               <div>
-                <p className={styles.cardPrice}>${event.dates[0].price}</p>
+                <p className={styles.cardPrice}>${new Intl.NumberFormat('de-DE').format(event.dates[0].price)}</p>
               </div>
             ) : orgEvent === 'true' && datePrice !== undefined ? (
               <div>
-                <p className={styles.cardPrice}>${datePrice}</p>
+                <p className={styles.cardPrice}>${new Intl.NumberFormat('de-DE').format(datePrice)}</p>
               </div>
             ) : orgEvent === undefined && datePrice === undefined && price !== '' ? (
-              <p className={styles.cardPrice}>${price}</p>
+              <p className={styles.cardPrice}>${new Intl.NumberFormat('de-DE').format(price)}</p>
             ) : (
-              <p className={styles.cardPrice}>${event.dates[0].price}</p>
+              <p className={styles.cardPrice}>${new Intl.NumberFormat('de-DE').format(event.dates[0].price)}</p>
             )}
             <div className={styles.vLine}></div>
             <Link className={styles.link} to={`/detalles-del-evento/${event._id}`}>
@@ -562,7 +562,7 @@ const Card = ({ event, listName, orgEvent, datePublic }) => {
                 </div>
                 <div className={styles.subDatos}>
                   <p>Ganancias:</p>
-                  {event.dates.map((date) => (date._id === selectedDateId ? <h4>{date.overallEarnings}</h4> : ''))}
+                  {event.dates.map((date) => (date._id === selectedDateId ? <h4>${new Intl.NumberFormat('de-DE').format(date.overallEarnings)}</h4> : ''))}
                   <button onClick={(e) => handleEarns(e)}>Ver</button>
                 </div>
               </div>

@@ -18,6 +18,8 @@ const Orders = () => {
 
   const [load, setLoad] = useState(true);
 
+  const [orden, setOrden] = useState(true);
+
   
   useEffect(() => {
     getUsers();
@@ -28,6 +30,16 @@ const Orders = () => {
       const userResult = await eventsApi.get(`/users`);
       setUserData(userResult.data);
       setLoad(false)
+
+      const ordenesTotal = []
+      
+
+      const ordenes = userResult.data.map(u => u.ordenes.map(orden=>
+
+        ordenesTotal.push(orden)
+      ))
+
+      setOrden(ordenesTotal)
     
   };
 
@@ -40,6 +52,9 @@ const Orders = () => {
   const indexOfLastOrder = currentPage * ordersPerPage;
   const indexOfFirsOrder = indexOfLastOrder - ordersPerPage;
   const paginado = (pageNumber) => setCurretPage(pageNumber);
+
+
+
 
  
 
@@ -93,11 +108,16 @@ const Orders = () => {
             </tbody>
           </div>
 
+          {orden !== undefined &&
+            
+                  <div className={style.container_pagination}>
+                    <Pagination ordersPerPage={ordersPerPage} state={orden.length} paginado={paginado} />
+                  </div>
+          }
+
          
          
-            <div className={style.container_pagination}>
-              <Pagination ordersPerPage={ordersPerPage} state={userData.length} paginado={paginado} />
-            </div>
+            
           
 
           <div className={style.container_exit}>
