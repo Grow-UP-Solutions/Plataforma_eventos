@@ -58,7 +58,7 @@ const UserSchema = new Schema(
     },
     isDeclarant: {
       type: Boolean,
-      default: null,
+      default: '',
     },
     isProfileCompleted: {
       type: Boolean,

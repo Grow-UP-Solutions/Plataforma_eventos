@@ -435,6 +435,7 @@ const UserForm = ({ userData }) => {
       if (typeof formData[key] === 'boolean') continue;
       if (key === 'nickname') continue;
       if (key === 'imageRent') continue;
+      if (key === 'isDeclarant') continue;
       if (!formData[key]) {
         isProfileCompleted = false;
         break;
@@ -1356,7 +1357,7 @@ const UserForm = ({ userData }) => {
         <div className={styles.containerCheckBoxRent}>
           <div className={styles.checkbox}>
             <input
-              checked={formData.isDeclarant}
+              checked={formData.isDeclarant === '' ? false : formData.isDeclarant}
               onChange={handleInputRadioButtonRent}
               name='rent'
               type='radio'
@@ -1366,7 +1367,7 @@ const UserForm = ({ userData }) => {
           </div>
           <div className={styles.checkbox}>
             <input
-              checked={!formData.isDeclarant}
+              checked={formData.isDeclarant === '' ? false : formData.isDeclarant}
               onChange={handleInputRadioButtonRent}
               name='rent'
               type='radio'
@@ -1374,7 +1375,7 @@ const UserForm = ({ userData }) => {
             />
             <label htmlFor='no'>No</label>
           </div>
-          {formData.isDeclarant && (
+          {formData.isDeclarant === true && (
             <div className={styles.containerDrag}>
               <p className={styles.anexRut}>Anexa el RUT:</p>
               {formData.imageRent && formData.isDeclarant ? (
