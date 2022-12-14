@@ -26,7 +26,12 @@ const OrganizerBills = () => {
     if (id) {
       const userResult = await eventsApi.get(`/users/${id}`);
       setUserData(userResult.data);
-      setLoad(false)
+      let billsInputs = {};
+      userResult.data.myEventsCreated.forEach((date) => {
+        billsInputs[date._id] = 0;
+      });
+      setBillNumber(billsInputs);
+      setLoad(false);
     }
   };
 
@@ -38,11 +43,14 @@ const OrganizerBills = () => {
   const indexOfFirstBill = indexOfLastBill - billsPerPage;
   const paginado = (pageNumber) => setCurretPage(pageNumber);
 
- 
-
   function handleChange(e) {
     e.preventDefault();
-    setBillNumber(e.target.value);
+    const id = e.target.name;
+    const value = e.target.value;
+    setBillNumber({
+      ...billNumber,
+      [id]: value,
+    });
   }
 
   const pagar = async (e, eventId, dateId, pendingEarnigs) => {
@@ -67,13 +75,9 @@ const OrganizerBills = () => {
     }
   };
 
-
-
-  if(load){
-    return(
-      <Loading />
-    )
-   }else{
+  if (load) {
+    return <Loading />;
+  } else {
     return (
       <div className={style.container}>
         <div className={style.container_titles}>
@@ -112,9 +116,9 @@ const OrganizerBills = () => {
                         <td>{date.isPay === false ? 'PENDIENTE' : 'PAGADO'}</td>
                         <td>
                           <input
-                          id={date._id}
+                            id={date._id}
                             type='text'
-                            name='billNumber'
+                            name={date._id}
                             value={billNumber}
                             onChange={(e) => handleChange(e)}
                             required
@@ -122,7 +126,12 @@ const OrganizerBills = () => {
                         </td>
                         <td>{date.overallEarnings}</td>
                         <td>
-                          <button className={style.pagar} onClick={(e) => pagar(e, event._id, date._id, date.overallEarnings)}>Pagar</button>
+                          <button
+                            className={style.pagar}
+                            onClick={(e) => pagar(e, event._id, date._id, date.overallEarnings)}
+                          >
+                            Pagar
+                          </button>
                         </td>
                       </tr>
                     ) : (
@@ -159,7 +168,6 @@ const OrganizerBills = () => {
       </div>
     );
   }
-
 };
 
 export default OrganizerBills;
