@@ -10,7 +10,9 @@ const MyListUser = ({ myFavorites, myEventsBooked }) => {
 
   const eventos = myFavorites.concat(myEventsBooked)
 
-  const orderByDate = eventos.sort((a, b) => {
+  const eventosPublicos = eventos.filter(evento=>evento.isPublic === true && evento.inRevision===false)
+
+  const orderByDate = eventosPublicos.sort((a, b) => {
     if (a.dates[0].date < b.dates[0].date) return -1;
     if (b.dates[0].date < a.dates[0].date) return 1;
     return 0;
@@ -53,7 +55,7 @@ const MyListUser = ({ myFavorites, myEventsBooked }) => {
       </div>
 
       <div className={styles.container_pagination}>
-        <Pagination billsPerPage={CardPerPage} state={eventos.length} paginado={paginado} page={currentPage} />
+        <Pagination billsPerPage={CardPerPage} state={eventosPublicos.length} paginado={paginado} page={currentPage} />
       </div>
     </div>
   );
