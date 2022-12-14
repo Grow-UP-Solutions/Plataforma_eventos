@@ -15,8 +15,6 @@ const UserSchema = new Schema(
     frontDocument: String,
     backDocument: String,
     imageRent: String,
-    referenceU: String,
-    referenceZ: String,
     registerProvider: String,
     membership: {
       type: String,
@@ -60,7 +58,7 @@ const UserSchema = new Schema(
     },
     isDeclarant: {
       type: Boolean,
-      default: null,
+      default: '',
     },
     isProfileCompleted: {
       type: Boolean,

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import style from './OrganizerList.module.css';
+import style from './Orders.module.css';
 import useFetch from '../../hooks/useFetch';
 import Pagination from '../Pagination/Pagination';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
@@ -10,28 +10,43 @@ import { fechaActual } from '../../utils/fechaActual';
 import { Link } from 'react-router-dom';
 import Loading from '../Loading/Loading';
 
-const OrganizerList = () => {
-  const [state, fetchUsers] = useFetch();
+const Orders = () => {
+  
   const navigate = useNavigate();
-  const [load, setLoad] = useState(true);
-  const [userData, setUserData] = useState([]);
+ 
+  const [userData, setUserData] = useState({});
 
+  const [load, setLoad] = useState(true);
+
+  
   useEffect(() => {
-    getUserData();
+    getUsers();
   }, []);
 
-  const getUserData = async () => {
-    const userResult = await eventsApi.get(`/users`);
-    setUserData(userResult.data);
-    setLoad(false)
+  const getUsers = async () => {
+    
+      const userResult = await eventsApi.get(`/users`);
+      setUserData(userResult.data);
+      setLoad(false)
+    
   };
 
+  console.log('userData:',userData)
+
+  
 
   const [currentPage, setCurretPage] = useState(1);
-  const organizerPerPage = 10;
-  const indexOfLastOrg = currentPage * organizerPerPage;
-  const indexOfFirstOrg = indexOfLastOrg - organizerPerPage;
+  const ordersPerPage = 10;
+  const indexOfLastOrder = currentPage * ordersPerPage;
+  const indexOfFirsOrder = indexOfLastOrder - ordersPerPage;
   const paginado = (pageNumber) => setCurretPage(pageNumber);
+
+ 
+
+  
+
+ 
+
 
 
   if(load){
@@ -42,7 +57,7 @@ const OrganizerList = () => {
     return (
       <div className={style.container}>
         <div className={style.container_titles}>
-          <h1>Lista de organizadores</h1>
+          <h1>Lista de compras</h1>
           <h5>{fechaActual}</h5>
         </div>
 
@@ -52,36 +67,38 @@ const OrganizerList = () => {
               <tr className={style.tr}>
                 <th className={style.th_first}>Nombre</th>
                 <th>Email</th>
+                <th>Fecha</th>
+                <th>Nº</th>
+               
               </tr>
             </thead>
 
             <tbody>
               {userData !== undefined &&
-                userData.slice(indexOfFirstOrg, indexOfLastOrg).map((e) => (
-                  e.isOrganizer===true ?
-                  <tr key={e.id} className={style.tbody}>
-                    <td className={style.tbody_name}>
-                      <img
-                        src={userData.userpicture}
-                        alt={e.first_name}
-                        style={{ maxWidth: '20%', borderRadius: '100px' }}
-                      />
-                      <Link to={'/organizador-facturas-pagar/' + e._id}>{e.name}</Link>
-                    </td>
-                    <td>{e.email}</td>
+                userData.slice(indexOfFirsOrder, indexOfLastOrder).map((user) =>
+                user.ordenes.map(order =>
+                    <tr key={user._id} className={style.tbody}>
+                        <td className={style.tbody_name}>
+                          <p>{user.name}</p>
+                        </td>
+                        <td>{user.email}</td>
+                        <td>{order.fechaDePago.slice(0,10)}</td>
+                        <td>
+                        <Link to={`/detalle-de-orden/${order._id}/${user._id}`}>{order._id}</Link>
+                        </td>
+                      </tr>
+                    )
                     
-                  </tr>
-                  :''
-                ))}
+                )}
             </tbody>
           </div>
 
-       
-          {userData !== undefined && (
+         
+         
             <div className={style.container_pagination}>
-              <Pagination organizerPerPage={organizerPerPage} state={userData.length} paginado={paginado} />
+              <Pagination ordersPerPage={ordersPerPage} state={userData.length} paginado={paginado} />
             </div>
-          )}
+          
 
           <div className={style.container_exit}>
             <p className={style.exit} onClick={() => navigate('/admin')}>
@@ -92,6 +109,10 @@ const OrganizerList = () => {
       </div>
     );
   }
+
 };
 
-export default OrganizerList;
+export default Orders;
+
+
+

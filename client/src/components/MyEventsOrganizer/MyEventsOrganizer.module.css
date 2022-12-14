@@ -75,6 +75,34 @@
   margin-top: 1rem;
 }
 
+.revision {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 1.6rem;
+  background-color: white;
+  color: #d53e27;
+  border: none;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.revision span {
+  color: var(--color-orange);
+}
+
+.revision .iconEdit {
+  color: var(--color-orange);
+}
+
+.revisionS {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+}
+
+
 @media screen and (max-width: 1420px) {
   .containerCard {
     grid-template-columns: repeat(2, 1fr) !important;

@@ -49,12 +49,10 @@ const EventSchema = new Schema(
           default: false,
         },
         dateFormated: String,
-        buyers: [
-          {
-            type: Schema.Types.ObjectId,
-            ref: 'Users',
-          },
-        ],
+        buyers: {
+          type: Array,
+          default: [],
+        },
         pendingEarnings: {
           type: Number,
           default: 0,

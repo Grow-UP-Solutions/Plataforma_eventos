@@ -121,9 +121,9 @@
     cursor: pointer;
   }
 
-  .pagar{
+  .aRevision{
     display: inline-block;
-    color: var(--color-orange);
+    color: green;
     font-size: 1.6rem;
     font-family: 'Raleway', sans-serif;
     cursor: pointer;
@@ -131,12 +131,14 @@
     border: white;
   }
 
-  .pagado{
+  .activar{
     display: inline-block;
-    color: rgb(18, 114, 44);
+    color: var(--color-orange);
     font-size: 1.6rem;
     font-family: 'Raleway', sans-serif;
-  
+    cursor: pointer;
+    background-color: white;
+    border: white;
 
   }
   

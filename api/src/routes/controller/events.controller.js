@@ -166,4 +166,60 @@ router.put('/reportEvent/sendEmail', async (req, res) => {
   }
 });
 
+router.put('/inRevision/acceptOrReject', async (req, res) => {
+  const { idEvent, idDate } = req.body;
+
+  try {
+    const event = await EventFunctionDb.oneEvent(idEvent);
+
+    if (idDate) {
+      console.log('Entre al if principal');
+      if (event.dates.length === 1) {
+        event.inRevision = !event.inRevision;
+        event.dates[0].inRevision = !event.dates[0].inRevision;
+      } else {
+        let auxDates = [...event.dates];
+
+        auxDates = auxDates.map((date) => {
+          if (idDate === date._id.toString()) {
+            console.log('entre al if de fecha');
+            date.inRevision = !date.inRevision;
+          }
+          return date;
+        });
+
+        let hasFalse = false;
+
+        for (let x = 0; x < auxDates.length; x++) {
+          if (auxDates[x].inRevision === false) hasFalse = true;
+        }
+
+        if (hasFalse) event.inRevision = false;
+        else event.inRevision = true;
+
+        event.dates = [];
+        event.dates.push(...auxDates);
+      }
+    } else {
+      event.inRevision = !event.inRevision;
+
+      let auxDates = [...event.dates];
+
+      auxDates = auxDates.map((date) => {
+        date.inRevision = event.inRevision;
+        return date;
+      });
+
+      event.dates = [];
+      event.dates.push(...auxDates);
+    }
+
+    event.save();
+
+    res.json({ message: 'Cambio realizado.' });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+});
+
 module.exports = router;

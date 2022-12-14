@@ -52,8 +52,10 @@ const UserForm = ({ userData }) => {
     setPropertysImageUser({ ...propertysImageUser, position });
   };
 
+  const [moveAvatar, setMoveAvatar] = useState(false);
+
   const handleProfileImg = async (e) => {
-    console.log({ event: e.target });
+    setMoveAvatar(true);
     setErrorMessagePhoto({
       userpicture: '',
     });
@@ -64,7 +66,6 @@ const UserForm = ({ userData }) => {
     });
 
     const image = e.target.files[0];
-    console.log({ image });
 
     if (image.size > 120000) {
       return setErrorMessagePhoto({
@@ -81,6 +82,7 @@ const UserForm = ({ userData }) => {
   };
 
   const handleOnSaveUserImagePicture = async () => {
+    setMoveAvatar(false);
     setCanWriteInput({
       ...canWriteInput,
       userpicture: true,
@@ -113,6 +115,8 @@ const UserForm = ({ userData }) => {
   };
 
   const handleCancelUserPicture = () => {
+    setMoveAvatar(false);
+
     setCanWriteInput({
       ...canWriteInput,
       userpicture: true,
@@ -431,6 +435,7 @@ const UserForm = ({ userData }) => {
       if (typeof formData[key] === 'boolean') continue;
       if (key === 'nickname') continue;
       if (key === 'imageRent') continue;
+      if (key === 'isDeclarant') continue;
       if (!formData[key]) {
         isProfileCompleted = false;
         break;
@@ -808,7 +813,7 @@ const UserForm = ({ userData }) => {
               border={0}
               borderRadius={propertysImageUser.borderRadius}
               onPositionChange={handlePositionChange}
-              className={styles.avatarEditor}
+              className={`${styles.avatarEditor} ${moveAvatar ? styles.moveMouse : styles.notMouseMove}`}
               ref={editor}
               image={formData.userpicture}
             />
@@ -885,6 +890,7 @@ const UserForm = ({ userData }) => {
       )}
 
       <div className={styles.divisor} />
+
       {/* FORM */}
       <div className={styles.containerForm}>
         <form>
@@ -902,10 +908,14 @@ const UserForm = ({ userData }) => {
                     name='firstName'
                     ref={txtName}
                   />
-                  <button className={styles.btnEditAuxResponsive} onClick={(e) => editFields(e, 'name')}>
-                    <BsPencilSquare className={styles.iconEdit} />
-                    <span>Editar</span>
-                  </button>
+                  {!userData.isOrganizer ? (
+                    <button className={styles.btnEditAuxResponsive} onClick={(e) => editFields(e, 'name')}>
+                      <BsPencilSquare className={styles.iconEdit} />
+                      <span>Editar</span>
+                    </button>
+                  ) : (
+                    <div className={styles.auxEditNameResponsive} />
+                  )}
                 </div>
 
                 <span>Como aparece en la cedula</span>
@@ -921,17 +931,25 @@ const UserForm = ({ userData }) => {
                     id='lastName'
                     name='lastName'
                   />
-                  <button className={styles.btnEditAuxResponsive} onClick={(e) => editFields(e, 'lastName')}>
-                    <BsPencilSquare className={styles.iconEdit} />
-                    <span>Editar</span>
-                  </button>
+                  {!userData.isOrganizer ? (
+                    <button className={styles.btnEditAuxResponsive} onClick={(e) => editFields(e, 'lastName')}>
+                      <BsPencilSquare className={styles.iconEdit} />
+                      <span>Editar</span>
+                    </button>
+                  ) : (
+                    <div className={styles.auxEditNameResponsive} />
+                  )}
                 </div>
                 <span>Como aparece en la cedula</span>
               </div>
-              <button className={styles.btnEditNames} onClick={(e) => editFields(e, 'name')}>
-                <BsPencilSquare className={styles.iconEdit} />
-                <span>Editar</span>
-              </button>
+              {!userData.isOrganizer ? (
+                <button className={styles.btnEditNames} onClick={(e) => editFields(e, 'name')}>
+                  <BsPencilSquare className={styles.iconEdit} />
+                  <span>Editar</span>
+                </button>
+              ) : (
+                <div className={styles.auxEditName} />
+              )}
             </div>
             {errorFields.firstName && <span className={styles.errorMessageField}>{errorFields.firstName}</span>}
           </div>
@@ -1169,7 +1187,7 @@ const UserForm = ({ userData }) => {
                         }}
                         type={isPasswordVisible.newPassword ? 'text' : 'password'}
                         id='newPassword'
-                        placeholder='Entre 12 y 20 caracteres que idealmente incluya combinación de una mayúscula, números y caracteres especiales (* / - _ & @^)'
+                        placeholder='Entre 12 y 20 caracteres con número(s), letra(s), y alguno(s) de estos especiales (* / - _ & @^)'
                         required
                         onChange={handleChangeInputPassword}
                       />
@@ -1249,10 +1267,14 @@ const UserForm = ({ userData }) => {
                   ref={txtDocument}
                 />
               </div>
-              <button onClick={(e) => editFields(e, 'document')}>
-                <BsPencilSquare className={styles.iconEdit} />
-                <span>Editar</span>
-              </button>
+              {!userData.isOrganizer ? (
+                <button onClick={(e) => editFields(e, 'document')}>
+                  <BsPencilSquare className={styles.iconEdit} />
+                  <span>Editar</span>
+                </button>
+              ) : (
+                <div className={styles.auxEditCedula} />
+              )}
             </div>
             {errorFields.document && <span className={styles.errorMessageField}>{errorFields.document}</span>}
           </div>
@@ -1268,19 +1290,25 @@ const UserForm = ({ userData }) => {
               ) : (
                 <>
                   <div className={styles.dragDni}>
-                    <input onChange={handleImageFrontDocument} type='file' className={styles.inputFile} />
+                    <input
+                      disabled={userData.isOrganizer}
+                      onChange={handleImageFrontDocument}
+                      type='file'
+                      className={styles.inputFile}
+                    />
                     <BsCamera className={styles.iconCameraFile} />
                     <span>Arrastra una imagen</span>
                   </div>
                 </>
               )}
               <p>Formatos: Jpg o png. Max. 100kb</p>
-
-              <button className={styles.btnAddPhoto}>
-                <input onChange={handleImageFrontDocument} type='file' className={styles.inputFile} />
-                <BsCardImage className={styles.btnAddPhotoIcon} />
-                <span>Agregar Imagen</span>
-              </button>
+              {!userData.isOrganizer && (
+                <button className={styles.btnAddPhoto}>
+                  <input onChange={handleImageFrontDocument} type='file' className={styles.inputFile} />
+                  <BsCardImage className={styles.btnAddPhotoIcon} />
+                  <span>Agregar Imagen</span>
+                </button>
+              )}
 
               {errorMessagePhoto.frontDocument && (
                 <span className={styles.errorMessage}>{errorMessagePhoto.frontDocument}</span>
@@ -1295,7 +1323,12 @@ const UserForm = ({ userData }) => {
               ) : (
                 <>
                   <div className={styles.dragDni}>
-                    <input onChange={handleImageBackDocument} type='file' className={styles.inputFile} />
+                    <input
+                      disabled={userData.isOrganizer}
+                      onChange={handleImageBackDocument}
+                      type='file'
+                      className={styles.inputFile}
+                    />
                     <BsCamera className={styles.iconCameraFile} />
                     <span>Arrastra una imagen</span>
                   </div>
@@ -1307,11 +1340,13 @@ const UserForm = ({ userData }) => {
                 <span className={styles.errorMessage}>{errorMessagePhoto.backDocument}</span>
               )}
 
-              <button className={styles.btnAddPhoto}>
-                <input onChange={handleImageBackDocument} type='file' className={styles.inputFile} />
-                <BsCardImage className={styles.btnAddPhotoIcon} />
-                <span>Agregar Imagen</span>
-              </button>
+              {!userData.isOrganizer && (
+                <button className={styles.btnAddPhoto}>
+                  <input onChange={handleImageBackDocument} type='file' className={styles.inputFile} />
+                  <BsCardImage className={styles.btnAddPhotoIcon} />
+                  <span>Agregar Imagen</span>
+                </button>
+              )}
             </div>
           </div>
         </form>
@@ -1322,7 +1357,7 @@ const UserForm = ({ userData }) => {
         <div className={styles.containerCheckBoxRent}>
           <div className={styles.checkbox}>
             <input
-              checked={formData.isDeclarant}
+              checked={formData.isDeclarant === '' ? false : formData.isDeclarant}
               onChange={handleInputRadioButtonRent}
               name='rent'
               type='radio'
@@ -1332,7 +1367,7 @@ const UserForm = ({ userData }) => {
           </div>
           <div className={styles.checkbox}>
             <input
-              checked={!formData.isDeclarant}
+              checked={formData.isDeclarant === '' ? false : formData.isDeclarant}
               onChange={handleInputRadioButtonRent}
               name='rent'
               type='radio'
@@ -1340,7 +1375,7 @@ const UserForm = ({ userData }) => {
             />
             <label htmlFor='no'>No</label>
           </div>
-          {formData.isDeclarant && (
+          {formData.isDeclarant === true && (
             <div className={styles.containerDrag}>
               <p className={styles.anexRut}>Anexa el RUT:</p>
               {formData.imageRent && formData.isDeclarant ? (
