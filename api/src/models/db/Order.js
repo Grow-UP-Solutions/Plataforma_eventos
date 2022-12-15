@@ -1,6 +1,6 @@
 const { Schema, model} = require('mongoose');
 
-const orderSchema = new Schema({
+const OrderSchema = new Schema({
   idCompra: String,
   idOrganizer: String,
   idEvent: String,
@@ -26,4 +26,4 @@ const orderSchema = new Schema({
   iva: String,
   organizerEarns: String,
 });
-module.exports = model('Orders', orderSchema);
+module.exports = model('Order', OrderSchema);
