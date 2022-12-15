@@ -248,7 +248,10 @@ const Card = ({ event, listName, orgEvent, datePublic }) => {
                         </option>
                       )
                     ) : (
-                      'N'
+                    
+                     ''
+                      
+
                     )
                   )}
                 </select>
