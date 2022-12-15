@@ -84,14 +84,7 @@ const CheckSolicitudOrganizer = () => {
         </div>
 
         <div className={styles.containerImgUserDesc}>
-          <img
-            className={styles.imgUser}
-            src={
-              userData.image ||
-              'https://estaticos.sport.es/resources/jpg/0/7/leo-messi-ficha-bio-utilizar-1375639723270.jpg'
-            }
-            alt='user-picture'
-          />
+          <img className={styles.imgUser} src={userData.image} alt='user-picture' />
           <p>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur, error illum voluptates dolores autem,
             vero amet eveniet aut culpa aspernatur expedita magni quo fuga nostrum accusantium saepe doloribus commodi
@@ -101,29 +94,9 @@ const CheckSolicitudOrganizer = () => {
       </div>
 
       <div className={styles.containerImageDocuments}>
-        <img
-          src={
-            userData.frontDocument ||
-            'https://estaticos.sport.es/resources/jpg/0/7/leo-messi-ficha-bio-utilizar-1375639723270.jpg'
-          }
-          alt='dni'
-        />
-        <img
-          src={
-            userData.backDocument ||
-            'https://estaticos.sport.es/resources/jpg/0/7/leo-messi-ficha-bio-utilizar-1375639723270.jpg'
-          }
-          alt='dni'
-        />
-        {userData.rut && (
-          <img
-            src={
-              userData.imageRut ||
-              'https://estaticos.sport.es/resources/jpg/0/7/leo-messi-ficha-bio-utilizar-1375639723270.jpg'
-            }
-            alt='dni'
-          />
-        )}
+        <img src={userData.frontDocument} alt='dni' />
+        <img src={userData.backDocument} alt='dni' />
+        {userData.rut && <img src={userData.imageRut} alt='dni' />}
       </div>
 
       {modalResultMessage && (

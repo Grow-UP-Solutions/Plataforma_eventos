@@ -9,7 +9,7 @@ const EventSchema = new Schema(
         ref: 'Categories',
       },
     ],
-    idEvent : String,
+    idEvent: String,
     otherCategorie: [String],
     shortDescription: String,
     longDescription: String,
