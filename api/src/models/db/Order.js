@@ -1,4 +1,6 @@
+
 const { Schema, model} = require('mongoose');
+
 
 const OrderSchema = new Schema({
   idCompra: String,
@@ -26,4 +28,6 @@ const OrderSchema = new Schema({
   iva: String,
   organizerEarns: String,
 });
+
 module.exports = model('Order', OrderSchema);
+
