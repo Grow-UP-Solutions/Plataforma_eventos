@@ -69,7 +69,7 @@ const MercadoPago = () => {
             <li>
               <p>
                 <span>Motivo:</span>
-                Evento "Hiking with my dog"
+                Evento  {successInfo.motivo}
               </p>
             </li>
             <li>
