@@ -435,6 +435,7 @@ const UserForm = ({ userData }) => {
       if (typeof formData[key] === 'boolean') continue;
       if (key === 'nickname') continue;
       if (key === 'imageRent') continue;
+      if (key === 'isDeclarant') continue;
       if (!formData[key]) {
         isProfileCompleted = false;
         break;

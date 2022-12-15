@@ -12,7 +12,7 @@ const CheckSolicitudOrganizer = () => {
   const navigate = useNavigate();
   localStorage.setItem('token-organizer', token);
 
-  /* useEffect(() => {
+  useEffect(() => {
     checkValidateTokenToOrganizer();
   }, []);
 
@@ -23,7 +23,7 @@ const CheckSolicitudOrganizer = () => {
     } catch (error) {
       navigate('/');
     }
-  }; */
+  };
 
   const acceptOrReject = async (option) => {
     try {
