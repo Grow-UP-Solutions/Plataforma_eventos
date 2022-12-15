@@ -38,7 +38,7 @@ const Compras = () => {
   
 
   const [currentPage, setCurretPage] = useState(1);
-  const ordersPerPage = 10;
+  const ordersPerPage = 25;
   const indexOfLastOrder = currentPage * ordersPerPage;
   const indexOfFirsOrder = indexOfLastOrder - ordersPerPage;
   const paginado = (pageNumber) => setCurretPage(pageNumber);
@@ -77,8 +77,9 @@ const Compras = () => {
                 <th>Codigo del Evento</th>
                 <th>Nombre del Evento</th>
                 <th>Fecha del Evento</th>
-                {/* <th>Hora del Evento</th> */}
+                <th>Hora del Evento</th>
                 <th>Cupos Comprados</th>
+                <th>Codigo de Descuento</th>
                 <th>Nº Compra</th>
                 <th>Fecha de Compra</th>
                 <th>Hora de Compra</th>
@@ -114,7 +115,21 @@ const Compras = () => {
                       <td>
                         {sell.eventDate.map(date=>
                           <tr>
+                            <td>{date.start}-{date.end}</td>
+                          </tr>
+                        )}
+                      </td>
+                      <td>
+                        {sell.eventDate.map(date=>
+                          <tr>
                             <td>{date.cantidad}</td>
+                          </tr>
+                        )}
+                      </td>
+                      <td>
+                        {sell.eventDate.map(date=>
+                          <tr>
+                            <td>{date.codigo !== null ? date.codigo : '-'}</td>
                           </tr>
                         )}
                       </td>

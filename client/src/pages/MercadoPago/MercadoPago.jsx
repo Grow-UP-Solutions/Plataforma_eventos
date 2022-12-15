@@ -81,13 +81,13 @@ const MercadoPago = () => {
             <li>
               <p>
                 <span>Valor de transacción:</span>
-                {successInfo.valorDeLaTransaccion}$
+                {new Intl.NumberFormat('de-DE').format(parseInt(successInfo.valorDeLaTransaccion))}$
               </p>
             </li>
             <li>
               <p>
                 <span>Costo de la transacción:</span>
-                {successInfo.costoDeLaTransaccion}$
+                {new Intl.NumberFormat('de-DE').format(parseInt(successInfo.costoDeLaTransaccion))}$
               </p>
             </li>
             <li>
