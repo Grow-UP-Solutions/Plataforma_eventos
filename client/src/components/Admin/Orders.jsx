@@ -80,12 +80,18 @@ const Orders = () => {
           <div className={style.container_headbody}>
             <thead className={style.thead}>
               <tr className={style.tr}>
-                <th className={style.th_first}>Nombre</th>
-                <th className={style.th_first}>Apellido</th>
-                <th>Email</th>
-                <th>Fecha</th>
+                <th className={style.th_first}>Nombre del Comprador</th>
+                <th className={style.th_first}>Apellido del Comprador</th>
+                <th>Email del Comprador</th>
+                <th>Cedula de Ciudadania del Comprador</th>
+                <th>Ciudad de Domicilio del Comprador</th>
+                <th>Direccion del Comprador</th>
+                <th>Telefono del Comprador</th>
+                <th>Fecha de Compra</th>
                 <th>Evento</th>
-                <th>Nº</th>
+                <th>Monto de la compra</th>
+
+                <th>Nº Identificacion de Compra</th>
                
               </tr>
             </thead>
@@ -100,8 +106,14 @@ const Orders = () => {
                         </td>
                         <td>{user.lastName}</td>
                         <td>{user.email}</td>
+                        <td>{user.document}</td>
+                        <td>{user.city}</td>
+                        <td>{user.direction}</td>
+                        <td>{user.tel}</td>
                         <td>{order.fechaDePago.slice(0,10)}</td>
                         <td>{order.motivo}</td>
+                        <td> ${new Intl.NumberFormat('de-DE').format(order.valorDeLaTransaccion)}</td>
+                       
                         <td>
                         <Link to={`/detalle-de-orden/${order._id}/${user._id}`}>{order._id}</Link>
                         </td>

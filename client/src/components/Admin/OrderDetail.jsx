@@ -64,7 +64,7 @@ const OrderDetail = () => {
    }else{
     return (
     <div className={style.containerAdminProfile}>
-        <h1>Detalles de Orden</h1>
+        <h1>Detalles de la Compra</h1>
         {order !== undefined && 
         <div className={style.containerAdmin}>
             <p className={style.h2}>Orden Id: {order._id}</p>
@@ -90,7 +90,7 @@ const OrderDetail = () => {
         }
 
      <Link className={style.exit} to='/ordenes'>
-       <button className={style.exit}>Ir a Todas Las Ordenes</button>
+       <button className={style.exit}>Ir a Todas Las Compras</button>
      </Link>
         
       </div>
