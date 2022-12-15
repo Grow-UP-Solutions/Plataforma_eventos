@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const Order = require('../../models/db/Order');
 const router = Router();
-const Order = require('../../models/DB/Order');
+
 
 router.get('/', async (req, res) => {
   try {
