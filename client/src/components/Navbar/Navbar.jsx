@@ -396,7 +396,7 @@ const Navbar = ({ upper }) => {
                       {userData.isOrganizer === true ? (
                         <Link to='/usuario/mis-eventos'>Mis eventos</Link>
                       ) : (
-                        <Link to='/usuario/mi-lista'>Mis eventos</Link>
+                        ''
                       )}
 
                       <Link to='/usuario/perfil'>
