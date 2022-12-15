@@ -146,6 +146,7 @@ const EventCreateForm = () => {
   }, [userData]);
 
   const [post, setPost] = useState({
+    idEvent:'',
     idOrganizer: '',
     title: '',
     categories: [],
@@ -162,6 +163,7 @@ const EventCreateForm = () => {
     specialRequires: '',
     dates: [
       {
+        idDate: '',
         date: '',
         start: '',
         end: '',
@@ -656,6 +658,7 @@ const EventCreateForm = () => {
       dates: [
         ...post.dates,
         {
+          idDate:'',
           date: '',
           start: '',
           end: '',

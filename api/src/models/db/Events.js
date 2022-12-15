@@ -9,6 +9,7 @@ const EventSchema = new Schema(
         ref: 'Categories',
       },
     ],
+    idEvent : String,
     otherCategorie: [String],
     shortDescription: String,
     longDescription: String,
@@ -32,6 +33,7 @@ const EventSchema = new Schema(
 
     dates: [
       {
+        idDate: String,
         date: String,
         start: String,
         end: String,

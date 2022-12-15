@@ -249,6 +249,9 @@ router.get('/success', async (req, res) => {
         costoDeLaTransaccion: response.net_amount,
         referencia: response.payer.identification.number,
         estatus: response.status,
+        organizador: event.organizer.name,
+        oganizadorId: event.organizer._id,
+        oganizadorRentas: event.organizer.isDeclarant,
         cuposComprados: usuariosComprados,
       };
 
