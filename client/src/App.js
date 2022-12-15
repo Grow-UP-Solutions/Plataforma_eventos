@@ -12,6 +12,7 @@ import OtherCategories from './components/Admin/OtherCategories';
 import InRevision from './components/Admin/InRevision';
 import OrderDetail from './components/Admin/OrderDetail';
 import Orders from './components/Admin/Orders';
+import Compras from './components/Admin/Compras';
 import Notifications from './components/Notifications/Notifications';
 import { AuthContext } from './context/auth';
 import { UIContext } from './context/ui';
@@ -103,6 +104,7 @@ function App() {
         <Route path={'/eventos-revision'} element={<InRevision />} />
         <Route path={'/ordenes'} element={<Orders />} />
         <Route path={'/detalle-de-orden/:orderId/:userId'} element={<OrderDetail />} />
+        <Route path={'/compras'} element={<Compras />} />
 
 
         {/* RUTAS PRIVADAS */}

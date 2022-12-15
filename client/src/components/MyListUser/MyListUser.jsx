@@ -20,7 +20,7 @@ const MyListUser = ({ myFavorites, myEventsBooked }) => {
 
 
   const [currentPage, setCurretPage] = useState(1);
-  const CardPerPage = 6;
+  const CardPerPage = 24;
   const indexOfLastCard = currentPage * CardPerPage;
   const indexOfFirstCard = indexOfLastCard - CardPerPage;
   const currentCard = orderByDate.slice(indexOfFirstCard, indexOfLastCard);
