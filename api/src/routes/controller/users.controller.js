@@ -62,7 +62,9 @@ router.put('/changeProcessingOrganizer/:id', async (req, res) => {
 });
 
 router.get('/checkValidateTokenOrganizer/', validateJWTOrganizer, async (req, res) => {
-  const { name, phone, document, tel, email, description, image, referenciaU, referenciaZ, id } = req;
+  const { name, phone, document, tel, email, description, image, id } = req;
+
+  const user = await UsersFunctionDb.oneUser(id);
 
   try {
     res.status(200).json({
@@ -73,9 +75,11 @@ router.get('/checkValidateTokenOrganizer/', validateJWTOrganizer, async (req, re
       email,
       description,
       image,
-      referenciaU,
-      referenciaZ,
       id,
+      rut: user.isDeclarant,
+      documentFront: user.frontDocument,
+      backDocument: user.backDocument,
+      imageRut: user.imageRent,
     });
   } catch (error) {
     res.status(404).json({
@@ -770,8 +774,6 @@ router.post('/requestToOrganizer/', async (req, res) => {
       user.phone,
       user.description,
       user.image,
-      user.referenciaU,
-      user.referenciaZ,
       user.id
     );
     await sendMailToOrganizer(

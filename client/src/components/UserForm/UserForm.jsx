@@ -773,8 +773,6 @@ const UserForm = ({ userData }) => {
       phone: formData.phone,
       description: formData.descriptionOrganizer,
       image: formData.userpicture,
-      referenciaU: 'U123',
-      referenciaZ: '',
     };
 
     try {

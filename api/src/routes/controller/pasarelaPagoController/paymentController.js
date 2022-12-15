@@ -80,8 +80,8 @@ router.post('/orden', async (req, res) => {
       },
 
       back_urls: {
-        success: `http://localhost:3000/mercadoPago/success`,
-        failure: `http://localhost:3000/mercadoPago/fail`,
+        success: `https://events-jean.vercel.app/mercadoPago/success`,
+        failure: `https://events-jean.vercel.app/mercadoPago/fail`,
       },
       auto_return: 'approved',
       taxes: [

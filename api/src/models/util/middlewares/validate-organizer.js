@@ -11,7 +11,7 @@ const validateJWTOrganizer = (req, res, next) => {
   }
 
   try {
-    const { name, phone, document, tel, email, description, image, referenciaU, referenciaZ, id } = jwt.verify(
+    const { name, phone, document, tel, email, description, image, id } = jwt.verify(
       token,
       process.env.SECRET_JWT_SEED_ORGANIZER
     );
@@ -23,8 +23,6 @@ const validateJWTOrganizer = (req, res, next) => {
     req.email = email;
     req.description = description;
     req.image = image;
-    req.referenciaU = referenciaU;
-    req.referenciaZ = referenciaZ;
     req.id = id;
   } catch (error) {
     return res.status(401).json({

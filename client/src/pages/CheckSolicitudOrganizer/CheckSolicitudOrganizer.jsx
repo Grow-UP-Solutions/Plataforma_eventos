@@ -19,7 +19,6 @@ const CheckSolicitudOrganizer = () => {
   const checkValidateTokenToOrganizer = async () => {
     try {
       const result = await eventsApi.get('/users/checkValidateTokenOrganizer');
-      console.log({ result });
       setUserData(result.data);
     } catch (error) {
       navigate('/');
@@ -48,41 +47,56 @@ const CheckSolicitudOrganizer = () => {
       <h1 className={styles.titlePage}>Solicitud para ser Organizador</h1>
 
       <div className={styles.listData}>
-        <ul className={styles.itemsUser}>
-          <li>
-            <span>Nombre: </span>
-            {userData.name}
-          </li>
-          <li>
-            <span>Correo: </span>
-            {userData.email}
-          </li>
-          <li>
-            <span>Cédula: </span>
-            {userData.document}
-          </li>
-          <li>
-            <span>Télefono: </span>
-            {userData.tel}
-          </li>
-          <li>
-            <span>Celular: </span>
-            {userData.phone}
-          </li>
-          <li>
-            <span>Ux </span>
-            {userData.idUser}
-          </li>
-          <li>
-            <span>Zx: </span>
-            {userData.idOrganizer}
-          </li>
-        </ul>
+        <div>
+          <ul className={styles.itemsUser}>
+            <li>
+              <span>Nombre: </span>
+              {userData.name}
+            </li>
+            <li>
+              <span>Correo: </span>
+              {userData.email}
+            </li>
+            <li>
+              <span>Cédula: </span>
+              {userData.document}
+            </li>
+            <li>
+              <span>Télefono: </span>
+              {userData.tel}
+            </li>
+            <li>
+              <span>Celular: </span>
+              {userData.phone}
+            </li>
+            <li>
+              <span>Ux: </span>
+              {userData.idUser}
+            </li>
+            <li>
+              <span>Zx: </span>
+              {userData.idOrganizer}
+            </li>
+            <li>
+              <span>RUT: {userData.rut ? 'Si' : 'No'}</span>
+            </li>
+          </ul>
+        </div>
 
         <div className={styles.containerImgUserDesc}>
           <img className={styles.imgUser} src={userData.image} alt='user-picture' />
-          <p>{userData.description}</p>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur, error illum voluptates dolores autem,
+            vero amet eveniet aut culpa aspernatur expedita magni quo fuga nostrum accusantium saepe doloribus commodi
+            quisquam.
+          </p>
         </div>
+      </div>
+
+      <div className={styles.containerImageDocuments}>
+        <img src={userData.frontDocument} alt='dni' />
+        <img src={userData.backDocument} alt='dni' />
+        {userData.rut && <img src={userData.imageRut} alt='dni' />}
       </div>
 
       {modalResultMessage && (
