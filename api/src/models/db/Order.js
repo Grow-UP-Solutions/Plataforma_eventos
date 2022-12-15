@@ -1,4 +1,4 @@
-const { Schema, model, STATES } = require('mongoose');
+const { Schema, model } = require('mongoose');
 
 const orderSchema = new Schema({
   idCompra: String,
@@ -26,4 +26,5 @@ const orderSchema = new Schema({
   iva: String,
   organizerEarns: String,
 });
-module.exports = model('Orders', orderSchema);
+
+module.exports = model('Order', orderSchema);
