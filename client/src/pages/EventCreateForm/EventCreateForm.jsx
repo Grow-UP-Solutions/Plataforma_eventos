@@ -146,7 +146,7 @@ const EventCreateForm = () => {
   }, [userData]);
 
   const [post, setPost] = useState({
-    idEvent:'',
+    idEvent: '',
     idOrganizer: '',
     title: '',
     categories: [],
@@ -658,7 +658,7 @@ const EventCreateForm = () => {
       dates: [
         ...post.dates,
         {
-          idDate:'',
+          idDate: '',
           date: '',
           start: '',
           end: '',
@@ -1258,7 +1258,6 @@ const EventCreateForm = () => {
                           <textarea
                             className={styles.textareaLong}
                             type='text'
-                            maxlength='100'
                             placeholder='Descripción detallada del evento.'
                             name='longDescription'
                             value={post.longDescription}
@@ -1269,7 +1268,6 @@ const EventCreateForm = () => {
                           <textarea
                             className={styles.textareaLong}
                             type='text'
-                            maxlength='100'
                             placeholder='Descripción detallada del evento.'
                             name='longDescription'
                             value={post.longDescription}

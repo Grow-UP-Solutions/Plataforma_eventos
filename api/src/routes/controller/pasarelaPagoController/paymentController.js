@@ -4,6 +4,7 @@ const { Router } = require('express');
 const router = Router();
 const mercadopago = require('mercadopago');
 const CodeDiscount = require('../../../models/DB/CodeDiscount');
+const Order = require('../../../models/DB/Order');
 const SuccessPayment = require('../../../models/DB/SuccessPayment');
 const calculoDeComicion = require('../../../models/util/calculoDeComiciones/calculoDeComicion');
 const { getCodeDiscountByCode } = require('../../../models/util/functionDB/CodeDiscountDb');
@@ -16,14 +17,11 @@ mercadopago.configure({
 });
 
 let auxBody = [];
-
+let idCompra = 0;
 router.post('/orden', async (req, res) => {
   const { dates, idUser, idEvent, ganancia } = req.body;
 
   auxBody.push({ dates, idUser, idEvent, ganancia });
-
-  console.log({ auxBody });
-  console.log({ auxBodyDates: auxBody[0].dates });
 
   const codigosPrueba = dates.map((e) => e.codigo);
 
@@ -82,8 +80,8 @@ router.post('/orden', async (req, res) => {
       },
 
       back_urls: {
-        success: `https://events-jean.vercel.app/mercadoPago/success`,
-        failure: `https://events-jean.vercel.app/mercadoPago/fail`,
+        success: `http://localhost:3000/mercadoPago/success`,
+        failure: `http://localhost:3000/mercadoPago/fail`,
       },
       auto_return: 'approved',
       taxes: [
@@ -213,8 +211,6 @@ router.get('/success', async (req, res) => {
         }
       });
 
-      auxBody = [];
-
       user.myEventsBooked.push(event._id);
 
       if (user.isReferral.code && !user.isReferral.use) {
@@ -264,12 +260,43 @@ router.get('/success', async (req, res) => {
       };
 
       organizerEvent.factura.push(factura);
-
       user.ordenes.push(resultTransaccion);
+
+      // obtener la hora en la configuración regional de EE. UU.
+      const today = new Date();
+      const timeNow = today.toLocaleTimeString('en-US');
+
+      idCompra++;
+
+      const newOrder = new Order({
+        idCompra: 'C' + idCompra,
+        idEvent: event.idEvent,
+        idOrganizer: organizerEvent.idOrganizer,
+        organizerName: organizerEvent.firstName,
+        organizerLastName: organizerEvent.lastName,
+        organizerisDeclarant: organizerEvent.isDeclarant,
+        idBuyer: user.idUser,
+        buyerDni: user.document,
+        buyerCity: user.city,
+        buyerAddress: user.direction,
+        buyerPhone: user.phone,
+        buyerName: user.firstName,
+        buyerLastName: user.lastName,
+        eventName: event.title,
+        eventDate: usuariosComprados,
+        dateBuy: fechaActual,
+        timeBuy: timeNow,
+        adminEarns: response.net_amount,
+        comision: response.net_amount * 0.16,
+        iva: response.net_amount * 0.19,
+        organizerEarns: auxBody[0].ganancia,
+      });
+
+      await newOrder.save();
       await organizerEvent.save();
       await user.save();
-
       usuariosComprados = [];
+      auxBody = [];
 
       return res.json(resultTransaccion);
     }

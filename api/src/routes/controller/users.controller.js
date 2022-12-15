@@ -155,12 +155,16 @@ router.get('/getBankAccount/:id', async (req, res) => {
 
 /**/ //////////////Rutas POST/////////////// */
 
+let contadorIdOrganizer = 0;
+
 router.post('/acceptOrRejectedOrganizer', async (req, res) => {
   const { option, id } = req.body;
   let message = '';
   try {
     const user = await getUser(id);
     if (option === 'accept') {
+      contadorIdOrganizer++;
+      user.idOrganizer = 'Z' + contadorIdOrganizer;
       user.isOrganizer = true;
       user.isProccessingToOrganizer = false;
       user.isRejected = false;
@@ -175,6 +179,7 @@ router.post('/acceptOrRejectedOrganizer', async (req, res) => {
     } else {
       return res.status(400).json({ message: 'error' });
     }
+
     await user.save();
 
     res.status(200).json({
@@ -270,7 +275,7 @@ router.delete('/notifications', async (req, res) => {
     res.status(500).json(error.Menssage);
   }
 });
-
+let contadorIdUser = 0;
 router.post(
   '/create',
   [
@@ -281,7 +286,12 @@ router.post(
   async (req, res) => {
     try {
       const user = req.body;
+
       const { codeReferral } = req.query;
+
+      contadorIdUser++;
+      user.idUser = 'U' + contadorIdUser;
+
       const userCreate = await createUsers(user, codeReferral);
 
       const time = '2h';
