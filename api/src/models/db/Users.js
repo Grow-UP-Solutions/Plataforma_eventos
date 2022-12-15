@@ -3,6 +3,11 @@ const Message = require('./Message');
 
 const UserSchema = new Schema(
   {
+    idUser: String,
+    idOrganizer: {
+      type: String,
+      default: '',
+    },
     firstName: String,
     lastName: String,
     name: String,

@@ -1,41 +1,29 @@
-const { Schema, model } = require('mongoose')
+const { Schema, model, STATES } = require('mongoose');
 
 const orderSchema = new Schema({
-  status: {
-    type: String,
+  idCompra: String,
+  idOrganizer: String,
+  idEvent: String,
+  organizerName: String,
+  organizerLastName: String,
+  organizerisDeclarant: Boolean,
+  idBuyer: String,
+  buyerDni: String,
+  buyerCity: String,
+  buyerAddress: String,
+  buyerPhone: String,
+  buyerName: String,
+  buyerLastName: String,
+  eventName: String,
+  eventDate: {
+    type: Array,
+    default: [],
   },
-  usuario: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Users',
-    },
-  ],
-  fecha: {
-    type: Date,
-  },
-  produt: [
-    {
-      type: String,
-    },
-  ],
-  total: {
-    type: Number,
-  },
-
-  payment_id: {
-    type: String,
-  },
-  status_order: {
-    type: String,
-    default: '',
-  },
-  events: {
-    type: [],
-  },
-  isHidden: {
-    type: Boolean,
-    default: false,
-  },
- 
-})
-module.exports = model('Orders', orderSchema)
+  dateBuy: String,
+  timeBuy: String,
+  adminEarns: String,
+  comision: String,
+  iva: String,
+  organizerEarns: String,
+});
+module.exports = model('Orders', orderSchema);

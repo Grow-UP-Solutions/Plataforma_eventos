@@ -12,7 +12,7 @@ const {
 
 const router = Router();
 
-const contadorEvent = 0
+let contadorEvent = 0;
 
 router.get('/', async (req, res) => {
   try {
@@ -48,15 +48,12 @@ router.get('/:id/buyer', async (req, res) => {
 router.post('/create', async (req, res) => {
   try {
     const event = req.body;
+    contadorEvent++;
+    event.idEvent = 'E' + contadorEvent;
 
-    contadorEvent ++
-
-    event.idDate = 'E'+ contadorEvent
-
-    for(i=0; i<event.dates.length; i++){
-      event.dates[i].idDate = event.idDate + '-' + (i+1)
+    for (i = 0; i < event.dates.length; i++) {
+      event.dates[i].idDate = event.idEvent + '-' + (i + 1);
     }
-
 
     const eventCreat = await createEvents(event);
     return res.status(200).json(eventCreat);

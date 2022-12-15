@@ -9,7 +9,7 @@ import axios from 'axios';
 import 'bootstrap';
 import dotenv from 'dotenv';
 import React, { useContext, useEffect, useState } from 'react';
-import { BsPencilSquare } from 'react-icons/bs';
+import { BsPencilSquare, BsTrash } from 'react-icons/bs';
 import { IoLocationOutline } from 'react-icons/io5';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -30,6 +30,8 @@ import { stateContext } from '../../context/state/stateContext';
 import { getColombia, postEvent, postEventSave } from '../../redux/actions';
 import { formatDateForm } from '../../utils/formatDateForm';
 import styles from './EventCreateForm.module.css';
+
+import { ImImage } from 'react-icons/im';
 
 const EventCreateForm = () => {
   const dispatch = useDispatch();
@@ -144,7 +146,7 @@ const EventCreateForm = () => {
   }, [userData]);
 
   const [post, setPost] = useState({
-    idEvent:'',
+    idEvent: '',
     idOrganizer: '',
     title: '',
     categories: [],
@@ -514,13 +516,12 @@ const EventCreateForm = () => {
 
   // const [imageSelected, setImageSelected] = useState('');
 
-  const [image, setImage] = useState({ files: '' });
-
   async function uploadImage(e) {
     e.preventDefault();
-    for (let i = 0; i < image.length; i++) {
+
+    for (let i = 0; i < e.target.files.length; i++) {
       const formData = new FormData();
-      formData.append('file', image[i]);
+      formData.append('file', e.target.files[i]);
       formData.append('upload_preset', 'wp0l2oeg');
       await axios.post('https://api.cloudinary.com/v1_1/dhmnttdy2/image/upload', formData).then((response) => {
         console.log('r:', response);
@@ -528,7 +529,6 @@ const EventCreateForm = () => {
           ...post,
           pictures: [...post.pictures, { cover: false, picture: response.data.secure_url }],
         });
-        setImage({ files: '' });
       });
     }
   }
@@ -658,7 +658,7 @@ const EventCreateForm = () => {
       dates: [
         ...post.dates,
         {
-          idDate:'',
+          idDate: '',
           date: '',
           start: '',
           end: '',
@@ -1258,7 +1258,6 @@ const EventCreateForm = () => {
                           <textarea
                             className={styles.textareaLong}
                             type='text'
-                            maxlength='100'
                             placeholder='Descripción detallada del evento.'
                             name='longDescription'
                             value={post.longDescription}
@@ -1269,7 +1268,6 @@ const EventCreateForm = () => {
                           <textarea
                             className={styles.textareaLong}
                             type='text'
-                            maxlength='100'
                             placeholder='Descripción detallada del evento.'
                             name='longDescription'
                             value={post.longDescription}
@@ -1284,7 +1282,7 @@ const EventCreateForm = () => {
                         )}
                         {longDescriptionArray.length > 0 ? (
                           <p className={styles.subTitle}>
-                            Usetd va escribiendo: {longDescriptionArray.length} palabras
+                            Usted va escribiendo: {longDescriptionArray.length} palabras
                           </p>
                         ) : (
                           ''
@@ -1331,35 +1329,59 @@ const EventCreateForm = () => {
                       <p className={styles.subTitle4}>Fotos del Evento</p>
 
                       {failedSubmit && errors.pictures ? (
-                        <div>
-                          <p>Fotos: Jpg, png, Max. 100kb</p>
-                          <p>Videos: .MP4 Max 100kb</p>
-                          <p>Haz click en examinar para elegir los archivos y luedo en añadir</p>
-                          <input
-                            type='file'
-                            multiple={true}
-                            onChange={(e) => {
-                              setImage(e.target.files);
-                            }}
-                          />
-                          {errors.pictures ? <p className={styles.errors}>{errors.pictures}</p> : null}
-                        </div>
+                        <div>{errors.pictures ? <p className={styles.errors}>{errors.pictures}</p> : null}</div>
                       ) : (
-                        <div>
-                          <p>Fotos: Jpg, png, Max. 100kb</p>
-                          <p>Videos: .MP4 Max 100kb</p>
-                          <p>"Haz click en examinar para elegir los archivos y luedo en añadir"</p>
-                          <input
-                            type='file'
-                            multiple={true}
-                            onChange={(e) => {
-                              setImage(e.target.files);
-                            }}
-                          />
-                        </div>
+                        ''
                       )}
 
-                      {image ? (
+                      <Swiper
+                        slidesPerView={1}
+                        navigation
+                        spaceBetween={0}
+                        modules={[Navigation]}
+                        className={'swiperAddImageEventCreateForm'}
+                      >
+                        {post.pictures.length > 0 &&
+                          post.pictures.map((picture) => (
+                            <SwiperSlide>
+                              <div className={styles.containerGeneralImage}>
+                                <div className={styles.containerImage}>
+                                  <img className={styles.mySwiperImg} src={picture.picture} alt='' />
+                                </div>
+                                <div className={styles.containerBtnsImage}>
+                                  <div className={styles.containerCheckPortada}>
+                                    <label className={styles.subInput}> Quiero que esta sea la portada</label>
+                                    <input
+                                      className={styles.checkBox4}
+                                      type='checkbox'
+                                      name='cover'
+                                      value={picture.picture}
+                                      onChange={(e) => handleCover(e)}
+                                      defaultChecked={false}
+                                    />
+                                  </div>
+                                  <BsTrash className={styles.mySwiperBtnDel} onClick={(e) => fileRemove(e, picture)} />
+                                </div>
+                              </div>
+                            </SwiperSlide>
+                          ))}
+
+                        <SwiperSlide>
+                          <div className={styles.containerGeneralImage}>
+                            <div className={`${styles.containerImage} ${styles.containerInputDragImage}`}>
+                              <input onChange={(e) => uploadImage(e)} type='file' className={styles.inputAddImage} />
+                              <ImImage className={styles.iconAddImage} />
+                              <span>Fotos: .Jpg, png. Max 100kb</span>
+                              <p className={styles.textDrag}>
+                                Arrastra los archivos aquí o haz click en{' '}
+                                <span className={styles.textOrangeSub}>Agregar archivos</span>
+                              </p>
+                            </div>
+                          </div>
+                        </SwiperSlide>
+                      </Swiper>
+
+                      {/* {image ? (
                         <button
                           onClick={(e) => {
                             uploadImage(e);
@@ -1368,9 +1390,9 @@ const EventCreateForm = () => {
                         >
                           <span>Agregar Imagen</span>
                         </button>
-                      ) : null}
+                      ) : null} */}
 
-                      {post.pictures.length > 0 ? (
+                      {/*   {post.pictures.length > 0 ? (
                         <div className={styles.dropFilePreview}>
                           <Swiper
                             slidesPerView={1}
@@ -1403,7 +1425,7 @@ const EventCreateForm = () => {
                           </Swiper>
                           {errors.pictures ? <p className={styles.errors}>{errors.pictures}</p> : null}
                         </div>
-                      ) : null}
+                      ) : null} */}
                     </div>
                   </div>
                 </SwiperSlide>
