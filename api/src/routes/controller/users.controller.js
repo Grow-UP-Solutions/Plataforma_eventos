@@ -80,6 +80,8 @@ router.get('/checkValidateTokenOrganizer/', validateJWTOrganizer, async (req, re
       documentFront: user.frontDocument,
       backDocument: user.backDocument,
       imageRut: user.imageRent,
+      idUser: user.idUser,
+      idOrganizer: user.idOrganizer,
     });
   } catch (error) {
     res.status(404).json({
@@ -178,6 +180,7 @@ router.post('/acceptOrRejectedOrganizer', async (req, res) => {
       user.isRejected = true;
       user.isOrganizer = false;
       user.isProccessingToOrganizer = false;
+      user.idOrganizer = '';
       await sendMailUserRejected(user.name, user.email);
       message = 'Rechazado';
     } else {
@@ -188,7 +191,22 @@ router.post('/acceptOrRejectedOrganizer', async (req, res) => {
 
     res.status(200).json({
       message,
-      success: true,
+      user: {
+        name: user.name,
+        phone: user.phone,
+        document: user.document,
+        tel: user.tel,
+        email: user.email,
+        description: user.descriptionOrganizer,
+        image: user.userpicture,
+        id: user._id,
+        rut: user.isDeclarant,
+        documentFront: user.frontDocument,
+        backDocument: user.backDocument,
+        imageRut: user.imageRent,
+        idUser: user.idUser,
+        idOrganizer: user.idOrganizer,
+      },
     });
   } catch (error) {
     res.status(404).json({
