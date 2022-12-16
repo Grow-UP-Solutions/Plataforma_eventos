@@ -34,8 +34,10 @@ register("es_ES", localeFunc);
 const CardComments = ({ o, organizer }) => {
   const [isOpenModal, openModal, closeModal] = useModal(false);
 
-  console.log('o', o)
-  console.log('organizer', organizer)
+  console.log('o',o)
+  console.log('organizer',organizer)
+
+
 
   const handleClickOpenModal = (e) => {
     e.preventDefault();
