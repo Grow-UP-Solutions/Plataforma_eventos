@@ -76,12 +76,24 @@ const OrganizerDetails = () => {
   const obtenerDatos = async () => {
     const data = await eventsApi.get('/users/' + id);
     const json = data.data;
-    
 
-    const eventsUserLog = data.data.myEventsCreated.filter(event => event.generalBuyers.filter(
-      buyer=>buyer === user.uid))
-   
+
+    const eventsUserLog=[]
+
+    for(let i = 0; i < data.data.myEventsCreated.length ; i++){
+      console.log('1')
+      for(let j = 0; j < data.data.myEventsCreated[i].generalBuyers.length ; j++){
+        console.log('2')
+        if( data.data.myEventsCreated[i].generalBuyers[j].buyer=== user.uid){
+          console.log('3')
+          eventsUserLog.push(data.data.myEventsCreated[i])
+        }
+      }
+    }
+
+    console.log('data.data',data.data)
     
+    console.log('eventsFromOrg',eventsFromOrg)
     
     setNextEvent(json);
     getEffectRatingOrganizer(json.rating);

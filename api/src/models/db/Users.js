@@ -154,7 +154,18 @@ const UserSchema = new Schema(
 
     opinionsOrg: [
       {
+        idUser:{
+          type: String,
+        },
+
         title: {
+          type: String,
+        },
+        dateEvent: {
+          type: String,
+        },
+        
+        eventTitle: {
           type: String,
         },
 
@@ -167,7 +178,6 @@ const UserSchema = new Schema(
         },
         picture: {
           type: String,
-          default: null,
         },
         opinion: String,
       },
