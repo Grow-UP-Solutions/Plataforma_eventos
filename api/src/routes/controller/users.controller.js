@@ -298,42 +298,34 @@ router.delete('/notifications', async (req, res) => {
   }
 });
 let contadorIdUser = 0;
-router.post(
-  '/create',
-  [
-    check('email', 'El email es obligatorio').isEmail(),
-    check('password', 'El password es obligatorio').isStrongPassword(),
-    validateFields,
-  ],
-  async (req, res) => {
-    try {
-      const user = req.body;
+router.post('/create', [check('email', 'El email es obligatorio').isEmail(), validateFields], async (req, res) => {
+  try {
+    const user = req.body;
 
-      const { codeReferral } = req.query;
+    const { codeReferral } = req.query;
 
-      contadorIdUser++;
-      user.idUser = 'U' + contadorIdUser;
+    contadorIdUser++;
+    user.idUser = 'U' + contadorIdUser;
 
-      const userCreate = await createUsers(user, codeReferral);
+    const userCreate = await createUsers(user, codeReferral);
 
-      const time = '2h';
-      const token = await generateJWT(userCreate._id, userCreate.name, time);
+    const time = '2h';
+    const token = await generateJWT(userCreate._id, userCreate.name, time);
 
-      return res.json({
-        uid: userCreate._id,
-        name: userCreate.name,
-        nickname: userCreate.nickname,
-        email: userCreate.email,
-        organizer: userCreate.isOrganizer,
-        picture: user.userpicture,
-        isProfileCompleted: user.isProfileCompleted,
-        token,
-      });
-    } catch (error) {
-      return res.status(500).json({ message: error.message });
-    }
+    return res.json({
+      uid: userCreate._id,
+      name: userCreate.name,
+      nickname: userCreate.nickname,
+      email: userCreate.email,
+      organizer: userCreate.isOrganizer,
+      picture: user.userpicture,
+      isProfileCompleted: user.isProfileCompleted,
+      token,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
   }
-);
+});
 
 router.post('/verifyEmailNotUsing', async (req, res) => {
   const { email } = req.body;
@@ -373,40 +365,32 @@ router.post('/message/:id', async (req, res) => {
 
 /* AUTH */
 
-router.post(
-  '/login',
-  [
-    check('email', 'El email es obligatorio').isEmail(),
-    check('password', 'El password es obligatorio').isStrongPassword(),
-    validateFields,
-  ],
-  async (req, res) => {
-    const { email, password, rememberMe } = req.body;
+router.post('/login', [check('email', 'El email es obligatorio').isEmail(), validateFields], async (req, res) => {
+  const { email, password, rememberMe } = req.body;
 
-    let time = '2h';
+  let time = '2h';
 
-    if (rememberMe) time = '365d';
+  if (rememberMe) time = '365d';
 
-    try {
-      const user = await login(email, password);
+  try {
+    const user = await login(email, password);
 
-      const token = await generateJWT(user._id, user.name, time);
+    const token = await generateJWT(user._id, user.name, time);
 
-      res.status(200).json({
-        uid: user._id,
-        name: user.name,
-        nickname: user.nickname,
-        email: user.email,
-        organizer: user.isOrganizer,
-        picture: user.userpicture,
-        isProfileCompleted: user.isProfileCompleted,
-        token,
-      });
-    } catch (error) {
-      return res.status(500).json({ message: error.message });
-    }
+    res.status(200).json({
+      uid: user._id,
+      name: user.name,
+      nickname: user.nickname,
+      email: user.email,
+      organizer: user.isOrganizer,
+      picture: user.userpicture,
+      isProfileCompleted: user.isProfileCompleted,
+      token,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
   }
-);
+});
 
 router.get('/login/renew', validateJWT, async (req, res) => {
   const uid = req.uid;

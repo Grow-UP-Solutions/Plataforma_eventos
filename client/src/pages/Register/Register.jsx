@@ -211,10 +211,10 @@ const Register = () => {
     <div className={`${styles.pageRegister} container`}>
       <h1 className={styles.title}>Registrate</h1>
       <div className={styles.loginProviders}>
-        <button onClick={() => registerWithProvider('facebook')} className={styles.providerFacebook}>
+        {/*  <button onClick={() => registerWithProvider('facebook')} className={styles.providerFacebook}>
           <IconFacebook />
           <span>Ingresa con Facebook</span>
-        </button>
+        </button> */}
         <button onClick={() => registerWithProvider('google')} className={styles.providerGoogle}>
           <IconGoogle />
           <span>Ingresa con Google</span>
