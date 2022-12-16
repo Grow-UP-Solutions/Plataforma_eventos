@@ -92,12 +92,11 @@ const EventSchema = new Schema(
         },
       },
     ],
-    generalBuyers: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Users',
-      },
-    ],
+    generalBuyers: {
+      type: Array,
+      default: [],
+    },
+    
     overallEarnings: {
       type: Number,
       default: 0,

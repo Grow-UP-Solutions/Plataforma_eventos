@@ -7,7 +7,7 @@ import swal from "sweetalert";
 import CardComments from "../CardComments/CardComments";
 import { UIContext } from "../../context/ui";
 
-const Opinions = ({ userDetail }) => {
+const Opinions = ({ userDetail , eventsFromOrg}) => {
   const id = userDetail._id;
   const [opinion, setOpinion] = useState([]);
   const [number, setNumber] = useState(0);
@@ -64,6 +64,7 @@ const Opinions = ({ userDetail }) => {
     };
     try {
       const res = await eventsApi.post("/users/commentOrganizer/" + id, data);
+      console.log('res.data',res.data)
       setOpinion([...opinion, res.data]);
       setNewOpinion("");
       setValue(0);
@@ -93,6 +94,9 @@ const Opinions = ({ userDetail }) => {
           </p>
         </div>
 
+
+        {/* VER OPINIONES */}
+
         {opinion ? (
           <>
             <div>
@@ -109,34 +113,42 @@ const Opinions = ({ userDetail }) => {
           <p>No hay comentarios</p>
         )}
 
-        <textarea
-          className={styles.textarea}
-          type="text"
-          placeholder="Escribe un Comentario"
-          value={newOpinion}
-          onChange={(e) => setNewOpinion(e.target.value)}
-        />
+        {/* ESCRIBIR OPINION */}
+        {eventsFromOrg !== undefined &&
+          eventsFromOrg.length>0 ?
+            <div>
+              <textarea
+                className={styles.textarea}
+                type="text"
+                placeholder="Escribe un Comentario"
+                value={newOpinion}
+                onChange={(e) => setNewOpinion(e.target.value)}
+              />
 
-        <div className={styles.contRate}>
-          <p className={styles.pRate}>Rate:</p>
+              <div className={styles.contRate}>
+                <p className={styles.pRate}>Rate:</p>
 
-          <Rating
-            className={styles.rating}
-            name="half-rating"
-            value={value}
-            precision={0.5}
-            onChange={(e) => setValue(e.target.value)}
-          />
-        </div>
+                <Rating
+                  className={styles.rating}
+                  name="half-rating"
+                  value={value}
+                  precision={0.5}
+                  onChange={(e) => setValue(e.target.value)}
+                />
+              </div>
 
-        <div className={styles.contBtn}>
-          <button
-            className={styles.button}
-            onClick={user.uid ? handlePostComments : handleAlert}
-          >
-            Enviar
-          </button>
-        </div>
+              <div className={styles.contBtn}>
+                <button
+                  className={styles.button}
+                  onClick={user.uid ? handlePostComments : handleAlert}
+                >
+                  Enviar
+                </button>
+              </div>
+            </div>
+           :''
+        }
+        
       </div>
     </div>
   );

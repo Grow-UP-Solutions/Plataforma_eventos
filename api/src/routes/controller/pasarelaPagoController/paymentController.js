@@ -144,8 +144,8 @@ router.get('/success', async (req, res) => {
     let ganancia = 0;
 
     if (response.status === 'approved' && response.status_detail === 'accredited') {
-      event.generalBuyers.push(user._id);
 
+      
       console.log({ auxBody });
 
       organizerEvent.pendingEarnings += auxBody[0].ganancia;
@@ -156,10 +156,30 @@ router.get('/success', async (req, res) => {
 
       let usuariosComprados = [];
 
+      const buyer = {
+        buyer : user._id,
+        eventId: event._id,
+        eventTitle: event.title,
+        dates: []
+      }
+
+      
+
       event.dates.forEach(async (e, i) => {
         for (let j = 0; j < auxBody[0].dates.length; ++j) {
          
           if (e._id == auxBody[0].dates[j].id) {
+
+           const date=  {
+              dateId: auxBody[0].dates[j].id,
+              date: e.dateFormated,
+              quantity:auxBody[0].dates[j].quantity
+              }
+
+            buyer.dates.push(date)
+
+            
+      
 
             const auxUsuariosComprados = {
               idDate: auxBody[0].dates[j].id,
@@ -216,6 +236,9 @@ router.get('/success', async (req, res) => {
           }
         }
       });
+
+
+      event.generalBuyers.push(buyer);
 
       user.myEventsBooked.push(event._id);
 
