@@ -50,6 +50,7 @@ const OrganizerDetails = () => {
   const [userDetail, setUserDetail] = useState({
     organizer: {},
   });
+  const [eventsFromOrg , setEventsFromOrg] = useState([])
 
   useEffect(() => {
     scroll.scrollToTop();
@@ -57,7 +58,12 @@ const OrganizerDetails = () => {
 
   useEffect(() => {
     obtenerDatos();
+    obtenerDatosLog();
   }, []);
+
+  useEffect(() => {
+    obtenerDatosLog();
+  }, [user]);
 
   useEffect(() => {
     setConversation({
@@ -65,6 +71,8 @@ const OrganizerDetails = () => {
       receiverId: id,
     });
   }, []);
+
+  
 
   const obtenerDatos = async () => {
     const data = await eventsApi.get('/users/' + id);
@@ -78,6 +86,18 @@ const OrganizerDetails = () => {
     setStyle('aboutOrganizer');
     setLoad(false);
   };
+
+  //Filtrar y ver si hay eventos comprados a este org//
+
+  const obtenerDatosLog = async () => {
+
+    const dataLog = await eventsApi.get('/users/' + user.uid);
+    const eventsBookedOrg = dataLog.data.myEventsBooked.filter(event => event.organizer === id)
+    setEventsFromOrg(eventsBookedOrg)
+
+  }
+
+  console.log('eventsFromOrg',eventsFromOrg)
 
   const handleClickMessages = (e) => {
     e.preventDefault();
@@ -120,7 +140,7 @@ const OrganizerDetails = () => {
       setStyle('nextEvents');
     }
     if (name === 'Opinions') {
-      setComponent(<Opinions userDetail={userDetail.organizer} />);
+      setComponent(<Opinions userDetail={userDetail.organizer}  eventsFromOrg={eventsFromOrg} />);
       setStyle('opinions');
     } else {
       console.log('growup');
@@ -154,12 +174,19 @@ const OrganizerDetails = () => {
 
             <p className={styles.member}>Miembro desde {format(userDetail.organizer.createdAt, 'es_ES')}</p>
 
-            <div className={styles.containerMess}>
-              <LocalPostOfficeIcon sx={{ fontSize: '1.6rem', color: '#d53e27' }} />
-              <button className={styles.message} onClick={logged === true ? handleClickMessages : handleAlert}>
-                Enviar Mensaje
-              </button>
-            </div>
+
+            {eventsFromOrg !== undefined &&
+
+              eventsFromOrg.length>0 ?
+              <div className={styles.containerMess}>
+                <LocalPostOfficeIcon sx={{ fontSize: '1.6rem', color: '#d53e27' }} />
+                <button className={styles.message} onClick={logged === true ? handleClickMessages : handleAlert}>
+                  Enviar Mensaje
+                </button>
+              </div>
+              :''
+            }
+         
 
             <div className={styles.containerButtons}>
               <button
