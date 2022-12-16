@@ -69,9 +69,9 @@ const UserForm = ({ userData }) => {
 
     const image = e.target.files[0];
 
-    if (image.size > 120000) {
+    if (image.size > 500000) {
       return setErrorMessagePhoto({
-        userpicture: 'Por favor ingrese una imagén con tamaño menor a 100kb',
+        userpicture: 'Por favor ingrese una imagén con tamaño menor a 500kb',
       });
     }
 
@@ -594,7 +594,7 @@ const UserForm = ({ userData }) => {
     });
 
     const image = e.target.files[0];
-    if (image.size > 120000) {
+    if (image.size > 100000) {
       return setErrorMessagePhoto({
         ...errorMessagePhoto,
         backDocument: 'Por favor ingrese una imagén con tamaño menor a 100kb',
@@ -631,7 +631,7 @@ const UserForm = ({ userData }) => {
 
     const image = e.target.files[0];
 
-    if (image.size > 120000) {
+    if (image.size > 100000) {
       return setErrorMessagePhoto({
         ...errorMessagePhoto,
         frontDocument: 'Por favor ingrese una imagén con tamaño menor a 100kb',
@@ -669,7 +669,7 @@ const UserForm = ({ userData }) => {
 
     const image = e.target.files[0];
 
-    if (image.size > 120000) {
+    if (image.size > 10000) {
       return setErrorMessagePhoto({
         ...errorMessagePhoto,
         imageRent: 'Por favor ingrese una imagén con tamaño menor a 100kb',
@@ -882,7 +882,7 @@ const UserForm = ({ userData }) => {
                   <BsInfoCircle className={styles.iconOrganizerInfo} />
                 </div>
 
-                <button onClick={() => navigate('/oganiza-un-evento')} className={styles.btnCreateEvent}>
+                <button onClick={() => navigate('/organiza-un-evento')} className={styles.btnCreateEvent}>
                   Organiza un evento
                 </button>
               </div>
