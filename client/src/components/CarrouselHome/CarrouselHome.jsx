@@ -76,7 +76,7 @@ const CarrouselHome = () => {
         <Search />
       </div>
       <div className={style.containerBtnOrganizerEvent}>
-        <Link to={'/oganiza-un-evento'}>Organiza un evento</Link>
+        <Link to={'/organiza-un-evento'}>Organiza un evento</Link>
       </div>
     </div>
   );
