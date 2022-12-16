@@ -34,9 +34,9 @@ register("es_ES", localeFunc);
 const CardComments = ({ o, organizer }) => {
   const [isOpenModal, openModal, closeModal] = useModal(false);
 
-  console.log('o',o)
-  console.log('organizer',organizer)
+ 
 
+  const a = o.dateEvent.split(' ')
 
 
   const handleClickOpenModal = (e) => {
@@ -49,7 +49,7 @@ const CardComments = ({ o, organizer }) => {
       <div>
         <img
           className={styles.picture}
-          src={avatar}
+          src={o.picture}
           alt="Not Found ):"
           width="20px"
           height="30px"
@@ -72,7 +72,8 @@ const CardComments = ({ o, organizer }) => {
               readOnly
             />
           </div>
-          <p className={styles.time}>{format(o.time, "es_ES")}</p>
+          {/* <p className={styles.time}>{format(o.time, "es_ES")}</p> */}
+          <p  className={styles.time}>Asistio a {o.eventTitle} el {a[1]} de {a[0]} {a[3]}</p>
           <p className={styles.opinion}>{o.opinion}</p>
         </div>
 

@@ -16,6 +16,8 @@ const Opinions = ({ userDetail , eventsFromOrg}) => {
   const { user } = useContext(AuthContext);
   const { getRatingOrganizer } = useContext(UIContext);
 
+
+console.log('eventsFromOrg',eventsFromOrg)
   
 
   useEffect(() => {
@@ -23,6 +25,7 @@ const Opinions = ({ userDetail , eventsFromOrg}) => {
       try {
         const res = await eventsApi.get("/users/" + id);
         setOpinion(res.data.opinionsOrg);
+        
         if (userDetail.opinionsOrg.length > 0) {
           setNumber(calcRatingEffect());
         } else {
@@ -35,10 +38,13 @@ const Opinions = ({ userDetail , eventsFromOrg}) => {
     getAllComments();
   }, [userDetail]);
 
+  //RTING//
+
   const calcRatingEffect = () => {
-    const ratings = userDetail.opinionsOrg.map((e) => e.rating);
+    const opinionsRated = userDetail.opinionsOrg.filter((e) => e.rating > 0 );
+    const ratings = opinionsRated.map((e) => e.rating );
     const suma = ratings.reduce((prev, current) => prev + current);
-    const result = (suma / userDetail.opinionsOrg.length).toFixed(1);
+    const result = (suma / opinionsRated.length).toFixed(1);
     return result;
   };
 
@@ -47,14 +53,36 @@ const Opinions = ({ userDetail , eventsFromOrg}) => {
       const resu = (num / 1).toFixed(1);
       return resu;
     } else {
-      const ratings = opinion.map((e) => e.rating);
+      const opinionsWithRanking = opinion.filter((e) => e.rating > 0 );
+      const ratings = opinionsWithRanking.map((e) => e.rating);
       const suma = ratings.reduce((prev, current) => prev + current);
       const otherSuma = suma + num;
-      const total = opinion.length + 1;
+      const total = opinionsWithRanking.length + 1;
       const result = (otherSuma / total).toFixed(1);
       return result;
     }
   };
+
+  // const calcRatingEffect = () => {
+  //   const ratings = userDetail.opinionsOrg.map((e) => e.rating );
+  //   const suma = ratings.reduce((prev, current) => prev + current);
+  //   const result = (suma / userDetail.opinionsOrg.length).toFixed(1);
+  //   return result;
+  // };
+
+  // const calcRating = (num) => {
+  //   if (opinion.length === 0) {
+  //     const resu = (num / 1).toFixed(1);
+  //     return resu;
+  //   } else {
+  //     const ratings = opinion.map((e) => e.rating);
+  //     const suma = ratings.reduce((prev, current) => prev + current);
+  //     const otherSuma = suma + num;
+  //     const total = opinion.length + 1;
+  //     const result = (otherSuma / total).toFixed(1);
+  //     return result;
+  //   }
+  // };
 
   const handlePostComments = async (e) => {
     e.preventDefault();
@@ -63,11 +91,10 @@ const Opinions = ({ userDetail , eventsFromOrg}) => {
       rating: value,
       title: user.name,
       opinion: newOpinion,
-      picture: eventsFromOrg.pictureBuyer,
-      dateEvent: eventsFromOrg.dates[0].date,
-      eventTitle: eventsFromOrg.eventTitle
+      picture: eventsFromOrg[0].generalBuyers[0].pictureBuyer,
+      dateEvent: eventsFromOrg[0].generalBuyers[0].dates[0].date,
+      eventTitle: eventsFromOrg[0].generalBuyers[0].eventTitle
     };
-
 
     try {
       const res = await eventsApi.post("/users/commentOrganizer/" + id, data);
@@ -122,6 +149,7 @@ const Opinions = ({ userDetail , eventsFromOrg}) => {
 
         {/* ESCRIBIR OPINION */}
         {eventsFromOrg !== undefined &&
+          eventsFromOrg.length > 0?
             <div>
               <textarea
                 className={styles.textarea}
@@ -152,6 +180,7 @@ const Opinions = ({ userDetail , eventsFromOrg}) => {
                 </button>
               </div>
             </div>
+          :''
            
         }
         
