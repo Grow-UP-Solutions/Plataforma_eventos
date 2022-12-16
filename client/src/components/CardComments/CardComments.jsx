@@ -76,7 +76,7 @@ const CardComments = ({ o, organizer }) => {
           onClick={handleClickOpenModal}
           data-hover="Reportar contenido inapropiado"
         >
-          <ReportProblemIcon sx={{ fontSize: "40px", color: "#cbcbcb" }} />
+          <ReportProblemIcon sx={{ fontSize: "40px", color: "#cbcbcb" , hover:"#fba430" }} />
         </div>
       </div>
     </div>

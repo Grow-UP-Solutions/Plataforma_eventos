@@ -25,9 +25,11 @@ const Compras = () => {
 
   const getsells = async () => {
     
-      const sellResult = await eventsApi.get(`/orders`);
+      const sellResult = await eventsApi.get(`/order`);
       setSells(sellResult.data);
       setLoad(false)
+
+      console.log((new Intl.NumberFormat('de-DE').format(parseInt(sellResult.data[0].adminEarns))))
 
       const ordenesTotal = []
     
@@ -36,7 +38,7 @@ const Compras = () => {
   
 
   const [currentPage, setCurretPage] = useState(1);
-  const ordersPerPage = 10;
+  const ordersPerPage = 25;
   const indexOfLastOrder = currentPage * ordersPerPage;
   const indexOfFirsOrder = indexOfLastOrder - ordersPerPage;
   const paginado = (pageNumber) => setCurretPage(pageNumber);
@@ -68,46 +70,83 @@ const Compras = () => {
           <div className={style.container_headbody}>
             <thead className={style.thead}>
               <tr className={style.tr}>
-                <th className={style.th_first}>Nombre del Comprador</th>
-                <th className={style.th_first}>Apellido del Comprador</th>
-                <th>Email del Comprador</th>
-                <th>Cedula de Ciudadania del Comprador</th>
-                <th>Ciudad de Domicilio del Comprador</th>
+                <th>Codigo del Organizador</th>
+                <th>Nombre del Organizador</th>
+                
+                <th>El Organizador es declarante?</th>
+                <th>Codigo del Evento</th>
+                <th>Nombre del Evento</th>
+                <th>Fecha del Evento</th>
+                <th>Hora del Evento</th>
+                <th>Cupos Comprados</th>
+                <th>Codigo de Descuento</th>
+                <th>Nº Compra</th>
+                <th>Fecha de Compra</th>
+                <th>Hora de Compra</th>
+                <th>Codigo del Comprador</th>
+                <th>Nombre del Comprador</th>
+                <th>Apellido del Comprador</th>
+                <th>Cedula de ciudadania del Comprador</th>
+                <th>Ciudad de domicilio del Comprador</th>
                 <th>Direccion del Comprador</th>
                 <th>Telefono del Comprador</th>
-                <th>Fecha de Compra</th>
-                <th>Evento</th>
-                <th>Monto de la compra</th>
-
-                <th>Nº Identificacion de Compra</th>
-               
+                <th>Valor Recadudado por LQQH</th>
+                <th>Total neto para el Organizador</th>      
               </tr>
             </thead>
 
             <tbody>
               {sells !== undefined &&
                 sells.slice(indexOfFirsOrder, indexOfLastOrder).map((sell) =>
-                sell.ordenes.map(order =>
+                
                     <tr key={sell._id} className={style.tbody}>
-                        <td>
-                          {sell.firstName}
-                        </td>
-                        <td>{sell.lastName}</td>
-                        <td>{sell.email}</td>
-                        <td>{sell.document}</td>
-                        <td>{sell.city}</td>
-                        <td>{sell.direction}</td>
-                        <td>{sell.tel}</td>
-                        <td>{order.fechaDePago.slice(0,10)}</td>
-                        <td>{order.motivo}</td>
-                        <td> ${new Intl.NumberFormat('de-DE').format(order.valorDeLaTransaccion)}</td>
-                       
-                        <td>
-                        <Link to={`/detalle-de-orden/${order._id}/${sell._id}`}>{order._id}</Link>
-                        </td>
-                      </tr>
-                    )
+                      <td>{sell.idOrganizer}</td>
+                      <td>{sell.organizerName} {sell.organizerLastName}</td>
+                      <td>{sell.organizerisDeclarant ? 'Si' : 'No' }</td>
+                      <td>{sell.idEvent}</td>
+                      <td>{sell.eventName}</td>
+                      <td>
+                        {sell.eventDate.map(date=>
+                          <tr>
+                            <td>{date.date}</td>
+                          </tr>
+                        )}
+                      </td>
+                      <td>
+                        {sell.eventDate.map(date=>
+                          <tr>
+                            <td>{date.start}-{date.end}</td>
+                          </tr>
+                        )}
+                      </td>
+                      <td>
+                        {sell.eventDate.map(date=>
+                          <tr>
+                            <td>{date.cantidad}</td>
+                          </tr>
+                        )}
+                      </td>
+                      <td>
+                        {sell.eventDate.map(date=>
+                          <tr>
+                            <td>{date.codigo !== null ? date.codigo : '-'}</td>
+                          </tr>
+                        )}
+                      </td>
+                      <td>{sell.idCompra}</td>
+                      <td>{sell.dateBuy}</td>
+                      <td>{sell.timeBuy}</td>
+                      <td>{sell.idBuyer}</td>
+                      <td>{sell.buyerName}</td>
+                      <td>{sell.buyerLastName}</td>
+                      <td>{sell.buyerDni}</td>
+                      <td>{sell.buyerCity}</td>
+                      <td>{sell.buyerAddress}</td>
+                      <td>{sell.buyerPhone}</td>
+                      <td>${(new Intl.NumberFormat('de-DE').format(parseInt(sell.adminEarns)))}</td>
+                      <td>${(new Intl.NumberFormat('de-DE').format(parseInt(sell.organizerEarns)))}</td>
                     
+                    </tr>
                 )}
             </tbody>
           </div>

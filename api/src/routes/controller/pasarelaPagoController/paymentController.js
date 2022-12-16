@@ -158,23 +158,29 @@ router.get('/success', async (req, res) => {
 
       event.dates.forEach(async (e, i) => {
         for (let j = 0; j < auxBody[0].dates.length; ++j) {
-          const auxUsuariosComprados = {
-            idDate: auxBody[0].dates[j].id,
-            idEvent: auxBody[0].idEvent,
-            cantidad: auxBody[0].dates[j].quantity,
-            codigo: auxBody[0].dates[j].codigoUsuario || auxBody[0].dates[j].codigoDescuento || null,
-            date: '',
-            dateFormated: '',
-          };
-
-          if (e._id.toString() === auxBody[0].dates[j].id) {
-            auxUsuariosComprados.date = e.date;
-            auxUsuariosComprados.dateFormated = e.dateFormated;
-          }
-
-          usuariosComprados.push(auxUsuariosComprados);
-
+         
           if (e._id == auxBody[0].dates[j].id) {
+
+            const auxUsuariosComprados = {
+              idDate: auxBody[0].dates[j].id,
+              idEvent: auxBody[0].idEvent,
+              cantidad: auxBody[0].dates[j].quantity,
+              codigo: auxBody[0].dates[j].codigoUsuario || auxBody[0].dates[j].codigoDescuento || null,
+              date: '',
+              dateFormated: '',
+              start: '',
+              end: '',
+            };
+  
+            if (e._id.toString() === auxBody[0].dates[j].id) {
+              auxUsuariosComprados.date = e.date;
+              auxUsuariosComprados.dateFormated = e.dateFormated;
+              auxUsuariosComprados.start = e.start;
+              auxUsuariosComprados.end = e.end;
+            }
+  
+            usuariosComprados.push(auxUsuariosComprados);
+  
             console.log('Id auxbody === Id eventDate');
             for (let x = 0; x < e.codigos.length; x++) {
               if (
