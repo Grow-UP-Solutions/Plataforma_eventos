@@ -79,6 +79,11 @@
   color: rgba(134, 134, 134, 255);
   cursor: pointer;
 }
+
+.reportCom:hover {
+  color: orange;
+
+}
   
 .reportCom:before {
   content: attr(data-hover);
@@ -104,4 +109,6 @@
 .reportCom:hover:before {
   opacity: 1;
   visibility: visible;
+  color:var(--color-orange)
 }
+

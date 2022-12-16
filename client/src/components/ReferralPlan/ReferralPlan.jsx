@@ -210,7 +210,7 @@ const ReferralPlan = ({ userData }) => {
         <img src={imgMoney} alt='cash' className={styles.imgMoney} />
         <div className={styles.money}>
           <p>Saldo disponible</p>
-          <span>{availableCredit}.000$</span>
+          <span>${new Intl.NumberFormat('de-DE').format(availableCredit)}</span>
         </div>
       </div>
 
@@ -286,7 +286,8 @@ const ReferralPlan = ({ userData }) => {
                                   <input
                                     id={codeDiscount._id}
                                     disabled
-                                    value={`${codeDiscount.value}.000$`}
+                                    value={`$${new Intl.NumberFormat('de-DE').format(codeDiscount.value)}`}
+                                   
                                     type='text'
                                   />
                                 ) : (
