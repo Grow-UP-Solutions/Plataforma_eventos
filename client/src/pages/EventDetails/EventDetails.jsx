@@ -241,7 +241,7 @@ const EventDetails = () => {
       setIsLoadingReport(false);
       setResultMessageReport({
         success: true,
-        message: 'Reporte enviado.',
+        message: 'Gracias por tu reporte, el cual a sido enviado exitosamente. El contenido será investigado y las debidas acciones serán tomadas.',
       });
     } catch (error) {
       setResultMessageReport({
