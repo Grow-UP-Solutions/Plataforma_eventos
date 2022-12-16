@@ -190,54 +190,94 @@ const Cart = () => {
     for (let c = 0; c < carrito.length; c++) {
       if (carrito[c].idDate === id) {
         for (let d = 0; d < currentDate[0].codigos.length; d++) {
-          if (currentDate[0].codigos[d].codigo === codigo) {
-            const descValor = currentDate[0].codigos[d].descuento; //10%
-            carrito[c].codigoDescuento = codigo;
-            carrito[c].codigoCorrecto = true;
-
-            const valorDescuento = (descValor * currentDate[0].price) / 100; //$1000
-            carrito[c].unit_disc = valorDescuento;
-
-            const valorDescuentoCupos = valorDescuento * carrito[c].quantity; //$2000
-
-            carrito[c].descuento = valorDescuentoCupos; //$2000
-
-            //const unitDic = carrito[c].unit_price - valorDescuento;
-            carrito[c].unit_price = carrito[c].unit_price - valorDescuento;
-            carrito[c].priceOrg = carrito[c].priceOrg - valorDescuento;
-            carrito[c].ganancias = carrito[c].ganancias - valorDescuentoCupos;
-
-            setDesc(carrito[c].descuento);
+          if (currentDate[0].codigos[d].codigo === codigo && currentDate[0].codigos[d].cantidad > 0 ) {
+              const descValor = currentDate[0].codigos[d].descuento; //10%
+              carrito[c].codigoDescuento = codigo;
+              carrito[c].codigoCorrecto = true;
+  
+              const valorDescuento = (descValor * currentDate[0].price) / 100; //$1000
+              carrito[c].unit_disc = valorDescuento;
+  
+              const valorDescuentoCupos = valorDescuento * carrito[c].quantity; //$2000
+  
+              carrito[c].descuento = valorDescuentoCupos; //$2000
+  
+              //const unitDic = carrito[c].unit_price - valorDescuento;
+              carrito[c].unit_price = carrito[c].unit_price - valorDescuento;
+              carrito[c].priceOrg = carrito[c].priceOrg - valorDescuento;
+              carrito[c].ganancias = carrito[c].ganancias - valorDescuentoCupos;
+  
+              setDesc(carrito[c].descuento);
+              return swal({
+                title: 'Codigo Aplicado',
+              });
+            
+          }else if (currentDate[0].codigos[d].codigo === codigo && currentDate[0].codigos[d].cantidad === 0 ){
             return swal({
-              title: 'Codigo Aplicado',
+              title: 'Ya no hay bonos disponibles para redimir con este código',
             });
           } else if (currentDate[0].codigos[d].codigo !== codigo) {
             const codeResult = await eventsApi.get(`/codeDiscount/getCodeDiscountByCode/${codigo} `);
 
-            if (codeResult.data.codeDiscount.length === 1 && codeResult.data.codeDiscount[0].isRedimeed === false) {
-              carrito[c].codigoReferido = codeResult.data.codeDiscount[0].code;
-              carrito[c].codigoCorrecto = true;
-              carrito[c].descuento = codeResult.data.codeDiscount[0].value;
+            if (codeResult.data.codeDiscount.length === 1 && 
+                codeResult.data.codeDiscount[0].isRedimeed === false  && 
+                codeResult.data.codeDiscount[0].value < valorTotal) {
 
-              const refUnit = codeResult.data.codeDiscount[0].value / carrito[c].quantity;
+                  return swal({
+                    title: 'manor',
+                    icon: 'warning',
+                    dangerMode: true,
+                  });
 
-              //const descuentoUnit = carrito[c].unit_price - codeResult.data.codeDiscount[0].value
+              // carrito[c].codigoReferido = codeResult.data.codeDiscount[0].code;
+              // carrito[c].codigoCorrecto = true;
+              // carrito[c].descuento = codeResult.data.codeDiscount[0].value;
 
-              carrito[c].unit_price = carrito[c].unit_price - refUnit;
+              // const refUnit = codeResult.data.codeDiscount[0].value / carrito[c].quantity;
 
-              carrito[c].priceOrg = carrito[c].priceOrg - refUnit;
+              // //const descuentoUnit = carrito[c].unit_price - codeResult.data.codeDiscount[0].value
 
-              carrito[c].ganancias = carrito[c].ganancias - codeResult.data.codeDiscount[0].value;
+              // carrito[c].unit_price = carrito[c].unit_price - refUnit;
 
-              setDesc(codeResult.data.codeDiscount[0].value);
+              // carrito[c].priceOrg = carrito[c].priceOrg - refUnit;
 
+              // carrito[c].ganancias = carrito[c].ganancias - codeResult.data.codeDiscount[0].value;
+
+              // setDesc(codeResult.data.codeDiscount[0].value);
+
+              // return swal({
+              //   title: 'Codigo Aplicado',
+              // });
+            } else if(
+              codeResult.data.codeDiscount.length === 1 && 
+              codeResult.data.codeDiscount[0].isRedimeed === false && 
+              codeResult.data.codeDiscount[0].value >valorTotal  ){
+                return swal({
+                  title: `El valor del código de descuento ingresado es $${new Intl.NumberFormat('de-DE').format(codeResult.data.codeDiscount[0].value)} 
+                  y el costo del evento es de $${new Intl.NumberFormat('de-DE').format(valorTotal)}. Si procedes el excedente se perderá`,
+                  icon: 'warning',
+                  buttons: ['Cancelar acción', 'Continuar'],
+                  dangerMode: true,
+                }).then((continuar) => {
+                  if (continuar){
+                    
+                    return swal({
+                      title: 'si',
+                    })
+                  }
+                })
+            }else if(
+              codeResult.data.codeDiscount.length === 1 && 
+              codeResult.data.codeDiscount[0].isRedimeed === true
+            ){
               return swal({
-                title: 'Codigo Aplicado',
+                title: 'Codigo no disponible',
               });
+
             } else {
               carrito[c].codigoCorrecto = false;
               return swal({
-                title: 'Codigo Incorrecto',
+                title: 'Este código ha sido inhabilitado por el Organizador o es Incorrecto ',
                 icon: 'warning',
                 dangerMode: true,
               });
@@ -324,33 +364,6 @@ const Cart = () => {
   }
 
 //---SUBMIT---//
-
-  // function format(2000)
-  //   {
-  //   var num = input.value.replace(/\./g,'');
-  //   if(!isNaN(num)){
-  //   num = num.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g,'$1.');
-  //   num = num.split('').reverse().join('').replace(/^[\.]/,'');
-  //   input.value = num;
-  //   }
-    
-  //   else{ alert('Solo se permiten numeros');
-  //   input.value = input.value.replace(/[^\d\.]*/g,'');
-  //   }
-  //   }
-
-  const n = 2000.56
-
-  // const num = n.replace(/\./g,'')
-
-  // const numero = num.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g,'$1.');
-  // const Numero = num.split('').reverse().join('').replace(/^[\.]/,'')
-     
-  // console.log('num:',num)
-  // console.log('numero:',numero)
-  // console.log('Numero:',Numero)
-
-  console.log(new Intl.NumberFormat('de-DE').format(n));
 
 
 
