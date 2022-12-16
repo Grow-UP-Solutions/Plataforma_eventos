@@ -158,6 +158,7 @@ router.get('/success', async (req, res) => {
 
       const buyer = {
         buyer : user._id,
+        pictureBuyer:user.userpicture,
         eventId: event._id,
         eventTitle: event.title,
         dates: []

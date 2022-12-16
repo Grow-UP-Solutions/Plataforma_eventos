@@ -16,6 +16,8 @@ const Opinions = ({ userDetail , eventsFromOrg}) => {
   const { user } = useContext(AuthContext);
   const { getRatingOrganizer } = useContext(UIContext);
 
+  console.log('eventsFromOrg',eventsFromOrg)
+
   useEffect(() => {
     const getAllComments = async () => {
       try {
@@ -60,7 +62,7 @@ const Opinions = ({ userDetail , eventsFromOrg}) => {
       idUser: user.uid,
       rating: value,
       title: user.name,
-      opinion: newOpinion,
+      opinion: newOpinion
     };
     try {
       const res = await eventsApi.post("/users/commentOrganizer/" + id, data);

@@ -58,12 +58,11 @@ const OrganizerDetails = () => {
 
   useEffect(() => {
     obtenerDatos();
-    obtenerDatosLog();
-  }, []);
-
-  useEffect(() => {
-    obtenerDatosLog();
   }, [user]);
+
+  // useEffect(() => {
+  //   obtenerDatosLog();
+  // }, [user]);
 
   useEffect(() => {
     setConversation({
@@ -77,6 +76,13 @@ const OrganizerDetails = () => {
   const obtenerDatos = async () => {
     const data = await eventsApi.get('/users/' + id);
     const json = data.data;
+    
+
+    const eventsUserLog = data.data.myEventsCreated.filter(event => event.generalBuyers.filter(
+      buyer=>buyer === user.uid))
+   
+    
+    
     setNextEvent(json);
     getEffectRatingOrganizer(json.rating);
     setUserDetail({
@@ -85,19 +91,21 @@ const OrganizerDetails = () => {
     setComponent(<AboutOrganizer userDetail={json.descriptionOrganizer} />);
     setStyle('aboutOrganizer');
     setLoad(false);
+    setEventsFromOrg(eventsUserLog)
   };
 
   //Filtrar y ver si hay eventos comprados a este org//
 
-  const obtenerDatosLog = async () => {
+  // const obtenerDatosLog = async () => {
 
-    const dataLog = await eventsApi.get('/users/' + user.uid);
-    const eventsBookedOrg = dataLog.data.myEventsBooked.filter(event => event.organizer === id)
-    setEventsFromOrg(eventsBookedOrg)
+  //   const dataLog = await eventsApi.get('/users/' + user.uid);
+  //   const eventsBookedOrg = dataLog.data.myEventsBooked.filter(event => event.organizer === id)
+  //   setEventsFromOrg(eventsBookedOrg)
+  //   console.log('dataLog.data',dataLog.data)
 
-  }
+  // }
 
-  console.log('eventsFromOrg',eventsFromOrg)
+  
 
   const handleClickMessages = (e) => {
     e.preventDefault();
@@ -140,7 +148,7 @@ const OrganizerDetails = () => {
       setStyle('nextEvents');
     }
     if (name === 'Opinions') {
-      setComponent(<Opinions userDetail={userDetail.organizer}  eventsFromOrg={eventsFromOrg} />);
+      setComponent(<Opinions userDetail={userDetail.organizer}  eventsFromOrg={eventsFromOrg[0].generalBuyers[0]} />);
       setStyle('opinions');
     } else {
       console.log('growup');
