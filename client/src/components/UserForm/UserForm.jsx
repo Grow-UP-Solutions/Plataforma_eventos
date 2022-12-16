@@ -14,7 +14,7 @@ import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { checkMalasPalabras } from '../../utils/checkMalasPalabras';
 import { inputKeyDown, inputKeyUpPh, inputKeyUpTel } from '../../utils/inputOnlyNumbers';
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { invalidWords } from '../../utils/invalidWord';
 import { isValidEmail } from '../../utils/validateEmail';
 
@@ -22,6 +22,8 @@ import AvatarEditor from 'react-avatar-editor';
 import { dataURLtoFile, toDataURL } from '../../utils/convertUrlToImageFile';
 
 const UserForm = ({ userData }) => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     firstName: userData.firstName || '',
     lastName: userData.lastName || '',
@@ -435,6 +437,7 @@ const UserForm = ({ userData }) => {
       if (typeof formData[key] === 'boolean') continue;
       if (key === 'nickname') continue;
       if (key === 'imageRent') continue;
+      if (key === 'isDeclarant') continue;
       if (!formData[key]) {
         isProfileCompleted = false;
         break;
@@ -879,7 +882,9 @@ const UserForm = ({ userData }) => {
                   <BsInfoCircle className={styles.iconOrganizerInfo} />
                 </div>
 
-                <button className={styles.btnCreateEvent}>Organiza un evento</button>
+                <button onClick={() => navigate('/oganiza-un-evento')} className={styles.btnCreateEvent}>
+                  Organiza un evento
+                </button>
               </div>
             </>
           )}

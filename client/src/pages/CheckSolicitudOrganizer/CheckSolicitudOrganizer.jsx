@@ -12,7 +12,7 @@ const CheckSolicitudOrganizer = () => {
   const navigate = useNavigate();
   localStorage.setItem('token-organizer', token);
 
-  /* useEffect(() => {
+  useEffect(() => {
     checkValidateTokenToOrganizer();
   }, []);
 
@@ -23,7 +23,7 @@ const CheckSolicitudOrganizer = () => {
     } catch (error) {
       navigate('/');
     }
-  }; */
+  };
 
   const acceptOrReject = async (option) => {
     try {
@@ -35,6 +35,7 @@ const CheckSolicitudOrganizer = () => {
       } else if (message === 'Rechazado') {
         setModalResultMessage(`Usted ha rechazado la solicitud de organizador a ${userData.name}.`);
       }
+      setUserData(data.user);
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
@@ -85,16 +86,12 @@ const CheckSolicitudOrganizer = () => {
 
         <div className={styles.containerImgUserDesc}>
           <img className={styles.imgUser} src={userData.image} alt='user-picture' />
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur, error illum voluptates dolores autem,
-            vero amet eveniet aut culpa aspernatur expedita magni quo fuga nostrum accusantium saepe doloribus commodi
-            quisquam.
-          </p>
+          <p>{userData.description}</p>
         </div>
       </div>
 
       <div className={styles.containerImageDocuments}>
-        <img src={userData.frontDocument} alt='dni' />
+        <img src={userData.documentFront} alt='dni' />
         <img src={userData.backDocument} alt='dni' />
         {userData.rut && <img src={userData.imageRut} alt='dni' />}
       </div>

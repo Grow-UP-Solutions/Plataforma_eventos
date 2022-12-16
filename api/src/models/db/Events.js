@@ -1,5 +1,4 @@
 const { Schema, model } = require('mongoose');
-// const Categories = require('./Categories.js')
 const EventSchema = new Schema(
   {
     title: String,
