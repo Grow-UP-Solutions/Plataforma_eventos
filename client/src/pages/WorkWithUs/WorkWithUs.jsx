@@ -84,7 +84,6 @@ const works = [
 ];
 
 const WorkWithUs = () => {
-
   useEffect(() => {
     scroll.scrollToTop();
   }, []);
