@@ -62,7 +62,9 @@ async function createEvents(event) {
 
 async function createOpinionsEvents(id, opinions) {
   try {
+    console.log('o2:',opinions)
     const opinionCreat = await EventFunctionDb.commentEvent(id, opinions);
+    console.log(opinionCreat)
     return opinionCreat;
   } catch (error) {
     throw new Error(error.message);

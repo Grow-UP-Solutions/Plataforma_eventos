@@ -3,7 +3,7 @@ import EventDate from './EventDate';
 import EventOrganizer from './EventOrganizer';
 import styles from './EventSideBar.module.css';
 
-const EventSideBar = ({ id }) => {
+const EventSideBar = ({ id , userBuyOrg }) => {
   return (
     <div className={styles.container}>
       <div className={styles.containerEventDate}>
@@ -25,7 +25,7 @@ const EventSideBar = ({ id }) => {
 
       <hr className={styles.cardHr}></hr>
 
-      <EventOrganizer id={id} />
+      <EventOrganizer id={id} userBuyOrg={userBuyOrg} />
     </div>
   );
 };

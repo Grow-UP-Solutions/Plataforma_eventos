@@ -95,6 +95,7 @@ router.post('/opinionsGenerate/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const comments = req.body;
+    console.log(comments);
     const createOpinions = await createOpinionsEvents(id, comments);
     return res.status(200).json(createOpinions);
   } catch (error) {
