@@ -8,13 +8,14 @@ import { AuthContext } from '../../context/auth/AuthContext';
 import { stateContext } from '../../context/state/stateContext';
 import swal from 'sweetalert';
 
-const EventOrganizer = ({ id }) => {
+const EventOrganizer = ({ id , userBuyOrg }) => {
   const [conversation, setConversation] = useState({});
   const { user } = useContext(AuthContext);
   const { setResult, conversa } = useContext(stateContext);
   const navigate = useNavigate();
   const allEvents = useSelector((state) => state.events);
   const eventDetails = allEvents.filter((event) => event._id === id)[0];
+  
 
   useEffect(() => {
     const addUserId = async () => {
@@ -74,12 +75,17 @@ const EventOrganizer = ({ id }) => {
         <div className={styles.container}>
           <div className={styles.containerTop}>
             <p className={styles.title}>Organizador</p>
-            <div className={styles.btn}>
-              <LocalPostOfficeIcon sx={{ fontSize: '13px', color: '#d53e27' }} />
-              <button className={styles.button} onClick={conversation.senderId ? handleClickMessages : handleAlert}>
-                Enviar Mensaje
-              </button>
-            </div>
+            {userBuyOrg!== undefined &&
+              userBuyOrg.length > 0 ? 
+                <div className={styles.btn}>
+                  <LocalPostOfficeIcon sx={{ fontSize: '13px', color: '#d53e27' }} />
+                  <button className={styles.button} onClick={conversation.senderId ? handleClickMessages : handleAlert}>
+                    Enviar Mensaje
+                  </button>
+                </div>
+              :''
+            }
+            
           </div>
           <div className={styles.orgCont}>
             <Link className={styles.link} to={`/sobre-el-organizador/${eventDetails.organizer._id}`}>
@@ -93,7 +99,7 @@ const EventOrganizer = ({ id }) => {
           </div>
           <p className={styles.orgDescription}>{eventDetails.organizer.descriptionOrganizer}</p>
           <button className={styles.button2} onClick={handleClickEventsOrganizer}>
-            Otros eventos organizados por {eventDetails.organizer.name}
+            Próximos eventos organizados por {eventDetails.organizer.name}
           </button>
         </div>
       ) : (

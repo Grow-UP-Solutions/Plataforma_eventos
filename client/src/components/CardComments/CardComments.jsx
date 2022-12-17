@@ -34,9 +34,15 @@ register("es_ES", localeFunc);
 const CardComments = ({ o, organizer }) => {
   const [isOpenModal, openModal, closeModal] = useModal(false);
 
- 
 
-  const a = o.dateEvent.split(' ')
+  // useEffect(() => {
+  //   const a = o.dateEvent.split(' ')
+
+  // }, [o]);
+
+  console.log('o',o)
+
+ 
 
 
   const handleClickOpenModal = (e) => {
@@ -72,8 +78,8 @@ const CardComments = ({ o, organizer }) => {
               readOnly
             />
           </div>
-          {/* <p className={styles.time}>{format(o.time, "es_ES")}</p> */}
-          <p  className={styles.time}>Asistio a {o.eventTitle} el {a[1]} de {a[0]} {a[3]}</p>
+          <p className={styles.time}>{format(o.time, "es_ES")}</p>
+          {/* <p  className={styles.time}>Asistio a {o.eventTitle} el {a[1]} de {a[0]} {a[3]}</p> */}
           <p className={styles.opinion}>{o.opinion}</p>
         </div>
 

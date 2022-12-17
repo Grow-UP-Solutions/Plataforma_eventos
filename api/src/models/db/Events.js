@@ -140,21 +140,58 @@ const EventSchema = new Schema(
 
     opinions: [
       {
+        idUser:{
+          type: String,
+        },
+
         title: {
           type: String,
         },
+
+        dateEvent: {
+          type: String,
+        },
+
+        eventTitle: {
+          type: String,
+        },
+
         time: {
           type: Date,
           default: Date.now(),
         },
-        rating: Number,
-        opinion: String,
+
+        rating: {
+          type: Number,
+        },
+
         picture: {
           type: String,
-          default: null,
+        },
+        
+        opinion: {
+          type: String,
         },
       },
     ],
+
+    // opinions: [
+    //   {
+    //     title: {
+    //       type: String,
+    //     },
+    //     time: {
+    //       type: Date,
+    //       default: Date.now(),
+    //     },
+    //     rating: Number,
+    //     opinion: String,
+    //     picture: {
+    //       type: String,
+    //       default: null,
+    //     },
+    //   },
+    // ],
   },
   { timestamps: true }
 );

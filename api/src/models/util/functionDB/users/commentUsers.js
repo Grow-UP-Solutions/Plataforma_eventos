@@ -16,7 +16,6 @@ module.exports = async function generateUserComment(id, opinions) {
       dateEvent,
       eventTitle,
       time,
-      opinion
     });
     await organizer.save();
 

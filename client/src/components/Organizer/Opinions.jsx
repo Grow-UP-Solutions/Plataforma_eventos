@@ -15,9 +15,40 @@ const Opinions = ({ userDetail , eventsFromOrg}) => {
   const [newOpinion, setNewOpinion] = useState("");
   const { user } = useContext(AuthContext);
   const { getRatingOrganizer } = useContext(UIContext);
+  const [assisted, setAssisted] = useState(false);
+ 
 
 
-console.log('eventsFromOrg',eventsFromOrg)
+  
+  const fecha = new Date();
+  const hora = fecha.getHours();
+  const minutes = fecha.getMinutes();
+  const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
+
+  console.log('eventsFromOrg',eventsFromOrg)
+  useEffect(() => {
+    if(eventsFromOrg[0] !== undefined){
+    const comprador = eventsFromOrg[0].generalBuyers.filter(b=>b.buyer === user.uid)
+    const fecha = comprador[0]
+
+    console.log('fecha',fecha)
+
+    fecha.dates.map((date) => {
+      if (new Date(date.date) < new Date(dateActual)) {
+        setAssisted(true)
+        
+      } else if (date.date === dateActual) {
+        if (date.end.slice(0, 2) <= hora && date.end.slice(3, 5) <= minutes + 2) {
+          setAssisted(true)
+        }
+      }
+    })};
+  
+  }, [user]);
+  console.log('assisted',assisted)
+  
+
+  
   
 
   useEffect(() => {
@@ -148,8 +179,8 @@ console.log('eventsFromOrg',eventsFromOrg)
         )}
 
         {/* ESCRIBIR OPINION */}
-        {eventsFromOrg !== undefined &&
-          eventsFromOrg.length > 0?
+        {assisted === true  && eventsFromOrg !== undefined ?
+
             <div>
               <textarea
                 className={styles.textarea}
