@@ -35,12 +35,12 @@ const CardComments = ({ o, organizer }) => {
   const [isOpenModal, openModal, closeModal] = useModal(false);
 
 
-  // useEffect(() => {
-  //   const a = o.dateEvent.split(' ')
 
-  // }, [o]);
+    const a = o.dateEvent.split(' ')
 
-  console.log('o',o)
+ 
+
+  
 
  
 
@@ -78,8 +78,8 @@ const CardComments = ({ o, organizer }) => {
               readOnly
             />
           </div>
-          <p className={styles.time}>{format(o.time, "es_ES")}</p>
-          {/* <p  className={styles.time}>Asistio a {o.eventTitle} el {a[1]} de {a[0]} {a[3]}</p> */}
+          {/* <p className={styles.time}>{format(o.time, "es_ES")}</p> */}
+          <p  className={styles.time}>Asistio a {o.eventTitle} el {a[1]} de {a[0]} {a[3]}</p>
           <p className={styles.opinion}>{o.opinion}</p>
         </div>
 
