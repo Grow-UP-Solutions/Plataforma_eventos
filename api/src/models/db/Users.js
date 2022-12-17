@@ -161,10 +161,11 @@ const UserSchema = new Schema(
         title: {
           type: String,
         },
+
         dateEvent: {
           type: String,
         },
-        
+
         eventTitle: {
           type: String,
         },
@@ -173,12 +174,15 @@ const UserSchema = new Schema(
           type: Date,
           default: Date.now(),
         },
+
         rating: {
           type: Number,
         },
+
         picture: {
           type: String,
         },
+        
         opinion: String,
       },
     ],
