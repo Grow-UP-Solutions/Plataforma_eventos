@@ -107,7 +107,7 @@ const EventComments = ({ id }) => {
               <div>
                 {opinion.map((o) => (
                   <div key={o._id} className={styles.comment}>
-                    <CardComments o={o} />
+                    <CardComments o={o} event={eventDetails} />
 
                     <hr className={styles.hr}></hr>
                   </div>

@@ -557,11 +557,25 @@ router.put('/sendEmailToEventNewDate/', async (req, res) => {
   }
 });
 
-router.put('/report/organizer', async (req, res) => {
+router.put('/report/opinions/check', async (req, res) => {
   const { dataForReport } = req.body;
-  const { titleReport, reasonToReport, dateToReport } = dataForReport;
   const { name, email } = dataForReport.userFromReport;
-  const { nameOrganizer, emailOrganizer, pictureOrganizer } = dataForReport.organizerReport;
+  const { titleReport, reasonToReport, dateToReport, nameOpinion, opinion } = dataForReport;
+
+  let dataPage = {};
+
+  if (dataForReport.eventReport) {
+    dataPage.title = dataForReport.eventReport.eventTitle;
+    dataPage.enlace = 'https://events-jean.vercel.app/detalles-del-evento/' + dataForReport.eventReport.eventId;
+    dataPage.image = dataForReport.eventReport.image;
+  }
+
+  if (dataForReport.organizerReport) {
+    dataPage.title = dataForReport.organizerReport.organizerName;
+    dataPage.enlace =
+      'https://events-jean.vercel.app/sobre-el-organizador/' + dataForReport.organizerReport.organizerId;
+    dataPage.image = dataForReport.organizerReport.image;
+  }
 
   try {
     await sendEmailToReportOrganizer(
@@ -570,9 +584,11 @@ router.put('/report/organizer', async (req, res) => {
       dateToReport,
       name,
       email,
-      nameOrganizer,
-      emailOrganizer,
-      pictureOrganizer
+      (title = dataPage.title),
+      (enlace = dataPage.enlace),
+      (image = dataPage.image),
+      nameOpinion,
+      opinion
     );
 
     res.json({ success: true });
