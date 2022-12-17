@@ -365,6 +365,7 @@ const Navbar = ({ upper }) => {
                       <p>{user.name.split(' ')[0]}</p>
                       <p>{user.name.split(' ')[1]}</p>
                     </Link>
+                    
                   </>
                 )}
               </div>
@@ -393,7 +394,8 @@ const Navbar = ({ upper }) => {
                 {menuOpen && (
                   <>
                     <div className={style.containerProfileMenu} ref={menuRef}>
-                      {userData.isOrganizer === true ? <Link to='/usuario/mis-eventos'>Mis eventos</Link> : ''}
+                      {userData.isOrganizer === true ? <Link to='/usuario/mis-eventos'>Mis eventos</Link> : 
+                      <Link to='/usuario/mis-eventos'>Mis eventos</Link>}
 
                       <Link to='/usuario/perfil'>
                         <a>Perfil</a>
