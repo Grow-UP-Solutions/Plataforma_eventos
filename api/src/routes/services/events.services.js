@@ -1,6 +1,8 @@
 const { OneCategoryDb } = require('../../models/util/functionDB/CategoryDb.js');
 const { eventCreateOrganizer } = require('../../models/util/mailer/eventeCreateOrganizer.js');
 const { eventCreateAdministrador } = require('../../models/util/mailer/eventCreateAdministrador.js');
+const { eventUpdateOrganizer } = require('../../models/util/mailer/eventUpdateOrganizer.js')
+const { eventUpdateAdministrador } = require('../../models/util/mailer/eventUpdateAdministrador.js')
 const EventFunctionDb = require('../../models/util/functionDB/event/index.event.js');
 const UsersFunctionDb = require('../../models/util/functionDB/users/index.users.js');
 
@@ -62,17 +64,6 @@ async function createEvents(event) {
   }
 }
 
-async function createOpinionsEvents(id, opinions) {
-  try {
-    console.log('o2:',opinions)
-    const opinionCreat = await EventFunctionDb.commentEvent(id, opinions);
-    console.log(opinionCreat)
-    return opinionCreat;
-  } catch (error) {
-    throw new Error(error.message);
-  }
-}
-
 async function eventsUpdate(id, newEvent) {
   const { categories } = newEvent;
   try {
@@ -88,6 +79,10 @@ async function eventsUpdate(id, newEvent) {
       });
     }
     const newEvents = await EventFunctionDb.updateEvent(id, newEvent);
+
+    eventUpdateOrganizer(events, organizer)  
+    eventUpdateAdministrador(events,organizer);
+
     const allBuyer = await UsersFunctionDb.allBuyerUsers(id)
     if(allBuyer.length> 0) console.log('hay comprador')
     return newEvents;
@@ -95,6 +90,19 @@ async function eventsUpdate(id, newEvent) {
     throw new Error(error.message);
   }
 }
+
+async function createOpinionsEvents(id, opinions) {
+  try {
+    console.log('o2:',opinions)
+    const opinionCreat = await EventFunctionDb.commentEvent(id, opinions);
+    console.log(opinionCreat)
+    return opinionCreat;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+
 
 module.exports = {
   getAllEvents,
