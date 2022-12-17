@@ -10,8 +10,8 @@ import { Loading } from "../../components";
 
 const SearchResult = () => {
   
-  const search = useParams().data;
   const { muni } = useContext(stateContext);
+  const { result } = useContext(stateContext);
   const { events } = useContext(UIContext);
   const [local, setLocal] = useState([]);
   const [load, setLoad] = useState(true);
@@ -27,26 +27,38 @@ const SearchResult = () => {
   }, []);
 
   useEffect(() => {
+
+    console.log('result',result)
+    console.log('muni',muni)
+
     
     const localEvents = events.filter((event)=>event.municipio.toLowerCase().includes(muni.toLowerCase()))
-    if(search && muni){
-    const getSearch = () => {
-      setLocal(localEvents.filter((event) => event.title.toLowerCase().includes(search.toLowerCase())));
+
+    console.log('localEvents',localEvents)
+
+    if(result !== '' && muni  !== '' ){
+
+      console.log('1')
+    
+      setLocal(localEvents.filter((event) => event.title.toLowerCase().includes(result.toLowerCase())));
       setLoad(false);
-    }
-    getSearch();
-    }else if(muni && search===''){
-      const getSearch = () => {
+    
+   
+    }else if( muni  !== '' && result===''){
+
+      console.log('2')
+      
         setLocal(localEvents);
         setLoad(false);
-      }
-      getSearch();
-    }else if(search && muni===''){
-      const getSearch = () => {
-        setLocal(events.filter((event) => event.title.toLowerCase().includes(search.toLowerCase())));
+      
+    }else if(result !== '' && muni === ''){
+
+      console.log('3')
+        setLocal(events.filter((event) => event.title.toLowerCase().includes(result.toLowerCase())));
         setLoad(false);
-      }
-      getSearch();
+    }else if(result ==='' && muni===''){
+      console.log('4')
+      setLoad(true);
     }
   }, [events]);
 
@@ -56,7 +68,7 @@ const SearchResult = () => {
   else {
     return (
       <div className={style.container}>
-        <p className={style.title}>Resultado de búsqueda: {search}</p>
+        <p className={style.title}>Resultado de búsqueda: {result}</p>
         <div className={style.containerCard}>
           {currentCard.length ? (
             currentCard.map((event, index) => {
