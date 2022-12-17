@@ -49,7 +49,9 @@ async function createEvents(event) {
 
       await organizer.save();
 
-      events.isPublic ? eventCreateOrganizer(events, organizer) : eventCreateAdministrador(events);
+      // events.isPublic ? eventCreateOrganizer(events, organizer) : eventCreateAdministrador(events);
+      eventCreateOrganizer(events, organizer)  
+      eventCreateAdministrador(events,organizer);
 
       return events;
     }
