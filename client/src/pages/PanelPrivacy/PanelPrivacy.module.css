@@ -1,11 +1,8 @@
 .container {
-  max-width: 1420px;
-  margin: 0 auto;
+  min-height: 70vh;
   display: grid;
   grid-template-columns: 30% 70%;
-  grid-template-areas: 'buttons components';
-
-  height: 100vh;
+  gap: 2rem;
 }
 
 .container_title {
@@ -27,27 +24,42 @@
 }
 
 .containerButtons {
-  grid-area: buttons;
-  background-color: var(--color-grey-6);
   display: flex;
   flex-direction: column;
-  gap: 1.6rem;
-  padding-top: 2rem;
-  width: 90%;
-  margin-left: 1.5rem;
   align-items: flex-start;
+  background-color: var(--color-grey-6);
+  gap: 1.6rem;
+  padding: 2rem 0;
+  height: 100%;
+}
+
+.containerButtonsSection {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+}
+
+.containerButtonsSection > div {
+  display: flex;
+  align-items: center;
+}
+
+.containerButtonsSection input {
+  display: none;
+}
+
+.containerButtonsSection label {
+  font-size: 1.6rem;
+  cursor: pointer;
+}
+
+.containerButtonsSection input:checked ~ * {
+  color: var(--color-orange);
 }
 
 .button {
-  margin-left: 2rem;
-  margin-top: 2rem;
-  color: var(--color-grey-3);
-  font-size: 1.6rem;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-  width: 80%;
-  text-align: left;
 }
 
 .button_c {
@@ -63,30 +75,37 @@
 }
 
 .icon {
+  margin-left: auto;
   font-size: 2rem;
-  margin-left: 20rem;
 }
-
-.icon_1 {
-  font-size: 2rem;
-  margin-left: 10rem;
-}
-
-/* .button:focus {
-  color: var(--color-orange);
-} */
 
 .containerComponent {
-  grid-area: components;
-  width: 92%;
   margin-top: 4rem;
 }
 
 .container_box {
-  width: 250px;
-  text-align: center;
+  display: flex;
+  justify-content: center;
   cursor: pointer;
-  margin: 0 auto;
+}
+
+.containerButtonTypeUser {
+}
+
+.containerButtonTypeUser input {
+  display: none;
+}
+
+.containerButtonTypeUser label {
+  font-size: 1.6rem;
+  color: var(--color-grey-3);
+  cursor: pointer;
+}
+
+.containerButtonTypeUser input:checked ~ label {
+  color: var(--color-orange);
+  border-bottom: 2px solid var(--color-orange);
+  padding-bottom: 0.5rem;
 }
 
 .box1,
@@ -107,4 +126,56 @@
   border-right: 2px solid var(--color-grey-3);
   margin-left: 10px;
   margin-right: 10px;
+}
+
+.containerResponsive {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  padding: 6rem 0;
+}
+
+.containerButtonsResponsive {
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  gap: 4rem;
+
+  border-radius: 1rem;
+  box-shadow: 0px 1px 10px 1px rgba(0, 0, 0, 0.2);
+}
+
+.containerResponsiveButtonTypeUser {
+}
+
+.containerResponsiveButtonTypeUser input {
+  display: none;
+}
+
+.containerResponsiveButtonTypeUser label {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: var(--color-grey-3);
+  cursor: pointer;
+}
+
+.containerResponsiveButtonTypeUser input:checked ~ label {
+  color: var(--color-orange);
+}
+
+@media screen and (max-width: 756px) {
+  .container {
+    display: block;
+  }
+
+  .containerComponent,
+  .containerButtons {
+    display: none;
+  }
+
+  .containerResponsive {
+    display: flex;
+  }
 }

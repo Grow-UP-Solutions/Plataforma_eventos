@@ -444,14 +444,14 @@
   }
 
   .containerTableBuy {
-    bottom: -25rem;
+    bottom: -21.5rem;
   }
   .containerIconOpenMenu {
     bottom: 8rem;
   }
 
   .checkOpenMenu:checked ~ .containerIconOpenMenu {
-    bottom: 33.2rem;
+    bottom: 30.2rem;
   }
 }
 
@@ -480,25 +480,26 @@
 
 @media screen and (max-width: 422px) {
   .containerTableBuy {
-    bottom: -26rem;
+    bottom: -21.5rem;
   }
   .checkOpenMenu:checked ~ .containerIconOpenMenu {
-    bottom: 34.5rem;
+    bottom: 29.5rem;
   }
 }
 
 @media screen and (max-width: 382px) {
   .containerTableBuy {
-    bottom: -28.6rem;
+    bottom: -22.6rem;
   }
   .containerIconOpenMenu {
-    bottom: 6rem;
+    bottom: 8rem;
   }
 
   .checkOpenMenu:checked ~ .containerIconOpenMenu {
+    bottom: 31rem;
   }
   .containerSwiper {
-    height: 37rem;
+    height: 36rem;
   }
 }
 

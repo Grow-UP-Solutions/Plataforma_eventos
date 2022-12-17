@@ -84,6 +84,7 @@
   background-color: transparent;
   color: var(--color-orange);
   border: 1px solid var(--color-orange);
+  font-weight: normal;
 }
 
 .buttonOrganizarMenu {

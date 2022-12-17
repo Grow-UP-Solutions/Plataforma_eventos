@@ -180,3 +180,17 @@
   border: none;
   cursor: pointer;
 }
+
+@media screen and (max-width: 920px) {
+  .pageWorkWithUsForm {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  .pageWorkWithUsForm {
+    padding-right: 2rem;
+    padding-left: 2rem;
+    width: 100%;
+  }
+}

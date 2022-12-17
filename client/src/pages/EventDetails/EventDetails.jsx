@@ -32,11 +32,10 @@ import { getEvents } from '../../redux/actions';
 // import { formatDate } from '../../utils/formatDate';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import { Hearts } from 'react-loader-spinner';
+import { MdOutlineKeyboardArrowDown, MdOutlineKeyboardArrowUp } from 'react-icons/md';
 import EventDate from '../../components/EventDetails/EventDate';
 import formatDateToString from '../../utils/formatDateToString';
 import style from './EventDetails.module.css';
-import { MdOutlineKeyboardArrowUp, MdOutlineKeyboardArrowDown } from 'react-icons/md';
 
 const EventDetails = () => {
   const id = useParams().id;
@@ -241,7 +240,8 @@ const EventDetails = () => {
       setIsLoadingReport(false);
       setResultMessageReport({
         success: true,
-        message: 'Gracias por tu reporte, el cual a sido enviado exitosamente. El contenido será investigado y las debidas acciones serán tomadas.',
+        message:
+          'Gracias por tu reporte, el cual a sido enviado exitosamente. El contenido será investigado y las debidas acciones serán tomadas.',
       });
     } catch (error) {
       setResultMessageReport({

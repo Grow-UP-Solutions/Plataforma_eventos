@@ -3,6 +3,7 @@
   margin: 0 auto;
 
   margin-top: 6rem;
+  padding: 0 2rem;
 }
 
 .contactoTitle {
@@ -74,6 +75,8 @@
   padding: 1rem;
   font-size: 1.6rem;
   color: var(--color-grey-1);
+  font-family: inherit;
+  resize: none;
 }
 
 .inputContainer input:focus,
@@ -107,4 +110,26 @@
 .btnForm:hover {
   color: white;
   background-color: var(--color-orange);
+}
+
+.resultMessage {
+  font-size: 1.6rem;
+}
+
+.iconLoading {
+  margin: 0 auto;
+  width: 3.2rem;
+  height: 3.2rem;
+  color: var(--color-green);
+  animation: spinner 2s infinite;
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }

@@ -1,119 +1,112 @@
 .container {
-  max-width: 200%;
-    
-  }
-  
-  .container_titles h1,
-  h3,
-  h5 {
-    font-family: 'Raleway', sans-serif;
-    text-align: center;
-    margin-top: 2rem;
-  }
-  
-  .container_titles h1 {
-    font-size: 3rem;
-    font-weight: bold;
-    color: var(--color-blue);
-    margin-top: 6rem;
-  }
-  
-  .container_titles h3 {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: var(--color-grey-2);
-  }
-  
-  .container_titles h5 {
-    font-size: 2rem;
-    font-style: italic;
-    color: var(--color-grey-3);
-  }
-  
-  .container_table {
-    margin-top: 4rem;
-    display: grid;
-    justify-content: center;
-    border-spacing: 1rem
-    
-  }
-  
-  .thead th {
-    font-family: 'Raleway', sans-serif;
-    font-size: 1.6rem;
-    font-weight: bold;
-    color: var(--color-grey-2);
-    border-bottom: 0.2px solid var(--color-grey-6);
-  }
-  
-  .tbody {
-    font-family: 'Raleway', sans-serif;
-    font-size: 1.6rem;
-    color: var(--color-grey-2);
-    text-align: center;
-  }
-  
-  .tbody td {
-    
-    border-bottom: 0.2px solid var(--color-grey-6);
-  }
-  
-  .tbody_name {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-  }
-  
-  
-  .container_download {
-    margin-top: 4rem;
-  }
-  
-  .container_one {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 0.5rem 1rem;
-    gap: 1rem;
-    color: var(--color-orange);
-  }
-  
-  .container_one p {
-    font-size: 1.6rem;
-    font-family: 'Raleway', sans-serif;
-    border-bottom: 1px solid var(--color-orange);
-    cursor: pointer;
-  }
-  
-  .container_two {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 0.5rem 2.7rem;
-    gap: 1rem;
-    color: var(--color-orange);
-  }
-  
-  .container_two p {
-    font-size: 1.6rem;
-    font-family: 'Raleway', sans-serif;
-    border-bottom: 1px solid var(--color-orange);
-    cursor: pointer;
-  }
-  
-  .container_exit {
-    display: flex;
-    justify-content: center;
-    align-self: stretch;
-    margin-top: 4rem;
-  }
-  
-  .exit {
-    display: inline-block;
-    color: var(--color-orange);
-    font-size: 1.6rem;
-    font-family: 'Raleway', sans-serif;
-    border-bottom: 1px solid var(--color-orange);
-    cursor: pointer;
-  }
+}
+
+.container_titles h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  color: var(--color-blue);
+  margin-top: 6rem;
+}
+
+.container_titles h3 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--color-grey-2);
+}
+
+.container_titles h5 {
+  font-size: 2rem;
+  font-style: italic;
+  color: var(--color-grey-3);
+}
+
+.container_table {
+  margin-top: 4rem;
+  display: grid;
+  justify-content: center;
+  border-spacing: 1rem;
+}
+
+.table {
+  border-spacing: 0.5rem;
+  font-size: 1rem !important;
+}
+
+.thead th {
+  font-family: 'Raleway', sans-serif;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--color-grey-2);
+  border-bottom: 0.2px solid var(--color-grey-6);
+}
+
+.tbody {
+  font-family: 'Raleway', sans-serif;
+  font-size: 1.6rem;
+  color: var(--color-grey-2);
+  text-align: center;
+}
+
+.tbody td {
+  font-size: 1.2rem;
+  border-bottom: 0.2px solid var(--color-grey-6);
+}
+
+.tbody_name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.container_download {
+  margin-top: 4rem;
+}
+
+.container_one {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  gap: 1rem;
+  color: var(--color-orange);
+}
+
+.container_one p {
+  font-size: 1.6rem;
+  font-family: 'Raleway', sans-serif;
+  border-bottom: 1px solid var(--color-orange);
+  cursor: pointer;
+}
+
+.container_two {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0.5rem 2.7rem;
+  gap: 1rem;
+  color: var(--color-orange);
+}
+
+.container_two p {
+  font-size: 1.6rem;
+  font-family: 'Raleway', sans-serif;
+  border-bottom: 1px solid var(--color-orange);
+  cursor: pointer;
+}
+
+.container_exit {
+  display: flex;
+  justify-content: center;
+  align-self: stretch;
+  margin-top: 4rem;
+}
+
+.exit {
+  display: inline-block;
+  color: var(--color-orange);
+  font-size: 1.6rem;
+  font-family: 'Raleway', sans-serif;
+  border-bottom: 1px solid var(--color-orange);
+  cursor: pointer;
+}

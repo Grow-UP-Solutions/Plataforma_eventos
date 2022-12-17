@@ -124,7 +124,6 @@ const Cart = () => {
     setCodigo(e.target.value);
   };
 
-  
   //   e.preventDefault();
 
   //   for (let c = 0; c < carrito.length; c++) {
@@ -190,44 +189,44 @@ const Cart = () => {
     for (let c = 0; c < carrito.length; c++) {
       if (carrito[c].idDate === id) {
         for (let d = 0; d < currentDate[0].codigos.length; d++) {
-          if (currentDate[0].codigos[d].codigo === codigo && currentDate[0].codigos[d].cantidad > 0 ) {
-              const descValor = currentDate[0].codigos[d].descuento; //10%
-              carrito[c].codigoDescuento = codigo;
-              carrito[c].codigoCorrecto = true;
-  
-              const valorDescuento = (descValor * currentDate[0].price) / 100; //$1000
-              carrito[c].unit_disc = valorDescuento;
-  
-              const valorDescuentoCupos = valorDescuento * carrito[c].quantity; //$2000
-  
-              carrito[c].descuento = valorDescuentoCupos; //$2000
-  
-              //const unitDic = carrito[c].unit_price - valorDescuento;
-              carrito[c].unit_price = carrito[c].unit_price - valorDescuento;
-              carrito[c].priceOrg = carrito[c].priceOrg - valorDescuento;
-              carrito[c].ganancias = carrito[c].ganancias - valorDescuentoCupos;
-  
-              setDesc(carrito[c].descuento);
-              return swal({
-                title: 'Codigo Aplicado',
-              });
-            
-          }else if (currentDate[0].codigos[d].codigo === codigo && currentDate[0].codigos[d].cantidad === 0 ){
+          if (currentDate[0].codigos[d].codigo === codigo && currentDate[0].codigos[d].cantidad > 0) {
+            const descValor = currentDate[0].codigos[d].descuento; //10%
+            carrito[c].codigoDescuento = codigo;
+            carrito[c].codigoCorrecto = true;
+
+            const valorDescuento = (descValor * currentDate[0].price) / 100; //$1000
+            carrito[c].unit_disc = valorDescuento;
+
+            const valorDescuentoCupos = valorDescuento * carrito[c].quantity; //$2000
+
+            carrito[c].descuento = valorDescuentoCupos; //$2000
+
+            //const unitDic = carrito[c].unit_price - valorDescuento;
+            carrito[c].unit_price = carrito[c].unit_price - valorDescuento;
+            carrito[c].priceOrg = carrito[c].priceOrg - valorDescuento;
+            carrito[c].ganancias = carrito[c].ganancias - valorDescuentoCupos;
+
+            setDesc(carrito[c].descuento);
+            return swal({
+              title: 'Codigo Aplicado',
+            });
+          } else if (currentDate[0].codigos[d].codigo === codigo && currentDate[0].codigos[d].cantidad === 0) {
             return swal({
               title: 'Ya no hay bonos disponibles para redimir con este código',
             });
           } else if (currentDate[0].codigos[d].codigo !== codigo) {
             const codeResult = await eventsApi.get(`/codeDiscount/getCodeDiscountByCode/${codigo} `);
 
-            if (codeResult.data.codeDiscount.length === 1 && 
-                codeResult.data.codeDiscount[0].isRedimeed === false  && 
-                codeResult.data.codeDiscount[0].value < valorTotal) {
-
-                  return swal({
-                    title: 'manor',
-                    icon: 'warning',
-                    dangerMode: true,
-                  });
+            if (
+              codeResult.data.codeDiscount.length === 1 &&
+              codeResult.data.codeDiscount[0].isRedimeed === false &&
+              codeResult.data.codeDiscount[0].value < valorTotal
+            ) {
+              return swal({
+                title: 'manor',
+                icon: 'warning',
+                dangerMode: true,
+              });
 
               // carrito[c].codigoReferido = codeResult.data.codeDiscount[0].code;
               // carrito[c].codigoCorrecto = true;
@@ -248,32 +247,35 @@ const Cart = () => {
               // return swal({
               //   title: 'Codigo Aplicado',
               // });
-            } else if(
-              codeResult.data.codeDiscount.length === 1 && 
-              codeResult.data.codeDiscount[0].isRedimeed === false && 
-              codeResult.data.codeDiscount[0].value >valorTotal  ){
-                return swal({
-                  title: `El valor del código de descuento ingresado es $${new Intl.NumberFormat('de-DE').format(codeResult.data.codeDiscount[0].value)} 
-                  y el costo del evento es de $${new Intl.NumberFormat('de-DE').format(valorTotal)}. Si procedes el excedente se perderá`,
-                  icon: 'warning',
-                  buttons: ['Cancelar acción', 'Continuar'],
-                  dangerMode: true,
-                }).then((continuar) => {
-                  if (continuar){
-                    
-                    return swal({
-                      title: 'si',
-                    })
-                  }
-                })
-            }else if(
-              codeResult.data.codeDiscount.length === 1 && 
+            } else if (
+              codeResult.data.codeDiscount.length === 1 &&
+              codeResult.data.codeDiscount[0].isRedimeed === false &&
+              codeResult.data.codeDiscount[0].value > valorTotal
+            ) {
+              return swal({
+                title: `El valor del código de descuento ingresado es $${new Intl.NumberFormat('de-DE').format(
+                  codeResult.data.codeDiscount[0].value
+                )} 
+                  y el costo del evento es de $${new Intl.NumberFormat('de-DE').format(
+                    valorTotal
+                  )}. Si procedes el excedente se perderá`,
+                icon: 'warning',
+                buttons: ['Cancelar acción', 'Continuar'],
+                dangerMode: true,
+              }).then((continuar) => {
+                if (continuar) {
+                  return swal({
+                    title: 'si',
+                  });
+                }
+              });
+            } else if (
+              codeResult.data.codeDiscount.length === 1 &&
               codeResult.data.codeDiscount[0].isRedimeed === true
-            ){
+            ) {
               return swal({
                 title: 'Codigo no disponible',
               });
-
             } else {
               carrito[c].codigoCorrecto = false;
               return swal({
@@ -363,84 +365,79 @@ const Cart = () => {
     });
   }
 
-//---SUBMIT---//
-
-
+  //---SUBMIT---//
 
   //---SUBMIT---//
 
-  const [acepted, setAcepted] = useState(false)
+  const [acepted, setAcepted] = useState(false);
 
   const handleChangeCehck = () => {
-    setAcepted(true)
-  }
+    setAcepted(true);
+  };
 
-
- 
   async function handleSubmit(e) {
     e.preventDefault();
 
-    if(acepted){
+    if (acepted) {
+      const costos = administracion + iva;
+      const ganancia = [];
+      const f = [];
+      const cod = [];
 
-    const costos = administracion + iva;
-    const ganancia = [];
-    const f = [];
-    const cod = [];
+      for (let i = 0; i < carrito.length; i++) {
+        const costoCarrito = costos / carrito.length;
 
-    for (let i = 0; i < carrito.length; i++) {
-      const costoCarrito = costos / carrito.length;
+        carrito[i].costos = costoCarrito / carrito[i].quantity;
+        carrito[i].unit_price = carrito[i].price + carrito[i].costos;
 
-      carrito[i].costos = costoCarrito / carrito[i].quantity;
-      carrito[i].unit_price = carrito[i].price + carrito[i].costos;
+        ganancia.push(carrito[i].ganancias);
 
-      ganancia.push(carrito[i].ganancias);
+        const d = {
+          title: eventDetail.title,
+          quantity: carrito[i].quantity,
+          unit_price: Math.trunc(carrito[i].unit_price),
+          id: carrito[i].idDate,
+          ganancias: carrito[i].ganancias,
+          codigoDescuento: carrito[i].codigoDescuento || null,
+          codigoUsuario: carrito[i].codigoReferido || null,
+        };
 
-      const d = {
-        title: eventDetail.title,
-        quantity: carrito[i].quantity,
-        unit_price: Math.trunc(carrito[i].unit_price),
-        id: carrito[i].idDate,
-        ganancias: carrito[i].ganancias,
-        codigoDescuento: carrito[i].codigoDescuento || null,
-        codigoUsuario: carrito[i].codigoReferido || null,
+        f.push(d);
+
+        const c = carrito[i].codigoDescuento;
+        cod.push(c);
+
+        setCode([
+          {
+            idEvent: eventDetail._id,
+            idDate: carrito[i].idDate,
+            code: carrito[i].codigoDescuento,
+          },
+        ]);
+      }
+
+      const gananciaTotalOrg = ganancia.reduce((a, b) => a + b);
+
+      const payload = {
+        idUser: user.uid,
+        idEvent: eventDetail._id,
+        ganancia: gananciaTotalOrg,
+        dates: f,
       };
 
-      f.push(d);
+      console.log('payload', payload);
 
-      const c = carrito[i].codigoDescuento;
-      cod.push(c);
+      const json = await eventsApi.post('/mercadoPago/orden', payload);
+      console.log('res:', json.data);
 
-      setCode([
-        {
-          idEvent: eventDetail._id,
-          idDate: carrito[i].idDate,
-          code: carrito[i].codigoDescuento,
-        },
-      ]);
-    }
-
-    const gananciaTotalOrg = ganancia.reduce((a, b) => a + b);
-
-    const payload = {
-      idUser: user.uid,
-      idEvent: eventDetail._id,
-      ganancia: gananciaTotalOrg,
-      dates: f,
-    };
-
-    console.log('payload', payload);
-
-    const json = await eventsApi.post('/mercadoPago/orden', payload);
-    console.log('res:', json.data);
-
-    window.location.assign(json.data.init_point);
-    }else{
+      window.location.assign(json.data.init_point);
+    } else {
       return swal({
         title: 'Debe haceptar el ACUERDO DE EXONERACIÓN DE RESPONSABILIDAD LEGAL (USUARIO) ',
         icon: 'warning',
         buttons: ['Continuar'],
         dangerMode: true,
-      })
+      });
     }
   }
 
@@ -685,7 +682,9 @@ const Cart = () => {
                   </div>
                   <div className={styles.detailsBuy}>
                     <p>Descuento</p>
-                    <span className={styles.detailDiscount}>-${new Intl.NumberFormat('de-DE').format(descuentoTotal)}</span>
+                    <span className={styles.detailDiscount}>
+                      -${new Intl.NumberFormat('de-DE').format(descuentoTotal)}
+                    </span>
                   </div>
                   <div className={styles.detailsBuy}>
                     <p>Administración</p>
@@ -708,17 +707,32 @@ const Cart = () => {
                     class={styles.checkBox}
                     value={acepted}
                     defaultChecked={false}
-                    onChange = {handleChangeCehck}
+                    onChange={handleChangeCehck}
                   ></input>
-                  <label className={styles.textTerms}>Confirmo que he leído el ACUERDO DE EXONERACIÓN DE RESPONSABILIDAD LEGAL (USUARIO). <a className={styles.enlace} href="/seguridad" target="_blank">Leer aqui</a> </label>
+                  <label className={styles.textTerms}>
+                    Confirmo que he leído el ACUERDO DE EXONERACIÓN DE RESPONSABILIDAD LEGAL (USUARIO).{' '}
+                    <a className={styles.enlace} href='/seguridad' target='_blank'>
+                      Leer aqui
+                    </a>{' '}
+                  </label>
                 </div>
 
-                <div className={styles.containerTerm} >
+                <div className={styles.containerTerm}>
                   <p className={styles.textTerms}>
-                    Al hacer clic en ‘Pagar,’ confirmas que has leído y aceptas la <a className={styles.enlace}  href="/privacidad" target="_blank">Politica de Privacidad</a>, 
-                    la <a className={styles.enlace} href="/seguridad" target="_blank">Politica de Seguridad</a> 
-                    y los <a className={styles.enlace}  href="/terminos" target="_blank">Termino y Condiciones</a> de LO QUE QUIERO HACER S.A.S. También confirmas que eres mayor
-                    de edad y que aceptas ser contactado por Nosotros en relación a los eventos que compres.
+                    Al hacer clic en ‘Pagar,’ confirmas que has leído y aceptas la{' '}
+                    <a className={styles.enlace} href='/docs/privacidad/usuario' target='_blank'>
+                      Politica de Privacidad
+                    </a>
+                    , la{' '}
+                    <a className={styles.enlace} href='/docs/seguridad/usuario' target='_blank'>
+                      Politica de Seguridad&nbsp;
+                    </a>
+                    y los{' '}
+                    <a className={styles.enlace} href='/docs/terminos-condiciones/usuario' target='_blank'>
+                      Termino y Condiciones&nbsp;
+                    </a>{' '}
+                    de LO QUE QUIERO HACER S.A.S. También confirmas que eres mayor de edad y que aceptas ser contactado
+                    por Nosotros en relación a los eventos que compres.
                   </p>
                 </div>
 
@@ -815,13 +829,19 @@ const Cart = () => {
           </div>
 
           <p className={styles.textTerms}>
-            Al hacer clic en ‘Pagar’ confirma que ha leído y entendido nuestros
-            <a href="/user/perfil/datos" target="_blank">Términos y Condiciones.</a>,
-            Notas legales de <a href="/user/perfil/datos" target="_blank">privacidad</a>
-            y <a href="/user/perfil/datos" target="_blank">Seguridad</a>.
-            
-            
-    
+            Al hacer clic en ‘Pagar’ confirma que ha leído y entendido nuestros&nbsp;
+            <a href='/docs/terminos-condiciones/usuarios' target='_blank'>
+              Términos y Condiciones.
+            </a>
+            , Notas legales de{' '}
+            <a href='/docs/privacidad/usuarios' target='_blank'>
+              Privacidad&nbsp;
+            </a>
+            y &nbsp;
+            <a href='/docs/seguridad/usuarios' target='_blank'>
+              Seguridad
+            </a>
+            .
           </p>
 
           <div className={styles.containerResponsiveBtnPagar}>

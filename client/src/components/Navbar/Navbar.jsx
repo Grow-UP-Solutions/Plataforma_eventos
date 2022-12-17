@@ -146,7 +146,7 @@ const Navbar = ({ upper }) => {
                 <li className={style.itemMenu}>
                   <button
                     className={style.btnOrganizeEvent}
-                    onClick={() => handleClickUserOptionMenu('/oganiza-un-evento')}
+                    onClick={() => handleClickUserOptionMenu('/organiza-un-evento')}
                   >
                     Organiza un evento
                   </button>
@@ -273,7 +273,7 @@ const Navbar = ({ upper }) => {
 
           <div className={style.containerBtnOrganizer}>
             {user.organizer ? (
-              <Link to='/oganiza-un-evento'>
+              <Link to='/organiza-un-evento'>
                 <p className={`${logged ? style.buttonOrganizar : ''}`}>Organiza un evento</p>
               </Link>
             ) : userData && userData.isRejected === true ? (
@@ -393,11 +393,7 @@ const Navbar = ({ upper }) => {
                 {menuOpen && (
                   <>
                     <div className={style.containerProfileMenu} ref={menuRef}>
-                      {userData.isOrganizer === true ? (
-                        <Link to='/usuario/mis-eventos'>Mis eventos</Link>
-                      ) : (
-                        ''
-                      )}
+                      {userData.isOrganizer === true ? <Link to='/usuario/mis-eventos'>Mis eventos</Link> : ''}
 
                       <Link to='/usuario/perfil'>
                         <a>Perfil</a>
@@ -405,7 +401,7 @@ const Navbar = ({ upper }) => {
                       <Link className={style.navMyListMenu} to='/usuario/mi-lista'>
                         Mi lista
                       </Link>
-                      <Link to='/oganiza-un-evento' className={style.buttonOrganizarMenu}>
+                      <Link to='/organiza-un-evento' className={style.buttonOrganizarMenu}>
                         Organiza un evento
                       </Link>
                       <Link to='/usuario/plan-de-referidos'>Plan de referidos</Link>

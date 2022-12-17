@@ -85,10 +85,19 @@
 .parrafo {
   color: rgba(112, 112, 112, 255);
   font-style: italic;
-  padding: 1rem;
+  padding: 1rem 0;
   letter-spacing: 1px;
   line-height: 1.5rem;
   font-size: 1.3rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid transparent;
+}
+
+.parrafo button {
+  font-size: inherit;
+  font-style: inherit;
+  color: var(--color-orange);
 }
 
 .containerBtnSolitudNewDate {
@@ -367,12 +376,69 @@
   }
 }
 
-.successSolicitudNewDate {
-  margin-top: 2rem;
+.overlayResultNewDate {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+
+  top: 0;
+  left: 0;
+
+  display: grid;
+  place-items: center;
+  background-color: rgba(0, 0, 0, 0.2);
+
+  z-index: 99999999;
+}
+
+.containerResultNewDate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem;
+  background-color: white;
+  border-radius: 1rem;
+  width: 45rem;
+
+  animation: scale 0.5s;
+}
+
+.containerResultNewDate .icon {
+  align-self: flex-end;
+  color: var(--color-grey-2);
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.containerResultNewDate hr {
+  width: 100%;
+  background-color: var(--color-grey-4);
+}
+
+.containerResultNewDate {
+}
+
+.containerResultNewDate h2 {
+  font-size: 2rem;
+  color: var(--color-blue);
   text-align: center;
-  font-size: 1.6rem;
+}
+
+.containerResultNewDate p {
+  font-size: 1.4rem;
+  color: var(--color-grey-2);
+  text-align: center;
+}
+
+.containerResultNewDate button {
+  color: white;
+  font-size: 1.4rem;
   font-weight: bold;
-  color: var(--color-green);
+  padding: 1rem 3rem;
+  border-radius: 2rem;
+  background-color: var(--color-orange);
+  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.1);
 }
 
 .loadingNewDate {
@@ -391,6 +457,20 @@
 
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes scale {
+  0% {
+    transform: scale(0);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
   }
 }
 
@@ -430,12 +510,12 @@
 
 @media screen and (max-width: 756px) {
   .containerMenuBuyEvent {
-    z-index: 999999999999999999999999999999999999999999999999999999999999999999999999999999999999999;
+    z-index: 999999999999999999999999999999999;
   }
   .containerMenuGetDate {
     left: 0%;
     top: -60rem;
-    z-index: 999999999999999999999999999999999999999999999999999999999999999999999999999999999999999;
+    z-index: 9999999999999999999999999999999999;
   }
 
   .containerTitle {
