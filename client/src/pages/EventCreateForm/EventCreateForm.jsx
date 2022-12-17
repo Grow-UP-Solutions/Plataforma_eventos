@@ -942,7 +942,7 @@ const EventCreateForm = () => {
       dangerMode: true,
     }).then((continuar) => {
       if (continuar) {
-        navigate('user/perfil/datos');
+        navigate('/usuario/mis-eventos');
       }
     });
   }
@@ -1802,7 +1802,7 @@ const EventCreateForm = () => {
                                 <label className={styles.subInfoTitle}>Tu ganas por cupo</label>
                                 <div className={styles.labelS}>
                                   <p>$</p>
-                                  <input className={styles.subInfoInput} placeholder={date.gananciaCupo} disabled />
+                                  <input className={styles.subInfoInput} placeholder={new Intl.NumberFormat('de-DE').format(date.gananciaCupo)} disabled />
                                 </div>
                                 <div>
                                   <p className={styles.subInfotxt}>Después de nuestra comisión + IVA</p>
@@ -1817,7 +1817,7 @@ const EventCreateForm = () => {
                                 <label className={styles.subInfoTitle}>Tu ganas por evento</label>
                                 <div className={styles.labelS}>
                                   <p>$</p>
-                                  <input className={styles.subInfoInput} placeholder={date.gananciaEvento} disabled />
+                                  <input className={styles.subInfoInput} placeholder={new Intl.NumberFormat('de-DE').format(date.gananciaEvento)} disabled />
                                 </div>
                                 <div>
                                   <p className={styles.subInfotxt}>
