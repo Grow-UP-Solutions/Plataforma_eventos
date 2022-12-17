@@ -58,12 +58,11 @@ const OrganizerDetails = () => {
 
   useEffect(() => {
     obtenerDatos();
-    obtenerDatosLog();
-  }, []);
-
-  useEffect(() => {
-    obtenerDatosLog();
   }, [user]);
+
+  // useEffect(() => {
+  //   obtenerDatosLog();
+  // }, [user]);
 
   useEffect(() => {
     setConversation({
@@ -77,6 +76,24 @@ const OrganizerDetails = () => {
   const obtenerDatos = async () => {
     const data = await eventsApi.get('/users/' + id);
     const json = data.data;
+
+
+    const eventsUserLog=[]
+
+    for(let i = 0; i < data.data.myEventsCreated.length ; i++){
+      
+      for(let j = 0; j < data.data.myEventsCreated[i].generalBuyers.length ; j++){
+        
+        if( data.data.myEventsCreated[i].generalBuyers[j].buyer=== user.uid){
+          
+          eventsUserLog.push(data.data.myEventsCreated[i])
+        }
+      }
+    }
+
+    
+  
+    
     setNextEvent(json);
     getEffectRatingOrganizer(json.rating);
     setUserDetail({
@@ -85,19 +102,21 @@ const OrganizerDetails = () => {
     setComponent(<AboutOrganizer userDetail={json.descriptionOrganizer} />);
     setStyle('aboutOrganizer');
     setLoad(false);
+    setEventsFromOrg(eventsUserLog)
   };
 
   //Filtrar y ver si hay eventos comprados a este org//
 
-  const obtenerDatosLog = async () => {
+  // const obtenerDatosLog = async () => {
 
-    const dataLog = await eventsApi.get('/users/' + user.uid);
-    const eventsBookedOrg = dataLog.data.myEventsBooked.filter(event => event.organizer === id)
-    setEventsFromOrg(eventsBookedOrg)
+  //   const dataLog = await eventsApi.get('/users/' + user.uid);
+  //   const eventsBookedOrg = dataLog.data.myEventsBooked.filter(event => event.organizer === id)
+  //   setEventsFromOrg(eventsBookedOrg)
+  //   console.log('dataLog.data',dataLog.data)
 
-  }
+  // }
 
-  console.log('eventsFromOrg',eventsFromOrg)
+  
 
   const handleClickMessages = (e) => {
     e.preventDefault();
