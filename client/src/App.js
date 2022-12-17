@@ -86,9 +86,7 @@ function App() {
         <Route path='/noticias' element={<News />} />
         <Route path='/prensa' element={<Press />} />
         <Route path='/empleo/aplicar/:work' element={<WorkWithUsForm />} />
-        <Route path='/privacidad' element={<PanelPrivacy />} />
-        <Route path='/seguridad' element={<PanelPrivacy />} />
-        <Route path='/terminos' element={<PanelPrivacy />} />
+        <Route path='/docs/:section/:typeUser' element={<PanelPrivacy />} />
         <Route path='/resultado-eventos-organizador/:id' element={<EventsOrganizerResult />} />
         <Route path={'/mercadoPago/success'} element={<MercadoPago />} />
         <Route path='/admin/check-solicitud-organizador/:token' element={<CheckSolicitudOrganizer />} />
