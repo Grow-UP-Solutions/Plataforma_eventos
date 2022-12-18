@@ -1329,24 +1329,8 @@ const EventEdit = () => {
         button: 'Completar',
         dangerMode: true,
       });
-    } else if (post.compras > 0 && post.inRevision === false) {
-      swal({
-        title:
-          'Si ya hay Asistentes al evento es importante que le informes de inmediato los cambios que consideres podrían afectar su participación ',
-        buttons: true,
-        dangerMode: true,
-      }).then((publicar) => {
-        if (publicar) {
-          dispatch(putEvent(post, eventId));
-          swal('Tu evento ha sido publicado ', {
-            icon: 'success',
-          });
-          navigate('/usuario/mis-eventos')
-        }
-      });
-    } else if (eventDetails === post) {
-      swal('No has hecho ninguna edición ');
     } else if (post.inRevision === true) {
+      console.log('1')
       swal({
         title: 'Este evento y sus fechas será publicado  ',
         buttons: true,
@@ -1362,7 +1346,24 @@ const EventEdit = () => {
           );
         }
       });
-    } else if (post.compras === 0 && post.inRevision === false) {
+    }else if (post.compras > 0 && post.inRevision === false) {
+      console.log('2')
+      swal({
+        title:
+          'Si ya hay Asistentes al evento es importante que le informes de inmediato los cambios que consideres podrían afectar su participación ',
+        buttons: true,
+        dangerMode: true,
+      }).then((publicar) => {
+        if (publicar) {
+          dispatch(putEvent(post, eventId));
+          swal('Tu evento ha sido publicado ', {
+            icon: 'success',
+          });
+          navigate('/usuario/mis-eventos')
+        }
+      });
+    }  else if (post.compras === 0 && post.inRevision === false) {
+      console.log('3')
       swal({
         title: 'Este evento y sus fechas será publicado  ',
         buttons: true,
@@ -1376,7 +1377,10 @@ const EventEdit = () => {
           navigate('/usuario/mis-eventos')
         }
       });
-    }
+    }else if (eventDetails === post) {
+      console.log('4')
+      swal('No has hecho ninguna edición ');
+    } 
   }
   return (
     <div>
@@ -1384,7 +1388,7 @@ const EventEdit = () => {
         <div>
          <div ref={ref}>
           <form  className='containerSwiper' onSubmit={(e) => handleSubmit(e)}>
-          <Swiper
+          {/* <Swiper
                 slidesPerView={1}
                 direction={'vertical'}
                 navigation={true}
@@ -1392,8 +1396,8 @@ const EventEdit = () => {
                 modules={[Pagination, Navigation]}
                 className='swiper'
                 autoHeight={true}
-              >
-             <SwiperSlide>
+              > */}
+             {/* <SwiperSlide> */}
               {/* SECTION 1: Nombre del Evento */}
               <div className={styles.section1}>
                 {/* linea vertical */}
@@ -1462,9 +1466,9 @@ const EventEdit = () => {
                   {errors.title ? <p className={styles.errors}>{errors.title}</p> : null}
                 </div>
               </div>
-              </SwiperSlide>
+              {/* </SwiperSlide> */}
 
-              <SwiperSlide>
+              {/* <SwiperSlide> */}
               {/* SECTION 2: Categorias */}
               <div className={styles.section2}>
                 {/* linea vertical */}
@@ -1565,9 +1569,9 @@ const EventEdit = () => {
                   )}
                 </div>
               </div>
-              </SwiperSlide>
+              {/* </SwiperSlide> */}
 
-              <SwiperSlide>
+              {/* <SwiperSlide> */}
               {/* SECTION 3: Descripcion */}
               <div className={styles.section3}>
                 {/* linea vertical */}
@@ -1683,9 +1687,9 @@ const EventEdit = () => {
                   </div>
                 </div>
               </div>
-              </SwiperSlide>
+              {/* </SwiperSlide> */}
 
-              <SwiperSlide>
+              {/* <SwiperSlide> */}
               {/* SECTION 4: Pictures */}
               <div className={styles.section4}>
                 {/* linea vertical */}
@@ -1797,9 +1801,9 @@ const EventEdit = () => {
                   ) : null}
                 </div>
               </div>
-              </SwiperSlide>
+              {/* </SwiperSlide> */}
 
-              <SwiperSlide>
+              {/* <SwiperSlide> */}
               {/* SECTION 5: Ubicacion */}
               <div className={styles.section5}>
                 {/* linea vertical */}
@@ -2053,9 +2057,9 @@ const EventEdit = () => {
                   {errors.specialRequires ? <p className={styles.errors}>{errors.specialRequires}</p> : null}
                 </div>
               </div>
-              </SwiperSlide>
+              {/* </SwiperSlide> */}
 
-              <SwiperSlide>
+              {/* <SwiperSlide> */}
               {/*SECTION 6: Dates */}
               <div className={styles.section6}>
                 {/* linea vertical */}
@@ -2813,9 +2817,9 @@ const EventEdit = () => {
                   </div>
                 </div>
               </div>
-              </SwiperSlide>
+              {/* </SwiperSlide> */}
             
-           </Swiper>
+           {/* </Swiper> */}
           </form>
          </div>
         </div>

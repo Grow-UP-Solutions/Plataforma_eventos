@@ -2,6 +2,12 @@ const { Router } = require('express');
 const EventFunctionDb = require('../../models/util/functionDB/event/index.event.js');
 const UsersFunctionDb = require('../../models/util/functionDB/users/index.users.js');
 const { sendEmailToReportEvent } = require('../../models/util/mailer/mailToReportEvent.js');
+const { eventInRevisionBuys } = require('../../models/util/mailer/eventInRevisionBuys.js')
+const { dateEventInRevisionBuys } = require('../../models/util/mailer/dateEventInRevisionBuys.js')
+const { dateEventInRevisionBuysAdmin } = require('../../models/util/mailer/dateEventInRevisionBuysAdmin.js')
+const { eventInRevisionBuysAdmin } = require('../../models/util/mailer/eventInRevisionBuysAdmin.js')
+const { editEventInRevisionAdmin } = require('../../models/util/mailer/editEventInRevisionAdmin.js')
+const { editEventAdmin } = require('../../models/util/mailer/editEventAdmin.js')
 const {
   getAllEvents,
   createEvents,
@@ -9,6 +15,7 @@ const {
   createOpinionsEvents,
   getOneEvent,
 } = require('../services/events.services.js');
+
 
 const router = Router();
 
@@ -97,7 +104,7 @@ router.post('/opinionsGenerate/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const comments = req.body;
-    console.log(comments);
+    
     const createOpinions = await createOpinionsEvents(id, comments);
     return res.status(200).json(createOpinions);
   } catch (error) {
@@ -108,7 +115,7 @@ router.post('/opinionsGenerate/:id', async (req, res) => {
 router.post('/:idEvent/payment/:idDate', async (req, res) => {
   const { idEvent, idDate } = req.params;
   const { codigoDescuento } = req.query;
-  console.log('*/*/', codigoDescuento);
+  
   try {
     const eventSoldOut = await paymentEvents(idEvent, idDate, codigoDescuento);
 
@@ -122,8 +129,14 @@ router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
 
-    const newEvent = req.body;
+    console.log('putid')
 
+    const newEvent = req.body;
+    const user = await UsersFunctionDb.oneUser(newEvent.organizer);
+    const event = await getOneEvent(id);
+
+    newEvent.inRevision === true ? editEventInRevisionAdmin(newEvente,user) : editEventAdmin(newEvent,event,user)
+    
     const newEvente = await eventsUpdate(id, newEvent);
 
     return res.json(newEvente);
@@ -172,10 +185,13 @@ router.put('/inRevision/acceptOrReject', async (req, res) => {
 
   try {
     const event = await EventFunctionDb.oneEvent(idEvent);
+    const user = await UsersFunctionDb.oneUser(event.organizer);
 
     if (idDate) {
-      console.log('Entre al if principal');
+     
       if (event.dates.length === 1) {
+        event.inRevision === false && event.sells > 0 ? eventInRevisionBuys(event , user) : ''
+        event.inRevision === false  ? eventInRevisionBuysAdmin(event , user) : ''
         event.inRevision = !event.inRevision;
         event.dates[0].inRevision = !event.dates[0].inRevision;
       } else {
@@ -183,7 +199,9 @@ router.put('/inRevision/acceptOrReject', async (req, res) => {
 
         auxDates = auxDates.map((date) => {
           if (idDate === date._id.toString()) {
-            console.log('entre al if de fecha');
+           
+            date.inRevision === false && date.sells > 0 ? dateEventInRevisionBuys(event , user , date) : ''
+            date.inRevision === false ? dateEventInRevisionBuysAdmin(event , user , date) : ''
             date.inRevision = !date.inRevision;
           }
           return date;
@@ -202,6 +220,9 @@ router.put('/inRevision/acceptOrReject', async (req, res) => {
         event.dates.push(...auxDates);
       }
     } else {
+
+      event.inRevision === false && event.sells > 0 ? eventInRevisionBuys(event , user)   : ''
+      event.inRevision === false ? eventInRevisionBuysAdmin(event , user)   : ''
       event.inRevision = !event.inRevision;
 
       let auxDates = [...event.dates];
@@ -213,6 +234,8 @@ router.put('/inRevision/acceptOrReject', async (req, res) => {
 
       event.dates = [];
       event.dates.push(...auxDates);
+      
+      
     }
 
     event.save();
