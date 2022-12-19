@@ -1,6 +1,6 @@
 const { OneCategoryDb } = require('../../models/util/functionDB/CategoryDb.js');
 const { eventCreateOrganizer } = require('../../models/util/mailer/eventeCreateOrganizer.js');
-const { eventCreateAdministrador } = require('../../models/util/mailer/Administrador/eventCreateAdministrador.js');
+const { eventCreateAdministrador } = require('../../models/util/mailer/eventCreateAdministrador.js');
 const { eventUpdateOrganizer } = require('../../models/util/mailer/eventUpdateOrganizer.js')
 const { eventUpdateAdministrador } = require('../../models/util/mailer/eventUpdateAdministrador.js')
 const EventFunctionDb = require('../../models/util/functionDB/event/index.event.js');
@@ -101,6 +101,8 @@ async function createOpinionsEvents(id, opinions) {
     throw new Error(error.message);
   }
 }
+
+
 
 
 

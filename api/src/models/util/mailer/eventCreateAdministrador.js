@@ -24,7 +24,7 @@ const eventCreateAdministrador = async (events, organizer) => {
   let mail_options = {
     from: 'Lo quiero hacer',
     to: process.env.MAIL_CLIENT,
-    subject: `NUEVO - Publicado por ${organizer.firstName} ${organizer.lastName} ${idEvent}`,
+    subject: `NUEVO - Publicado por ${organizer.firstName} ${organizer.lastName} REF: ${idEvent}`,
     html: `<!DOCTYPE html>
     <html lang="en">
       <head>

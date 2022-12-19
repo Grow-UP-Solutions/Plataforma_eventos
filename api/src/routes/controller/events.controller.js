@@ -12,7 +12,8 @@ const { eventCancelBuyers } = require('../../models/util/mailer/Compradores/even
 const { dateCanceltoBuyers } = require('../../models/util/mailer/Compradores/dateCanceltoBuyers.js')
 const { eventCancelToAdminbyOrg } = require('../../models/util/mailer/Administrador/eventCancelToAdminbyOrg.js')
 const { dateCanceltoAdminbyOrg } = require('../../models/util/mailer/Administrador/dateCanceltoAdminbyOrg.js')
-
+const { dateDeleteToBuyers } = require('../../models/util/mailer/Compradores/dateDeleteToBuyers.js')
+const { dateDeleteToAdmin } = require('../../models/util/mailer/Administrador/dateDeleteToAdmin.js')
 
 
 
@@ -23,6 +24,7 @@ const {
   eventsUpdate,
   createOpinionsEvents,
   getOneEvent,
+  
 } = require('../services/events.services.js');
 
 
@@ -160,6 +162,16 @@ router.put('/:id', async (req, res) => {
       }
     }
 
+
+    console.log('newEvent.dateDelete.length',newEvent.dateDelete.length)
+
+    if(newEvent.dateDelete.length){
+      for(let i = 0 ; i < newEvent.dateDelete.length; i++ ){
+        dateDeleteToBuyers(event , newEvent.dateDelete[i] )
+        dateDeleteToAdmin(event , user , newEvent.dateDelete[i] )
+      }
+    }
+
     //mails para avisar evento editado
     if(newEvent.inRevision === false && newEvent.sendEmail === false ){
       editEventToAdmin(newEvent , user , event)
@@ -277,5 +289,9 @@ router.put('/inRevision/acceptOrReject', async (req, res) => {
     res.status(404).json({ message: error.message });
   }
 });
+
+
+
+
 
 module.exports = router;

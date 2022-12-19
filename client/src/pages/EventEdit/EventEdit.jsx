@@ -70,7 +70,7 @@ const EventEdit = () => {
   const allEvents = [...eventos];
 
   const eventDetails = allEvents.find((e) => e._id === eventId);
-  console.log('eventDetails:', eventDetails);
+ 
 
   const [post, setPost] = useState({
     idOrganizer: '',
@@ -102,6 +102,7 @@ const EventEdit = () => {
         gananciaEvento: '',
         dateFormated: '',
         inRevision: '',
+        sendEmail:'',
         codigos: [
           {
             codigo: '',
@@ -115,16 +116,25 @@ const EventEdit = () => {
         ],
       },
     ],
+    dateDelete:[],
     isPublic: '',
     inRevision: '',
-    compras: 10,
+    sendEmail:'',
+    opinions:'',
+    notificaciones:'',
+    rating:'',
+    payedEarnings:'',
+    pendingEarnings:'',
+    overallEarnings:'',
+    generalBuyers:[],
+    sells:'',
+    idEvent:''
   });
 
   useEffect(() => {
-    console.log('entre al effect:');
+   
     if (eventDetails) {
-      console.log('entre al if:');
-      console.log('eventDetails en effect', eventDetails);
+     
       const auxCategories = eventDetails.categories.map((categorie) => categorie.name);
       setPost({
         ...post,
@@ -145,13 +155,23 @@ const EventEdit = () => {
         dates: eventDetails.dates,
         isPublic: eventDetails.isPublic,
         inRevision: eventDetails.inRevision,
-        compras: 10,
+        sendEmail: eventDetails.sendEmail,
+        dateDelete: eventDetails.dateDelete,
+        opinions: eventDetails.opinions,
+        notificaciones: eventDetails.notificaciones,
+        rating:eventDetails.notificaciones,
+        payedEarnings:eventDetails.payedEarnings,
+        pendingEarnings:eventDetails.pendingEarnings,
+        overallEarnings:eventDetails.overallEarnings,
+        generalBuyers:eventDetails.generalBuyers,
+        sells:eventDetails.sells,
+        idEvent:eventDetails.idEvent
       });
-      console.log('post', post);
+     
     }
   }, [eventDetails]);
 
-  console.log('post despues effect', post);
+ 
 
   //              para comparar            //
   const allEventsCopy = useSelector((state) => state.eventsCopy);
@@ -884,9 +904,7 @@ const EventEdit = () => {
     }
   };
 
-  // const removeFromPublic = (e,i,id)=>{
-  //   console.log('2')
-  // }
+ 
   let removeFromPublic = (e, i, id) => {
     e.preventDefault();
     let newFechas = [...post.dates];
@@ -941,6 +959,7 @@ const EventEdit = () => {
         dangerMode: true,
       }).then((result) => {
         if (result.isConfirmed) {
+          newFechas[i].sendEmail = true;
           setPost({
             ...post,
             dates: newFechas,
@@ -1032,6 +1051,7 @@ const EventEdit = () => {
   let removeFormFields = (e, i, id) => {
     e.preventDefault();
     let newFechas = [...post.dates];
+    
     newFechas.splice(i, 1);
     for (let i = 0; i < post.dates.length; i++) {
       if (post.dates[i]._id === id && post.dates[i].sells === 0) {
@@ -1062,8 +1082,17 @@ const EventEdit = () => {
           dangerMode: true,
         }).then((result) => {
           if (result.isConfirmed) {
+            let dateDeletes = {
+             id: post.dates[i]._id,
+             dateFormated : post.dates[i].dateFormated,
+             start: post.dates[i].start,
+             end: post.dates[i].end,
+            }
+            console.log('dateDeletes')
             setPost({
               ...post,
+              sendEmail: true,
+              dateDelete :[...post.dateDelete , dateDeletes],
               dates: newFechas,
             });
           }
@@ -1317,15 +1346,21 @@ const EventEdit = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (Object.values(errors).length > 0) {
-      setFailedSubmit(true);
-      return swal({
-        title: 'Completa los campos faltantes',
-        icon: 'warning',
-        button: 'Completar',
-        dangerMode: true,
-      });
-    } else if (post.compras > 0 && post.inRevision === false) {
+    console.log('cambios')
+    
+    
+    // if (Object.values(errors).length > 0) {
+    //   console.log('0')
+    //   setFailedSubmit(true);
+    //   return swal({
+    //     title: 'Completa los campos faltantes',
+    //     icon: 'warning',
+    //     button: 'Completar',
+    //     dangerMode: true,
+    //   });
+    // }  
+    if (post.sells > 0 && post.inRevision === false) {
+      console.log('2')
       swal({
         title:
           'Si ya hay Asistentes al evento es importante que le informes de inmediato los cambios que consideres podrían afectar su participación ',
@@ -1337,11 +1372,24 @@ const EventEdit = () => {
           swal('Tu evento ha sido publicado ', {
             icon: 'success',
           });
+          navigate('/usuario/mis-eventos')
+        }
+      });
+    }  else if (post.sells === 0 && post.inRevision === false) {
+      console.log('3')
+      swal({
+        title: 'Este evento y sus fechas será publicado  ',
+        buttons: true,
+        dangerMode: true,
+      }).then((publicar) => {
+        if (publicar) {
+          dispatch(postEvent(post, id));
+          swal('Tu evento ha sido publicado ', {
+            icon: 'success',
+          });
           navigate('/usuario/mis-eventos');
         }
       });
-    } else if (eventDetails === post) {
-      swal('No has hecho ninguna edición ');
     } else if (post.inRevision === true) {
       console.log('1')
       swal({
@@ -1359,39 +1407,13 @@ const EventEdit = () => {
           );
         }
       });
-    }else if (post.compras > 0 && post.inRevision === false) {
-      console.log('2')
-      swal({
-        title:
-          'Si ya hay Asistentes al evento es importante que le informes de inmediato los cambios que consideres podrían afectar su participación ',
-        buttons: true,
-        dangerMode: true,
-      }).then((publicar) => {
-        if (publicar) {
-          dispatch(putEvent(post, eventId));
-          swal('Tu evento ha sido publicado ', {
-            icon: 'success',
-          });
-          navigate('/usuario/mis-eventos')
-        }
-      });
-    }  else if (post.compras === 0 && post.inRevision === false) {
-      console.log('3')
-      swal({
-        title: 'Este evento y sus fechas será publicado  ',
-        buttons: true,
-        dangerMode: true,
-      }).then((publicar) => {
-        if (publicar) {
-          dispatch(postEvent(post, id));
-          swal('Tu evento ha sido publicado ', {
-            icon: 'success',
-          });
-          navigate('/usuario/mis-eventos');
-        }
-      });
+    }  else if (eventDetails === post) {
+      console.log('4')
+      swal('No has hecho ninguna edición ');
     }
-  };
+  }
+
+
   return (
     <div>
       <div className={`${styles.container} container`}>
