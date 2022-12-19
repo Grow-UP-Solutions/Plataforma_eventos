@@ -12,27 +12,32 @@ const apiFaqUsuario = [
   {
     id: 1,
     title: 'Aqui va una pregunta sobre el tema Usuario',
-    text: 'Con más de 15 años de experiencia en el rubro, nos especializamos en el diseño y ejecución de Exposiciones, Ferias, Congresos y Eventos Corporativos. Trabajamos en conjunto para generar acciones de marketing internas y externas; potenciando las marcas, generando vínculos y reforzando las relaciones internas. Estamos para ayudarte a conectar con tus actuales clientes, generar nuevos y atraer a los potenciales. Logrando una experiencia única, trabajando en equipo y en constante comunicación para definir los objetivos y tener una ruta clara y específica.'
+    text:
+      'Con más de 15 años de experiencia en el rubro, nos especializamos en el diseño y ejecución de Exposiciones, Ferias, Congresos y Eventos Corporativos. Trabajamos en conjunto para generar acciones de marketing internas y externas; potenciando las marcas, generando vínculos y reforzando las relaciones internas. Estamos para ayudarte a conectar con tus actuales clientes, generar nuevos y atraer a los potenciales. Logrando una experiencia única, trabajando en equipo y en constante comunicación para definir los objetivos y tener una ruta clara y específica.',
   },
   {
     id: 2,
     title: 'Aqui va una pregunta sobre el tema Usuario',
-    text: 'Realizamos una propuesta totalmente personalizada y ajustada a cualquier presupuesto para que quienes estén interesados puedan contratar nuestros servicios. Seré tu socia, asesora y representante, negociando y/o intermediando con los proveedores para poder conseguir una disminución considerable en el presupuesto inicial. Imaginalo, contalo…. disfrutalo!.'
+    text:
+      'Realizamos una propuesta totalmente personalizada y ajustada a cualquier presupuesto para que quienes estén interesados puedan contratar nuestros servicios. Seré tu socia, asesora y representante, negociando y/o intermediando con los proveedores para poder conseguir una disminución considerable en el presupuesto inicial. Imaginalo, contalo…. disfrutalo!.',
   },
   {
     id: 3,
     title: 'Aqui va una pregunta sobre el tema Usuario',
-    text: 'Somos la mejor garantía de éxito, sin nervios, sin preocupaciones, tanto si necesitas ayuda desde el principio de la organización o bien para el día del evento.  No importa si la reunión es pequeña o grande, tu evento merece ser cuidado de forma especial con detalles que hagan que sea único. Mi secreto: Distinción, ilusión, conocimiento con una pizca de elegancia y sutileza.'
+    text:
+      'Somos la mejor garantía de éxito, sin nervios, sin preocupaciones, tanto si necesitas ayuda desde el principio de la organización o bien para el día del evento.  No importa si la reunión es pequeña o grande, tu evento merece ser cuidado de forma especial con detalles que hagan que sea único. Mi secreto: Distinción, ilusión, conocimiento con una pizca de elegancia y sutileza.',
   },
   {
     id: 4,
     title: 'Aqui va una pregunta sobre el tema Usuario',
-    text: 'En base a esto F&D realiza una propuesta completamente personalizada y ajustada a tu presupuesto. El mismo día del evento, estamos ahí ayudando a que todo salga perfecto. Para que vos disfrutes de este día a pleno, sin preocuparte por algún imprevisto. Seguro estaras encantado con nosotros y obtendras lo que venias a buscar.'
+    text:
+      'En base a esto F&D realiza una propuesta completamente personalizada y ajustada a tu presupuesto. El mismo día del evento, estamos ahí ayudando a que todo salga perfecto. Para que vos disfrutes de este día a pleno, sin preocuparte por algún imprevisto. Seguro estaras encantado con nosotros y obtendras lo que venias a buscar.',
   },
   {
     id: 5,
     title: 'Aqui va una pregunta sobre el tema Usuario',
-    text: 'Tras un primer contacto telefónico o vía mail, concertamos una entrevista donde, nos expones tu idea, tus necesidades, que querés comunicar y presupuesto. Una vez aprobada la propuesta continuamos nuestro trabajo contactando a los proveedores seleccionados y cuidando hasta el último detalle que compone tu evento.'
+    text:
+      'Tras un primer contacto telefónico o vía mail, concertamos una entrevista donde, nos expones tu idea, tus necesidades, que querés comunicar y presupuesto. Una vez aprobada la propuesta continuamos nuestro trabajo contactando a los proveedores seleccionados y cuidando hasta el último detalle que compone tu evento.',
   },
 ];
 
@@ -40,32 +45,36 @@ const apiFaqOrganizador = [
   {
     id: 1,
     title: 'Aqui va una pregunta sobre el tema Organizador',
-    text: 'El día miércoles 24 de agosto se realizó una charla sobre cómo se encuentra la Comunicación luego de la pandemia, las inclinaciones de las comunicaciones corporativas a la vida diaria y como llegar a su consumidor y los modos de relacionarse entre empresa, medios y clientes post covid. La expositora fue Vanesa Rivera, Directora General de Ver&Comunicar.',
+    text:
+      'El día miércoles 24 de agosto se realizó una charla sobre cómo se encuentra la Comunicación luego de la pandemia, las inclinaciones de las comunicaciones corporativas a la vida diaria y como llegar a su consumidor y los modos de relacionarse entre empresa, medios y clientes post covid. La expositora fue Vanesa Rivera, Directora General de Ver&Comunicar.',
   },
   {
     id: 2,
     title: 'Aqui va una pregunta sobre el tema Organizador',
-    text: 'Durante la pandemia y post pandemia lo que sucedió es que creció fuertemente todo lo que tiene que ver con el aspecto de las redes, se introdujo en nuestra vida. Hoy todo pasa por el celular, tiene un protagonismo muy grande dentro de una estrategia comunicacional”, dijo Rivera y continuó “hubo un quiebre en la humanidad durante la pandemia, a todos nos atravesó de alguna forma. Lo que si siempre después de una crisis hay oportunidades,  algunas empresas se vieron muy perjudicadas y otras crecieron.',
+    text:
+      'Durante la pandemia y post pandemia lo que sucedió es que creció fuertemente todo lo que tiene que ver con el aspecto de las redes, se introdujo en nuestra vida. Hoy todo pasa por el celular, tiene un protagonismo muy grande dentro de una estrategia comunicacional”, dijo Rivera y continuó “hubo un quiebre en la humanidad durante la pandemia, a todos nos atravesó de alguna forma. Lo que si siempre después de una crisis hay oportunidades,  algunas empresas se vieron muy perjudicadas y otras crecieron.',
   },
   {
     id: 3,
     title: 'Aqui va una pregunta sobre el tema Organizador',
-    text: 'Luego la expositora expresó que es importante ver las diferencias entre las dos técnicas que siguen existiendo en el mercado y son las más fuertes, que son la prensa y la publicidad. “Hoy como estrategias de PR se incorporó estrategias de influencers, no existen dos estrategias sino que ambas forman una. Es importante decir que la estrategia digital creció un montón pero no es lo único”. También, Vanesa agregó “desde el lado comunicacional lo que empezamos a compartir con nuestros clientes es que si vamos a utilizar la red social dentro de una estrategia de comunicación, tiene que ser comunicada de una forma más cercana, amigable.',
+    text:
+      'Luego la expositora expresó que es importante ver las diferencias entre las dos técnicas que siguen existiendo en el mercado y son las más fuertes, que son la prensa y la publicidad. “Hoy como estrategias de PR se incorporó estrategias de influencers, no existen dos estrategias sino que ambas forman una. Es importante decir que la estrategia digital creció un montón pero no es lo único”. También, Vanesa agregó “desde el lado comunicacional lo que empezamos a compartir con nuestros clientes es que si vamos a utilizar la red social dentro de una estrategia de comunicación, tiene que ser comunicada de una forma más cercana, amigable.',
   },
   {
     id: 4,
     title: 'Aqui va una pregunta sobre el tema Organizador',
-    text: 'Por otro lado, la especialista expresó “es importante decir que hoy más allá del contenido todo pasa por lo visual. Cuánto más impacto visual tiene, más impacto podemos tener con ese usuario o consumidor final. También lo impactante y lo fuerte dentro de una construcción de comunicación es el titular.',
+    text:
+      'Por otro lado, la especialista expresó “es importante decir que hoy más allá del contenido todo pasa por lo visual. Cuánto más impacto visual tiene, más impacto podemos tener con ese usuario o consumidor final. También lo impactante y lo fuerte dentro de una construcción de comunicación es el titular.',
   },
   {
     id: 5,
     title: 'Aqui va una pregunta sobre el tema Organizador',
-    text: 'Por último, Rivera concluyó “las marcas no tienen que ser un ícono, sino mostrarse cercanas y sinceras. Tienen que centrarse en lo que el producto o servicio puede hacer por los demás. Por eso dentro de las estrategias de comunicación las empresas empezaron a darle más preponderancia a destinar sus comunicados a responsabilidad social empresaria. Cuanto más sinceros y cercanos somos, está el éxito de una campaña de comunicación.',
+    text:
+      'Por último, Rivera concluyó “las marcas no tienen que ser un ícono, sino mostrarse cercanas y sinceras. Tienen que centrarse en lo que el producto o servicio puede hacer por los demás. Por eso dentro de las estrategias de comunicación las empresas empezaron a darle más preponderancia a destinar sus comunicados a responsabilidad social empresaria. Cuanto más sinceros y cercanos somos, está el éxito de una campaña de comunicación.',
   },
-]
+];
 
 const Faq = () => {
-
   const [expanded, setExpanded] = useState(false);
   const [usuario, setUsuario] = useState(true);
   const [organizador, setOrganizador] = useState(false);
@@ -116,7 +125,7 @@ const Faq = () => {
   const handleChangeSearch = (e) => {
     e.preventDefault();
     setNewSearch(e.target.value);
-  }
+  };
 
   const handleClickSearch = (e) => {
     e.preventDefault();
@@ -125,33 +134,31 @@ const Faq = () => {
       setResultSearch(data);
       setOpen(true);
       setNewSearch('');
-    }
-    else {
+    } else {
       const data = apiFaqOrganizador.filter((e) => e.text.toLowerCase().includes(newSearch.toLowerCase()));
       setResultSearch(data);
       setOpen(true);
       setNewSearch('');
     }
-  }
-  
+  };
+
   return (
     <div className={style.container}>
       <header className={style.header}>
-        <Typography variant='h1' fontWeight={'bold'}>
-          ¡Hola! ¿Cómo te
-        </Typography>
-        <Typography variant='h1' fontWeight={'bold'}>
-          podemos ayudar?
-        </Typography>
+        <h1>!Hola¡ ¿Cómo te podemos ayudar?</h1>
 
-        <br />
-        <br />
-        <br />
-
-        <input type='text' placeholder='Escribe una palabra clave' className={style.input} onChange={handleChangeSearch} value={newSearch}/>
-        <button className={style.button} onClick={handleClickSearch}>
-          <BsSearch className={style.loop} />
-        </button>
+        <div className={style.containerInputSearch}>
+          <input
+            type='text'
+            placeholder='Escribe una palabra clave'
+            className={style.input}
+            onChange={handleChangeSearch}
+            value={newSearch}
+          />
+          <button className={style.button} onClick={handleClickSearch}>
+            <BsSearch className={style.loop} />
+          </button>
+        </div>
         <TbHeadset className={style.headset} />
       </header>
 
@@ -168,115 +175,115 @@ const Faq = () => {
           </span>
         </div>
 
-        {
-          usuario && !open ?
-          (apiFaqUsuario.map((e) => (
-            <div className={style.container_accordion}>
-              <Accordion
-                expanded={expanded === `panel${e.id}`}
-                onChange={handleChange(`panel${e.id}`)}
-                sx={{ backgroundColor: 'transparent' }}
-              >
-                <AccordionSummary
-                  className={style.box_accordion}
-                  expandIcon={
-                    <ExpandMoreIcon
-                      sx={{
-                        color: '#585858',
-                        fontSize: '3rem',
-                      }}
-                    />
-                  }
-                  aria-controls='panel1bh-content'
-                  id='panel1bh-header'
-                  sx={{
-                    backgroundColor: 'white',
-                    boxShadow: '1px 1px 5px 1px #d6d6d6',
-                    borderRadius: '5px',
-                    margin: '1rem 0 0 0',
-                  }}
+        {usuario && !open
+          ? apiFaqUsuario.map((e) => (
+              <div className={style.container_accordion}>
+                <Accordion
+                  expanded={expanded === `panel${e.id}`}
+                  onChange={handleChange(`panel${e.id}`)}
+                  sx={{ backgroundColor: 'transparent' }}
                 >
-                  <p className={style.text}>{e.title}</p>
-                </AccordionSummary>
+                  <AccordionSummary
+                    className={style.box_accordion}
+                    expandIcon={
+                      <ExpandMoreIcon
+                        sx={{
+                          color: '#585858',
+                          fontSize: '3rem',
+                        }}
+                      />
+                    }
+                    aria-controls='panel1bh-content'
+                    id='panel1bh-header'
+                    sx={{
+                      backgroundColor: 'white',
+                      boxShadow: '1px 1px 5px 1px #d6d6d6',
+                      borderRadius: '5px',
+                      margin: '1rem 0 0 0',
+                    }}
+                  >
+                    <p className={style.text}>{e.title}</p>
+                  </AccordionSummary>
 
-                <AccordionDetails sx={{ backgroundColor: '#d6d6d6' }}>
-                  <p className={style.detail}>{e.text}</p>
-                </AccordionDetails>
-              </Accordion>
-            </div>)
-          )) : organizador && !open ?
-          (apiFaqOrganizador.map((e) => (
-            <div className={style.container_accordion}>
-              <Accordion
-                expanded={expanded === `panel${e.id}`}
-                onChange={handleChange(`panel${e.id}`)}
-                sx={{ backgroundColor: 'transparent' }}
-              >
-                <AccordionSummary
-                  className={style.box_accordion}
-                  expandIcon={
-                    <ExpandMoreIcon
-                      sx={{
-                        color: '#585858',
-                        fontSize: '3rem',
-                      }}
-                    />
-                  }
-                  aria-controls='panel1bh-content'
-                  id='panel1bh-header'
-                  sx={{
-                    backgroundColor: 'white',
-                    boxShadow: '1px 1px 5px 1px #d6d6d6',
-                    borderRadius: '5px',
-                    margin: '1rem 0 0 0',
-                  }}
+                  <AccordionDetails sx={{ backgroundColor: '#d6d6d6' }}>
+                    <p className={style.detail}>{e.text}</p>
+                  </AccordionDetails>
+                </Accordion>
+              </div>
+            ))
+          : organizador && !open
+          ? apiFaqOrganizador.map((e) => (
+              <div className={style.container_accordion}>
+                <Accordion
+                  expanded={expanded === `panel${e.id}`}
+                  onChange={handleChange(`panel${e.id}`)}
+                  sx={{ backgroundColor: 'transparent' }}
                 >
-                  <p className={style.text}>{e.title}</p>
-                </AccordionSummary>
+                  <AccordionSummary
+                    className={style.box_accordion}
+                    expandIcon={
+                      <ExpandMoreIcon
+                        sx={{
+                          color: '#585858',
+                          fontSize: '3rem',
+                        }}
+                      />
+                    }
+                    aria-controls='panel1bh-content'
+                    id='panel1bh-header'
+                    sx={{
+                      backgroundColor: 'white',
+                      boxShadow: '1px 1px 5px 1px #d6d6d6',
+                      borderRadius: '5px',
+                      margin: '1rem 0 0 0',
+                    }}
+                  >
+                    <p className={style.text}>{e.title}</p>
+                  </AccordionSummary>
 
-                <AccordionDetails sx={{ backgroundColor: '#d6d6d6' }}>
-                  <p className={style.detail}>{e.text}</p>
-                </AccordionDetails>
-              </Accordion>
-            </div>)
-          )) : usuario && open || organizador && open ? 
-          (resultSearch.map((e) => (
-            <div className={style.container_accordion}>
-              <Accordion
-                expanded={expanded === `panel${e.id}`}
-                onChange={handleChange(`panel${e.id}`)}
-                sx={{ backgroundColor: 'transparent' }}
-              >
-                <AccordionSummary
-                  className={style.box_accordion}
-                  expandIcon={
-                    <ExpandMoreIcon
-                      sx={{
-                        color: '#585858',
-                        fontSize: '3rem',
-                      }}
-                    />
-                  }
-                  aria-controls='panel1bh-content'
-                  id='panel1bh-header'
-                  sx={{
-                    backgroundColor: 'white',
-                    boxShadow: '1px 1px 5px 1px #d6d6d6',
-                    borderRadius: '5px',
-                    margin: '1rem 0 0 0',
-                  }}
+                  <AccordionDetails sx={{ backgroundColor: '#d6d6d6' }}>
+                    <p className={style.detail}>{e.text}</p>
+                  </AccordionDetails>
+                </Accordion>
+              </div>
+            ))
+          : (usuario && open) || (organizador && open)
+          ? resultSearch.map((e) => (
+              <div className={style.container_accordion}>
+                <Accordion
+                  expanded={expanded === `panel${e.id}`}
+                  onChange={handleChange(`panel${e.id}`)}
+                  sx={{ backgroundColor: 'transparent' }}
                 >
-                  <p className={style.text}>{e.title}</p>
-                </AccordionSummary>
+                  <AccordionSummary
+                    className={style.box_accordion}
+                    expandIcon={
+                      <ExpandMoreIcon
+                        sx={{
+                          color: '#585858',
+                          fontSize: '3rem',
+                        }}
+                      />
+                    }
+                    aria-controls='panel1bh-content'
+                    id='panel1bh-header'
+                    sx={{
+                      backgroundColor: 'white',
+                      boxShadow: '1px 1px 5px 1px #d6d6d6',
+                      borderRadius: '5px',
+                      margin: '1rem 0 0 0',
+                    }}
+                  >
+                    <p className={style.text}>{e.title}</p>
+                  </AccordionSummary>
 
-                <AccordionDetails sx={{ backgroundColor: '#d6d6d6' }}>
-                  <p className={style.detail}>{e.text}</p>
-                </AccordionDetails>
-              </Accordion>
-            </div>)
-          )) 
-          : ''
-        }
+                  <AccordionDetails sx={{ backgroundColor: '#d6d6d6' }}>
+                    <p className={style.detail}>{e.text}</p>
+                  </AccordionDetails>
+                </Accordion>
+              </div>
+            ))
+          : ''}
 
         <p className={style.parrafo}>
           ¿No encontraste la respuesta que buscabas?{' '}

@@ -14,6 +14,33 @@
   font-size: 1.6rem;
 }
 
+/*  */
+
+.containerSwiper .swiperAddImageEventCreateForm .swiper .swiper-button-next {
+  right: 2rem !important ;
+}
+
+.containerSwiper .swiperAddImageEventCreateForm .swiper .swiper-button-prev {
+  left: 2rem !important;
+}
+
+.containerSwiper .swiperAddImageEventCreateForm .swiper-button-prev::after,
+.containerSwiper .swiperAddImageEventCreateForm .swiper-button-next::after {
+  background-color: white;
+  border-radius: 100%;
+  padding: 0.5rem 1rem;
+  color: var(--color-grey-3) !important;
+  font-size: 2.2rem !important;
+  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.3);
+}
+
+.containerSwiper .swiperAddImageEventCreateForm .swiper-button-next.swiper-button-disabled,
+.containerSwiper .swiperAddImageEventCreateForm .swiper-button-prev.swiper-button-disabled {
+  opacity: 0 !important;
+}
+
+/*  */
+
 .swiper-button-next {
   right: 2rem !important ;
 }
@@ -137,6 +164,10 @@
 .calendar-user .orangeDay:not(.-selectedStart):not(.-selectedBetween):not(.-selectedEnd):not(.-selected) {
   background: var(--color-orange) !important;
   color: white;
+}
+
+.swiperEditEventForm {
+  width: 40rem !important;
 }
 
 /* MEDIA QUERIES */

@@ -1,5 +1,4 @@
 const { Schema, model } = require('mongoose');
-// const Categories = require('./Categories.js')
 const EventSchema = new Schema(
   {
     title: String,
@@ -9,6 +8,7 @@ const EventSchema = new Schema(
         ref: 'Categories',
       },
     ],
+    idEvent: String,
     otherCategorie: [String],
     shortDescription: String,
     longDescription: String,
@@ -32,6 +32,7 @@ const EventSchema = new Schema(
 
     dates: [
       {
+        idDate: String,
         date: String,
         start: String,
         end: String,
@@ -90,12 +91,11 @@ const EventSchema = new Schema(
         },
       },
     ],
-    generalBuyers: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Users',
-      },
-    ],
+    generalBuyers: {
+      type: Array,
+      default: [],
+    },
+    
     overallEarnings: {
       type: Number,
       default: 0,
@@ -140,21 +140,58 @@ const EventSchema = new Schema(
 
     opinions: [
       {
+        idUser:{
+          type: String,
+        },
+
         title: {
           type: String,
         },
+
+        dateEvent: {
+          type: String,
+        },
+
+        eventTitle: {
+          type: String,
+        },
+
         time: {
           type: Date,
           default: Date.now(),
         },
-        rating: Number,
-        opinion: String,
+
+        rating: {
+          type: Number,
+        },
+
         picture: {
           type: String,
-          default: null,
+        },
+        
+        opinion: {
+          type: String,
         },
       },
     ],
+
+    // opinions: [
+    //   {
+    //     title: {
+    //       type: String,
+    //     },
+    //     time: {
+    //       type: Date,
+    //       default: Date.now(),
+    //     },
+    //     rating: Number,
+    //     opinion: String,
+    //     picture: {
+    //       type: String,
+    //       default: null,
+    //     },
+    //   },
+    // ],
   },
   { timestamps: true }
 );

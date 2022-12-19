@@ -40,7 +40,7 @@ const EventCreate = () => {
 
   useEffect(() => {
     if (userData.isOrganizer === true) {
-      navigate('/oganiza-un-evento');
+      navigate('/organiza-un-evento');
     }
   }, [userData]);
 
@@ -97,14 +97,14 @@ const EventCreate = () => {
           console.log('ingreso');
           toggleScreenLogin();
           if (userData.isOrganizer) {
-            navigate('/oganiza-un-evento');
+            navigate('/organiza-un-evento');
           }
         }
       });
       // .then((logged)=>{
       //   if(logged && user.organizer){
       //     console.log('soy organizador')
-      //     navigate('/oganiza-un-evento')
+      //     navigate('/organiza-un-evento')
       //   }
       // })
     }
@@ -138,7 +138,7 @@ const EventCreate = () => {
 
       <div className={styles.containerContent}>
         <div className={styles.header}>
-          <p>Beneficios de Organizar un evento</p>
+          <p>Ventajas</p>
         </div>
 
         <div className={styles.containerItems}>

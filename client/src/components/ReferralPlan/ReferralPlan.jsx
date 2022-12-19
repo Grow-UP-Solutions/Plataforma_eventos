@@ -5,14 +5,16 @@ import { TbTrash } from 'react-icons/tb';
 import { imgMoney } from '../../assets/imgs';
 import styles from './ReferralPlan.module.css';
 
-import { Helmet } from 'react-helmet';
-
 import eventsApi from '../../axios/eventsApi';
 import { generarCodigo } from '../../utils/generateCodeDiscount';
 import { inputKeyDown } from '../../utils/inputOnlyNumbers';
 
-import { GoTriangleDown, GoTriangleUp } from 'react-icons/go';
 import { FaUserCircle } from 'react-icons/fa';
+import { GoTriangleDown, GoTriangleUp } from 'react-icons/go';
+
+import CopyToClipboard from 'react-copy-to-clipboard';
+import { ImFacebook, ImLink, ImLinkedin2, ImTwitter, ImWhatsapp } from 'react-icons/im';
+
 const ReferralPlan = ({ userData }) => {
   const txtValueCodeDiscount = useRef();
   const [availableCredit, setAvailableCredit] = useState(userData.availableCredit);
@@ -94,6 +96,22 @@ const ReferralPlan = ({ userData }) => {
     getListCodeDiscount();
   }, []);
 
+  const redesContainer = useRef(null);
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (redesContainer.current === null || redesContainer.current === undefined) {
+      } else if (!redesContainer.current.contains(e.target)) {
+        const input = document.getElementById('redes');
+        input.checked = false;
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => {
+      document.removeEventListener('mousedown', handler);
+    };
+  });
+
   const getListCodeDiscount = async () => {
     try {
       const { data } = await eventsApi.get(`/codeDiscount/getListCodeDiscountByCreator/${userData._id}`);
@@ -171,20 +189,6 @@ const ReferralPlan = ({ userData }) => {
   };
   return (
     <div className={styles.containerReferralPlan}>
-      <Helmet>
-        <title>Plan de referidos</title>
-
-        <meta property='og:title' content='Mi código de referido.' />
-        <meta
-          property='og:description'
-          content='Usalo y tendrás grandes descuentos en los eventos que quieras participar!'
-        />
-        <meta
-          property='og:image'
-          content='https://ahrefs.com/blog/wp-content/uploads/2019/12/fb-how-to-become-an-seo-expert.png'
-        />
-      </Helmet>
-
       <div className={styles.containerCurrentReferred}>
         <h2 className={styles.titleCurrentReferred}>Tu código de referido es</h2>
 
@@ -192,9 +196,30 @@ const ReferralPlan = ({ userData }) => {
           <p>{userData.referralCode}</p>
         </div>
 
-        <div className={styles.containerLinkCdoe}>
-          <FiLink2 />
-          <span>Compartir código</span>
+        <div className={styles.containerLinkCode}>
+          <FiLink2 className={styles.shareIcon} />
+          <label htmlFor='redes'>Compartir código</label>
+          <input type='checkbox' id='redes' />
+
+          <ul className={styles.iconsRedes} ref={redesContainer}>
+            <li>
+              <ImFacebook className={styles.iconRed} />
+            </li>
+            <li>
+              <ImLinkedin2 className={styles.iconRed} />
+            </li>
+            <li>
+              <ImTwitter className={styles.iconRed} />
+            </li>
+            <li>
+              <ImWhatsapp className={styles.iconRed} />
+            </li>
+            <li>
+              <CopyToClipboard text={`${userData.referralCode}`}>
+                <ImLink className={styles.iconRed} />
+              </CopyToClipboard>
+            </li>
+          </ul>
         </div>
 
         <div className={styles.codeDesc}>
@@ -210,7 +235,7 @@ const ReferralPlan = ({ userData }) => {
         <img src={imgMoney} alt='cash' className={styles.imgMoney} />
         <div className={styles.money}>
           <p>Saldo disponible</p>
-          <span>{availableCredit}.000$</span>
+          <span>${new Intl.NumberFormat('de-DE').format(availableCredit)}</span>
         </div>
       </div>
 
@@ -286,7 +311,7 @@ const ReferralPlan = ({ userData }) => {
                                   <input
                                     id={codeDiscount._id}
                                     disabled
-                                    value={`${codeDiscount.value}.000$`}
+                                    value={`$${new Intl.NumberFormat('de-DE').format(codeDiscount.value)}`}
                                     type='text'
                                   />
                                 ) : (

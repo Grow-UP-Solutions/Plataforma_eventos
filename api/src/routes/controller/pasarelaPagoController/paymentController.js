@@ -4,6 +4,7 @@ const { Router } = require('express');
 const router = Router();
 const mercadopago = require('mercadopago');
 const CodeDiscount = require('../../../models/DB/CodeDiscount');
+const Order = require('../../../models/db/Order');
 const SuccessPayment = require('../../../models/DB/SuccessPayment');
 const calculoDeComicion = require('../../../models/util/calculoDeComiciones/calculoDeComicion');
 const { getCodeDiscountByCode } = require('../../../models/util/functionDB/CodeDiscountDb');
@@ -16,14 +17,11 @@ mercadopago.configure({
 });
 
 let auxBody = [];
-
+let idCompra = 0;
 router.post('/orden', async (req, res) => {
   const { dates, idUser, idEvent, ganancia } = req.body;
 
   auxBody.push({ dates, idUser, idEvent, ganancia });
-
-  console.log({ auxBody });
-  console.log({ auxBodyDates: auxBody[0].dates });
 
   const codigosPrueba = dates.map((e) => e.codigo);
 
@@ -82,8 +80,8 @@ router.post('/orden', async (req, res) => {
       },
 
       back_urls: {
-        success: `https://events-jean.vercel.app/mercadoPago/success`,
-        failure: `https://events-jean.vercel.app/mercadoPago/fail`,
+        success: `http://localhost:3000/mercadoPago/success`,
+        failure: `http://localhost:3000/mercadoPago/fail`,
       },
       auto_return: 'approved',
       taxes: [
@@ -146,8 +144,8 @@ router.get('/success', async (req, res) => {
     let ganancia = 0;
 
     if (response.status === 'approved' && response.status_detail === 'accredited') {
-      event.generalBuyers.push(user._id);
 
+      
       console.log({ auxBody });
 
       organizerEvent.pendingEarnings += auxBody[0].ganancia;
@@ -158,25 +156,56 @@ router.get('/success', async (req, res) => {
 
       let usuariosComprados = [];
 
+      const buyer = {
+        buyer : user._id,
+        pictureBuyer:user.userpicture,
+        eventId: event._id,
+        eventTitle: event.title,
+        dates: []
+      }
+
+      console.log('b',buyer)
+      
+
       event.dates.forEach(async (e, i) => {
         for (let j = 0; j < auxBody[0].dates.length; ++j) {
-          const auxUsuariosComprados = {
-            idDate: auxBody[0].dates[j].id,
-            idEvent: auxBody[0].idEvent,
-            cantidad: auxBody[0].dates[j].quantity,
-            codigo: auxBody[0].dates[j].codigoUsuario || auxBody[0].dates[j].codigoDescuento || null,
-            date: '',
-            dateFormated: '',
-          };
-
-          if (e._id.toString() === auxBody[0].dates[j].id) {
-            auxUsuariosComprados.date = e.date;
-            auxUsuariosComprados.dateFormated = e.dateFormated;
-          }
-
-          usuariosComprados.push(auxUsuariosComprados);
-
+         
           if (e._id == auxBody[0].dates[j].id) {
+
+           const date=  {
+              dateId: auxBody[0].dates[j].id,
+              dateFromated: e.dateFormated,
+              date:e.date,
+              start:e.start,
+              end:e.end,
+              quantity:auxBody[0].dates[j].quantity
+              }
+
+            buyer.dates.push(date)
+
+            
+      
+
+            const auxUsuariosComprados = {
+              idDate: auxBody[0].dates[j].id,
+              idEvent: auxBody[0].idEvent,
+              cantidad: auxBody[0].dates[j].quantity,
+              codigo: auxBody[0].dates[j].codigoUsuario || auxBody[0].dates[j].codigoDescuento || null,
+              date: '',
+              dateFormated: '',
+              start: '',
+              end: '',
+            };
+  
+            if (e._id.toString() === auxBody[0].dates[j].id) {
+              auxUsuariosComprados.date = e.date;
+              auxUsuariosComprados.dateFormated = e.dateFormated;
+              auxUsuariosComprados.start = e.start;
+              auxUsuariosComprados.end = e.end;
+            }
+  
+            usuariosComprados.push(auxUsuariosComprados);
+  
             console.log('Id auxbody === Id eventDate');
             for (let x = 0; x < e.codigos.length; x++) {
               if (
@@ -213,7 +242,10 @@ router.get('/success', async (req, res) => {
         }
       });
 
-      auxBody = [];
+      console.log('b',buyer)
+
+
+      event.generalBuyers.push(buyer);
 
       user.myEventsBooked.push(event._id);
 
@@ -249,6 +281,9 @@ router.get('/success', async (req, res) => {
         costoDeLaTransaccion: response.net_amount,
         referencia: response.payer.identification.number,
         estatus: response.status,
+        organizador: event.organizer.name,
+        oganizadorId: event.organizer._id,
+        oganizadorRentas: event.organizer.isDeclarant,
         cuposComprados: usuariosComprados,
       };
 
@@ -261,12 +296,43 @@ router.get('/success', async (req, res) => {
       };
 
       organizerEvent.factura.push(factura);
-
       user.ordenes.push(resultTransaccion);
+
+      // obtener la hora en la configuración regional de EE. UU.
+      const today = new Date();
+      const timeNow = today.toLocaleTimeString('en-US');
+
+      idCompra++;
+
+      const newOrder = new Order({
+        idCompra: 'C' + idCompra,
+        idEvent: event.idEvent,
+        idOrganizer: organizerEvent.idOrganizer,
+        organizerName: organizerEvent.firstName,
+        organizerLastName: organizerEvent.lastName,
+        organizerisDeclarant: organizerEvent.isDeclarant,
+        idBuyer: user.idUser,
+        buyerDni: user.document,
+        buyerCity: user.city,
+        buyerAddress: user.direction,
+        buyerPhone: user.phone,
+        buyerName: user.firstName,
+        buyerLastName: user.lastName,
+        eventName: event.title,
+        eventDate: usuariosComprados,
+        dateBuy: fechaActual,
+        timeBuy: timeNow,
+        adminEarns: response.net_amount,
+        comision: response.net_amount * 0.16,
+        iva: response.net_amount * 0.19,
+        organizerEarns: auxBody[0].ganancia,
+      });
+
+      await newOrder.save();
       await organizerEvent.save();
       await user.save();
-
       usuariosComprados = [];
+      auxBody = [];
 
       return res.json(resultTransaccion);
     }

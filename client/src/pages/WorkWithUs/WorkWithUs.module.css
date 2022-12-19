@@ -26,7 +26,8 @@
   padding: 4.8rem 0;
 }
 
-.containerInfoWork:not(:last-child) {
+.containerWork:not(:last-child) {
+  padding-bottom: 4rem;
   border-bottom: 1px solid var(--color-grey-4);
 }
 
@@ -45,4 +46,29 @@
   color: var(--color-orange);
   border-bottom: 1px solid var(--color-orange);
   font-size: 1.8rem;
+}
+
+@media screen and (max-width: 1355px) {
+  .pageWorkWithUs {
+    width: 80%;
+  }
+}
+
+@media screen and (max-width: 756px) {
+  .pageWorkWithUs {
+    width: 100%;
+  }
+
+  .containerWork {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .containerInfoWork {
+    padding: 2rem 0;
+  }
+
+  .containerWork:not(:last-child) {
+    padding-bottom: 4rem;
+  }
 }

@@ -211,10 +211,10 @@ const Register = () => {
     <div className={`${styles.pageRegister} container`}>
       <h1 className={styles.title}>Registrate</h1>
       <div className={styles.loginProviders}>
-        <button onClick={() => registerWithProvider('facebook')} className={styles.providerFacebook}>
+        {/*  <button onClick={() => registerWithProvider('facebook')} className={styles.providerFacebook}>
           <IconFacebook />
           <span>Ingresa con Facebook</span>
-        </button>
+        </button> */}
         <button onClick={() => registerWithProvider('google')} className={styles.providerGoogle}>
           <IconGoogle />
           <span>Ingresa con Google</span>
@@ -342,19 +342,13 @@ const Register = () => {
           <p>
             Tu información esta segura con nosotros y no se comparte con terceros. Todos tus datos serán tratados de
             conformidad con la normatividad de Políticas de Datos y nuestra política de tratamiento de datos.
-            Información que está disponible&nbsp; <Link to={'/privacidad'}>aquí</Link>.
+            Información que está disponible&nbsp; <Link to={'/docs/privacidad/usuario'}>aquí</Link>.
           </p>
           <p>
-            Al proceder con la creación de tu cuenta aceptas la Política de &nbsp;
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                navigate('/privacidad');
-                setResult('tyc');
-              }}
-            >
-              Tratamiento de Datos, la Política de Seguridad y los Términos y Condiciones
-            </button>
+            Al proceder con la creación de tu cuenta aceptas la &nbsp;
+            <Link to={'/docs/privacidad/usuario'}>Política de Privacidad</Link>, la{' '}
+            <Link to={'/docs/seguridad/usuario'}>Política de Seguridad</Link> y los{' '}
+            <Link to={'/docs/terminos-condiciones/usuario'}>Términos y Condiciones</Link>
             &nbsp;de LO QUE QUIERO HACER S.A.S. Aceptas ser contactado por nosotros en relación a los eventos que
             compres o publiques en la Plataforma y confirmas ser mayor de edad.
           </p>

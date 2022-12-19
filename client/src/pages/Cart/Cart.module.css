@@ -29,8 +29,9 @@
 /* OPTIONS */
 
 .summaryCart {
-  width: 70%;
   margin: 0 auto;
+  background-color: rgba(190, 190, 190, 0.1);
+  padding: 0 1rem 1rem 1rem;
 }
 
 .summaryTitle {
@@ -478,6 +479,16 @@
   text-align: center;
 }
 
+.containerResponsiveAccesbility {
+  display: none;
+  margin: 2rem 0;
+}
+
+.containerResponsiveAccesbility .summaryCart {
+  margin: 0;
+  width: 100%;
+}
+
 .detailsBuy {
   display: flex;
   justify-content: space-between;
@@ -519,7 +530,7 @@
   font-size: 1.2rem;
   color: var(--color-grey-2);
   margin-bottom: 2rem;
-
+  margin-top: 4rem;
   line-height: 1.2;
 }
 
@@ -539,6 +550,10 @@
   font-size: 1.4rem;
   font-weight: bold;
   cursor: pointer;
+}
+
+.enlace {
+  color: var(--color-orange);
 }
 
 @media screen and (max-width: 1490px) {
@@ -638,6 +653,15 @@
   }
 
   .containerResponsiveBtnPagar {
+    display: block;
+  }
+
+  .summaryCart {
+    display: none;
+  }
+
+  .containerResponsiveAccesbility,
+  .containerResponsiveAccesbility .summaryCart {
     display: block;
   }
 }

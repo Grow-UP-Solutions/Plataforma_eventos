@@ -14,7 +14,9 @@ const Search = ({ location = 'home' }) => {
   const [input, setInput] = useState('');
   const [municipio, setMunicipio] = useState('');
   const navigate = useNavigate();
-  const { setResult, setMuni } = useContext(stateContext);
+  const { muni, setMuni } = useContext(stateContext);
+  const { result, setResult } = useContext(stateContext);
+  
  
   const handleChange = (e) => {
     e.preventDefault();
@@ -29,18 +31,18 @@ const Search = ({ location = 'home' }) => {
   const handleKeyPress = (e) => {
     if (e.charCode === 13) {
       e.preventDefault();
-      
       setMuni(municipio)
-      navigate('/resultados-de-busqueda/' + input);
+      setResult(input)
+      navigate('/resultados-de-busqueda/');
       setInput('');
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
     setMuni(municipio)
-    navigate('/resultados-de-busqueda/' + input);
+    setResult(input)
+    navigate('/resultados-de-busqueda/');
     setInput('');
   };
 

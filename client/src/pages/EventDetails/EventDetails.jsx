@@ -32,17 +32,17 @@ import { getEvents } from '../../redux/actions';
 // import { formatDate } from '../../utils/formatDate';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import { Hearts } from 'react-loader-spinner';
+import { MdOutlineKeyboardArrowDown, MdOutlineKeyboardArrowUp } from 'react-icons/md';
 import EventDate from '../../components/EventDetails/EventDate';
 import formatDateToString from '../../utils/formatDateToString';
 import style from './EventDetails.module.css';
-import { MdOutlineKeyboardArrowUp, MdOutlineKeyboardArrowDown } from 'react-icons/md';
 
 const EventDetails = () => {
   const id = useParams().id;
   const dispatch = useDispatch();
   const allEvents = useSelector((state) => state.events);
   const eventDetails = allEvents.filter((event) => event._id === id)[0];
+  
   const [getDanger, setGetDanger] = useState(false);
   const [component, setComponent] = useState(null);
   const [description, setDescription] = useState(false);
@@ -51,6 +51,10 @@ const EventDetails = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { user } = useContext(AuthContext);
   const { notes, setNotes } = useContext(stateContext);
+  const [eventBuyUser , setEventBuyUser] = useState([])
+  const [userBuyOrg , setUserBuyOrg] = useState([])
+  const [datesBuy , setDateBuy] = useState([])
+  const [assisted , setAssisted] = useState(false)
   const {
     getEventsFavourites,
     getEffectRatingEvent,
@@ -60,6 +64,11 @@ const EventDetails = () => {
   } = useContext(UIContext);
   const menuRef = useRef();
 
+  const fecha = new Date();
+  const hora = fecha.getHours();
+  const minutes = fecha.getMinutes();
+  const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
+
   useEffect(() => {
     scroll.scrollToTop();
   }, []);
@@ -68,14 +77,84 @@ const EventDetails = () => {
     dispatch(getEvents);
   }, [dispatch]);
 
+  
   useEffect(() => {
     const obtenerDatos = async () => {
       const data = await eventsApi.get('/events/' + id);
       const json = data.data;
+      console.log('j',json.organizer)
+      obtenerDatosU(json.organizer);
       getEffectRatingEvent(json.rating);
     };
     obtenerDatos();
   }, [eventDetails]);
+
+
+
+  const obtenerDatosU = async (orgId) => {
+    
+    const data = await eventsApi.get('/users/' + orgId);
+    const json = data.data;
+
+   
+
+    const eventBuyU = []
+    const userBuyOrg = []
+    const datesBuy = []
+
+    for(let i = 0; i < data.data.myEventsCreated.length ; i++){
+      for(let j = 0; j < data.data.myEventsCreated[i].generalBuyers.length ; j++){
+        if(  data.data.myEventsCreated[i]._id=== id && data.data.myEventsCreated[i].generalBuyers[j].buyer=== user.uid){
+            eventBuyU.push(data.data.myEventsCreated[i])
+        }
+      }
+    }
+
+    for(let i = 0; i < data.data.myEventsCreated.length ; i++){
+      for(let j = 0; j < data.data.myEventsCreated[i].generalBuyers.length ; j++){
+       if( data.data.myEventsCreated[i].generalBuyers[j].buyer=== user.uid){
+           
+            userBuyOrg.push(data.data.myEventsCreated[i])
+            const compradores = data.data.myEventsCreated[i].generalBuyers
+            const usuarioFecha = compradores.filter(c=>c.buyer === user.uid)
+            datesBuy.push(usuarioFecha)
+
+              usuarioFecha[0].dates.map((date) => {
+                if (new Date(date.date) < new Date(dateActual)) {
+                  setAssisted(true)
+                  
+                } else if (date.date === dateActual) {
+                  if (date.end.slice(0, 2) <= hora && date.end.slice(3, 5) <= minutes + 2) {
+                    setAssisted(true)
+                  }
+                }
+              });
+            
+        }
+      }
+    }
+  
+    setEventBuyUser(eventBuyU)
+    setUserBuyOrg(userBuyOrg)
+    setDateBuy(datesBuy)
+
+    
+  
+  };
+
+  console.log('assisted',assisted)
+
+
+ 
+
+  
+
+  
+
+
+ 
+ 
+  //Favorito//
 
   useEffect(() => {
     const getFav = async () => {
@@ -166,7 +245,7 @@ const EventDetails = () => {
 
   const handleClickWatchComments = (e) => {
     e.preventDefault();
-    setComponent(<EventComments id={id} />);
+    setComponent(<EventComments id={id} eventBuyUser={eventBuyUser} datesBuy={datesBuy} assisted={assisted} />);
     scroller.scrollTo('comments');
   };
 
@@ -241,7 +320,8 @@ const EventDetails = () => {
       setIsLoadingReport(false);
       setResultMessageReport({
         success: true,
-        message: 'Reporte enviado.',
+        message:
+          'Gracias por tu reporte, el cual a sido enviado exitosamente. El contenido será investigado y las debidas acciones serán tomadas.',
       });
     } catch (error) {
       setResultMessageReport({
@@ -266,7 +346,7 @@ const EventDetails = () => {
   return (
     <div className={`${style.container}`}>
       <div className={style.item1}>
-        {eventDetails ? (
+        {eventDetails !== undefined ? (
           <div className={style.containers}>
             <div className={style.containerSwiper}>
               {eventDetails.pictures.length > 1 ? (
@@ -341,7 +421,7 @@ const EventDetails = () => {
                         <FaWhatsapp className={style.icons} />
                       </a>
 
-                      <CopyToClipboard text={`https://events-jean.vercel.app//detalles-del-evento/${id}`}>
+                      <CopyToClipboard text={`https://events-jean.vercel.app/detalles-del-evento/${id}`}>
                         <IoLinkOutline onClick={handleClickCopy} className={style.icons} />
                       </CopyToClipboard>
                     </div>
@@ -515,11 +595,16 @@ const EventDetails = () => {
           <Element name='comments'>{component ? component : ''}</Element>
         </div>
       </div>
-
-      <EventSideBar id={id} />
-      <div className={style.containerCommentsEvents}>
-        <EventComments id={id} />
-      </div>
+      {eventDetails !== undefined &&
+        <div>
+          <EventSideBar id={id} userBuyOrg={userBuyOrg} />
+          <div className={style.containerCommentsEvents}>
+          <EventComments id={id} eventBuyUser={eventBuyUser} datesBuy={datesBuy} assisted={assisted} />
+          </div>
+        </div>
+      }
+     
+     
 
       <div className={style.containerMenuOpenEvent}>
         <input

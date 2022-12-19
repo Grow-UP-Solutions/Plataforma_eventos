@@ -114,8 +114,6 @@
 .subInput {
   color: #878787;
   font-size: 1rem;
-  margin-bottom: 2rem;
-  margin-left: 0.5rem;
 }
 
 /*SECTION 2 */
@@ -247,80 +245,74 @@
   font-weight: bold;
 }
 
-/* .dropFileIput {
-  text-align: center;
-  width: 50rem;
-  height: 30rem;
-  border: 2px dashed var(--color-grey-4);
-  border-radius: 10px;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-grey-2);
-  background-color: var(--input-bg);
-  margin-bottom: 2rem;
-  margin-left: 4rem;
-} */
+.containerGeneralImage {
+}
 
-/* .dropFileIput input {
-  opacity: 0;
-  top: 0;
-  left: 0;
+.containerImage {
+  height: 30rem;
+}
+
+.containerInputDragImage {
+  position: relative;
+  border: 1px dashed var(--color-grey-4);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+
+  padding: 4rem 0;
+  border-radius: 1rem;
+}
+
+.inputAddImage {
+  position: absolute;
+  margin: 0;
+  padding: 0;
   width: 100%;
   height: 100%;
+  outline: none;
+  opacity: 0;
   cursor: pointer;
 }
 
-.dropFileIput input::placeholder {
-  color: var(--color-grey-2);
+.iconAddImage {
+  width: 4.8rem;
+  height: 4.8rem;
+  color: var(--color-grey-4);
 }
 
-.dropFileIput p {
-  color: var(--color-grey-2);
-  text-align: center;
-  margin-top: 1rem;
-}
-
-.dropFileIput div {
-  color: var(--color-grey-2);
-  text-align: center;
-  margin-top: 1rem;
-}
-
-.dropFileIput:hover,
-.dropFileIput.dragover {
-  opacity: 0.6;
-}
-
-.dropFilePreview {
-  margin-top: 1rem;
-}
-
-.dropFilePreview p {
-  color: #707070;
-  margin-bottom: 1rem;
+.containerInputDragImage {
+  color: var(--color-grey-4);
   font-size: 1.2rem;
-  font-weight: bold;
-} */
+  font-style: italic;
+}
 
-/* .mySwiper{
-  position: relative;
-  width: 100%;
-  max-height: 10rem;
-  border: 2px solid var(--color-grey-4);
-  border-radius: 10px;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-grey-2);
-  background-color: var(--input-bg);
-  margin-bottom: 1rem;
-
-} */
+.containerInputDragImage p span {
+  color: var(--color-orange);
+  border-bottom: 1px solid var(--color-orange);
+}
 
 .mySwiperImg {
-  width: 40rem;
-  height: 24rem;
-  border: 2px solid var(--color-grey-4);
-  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+}
+
+.containerBtnsImage {
+  margin-top: 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 1.2rem;
+}
+
+.containerCheckPortada {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.containerCheckPortada .subInput {
+  font-size: 1.4rem;
 }
 
 .mySwiperBtnDel {
@@ -328,21 +320,12 @@
   width: 3rem;
   height: 3rem;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  top: 10%;
-  left: 90%;
-  transform: translateY(-50%);
   cursor: pointer;
   color: #d53e27;
   border: none;
 }
 
 .mySwiperBtnDel:hover {
-  color: white;
-  background-color: #d53e27;
 }
 
 .checkBox4 {

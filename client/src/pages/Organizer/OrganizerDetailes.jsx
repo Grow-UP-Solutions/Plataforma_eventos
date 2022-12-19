@@ -50,6 +50,7 @@ const OrganizerDetails = () => {
   const [userDetail, setUserDetail] = useState({
     organizer: {},
   });
+  const [eventsFromOrg , setEventsFromOrg] = useState([])
 
   useEffect(() => {
     scroll.scrollToTop();
@@ -57,7 +58,11 @@ const OrganizerDetails = () => {
 
   useEffect(() => {
     obtenerDatos();
-  }, []);
+  }, [user]);
+
+  // useEffect(() => {
+  //   obtenerDatosLog();
+  // }, [user]);
 
   useEffect(() => {
     setConversation({
@@ -66,9 +71,29 @@ const OrganizerDetails = () => {
     });
   }, []);
 
+  
+
   const obtenerDatos = async () => {
     const data = await eventsApi.get('/users/' + id);
     const json = data.data;
+
+
+    const eventsUserLog=[]
+
+    for(let i = 0; i < data.data.myEventsCreated.length ; i++){
+      
+      for(let j = 0; j < data.data.myEventsCreated[i].generalBuyers.length ; j++){
+        
+        if( data.data.myEventsCreated[i].generalBuyers[j].buyer=== user.uid){
+          
+          eventsUserLog.push(data.data.myEventsCreated[i])
+        }
+      }
+    }
+
+    
+  
+    
     setNextEvent(json);
     getEffectRatingOrganizer(json.rating);
     setUserDetail({
@@ -77,7 +102,21 @@ const OrganizerDetails = () => {
     setComponent(<AboutOrganizer userDetail={json.descriptionOrganizer} />);
     setStyle('aboutOrganizer');
     setLoad(false);
+    setEventsFromOrg(eventsUserLog)
   };
+
+  //Filtrar y ver si hay eventos comprados a este org//
+
+  // const obtenerDatosLog = async () => {
+
+  //   const dataLog = await eventsApi.get('/users/' + user.uid);
+  //   const eventsBookedOrg = dataLog.data.myEventsBooked.filter(event => event.organizer === id)
+  //   setEventsFromOrg(eventsBookedOrg)
+  //   console.log('dataLog.data',dataLog.data)
+
+  // }
+
+  
 
   const handleClickMessages = (e) => {
     e.preventDefault();
@@ -120,7 +159,7 @@ const OrganizerDetails = () => {
       setStyle('nextEvents');
     }
     if (name === 'Opinions') {
-      setComponent(<Opinions userDetail={userDetail.organizer} />);
+      setComponent(<Opinions userDetail={userDetail.organizer}  eventsFromOrg={eventsFromOrg} />);
       setStyle('opinions');
     } else {
       console.log('growup');
@@ -154,12 +193,19 @@ const OrganizerDetails = () => {
 
             <p className={styles.member}>Miembro desde {format(userDetail.organizer.createdAt, 'es_ES')}</p>
 
-            <div className={styles.containerMess}>
-              <LocalPostOfficeIcon sx={{ fontSize: '1.6rem', color: '#d53e27' }} />
-              <button className={styles.message} onClick={logged === true ? handleClickMessages : handleAlert}>
-                Enviar Mensaje
-              </button>
-            </div>
+
+            {eventsFromOrg !== undefined &&
+
+              eventsFromOrg.length>0 ?
+              <div className={styles.containerMess}>
+                <LocalPostOfficeIcon sx={{ fontSize: '1.6rem', color: '#d53e27' }} />
+                <button className={styles.message} onClick={logged === true ? handleClickMessages : handleAlert}>
+                  Enviar Mensaje
+                </button>
+              </div>
+              :''
+            }
+         
 
             <div className={styles.containerButtons}>
               <button

@@ -2,16 +2,20 @@ const Users = require('../../../db/Users');
 
 module.exports = async function generateUserComment(id, opinions) {
   try {
-    const { idUser, opinion, rating } = opinions;
+    const { idUser, opinion, rating, picture, dateEvent , eventTitle,time } = opinions;
 
     const user = await Users.findById(idUser);
 
     const organizer = await Users.findById(id);
     organizer.opinionsOrg.push({
       title: user.name,
-      picture: user.picture,
+      picture,
       rating,
       opinion,
+      idUser,
+      dateEvent,
+      eventTitle,
+      time,
     });
     await organizer.save();
 

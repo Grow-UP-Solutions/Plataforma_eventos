@@ -41,7 +41,13 @@ const Login = () => {
 
   const onLogin = async (e) => {
     e.preventDefault();
-    const regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[().#?!@$%^&*-]).{12,20}$/;
+    const regex = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[*/-_&@^]).{12,20}$/;
+    if (formData.mail === '')
+      return setErrorLogin({
+        result: true,
+        message: 'Ingrese datos correctos.',
+      });
+
     if (errorLogin) setErrorLogin(false);
 
     if (!regex.test(formData.password))
@@ -133,19 +139,20 @@ const Login = () => {
   };
 
   const [modalForgetPassword, setModalForgetPassword] = useState(false);
+  const [modalErrorForgetPassword, setModalErrorForgetPassword] = useState(false);
 
-  const navigateToChangePassword = async (option) => {
-    if (!formData.mail)
-      return setErrorLogin({
-        result: true,
-        message: 'Por favor ingrese su correo.',
+  const navigateToChangePassword = async () => {
+    if (!formData.mail) return setModalErrorForgetPassword(true);
+
+    try {
+      await eventsApi.post('/users/verifyEmailNotUsing', { email: formData.mail });
+      setModalErrorForgetPassword(true);
+    } catch (error) {
+      setModalForgetPassword(true);
+      await eventsApi.post('/users/sendMailChangePassword', {
+        email: formData.mail,
       });
-
-    setModalForgetPassword(true);
-
-    await eventsApi.post('/users/sendMailChangePassword', {
-      email: formData.mail,
-    });
+    }
   };
 
   return (
@@ -154,10 +161,10 @@ const Login = () => {
         <CgClose onClick={toggleScreenLogin} className={styles.closeIcon} />
         <h1 className={styles.title}>Ingresa</h1>
         <div className={styles.loginProviders}>
-          <button onClick={() => loginWithProvider('facebook')} className={styles.providerFacebook}>
+          {/*  <button onClick={() => loginWithProvider('facebook')} className={styles.providerFacebook}>
             <IconFacebook />
             <span>Ingresa con Facebook</span>
-          </button>
+          </button> */}
           <button onClick={() => loginWithProvider('google')} className={styles.providerGoogle}>
             <IconGoogle />
             <span>Ingresa con Google</span>
@@ -194,7 +201,7 @@ const Login = () => {
                 type='button'
                 onClick={(e) => {
                   e.preventDefault();
-                  navigateToChangePassword('forgetPassword');
+                  navigateToChangePassword();
                 }}
               >
                 ¿Olvidaste tu contraseña?
@@ -216,12 +223,11 @@ const Login = () => {
         </div>
 
         {modalChangePassword.attemps >= 3 && (
-          <div className={styles.containerModalChangePassword}>
-            <p>
-              Has intentado entrar muchas veces con contraseña incorrecta. Por tu seguridad enviaremos un correo para
-              que puedas cambiar tu clave.
-            </p>
-            <button onClick={navigateToChangePassword}>Cambiar clave</button>
+          <div className={styles.overlayModalChangePassword}>
+            <div className={styles.containerModalChangePassword}>
+              <p>Has intentado entrar muchas veces con contraseña incorrecta. Para tu seguridad cambia tu clave.</p>
+              <button onClick={navigateToChangePassword}>Cambiar clave</button>
+            </div>
           </div>
         )}
 
@@ -240,6 +246,23 @@ const Login = () => {
                 }}
               >
                 Listo
+              </button>
+            </div>
+          </div>
+        )}
+
+        {modalErrorForgetPassword && (
+          <div className={styles.overlayModalChangePassword}>
+            <div className={styles.containerModalChangePassword}>
+              <p>Ingresa e-mail correcto en casilla.</p>
+              <button
+                onClick={() => {
+                  setModalChangePassword(false);
+                  setModalErrorForgetPassword(false);
+                  setErrorLogin({ message: '', result: false });
+                }}
+              >
+                Cerrar
               </button>
             </div>
           </div>

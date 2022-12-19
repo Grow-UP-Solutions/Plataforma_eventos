@@ -62,7 +62,9 @@ router.put('/changeProcessingOrganizer/:id', async (req, res) => {
 });
 
 router.get('/checkValidateTokenOrganizer/', validateJWTOrganizer, async (req, res) => {
-  const { name, phone, document, tel, email, description, image, referenciaU, referenciaZ, id } = req;
+  const { name, phone, document, tel, email, description, image, id } = req;
+
+  const user = await UsersFunctionDb.oneUser(id);
 
   try {
     res.status(200).json({
@@ -73,9 +75,13 @@ router.get('/checkValidateTokenOrganizer/', validateJWTOrganizer, async (req, re
       email,
       description,
       image,
-      referenciaU,
-      referenciaZ,
       id,
+      rut: user.isDeclarant,
+      documentFront: user.frontDocument,
+      backDocument: user.backDocument,
+      imageRut: user.imageRent,
+      idUser: user.idUser,
+      idOrganizer: user.idOrganizer,
     });
   } catch (error) {
     res.status(404).json({
@@ -155,12 +161,16 @@ router.get('/getBankAccount/:id', async (req, res) => {
 
 /**/ //////////////Rutas POST/////////////// */
 
+let contadorIdOrganizer = 0;
+
 router.post('/acceptOrRejectedOrganizer', async (req, res) => {
   const { option, id } = req.body;
   let message = '';
   try {
     const user = await getUser(id);
     if (option === 'accept') {
+      contadorIdOrganizer++;
+      user.idOrganizer = 'Z' + contadorIdOrganizer;
       user.isOrganizer = true;
       user.isProccessingToOrganizer = false;
       user.isRejected = false;
@@ -170,16 +180,33 @@ router.post('/acceptOrRejectedOrganizer', async (req, res) => {
       user.isRejected = true;
       user.isOrganizer = false;
       user.isProccessingToOrganizer = false;
+      user.idOrganizer = '';
       await sendMailUserRejected(user.name, user.email);
       message = 'Rechazado';
     } else {
       return res.status(400).json({ message: 'error' });
     }
+
     await user.save();
 
     res.status(200).json({
       message,
-      success: true,
+      user: {
+        name: user.name,
+        phone: user.phone,
+        document: user.document,
+        tel: user.tel,
+        email: user.email,
+        description: user.descriptionOrganizer,
+        image: user.userpicture,
+        id: user._id,
+        rut: user.isDeclarant,
+        documentFront: user.frontDocument,
+        backDocument: user.backDocument,
+        imageRut: user.imageRent,
+        idUser: user.idUser,
+        idOrganizer: user.idOrganizer,
+      },
     });
   } catch (error) {
     res.status(404).json({
@@ -270,42 +297,38 @@ router.delete('/notifications', async (req, res) => {
     res.status(500).json(error.Menssage);
   }
 });
+let contadorIdUser = 0;
+router.post('/create', [check('email', 'El email es obligatorio').isEmail(), validateFields], async (req, res) => {
+  try {
+    const user = req.body;
 
-router.post(
-  '/create',
-  [
-    check('email', 'El email es obligatorio').isEmail(),
-    check('password', 'El password es obligatorio').isStrongPassword(),
-    validateFields,
-  ],
-  async (req, res) => {
-    try {
-      const user = req.body;
-      const { codeReferral } = req.query;
-      const userCreate = await createUsers(user, codeReferral);
+    const { codeReferral } = req.query;
 
-      const time = '2h';
-      const token = await generateJWT(userCreate._id, userCreate.name, time);
+    contadorIdUser++;
+    user.idUser = 'U' + contadorIdUser;
 
-      return res.json({
-        uid: userCreate._id,
-        name: userCreate.name,
-        nickname: userCreate.nickname,
-        email: userCreate.email,
-        organizer: userCreate.isOrganizer,
-        picture: user.userpicture,
-        isProfileCompleted: user.isProfileCompleted,
-        token,
-      });
-    } catch (error) {
-      return res.status(500).json({ message: error.message });
-    }
+    const userCreate = await createUsers(user, codeReferral);
+
+    const time = '2h';
+    const token = await generateJWT(userCreate._id, userCreate.name, time);
+
+    return res.json({
+      uid: userCreate._id,
+      name: userCreate.name,
+      nickname: userCreate.nickname,
+      email: userCreate.email,
+      organizer: userCreate.isOrganizer,
+      picture: user.userpicture,
+      isProfileCompleted: user.isProfileCompleted,
+      token,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
   }
-);
+});
 
 router.post('/verifyEmailNotUsing', async (req, res) => {
   const { email } = req.body;
-
   try {
     const user = await UsersFunctionDb.validationEmail(email);
 
@@ -341,40 +364,32 @@ router.post('/message/:id', async (req, res) => {
 
 /* AUTH */
 
-router.post(
-  '/login',
-  [
-    check('email', 'El email es obligatorio').isEmail(),
-    check('password', 'El password es obligatorio').isStrongPassword(),
-    validateFields,
-  ],
-  async (req, res) => {
-    const { email, password, rememberMe } = req.body;
+router.post('/login', [check('email', 'El email es obligatorio').isEmail(), validateFields], async (req, res) => {
+  const { email, password, rememberMe } = req.body;
 
-    let time = '2h';
+  let time = '2h';
 
-    if (rememberMe) time = '365d';
+  if (rememberMe) time = '365d';
 
-    try {
-      const user = await login(email, password);
+  try {
+    const user = await login(email, password);
 
-      const token = await generateJWT(user._id, user.name, time);
+    const token = await generateJWT(user._id, user.name, time);
 
-      res.status(200).json({
-        uid: user._id,
-        name: user.name,
-        nickname: user.nickname,
-        email: user.email,
-        organizer: user.isOrganizer,
-        picture: user.userpicture,
-        isProfileCompleted: user.isProfileCompleted,
-        token,
-      });
-    } catch (error) {
-      return res.status(500).json({ message: error.message });
-    }
+    res.status(200).json({
+      uid: user._id,
+      name: user.name,
+      nickname: user.nickname,
+      email: user.email,
+      organizer: user.isOrganizer,
+      picture: user.userpicture,
+      isProfileCompleted: user.isProfileCompleted,
+      token,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
   }
-);
+});
 
 router.get('/login/renew', validateJWT, async (req, res) => {
   const uid = req.uid;
@@ -541,11 +556,25 @@ router.put('/sendEmailToEventNewDate/', async (req, res) => {
   }
 });
 
-router.put('/report/organizer', async (req, res) => {
+router.put('/report/opinions/check', async (req, res) => {
   const { dataForReport } = req.body;
-  const { titleReport, reasonToReport, dateToReport } = dataForReport;
   const { name, email } = dataForReport.userFromReport;
-  const { nameOrganizer, emailOrganizer, pictureOrganizer } = dataForReport.organizerReport;
+  const { titleReport, reasonToReport, dateToReport, nameOpinion, opinion } = dataForReport;
+
+  let dataPage = {};
+
+  if (dataForReport.eventReport) {
+    dataPage.title = dataForReport.eventReport.eventTitle;
+    dataPage.enlace = 'https://events-jean.vercel.app/detalles-del-evento/' + dataForReport.eventReport.eventId;
+    dataPage.image = dataForReport.eventReport.image;
+  }
+
+  if (dataForReport.organizerReport) {
+    dataPage.title = dataForReport.organizerReport.organizerName;
+    dataPage.enlace =
+      'https://events-jean.vercel.app/sobre-el-organizador/' + dataForReport.organizerReport.organizerId;
+    dataPage.image = dataForReport.organizerReport.image;
+  }
 
   try {
     await sendEmailToReportOrganizer(
@@ -554,9 +583,11 @@ router.put('/report/organizer', async (req, res) => {
       dateToReport,
       name,
       email,
-      nameOrganizer,
-      emailOrganizer,
-      pictureOrganizer
+      (title = dataPage.title),
+      (enlace = dataPage.enlace),
+      (image = dataPage.image),
+      nameOpinion,
+      opinion
     );
 
     res.json({ success: true });
@@ -760,8 +791,6 @@ router.post('/requestToOrganizer/', async (req, res) => {
       user.phone,
       user.description,
       user.image,
-      user.referenciaU,
-      user.referenciaZ,
       user.id
     );
     await sendMailToOrganizer(

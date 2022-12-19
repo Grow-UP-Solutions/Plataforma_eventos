@@ -20,7 +20,6 @@ import { formatDate } from '../../utils/formatDate';
 import styles from './EventDate.module.css';
 import EventDateMap from './EventDateMap';
 
-
 import { Calendar } from '@amir04lm26/react-modern-calendar-date-picker';
 import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 import { myCustomLocale } from '../../utils/customLocaleDate';
@@ -204,13 +203,13 @@ const EventDate = ({ id, openMenu }) => {
                 <th>Fecha</th>
                 <th>Hora</th>
                 <th>Precio</th>
-                <th>Cupos Dispopnibles</th>
-                <th>Cupos a Comprar</th>
+                <th>Cupos disponibles</th>
+                <th>Cupos a comprar</th>
               </tr>
             </thead>
             <tbody>
               {eventDetails.dates.map((date) =>
-                moment(date.date) > moment(dateActual)  && date.isPublic === true ? (
+                moment(date.date) > moment(dateActual) && date.isPublic === true ? (
                   <tr>
                     <td>
                       <input
@@ -227,7 +226,7 @@ const EventDate = ({ id, openMenu }) => {
                       {date.start}-{date.end}
                     </td>
 
-                    <td>{date.price}</td>
+                    <td>${new Intl.NumberFormat('de-DE').format(date.price)}</td>
 
                     <td>{date.cupos}</td>
 
@@ -348,15 +347,14 @@ const EventDate = ({ id, openMenu }) => {
             </div>
           </div>
 
-          <p className={styles.parrafo}>
-            Nuevas fechas pueden ser solicitadas en cuyo caso un mínimo aplicaría de cupos a ser adquiridos por el
-            solicitante, será sujeto a aprobación de fecha
+          <p onClick={handleFormSolicitudNewDate} className={styles.parrafo}>
+            Si las fechas u horas arriba mostradas no son de tu conveniencia, puedes solicitar unas que se acomoden a tu
+            agenda{' '}
+            <button type='button' onClick={handleFormSolicitudNewDate}>
+              aquí.
+            </button>
           </p>
-          <div className={styles.containerBtnSolitudNewDate}>
-            <p onClick={handleFormSolicitudNewDate} className={styles.parrafo2}>
-              Solicitar nuevas fechas
-            </p>
-          </div>
+
           {/* MENU GET NEW DATE */}
 
           <div
@@ -413,14 +411,33 @@ const EventDate = ({ id, openMenu }) => {
                     {isLoadingNewDate && <AiOutlineLoading3Quarters className={styles.loadingNewDate} />}
 
                     {resultFormNewDate && (
-                      <p
-                        style={{
-                          color: resultFormNewDate.success ? '#29aa79' : '#d53e27',
-                        }}
-                        className={styles.successSolicitudNewDate}
-                      >
-                        {resultFormNewDate.message}
-                      </p>
+                      <div className={styles.overlayResultNewDate}>
+                        <div className={styles.containerResultNewDate}>
+                          <AiOutlineClose
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setResultFormNewDate(false);
+                              setGetNewDate(false);
+                            }}
+                            className={styles.icon}
+                          />
+                          <hr />
+                          <h2>Haz solicitado una fecha u hora nueva</h2>
+                          <p>
+                            La solicitud está sujeta a aprobación por parte del Organizador. Pronto recibirás una
+                            respuesta a tu correo.{' '}
+                          </p>
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setResultFormNewDate(false);
+                              setGetNewDate(false);
+                            }}
+                          >
+                            Listo
+                          </button>
+                        </div>
+                      </div>
                     )}
                   </form>
                 </div>

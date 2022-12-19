@@ -76,6 +76,13 @@
   margin-bottom: 4rem;
 }
 
+.textPoliticsData {
+  font-size: 1.4rem;
+  color: var(--color-grey-3);
+  margin-top: -2rem;
+  margin-bottom: 2rem;
+}
+
 /* FOR ORGANIZER */
 
 .isUserIsProfileCompleted {
@@ -319,7 +326,7 @@
 }
 
 .formGroupPassword input::placeholder {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-style: italic;
 }
 

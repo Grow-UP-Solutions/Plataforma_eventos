@@ -1,7 +1,7 @@
 .page {
   padding: 10rem 0;
   display: grid;
-  gap: 10rem;
+  gap: 4rem;
   place-items: center;
 }
 
@@ -14,7 +14,7 @@
 .listData {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  align-items: center;
+  align-items: flex-start;
   justify-items: center;
 }
 
@@ -94,6 +94,17 @@
   animation: spinner 2s infinite;
 }
 
+.containerImageDocuments {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-content: center;
+  gap: 2rem;
+}
+
+.containerImageDocuments img {
+  width: 30rem;
+}
+
 @keyframes spinner {
   0% {
     transform: rotate(0);
@@ -108,5 +119,9 @@
   .listData {
     grid-template-columns: none;
     gap: 4rem;
+  }
+
+  .containerImageDocuments {
+    grid-template-columns: none;
   }
 }

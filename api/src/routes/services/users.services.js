@@ -40,7 +40,9 @@ async function createUsers(user, code) {
 
 async function createOrganizerComment(id, opinion) {
   try {
+    console.log('o2:',opinion)
     const generateComment = await UsersFunctionDb.commentUsers(id, opinion);
+    console.log(generateComment)
     return generateComment;
   } catch (error) {
     throw new Error(error.message);

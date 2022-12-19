@@ -22,10 +22,7 @@ const ChangePassword = () => {
     isFail: false,
     message: '',
   });
-  const [successMessage, setSuccessMessage] = useState({
-    isSuccess: true,
-    message: '',
-  });
+  const [modalSuccessChangePassword, setModalSuccessChangePassword] = useState(false);
 
   const [formData, setFormData] = useState({
     password: '',
@@ -33,7 +30,7 @@ const ChangePassword = () => {
   });
 
   const [errorsInputs, handleChangeInputValue] = useValidateForm(formData, setFormData);
-
+  const [modalErrorForgetPassword, setModalErrorForgetPassword] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState({
     password: false,
     confirmPassword: false,
@@ -70,10 +67,7 @@ const ChangePassword = () => {
     const { confirmPassword, password } = formData;
 
     if (confirmPassword === '' || password === '') {
-      return setErrorMessage({
-        isFail: true,
-        message: 'Por favor complete los campos correctamente',
-      });
+      return setModalErrorForgetPassword(true);
     }
 
     try {
@@ -82,14 +76,7 @@ const ChangePassword = () => {
         password,
       });
 
-      setSuccessMessage({
-        isSuccess: true,
-        message: 'Contraseña cambiada exitosamente',
-      });
-
-      setTimeout(() => {
-        navigate('/');
-      }, 1000);
+      setModalSuccessChangePassword(true);
     } catch (error) {
       console.log(error);
     }
@@ -165,22 +152,44 @@ const ChangePassword = () => {
                 )}
               </div>
             </div>
-            {errorMessage.isFail && (
-              <div>
-                <p className={styles.containerErrorMessageGeneral}>{errorMessage.message}</p>
-              </div>
-            )}
-
-            {successMessage.isSuccess && (
-              <div>
-                <p className={styles.containerSuccessMessageGeneral}>{successMessage.message}</p>
-              </div>
-            )}
 
             <div className={styles.btnCambiar}>
               <button>Cambiar</button>
             </div>
           </form>
+
+          {modalSuccessChangePassword && (
+            <div className={styles.overlayErrorModalPassword}>
+              <div className={styles.containerErrorModalPassword}>
+                <p>
+                  Hemos enviado un código de validación a tu correo electrónico, revísalo para finalizar tu proceso de
+                  cambio de clave. Recuerda ver la lista de no deseados y agregárnos a la lista blanca de contáctos.
+                </p>
+                <button
+                  onClick={() => {
+                    navigate('/');
+                  }}
+                >
+                  Cerrar
+                </button>
+              </div>
+            </div>
+          )}
+
+          {modalErrorForgetPassword && (
+            <div className={styles.overlayErrorModalPassword}>
+              <div className={styles.containerErrorModalPassword}>
+                <p>Información en casilla(s) esta incompleta o con formato incorrecto. Por favor revisar</p>
+                <button
+                  onClick={() => {
+                    setModalErrorForgetPassword(false);
+                  }}
+                >
+                  Cerrar
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

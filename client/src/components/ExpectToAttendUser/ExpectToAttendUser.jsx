@@ -13,48 +13,48 @@ const ExpectToAttendUser = ({ myEventsBooked }) => {
   });
 
   const [currentPage, setCurretPage] = useState(1);
-  const CardPerPage = 6;
+  const CardPerPage = 24;
   const indexOfLastCard = currentPage * CardPerPage;
   const indexOfFirstCard = indexOfLastCard - CardPerPage;
   const currentCard = orderByDate.slice(indexOfFirstCard, indexOfLastCard);
   const paginado = (pageNumber) => setCurretPage(pageNumber);
 
+  console.log({ currentCard });
+
   return (
     <div className={styles.container}>
       <p className={styles.title}>Pendientes por asistir</p>
 
-      <div className={styles.containercard}>
-        {currentCard ? (
-          <>
-            {currentCard.map((event) => (
-              <div className={styles.card}>
-                <Card event={event} />
-              </div>
-            ))}
-            <div className={styles.container_pagination}>
-              <Pagination
-                billsPerPage={CardPerPage}
-                state={myEventsBooked.length}
-                paginado={paginado}
-                page={currentPage}
-              />
+      {currentCard.length > 0 ? (
+        <div className={styles.containercard}>
+          {currentCard.map((event) => (
+            <div className={styles.card}>
+              <Card event={event} />
             </div>
-          </>
-        ) : (
-          <>
-            <div className={styles.containerSeeEvents}>
-              <hr className={styles.hr}></hr>
-              <p className={styles.text}>
-                Aún no tienes eventos en “Pendientes por Asistir”. ¡Alistate a un evento con “LO QUE QUIERO HACER”!
-              </p>
-              <button className={styles.btn}>
-                <Link to='/'>Ver eventos</Link>
-              </button>
-              <hr className={styles.hr}></hr>
-            </div>
-          </>
-        )}
-      </div>
+          ))}
+          <div className={styles.container_pagination}>
+            <Pagination
+              billsPerPage={CardPerPage}
+              state={myEventsBooked.length}
+              paginado={paginado}
+              page={currentPage}
+            />
+          </div>
+        </div>
+      ) : (
+        <>
+          <div className={styles.containerSeeEvents}>
+            <hr className={styles.hr}></hr>
+            <p className={styles.text}>
+              Aún no tienes eventos en “Pendientes por Asistir”. ¡Alistate a un evento con “LO QUE QUIERO HACER”!
+            </p>
+            <button className={styles.btn}>
+              <Link to='/'>Ver eventos</Link>
+            </button>
+            <hr className={styles.hr}></hr>
+          </div>
+        </>
+      )}
     </div>
   );
 };

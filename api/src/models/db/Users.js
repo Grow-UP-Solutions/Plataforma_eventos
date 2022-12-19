@@ -3,6 +3,11 @@ const Message = require('./Message');
 
 const UserSchema = new Schema(
   {
+    idUser: String,
+    idOrganizer: {
+      type: String,
+      default: '',
+    },
     firstName: String,
     lastName: String,
     name: String,
@@ -58,7 +63,6 @@ const UserSchema = new Schema(
     },
     isDeclarant: {
       type: Boolean,
-      default: '',
     },
     isProfileCompleted: {
       type: Boolean,
@@ -150,7 +154,19 @@ const UserSchema = new Schema(
 
     opinionsOrg: [
       {
+        idUser:{
+          type: String,
+        },
+
         title: {
+          type: String,
+        },
+
+        dateEvent: {
+          type: String,
+        },
+
+        eventTitle: {
           type: String,
         },
 
@@ -158,13 +174,15 @@ const UserSchema = new Schema(
           type: Date,
           default: Date.now(),
         },
+
         rating: {
           type: Number,
         },
+
         picture: {
           type: String,
-          default: null,
         },
+        
         opinion: String,
       },
     ],

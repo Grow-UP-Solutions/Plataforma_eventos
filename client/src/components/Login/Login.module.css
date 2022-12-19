@@ -136,7 +136,7 @@
 }
 
 .formGroup span {
-  align-self: flex-end;
+  align-self: flex-start;
   font-size: 1.4rem;
   font-style: italic;
   color: var(--color-orange);
@@ -162,7 +162,7 @@
 .checkboxRemember {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 1rem;
 }
 
 .checkboxRemember input {
@@ -173,6 +173,8 @@
 
 .checkboxRemember span {
   font-size: 1.6rem;
+  font-weight: bold;
+  color: var(--color-grey-2);
 }
 
 .forgetPassword button {
@@ -181,6 +183,7 @@
   color: var(--color-orange);
   font-size: 1.6rem;
   cursor: pointer;
+  font-weight: bold;
 }
 
 .btnLogin {

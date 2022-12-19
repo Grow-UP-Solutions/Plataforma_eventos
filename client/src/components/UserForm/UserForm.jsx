@@ -14,7 +14,7 @@ import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { checkMalasPalabras } from '../../utils/checkMalasPalabras';
 import { inputKeyDown, inputKeyUpPh, inputKeyUpTel } from '../../utils/inputOnlyNumbers';
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { invalidWords } from '../../utils/invalidWord';
 import { isValidEmail } from '../../utils/validateEmail';
 
@@ -22,6 +22,8 @@ import AvatarEditor from 'react-avatar-editor';
 import { dataURLtoFile, toDataURL } from '../../utils/convertUrlToImageFile';
 
 const UserForm = ({ userData }) => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     firstName: userData.firstName || '',
     lastName: userData.lastName || '',
@@ -67,9 +69,9 @@ const UserForm = ({ userData }) => {
 
     const image = e.target.files[0];
 
-    if (image.size > 120000) {
+    if (image.size > 500000) {
       return setErrorMessagePhoto({
-        userpicture: 'Por favor ingrese una imagén con tamaño menor a 100kb',
+        userpicture: 'Por favor ingrese una imagén con tamaño menor a 500kb',
       });
     }
 
@@ -592,7 +594,7 @@ const UserForm = ({ userData }) => {
     });
 
     const image = e.target.files[0];
-    if (image.size > 120000) {
+    if (image.size > 100000) {
       return setErrorMessagePhoto({
         ...errorMessagePhoto,
         backDocument: 'Por favor ingrese una imagén con tamaño menor a 100kb',
@@ -629,7 +631,7 @@ const UserForm = ({ userData }) => {
 
     const image = e.target.files[0];
 
-    if (image.size > 120000) {
+    if (image.size > 100000) {
       return setErrorMessagePhoto({
         ...errorMessagePhoto,
         frontDocument: 'Por favor ingrese una imagén con tamaño menor a 100kb',
@@ -667,7 +669,7 @@ const UserForm = ({ userData }) => {
 
     const image = e.target.files[0];
 
-    if (image.size > 120000) {
+    if (image.size > 10000) {
       return setErrorMessagePhoto({
         ...errorMessagePhoto,
         imageRent: 'Por favor ingrese una imagén con tamaño menor a 100kb',
@@ -774,8 +776,6 @@ const UserForm = ({ userData }) => {
       phone: formData.phone,
       description: formData.descriptionOrganizer,
       image: formData.userpicture,
-      referenciaU: 'U123',
-      referenciaZ: '',
     };
 
     try {
@@ -882,7 +882,9 @@ const UserForm = ({ userData }) => {
                   <BsInfoCircle className={styles.iconOrganizerInfo} />
                 </div>
 
-                <button className={styles.btnCreateEvent}>Organiza un evento</button>
+                <button onClick={() => navigate('/organiza-un-evento')} className={styles.btnCreateEvent}>
+                  Organiza un evento
+                </button>
               </div>
             </>
           )}
@@ -893,6 +895,11 @@ const UserForm = ({ userData }) => {
 
       {/* FORM */}
       <div className={styles.containerForm}>
+        <p className={styles.textPoliticsData}>
+          Todos tus datos serán tratados conforma a la normatividad de{' '}
+          <Link to='/docs/seguridad/usuario'>Politicas de Seguridad</Link> y nuetras{' '}
+          <Link to='/docs/privacidad/usuario'>Politica de privacidad</Link>.
+        </p>
         <form>
           <div className={`${styles.formGroup} ${styles.formGroupNames}`}>
             <div className={`${styles.subFormGroup} ${styles.containerNames}`}>
@@ -1357,7 +1364,7 @@ const UserForm = ({ userData }) => {
         <div className={styles.containerCheckBoxRent}>
           <div className={styles.checkbox}>
             <input
-              checked={formData.isDeclarant === '' ? false : formData.isDeclarant}
+              checked={formData.isDeclarant}
               onChange={handleInputRadioButtonRent}
               name='rent'
               type='radio'
@@ -1367,7 +1374,7 @@ const UserForm = ({ userData }) => {
           </div>
           <div className={styles.checkbox}>
             <input
-              checked={formData.isDeclarant === '' ? false : formData.isDeclarant}
+              checked={!formData.isDeclarant}
               onChange={handleInputRadioButtonRent}
               name='rent'
               type='radio'
@@ -1375,7 +1382,7 @@ const UserForm = ({ userData }) => {
             />
             <label htmlFor='no'>No</label>
           </div>
-          {formData.isDeclarant === true && (
+          {formData.isDeclarant && (
             <div className={styles.containerDrag}>
               <p className={styles.anexRut}>Anexa el RUT:</p>
               {formData.imageRent && formData.isDeclarant ? (
@@ -1498,15 +1505,23 @@ const UserForm = ({ userData }) => {
         <>
           <div className={styles.overlaySetOrganizer}>
             <div className={styles.containerModalSetOrganizer}>
-              <h3>Esta aplicando para convertirte en organizador</h3>
+              <h3>Estas aplicando para convertirte en organizador</h3>
 
               <p>Esto te permitirá publicar eventos por medio de la plataforma</p>
 
               <span>
                 Al proceder con ésta aplicación confirmas que has leído y aceptar la{' '}
-                <Link to={'/privacy'}>Politica de privacidad</Link>, la{' '}
-                <Link to={'/privacy'}>Politica de seguridad</Link> y los{' '}
-                <Link to={'/privacy'}>Términos y condiciones</Link>
+                <a href={'/docs/privacidad/usuario'} target='_blank'>
+                  Politica de privacidad
+                </a>
+                , la{' '}
+                <a href={'/docs/seguridad/usuario'} target='_blank'>
+                  Politica de seguridad
+                </a>{' '}
+                y los{' '}
+                <a href={'/docs/terminos-condiciones/usuario'} target='_blank'>
+                  Términos y condiciones
+                </a>
                 de LO QUE QUIERO HACER S.A.S que aplican para un Organizador y las cuales son distintas a las que
                 aceptaste previamente al momento de crear tu cuenta.
               </span>

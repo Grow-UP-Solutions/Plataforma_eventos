@@ -124,7 +124,6 @@ const Cart = () => {
     setCodigo(e.target.value);
   };
 
-  // const aplicar = async (e, id) => {
   //   e.preventDefault();
 
   //   for (let c = 0; c < carrito.length; c++) {
@@ -190,7 +189,7 @@ const Cart = () => {
     for (let c = 0; c < carrito.length; c++) {
       if (carrito[c].idDate === id) {
         for (let d = 0; d < currentDate[0].codigos.length; d++) {
-          if (currentDate[0].codigos[d].codigo === codigo) {
+          if (currentDate[0].codigos[d].codigo === codigo && currentDate[0].codigos[d].cantidad > 0) {
             const descValor = currentDate[0].codigos[d].descuento; //10%
             carrito[c].codigoDescuento = codigo;
             carrito[c].codigoCorrecto = true;
@@ -211,33 +210,76 @@ const Cart = () => {
             return swal({
               title: 'Codigo Aplicado',
             });
+          } else if (currentDate[0].codigos[d].codigo === codigo && currentDate[0].codigos[d].cantidad === 0) {
+            return swal({
+              title: 'Ya no hay bonos disponibles para redimir con este código',
+            });
           } else if (currentDate[0].codigos[d].codigo !== codigo) {
             const codeResult = await eventsApi.get(`/codeDiscount/getCodeDiscountByCode/${codigo} `);
 
-            if (codeResult.data.codeDiscount.length === 1 && codeResult.data.codeDiscount[0].isRedimeed === false) {
-              carrito[c].codigoReferido = codeResult.data.codeDiscount[0].code;
-              carrito[c].codigoCorrecto = true;
-              carrito[c].descuento = codeResult.data.codeDiscount[0].value;
-
-              const refUnit = codeResult.data.codeDiscount[0].value / carrito[c].quantity;
-
-              //const descuentoUnit = carrito[c].unit_price - codeResult.data.codeDiscount[0].value
-
-              carrito[c].unit_price = carrito[c].unit_price - refUnit;
-
-              carrito[c].priceOrg = carrito[c].priceOrg - refUnit;
-
-              carrito[c].ganancias = carrito[c].ganancias - codeResult.data.codeDiscount[0].value;
-
-              setDesc(codeResult.data.codeDiscount[0].value);
-
+            if (
+              codeResult.data.codeDiscount.length === 1 &&
+              codeResult.data.codeDiscount[0].isRedimeed === false &&
+              codeResult.data.codeDiscount[0].value < valorTotal
+            ) {
               return swal({
-                title: 'Codigo Aplicado',
+                title: 'manor',
+                icon: 'warning',
+                dangerMode: true,
+              });
+
+              // carrito[c].codigoReferido = codeResult.data.codeDiscount[0].code;
+              // carrito[c].codigoCorrecto = true;
+              // carrito[c].descuento = codeResult.data.codeDiscount[0].value;
+
+              // const refUnit = codeResult.data.codeDiscount[0].value / carrito[c].quantity;
+
+              // //const descuentoUnit = carrito[c].unit_price - codeResult.data.codeDiscount[0].value
+
+              // carrito[c].unit_price = carrito[c].unit_price - refUnit;
+
+              // carrito[c].priceOrg = carrito[c].priceOrg - refUnit;
+
+              // carrito[c].ganancias = carrito[c].ganancias - codeResult.data.codeDiscount[0].value;
+
+              // setDesc(codeResult.data.codeDiscount[0].value);
+
+              // return swal({
+              //   title: 'Codigo Aplicado',
+              // });
+            } else if (
+              codeResult.data.codeDiscount.length === 1 &&
+              codeResult.data.codeDiscount[0].isRedimeed === false &&
+              codeResult.data.codeDiscount[0].value > valorTotal
+            ) {
+              return swal({
+                title: `El valor del código de descuento ingresado es $${new Intl.NumberFormat('de-DE').format(
+                  codeResult.data.codeDiscount[0].value
+                )} 
+                  y el costo del evento es de $${new Intl.NumberFormat('de-DE').format(
+                    valorTotal
+                  )}. Si procedes el excedente se perderá`,
+                icon: 'warning',
+                buttons: ['Cancelar acción', 'Continuar'],
+                dangerMode: true,
+              }).then((continuar) => {
+                if (continuar) {
+                  return swal({
+                    title: 'si',
+                  });
+                }
+              });
+            } else if (
+              codeResult.data.codeDiscount.length === 1 &&
+              codeResult.data.codeDiscount[0].isRedimeed === true
+            ) {
+              return swal({
+                title: 'Codigo no disponible',
               });
             } else {
               carrito[c].codigoCorrecto = false;
               return swal({
-                title: 'Codigo Incorrecto',
+                title: 'Este código ha sido inhabilitado por el Organizador o es Incorrecto ',
                 icon: 'warning',
                 dangerMode: true,
               });
@@ -323,73 +365,80 @@ const Cart = () => {
     });
   }
 
-  // const quitarFecha = (e, id)=>{
-
-  //   let seleccion = carrito.filter((c) => c.idDate !== id);
-  //   let seleccionDate = dateToBuy.filter((d) => d._id !== id);
-
-  //   setCarrito(seleccion);
-  //   setDateToBuy(seleccionDate);
-
-  // }
+  //---SUBMIT---//
 
   //---SUBMIT---//
+
+  const [acepted, setAcepted] = useState(false);
+
+  const handleChangeCehck = () => {
+    setAcepted(true);
+  };
 
   async function handleSubmit(e) {
     e.preventDefault();
 
-    const costos = administracion + iva;
-    const ganancia = [];
-    const f = [];
-    const cod = [];
+    if (acepted) {
+      const costos = administracion + iva;
+      const ganancia = [];
+      const f = [];
+      const cod = [];
 
-    for (let i = 0; i < carrito.length; i++) {
-      const costoCarrito = costos / carrito.length;
+      for (let i = 0; i < carrito.length; i++) {
+        const costoCarrito = costos / carrito.length;
 
-      carrito[i].costos = costoCarrito / carrito[i].quantity;
-      carrito[i].unit_price = carrito[i].price + carrito[i].costos;
+        carrito[i].costos = costoCarrito / carrito[i].quantity;
+        carrito[i].unit_price = carrito[i].price + carrito[i].costos;
 
-      ganancia.push(carrito[i].ganancias);
+        ganancia.push(carrito[i].ganancias);
 
-      const d = {
-        title: eventDetail.title,
-        quantity: carrito[i].quantity,
-        unit_price: Math.trunc(carrito[i].unit_price),
-        id: carrito[i].idDate,
-        ganancias: carrito[i].ganancias,
-        codigoDescuento: carrito[i].codigoDescuento || null,
-        codigoUsuario: carrito[i].codigoReferido || null,
+        const d = {
+          title: eventDetail.title,
+          quantity: carrito[i].quantity,
+          unit_price: Math.trunc(carrito[i].unit_price),
+          id: carrito[i].idDate,
+          ganancias: carrito[i].ganancias,
+          codigoDescuento: carrito[i].codigoDescuento || null,
+          codigoUsuario: carrito[i].codigoReferido || null,
+        };
+
+        f.push(d);
+
+        const c = carrito[i].codigoDescuento;
+        cod.push(c);
+
+        setCode([
+          {
+            idEvent: eventDetail._id,
+            idDate: carrito[i].idDate,
+            code: carrito[i].codigoDescuento,
+          },
+        ]);
+      }
+
+      const gananciaTotalOrg = ganancia.reduce((a, b) => a + b);
+
+      const payload = {
+        idUser: user.uid,
+        idEvent: eventDetail._id,
+        ganancia: gananciaTotalOrg,
+        dates: f,
       };
 
-      f.push(d);
+      console.log('payload', payload);
 
-      const c = carrito[i].codigoDescuento;
-      cod.push(c);
+      const json = await eventsApi.post('/mercadoPago/orden', payload);
+      console.log('res:', json.data);
 
-      setCode([
-        {
-          idEvent: eventDetail._id,
-          idDate: carrito[i].idDate,
-          code: carrito[i].codigoDescuento,
-        },
-      ]);
+      window.location.assign(json.data.init_point);
+    } else {
+      return swal({
+        title: 'Debe haceptar el ACUERDO DE EXONERACIÓN DE RESPONSABILIDAD LEGAL (USUARIO) ',
+        icon: 'warning',
+        buttons: ['Continuar'],
+        dangerMode: true,
+      });
     }
-
-    const gananciaTotalOrg = ganancia.reduce((a, b) => a + b);
-
-    const payload = {
-      idUser: user.uid,
-      idEvent: eventDetail._id,
-      ganancia: gananciaTotalOrg,
-      dates: f,
-    };
-
-    console.log('payload', payload);
-
-    const json = await eventsApi.post('/mercadoPago/orden', payload);
-    console.log('res:', json.data);
-
-    window.location.assign(json.data.init_point);
   }
 
   const [nextPageForm, setNextPageForm] = useState(false);
@@ -629,32 +678,63 @@ const Cart = () => {
                 <div className={styles.containerDetailsBuy}>
                   <div className={styles.detailsBuy}>
                     <p>Subtotal</p>
-                    <span>${subTotal}</span>
+                    <span>${new Intl.NumberFormat('de-DE').format(subTotal)}</span>
                   </div>
                   <div className={styles.detailsBuy}>
                     <p>Descuento</p>
-                    <span className={styles.detailDiscount}>-${descuentoTotal}</span>
+                    <span className={styles.detailDiscount}>
+                      -${new Intl.NumberFormat('de-DE').format(descuentoTotal)}
+                    </span>
                   </div>
                   <div className={styles.detailsBuy}>
                     <p>Administración</p>
-                    <span>${administracion}</span>
+                    <span>${new Intl.NumberFormat('de-DE').format(administracion)}</span>
                   </div>
                   <div className={styles.detailsBuy}>
                     <p>Valor IVA</p>
-                    <span>${iva}</span>
+                    <span>${new Intl.NumberFormat('de-DE').format(iva)}</span>
                   </div>
                   <div className={styles.formDivisor} />
                   <div className={`${styles.detailsBuy} ${styles.totalBuy}`}>
                     <p>Valor total Inc IVA</p>
-                    <span>${valorTotal}</span>
+                    <span>${new Intl.NumberFormat('de-DE').format(valorTotal)}</span>
                   </div>
                 </div>
 
-                <p className={styles.textTerms}>
-                  Al hacer clic en ‘Pagar,’ confirmas que has leído y aceptas la Política de privacidad, la Políticas de
-                  seguridad y los Términos y condiciones de LO QUE QUIERO HACER S.A.S. También confirmas que eres mayor
-                  de edad y que aceptas ser contactado por Nosotros en relación a los eventos que compres.
-                </p>
+                <div className={styles.containerTerm}>
+                  <input
+                    type='checkbox'
+                    class={styles.checkBox}
+                    value={acepted}
+                    defaultChecked={false}
+                    onChange={handleChangeCehck}
+                  ></input>
+                  <label className={styles.textTerms}>
+                    Confirmo que he leído el ACUERDO DE EXONERACIÓN DE RESPONSABILIDAD LEGAL (USUARIO).{' '}
+                    <a className={styles.enlace} href='/seguridad' target='_blank'>
+                      Leer aqui
+                    </a>{' '}
+                  </label>
+                </div>
+
+                <div className={styles.containerTerm}>
+                  <p className={styles.textTerms}>
+                    Al hacer clic en ‘Pagar,’ confirmas que has leído y aceptas la{' '}
+                    <a className={styles.enlace} href='/docs/privacidad/usuario' target='_blank'>
+                      Politica de Privacidad
+                    </a>
+                    , la{' '}
+                    <a className={styles.enlace} href='/docs/seguridad/usuario' target='_blank'>
+                      Politica de Seguridad&nbsp;
+                    </a>
+                    y los{' '}
+                    <a className={styles.enlace} href='/docs/terminos-condiciones/usuario' target='_blank'>
+                      Termino y Condiciones&nbsp;
+                    </a>{' '}
+                    de LO QUE QUIERO HACER S.A.S. También confirmas que eres mayor de edad y que aceptas ser contactado
+                    por Nosotros en relación a los eventos que compres.
+                  </p>
+                </div>
 
                 <div className={styles.containerButtonForm}>
                   <button onClick={(e) => handleSubmit(e)} className={styles.btnForm}>
@@ -670,24 +750,24 @@ const Cart = () => {
             <div className={styles.containerDetailsBuy}>
               <div className={styles.detailsBuy}>
                 <p>Subtotal</p>
-                <span>${subTotal}</span>
+                <span>${new Intl.NumberFormat('de-DE').format(subTotal)}</span>
               </div>
               <div className={styles.detailsBuy}>
                 <p>Descuento</p>
-                <span className={styles.detailDiscount}>-${descuentoTotal}</span>
+                <span className={styles.detailDiscount}>-${new Intl.NumberFormat('de-DE').format(descuentoTotal)}</span>
               </div>
               <div className={styles.detailsBuy}>
                 <p>Administración</p>
-                <span>${administracion}</span>
+                <span>${new Intl.NumberFormat('de-DE').format(administracion)}</span>
               </div>
               <div className={styles.detailsBuy}>
                 <p>Valor IVA</p>
-                <span>${iva}</span>
+                <span>${new Intl.NumberFormat('de-DE').format(iva)}</span>
               </div>
               <div className={styles.formDivisor} />
               <div className={`${styles.detailsBuy} ${styles.totalBuy}`}>
                 <p>Valor total Inc IVA</p>
-                <span>${valorTotal}</span>
+                <span>${new Intl.NumberFormat('de-DE').format(new Intl.NumberFormat('de-DE').format(valorTotal))}</span>
               </div>
             </div>
           </div>
@@ -745,12 +825,23 @@ const Cart = () => {
 
           <div className={`${styles.detailsBuy} ${styles.totalBuy}`}>
             <p>Valor total Inc IVA</p>
-            <span>${valorTotal}</span>
+            <span>${new Intl.NumberFormat('de-DE').format(valorTotal)}</span>
           </div>
 
           <p className={styles.textTerms}>
-            Al hacer clic en ‘Pagar’ confirma que ha leído y entendido nuestros Términos y Condiciones, Notas legales de
-            privacidad y Seguridad.
+            Al hacer clic en ‘Pagar’ confirma que ha leído y entendido nuestros&nbsp;
+            <a href='/docs/terminos-condiciones/usuarios' target='_blank'>
+              Términos y Condiciones.
+            </a>
+            , Notas legales de{' '}
+            <a href='/docs/privacidad/usuarios' target='_blank'>
+              Privacidad&nbsp;
+            </a>
+            y &nbsp;
+            <a href='/docs/seguridad/usuarios' target='_blank'>
+              Seguridad
+            </a>
+            .
           </p>
 
           <div className={styles.containerResponsiveBtnPagar}>

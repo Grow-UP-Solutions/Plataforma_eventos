@@ -12,6 +12,7 @@ import OtherCategories from './components/Admin/OtherCategories';
 import InRevision from './components/Admin/InRevision';
 import OrderDetail from './components/Admin/OrderDetail';
 import Orders from './components/Admin/Orders';
+import Compras from './components/Admin/Compras';
 import Notifications from './components/Notifications/Notifications';
 import { AuthContext } from './context/auth';
 import { UIContext } from './context/ui';
@@ -38,7 +39,7 @@ import {
   CheckSolicitudOrganizer,
   MyEventsAsistentes,
   MercadoPago,
-  MercadoPagoFail
+  MercadoPagoFail,
 } from './pages';
 import EventsOrganizerResult from './pages/EventsOrganizerResult/EventsOrganizerResult';
 import News from './pages/News/News';
@@ -48,7 +49,6 @@ import { getEvents } from './redux/actions';
 import RutaPrivada from './router/RutaPrivada';
 
 function App() {
-
   const [navBar, setNavBar] = useState(false);
   const dispatch = useDispatch();
   const { isMenuLoginOpen, getCategories, getAllEvents } = useContext(UIContext);
@@ -72,14 +72,13 @@ function App() {
     <div className='App'>
       <Navbar upper={navBar} />
       <Routes>
-
         {/* RUTAS PUBLICAS */}
         <Route path='/' element={<Home handleNav={setNavBar} />} />
         <Route path='/contactanos' element={<Contacto />} />
         <Route path='/preguntas-frecuentes' element={<Faq />} />
         <Route path='/sobre-el-organizador/:id' element={<Organizer />} />
         <Route path='/detalles-del-evento/:id' element={<EventDetails />} />
-        <Route path='/resultados-de-busqueda/:data' element={<SearchResult />} />
+        <Route path='/resultados-de-busqueda/' element={<SearchResult />} />
         <Route path='/registrate' element={<Register />} />
         <Route path='/organiza-un-evento/beneficios' element={<EventCreate />} />
         <Route path='/resultado-categoria/:data' element={<CategoriesResult />} />
@@ -87,9 +86,7 @@ function App() {
         <Route path='/noticias' element={<News />} />
         <Route path='/prensa' element={<Press />} />
         <Route path='/empleo/aplicar/:work' element={<WorkWithUsForm />} />
-        <Route path='/privacidad' element={<PanelPrivacy />} />
-        <Route path='/seguridad' element={<PanelPrivacy />} />
-        <Route path='/terminos' element={<PanelPrivacy />} />
+        <Route path='/docs/:section/:typeUser' element={<PanelPrivacy />} />
         <Route path='/resultado-eventos-organizador/:id' element={<EventsOrganizerResult />} />
         <Route path={'/mercadoPago/success'} element={<MercadoPago />} />
         <Route path='/admin/check-solicitud-organizador/:token' element={<CheckSolicitudOrganizer />} />
@@ -103,42 +100,47 @@ function App() {
         <Route path={'/eventos-revision'} element={<InRevision />} />
         <Route path={'/ordenes'} element={<Orders />} />
         <Route path={'/detalle-de-orden/:orderId/:userId'} element={<OrderDetail />} />
-
+        <Route path={'/compras'} element={<Compras />} />
 
         {/* RUTAS PRIVADAS */}
-        <Route path='/oganiza-un-evento' 
+        <Route
+          path='/organiza-un-evento'
           element={
             <RutaPrivada>
               <EventCreateForm />
             </RutaPrivada>
-          } 
+          }
         />
-        
-        <Route path='/oganiza-un-evento-editar/:id' 
+
+        <Route
+          path='/organiza-un-evento-editar/:id'
           element={
             <RutaPrivada>
               <EventEdit />
             </RutaPrivada>
-          } 
+          }
         />
-        
-        <Route path='/cart/:id' 
+
+        <Route
+          path='/cart/:id'
           element={
             <RutaPrivada>
               <Cart />
             </RutaPrivada>
-          } 
+          }
         />
 
-        <Route path='/payment' 
+        <Route
+          path='/payment'
           element={
             <RutaPrivada>
               <Payment />
             </RutaPrivada>
-          } 
+          }
         />
 
-        <Route path='/usuario/:option' 
+        <Route
+          path='/usuario/:option'
           element={
             <RutaPrivada>
               <UserPage />
@@ -146,7 +148,8 @@ function App() {
           }
         />
 
-        <Route path='/usuario/mensajes' 
+        <Route
+          path='/usuario/mensajes'
           element={
             <RutaPrivada>
               <Messages />
@@ -154,38 +157,41 @@ function App() {
           }
         />
 
-        <Route path='/usuario/notificaciones' 
+        <Route
+          path='/usuario/notificaciones'
           element={
             <RutaPrivada>
               <Notifications />
             </RutaPrivada>
-          } 
+          }
         />
 
-        <Route path='/facturas/:id' 
+        <Route
+          path='/facturas/:id'
           element={
             <RutaPrivada>
               <Bills />
             </RutaPrivada>
-          } 
+          }
         />
 
-        <Route path='/edita-un-evento' 
+        <Route
+          path='/edita-un-evento'
           element={
             <RutaPrivada>
               <EventEdit />
             </RutaPrivada>
-          } 
+          }
         />
 
-        <Route path='/usuario/asistentes-al-evento/:eventId/:dateId' 
+        <Route
+          path='/usuario/asistentes-al-evento/:eventId/:dateId'
           element={
             <RutaPrivada>
               <MyEventsAsistentes />
             </RutaPrivada>
-          } 
+          }
         />
-
       </Routes>
 
       <div className='container_footer'>
