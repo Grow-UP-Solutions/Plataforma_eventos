@@ -8,7 +8,7 @@ const fecha = new Date();
   const minutes = fecha.getMinutes();
   const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
 
-const eventCreateAdministrador = async (events, organizer) => {
+const eventUpdateAdministrador = async (events, organizer) => {
   console.log('eventmail',events)
   console.log('organizer',organizer)
   const { title, _id, longDescription, idEvent, } = events;
@@ -160,5 +160,5 @@ const eventCreateAdministrador = async (events, organizer) => {
   }
 };
 module.exports = {
-  eventCreateAdministrador,
+    eventUpdateAdministrador,
 };
