@@ -341,7 +341,7 @@ const EventDetails = () => {
                         <FaWhatsapp className={style.icons} />
                       </a>
 
-                      <CopyToClipboard text={`https://events-jean.vercel.app//detalles-del-evento/${id}`}>
+                      <CopyToClipboard text={`https://events-jean.vercel.app/detalles-del-evento/${id}`}>
                         <IoLinkOutline onClick={handleClickCopy} className={style.icons} />
                       </CopyToClipboard>
                     </div>

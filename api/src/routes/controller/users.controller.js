@@ -329,7 +329,6 @@ router.post('/create', [check('email', 'El email es obligatorio').isEmail(), val
 
 router.post('/verifyEmailNotUsing', async (req, res) => {
   const { email } = req.body;
-
   try {
     const user = await UsersFunctionDb.validationEmail(email);
 

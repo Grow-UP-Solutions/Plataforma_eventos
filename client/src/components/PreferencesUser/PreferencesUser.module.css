@@ -252,6 +252,11 @@
   color: var(--color-grey-1);
   line-height: 1.2;
 }
+
+.containerModalDeleteAccount p a {
+  color: var(--color-orange);
+}
+
 .containerBtnsDeleteAccount {
   display: flex;
   justify-content: center;

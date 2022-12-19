@@ -175,9 +175,11 @@ const PreferencesUser = ({ userData }) => {
           </div>
         </div>
         <div className={styles.contbutton}>
-          <button onClick={openModalVerifyPassword} className={styles.button}>
-            Eliminar Cuenta
-          </button>
+          {userConfigs.reasonForElimination !== '' && (
+            <button onClick={openModalVerifyPassword} className={styles.button}>
+              Eliminar Cuenta
+            </button>
+          )}
         </div>
 
         {modalVerifyPassword && (
@@ -220,9 +222,13 @@ const PreferencesUser = ({ userData }) => {
           <div className={styles.containerModalDeleteAccount}>
             <h3>¿Estás seguro?</h3>
             <p>
-              Si procedes, toda tu información será borada con excepción de la requerida para efecto de cumplimiento de
+              Si procedes, toda tu información será borrada con excepción de la requerida para efecto de cumplimiento de
               normativa tributarios en caso de que aplique. Cualquier saldo a tu favor generado por tu código de
-              Referidos también será eliminado. Ver sección &&&&& en Términos y Condiciones.
+              Referidos también será eliminado. Ver sección &&&&& en{' '}
+              <Link to={'/docs/terminos-condiciones/usuario'} target='_blank' rel='noopener noreferrer'>
+                Términos y Condiciones
+              </Link>
+              .
             </p>
             <div className={styles.containerBtnsDeleteAccount}>
               <button onClick={() => navigate('/')} className={styles.btnSuccess}>

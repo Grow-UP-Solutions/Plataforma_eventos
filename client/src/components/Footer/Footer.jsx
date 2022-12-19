@@ -9,8 +9,6 @@ import { animateScroll as scroll } from 'react-scroll';
 import { stateContext } from '../../context/state/stateContext';
 
 const Footer = () => {
-  const { setResult } = useContext(stateContext);
-
   const handleClickToTop = (e) => {
     e.preventDefault();
     scroll.scrollToTop();
