@@ -12,7 +12,7 @@ const {
 
 const router = Router();
 
-let contadorEvent = 0;
+
 
 router.get('/', async (req, res) => {
   try {
@@ -44,6 +44,8 @@ router.get('/:id/buyer', async (req, res) => {
     return res.status(500).json({ ERROR_EVENT_BUYER: error.message });
   }
 });
+
+let contadorEvent = 0;
 
 router.post('/create', async (req, res) => {
   try {

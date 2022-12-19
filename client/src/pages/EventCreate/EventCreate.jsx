@@ -138,7 +138,7 @@ const EventCreate = () => {
 
       <div className={styles.containerContent}>
         <div className={styles.header}>
-          <p>Beneficios de Organizar un evento</p>
+          <p>Ventajas</p>
         </div>
 
         <div className={styles.containerItems}>
