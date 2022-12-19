@@ -8,8 +8,9 @@ import { AuthContext } from '../../context/auth/AuthContext';
 import CardComments from '../CardComments/CardComments';
 import swal from 'sweetalert';
 import { UIContext } from '../../context/ui';
+import { AiOutlineConsoleSql } from 'react-icons/ai';
 
-const EventComments = ({ id }) => {
+const EventComments = ({ id, eventBuyUser, datesBuy, assisted }) => {
   const [opinion, setOpinion] = useState([]);
   const [newOpinion, setNewOpinion] = useState('');
   const [number, setNumber] = useState(0);
@@ -18,6 +19,9 @@ const EventComments = ({ id }) => {
   const allEvents = useSelector((state) => state.events);
   const eventDetails = allEvents.filter((event) => event._id === id)[0];
   const { getRatingEvent } = useContext(UIContext);
+
+  console.log('datesBuy', datesBuy);
+  console.log('eventBuyUser', eventBuyUser);
 
   useEffect(() => {
     const getAllComments = async () => {
@@ -36,10 +40,13 @@ const EventComments = ({ id }) => {
     getAllComments();
   }, [id]);
 
+  //RTING//
+
   const calcRatingEffect = () => {
-    const ratings = eventDetails.opinions.map((e) => e.rating);
+    const opinionsRated = eventDetails.opinions.filter((e) => e.rating > 0);
+    const ratings = opinionsRated.map((e) => e.rating);
     const suma = ratings.reduce((prev, current) => prev + current);
-    const result = (suma / eventDetails.opinions.length).toFixed(1);
+    const result = (suma / opinionsRated.length).toFixed(1);
     return result;
   };
 
@@ -48,10 +55,11 @@ const EventComments = ({ id }) => {
       const resu = (num / 1).toFixed(1);
       return resu;
     } else {
-      const ratings = opinion.map((e) => e.rating);
+      const opinionsWithRanking = opinion.filter((e) => e.rating > 0);
+      const ratings = opinionsWithRanking.map((e) => e.rating);
       const suma = ratings.reduce((prev, current) => prev + current);
       const otherSuma = suma + num;
-      const total = opinion.length + 1;
+      const total = opinionsWithRanking.length + 1;
       const result = (otherSuma / total).toFixed(1);
       return result;
     }
@@ -59,12 +67,18 @@ const EventComments = ({ id }) => {
 
   const handlePostComments = async (e) => {
     e.preventDefault();
+    const fecha = datesBuy[0];
+    console.log('fecha', fecha);
     const data = {
       idUser: user.uid,
       rating: value,
       title: user.name,
       opinion: newOpinion,
+      picture: fecha[0].pictureBuyer,
+      dateEvent: fecha[0].dates[0].date,
+      eventTitle: eventBuyUser[0].title,
     };
+    console.log('data', data);
     try {
       const res = await eventsApi.post('/events/opinionsGenerate/' + id, data);
       setOpinion([...opinion, res.data]);
@@ -102,6 +116,8 @@ const EventComments = ({ id }) => {
             </p>
           </div>
 
+          {/* //VER OPINIONES// */}
+
           {opinion ? (
             <>
               <div>
@@ -118,32 +134,39 @@ const EventComments = ({ id }) => {
             <p>''</p>
           )}
 
-          <textarea
-            className={styles.textarea}
-            type='text'
-            placeholder='Escribe un Comentario'
-            value={newOpinion}
-            onChange={(e) => setNewOpinion(e.target.value)}
-            cols={80}
-          />
+          {/* //DEJAR OPINIONES// */}
+          {assisted === true ? (
+            <div>
+              <textarea
+                className={styles.textarea}
+                type='text'
+                placeholder='Escribe un Comentario'
+                value={newOpinion}
+                onChange={(e) => setNewOpinion(e.target.value)}
+                cols={80}
+              />
 
-          <div className={styles.contRate}>
-            <p className={styles.pRate}>Rate:</p>
+              <div className={styles.contRate}>
+                <p className={styles.pRate}>Rate:</p>
 
-            <Rating
-              className={styles.rating}
-              name='half-rating'
-              value={value}
-              precision={0.5}
-              onChange={(e) => setValue(e.target.value)}
-            />
-          </div>
+                <Rating
+                  className={styles.rating}
+                  name='half-rating'
+                  value={value}
+                  precision={0.5}
+                  onChange={(e) => setValue(e.target.value)}
+                />
+              </div>
 
-          <div className={styles.contBtn}>
-            <button className={styles.button} onClick={user.uid ? handlePostComments : handleAlert}>
-              Enviar
-            </button>
-          </div>
+              <div className={styles.contBtn}>
+                <button className={styles.button} onClick={user.uid ? handlePostComments : handleAlert}>
+                  Enviar
+                </button>
+              </div>
+            </div>
+          ) : (
+            ''
+          )}
         </div>
       ) : (
         ''

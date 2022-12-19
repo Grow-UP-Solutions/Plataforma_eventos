@@ -80,8 +80,8 @@ router.post('/orden', async (req, res) => {
       },
 
       back_urls: {
-        success: `https://events-jean.vercel.app/mercadoPago/success`,
-        failure: `https://events-jean.vercel.app/mercadoPago/fail`,
+        success: `http://localhost:3000/mercadoPago/success`,
+        failure: `http://localhost:3000/mercadoPago/fail`,
       },
       auto_return: 'approved',
       taxes: [
@@ -164,6 +164,7 @@ router.get('/success', async (req, res) => {
         dates: []
       }
 
+      console.log('b',buyer)
       
 
       event.dates.forEach(async (e, i) => {
@@ -173,7 +174,10 @@ router.get('/success', async (req, res) => {
 
            const date=  {
               dateId: auxBody[0].dates[j].id,
-              date: e.dateFormated,
+              dateFromated: e.dateFormated,
+              date:e.date,
+              start:e.start,
+              end:e.end,
               quantity:auxBody[0].dates[j].quantity
               }
 
@@ -237,6 +241,8 @@ router.get('/success', async (req, res) => {
           }
         }
       });
+
+      console.log('b',buyer)
 
 
       event.generalBuyers.push(buyer);

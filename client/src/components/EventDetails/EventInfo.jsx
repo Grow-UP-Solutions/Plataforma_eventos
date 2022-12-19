@@ -201,7 +201,7 @@ const EventInfo = ({ id }) => {
               <Rating
                 className={style.rating}
                 name="read-only"
-                value={eventDetails.rating}
+                value={eventDetails.rating}rating
                 readOnly
                 sx={{ fontSize: 25 }}
               />
