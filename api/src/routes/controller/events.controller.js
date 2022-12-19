@@ -59,6 +59,7 @@ router.post('/create', async (req, res) => {
     const event = req.body;
     contadorEvent++;
     event.idEvent = 'E' + contadorEvent;
+    event.sendEmail = false;
 
     for (i = 0; i < event.dates.length; i++) {
       event.dates[i].idDate = event.idEvent + '-' + (i + 1);
