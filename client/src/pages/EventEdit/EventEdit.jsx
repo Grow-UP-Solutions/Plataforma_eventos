@@ -1343,6 +1343,7 @@ const EventEdit = () => {
     } else if (eventDetails === post) {
       swal('No has hecho ninguna edición ');
     } else if (post.inRevision === true) {
+      console.log('1')
       swal({
         title: 'Este evento y sus fechas será publicado  ',
         buttons: true,
@@ -1358,7 +1359,24 @@ const EventEdit = () => {
           );
         }
       });
-    } else if (post.compras === 0 && post.inRevision === false) {
+    }else if (post.compras > 0 && post.inRevision === false) {
+      console.log('2')
+      swal({
+        title:
+          'Si ya hay Asistentes al evento es importante que le informes de inmediato los cambios que consideres podrían afectar su participación ',
+        buttons: true,
+        dangerMode: true,
+      }).then((publicar) => {
+        if (publicar) {
+          dispatch(putEvent(post, eventId));
+          swal('Tu evento ha sido publicado ', {
+            icon: 'success',
+          });
+          navigate('/usuario/mis-eventos')
+        }
+      });
+    }  else if (post.compras === 0 && post.inRevision === false) {
+      console.log('3')
       swal({
         title: 'Este evento y sus fechas será publicado  ',
         buttons: true,
