@@ -345,14 +345,10 @@ const Register = () => {
             Información que está disponible&nbsp; <Link to={'/docs/privacidad/usuario'}>aquí</Link>.
           </p>
           <p>
-            Al proceder con la creación de tu cuenta aceptas la Política de &nbsp;
-            <button
-              onClick={() => {
-                navigate('/docs/privacidad/usuario');
-              }}
-            >
-              Tratamiento de Datos, la Política de Seguridad y los Términos y Condiciones
-            </button>
+            Al proceder con la creación de tu cuenta aceptas la &nbsp;
+            <Link to={'/docs/privacidad/usuario'}>Política de Privacidad</Link>, la{' '}
+            <Link to={'/docs/seguridad/usuario'}>Política de Seguridad</Link> y los{' '}
+            <Link to={'/docs/terminos-condiciones/usuario'}>Términos y Condiciones</Link>
             &nbsp;de LO QUE QUIERO HACER S.A.S. Aceptas ser contactado por nosotros en relación a los eventos que
             compres o publiques en la Plataforma y confirmas ser mayor de edad.
           </p>

@@ -10,7 +10,7 @@ import swal from 'sweetalert';
 import { UIContext } from '../../context/ui';
 import { AiOutlineConsoleSql } from 'react-icons/ai';
 
-const EventComments = ({ id , eventBuyUser , datesBuy ,assisted}) => {
+const EventComments = ({ id, eventBuyUser, datesBuy, assisted }) => {
   const [opinion, setOpinion] = useState([]);
   const [newOpinion, setNewOpinion] = useState('');
   const [number, setNumber] = useState(0);
@@ -19,13 +19,9 @@ const EventComments = ({ id , eventBuyUser , datesBuy ,assisted}) => {
   const allEvents = useSelector((state) => state.events);
   const eventDetails = allEvents.filter((event) => event._id === id)[0];
   const { getRatingEvent } = useContext(UIContext);
-  
-  
 
-
-  console.log('datesBuy',datesBuy)
-  console.log('eventBuyUser',eventBuyUser)
- 
+  console.log('datesBuy', datesBuy);
+  console.log('eventBuyUser', eventBuyUser);
 
   useEffect(() => {
     const getAllComments = async () => {
@@ -47,7 +43,7 @@ const EventComments = ({ id , eventBuyUser , datesBuy ,assisted}) => {
   //RTING//
 
   const calcRatingEffect = () => {
-    const opinionsRated = eventDetails.opinions.filter((e) => e.rating > 0 );
+    const opinionsRated = eventDetails.opinions.filter((e) => e.rating > 0);
     const ratings = opinionsRated.map((e) => e.rating);
     const suma = ratings.reduce((prev, current) => prev + current);
     const result = (suma / opinionsRated.length).toFixed(1);
@@ -59,7 +55,7 @@ const EventComments = ({ id , eventBuyUser , datesBuy ,assisted}) => {
       const resu = (num / 1).toFixed(1);
       return resu;
     } else {
-      const opinionsWithRanking = opinion.filter((e) => e.rating > 0 );
+      const opinionsWithRanking = opinion.filter((e) => e.rating > 0);
       const ratings = opinionsWithRanking.map((e) => e.rating);
       const suma = ratings.reduce((prev, current) => prev + current);
       const otherSuma = suma + num;
@@ -71,8 +67,8 @@ const EventComments = ({ id , eventBuyUser , datesBuy ,assisted}) => {
 
   const handlePostComments = async (e) => {
     e.preventDefault();
-    const fecha = datesBuy[0]
-    console.log('fecha',fecha)
+    const fecha = datesBuy[0];
+    console.log('fecha', fecha);
     const data = {
       idUser: user.uid,
       rating: value,
@@ -80,9 +76,9 @@ const EventComments = ({ id , eventBuyUser , datesBuy ,assisted}) => {
       opinion: newOpinion,
       picture: fecha[0].pictureBuyer,
       dateEvent: fecha[0].dates[0].date,
-      eventTitle: eventBuyUser[0].title
+      eventTitle: eventBuyUser[0].title,
     };
-    console.log('data',data)
+    console.log('data', data);
     try {
       const res = await eventsApi.post('/events/opinionsGenerate/' + id, data);
       setOpinion([...opinion, res.data]);
@@ -120,7 +116,6 @@ const EventComments = ({ id , eventBuyUser , datesBuy ,assisted}) => {
             </p>
           </div>
 
-
           {/* //VER OPINIONES// */}
 
           {opinion ? (
@@ -128,7 +123,7 @@ const EventComments = ({ id , eventBuyUser , datesBuy ,assisted}) => {
               <div>
                 {opinion.map((o) => (
                   <div key={o._id} className={styles.comment}>
-                    <CardComments organizer={eventDetails.organizer._id} o={o} />
+                    <CardComments o={o} event={eventDetails} />
 
                     <hr className={styles.hr}></hr>
                   </div>
@@ -139,10 +134,9 @@ const EventComments = ({ id , eventBuyUser , datesBuy ,assisted}) => {
             <p>''</p>
           )}
 
-            {/* //DEJAR OPINIONES// */}
-          {assisted === true ?
-            
-              <div>
+          {/* //DEJAR OPINIONES// */}
+          {assisted === true ? (
+            <div>
               <textarea
                 className={styles.textarea}
                 type='text'
@@ -169,13 +163,10 @@ const EventComments = ({ id , eventBuyUser , datesBuy ,assisted}) => {
                   Enviar
                 </button>
               </div>
-              </div>
-
-              : ''
-           
-          }
-
-         
+            </div>
+          ) : (
+            ''
+          )}
         </div>
       ) : (
         ''

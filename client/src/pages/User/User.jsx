@@ -84,6 +84,7 @@ const UserPage = () => {
       switch (option) {
         case 'perfil':
           setOptionChecked('perfil');
+          setOptionSubMenuChecked('');
           setComponent(<UserForm userData={userResult.data} />);
           break;
         case 'mi-lista':
@@ -102,10 +103,17 @@ const UserPage = () => {
             <MyListUser myFavorites={userResult.data.myFavorites} myEventsBooked={userResult.data.myEventsBooked} />
           );
           break;
-        case 'pendientes-por-asistir':
-          setIsMenuOpen(true);
-          setOptionChecked('events');
-          setOptionSubMenuChecked('eventsForAssist');
+        case 'pendientes-asistir':
+          if (widthScreen <= 756) {
+            console.log({ widthTest: widthScreen });
+            setOptionChecked('eventos');
+          } else {
+            console.log({ widthTestElse: widthScreen });
+
+            setOptionChecked('eventos');
+            setIsMenuOpen(true);
+            setOptionSubMenuChecked('eventsForAssist');
+          }
           setComponent(<ExpectToAttendUser myEventsBooked={userResult.data.myEventsBooked} />);
           break;
         case 'mis-eventos':
@@ -122,12 +130,23 @@ const UserPage = () => {
           break;
         case 'plan-de-referidos':
           setOptionChecked('plan de referidos');
+          setOptionSubMenuChecked('');
           setComponent(<ReferralPlan userData={userResult.data} />);
           break;
         case 'preferencias':
           setOptionChecked('preferencias');
-
+          setOptionSubMenuChecked('');
           setComponent(<PreferencesUser userData={userResult.data} />);
+          break;
+        case 'finanzas':
+          setOptionChecked('finance');
+          setOptionSubMenuChecked('');
+          setComponent(<Finance userData={userResult.data} />);
+          break;
+        case 'guia-organizador':
+          setOptionChecked('guide');
+          setOptionSubMenuChecked('');
+          setComponent(<GoodPracticeOrg />);
           break;
         default:
           setComponent(<UserForm userData={userResult.data} />);
@@ -155,33 +174,34 @@ const UserPage = () => {
 
     const name = e.target.name;
     /* ORGANIZER */
-    if (name === 'Finance' || iconValue === 'Finance') setComponent(<Finance userData={userData} />);
-    if (name === 'Guia Del Organizador' || iconValue === 'Guia del Organizador') setComponent(<GoodPracticeOrg />);
+    if (name === 'Finance' || iconValue === 'Finance') navigate('/usuario/finanzas');
+    if (name === 'Guia Del Organizador' || iconValue === 'Guia del Organizador') navigate('/usuario/guia-organizador');
 
     /* USER */
     if (name === 'Mi lista' || iconValue === 'Mi lista') {
-      setComponent(<MyListUser myFavorites={userData.myFavorites} myEventsBooked={userData.myEventsBooked} />);
+      // setComponent(<MyListUser myFavorites={userData.myFavorites} myEventsBooked={userData.myEventsBooked} />);
       navigate('/usuario/mi-lista');
     }
 
     if (name === 'Pendientes por Asistir' || iconValue === 'Pendientes por Asistir') {
-      setComponent(<ExpectToAttendUser myFavorites={userData.myFavorites} myEventsBooked={userData.myEventsBooked} />);
-      navigate('/usuario/pendientes-por-asistir');
+      // setComponent(<ExpectToAttendUser myFavorites={userData.myFavorites} myEventsBooked={userData.myEventsBooked} />);
+      console.log('Pendientes por asistir');
+      navigate('/usuario/pendientes-asistir');
     }
 
     if (name === 'Perfil' || iconValue === 'Perfil') {
-      setComponent(<UserForm userData={userData} />);
+      // setComponent(<UserForm userData={userData} />);
       navigate('/usuario/perfil');
     }
     if (name === 'Mensajes' || iconValue === 'Mensajes') {
       setComponent(<MessagesResponsive />);
     }
     if (name === 'Plan de Referidos' || iconValue === 'Plan de Referidos') {
-      setComponent(<ReferralPlan userData={userData} />);
+      // setComponent(<ReferralPlan userData={userData} />);
       navigate('/usuario/plan-de-referidos');
     }
     if (name === 'Preferencias' || iconValue === 'Preferencias') {
-      setComponent(<PreferencesUser userData={userData} />);
+      // setComponent(<PreferencesUser userData={userData} />);
       navigate('/usuario/preferencias');
     }
   };
@@ -197,12 +217,9 @@ const UserPage = () => {
 
     setOpenMenuResponsive(false);
 
-    if (name === 'Mi lista')
-      setComponent(<MyListUser myFavorites={userData.myFavorites} myEventsBooked={userData.myEventsBooked} />);
-    if (name === 'Pendientes por Asistir')
-      setComponent(<ExpectToAttendUser myEventsBooked={userData.myEventsBooked} />);
-    if (name === 'Mis Eventos')
-      setComponent(<MyEventsOrganizer userData={userData} myEventsCreated={userData.myEventsCreated} />);
+    if (name === 'Pendientes por Asistir') navigate('/usuario/pendientes-asistir');
+    if (name === 'Mi lista') navigate('/usuario/mi-lista');
+    if (name === 'Mis Eventos') navigate('/usuario/mis-eventos');
   };
 
   const [openMenuResponsive, setOpenMenuResponsive] = useState(false);

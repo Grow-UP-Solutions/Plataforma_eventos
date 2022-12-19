@@ -7,17 +7,15 @@ import { useState } from 'react';
 import { FaCaretSquareRight } from 'react-icons/fa';
 
 const MyListUser = ({ myFavorites, myEventsBooked }) => {
+  const eventos = myFavorites.concat(myEventsBooked);
 
-  const eventos = myFavorites.concat(myEventsBooked)
-
-  const eventosPublicos = eventos.filter(evento=>evento.isPublic === true && evento.inRevision===false)
+  const eventosPublicos = eventos.filter((evento) => evento.isPublic === true && evento.inRevision === false);
 
   const orderByDate = eventosPublicos.sort((a, b) => {
     if (a.dates[0].date < b.dates[0].date) return -1;
     if (b.dates[0].date < a.dates[0].date) return 1;
     return 0;
   });
-
 
   const [currentPage, setCurretPage] = useState(1);
   const CardPerPage = 24;
@@ -26,11 +24,6 @@ const MyListUser = ({ myFavorites, myEventsBooked }) => {
   const currentCard = orderByDate.slice(indexOfFirstCard, indexOfLastCard);
   const paginado = (pageNumber) => setCurretPage(pageNumber);
 
-  
-  
-
-
-  
   return (
     <div className={styles.container}>
       <p className={styles.title}>Mi Lista</p>
@@ -62,6 +55,3 @@ const MyListUser = ({ myFavorites, myEventsBooked }) => {
 };
 
 export default MyListUser;
-
-
-

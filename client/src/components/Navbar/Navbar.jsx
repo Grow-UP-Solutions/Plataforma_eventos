@@ -26,12 +26,11 @@ const Navbar = ({ upper }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const menuRef = useRef();
-
   useEffect(() => {
     getUserData();
   }, [user]);
 
-  /* useEffect(() => {
+  useEffect(() => {
     const handler = (e) => {
       if (menuRef.current === null || menuRef.current === undefined) {
       } else if (!menuRef.current.contains(e.target)) {
@@ -45,7 +44,7 @@ const Navbar = ({ upper }) => {
     return () => {
       document.removeEventListener('mousedown', handler);
     };
-  }); */
+  });
 
   const [userData, setUserData] = useState({});
 
@@ -365,7 +364,6 @@ const Navbar = ({ upper }) => {
                       <p>{user.name.split(' ')[0]}</p>
                       <p>{user.name.split(' ')[1]}</p>
                     </Link>
-                    
                   </>
                 )}
               </div>
@@ -390,65 +388,60 @@ const Navbar = ({ upper }) => {
                 ) : (
                   <IoCaretDownSharp className={style.iconMenu} />
                 )}
-
                 {menuOpen && (
-                  <>
-                    <div className={style.containerProfileMenu} ref={menuRef}>
-                      {userData.isOrganizer === true ? <Link to='/usuario/mis-eventos'>Mis eventos</Link> : 
-                      <Link to='/usuario/mis-eventos'>Mis eventos</Link>}
+                  <div className={style.containerProfileMenu} ref={menuRef}>
+                    {userData.isOrganizer === true ? <Link to='/usuario/mis-eventos'>Mis eventos</Link> : ''}
+                    <Link to='/usuario/perfil'>Perfil</Link>
+                    <Link className={style.navMyListMenu} to='/usuario/mi-lista'>
+                      Mi lista
+                    </Link>
+                    <Link to='/organiza-un-evento' className={style.buttonOrganizarMenu}>
+                      Organiza un evento
+                    </Link>
+                    <Link to='/usuario/plan-de-referidos'>Plan de referidos</Link>
+                    <Link to='/usuario/preferencias'>Preferencias</Link>
 
-                      <Link to='/usuario/perfil'>
-                        <a>Perfil</a>
-                      </Link>
-                      <Link className={style.navMyListMenu} to='/usuario/mi-lista'>
-                        Mi lista
-                      </Link>
-                      <Link to='/organiza-un-evento' className={style.buttonOrganizarMenu}>
-                        Organiza un evento
-                      </Link>
-                      <Link to='/usuario/plan-de-referidos'>Plan de referidos</Link>
-                      <Link to='/usuario/preferencias'>Preferencias</Link>
-                      <hr />
-                      <span
-                        onClick={(e) => {
-                          e.preventDefault();
-                          logout();
-                          navigate('/');
-                        }}
-                      >
-                        Cerrar sesión
-                      </span>
-                    </div>
-
-                    <div className={style.containerProfileMenuResponsive} ref={menuRef}>
-                      <p className={style.menuUserName}>{user.nickname}</p>
-                      <hr />
-                      <ul className={style.listNavMenuResponsive}>
-                        <li className={style.itemNavMenuResponsive}>
-                          <FaUserCircle className={style.iconMenuResponsive} />
-                          <Link to={'/usuario/perfil'}>Mi cuenta</Link>
-                        </li>
-                        <li className={style.itemNavMenuResponsive}>
-                          {msg.length > 0 && <span className={style.badgeMenuProfileResponsive} />}
-                          <GrMail className={style.iconMenuResponsive} />
-                          <Link to={'/usuario/mensajes'}>Mensajes</Link>
-                        </li>
-                        <li className={style.itemNavMenuResponsive}>
-                          {notes.length > 0 && <span className={style.badgeMenuProfileResponsive} />}
-                          <IoNotifications className={style.iconMenuResponsive} />
-                          <Link to={'/usuario/notificaciones'}>Notificaciones</Link>
-                        </li>
-                        <li className={style.itemNavMenuResponsive}>
-                          <IoHeartCircle className={style.iconMenuResponsive} />
-                          <Link to={'/usuario/mi-lista'}>Mi Lista</Link>
-                        </li>
-                      </ul>
-                      <hr />
-                      <button onClick={() => logout()} className={style.btnCloseSesionProfileMenuResponsive}>
-                        Cerrar sesión
-                      </button>
-                    </div>
-                  </>
+                    <hr />
+                    <span
+                      onClick={(e) => {
+                        e.preventDefault();
+                        logout();
+                        navigate('/');
+                      }}
+                    >
+                      Cerrar sesión
+                    </span>
+                  </div>
+                )}
+                {menuOpen && window.innerWidth <= 756 && (
+                  <div className={style.containerProfileMenuResponsive} ref={menuRef}>
+                    <p className={style.menuUserName}>{user.nickname}</p>
+                    <hr />
+                    <ul className={style.listNavMenuResponsive}>
+                      <li className={style.itemNavMenuResponsive}>
+                        <FaUserCircle className={style.iconMenuResponsive} />
+                        <Link to={'/usuario/perfil'}>Mi cuenta</Link>
+                      </li>
+                      <li className={style.itemNavMenuResponsive}>
+                        {msg.length > 0 && <span className={style.badgeMenuProfileResponsive} />}
+                        <GrMail className={style.iconMenuResponsive} />
+                        <Link to={'/usuario/mensajes'}>Mensajes</Link>
+                      </li>
+                      <li className={style.itemNavMenuResponsive}>
+                        {notes.length > 0 && <span className={style.badgeMenuProfileResponsive} />}
+                        <IoNotifications className={style.iconMenuResponsive} />
+                        <Link to={'/usuario/notificaciones'}>Notificaciones</Link>
+                      </li>
+                      <li className={style.itemNavMenuResponsive}>
+                        <IoHeartCircle className={style.iconMenuResponsive} />
+                        <Link to={'/usuario/mi-lista'}>Mi Lista</Link>
+                      </li>
+                    </ul>
+                    <hr />
+                    <button onClick={() => logout()} className={style.btnCloseSesionProfileMenuResponsive}>
+                      Cerrar sesión
+                    </button>
+                  </div>
                 )}
               </div>
             </>

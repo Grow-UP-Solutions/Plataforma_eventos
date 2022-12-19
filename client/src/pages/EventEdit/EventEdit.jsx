@@ -53,13 +53,9 @@ const EventEdit = () => {
     mes = '' + _mes;
   }
 
-  
-
   const hora = fecha.getHours();
   const minutes = fecha.getMinutes();
   const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
-
-
 
   //--------------------------------------------------//
   //               EVENT              //
@@ -74,7 +70,7 @@ const EventEdit = () => {
   const allEvents = [...eventos];
 
   const eventDetails = allEvents.find((e) => e._id === eventId);
-  console.log('eventDetails:',eventDetails)
+  console.log('eventDetails:', eventDetails);
 
   const [post, setPost] = useState({
     idOrganizer: '',
@@ -124,14 +120,12 @@ const EventEdit = () => {
     compras: 10,
   });
 
-  
-
   useEffect(() => {
-    console.log('entre al effect:')
-    if(eventDetails){
-      console.log('entre al if:')
-      console.log('eventDetails en effect',eventDetails)
-      const auxCategories = eventDetails.categories.map((categorie) => categorie.name)
+    console.log('entre al effect:');
+    if (eventDetails) {
+      console.log('entre al if:');
+      console.log('eventDetails en effect', eventDetails);
+      const auxCategories = eventDetails.categories.map((categorie) => categorie.name);
       setPost({
         ...post,
         idOrganizer: eventDetails.organizer._id,
@@ -152,13 +146,12 @@ const EventEdit = () => {
         isPublic: eventDetails.isPublic,
         inRevision: eventDetails.inRevision,
         compras: 10,
-      })
-      console.log('post', post)
-    }}, [eventDetails]);
+      });
+      console.log('post', post);
+    }
+  }, [eventDetails]);
 
-    console.log('post despues effect', post)
-
-
+  console.log('post despues effect', post);
 
   //              para comparar            //
   const allEventsCopy = useSelector((state) => state.eventsCopy);
@@ -263,8 +256,6 @@ const EventEdit = () => {
 
   //--------------------------------------------------//
   //               POST Y ERROR            //
-
-  
 
   const [errors, setErrors] = useState({
     title: '',
@@ -541,7 +532,9 @@ const EventEdit = () => {
     for (let i = 0; i < post.dates.length; i++) {
       for (let j = 0; j < post.dates[i].codigos.length; j++) {
         if (
-          ( post.dates[i].codigos[j].descuento !== null &&post.dates[i].codigos[j].descuento.length && post.dates[i].codigos[j].descuento < 1) ||
+          (post.dates[i].codigos[j].descuento !== null &&
+            post.dates[i].codigos[j].descuento.length &&
+            post.dates[i].codigos[j].descuento < 1) ||
           post.dates[i].codigos[j].descuento > 100
         ) {
           errors.bono = 'Descuento: Valores entre 1 y 99';
@@ -905,31 +898,35 @@ const EventEdit = () => {
         buttons: ['Cancelar acción', 'Continuar'],
         dangerMode: true,
       }).then((continuar) => {
-        if (continuar){
-        if(post.dates.length>1){
-          setPost({
-            ...post,
-            dates: newFechas,
-          })
-          post.dates.map((date)=>{ 
-            if(new Date(date.date)<new Date(dateActual) || date.date === dateActual && date.end.slice(0,2) <= hora && date.end.slice(3,5) <= minutes+2){
-              date.isPublic=false
-            }
-          })     
-          let allFalse = post.dates.filter((date)=>date.isPublic === true)
-          if(allFalse.length===0){
+        if (continuar) {
+          if (post.dates.length > 1) {
             setPost({
               ...post,
-              isPublic:false
-            })
+              dates: newFechas,
+            });
+            post.dates.map((date) => {
+              if (
+                new Date(date.date) < new Date(dateActual) ||
+                (date.date === dateActual && date.end.slice(0, 2) <= hora && date.end.slice(3, 5) <= minutes + 2)
+              ) {
+                date.isPublic = false;
+              }
+            });
+            let allFalse = post.dates.filter((date) => date.isPublic === true);
+            if (allFalse.length === 0) {
+              setPost({
+                ...post,
+                isPublic: false,
+              });
+            }
+          } else if (post.dates.length === 1) {
+            setPost({
+              ...post,
+              dates: newFechas,
+              isPublic: false,
+            });
           }
-        }else if(post.dates.length===1){
-          setPost({
-            ...post,
-            dates: newFechas,
-            isPublic:false
-          });
-        }} 
+        }
       });
     } else if (newFechas[i].sells > 0) {
       return Swal.fire({
@@ -959,7 +956,7 @@ const EventEdit = () => {
     e.preventDefault();
     let newFechas = [...post.dates];
     newFechas[i].isPublic = true;
-    
+
     return swal({
       title: 'Esta acción agregara esta fecha a publicados. ',
       icon: 'warning',
@@ -970,7 +967,7 @@ const EventEdit = () => {
         setPost({
           ...post,
           dates: newFechas,
-          isPublic:true
+          isPublic: true,
         });
       }
     });
@@ -1270,7 +1267,6 @@ const EventEdit = () => {
     return `Z-` + letrasResult + numerosResult;
   };
 
- 
   const fechaMinima = anio + '-' + mes + '-' + dia;
 
   //-----------------------------------------------------//
@@ -1314,7 +1310,7 @@ const EventEdit = () => {
         navigate('user/perfil/datos');
       }
     });
-  }
+  };
 
   //--------------------------------------------------//
   //                  SUBMIT              //
@@ -1341,7 +1337,7 @@ const EventEdit = () => {
           swal('Tu evento ha sido publicado ', {
             icon: 'success',
           });
-          navigate('/usuario/mis-eventos')
+          navigate('/usuario/mis-eventos');
         }
       });
     } else if (eventDetails === post) {
@@ -1373,18 +1369,18 @@ const EventEdit = () => {
           swal('Tu evento ha sido publicado ', {
             icon: 'success',
           });
-          navigate('/usuario/mis-eventos')
+          navigate('/usuario/mis-eventos');
         }
       });
     }
-  }
+  };
   return (
     <div>
       <div className={`${styles.container} container`}>
         <div>
-         <div ref={ref}>
-          <form  className='containerSwiper' onSubmit={(e) => handleSubmit(e)}>
-          <Swiper
+          <div ref={ref}>
+            <form className='containerSwiper' onSubmit={(e) => handleSubmit(e)}>
+              <Swiper
                 slidesPerView={1}
                 direction={'vertical'}
                 navigation={true}
@@ -1393,900 +1389,913 @@ const EventEdit = () => {
                 className='swiper'
                 autoHeight={true}
               >
-             <SwiperSlide>
-              {/* SECTION 1: Nombre del Evento */}
-              <div className={styles.section1}>
-                {/* linea vertical */}
-                <div className={styles.containerLine}>
-                  <ul className={styles.timeVerticalRed}>
-                    <li>
-                      <b></b>
-                      <span>1</span>
-                    </li>
-                  </ul>
-                  <ul className={styles.timeVertical}>
-                    <li>
-                      <b></b>
-                    </li>
-                    <li>
-                      <b></b>
-                    </li>
-                    <li>
-                      <b></b>
-                    </li>
-                    <li>
-                      <b></b>
-                    </li>
-                  </ul>
-                </div>
+                <SwiperSlide>
+                  {/* SECTION 1: Nombre del Evento */}
+                  <div className={styles.section1}>
+                    {/* linea vertical */}
+                    <div className={styles.containerLine}>
+                      <ul className={styles.timeVerticalRed}>
+                        <li>
+                          <b></b>
+                          <span>1</span>
+                        </li>
+                      </ul>
+                      <ul className={styles.timeVertical}>
+                        <li>
+                          <b></b>
+                        </li>
+                        <li>
+                          <b></b>
+                        </li>
+                        <li>
+                          <b></b>
+                        </li>
+                        <li>
+                          <b></b>
+                        </li>
+                      </ul>
+                    </div>
 
-                {/* form */}
-                <div className={styles.container1}>
-                  <p className={styles.title}>Nombre del Evento</p>
-                  <p className={styles.subTitle}>
-                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut
-                    laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
-                    ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure
-                    dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla
-                    facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril
-                    delenit augue duis dolaore te feugait nulla facilisi.
-                  </p>
-                  {failedSubmit && errors.title ? (
-                    <input
-                      className={styles.input}
-                      type='text'
-                      maxlength='75'
-                      placeholder='Nombre del evento'
-                      name='title'
-                      value={post.title}
-                      onChange={(e) => handleChange(e)}
-                      required
-                    />
-                  ) : (
-                    <input
-                      className={styles.input}
-                      type='text'
-                      maxlength='75'
-                      placeholder='Nombre del evento'
-                      name='title'
-                      value={post.title}
-                      onChange={(e) => handleChange(e)}
-                    />
-                  )}
-
-                  {titleArray.length > 10 ? (
-                    <p className={styles.errors}>Máximo 10 palabras</p>
-                  ) : (
-                    <p className={styles.subInput}>Máximo 10 palabras</p>
-                  )}
-                  {errors.title ? <p className={styles.errors}>{errors.title}</p> : null}
-                </div>
-              </div>
-              </SwiperSlide>
-
-              <SwiperSlide>
-              {/* SECTION 2: Categorias */}
-              <div className={styles.section2}>
-                {/* linea vertical */}
-                <div className={styles.containerLine}>
-                  <ul className={styles.timeVerticalRed}>
-                    <li>
-                      <b></b>
-                      <span>2</span>
-                    </li>
-                  </ul>
-                  <ul className={styles.timeVertical}>
-                    <li>
-                      <b></b>
-                    </li>
-                    <li>
-                      <b></b>
-                    </li>
-                    <li>
-                      <b></b>
-                    </li>
-                    <li>
-                      <b></b>
-                    </li>
-                  </ul>
-                </div>
-
-                {/* form */}
-                <div className={styles.container1}>
-                  <p className={styles.title}>Categorías</p>
-                  <p className={styles.subTitle}>
-                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum dolor
-                    sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
-                  </p>
-                  <div className={styles.containerChecks}>
-                    {post &&
-                      categories.map((categorie) => (
-                        <div className={styles.checks}>
-                          <label className={styles.labelsChecks}>
-                            <input
-                              className={styles.checkBox}
-                              type='checkbox'
-                              value={categorie.name}
-                              onChange={(e) => handleCategories(e)}
-                              checked={post.categories.includes(categorie.name)}
-                            />
-                            {categorie.name}
-                          </label>
-                        </div>
-                      ))}
-                  </div>
-
-                  {/* otra categoria*/}
-                  <div className={styles.checkOther}>
-                    <input
-                      className={styles.checkBox}
-                      defaultChecked={false}
-                      type='checkbox'
-                      name='categories'
-                      value={post.categories}
-                    />
-                    <label className={styles.labelsChecks}>Otro</label>
-
-                    <div className={styles.otherCategorie}>
-                      <label className={styles.subTitle}>Si escogiste ‘otro’, especifica : </label>
-                      {failedSubmit && errors.otherCategorie ? (
+                    {/* form */}
+                    <div className={styles.container1}>
+                      <p className={styles.title}>Nombre del Evento</p>
+                      <p className={styles.subTitle}>
+                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
+                        tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis
+                        nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+                        Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel
+                        illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui
+                        blandit praesent luptatum zzril delenit augue duis dolaore te feugait nulla facilisi.
+                      </p>
+                      {failedSubmit && errors.title ? (
                         <input
-                          className={styles.input2}
+                          className={styles.input}
                           type='text'
-                          name='otherCategorie'
-                          values={post.otherCategorie}
-                          onChange={(e) => handleOtherCategorie(e)}
+                          maxlength='75'
+                          placeholder='Nombre del evento'
+                          name='title'
+                          value={post.title}
+                          onChange={(e) => handleChange(e)}
                           required
                         />
                       ) : (
                         <input
-                          className={styles.input2}
+                          className={styles.input}
                           type='text'
-                          name='otherCategorie'
-                          values={post.otherCategorie}
-                          onChange={(e) => handleOtherCategorie(e)}
-                        />
-                      )}
-                    </div>
-                  </div>
-
-                  {errors.categories && <p className={styles.errors}>{errors.categories}</p>}
-
-                  {failedSubmit && errors.categories && errors.categories < 3 ? (
-                    <p className={styles.errors}>Debes seleccionar al menos una categoría</p>
-                  ) : (
-                    ''
-                  )}
-
-                  {failedSubmit && errors.otherCategorie ? (
-                    <p className={styles.errors}>Solo puedes una ingresar una categoria</p>
-                  ) : (
-                    ''
-                  )}
-                </div>
-              </div>
-              </SwiperSlide>
-
-              <SwiperSlide>
-              {/* SECTION 3: Descripcion */}
-              <div className={styles.section3}>
-                {/* linea vertical */}
-                <div className={styles.containerLine}>
-                  <ul className={styles.timeVerticalRed}>
-                    <li>
-                      <b></b>
-                      <span>3</span>
-                    </li>
-                  </ul>
-                  <ul className={styles.timeVertical}>
-                    <li>
-                      <b></b>
-                    </li>
-                    <li>
-                      <b></b>
-                    </li>
-                    <li>
-                      <b></b>
-                    </li>
-                    <li>
-                      <b></b>
-                    </li>
-                  </ul>
-                </div>
-
-                {/* form */}
-                <div className={styles.container1}>
-                  {/* shortDescription */}
-                  <div className={styles.containerDescription}>
-                    <p className={styles.title}>Descripción breve</p>
-                    <p className={styles.subTitle}>
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum dolor
-                      sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
-                    </p>
-                    {failedSubmit && errors.shortDescription ? (
-                      <textarea
-                        className={styles.textareaShort}
-                        type='text'
-                        maxlength='100'
-                        placeholder='descripción breve del evento'
-                        name='shortDescription'
-                        value={post.shortDescription}
-                        onChange={(e) => handleChange(e)}
-                        required
-                      />
-                    ) : (
-                      <textarea
-                        className={styles.textareaShort}
-                        type='text'
-                        maxlength='100'
-                        placeholder='descripción breve del evento'
-                        name='shortDescription'
-                        value={post.shortDescription}
-                        onChange={(e) => handleChange(e)}
-                      />
-                    )}
-
-                    {post.shortDescription.length === 100 ? (
-                      <p className={styles.errors}>Máximo: 100 de caracteres</p>
-                    ) : (
-                      <p className={styles.subTitle}>Máximo: 100 de caracteres</p>
-                    )}
-                    {post.shortDescription.length > 0 ? (
-                      <p className={styles.subTitle}>
-                        Usetd va escribiendo: {post.shortDescription.length}/100 caracteres
-                      </p>
-                    ) : (
-                      ''
-                    )}
-                    {errors.shortDescription ? <p className={styles.errors}>{errors.shortDescription}</p> : null}
-                  </div>
-
-                  {/* longDescription */}
-                  <div className={styles.containerDescription}>
-                    <p className={styles.title}>Descripción detallada</p>
-                    <p className={styles.subTitle}>
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum dolor
-                      sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
-                    </p>
-                    {failedSubmit && errors.longDescription ? (
-                      <textarea
-                        className={styles.textareaLong}
-                        type='text'
-                        placeholder='descripción detallada del evento'
-                        name='longDescription'
-                        value={post.longDescription}
-                        onChange={(e) => handleChange(e)}
-                        required
-                      />
-                    ) : (
-                      <textarea
-                        className={styles.textareaLong}
-                        type='text'
-                        placeholder='descripción detallada del evento'
-                        name='longDescription'
-                        value={post.longDescription}
-                        onChange={(e) => handleChange(e)}
-                      />
-                    )}
-
-                    {longDescriptionArray.length < 75 && longDescriptionArray.length > 0 ? (
-                      <p className={styles.errors}>Minimo 75 palabras</p>
-                    ) : (
-                      <p className={styles.subTitle}>Minimo 75 palabras</p>
-                    )}
-                    {longDescriptionArray.length > 0 ? (
-                      <p className={styles.subTitle}>Usetd va escribiendo: {longDescriptionArray.length} palabras</p>
-                    ) : (
-                      ''
-                    )}
-                    {errors.longDescription ? <p className={styles.errors}>{errors.longDescription}</p> : null}
-                  </div>
-                </div>
-              </div>
-              </SwiperSlide>
-
-              <SwiperSlide>
-              {/* SECTION 4: Pictures */}
-              <div className={styles.section4}>
-                {/* linea vertical */}
-                <div className={styles.containerLine}>
-                  <ul className={styles.timeVerticalRed}>
-                    <li>
-                      <b></b>
-                      <span>4</span>
-                    </li>
-                  </ul>
-                  <ul className={styles.timeVertical}>
-                    <li>
-                      <b></b>
-                    </li>
-                    <li>
-                      <b></b>
-                    </li>
-                    <li>
-                      <b></b>
-                    </li>
-                    <li>
-                      <b></b>
-                    </li>
-                  </ul>
-                </div>
-
-                {/* form */}
-                <div className={styles.container1}>
-                  <p className={styles.title}>Agrega fotos y/o videos</p>
-                  <p className={styles.subTitle}>
-                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum dolor
-                    sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
-                  </p>
-                  <p className={styles.subTitle4}>Fotos del Evento</p>
-
-                  {failedSubmit && errors.pictures ? (
-                    <div>
-                      <p>Fotos: Jpg, png, Max.100kb </p>
-                      <p>Videos: .MP4 Max 100kb</p>
-                      <p>"Haz click en examinar para elegir los archivos y luedo en añadir"</p>
-                      <input
-                        type='file'
-                        multiple={true}
-                        onChange={(e) => {
-                          setImage(e.target.files);
-                        }}
-                      />
-                      {errors.pictures ? <p className={styles.errors}>{errors.pictures}</p> : null}
-                    </div>
-                  ) : (
-                    <div>
-                      <p>Fotos: Jpg, png, Max.100kb </p>
-                      <p>Videos: .MP4 Max 100kb</p>
-                      <p>"Haz click en examinar para elegir los archivos y luedo en añadir"</p>
-                      <input
-                        type='file'
-                        multiple={true}
-                        onChange={(e) => {
-                          setImage(e.target.files);
-                        }}
-                      />
-                    </div>
-                  )}
-
-                  {image ? (
-                    <button
-                      onClick={(e) => {
-                        uploadImage(e);
-                      }}
-                      className={styles.btnAddPhoto}
-                    >
-                      <span>Agregar Imagen</span>
-                    </button>
-                  ) : null}
-
-                  {post.pictures.length > 0 ? (
-                    <div className={styles.dropFilePreview}>
-                      <Swiper
-                        slidesPerView={1}
-                        navigation
-                        spaceBetween={0}
-                        modules={[Navigation]}
-                        className={styles.mySwipper}
-                      >
-                        {post.pictures.map((item, index) => (
-                          <div key={index} className={styles.mySwiper}>
-                            <SwiperSlide>
-                              <img className={styles.mySwiperImg} src={item.picture} alt='' />
-                              <button className={styles.mySwiperBtnDel} onClick={() => fileRemove(item)}>
-                                x
-                              </button>
-                              <label className={styles.subInput}>
-                                <input
-                                  className={styles.checkBox4}
-                                  type='checkbox'
-                                  name='cover'
-                                  value={item.picture}
-                                  onChange={(e) => handleCover(e)}
-                                  defaultChecked={false}
-                                />
-                                Quiero que esta sea la portada
-                              </label>
-                            </SwiperSlide>
-                          </div>
-                        ))}
-                      </Swiper>
-                      {errors.pictures ? <p className={styles.errors}>{errors.pictures}</p> : null}
-                    </div>
-                  ) : null}
-                </div>
-              </div>
-              </SwiperSlide>
-
-              <SwiperSlide>
-              {/* SECTION 5: Ubicacion */}
-              <div className={styles.section5}>
-                {/* linea vertical */}
-                <div className={styles.containerLine}>
-                  <ul className={styles.timeVerticalRed}>
-                    <li>
-                      <b></b>
-                      <span>5</span>
-                    </li>
-                  </ul>
-                  <ul className={styles.timeVertical}>
-                    <li>
-                      <b></b>
-                    </li>
-                    <li>
-                      <b></b>
-                    </li>
-                    <li>
-                      <b></b>
-                    </li>
-                    <li>
-                      <b></b>
-                    </li>
-                  </ul>
-                </div>
-
-                {/* form */}
-                <div className={styles.container1}>
-                  {/* Title*/}
-                  <p className={styles.title}>¿Dónde es el evento?</p>
-                  <p className={styles.subTitle}>
-                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum dolor
-                    sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
-                  </p>
-
-                  {/* CheckBoxOnLine*/}
-                  <div className={styles.containerOnLine}>
-                    <input
-                      className={styles.checkBox4}
-                      type='checkbox'
-                      defaultChecked={false}
-                      name='online'
-                      value={post.online}
-                      onChange={(e) => handleCheck(e)}
-                      id='check'
-                    />
-                    <label> Este es un evento en linea</label>
-
-                    {/*Online*/}
-
-                    {failedSubmit && errors.link ? (
-                      <div className={styles.online}>
-                        <input
-                          type='text'
-                          placeholder='Colocar el enlace del evento'
-                          name='link'
-                          value={post.link}
-                          onChange={(e) => handleLink(e)}
-                          required
-                        />
-                      </div>
-                    ) : (
-                      <div className={styles.online}>
-                        <input
-                          type='text'
-                          placeholder='Colocar el enlace del evento'
-                          name='link'
-                          value={post.link}
+                          maxlength='75'
+                          placeholder='Nombre del evento'
+                          name='title'
+                          value={post.title}
                           onChange={(e) => handleChange(e)}
                         />
-                      </div>
-                    )}
-                    {errors.link ? <p className={styles.errors}>{errors.link}</p> : null}
+                      )}
 
-                    {/*notOnline*/}
-                    <div className={styles.notOnline}>
-                      {/* Dpto */}
-                      <div className={styles.containerDirection}>
-                        {failedSubmit && errors.departamento ? (
-                          <input
-                            className={styles.select}
-                            list='dptos'
-                            id='myDep'
-                            name='departamento'
-                            placeholder='Departamento'
-                            value={post.departamento}
-                            onChange={(e) => handleChange(e)}
-                            required
-                          />
-                        ) : (
-                          <input
-                            className={styles.select}
-                            list='dptos'
-                            id='myDep'
-                            name='departamento'
-                            placeholder='Departamento'
-                            value={post.departamento}
-                            onChange={(e) => handleChange(e)}
-                          />
-                        )}
-                        <datalist id='dptos'>
-                          {nuevoArrayDepartamentos &&
-                            nuevoArrayDepartamentos.map((departamento) => (
-                              <option value={departamento.departamento}>{departamento.departamento}</option>
-                            ))}
-                        </datalist>
+                      {titleArray.length > 10 ? (
+                        <p className={styles.errors}>Máximo 10 palabras</p>
+                      ) : (
+                        <p className={styles.subInput}>Máximo 10 palabras</p>
+                      )}
+                      {errors.title ? <p className={styles.errors}>{errors.title}</p> : null}
+                    </div>
+                  </div>
+                </SwiperSlide>
 
-                        {/* Municipio*/}
+                <SwiperSlide>
+                  {/* SECTION 2: Categorias */}
+                  <div className={styles.section2}>
+                    {/* linea vertical */}
+                    <div className={styles.containerLine}>
+                      <ul className={styles.timeVerticalRed}>
+                        <li>
+                          <b></b>
+                          <span>2</span>
+                        </li>
+                      </ul>
+                      <ul className={styles.timeVertical}>
+                        <li>
+                          <b></b>
+                        </li>
+                        <li>
+                          <b></b>
+                        </li>
+                        <li>
+                          <b></b>
+                        </li>
+                        <li>
+                          <b></b>
+                        </li>
+                      </ul>
+                    </div>
 
-                        {nuevoArrayDepartamentos &&
-                          nuevoArrayDepartamentos.map((departamento) => (
-                            <div>
-                              {departamento.departamento === post.departamento && (
-                                <div>
-                                  {failedSubmit && errors.municipio ? (
-                                    <div className={styles.Muni}>
-                                      <input
-                                        list='municipio'
-                                        id='myMuni'
-                                        name='municipio'
-                                        placeholder={departamento.capital}
-                                        value={post.municipio}
-                                        onChange={(e) => handleChange(e)}
-                                        required
-                                      />
-                                      <datalist id='municipio'>
-                                        <option>{departamento.capital}</option>
-                                        {departamento.municipio.map((m) => (
-                                          <option>{m}</option>
-                                        ))}
-                                      </datalist>
-                                    </div>
-                                  ) : (
-                                    <div className={styles.Muni}>
-                                      <input
-                                        list='municipio'
-                                        id='myMuni'
-                                        name='municipio'
-                                        placeholder={departamento.capital}
-                                        value={post.municipio}
-                                        onChange={(e) => handleChange(e)}
-                                      />
-                                      <datalist id='municipio'>
-                                        <option>{departamento.capital}</option>
-                                        {departamento.municipio.map((m) => (
-                                          <option>{m}</option>
-                                        ))}
-                                      </datalist>
-                                    </div>
-                                  )}
-                                </div>
-                              )}
+                    {/* form */}
+                    <div className={styles.container1}>
+                      <p className={styles.title}>Categorías</p>
+                      <p className={styles.subTitle}>
+                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum
+                        dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
+                      </p>
+                      <div className={styles.containerChecks}>
+                        {post &&
+                          categories.map((categorie) => (
+                            <div className={styles.checks}>
+                              <label className={styles.labelsChecks}>
+                                <input
+                                  className={styles.checkBox}
+                                  type='checkbox'
+                                  value={categorie.name}
+                                  onChange={(e) => handleCategories(e)}
+                                  checked={post.categories.includes(categorie.name)}
+                                />
+                                {categorie.name}
+                              </label>
                             </div>
                           ))}
                       </div>
 
-                      {/* Direccion*/}
-                      {failedSubmit && errors.direccion ? (
-                        <div className={styles.direccionError}>
-                          <input
-                            className={styles.input5}
-                            type='text'
-                            placeholder='Dirección del evento'
-                            name='direccion'
-                            value={post.direccion}
-                            onChange={(e) => handleChange(e)}
-                            required
-                          />
-                        </div>
-                      ) : (
+                      {/* otra categoria*/}
+                      <div className={styles.checkOther}>
                         <input
-                          className={styles.input5}
-                          type='text'
-                          placeholder='Dirección del evento'
-                          name='direccion'
-                          value={post.direccion}
-                          onChange={(e) => handleChange(e)}
+                          className={styles.checkBox}
+                          defaultChecked={false}
+                          type='checkbox'
+                          name='categories'
+                          value={post.categories}
                         />
-                      )}
-                      {errors.direccion ? <p className={styles.errors}>{errors.direccion}</p> : null}
+                        <label className={styles.labelsChecks}>Otro</label>
 
-                      {/* Barrio*/}
-                      {failedSubmit && errors.barrio ? (
-                        <div className={styles.barrio}>
-                          <input
-                            className={styles.input5}
-                            type='text'
-                            placeholder='Barrio'
-                            name='barrio'
-                            value={post.barrio}
-                            onChange={(e) => handleChange(e)}
-                            required
-                          />
+                        <div className={styles.otherCategorie}>
+                          <label className={styles.subTitle}>Si escogiste ‘otro’, especifica : </label>
+                          {failedSubmit && errors.otherCategorie ? (
+                            <input
+                              className={styles.input2}
+                              type='text'
+                              name='otherCategorie'
+                              values={post.otherCategorie}
+                              onChange={(e) => handleOtherCategorie(e)}
+                              required
+                            />
+                          ) : (
+                            <input
+                              className={styles.input2}
+                              type='text'
+                              name='otherCategorie'
+                              values={post.otherCategorie}
+                              onChange={(e) => handleOtherCategorie(e)}
+                            />
+                          )}
                         </div>
-                      ) : (
-                        <input
-                          className={styles.input5}
-                          type='text'
-                          placeholder='Barrio'
-                          name='barrio'
-                          value={post.barrio}
-                          onChange={(e) => handleChange(e)}
-                        />
-                      )}
-                      {errors.barrio ? <p className={styles.errors}>{errors.barrio}</p> : null}
-
-                      {/* Map*/}
-                      <div className={styles.containerMap}>
-                        <p className={styles.titleMap}>Ubicación en el mapa</p>
-                        {post.municipio ? (
-                          <div>
-                            <img src={url} alt='mapaStaticGoogleMaps' />
-                          </div>
-                        ) : (
-                          <div>
-                            <img src={mapa} alt='mapaStaticGoogleMaps' />
-                          </div>
-                        )}
-                        <p className={styles.subtextMap}>Texto google legal aqui</p>
-
-                        {/* <img  className={styles.icon} src={iconEditar} alt='n' /> */}
-                        <button className={styles.btn}>
-                          <img className={styles.icon} src={iconEditar} alt='n' />
-                        </button>
                       </div>
+
+                      {errors.categories && <p className={styles.errors}>{errors.categories}</p>}
+
+                      {failedSubmit && errors.categories && errors.categories < 3 ? (
+                        <p className={styles.errors}>Debes seleccionar al menos una categoría</p>
+                      ) : (
+                        ''
+                      )}
+
+                      {failedSubmit && errors.otherCategorie ? (
+                        <p className={styles.errors}>Solo puedes una ingresar una categoria</p>
+                      ) : (
+                        ''
+                      )}
                     </div>
                   </div>
+                </SwiperSlide>
 
-                  {/*especialRequires*/}
-                  <div className={styles.especialRequires}>
-                    <hr className={styles.hr}></hr>
-                    <p className={styles.subtextEspecial}>Accesibilidad y requerimientos especiales</p>
-                    <div className={styles.especialDiv}>
-                      <span>
-                        <img className={styles.iconExclamacion2} src={iconExclamacion2} alt='n' />
-                      </span>
-                      <span>
+                <SwiperSlide>
+                  {/* SECTION 3: Descripcion */}
+                  <div className={styles.section3}>
+                    {/* linea vertical */}
+                    <div className={styles.containerLine}>
+                      <ul className={styles.timeVerticalRed}>
+                        <li>
+                          <b></b>
+                          <span>3</span>
+                        </li>
+                      </ul>
+                      <ul className={styles.timeVertical}>
+                        <li>
+                          <b></b>
+                        </li>
+                        <li>
+                          <b></b>
+                        </li>
+                        <li>
+                          <b></b>
+                        </li>
+                        <li>
+                          <b></b>
+                        </li>
+                      </ul>
+                    </div>
+
+                    {/* form */}
+                    <div className={styles.container1}>
+                      {/* shortDescription */}
+                      <div className={styles.containerDescription}>
+                        <p className={styles.title}>Descripción breve</p>
                         <p className={styles.subTitle}>
                           Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum
                           dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
                         </p>
-                      </span>
+                        {failedSubmit && errors.shortDescription ? (
+                          <textarea
+                            className={styles.textareaShort}
+                            type='text'
+                            maxlength='100'
+                            placeholder='descripción breve del evento'
+                            name='shortDescription'
+                            value={post.shortDescription}
+                            onChange={(e) => handleChange(e)}
+                            required
+                          />
+                        ) : (
+                          <textarea
+                            className={styles.textareaShort}
+                            type='text'
+                            maxlength='100'
+                            placeholder='descripción breve del evento'
+                            name='shortDescription'
+                            value={post.shortDescription}
+                            onChange={(e) => handleChange(e)}
+                          />
+                        )}
+
+                        {post.shortDescription.length === 100 ? (
+                          <p className={styles.errors}>Máximo: 100 de caracteres</p>
+                        ) : (
+                          <p className={styles.subTitle}>Máximo: 100 de caracteres</p>
+                        )}
+                        {post.shortDescription.length > 0 ? (
+                          <p className={styles.subTitle}>
+                            Usetd va escribiendo: {post.shortDescription.length}/100 caracteres
+                          </p>
+                        ) : (
+                          ''
+                        )}
+                        {errors.shortDescription ? <p className={styles.errors}>{errors.shortDescription}</p> : null}
+                      </div>
+
+                      {/* longDescription */}
+                      <div className={styles.containerDescription}>
+                        <p className={styles.title}>Descripción detallada</p>
+                        <p className={styles.subTitle}>
+                          Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum
+                          dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
+                        </p>
+                        {failedSubmit && errors.longDescription ? (
+                          <textarea
+                            className={styles.textareaLong}
+                            type='text'
+                            placeholder='descripción detallada del evento'
+                            name='longDescription'
+                            value={post.longDescription}
+                            onChange={(e) => handleChange(e)}
+                            required
+                          />
+                        ) : (
+                          <textarea
+                            className={styles.textareaLong}
+                            type='text'
+                            placeholder='descripción detallada del evento'
+                            name='longDescription'
+                            value={post.longDescription}
+                            onChange={(e) => handleChange(e)}
+                          />
+                        )}
+
+                        {longDescriptionArray.length < 75 && longDescriptionArray.length > 0 ? (
+                          <p className={styles.errors}>Minimo 75 palabras</p>
+                        ) : (
+                          <p className={styles.subTitle}>Minimo 75 palabras</p>
+                        )}
+                        {longDescriptionArray.length > 0 ? (
+                          <p className={styles.subTitle}>
+                            Usetd va escribiendo: {longDescriptionArray.length} palabras
+                          </p>
+                        ) : (
+                          ''
+                        )}
+                        {errors.longDescription ? <p className={styles.errors}>{errors.longDescription}</p> : null}
+                      </div>
                     </div>
-                    <input
-                      type='text'
-                      name='specialRequires'
-                      value={post.specialRequires}
-                      onChange={(e) => handleChange(e)}
-                    />
                   </div>
-                  {errors.specialRequires ? <p className={styles.errors}>{errors.specialRequires}</p> : null}
-                </div>
-              </div>
-              </SwiperSlide>
+                </SwiperSlide>
 
-              <SwiperSlide>
-              {/*SECTION 6: Dates */}
-              <div className={styles.section6}>
-                {/* linea vertical */}
-                <div className={styles.containerLine}>
-                  <ul className={styles.timeVerticalRed}>
-                    <li>
-                      <b></b>
-                      <span>6</span>
-                    </li>
-                  </ul>
-                  <ul className={styles.timeVertical}>
-                    <li>
-                      <b></b>
-                    </li>
-                    <li>
-                      <b></b>
-                    </li>
-                    <li>
-                      <b></b>
-                    </li>
-                    <li>
-                      <b></b>
-                    </li>
-                  </ul>
-                </div>
+                <SwiperSlide>
+                  {/* SECTION 4: Pictures */}
+                  <div className={styles.section4}>
+                    {/* linea vertical */}
+                    <div className={styles.containerLine}>
+                      <ul className={styles.timeVerticalRed}>
+                        <li>
+                          <b></b>
+                          <span>4</span>
+                        </li>
+                      </ul>
+                      <ul className={styles.timeVertical}>
+                        <li>
+                          <b></b>
+                        </li>
+                        <li>
+                          <b></b>
+                        </li>
+                        <li>
+                          <b></b>
+                        </li>
+                        <li>
+                          <b></b>
+                        </li>
+                      </ul>
+                    </div>
 
-                {/* form */}
-                <div className={`${styles.container1} ${styles.containerFormDate}`} >
-                  {/* titulo*/}
-                  <div>
-                    <p className={styles.title}>Costo y fecha</p>
-                    <p className={styles.subTitle}>
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum dolor
-                      sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
-                    </p>
+                    {/* form */}
+                    <div className={styles.container1}>
+                      <p className={styles.title}>Agrega fotos y/o videos</p>
+                      <p className={styles.subTitle}>
+                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum
+                        dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
+                      </p>
+                      <p className={styles.subTitle4}>Fotos del Evento</p>
+
+                      {failedSubmit && errors.pictures ? (
+                        <div>
+                          <p>Fotos: Jpg, png, Max.100kb </p>
+                          <p>Videos: .MP4 Max 100kb</p>
+                          <p>"Haz click en examinar para elegir los archivos y luedo en añadir"</p>
+                          <input
+                            type='file'
+                            multiple={true}
+                            onChange={(e) => {
+                              setImage(e.target.files);
+                            }}
+                          />
+                          {errors.pictures ? <p className={styles.errors}>{errors.pictures}</p> : null}
+                        </div>
+                      ) : (
+                        <div>
+                          <p>Fotos: Jpg, png, Max.100kb </p>
+                          <p>Videos: .MP4 Max 100kb</p>
+                          <p>"Haz click en examinar para elegir los archivos y luedo en añadir"</p>
+                          <input
+                            type='file'
+                            multiple={true}
+                            onChange={(e) => {
+                              setImage(e.target.files);
+                            }}
+                          />
+                        </div>
+                      )}
+
+                      {image ? (
+                        <button
+                          onClick={(e) => {
+                            uploadImage(e);
+                          }}
+                          className={styles.btnAddPhoto}
+                        >
+                          <span>Agregar Imagen</span>
+                        </button>
+                      ) : null}
+
+                      {post.pictures.length > 0 ? (
+                        <div className={styles.dropFilePreview}>
+                          <Swiper
+                            slidesPerView={1}
+                            navigation
+                            spaceBetween={0}
+                            modules={[Navigation]}
+                            className={'swiperEditEventForm'}
+                          >
+                            {post.pictures.map((item, index) => (
+                              <div key={index} className={styles.mySwiper}>
+                                <SwiperSlide>
+                                  <img className={styles.mySwiperImg} src={item.picture} alt='' />
+                                  <button className={styles.mySwiperBtnDel} onClick={() => fileRemove(item)}>
+                                    x
+                                  </button>
+                                  <label className={styles.subInput}>
+                                    <input
+                                      className={styles.checkBox4}
+                                      type='checkbox'
+                                      name='cover'
+                                      value={item.picture}
+                                      onChange={(e) => handleCover(e)}
+                                      defaultChecked={false}
+                                    />
+                                    Quiero que esta sea la portada
+                                  </label>
+                                </SwiperSlide>
+                              </div>
+                            ))}
+                          </Swiper>
+                          {errors.pictures ? <p className={styles.errors}>{errors.pictures}</p> : null}
+                        </div>
+                      ) : null}
+                    </div>
                   </div>
+                </SwiperSlide>
 
-                  <hr className={styles.hr}></hr>
+                <SwiperSlide>
+                  {/* SECTION 5: Ubicacion */}
+                  <div className={styles.section5}>
+                    {/* linea vertical */}
+                    <div className={styles.containerLine}>
+                      <ul className={styles.timeVerticalRed}>
+                        <li>
+                          <b></b>
+                          <span>5</span>
+                        </li>
+                      </ul>
+                      <ul className={styles.timeVertical}>
+                        <li>
+                          <b></b>
+                        </li>
+                        <li>
+                          <b></b>
+                        </li>
+                        <li>
+                          <b></b>
+                        </li>
+                        <li>
+                          <b></b>
+                        </li>
+                      </ul>
+                    </div>
 
-                  {/* Dates*/}
-                  <div>
-                    {post.dates.map((date, index) => (
-                      new Date(date.date)<new Date(dateActual) || date.date === dateActual && date.end.slice(0,2) <= hora && date.end.slice(3,5) <= minutes+2 || date.inRevision === true ?
-                      (''):(
-                      <div>
-                        {/* cupos-precios*/}
-                        <div className={styles.containerInfo} key={index}>
-                          {/* cupos*/}
-                          <div className={styles.containerSubInfo}>
-                            <label className={styles.subInfoTitle}>
-                              Máximo número de participantes
-                              {failedSubmit && errors.cupos ? (
-                                <input
-                                  id='cupos'
-                                  type='number'
-                                  placeholder='10'
-                                  name='cupos'
-                                  value={date.cupos}
-                                  onChange={(e) => handleChanges(e, index, date._id)}
-                                  required
-                                />
-                              ) : (
-                                <input
-                                  id='cupos'
-                                  className={styles.subInfoInput}
-                                  type='number'
-                                  placeholder='10'
-                                  name='cupos'
-                                  value={date.cupos || ''}
-                                  onChange={(e) => handleChanges(e, index, date._id)}
-                                />
-                              )}
-                            </label>
+                    {/* form */}
+                    <div className={styles.container1}>
+                      {/* Title*/}
+                      <p className={styles.title}>¿Dónde es el evento?</p>
+                      <p className={styles.subTitle}>
+                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum
+                        dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
+                      </p>
+
+                      {/* CheckBoxOnLine*/}
+                      <div className={styles.containerOnLine}>
+                        <input
+                          className={styles.checkBox4}
+                          type='checkbox'
+                          defaultChecked={false}
+                          name='online'
+                          value={post.online}
+                          onChange={(e) => handleCheck(e)}
+                          id='check'
+                        />
+                        <label> Este es un evento en linea</label>
+
+                        {/*Online*/}
+
+                        {failedSubmit && errors.link ? (
+                          <div className={styles.online}>
+                            <input
+                              type='text'
+                              placeholder='Colocar el enlace del evento'
+                              name='link'
+                              value={post.link}
+                              onChange={(e) => handleLink(e)}
+                              required
+                            />
+                          </div>
+                        ) : (
+                          <div className={styles.online}>
+                            <input
+                              type='text'
+                              placeholder='Colocar el enlace del evento'
+                              name='link'
+                              value={post.link}
+                              onChange={(e) => handleChange(e)}
+                            />
+                          </div>
+                        )}
+                        {errors.link ? <p className={styles.errors}>{errors.link}</p> : null}
+
+                        {/*notOnline*/}
+                        <div className={styles.notOnline}>
+                          {/* Dpto */}
+                          <div className={styles.containerDirection}>
+                            {failedSubmit && errors.departamento ? (
+                              <input
+                                className={styles.select}
+                                list='dptos'
+                                id='myDep'
+                                name='departamento'
+                                placeholder='Departamento'
+                                value={post.departamento}
+                                onChange={(e) => handleChange(e)}
+                                required
+                              />
+                            ) : (
+                              <input
+                                className={styles.select}
+                                list='dptos'
+                                id='myDep'
+                                name='departamento'
+                                placeholder='Departamento'
+                                value={post.departamento}
+                                onChange={(e) => handleChange(e)}
+                              />
+                            )}
+                            <datalist id='dptos'>
+                              {nuevoArrayDepartamentos &&
+                                nuevoArrayDepartamentos.map((departamento) => (
+                                  <option value={departamento.departamento}>{departamento.departamento}</option>
+                                ))}
+                            </datalist>
+
+                            {/* Municipio*/}
+
+                            {nuevoArrayDepartamentos &&
+                              nuevoArrayDepartamentos.map((departamento) => (
+                                <div>
+                                  {departamento.departamento === post.departamento && (
+                                    <div>
+                                      {failedSubmit && errors.municipio ? (
+                                        <div className={styles.Muni}>
+                                          <input
+                                            list='municipio'
+                                            id='myMuni'
+                                            name='municipio'
+                                            placeholder={departamento.capital}
+                                            value={post.municipio}
+                                            onChange={(e) => handleChange(e)}
+                                            required
+                                          />
+                                          <datalist id='municipio'>
+                                            <option>{departamento.capital}</option>
+                                            {departamento.municipio.map((m) => (
+                                              <option>{m}</option>
+                                            ))}
+                                          </datalist>
+                                        </div>
+                                      ) : (
+                                        <div className={styles.Muni}>
+                                          <input
+                                            list='municipio'
+                                            id='myMuni'
+                                            name='municipio'
+                                            placeholder={departamento.capital}
+                                            value={post.municipio}
+                                            onChange={(e) => handleChange(e)}
+                                          />
+                                          <datalist id='municipio'>
+                                            <option>{departamento.capital}</option>
+                                            {departamento.municipio.map((m) => (
+                                              <option>{m}</option>
+                                            ))}
+                                          </datalist>
+                                        </div>
+                                      )}
+                                    </div>
+                                  )}
+                                </div>
+                              ))}
                           </div>
 
-                          {/* precio*/}
-                          <div className={styles.containerSubInfo}>
-                            <label className={styles.subInfoTitle}>
-                              Precio por cupo
-                              <div className={styles.labelS}>
-                                <p>$</p>
-                                {failedSubmit && errors.dates ? (
-                                  <input
-                                    type='number'
-                                    placeholder='20.00'
-                                    name='price'
-                                    value={date.price || ''}
-                                    onChange={(e) => handleChanges(e, index, date._id)}
-                                    required
-                                  />
-                                ) : (
-                                  <input
-                                    className={styles.subInfoInput}
-                                    type='number'
-                                    placeholder='20.00'
-                                    name='price'
-                                    value={date.price || ''}
-                                    onChange={(e) => handleChanges(e, index, date._id)}
-                                  />
-                                )}
+                          {/* Direccion*/}
+                          {failedSubmit && errors.direccion ? (
+                            <div className={styles.direccionError}>
+                              <input
+                                className={styles.input5}
+                                type='text'
+                                placeholder='Dirección del evento'
+                                name='direccion'
+                                value={post.direccion}
+                                onChange={(e) => handleChange(e)}
+                                required
+                              />
+                            </div>
+                          ) : (
+                            <input
+                              className={styles.input5}
+                              type='text'
+                              placeholder='Dirección del evento'
+                              name='direccion'
+                              value={post.direccion}
+                              onChange={(e) => handleChange(e)}
+                            />
+                          )}
+                          {errors.direccion ? <p className={styles.errors}>{errors.direccion}</p> : null}
+
+                          {/* Barrio*/}
+                          {failedSubmit && errors.barrio ? (
+                            <div className={styles.barrio}>
+                              <input
+                                className={styles.input5}
+                                type='text'
+                                placeholder='Barrio'
+                                name='barrio'
+                                value={post.barrio}
+                                onChange={(e) => handleChange(e)}
+                                required
+                              />
+                            </div>
+                          ) : (
+                            <input
+                              className={styles.input5}
+                              type='text'
+                              placeholder='Barrio'
+                              name='barrio'
+                              value={post.barrio}
+                              onChange={(e) => handleChange(e)}
+                            />
+                          )}
+                          {errors.barrio ? <p className={styles.errors}>{errors.barrio}</p> : null}
+
+                          {/* Map*/}
+                          <div className={styles.containerMap}>
+                            <p className={styles.titleMap}>Ubicación en el mapa</p>
+                            {post.municipio ? (
+                              <div>
+                                <img src={url} alt='mapaStaticGoogleMaps' />
                               </div>
-                            </label>
-
-                            {/* {date.price === '' ? <p>$21.990</p> : <p>{date.precioAlPublico}</p>}
-
-                            <p className={styles.subInfotxt}>Precio al público incluyendo costo de manejo e IVA</p> */}
-                          </div>
-
-                          {/* ganacia x cupo*/}
-                          <div className={styles.containerSubInfo}>
-                            <label className={styles.subInfoTitle}>
-                              Tu ganas por cupo
-                              <div className={styles.labelS}>
-                                <p>$</p>
-                                <input className={styles.subInfoInput} placeholder={date.gananciaCupo} disabled />
+                            ) : (
+                              <div>
+                                <img src={mapa} alt='mapaStaticGoogleMaps' />
                               </div>
-                            </label>
-                            <p className={styles.subInfotxt}>Después de nuestra comisión + IVA</p>
-                            <a className={styles.btn6} href='user/perfil/datos' target='_blank'>
-                              Ver mas
-                            </a>
-                          </div>
+                            )}
+                            <p className={styles.subtextMap}>Texto google legal aqui</p>
 
-                          {/* ganacia x evento*/}
-                          <div className={styles.containerSubInfo}>
-                            <label className={styles.subInfoTitle}>
-                              Tu ganas por evento
-                              <div className={styles.labelS}>
-                                <p>$</p>
-                                <input className={styles.subInfoInput} placeholder={date.gananciaEvento} disabled />
-                              </div>
-                            </label>
-                            <p className={styles.subInfotxt}>Esto sería lo que ganarías si se venden todos tus cupos</p>
-                            <a className={styles.btn6} href='user/perfil/datos' target='_blank'>
-                              Ver mas
-                            </a>
+                            {/* <img  className={styles.icon} src={iconEditar} alt='n' /> */}
+                            <button className={styles.btn}>
+                              <img className={styles.icon} src={iconEditar} alt='n' />
+                            </button>
                           </div>
                         </div>
+                      </div>
 
-                        {/* fecha-inicio-fin*/}
-                        <div className={styles.contTimeAndDate} key={index}>
-                          {/* fecha*/}
-                          <div className={styles.contDate}>
-                            <label>Fecha</label>
-                            {failedSubmit && errors.dates ? (
-                              <input
-                                classname={styles.errors}
-                                type='date'
-                                name='date'
-                                value={date.date}
-                                onChange={(e) => handleChanges(e, index, date._id)}
-                                min={fechaMinima}
-                                required
-                              />
-                            ) : (
-                              <input
-                                id='fecha'
-                                type='date'
-                                name='date'
-                                value={date.date}
-                                onChange={(e) => handleChanges(e, index, date._id)}
-                                min={fechaMinima}
-                              />
-                            )}
-                            <p>{date.dateFormated}</p>
-                          </div>
+                      {/*especialRequires*/}
+                      <div className={styles.especialRequires}>
+                        <hr className={styles.hr}></hr>
+                        <p className={styles.subtextEspecial}>Accesibilidad y requerimientos especiales</p>
+                        <div className={styles.especialDiv}>
+                          <span>
+                            <img className={styles.iconExclamacion2} src={iconExclamacion2} alt='n' />
+                          </span>
+                          <span>
+                            <p className={styles.subTitle}>
+                              Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem
+                              ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
+                            </p>
+                          </span>
+                        </div>
+                        <input
+                          type='text'
+                          name='specialRequires'
+                          value={post.specialRequires}
+                          onChange={(e) => handleChange(e)}
+                        />
+                      </div>
+                      {errors.specialRequires ? <p className={styles.errors}>{errors.specialRequires}</p> : null}
+                    </div>
+                  </div>
+                </SwiperSlide>
 
-                          {/* hora inicio*/}
-                          <div className={styles.contStart}>
-                            <label>Comienza</label>
-                            {failedSubmit && errors.dates ? (
-                              <input
-                                type='time'
-                                name='start'
-                                value={date.start || ''}
-                                onChange={(e) => handleChanges(e, index, date._id)}
-                                required
-                              />
-                            ) : (
-                              <input
-                                type='time'
-                                name='start'
-                                value={date.start || ''}
-                                onChange={(e) => handleChanges(e, index, date._id)}
-                                step='900'
-                              />
-                            )}
-                          </div>
+                <SwiperSlide>
+                  {/*SECTION 6: Dates */}
+                  <div className={styles.section6}>
+                    {/* linea vertical */}
+                    <div className={styles.containerLine}>
+                      <ul className={styles.timeVerticalRed}>
+                        <li>
+                          <b></b>
+                          <span>6</span>
+                        </li>
+                      </ul>
+                      <ul className={styles.timeVertical}>
+                        <li>
+                          <b></b>
+                        </li>
+                        <li>
+                          <b></b>
+                        </li>
+                        <li>
+                          <b></b>
+                        </li>
+                        <li>
+                          <b></b>
+                        </li>
+                      </ul>
+                    </div>
 
-                          {/* hora fin*/}
-                          <div className={styles.contStart}>
-                            <label>End</label>
-                            {failedSubmit && errors.dates ? (
-                              <input
-                                type='time'
-                                name='end'
-                                value={date.end || ''}
-                                onChange={(e) => handleChanges(e, index, date._id)}
-                                required
-                              />
-                            ) : (
-                              <input
-                                type='time'
-                                name='end'
-                                value={date.end || ''}
-                                onChange={(e) => handleChanges(e, index, date._id)}
-                              />
-                            )}
-                          </div>
+                    {/* form */}
+                    <div className={`${styles.container1} ${styles.containerFormDate}`}>
+                      {/* titulo*/}
+                      <div>
+                        <p className={styles.title}>Costo y fecha</p>
+                        <p className={styles.subTitle}>
+                          Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum
+                          dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
+                        </p>
+                      </div>
 
-                          {/* Public*/}
-                          {date.isPublic === true  ? (
-                            <button
-                              className={styles.removePublic}
-                              type='button'
-                              onClick={(e) => removeFromPublic(e, index, date._id)}
-                            >
-                              Quitar de Publicados
-                            </button>
+                      <hr className={styles.hr}></hr>
+
+                      {/* Dates*/}
+                      <div>
+                        {post.dates.map((date, index) =>
+                          new Date(date.date) < new Date(dateActual) ||
+                          (date.date === dateActual &&
+                            date.end.slice(0, 2) <= hora &&
+                            date.end.slice(3, 5) <= minutes + 2) ||
+                          date.inRevision === true ? (
+                            ''
                           ) : (
-                            <button
-                              className={styles.removePublic}
-                              type='button'
-                              onClick={(e) => becomePublic(e, index, date._id)}
-                            >
-                              Agregar a Publicados
-                            </button>
-                          )}
+                            <div>
+                              {/* cupos-precios*/}
+                              <div className={styles.containerInfo} key={index}>
+                                {/* cupos*/}
+                                <div className={styles.containerSubInfo}>
+                                  <label className={styles.subInfoTitle}>
+                                    Máximo número de participantes
+                                    {failedSubmit && errors.cupos ? (
+                                      <input
+                                        id='cupos'
+                                        type='number'
+                                        placeholder='10'
+                                        name='cupos'
+                                        value={date.cupos}
+                                        onChange={(e) => handleChanges(e, index, date._id)}
+                                        required
+                                      />
+                                    ) : (
+                                      <input
+                                        id='cupos'
+                                        className={styles.subInfoInput}
+                                        type='number'
+                                        placeholder='10'
+                                        name='cupos'
+                                        value={date.cupos || ''}
+                                        onChange={(e) => handleChanges(e, index, date._id)}
+                                      />
+                                    )}
+                                  </label>
+                                </div>
 
-                          {/* Remove date*/}
-                          {/* {
+                                {/* precio*/}
+                                <div className={styles.containerSubInfo}>
+                                  <label className={styles.subInfoTitle}>
+                                    Precio por cupo
+                                    <div className={styles.labelS}>
+                                      <p>$</p>
+                                      {failedSubmit && errors.dates ? (
+                                        <input
+                                          type='number'
+                                          placeholder='20.00'
+                                          name='price'
+                                          value={date.price || ''}
+                                          onChange={(e) => handleChanges(e, index, date._id)}
+                                          required
+                                        />
+                                      ) : (
+                                        <input
+                                          className={styles.subInfoInput}
+                                          type='number'
+                                          placeholder='20.00'
+                                          name='price'
+                                          value={date.price || ''}
+                                          onChange={(e) => handleChanges(e, index, date._id)}
+                                        />
+                                      )}
+                                    </div>
+                                  </label>
+
+                                  {/* {date.price === '' ? <p>$21.990</p> : <p>{date.precioAlPublico}</p>}
+
+                            <p className={styles.subInfotxt}>Precio al público incluyendo costo de manejo e IVA</p> */}
+                                </div>
+
+                                {/* ganacia x cupo*/}
+                                <div className={styles.containerSubInfo}>
+                                  <label className={styles.subInfoTitle}>
+                                    Tu ganas por cupo
+                                    <div className={styles.labelS}>
+                                      <p>$</p>
+                                      <input className={styles.subInfoInput} placeholder={date.gananciaCupo} disabled />
+                                    </div>
+                                  </label>
+                                  <p className={styles.subInfotxt}>Después de nuestra comisión + IVA</p>
+                                  <a className={styles.btn6} href='user/perfil/datos' target='_blank'>
+                                    Ver mas
+                                  </a>
+                                </div>
+
+                                {/* ganacia x evento*/}
+                                <div className={styles.containerSubInfo}>
+                                  <label className={styles.subInfoTitle}>
+                                    Tu ganas por evento
+                                    <div className={styles.labelS}>
+                                      <p>$</p>
+                                      <input
+                                        className={styles.subInfoInput}
+                                        placeholder={date.gananciaEvento}
+                                        disabled
+                                      />
+                                    </div>
+                                  </label>
+                                  <p className={styles.subInfotxt}>
+                                    Esto sería lo que ganarías si se venden todos tus cupos
+                                  </p>
+                                  <a className={styles.btn6} href='user/perfil/datos' target='_blank'>
+                                    Ver mas
+                                  </a>
+                                </div>
+                              </div>
+
+                              {/* fecha-inicio-fin*/}
+                              <div className={styles.contTimeAndDate} key={index}>
+                                {/* fecha*/}
+                                <div className={styles.contDate}>
+                                  <label>Fecha</label>
+                                  {failedSubmit && errors.dates ? (
+                                    <input
+                                      classname={styles.errors}
+                                      type='date'
+                                      name='date'
+                                      value={date.date}
+                                      onChange={(e) => handleChanges(e, index, date._id)}
+                                      min={fechaMinima}
+                                      required
+                                    />
+                                  ) : (
+                                    <input
+                                      id='fecha'
+                                      type='date'
+                                      name='date'
+                                      value={date.date}
+                                      onChange={(e) => handleChanges(e, index, date._id)}
+                                      min={fechaMinima}
+                                    />
+                                  )}
+                                  <p>{date.dateFormated}</p>
+                                </div>
+
+                                {/* hora inicio*/}
+                                <div className={styles.contStart}>
+                                  <label>Comienza</label>
+                                  {failedSubmit && errors.dates ? (
+                                    <input
+                                      type='time'
+                                      name='start'
+                                      value={date.start || ''}
+                                      onChange={(e) => handleChanges(e, index, date._id)}
+                                      required
+                                    />
+                                  ) : (
+                                    <input
+                                      type='time'
+                                      name='start'
+                                      value={date.start || ''}
+                                      onChange={(e) => handleChanges(e, index, date._id)}
+                                      step='900'
+                                    />
+                                  )}
+                                </div>
+
+                                {/* hora fin*/}
+                                <div className={styles.contStart}>
+                                  <label>End</label>
+                                  {failedSubmit && errors.dates ? (
+                                    <input
+                                      type='time'
+                                      name='end'
+                                      value={date.end || ''}
+                                      onChange={(e) => handleChanges(e, index, date._id)}
+                                      required
+                                    />
+                                  ) : (
+                                    <input
+                                      type='time'
+                                      name='end'
+                                      value={date.end || ''}
+                                      onChange={(e) => handleChanges(e, index, date._id)}
+                                    />
+                                  )}
+                                </div>
+
+                                {/* Public*/}
+                                {date.isPublic === true ? (
+                                  <button
+                                    className={styles.removePublic}
+                                    type='button'
+                                    onClick={(e) => removeFromPublic(e, index, date._id)}
+                                  >
+                                    Quitar de Publicados
+                                  </button>
+                                ) : (
+                                  <button
+                                    className={styles.removePublic}
+                                    type='button'
+                                    onClick={(e) => becomePublic(e, index, date._id)}
+                                  >
+                                    Agregar a Publicados
+                                  </button>
+                                )}
+
+                                {/* Remove date*/}
+                                {/* {
                           index ? 
                             <button className={styles.addDelete}  type="button"  onClick={() => removeFormFields(index,)}>
                               <img className={styles.basquet} src={basquet} alt="n" />
@@ -2294,530 +2303,546 @@ const EventEdit = () => {
                           : null
                         } */}
 
-                          <button
-                            className={styles.addDelete}
-                            type='button'
-                            onClick={(e) => removeFormFields(e, index, date._id)}
-                          >
-                            <img className={styles.basquet} src={basquet} alt='n' />
-                          </button>
-                        </div>
+                                <button
+                                  className={styles.addDelete}
+                                  type='button'
+                                  onClick={(e) => removeFormFields(e, index, date._id)}
+                                >
+                                  <img className={styles.basquet} src={basquet} alt='n' />
+                                </button>
+                              </div>
 
-                        {/* bono*/}
-                        <div className={styles.checkBono}>
-                          {date.codigos[0] && date.codigos[0].codigo.length ? (
-                            <input
-                              className={styles.checkBoxBono}
-                              defaultChecked={true}
-                              type='checkbox'
-                              name='bono'
-                              checked
-                            />
-                          ) : (
-                            <input className={styles.checkBoxBono} defaultChecked={false} type='checkbox' name='bono' />
-                          )}
-                          <label className={styles.labelsChecks}>Brindar códigos de descuento</label>
-                          {date.codigos &&
-                            date.codigos.map((codigo, indice) => (
-                              <div className={styles.paso}>
-                                <div className={styles.containerBono}>
-                                  {codigo.show === true ? (
-                                    <div>
-                                      {/*codigo*/}
-                                      <div className={styles.opcionesBonos} key={indice}>
-                                        {/*%descuento-cantidad*/}
-                                        {codigo.codigo.length && codigo.ed === false ? (
-                                          <div className={styles.descuentoCantidad}>
-                                            {/* descuento*/}
-                                            <div className={styles.descuento}>
-                                              <label>
-                                                Porcentaje
-                                                <p>{codigo.descuento}</p>
-                                              </label>
-                                            </div>
+                              {/* bono*/}
+                              <div className={styles.checkBono}>
+                                {date.codigos[0] && date.codigos[0].codigo.length ? (
+                                  <input
+                                    className={styles.checkBoxBono}
+                                    defaultChecked={true}
+                                    type='checkbox'
+                                    name='bono'
+                                    checked
+                                  />
+                                ) : (
+                                  <input
+                                    className={styles.checkBoxBono}
+                                    defaultChecked={false}
+                                    type='checkbox'
+                                    name='bono'
+                                  />
+                                )}
+                                <label className={styles.labelsChecks}>Brindar códigos de descuento</label>
+                                {date.codigos &&
+                                  date.codigos.map((codigo, indice) => (
+                                    <div className={styles.paso}>
+                                      <div className={styles.containerBono}>
+                                        {codigo.show === true ? (
+                                          <div>
+                                            {/*codigo*/}
+                                            <div className={styles.opcionesBonos} key={indice}>
+                                              {/*%descuento-cantidad*/}
+                                              {codigo.codigo.length && codigo.ed === false ? (
+                                                <div className={styles.descuentoCantidad}>
+                                                  {/* descuento*/}
+                                                  <div className={styles.descuento}>
+                                                    <label>
+                                                      Porcentaje
+                                                      <p>{codigo.descuento}</p>
+                                                    </label>
+                                                  </div>
 
-                                            {/* cantidad de bonos*/}
-                                            <div className={styles.descuento}>
-                                              <label>
-                                                Cantidad de bonos
-                                                <p>{codigo.cantidad}</p>
-                                              </label>
-                                            </div>
-                                          </div>
-                                        ) : (
-                                          <div className={styles.descuentoCantidad}>
-                                            {/* descuento*/}
-                                            <div className={styles.descuento}>
-                                              <label>
-                                                Porcentaje
-                                                <div>
-                                                  {failedSubmit && errors.bonos ? (
-                                                    <input
-                                                      id='descuento'
-                                                      type='number'
-                                                      placeholder={codigo.descuento}
-                                                      name='descuento'
-                                                      value={codigo.descuento}
-                                                      max='100'
-                                                      min='1'
-                                                      onChange={(e) =>
-                                                        handleChanges(e, index, date._id, indice, codigo.codigo)
-                                                      }
-                                                      required
-                                                    />
-                                                  ) : codigo.ed === true ? (
-                                                    <input
-                                                      id='descuento'
-                                                      type='number'
-                                                      placeholder={codigo.descuento}
-                                                      name='descuento'
-                                                      value={codigo.descuento}
-                                                      max='100'
-                                                      min='1'
-                                                      onChange={(e) =>
-                                                        handleChanges(e, index, date._id, indice, codigo.codigo)
-                                                      }
-                                                      required
-                                                    />
-                                                  ) : (
-                                                    <input
-                                                      id='descuento'
-                                                      type='number'
-                                                      placeholder='-'
-                                                      name='descuento'
-                                                      value={codigo.descuento}
-                                                      max='100'
-                                                      min='1'
-                                                      onChange={(e) =>
-                                                        handleChanges(e, index, date._id, indice, codigo.codigo)
-                                                      }
-                                                    />
-                                                  )}
+                                                  {/* cantidad de bonos*/}
+                                                  <div className={styles.descuento}>
+                                                    <label>
+                                                      Cantidad de bonos
+                                                      <p>{codigo.cantidad}</p>
+                                                    </label>
+                                                  </div>
                                                 </div>
-                                              </label>
-                                            </div>
+                                              ) : (
+                                                <div className={styles.descuentoCantidad}>
+                                                  {/* descuento*/}
+                                                  <div className={styles.descuento}>
+                                                    <label>
+                                                      Porcentaje
+                                                      <div>
+                                                        {failedSubmit && errors.bonos ? (
+                                                          <input
+                                                            id='descuento'
+                                                            type='number'
+                                                            placeholder={codigo.descuento}
+                                                            name='descuento'
+                                                            value={codigo.descuento}
+                                                            max='100'
+                                                            min='1'
+                                                            onChange={(e) =>
+                                                              handleChanges(e, index, date._id, indice, codigo.codigo)
+                                                            }
+                                                            required
+                                                          />
+                                                        ) : codigo.ed === true ? (
+                                                          <input
+                                                            id='descuento'
+                                                            type='number'
+                                                            placeholder={codigo.descuento}
+                                                            name='descuento'
+                                                            value={codigo.descuento}
+                                                            max='100'
+                                                            min='1'
+                                                            onChange={(e) =>
+                                                              handleChanges(e, index, date._id, indice, codigo.codigo)
+                                                            }
+                                                            required
+                                                          />
+                                                        ) : (
+                                                          <input
+                                                            id='descuento'
+                                                            type='number'
+                                                            placeholder='-'
+                                                            name='descuento'
+                                                            value={codigo.descuento}
+                                                            max='100'
+                                                            min='1'
+                                                            onChange={(e) =>
+                                                              handleChanges(e, index, date._id, indice, codigo.codigo)
+                                                            }
+                                                          />
+                                                        )}
+                                                      </div>
+                                                    </label>
+                                                  </div>
 
-                                            {/* cantidad de bonos*/}
-                                            <div className={styles.descuento}>
-                                              <label>
-                                                Cantidad de bonos
-                                                <div>
-                                                  {failedSubmit && errors.bonos ? (
-                                                    <input
-                                                      type='number'
-                                                      placeholder={codigo.cantidad}
-                                                      name='cantidad'
-                                                      value={codigo.cantidad}
-                                                      onChange={(e) =>
-                                                        handleChanges(e, index, date._id, indice, codigo.codigo)
-                                                      }
-                                                      required
-                                                    />
-                                                  ) : codigo.ed === true ? (
-                                                    <input
-                                                      type='number'
-                                                      placeholder={codigo.cantidad}
-                                                      name='cantidad'
-                                                      value={codigo.cantidad}
-                                                      onChange={(e) =>
-                                                        handleChanges(e, index, date._id, indice, codigo.codigo)
-                                                      }
-                                                      required
-                                                    />
-                                                  ) : (
-                                                    <input
-                                                      className={styles.cantidad}
-                                                      type='number'
-                                                      placeholder={codigo.cantidad}
-                                                      name='cantidad'
-                                                      value={codigo.cantidad}
-                                                      onChange={(e) =>
-                                                        handleChanges(e, index, date._id, indice, codigo.codigo)
-                                                      }
-                                                    />
-                                                  )}
+                                                  {/* cantidad de bonos*/}
+                                                  <div className={styles.descuento}>
+                                                    <label>
+                                                      Cantidad de bonos
+                                                      <div>
+                                                        {failedSubmit && errors.bonos ? (
+                                                          <input
+                                                            type='number'
+                                                            placeholder={codigo.cantidad}
+                                                            name='cantidad'
+                                                            value={codigo.cantidad}
+                                                            onChange={(e) =>
+                                                              handleChanges(e, index, date._id, indice, codigo.codigo)
+                                                            }
+                                                            required
+                                                          />
+                                                        ) : codigo.ed === true ? (
+                                                          <input
+                                                            type='number'
+                                                            placeholder={codigo.cantidad}
+                                                            name='cantidad'
+                                                            value={codigo.cantidad}
+                                                            onChange={(e) =>
+                                                              handleChanges(e, index, date._id, indice, codigo.codigo)
+                                                            }
+                                                            required
+                                                          />
+                                                        ) : (
+                                                          <input
+                                                            className={styles.cantidad}
+                                                            type='number'
+                                                            placeholder={codigo.cantidad}
+                                                            name='cantidad'
+                                                            value={codigo.cantidad}
+                                                            onChange={(e) =>
+                                                              handleChanges(e, index, date._id, indice, codigo.codigo)
+                                                            }
+                                                          />
+                                                        )}
+                                                      </div>
+                                                    </label>
+                                                  </div>
                                                 </div>
-                                              </label>
+                                              )}
+
+                                              {/*codigo*/}
+                                              {codigo.ed === true ? (
+                                                <div className={styles.descuento}>
+                                                  <label>
+                                                    Código
+                                                    <input
+                                                      className={styles.inputCodigo}
+                                                      placeholder={codigo.codigo}
+                                                      disabled
+                                                    />
+                                                  </label>
+                                                </div>
+                                              ) : (
+                                                <div className={styles.codigoAble}>
+                                                  <label>
+                                                    Código
+                                                    <p>{codigo.codigo}</p>
+                                                  </label>
+                                                </div>
+                                              )}
+
+                                              {/*generar-editar-resetear codigo*/}
+                                              {codigo.descuento && codigo.cantidad && codigo.cod === false ? (
+                                                <div className={styles.contDate}>
+                                                  <button
+                                                    className={styles.generarCodigo}
+                                                    onClick={(e) => generarCodigo(e, index, indice)}
+                                                  >
+                                                    Generar Código
+                                                  </button>
+                                                </div>
+                                              ) : codigo.cod === true ? (
+                                                <div className={styles.editarResetear}>
+                                                  {/*editar codigo*/}
+                                                  <button
+                                                    className={styles.editarCodigo}
+                                                    onClick={(e) => editarCodigo(e, index, indice)}
+                                                  >
+                                                    <BsPencilSquare className={styles.iconEdit} />
+                                                    <span>Editar</span>
+                                                  </button>
+                                                  {/*setear codigo*/}
+                                                  <button
+                                                    className={styles.editarCodigo}
+                                                    onClick={(e) => setearCodigo(e, index, indice)}
+                                                  >
+                                                    Resetear
+                                                  </button>
+                                                </div>
+                                              ) : (
+                                                ''
+                                              )}
+
+                                              {/*guardar codigo*/}
+                                              {codigo.ed === true && cambios === false ? (
+                                                <div>
+                                                  <button
+                                                    className={styles.generarCodigo}
+                                                    onClick={(e) =>
+                                                      guardarCambios(e, index, date._id, indice, codigo.codigo)
+                                                    }
+                                                  >
+                                                    Guardar Cambios
+                                                  </button>
+                                                </div>
+                                              ) : (
+                                                ''
+                                              )}
+
+                                              {/*borrar codigo*/}
+                                              {
+                                                <button
+                                                  className={styles.addDelete}
+                                                  onClick={(e) =>
+                                                    borrarCodigo(e, index, date._id, indice, codigo.codigo)
+                                                  }
+                                                >
+                                                  <img className={styles.basquet} src={basquet} alt='n' />
+                                                </button>
+                                              }
                                             </div>
-                                          </div>
-                                        )}
-
-                                        {/*codigo*/}
-                                        {codigo.ed === true ? (
-                                          <div className={styles.descuento}>
-                                            <label>
-                                              Código
-                                              <input
-                                                className={styles.inputCodigo}
-                                                placeholder={codigo.codigo}
-                                                disabled
-                                              />
-                                            </label>
-                                          </div>
-                                        ) : (
-                                          <div className={styles.codigoAble}>
-                                            <label>
-                                              Código
-                                              <p>{codigo.codigo}</p>
-                                            </label>
-                                          </div>
-                                        )}
-
-                                        {/*generar-editar-resetear codigo*/}
-                                        {codigo.descuento && codigo.cantidad && codigo.cod === false ? (
-                                          <div className={styles.contDate}>
-                                            <button
-                                              className={styles.generarCodigo}
-                                              onClick={(e) => generarCodigo(e, index, indice)}
-                                            >
-                                              Generar Código
-                                            </button>
-                                          </div>
-                                        ) : codigo.cod === true ? (
-                                          <div className={styles.editarResetear}>
-                                            {/*editar codigo*/}
-                                            <button
-                                              className={styles.editarCodigo}
-                                              onClick={(e) => editarCodigo(e, index, indice)}
-                                            >
-                                              <BsPencilSquare className={styles.iconEdit} />
-                                              <span>Editar</span>
-                                            </button>
-                                            {/*setear codigo*/}
-                                            <button
-                                              className={styles.editarCodigo}
-                                              onClick={(e) => setearCodigo(e, index, indice)}
-                                            >
-                                              Resetear
-                                            </button>
                                           </div>
                                         ) : (
                                           ''
                                         )}
-
-                                        {/*guardar codigo*/}
-                                        {codigo.ed === true && cambios === false ? (
+                                      </div>
+                                      <div className={styles.toShow}>
+                                        {/* Mostrar-Ocultar */}
+                                        {codigo.show === true && codigo.codigo.length ? (
                                           <div>
                                             <button
-                                              className={styles.generarCodigo}
-                                              onClick={(e) => guardarCambios(e, index, date._id, indice, codigo.codigo)}
+                                              className={styles.addDate}
+                                              onClick={(e) => ocultarCodigos(e, index, indice)}
                                             >
-                                              Guardar Cambios
+                                              Ocultar Codigo
                                             </button>
                                           </div>
+                                        ) : codigo.show === false && codigo.codigo.length ? (
+                                          <button
+                                            className={styles.addDate}
+                                            onClick={(e) => mostrarCodigos(e, index, indice)}
+                                          >
+                                            Mostrar Codigo
+                                          </button>
                                         ) : (
                                           ''
                                         )}
-
-                                        {/*borrar codigo*/}
-                                        {
-                                          <button
-                                            className={styles.addDelete}
-                                            onClick={(e) => borrarCodigo(e, index, date._id, indice, codigo.codigo)}
-                                          >
-                                            <img className={styles.basquet} src={basquet} alt='n' />
-                                          </button>
-                                        }
                                       </div>
                                     </div>
-                                  ) : (
-                                    ''
-                                  )}
-                                </div>
-                                <div className={styles.toShow}>
-                                  {/* Mostrar-Ocultar */}
-                                  {codigo.show === true && codigo.codigo.length ? (
-                                    <div>
-                                      <button
-                                        className={styles.addDate}
-                                        onClick={(e) => ocultarCodigos(e, index, indice)}
-                                      >
-                                        Ocultar Codigo
-                                      </button>
-                                    </div>
-                                  ) : codigo.show === false && codigo.codigo.length ? (
-                                    <button
-                                      className={styles.addDate}
-                                      onClick={(e) => mostrarCodigos(e, index, indice)}
-                                    >
-                                      Mostrar Codigo
-                                    </button>
-                                  ) : (
-                                    ''
-                                  )}
-                                </div>
-                              </div>
-                            ))}
-                          {/*agregar otro codigo*/}
-                          <div className={styles.flex}>
-                            <div className={styles.addBono}>
-                              {
-                                <div>
-                                  <button className={styles.addDate} type='button' onClick={(e) => addBono(e, index)}>
-                                    {' '}
-                                    + Agregar otro código
-                                  </button>
-                                </div>
-                              }
-                            </div>
-                          </div>
-                        </div>
-
-                        {errors.cupos && <p className={styles.errors}>{errors.cupos}</p>}
-                        {errors.price && <p className={styles.errors}>{errors.price}</p>}
-                        {errors.dates && <p className={styles.errors}>{errors.dates}</p>}
-                        {errors.bono && <p className={styles.errors}>{errors.bono}</p>}
-
-                        <hr className={styles.hr}></hr>
-                      </div>)
-            
-                    ))}
-                  </div>
-
-                  {/* agregar fecha*/}
-                  <div>
-                    <button className={styles.addDate} type='button' onClick={() => addFormFields()}>
-                      {' '}
-                      + Crear Nueva Fecha
-                    </button>
-                  </div>
-
-                  {/*botones*/}
-                  <div>
-                    <p className={styles.acceptText}>
-                      Al hacer clic en ‘Publicar’ confirma que ha leído y entendido nuestros Términos y Condiciones,
-                      Notas legales de privacidad y Seguridad.
-                    </p>
-
-                    {/*vistaprevia-publicar*/}
-                    <div className={styles.btnContainer}>
-                      {/*vista previa*/}
-                      <div className={styles.btnVista}>
-                        <p onClick={() => setGetPreview(!getPreview)} className={styles.viewBtn}>
-                          Vista Previa
-                        </p>
-                        {getPreview && (
-                          <div className={styles.modal}>
-                            <div className={styles.closeMenuGetPreview}>
-                              <button className={styles.viewBtn} onClick={() => setGetPreview(false)}>
-                                Salir de Vista Previa
-                              </button>
-                            </div>
-                            <div className={styles.modalContent}>
-                              <div className={styles.column1}>
-                                <div className={styles.containerInfoModal}>
-                                  {post.pictures.length > 0 ? (
-                                    <Swiper
-                                      slidesPerView={1}
-                                      spaceBetween={40}
-                                      navigation
-                                      onSlideChange={() => console.log('slide change')}
-                                      onSwiper={(swiper) => console.log(swiper)}
-                                      modules={[Pagination, Navigation]}
-                                      className={styles.mySwipperInfo}
-                                    >
-                                      {post.pictures.map((picture) => (
-                                        <SwiperSlide>
-                                          <img className={styles.imgInfo} src={picture.picture} alt='Not Found ):' />
-                                        </SwiperSlide>
-                                      ))}
-                                    </Swiper>
-                                  ) : (
-                                    'No'
-                                  )}
-
-                                  <div className={styles.container_icon_heartInfo}>
-                                    <FavoriteIcon className={styles.icon_heartInfo} sx={{ fontSize: 25 }} />
-                                  </div>
-
-                                  <div className={styles.container_icon_shareInfo}>
-                                    <input type='checkbox' id='check' />
-                                    <label htmlFor='check' className={styles.labelInfo}>
-                                      <LaunchOutlinedIcon className={styles.icon_shareInfo} sx={{ fontSize: 25 }} />
-                                    </label>
-                                  </div>
-
-                                  <div className={styles.titleInfo}>
-                                    <p>{post.title}</p>
-
-                                    <div className={styles.container_ratingInfo}>
-                                      <Rating
-                                        className={styles.ratingInfo}
-                                        name='read-only'
-                                        value={5}
-                                        readOnly
-                                        sx={{ fontSize: 25 }}
-                                      />
-                                    </div>
-                                    <p className={styles.numberRatingInfo}>({5})</p>
-                                  </div>
-                                  <div className={styles.container_opinionsInfo}>
-                                    <p className={styles.opinionsInfo}>Ver Opiniones</p>
-                                  </div>
-                                  <p className={styles.title_descriptionInfo}>
-                                    <DescriptionOutlinedIcon fontSize='large' /> Descripcion Del Evento
-                                  </p>
-                                  <p className={styles.descriptionInfo}>{post.longDescription}</p>
-                                  <div className={styles.container_plusInfo}>
-                                    <p>Ver más</p>
-                                  </div>
-                                  <hr className={styles.hr}></hr>
-
-                                  <p className={styles.reportInfo}>
-                                    <WarningOutlinedIcon fontSize='medium' /> Reportar Contenido Inapropiado
-                                  </p>
-                                </div>
-                                <div className={styles.containerLoc}>
-                                  <div className={styles.container_locationLoc}>
-                                    <IoLocationOutline className={styles.iconLoc} />
-                                    <p>Ubicacion</p>
-                                  </div>
-                                  {post.online === 'false' ? (
-                                    <div>
+                                  ))}
+                                {/*agregar otro codigo*/}
+                                <div className={styles.flex}>
+                                  <div className={styles.addBono}>
+                                    {
                                       <div>
-                                        <span className={styles.cityLoc}>{post.municipio} / </span>
-                                        <span className={styles.stateLoc}>{post.departamento}</span>
-                                        <p className={styles.textoLoc}>
-                                          La ubicación exacta se te enviará al adquirir tu entrada
-                                        </p>
+                                        <button
+                                          className={styles.addDate}
+                                          type='button'
+                                          onClick={(e) => addBono(e, index)}
+                                        >
+                                          {' '}
+                                          + Agregar otro código
+                                        </button>
                                       </div>
-                                      <div className={styles.imgLoc}>
-                                        <div>
-                                          <img src={url} alt='mapaStaticGoogleMaps' />
-                                        </div>
-                                      </div>
-                                    </div>
-                                  ) : (
-                                    <div>
-                                      <span className={styles.cityLoc}>En Linea</span>
-                                      <p className={styles.textoLoc}>
-                                        El enlace para el evento se te enviara al momento de adquirir tu cupo
-                                      </p>
-                                    </div>
-                                  )}
-                                  <p className={styles.descriptionLoc}>{post.shortDescription}</p>
-                                  <hr className={styles.hr}></hr>
+                                    }
+                                  </div>
                                 </div>
                               </div>
-                              <div className={styles.column2}>
-                                <div className={styles.eventDate}>
-                                  <div>
-                                    <div className={styles.containerTitleDate}>
-                                      <CalendarMonthIcon
-                                        sx={{
-                                          fontSize: '16px',
-                                          color: '#585858',
-                                          '& :hover': { color: '#ef5350' },
-                                        }}
-                                      />
-                                      <p className={styles.titleDate}>Próximas Fechas</p>
-                                    </div>
-                                    <div>
-                                      <table className={styles.tableDate}>
-                                        <thead>
-                                          <tr>
-                                            <th></th>
-                                            <th>Fecha</th>
-                                            <th>Hora</th>
-                                            <th>Precio</th>
-                                            <th>Cupos Dispopnibles</th>
-                                            <th>Cupos a Comprar</th>
-                                          </tr>
-                                        </thead>
-                                        <tbody>
-                                          {post.dates.map((date) => (
-                                            <tr>
-                                              <td>
-                                                <input
-                                                  type='checkbox'
-                                                  class={styles.checkBox}
-                                                  value={date.id}
-                                                  defaultChecked={false}
-                                                ></input>
-                                              </td>
-                                              <td>{date.date}</td>
-                                              <td>
-                                                {date.start}-{date.end}
-                                              </td>
-                                              <td>{date.price}</td>
-                                              <td>{date.cupos}</td>
-                                            </tr>
-                                          ))}
-                                        </tbody>
-                                      </table>
-                                    </div>
-                                    <p className={styles.buttonDate}>Comprar</p>
-                                    <p className={styles.parrafoDate}>
-                                      Nuevas fechas pueden ser solicitadas en cuyo caso un mínimo aplicaría de cupos a
-                                      ser adquiridos por el solicitante, será sujeto a aprobación de fecha
-                                    </p>
-                                    <p>Solicitar nuevas fechas</p>
-                                    <hr className={styles.hr}></hr>
-                                  </div>
-                                </div>
-                                <div className={styles.container2Special}>
-                                  <p className={styles.c2titleSpecial}>Accesibilidad y requerimientos especiales</p>
-                                  <div className={styles.subcontainer2Special}>
-                                    <p className={styles.iconSpecial}>!</p>
-                                    <p className={styles.c2subtitleSpecial}>{post.specialRequires}</p>
-                                  </div>
-                                </div>
-                                <hr className={styles.hr}></hr>
-                                {/* Orgna */}
-                                {userData ? (
-                                  <div className={styles.containerOrg}>
-                                    <div className={styles.containerTopOrg}>
-                                      <p className={styles.titleOrg}>Organizador</p>
-                                      <div className={styles.btnOrg}>
-                                        <LocalPostOfficeIcon sx={{ fontSize: '13px', color: '#d53e27' }} />
-                                        <button className={styles.buttonOrg}>Enviar Mensaje</button>
-                                      </div>
-                                    </div>
-                                    <div className={styles.orgContOrg}>
-                                      <img className={styles.orgImgOrg} src={userData.userpicture} alt='N' />
 
-                                      <div className={styles.orgSubContOrg}>
-                                        <p className={styles.orgNameOrg}>{userData.name}</p>
-                                        <p className={styles.orgMembershipOrg}>Miembro desde *falta valor real*</p>
-                                      </div>
-                                    </div>
-                                    <p className={styles.orgDescriptionOrg}>{userData.descriptionOrganizer}</p>
-                                    <button className={styles.button2Org}>
-                                      Otros eventos organizados por {userData.name}
-                                    </button>
-                                  </div>
-                                ) : (
-                                  'No hay usuario todavia'
-                                )}
-                              </div>
+                              {errors.cupos && <p className={styles.errors}>{errors.cupos}</p>}
+                              {errors.price && <p className={styles.errors}>{errors.price}</p>}
+                              {errors.dates && <p className={styles.errors}>{errors.dates}</p>}
+                              {errors.bono && <p className={styles.errors}>{errors.bono}</p>}
+
+                              <hr className={styles.hr}></hr>
                             </div>
-                          </div>
+                          )
                         )}
                       </div>
 
-                      {/*publicar*/}
+                      {/* agregar fecha*/}
                       <div>
-                        <button className={styles.viewBtn} onClick={(e)=>handleSubmit(e)}>
+                        <button className={styles.addDate} type='button' onClick={() => addFormFields()}>
                           {' '}
-                          Guardar Cambios
+                          + Crear Nueva Fecha
+                        </button>
+                      </div>
+
+                      {/*botones*/}
+                      <div>
+                        <p className={styles.acceptText}>
+                          Al hacer clic en ‘Publicar’ confirma que ha leído y entendido nuestros Términos y Condiciones,
+                          Notas legales de privacidad y Seguridad.
+                        </p>
+
+                        {/*vistaprevia-publicar*/}
+                        <div className={styles.btnContainer}>
+                          {/*vista previa*/}
+                          <div className={styles.btnVista}>
+                            <p onClick={() => setGetPreview(!getPreview)} className={styles.viewBtn}>
+                              Vista Previa
+                            </p>
+                            {getPreview && (
+                              <div className={styles.modal}>
+                                <div className={styles.closeMenuGetPreview}>
+                                  <button className={styles.viewBtn} onClick={() => setGetPreview(false)}>
+                                    Salir de Vista Previa
+                                  </button>
+                                </div>
+                                <div className={styles.modalContent}>
+                                  <div className={styles.column1}>
+                                    <div className={styles.containerInfoModal}>
+                                      {post.pictures.length > 0 ? (
+                                        <Swiper
+                                          slidesPerView={1}
+                                          spaceBetween={40}
+                                          navigation
+                                          onSlideChange={() => console.log('slide change')}
+                                          onSwiper={(swiper) => console.log(swiper)}
+                                          modules={[Pagination, Navigation]}
+                                          className={styles.mySwipperInfo}
+                                        >
+                                          {post.pictures.map((picture) => (
+                                            <SwiperSlide>
+                                              <img
+                                                className={styles.imgInfo}
+                                                src={picture.picture}
+                                                alt='Not Found ):'
+                                              />
+                                            </SwiperSlide>
+                                          ))}
+                                        </Swiper>
+                                      ) : (
+                                        'No'
+                                      )}
+
+                                      <div className={styles.container_icon_heartInfo}>
+                                        <FavoriteIcon className={styles.icon_heartInfo} sx={{ fontSize: 25 }} />
+                                      </div>
+
+                                      <div className={styles.container_icon_shareInfo}>
+                                        <input type='checkbox' id='check' />
+                                        <label htmlFor='check' className={styles.labelInfo}>
+                                          <LaunchOutlinedIcon className={styles.icon_shareInfo} sx={{ fontSize: 25 }} />
+                                        </label>
+                                      </div>
+
+                                      <div className={styles.titleInfo}>
+                                        <p>{post.title}</p>
+
+                                        <div className={styles.container_ratingInfo}>
+                                          <Rating
+                                            className={styles.ratingInfo}
+                                            name='read-only'
+                                            value={5}
+                                            readOnly
+                                            sx={{ fontSize: 25 }}
+                                          />
+                                        </div>
+                                        <p className={styles.numberRatingInfo}>({5})</p>
+                                      </div>
+                                      <div className={styles.container_opinionsInfo}>
+                                        <p className={styles.opinionsInfo}>Ver Opiniones</p>
+                                      </div>
+                                      <p className={styles.title_descriptionInfo}>
+                                        <DescriptionOutlinedIcon fontSize='large' /> Descripcion Del Evento
+                                      </p>
+                                      <p className={styles.descriptionInfo}>{post.longDescription}</p>
+                                      <div className={styles.container_plusInfo}>
+                                        <p>Ver más</p>
+                                      </div>
+                                      <hr className={styles.hr}></hr>
+
+                                      <p className={styles.reportInfo}>
+                                        <WarningOutlinedIcon fontSize='medium' /> Reportar Contenido Inapropiado
+                                      </p>
+                                    </div>
+                                    <div className={styles.containerLoc}>
+                                      <div className={styles.container_locationLoc}>
+                                        <IoLocationOutline className={styles.iconLoc} />
+                                        <p>Ubicacion</p>
+                                      </div>
+                                      {post.online === 'false' ? (
+                                        <div>
+                                          <div>
+                                            <span className={styles.cityLoc}>{post.municipio} / </span>
+                                            <span className={styles.stateLoc}>{post.departamento}</span>
+                                            <p className={styles.textoLoc}>
+                                              La ubicación exacta se te enviará al adquirir tu entrada
+                                            </p>
+                                          </div>
+                                          <div className={styles.imgLoc}>
+                                            <div>
+                                              <img src={url} alt='mapaStaticGoogleMaps' />
+                                            </div>
+                                          </div>
+                                        </div>
+                                      ) : (
+                                        <div>
+                                          <span className={styles.cityLoc}>En Linea</span>
+                                          <p className={styles.textoLoc}>
+                                            El enlace para el evento se te enviara al momento de adquirir tu cupo
+                                          </p>
+                                        </div>
+                                      )}
+                                      <p className={styles.descriptionLoc}>{post.shortDescription}</p>
+                                      <hr className={styles.hr}></hr>
+                                    </div>
+                                  </div>
+                                  <div className={styles.column2}>
+                                    <div className={styles.eventDate}>
+                                      <div>
+                                        <div className={styles.containerTitleDate}>
+                                          <CalendarMonthIcon
+                                            sx={{
+                                              fontSize: '16px',
+                                              color: '#585858',
+                                              '& :hover': { color: '#ef5350' },
+                                            }}
+                                          />
+                                          <p className={styles.titleDate}>Próximas Fechas</p>
+                                        </div>
+                                        <div>
+                                          <table className={styles.tableDate}>
+                                            <thead>
+                                              <tr>
+                                                <th></th>
+                                                <th>Fecha</th>
+                                                <th>Hora</th>
+                                                <th>Precio</th>
+                                                <th>Cupos Dispopnibles</th>
+                                                <th>Cupos a Comprar</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                              {post.dates.map((date) => (
+                                                <tr>
+                                                  <td>
+                                                    <input
+                                                      type='checkbox'
+                                                      class={styles.checkBox}
+                                                      value={date.id}
+                                                      defaultChecked={false}
+                                                    ></input>
+                                                  </td>
+                                                  <td>{date.date}</td>
+                                                  <td>
+                                                    {date.start}-{date.end}
+                                                  </td>
+                                                  <td>{date.price}</td>
+                                                  <td>{date.cupos}</td>
+                                                </tr>
+                                              ))}
+                                            </tbody>
+                                          </table>
+                                        </div>
+                                        <p className={styles.buttonDate}>Comprar</p>
+                                        <p className={styles.parrafoDate}>
+                                          Nuevas fechas pueden ser solicitadas en cuyo caso un mínimo aplicaría de cupos
+                                          a ser adquiridos por el solicitante, será sujeto a aprobación de fecha
+                                        </p>
+                                        <p>Solicitar nuevas fechas</p>
+                                        <hr className={styles.hr}></hr>
+                                      </div>
+                                    </div>
+                                    <div className={styles.container2Special}>
+                                      <p className={styles.c2titleSpecial}>Accesibilidad y requerimientos especiales</p>
+                                      <div className={styles.subcontainer2Special}>
+                                        <p className={styles.iconSpecial}>!</p>
+                                        <p className={styles.c2subtitleSpecial}>{post.specialRequires}</p>
+                                      </div>
+                                    </div>
+                                    <hr className={styles.hr}></hr>
+                                    {/* Orgna */}
+                                    {userData ? (
+                                      <div className={styles.containerOrg}>
+                                        <div className={styles.containerTopOrg}>
+                                          <p className={styles.titleOrg}>Organizador</p>
+                                          <div className={styles.btnOrg}>
+                                            <LocalPostOfficeIcon sx={{ fontSize: '13px', color: '#d53e27' }} />
+                                            <button className={styles.buttonOrg}>Enviar Mensaje</button>
+                                          </div>
+                                        </div>
+                                        <div className={styles.orgContOrg}>
+                                          <img className={styles.orgImgOrg} src={userData.userpicture} alt='N' />
+
+                                          <div className={styles.orgSubContOrg}>
+                                            <p className={styles.orgNameOrg}>{userData.name}</p>
+                                            <p className={styles.orgMembershipOrg}>Miembro desde *falta valor real*</p>
+                                          </div>
+                                        </div>
+                                        <p className={styles.orgDescriptionOrg}>{userData.descriptionOrganizer}</p>
+                                        <button className={styles.button2Org}>
+                                          Otros eventos organizados por {userData.name}
+                                        </button>
+                                      </div>
+                                    ) : (
+                                      'No hay usuario todavia'
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+
+                          {/*publicar*/}
+                          <div>
+                            <button className={styles.viewBtn} onClick={(e) => handleSubmit(e)}>
+                              {' '}
+                              Guardar Cambios
+                            </button>
+                          </div>
+                        </div>
+
+                        <p>Debes llenar todos los campos para poder continuar.</p>
+
+                        {/*cancelar*/}
+                        <button className={styles.cancelBtn} onClick={(e) => handleDelete(e)}>
+                          Cancelar
                         </button>
                       </div>
                     </div>
-
-                    <p>Debes llenar todos los campos para poder continuar.</p>
-
-                    {/*cancelar*/}
-                    <button className={styles.cancelBtn} onClick={(e) => handleDelete(e)}>
-                      Cancelar
-                    </button>
                   </div>
-                </div>
-              </div>
-              </SwiperSlide>
-            
-           </Swiper>
-          </form>
-         </div>
+                </SwiperSlide>
+              </Swiper>
+            </form>
+          </div>
         </div>
       </div>
     </div>

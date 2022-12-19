@@ -166,6 +166,10 @@
   color: white;
 }
 
+.swiperEditEventForm {
+  width: 40rem !important;
+}
+
 /* MEDIA QUERIES */
 
 @media screen and (max-width: 1490px) {
