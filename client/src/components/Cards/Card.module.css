@@ -1,4 +1,4 @@
-/* .card {
+.card {
   width: 30rem;
   background-color: rgba(248, 248, 248, 255);
   overflow: hidden;
@@ -483,4 +483,4 @@
   .cardDetails {
     display: none;
   }
-} */
+}
