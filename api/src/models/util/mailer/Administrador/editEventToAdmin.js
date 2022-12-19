@@ -1,18 +1,24 @@
+// DESTINO: ADMINISTRADOR
+// CASO: 
+// 1. CUANDO UN ORGANIZADOR SACA DE PUBLICO UN EVENTO 
+// 2. CUANDO UNA FECHA DE JA DE SER PUBLICA Y ESTA ERA LA UNICA FECHA DEL EVENTO
+//MOTIVO: AVISA QUE UN EVENTO HA SIDO EDITADO
+
+
+
 const { createTransport } = require('nodemailer');
 require('dotenv').config();
 
 const { EMAIL, PASSWORD } = process.env;
 
-const fecha = new Date();
+  const fecha = new Date();
   const hora = fecha.getHours();
   const minutes = fecha.getMinutes();
   const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
 
-const editEventInRevisionAdmin = async (newEvente,user) => {
-
-    console.log('editEventInRevisionAdmin')
+const editEventToAdmin = async (newEvent,event,user) => {
   
-
+ 
   const transporter = createTransport({
     service: 'gmail',
     secure: true,
@@ -25,7 +31,7 @@ const editEventInRevisionAdmin = async (newEvente,user) => {
   let mail_options = {
     from: 'Lo quiero hacer',
     to: process.env.MAIL_CLIENT,
-    subject: `EDITADO ***EN REVISION*** ${user.firstName} ${user.lastName} ${newEvente.idEvent}`,
+    subject: `EVENTO EDITADO - ${user.firstName} ${user.lastName} REF: ${newEvent.idEvent}`,
     html: `<!DOCTYPE html>
     <html lang="en">
       <head>
@@ -124,11 +130,11 @@ const editEventInRevisionAdmin = async (newEvente,user) => {
           <div class="container">
             <div class="franja-top"></div>
             <div class="container-data">
-              <h1>Edicion de Evento en Revision</h1>
+              <h1>Este Evento ha sido editado</h1>
     
             
-              <a class="event-name" href="https://events-jean.vercel.app/detalles-del-evento/${_id}"
-                >Evento: ${title}</a
+              <a class="event-name" href="https://events-jean.vercel.app/detalles-del-evento/${newEvent._id}"
+                >Evento: ${newEvent.title}</a
               >
 
               <p>
@@ -139,7 +145,7 @@ const editEventInRevisionAdmin = async (newEvente,user) => {
               </p>
            
               <p>
-               ${longDescription}
+              Descripcion del evento: : ${newEvent.longDescription}
               </p>
     
               <div class="container-date">
@@ -161,6 +167,8 @@ const editEventInRevisionAdmin = async (newEvente,user) => {
     return { msg: ('FALLO EL ENVIO DE EMAIL', error) };
   }
 };
+
+
 module.exports = {
-    editEventInRevisionAdmin,
+  editEventToAdmin,
 };

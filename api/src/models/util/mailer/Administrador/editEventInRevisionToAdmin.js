@@ -3,16 +3,16 @@ require('dotenv').config();
 
 const { EMAIL, PASSWORD } = process.env;
 
-  const fecha = new Date();
+const fecha = new Date();
   const hora = fecha.getHours();
   const minutes = fecha.getMinutes();
   const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
 
-const editEventAdmin = async (newEvent,event,user) => {
+const editEventInRevisionToAdmin = async (newEvente,user) => {
 
     console.log('editEventInRevisionAdmin')
   
- 
+
   const transporter = createTransport({
     service: 'gmail',
     secure: true,
@@ -25,7 +25,7 @@ const editEventAdmin = async (newEvent,event,user) => {
   let mail_options = {
     from: 'Lo quiero hacer',
     to: process.env.MAIL_CLIENT,
-    subject: `EDITADO - ${user.firstName} ${user.lastName} REF  ${newEvent.idEvent}`,
+    subject: `EDITADO ***EN REVISION*** ${user.firstName} ${user.lastName} REF: ${newEvente.idEvent}`,
     html: `<!DOCTYPE html>
     <html lang="en">
       <head>
@@ -161,8 +161,6 @@ const editEventAdmin = async (newEvent,event,user) => {
     return { msg: ('FALLO EL ENVIO DE EMAIL', error) };
   }
 };
-
-
 module.exports = {
-    editEventAdmin,
+  editEventInRevisionToAdmin,
 };
