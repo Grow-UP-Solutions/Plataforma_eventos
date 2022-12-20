@@ -1,8 +1,8 @@
-// DESTINO: COMPRADORES
+// DESTINO: ADMINISTRADOR
 // CASO: 
-//  CUANDO UN ORGANIZADOR QUITA DE PUBLICOS A UNA FECHA Y ESTA FECHA NO ES UNICA, 
-//   ES DECIR EL EVENTO TIENE MAS FECHAS PUBLICAS
-//MOTIVO: AVISA QUE UNA FECHA HA SIDO CANCELADA
+// 1. CUANDO UN ORGANIZADOR SACA DE PUBLICO UN EVENTO 
+// 2. CUANDO UNA FECHA DEJA DE SER PUBLICA Y ESTA ERA LA UNICA FECHA DEL EVENTO
+//MOTIVO: AVISA QUE UN EVENTO HA SIDO CANCELADO
 
 
 
@@ -16,11 +16,9 @@ const { EMAIL, PASSWORD } = process.env;
   const minutes = fecha.getMinutes();
   const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
 
-const dateDeleteToBuyers = async (event , date) => {
+const eventCancelAdmin = async (event, user) => {
 
-  
-    for (let i = 0 ; i < event.generalBuyers.length ; i ++){
-
+   
  
         const transporter = createTransport({
             service: 'gmail',
@@ -33,8 +31,8 @@ const dateDeleteToBuyers = async (event , date) => {
 
         let mail_options = {
             from: 'Lo quiero hacer',
-            to: event.generalBuyers[i].buyerEmail,
-            subject: `FECHA CANCELADA! - ${event.title}`,
+            to: newEvent.generalBuyers[i].buyerEmail,
+            subject: `EVENTO CANCELADO! - ${user.name} REF: ${event.idEvent} `,
             html: `<!DOCTYPE html>
             <html lang="en">
             <head>
@@ -133,7 +131,7 @@ const dateDeleteToBuyers = async (event , date) => {
                 <div class="container">
                     <div class="franja-top"></div>
                     <div class="container-data">
-                    <h1>Fecha Cancelada</h1>
+                    <h1>Evento Cancelado</h1>
             
                     
                     <a class="event-name" href="https://events-jean.vercel.app/detalles-del-evento/${event._id}"
@@ -141,10 +139,10 @@ const dateDeleteToBuyers = async (event , date) => {
                     >
 
                     <p>
-                    Fecha cancelada :${date.dateFormated}
+                    Fecha del Evento :${event.dates[0].dateFormated}
                     </p>
                     <p>
-                    Hora :${date.start}-${date.end}
+                        Hora del Evento :${event.dates[0].start}-${newEvent.dates[0].end}
                     </p>
                 
                     <p>
@@ -169,11 +167,11 @@ const dateDeleteToBuyers = async (event , date) => {
         } catch (error) {
             return { msg: ('FALLO EL ENVIO DE EMAIL', error) };
         }
-        }
+        
 
 }
 
 
 module.exports = {
-    dateDeleteToBuyers,
+    eventCancelAdmin,
 };

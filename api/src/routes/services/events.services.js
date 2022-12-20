@@ -1,8 +1,5 @@
 const { OneCategoryDb } = require('../../models/util/functionDB/CategoryDb.js');
-const { eventCreateOrganizer } = require('../../models/util/mailer/eventeCreateOrganizer.js');
-const { eventCreateAdministrador } = require('../../models/util/mailer/eventCreateAdministrador.js');
-const { eventUpdateOrganizer } = require('../../models/util/mailer/eventUpdateOrganizer.js')
-const { eventUpdateAdministrador } = require('../../models/util/mailer/eventUpdateAdministrador.js')
+
 const EventFunctionDb = require('../../models/util/functionDB/event/index.event.js');
 const UsersFunctionDb = require('../../models/util/functionDB/users/index.users.js');
 
@@ -51,10 +48,6 @@ async function createEvents(event) {
 
       await organizer.save();
 
-      // events.isPublic ? eventCreateOrganizer(events, organizer) : eventCreateAdministrador(events);
-      eventCreateOrganizer(events, organizer)  
-      eventCreateAdministrador(events,organizer);
-
       return events;
     }
 
@@ -80,8 +73,6 @@ async function eventsUpdate(id, newEvent) {
     }
     const newEvents = await EventFunctionDb.updateEvent(id, newEvent);
 
-    eventUpdateOrganizer(events, organizer)  
-    eventUpdateAdministrador(events,organizer);
 
     const allBuyer = await UsersFunctionDb.allBuyerUsers(id)
     if(allBuyer.length> 0) console.log('hay comprador')

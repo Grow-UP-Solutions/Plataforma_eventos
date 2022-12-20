@@ -8,7 +8,7 @@ module.exports = async function findAndUpdateMessage(idUser, conversationId) {
          "message"
       );
 
-      console.log(userAndMessage.message);
+     
       const messageConversation = userAndMessage.message.filter((e) => {
          return e.conversationId == conversationId;
       });

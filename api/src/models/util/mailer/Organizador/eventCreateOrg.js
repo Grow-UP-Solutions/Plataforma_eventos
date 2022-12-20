@@ -3,15 +3,8 @@ require('dotenv').config();
 
 const { EMAIL, PASSWORD } = process.env;
 
-const fecha = new Date();
-  const hora = fecha.getHours();
-  const minutes = fecha.getMinutes();
-  const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
-
-const editEventInRevisionToAdmin = async (newEvente,user) => {
-
-    console.log('editEventInRevisionAdmin')
-  
+const eventCreateOrg = async (event,user) => {
+ 
 
   const transporter = createTransport({
     service: 'gmail',
@@ -24,8 +17,8 @@ const editEventInRevisionToAdmin = async (newEvente,user) => {
 
   let mail_options = {
     from: 'Lo quiero hacer',
-    to: process.env.MAIL_CLIENT,
-    subject: `EDITADO ***EN REVISION*** ${user.firstName} ${user.lastName} REF: ${newEvente.idEvent}`,
+    to: user.email,
+    subject: `EEVENTO PUBLICADO : ${event.title}`,
     html: `<!DOCTYPE html>
     <html lang="en">
       <head>
@@ -101,21 +94,17 @@ const editEventInRevisionToAdmin = async (newEvente,user) => {
     
           .container-data {
             padding: 2rem;
-    
             color: #585858;
             font-size: 1.4rem;
           }
     
           .container-data p {
-            font-size: 1.4rem;
+            font-size: 1.8rem;
           }
           .event-name {
             color: #1b3c6a;
             font-weight: bold;
-            font-size: 2.5rem;
-          }
-    
-          .container-date {
+            font-size: 3.2rem;
           }
         </style>
       </head>
@@ -124,34 +113,24 @@ const editEventInRevisionToAdmin = async (newEvente,user) => {
           <div class="container">
             <div class="franja-top"></div>
             <div class="container-data">
-              <h1>Edicion de Evento en Revision</h1>
+              <h1>Evento creado</h1>
     
-            
-              <a class="event-name" href="https://events-jean.vercel.app/detalles-del-evento/${_id}"
-                >Evento: ${title}</a
+              <p>
+                Hola, usted ha publicado el siguiente evento, de click en el título para poder
+                visualizar su publicación.
+              </p>
+    
+              <a
+                class="event-name"
+                href="https://events-jean.vercel.app/detalles-del-evento/${event._id}"
+                >${event.title}</a
               >
-
-              <p>
-               Fecha de edicion:${dateActual}
-              </p>
-              <p>
-                Fecha de edicion:${hora}-${minutes}
-              </p>
-           
-              <p>
-               ${longDescription}
-              </p>
-    
-              <div class="container-date">
-                
-              </div>
             </div>
-    
             <div class="franja-bottom"></div>
           </div>
         </div>
       </body>
-    </html>
+    </html>    
   `,
   };
   try {
@@ -162,5 +141,5 @@ const editEventInRevisionToAdmin = async (newEvente,user) => {
   }
 };
 module.exports = {
-  editEventInRevisionToAdmin,
+  eventCreateOrg,
 };

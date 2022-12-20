@@ -161,6 +161,7 @@ const EventCreateForm = () => {
     direccion: '',
     barrio: '',
     specialRequires: '',
+    isEdit:false,
     dates: [
       {
         idDate: '',
