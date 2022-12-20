@@ -1,3 +1,8 @@
+
+
+// CASO: ADMIN PASA UNA FECHA A REVISION 
+// - MAILS PARA EL ORGANIZADOR AVISANDO QUE UNA FECHA ESTA EN REVISION
+
 const { createTransport } = require('nodemailer');
 require('dotenv').config();
 
@@ -8,10 +13,8 @@ const fecha = new Date();
   const minutes = fecha.getMinutes();
   const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
 
-const eventUpdateAdministrador = async (events, organizer) => {
-  console.log('eventmail',events)
-  console.log('organizer',organizer)
-  const { title, _id, longDescription, idEvent, } = events;
+const dateInRevisionOrg = async (event ,user, date) => {
+  
   const transporter = createTransport({
     service: 'gmail',
     secure: true,
@@ -23,8 +26,8 @@ const eventUpdateAdministrador = async (events, organizer) => {
 
   let mail_options = {
     from: 'Lo quiero hacer',
-    to: process.env.MAIL_CLIENT,
-    subject: `NUEVO - Publicado por ${organizer.firstName} ${organizer.lastName} ${idEvent}`,
+    to: user.email,
+    subject: `FECHA EN REVISION ${event.title}`,
     html: `<!DOCTYPE html>
     <html lang="en">
       <head>
@@ -123,21 +126,29 @@ const eventUpdateAdministrador = async (events, organizer) => {
           <div class="container">
             <div class="franja-top"></div>
             <div class="container-data">
-              <h1>Evento creado</h1>
+              <h1>Una Fecha está en Revision</h1>
     
-              <p>Hola, han creado un evento.</p>
-    
-              <a class="event-name" href="https://events-jean.vercel.app/detalles-del-evento/${_id}"
-                >${title}</a
+            
+              <a class="event-name" href="https://events-jean.vercel.app/detalles-del-evento/${event._id}"
+                >Evento: ${event.title}</a
               >
+
               <p>
-              Fecha de Creacion: ${dateActual}
-             </p>
-              <p>
-              Hora de Creacion: ${hora}:${minutes}
+               Fecha en revision:  ${date.dateFormated}
               </p>
               <p>
-               ${longDescription}
+                Hora en revision:  ${date.start}-${date.end}
+              </p>
+
+              <p>
+               Fecha de cambio de estado:  ${dateActual}
+              </p>
+              <p>
+                Hora de cambio de estado:  ${hora}-${minutes}
+              </p>
+           
+              <p>
+               Descripcion: ${event.longDescription}
               </p>
     
               <div class="container-date">
@@ -160,5 +171,5 @@ const eventUpdateAdministrador = async (events, organizer) => {
   }
 };
 module.exports = {
-    eventUpdateAdministrador,
+    dateInRevisionOrg,
 };

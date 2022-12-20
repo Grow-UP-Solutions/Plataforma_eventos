@@ -2,18 +2,32 @@ const { Router } = require('express');
 const EventFunctionDb = require('../../models/util/functionDB/event/index.event.js');
 const UsersFunctionDb = require('../../models/util/functionDB/users/index.users.js');
 const { sendEmailToReportEvent } = require('../../models/util/mailer/mailToReportEvent.js');
-const { eventInRevisionBuys } = require('../../models/util/mailer/Compradores/eventInRevisionBuys.js')
-const { dateEventInRevisionBuys } = require('../../models/util/mailer/Compradores/dateEventInRevisionBuys.js')
-const { dateEventInRevisionBuysAdmin } = require('../../models/util/mailer/Administrador/dateEventInRevisionBuysAdmin.js')
-const { eventInRevisionBuysAdmin } = require('../../models/util/mailer/Administrador/eventInRevisionBuysAdmin.js')
-const { editEventInRevisionToAdmin } = require('../../models/util/mailer/Administrador/editEventInRevisionToAdmin.js')
-const { editEventToAdmin } = require('../../models/util/mailer/Administrador/editEventToAdmin.js')
+
+
+
+//administrador
+const { eventEdited } = require('../../models/util/mailer/Administrador/eventEdited.js')
+const { eventInRevisionEditedAdmin } = require('../../models/util/mailer/Administrador/eventInRevisionEditedAdmin.js')
+
+const { eventInRevisionAdmin } = require('../../models/util/mailer/Administrador/eventInRevisionAdmin.js')
+const { dateInRevisionAdmin} = require('../../models/util/mailer/Administrador/dateInRevisionAdmin.js')
+
+const { eventCancelAdmin } = require('../../models/util/mailer/Administrador/eventCancelAdmin.js')
+const { dateCancelAdmin } = require('../../models/util/mailer/Administrador/dateCancelAdmin.js')
+
+const { eventCreateAdmin } = require('../../models/util/mailer/Administrador/eventCreateAdmin.js')
+
+
+//organizador
+const { dateInRevisionOrg} = require('../../models/util/mailer/Organizador/dateInRevisionOrg.js')
+const { eventInRevisionOrg } = require('../../models/util/mailer/Organizador/eventInRevisionOrg.js')
+const { eventCreateOrg } = require('../../models/util/mailer/Organizador/eventCreateOrg.js')
+
+
+//comprador
+const { dateCancelBuyers } = require('../../models/util/mailer/Compradores/dateCancelBuyers.js')
 const { eventCancelBuyers } = require('../../models/util/mailer/Compradores/eventCancelBuyers.js')
-const { dateCanceltoBuyers } = require('../../models/util/mailer/Compradores/dateCanceltoBuyers.js')
-const { eventCancelToAdminbyOrg } = require('../../models/util/mailer/Administrador/eventCancelToAdminbyOrg.js')
-const { dateCanceltoAdminbyOrg } = require('../../models/util/mailer/Administrador/dateCanceltoAdminbyOrg.js')
-const { dateDeleteToBuyers } = require('../../models/util/mailer/Compradores/dateDeleteToBuyers.js')
-const { dateDeleteToAdmin } = require('../../models/util/mailer/Administrador/dateDeleteToAdmin.js')
+
 
 
 
@@ -69,6 +83,7 @@ router.post('/create', async (req, res) => {
   try {
     
     const event = req.body;
+    const user = await UsersFunctionDb.oneUser(event.idOrganizer);
     
     contadorEvent++;
     event.idEvent = 'E' + contadorEvent;
@@ -76,6 +91,9 @@ router.post('/create', async (req, res) => {
     for (i = 0; i < event.dates.length; i++) {
       event.dates[i].idDate = event.idEvent + '-' + (i + 1);
     }
+
+    eventCreateOrg(event , user)
+    eventCreateAdmin(event,user)
 
     const eventCreat = await createEvents(event);
     return res.status(200).json(eventCreat);
@@ -143,41 +161,50 @@ router.put('/:id', async (req, res) => {
     const { id } = req.params;
 
     const newEvent = req.body;
-    const user = await UsersFunctionDb.oneUser(newEvent.organizer);
+    const user = await UsersFunctionDb.oneUser(newEvent.idOrganizer);
     const event = await getOneEvent(id);
 
-    //mails para avisar evento/fecha cancelado(sacado de publico o eliminado)
+    //mails para avisar evento/fecha cancelado(sacado de publico)
 
     if(newEvent.dates.length === 1){
      
-      newEvent.dates[0].sendEmail === true ? eventCancelBuyers(event, user) :  ''
-      newEvent.dates[0].sendEmail === true ? eventCancelToAdminbyOrg(event, user) :  ''
+      newEvent.dates[0].sendEmail === true ? eventCancelBuyers(event) :  ''
+      newEvent.dates[0].sendEmail === true ? eventCancelAdmin(event, user) :  ''
+
     }else{
       for(let i = 0 ; i < newEvent.dates.length ; i ++){
-        newEvent.dates[i].sendEmail === true ? dateCanceltoBuyers(event, user , newEvent.dates[i]) : ''
-        newEvent.dates[i].sendEmail === true ? dateCanceltoAdminbyOrg(event, user , newEvent.dates[i]) :  ''
+      
+        newEvent.dates[i].sendEmail === true ? dateCancelBuyers(event , newEvent.dates[i]) : ''
+        newEvent.dates[i].sendEmail === true ? dateCancelAdmin(event, user , newEvent.dates[i]) :  ''
       }
     }
 
-
-    
+    //mails para avisar evento/fecha cancelado(eliminado)
 
     if(newEvent.dateDelete.length){
       for(let i = 0 ; i < newEvent.dateDelete.length; i++ ){
-        dateDeleteToBuyers(event , newEvent.dateDelete[i] )
-        dateDeleteToAdmin(event , user , newEvent.dateDelete[i] )
+        dateCancelBuyers(event , newEvent.dateDelete[i]) 
+        dateCancelAdmin(event, user , newEvent.dateDelete[i]) 
       }
     }
 
     //mails para avisar evento editado
-    if(newEvent.inRevision === false && newEvent.sendEmail === false ){
-      editEventToAdmin(newEvent , user , event)
-    }else if(newEvent.inRevision === true && newEvent.sendEmail === false){
-      editEventInRevisionToAdmin(newEvent , user , event)
+    if(newEvent.inRevision === false && newEvent.isEdit === true ){
+      eventEdited(newEvent , user )
+    }else if(newEvent.inRevision === true && newEvent.isEdit === true){
+      eventInRevisionEditedAdmin(newEvent , user , event)
     }
 
    // newEvent.inRevision === true ? editEventInRevisionAdmin(newEvente,user) : editEventAdmin(newEvent,event,user)
     
+
+    // newEvent.dateDelete = []
+    // newEvent.sendEmail = false
+    // newEvent.isEdit = false
+    // for(let i = 0 ; i < newEvent.dates.length ; i++){
+    //   newEvent.dates[i].sendEmail = false
+    // }
+
     const newEvente = await eventsUpdate(id, newEvent);
 
     return res.json(newEvente);
@@ -223,16 +250,19 @@ router.put('/reportEvent/sendEmail', async (req, res) => {
 
 router.put('/inRevision/acceptOrReject', async (req, res) => {
   const { idEvent, idDate } = req.body;
+  
 
   try {
     const event = await EventFunctionDb.oneEvent(idEvent);
+    console.log('event.organizer',event.organizer)
     const user = await UsersFunctionDb.oneUser(event.organizer);
 
     if (idDate) {
      
       if (event.dates.length === 1) {
-        event.inRevision === false && event.sells > 0 ? eventInRevisionBuys(event , user) : ''
-        event.inRevision === false  ? eventInRevisionBuysAdmin(event , user) : ''
+        event.inRevision === false && event.sells > 0 ? eventCancelBuyers(event , user) : ''
+        event.inRevision === false  ? eventInRevisionAdmin(event , user) : ''
+        event.inRevision === false  ? eventInRevisionOrg(event , user) : ''
         event.inRevision = !event.inRevision;
         event.dates[0].inRevision = !event.dates[0].inRevision;
       } else {
@@ -241,8 +271,9 @@ router.put('/inRevision/acceptOrReject', async (req, res) => {
         auxDates = auxDates.map((date) => {
           if (idDate === date._id.toString()) {
            
-            date.inRevision === false && date.sells > 0 ? dateEventInRevisionBuys(event , user , date) : ''
-            date.inRevision === false ? dateEventInRevisionBuysAdmin(event , user , date) : ''
+            date.inRevision === false && date.sells > 0 ? dateCancelBuyers(event , date) : ''
+            date.inRevision === false ? dateInRevisionAdmin(event , user , date) : ''
+            date.inRevision === false ? dateInRevisionOrg(event , user , date) : ''
             date.inRevision = !date.inRevision;
           }
           return date;
@@ -261,9 +292,11 @@ router.put('/inRevision/acceptOrReject', async (req, res) => {
         event.dates.push(...auxDates);
       }
     } else {
+      
 
-      event.inRevision === false && event.sells > 0 ? eventInRevisionBuys(event , user)   : ''
-      event.inRevision === false ? eventInRevisionBuysAdmin(event , user)   : ''
+      event.inRevision === false && event.sells > 0 ? eventCancelBuyers(event)   : ''
+      event.inRevision === false ? eventInRevisionAdmin(event , user)   : ''
+      event.inRevision === false ? eventInRevisionOrg(event, user)   : ''
       event.inRevision = !event.inRevision;
       event.inRevision === false ? event.isPublic === false : event.isPublic === event.isPublic;
 

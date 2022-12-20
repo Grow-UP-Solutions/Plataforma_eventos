@@ -163,6 +163,12 @@ const EventSchema = new Schema(
       type: Array,
       default: [],
     },
+
+    isEdit: {
+      type: Boolean,
+      default: false,
+    },
+    
     
 
     opinions: [

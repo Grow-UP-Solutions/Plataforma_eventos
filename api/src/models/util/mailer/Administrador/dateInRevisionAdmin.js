@@ -1,10 +1,19 @@
+
+// CASO: ADMIN PASA UNA FECHA A REVISION 
+// - MAILS PARA EL ADMIN AVISANDO QUE UNA FECHA ESTA EN REVISION
+
 const { createTransport } = require('nodemailer');
 require('dotenv').config();
 
 const { EMAIL, PASSWORD } = process.env;
 
-const eventCreateOrganizer = async (events, organizer) => {
-  const { title, _id } = events;
+const fecha = new Date();
+  const hora = fecha.getHours();
+  const minutes = fecha.getMinutes();
+  const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
+
+const dateInRevisionAdmin = async (event ,user,date) => {
+  
 
   const transporter = createTransport({
     service: 'gmail',
@@ -17,8 +26,8 @@ const eventCreateOrganizer = async (events, organizer) => {
 
   let mail_options = {
     from: 'Lo quiero hacer',
-    to: organizer.email,
-    subject: `${organizer.firstName} ${organizer.lastName} tu evento ha sido publicado`,
+    to: process.env.MAIL_CLIENT,
+    subject: `***FECHA EN REVISION*** ${user.firstName} ${user.lastName} REF: ${date.idDate}`,
     html: `<!DOCTYPE html>
     <html lang="en">
       <head>
@@ -94,17 +103,21 @@ const eventCreateOrganizer = async (events, organizer) => {
     
           .container-data {
             padding: 2rem;
+    
             color: #585858;
             font-size: 1.4rem;
           }
     
           .container-data p {
-            font-size: 1.8rem;
+            font-size: 1.4rem;
           }
           .event-name {
             color: #1b3c6a;
             font-weight: bold;
-            font-size: 3.2rem;
+            font-size: 2.5rem;
+          }
+    
+          .container-date {
           }
         </style>
       </head>
@@ -113,24 +126,41 @@ const eventCreateOrganizer = async (events, organizer) => {
           <div class="container">
             <div class="franja-top"></div>
             <div class="container-data">
-              <h1>Evento creado</h1>
+              <h1>Fecha en estado de Revision</h1>
     
+            
+              <a class="event-name" href="https://events-jean.vercel.app/detalles-del-evento/${event._id}"
+                >Evento: ${event.title}</a
+              >
+
+
               <p>
-                Hola, usted ha publicado el siguiente evento, de click en el título para poder
-                visualizar su publicación.
+               Fecha y hora en Revision:
+               ${date.dateFormated} - ${date.star}-${date.end}
+              </p>
+
+
+              <p>
+               Fecha de cambio de estado:${dateActual}
+              </p>
+              <p>
+                Hora de cambio de estado:${hora}-${minutes}
+              </p>
+           
+              <p>
+               Descripcion: ${event.longDescription}
               </p>
     
-              <a
-                class="event-name"
-                href="https://events-jean.vercel.app/detalles-del-evento/${_id}"
-                >${title}</a
-              >
+              <div class="container-date">
+                
+              </div>
             </div>
+    
             <div class="franja-bottom"></div>
           </div>
         </div>
       </body>
-    </html>    
+    </html>
   `,
   };
   try {
@@ -141,5 +171,5 @@ const eventCreateOrganizer = async (events, organizer) => {
   }
 };
 module.exports = {
-  eventCreateOrganizer,
+  dateInRevisionAdmin,
 };

@@ -1,24 +1,20 @@
-// DESTINO: ADMINISTRADOR
-// CASO: 
-// 1. CUANDO UN ORGANIZADOR SACA DE PUBLICO UN EVENTO 
-// 2. CUANDO UNA FECHA DE JA DE SER PUBLICA Y ESTA ERA LA UNICA FECHA DEL EVENTO
-//MOTIVO: AVISA QUE UN EVENTO HA SIDO EDITADO
 
-
+// CASO: ADMIN PASA UN EVENTO A REVISION 
+// - MAILS PARA EL ORGANIZADOR AVISANDO QUE SE CANCELO EL EVENTO
 
 const { createTransport } = require('nodemailer');
 require('dotenv').config();
 
 const { EMAIL, PASSWORD } = process.env;
 
-  const fecha = new Date();
+const fecha = new Date();
   const hora = fecha.getHours();
   const minutes = fecha.getMinutes();
   const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
 
-const editEventToAdmin = async (newEvent,event,user) => {
+const eventInRevisionOrg = async (event,user) => {
+
   
- 
   const transporter = createTransport({
     service: 'gmail',
     secure: true,
@@ -30,8 +26,8 @@ const editEventToAdmin = async (newEvent,event,user) => {
 
   let mail_options = {
     from: 'Lo quiero hacer',
-    to: process.env.MAIL_CLIENT,
-    subject: `EVENTO EDITADO - ${user.firstName} ${user.lastName} REF: ${newEvent.idEvent}`,
+    to: user.email,
+    subject: `EVENTO EN REVISION ${event.title}`,
     html: `<!DOCTYPE html>
     <html lang="en">
       <head>
@@ -130,22 +126,22 @@ const editEventToAdmin = async (newEvent,event,user) => {
           <div class="container">
             <div class="franja-top"></div>
             <div class="container-data">
-              <h1>Este Evento ha sido editado</h1>
+              <h1>Su Evento esta en Revision</h1>
     
             
-              <a class="event-name" href="https://events-jean.vercel.app/detalles-del-evento/${newEvent._id}"
-                >Evento: ${newEvent.title}</a
+              <a class="event-name" href="https://events-jean.vercel.app/detalles-del-evento/${event._id}"
+                >Evento: ${event.title}</a
               >
 
               <p>
-               Fecha de edicion:${dateActual}
+               Fecha de cambio de estado:  ${dateActual}
               </p>
               <p>
-                Fecha de edicion:${hora}-${minutes}
+                Hora de cambio de estado:  ${hora}:${minutes}
               </p>
            
               <p>
-              Descripcion del evento: : ${newEvent.longDescription}
+               ${event.longDescription}
               </p>
     
               <div class="container-date">
@@ -167,8 +163,6 @@ const editEventToAdmin = async (newEvent,event,user) => {
     return { msg: ('FALLO EL ENVIO DE EMAIL', error) };
   }
 };
-
-
 module.exports = {
-  editEventToAdmin,
+    eventInRevisionOrg,
 };

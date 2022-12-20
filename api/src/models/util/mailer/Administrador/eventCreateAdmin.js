@@ -1,7 +1,3 @@
-
-// CASO: ADMIN PASA UNA FECHA DEL EVENTO A REVISION Y ESTE TIENE COMPRAS  
-// - MAILS PARA LOS COMPRADORES AVISANDO QUE SE CANCELO LA FECHA
-
 const { createTransport } = require('nodemailer');
 require('dotenv').config();
 
@@ -12,10 +8,8 @@ const fecha = new Date();
   const minutes = fecha.getMinutes();
   const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
 
-const dateEventInRevisionBuys = async (event ,user , date) => {
-  console.log('event en revision mail',event)
-  
-  const { title, _id, longDescription, idEvent } = event;
+const eventCreateAdmin = async (event, user) => {
+
   const transporter = createTransport({
     service: 'gmail',
     secure: true,
@@ -28,7 +22,7 @@ const dateEventInRevisionBuys = async (event ,user , date) => {
   let mail_options = {
     from: 'Lo quiero hacer',
     to: process.env.MAIL_CLIENT,
-    subject: `Fecha Cancelada Evento: ${event.title}`,
+    subject: `NUEVO - Publicado por ${user.firstName} ${user.lastName} REF: ${event.idEvent}`,
     html: `<!DOCTYPE html>
     <html lang="en">
       <head>
@@ -127,28 +121,22 @@ const dateEventInRevisionBuys = async (event ,user , date) => {
           <div class="container">
             <div class="franja-top"></div>
             <div class="container-data">
-              <h1>Fecha Cancelada</h1>
+              <h1>Evento creado</h1>
     
-            
-              <a class="event-name" href="https://events-jean.vercel.app/detalles-del-evento/${_id}"
-                >Evento: ${title}</a
+              <p>Hola, han creado un evento.</p>
+    
+              <a class="event-name" href="https://events-jean.vercel.app/detalles-del-evento/${event._id}"
+                >${event.title}</a
               >
               <p>
-               Fecha cancelada:${date.dateFormated}
+              Fecha de Creacion: ${dateActual}
+             </p>
+              <p>
+              Hora de Creacion: ${hora}:${minutes}
               </p>
               <p>
-                Hora cancelada:${date.start}-${date.end}
+               ${event.longDescription}
               </p>
-
-
-              <p>
-               Fecha de cancelacion:${dateActual}
-              </p>
-              <p>
-                Hora de cancelacion:${hora}-${minutes}
-              </p>
-           
-        
     
               <div class="container-date">
                 
@@ -170,5 +158,5 @@ const dateEventInRevisionBuys = async (event ,user , date) => {
   }
 };
 module.exports = {
-    dateEventInRevisionBuys,
+    eventCreateAdmin,
 };

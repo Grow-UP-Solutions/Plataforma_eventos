@@ -18,7 +18,7 @@ const { EMAIL, PASSWORD } = process.env;
   const minutes = fecha.getMinutes();
   const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
 
-const dateCanceltoAdminbyOrg = async (event, user , date) => {
+const dateCancelAdmin = async (event, user , date) => {
 
   
         const transporter = createTransport({
@@ -33,7 +33,7 @@ const dateCanceltoAdminbyOrg = async (event, user , date) => {
         let mail_options = {
             from: 'Lo quiero hacer',
             to: process.env.MAIL_CLIENT,
-            subject: `FECHA CANCELADA! - ${user.name} REF:${date.idDate}`,
+            subject: `FECHA CANCELADA! - ${user.firstName} ${user.lastName} REF:${date.idDate}`,
             html: `<!DOCTYPE html>
             <html lang="en">
             <head>
@@ -140,21 +140,18 @@ const dateCanceltoAdminbyOrg = async (event, user , date) => {
                     >
 
                     <p>
-                    Fecha y hora cancelada: 
-                    </p>
-                    <p>
-                    ${date.dateFormated}  ${date.start}-${date.end}
+                    Fecha y hora del Evento cancelado:  ${date.dateFormated} - ${date.start}-${date.end}
                     </p>
 
                     <p>
                     Fecha de cancelacion :${dateActual}
                     </p>
                     <p>
-                    Hora de cancelacion :${hora}-${minutes}
+                    Hora de cancelacion :${hora}:${minutes}
                     </p>
                 
                     <p>
-                    Descripcion del evento: ${event.longDescription}
+                    Descripcion del Evento: ${event.longDescription}
                     </p>
             
                     <div class="container-date">
@@ -181,7 +178,7 @@ const dateCanceltoAdminbyOrg = async (event, user , date) => {
 
 
 module.exports = {
-    dateCanceltoAdminbyOrg,
+    dateCancelAdmin,
 };
 
 
