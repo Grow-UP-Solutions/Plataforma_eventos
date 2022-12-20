@@ -20,7 +20,6 @@ router.get('/', async (req, res) => {
 router.get('/category', async (req, res) => {
   const { name } = req.query;
   try {
-    console.log(name);
     const allCategory = await getCategory(name);
 
     return res.json(allCategory);

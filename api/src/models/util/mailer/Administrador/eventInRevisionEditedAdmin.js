@@ -1,7 +1,3 @@
-
-// CASO: ADMIN PASA UN EVENTO A REVISION 
-// - MAILS PARA EL ADMIN AVISANDO QUE SE CANCELO EL EVENTO
-
 const { createTransport } = require('nodemailer');
 require('dotenv').config();
 
@@ -12,10 +8,11 @@ const fecha = new Date();
   const minutes = fecha.getMinutes();
   const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
 
-const eventInRevisionBuysAdmin = async (event ,user) => {
-  console.log('event en revision mail',event)
+const eventInRevisionEditedAdmin = async (newEvente,user) => {
+
+   
   
-  const { title, _id, longDescription, idEvent } = event;
+
   const transporter = createTransport({
     service: 'gmail',
     secure: true,
@@ -28,7 +25,7 @@ const eventInRevisionBuysAdmin = async (event ,user) => {
   let mail_options = {
     from: 'Lo quiero hacer',
     to: process.env.MAIL_CLIENT,
-    subject: `CANCELACIÓN ***EN REVISION*** ${user.firstName} ${user.lastName} ${idEvent}`,
+    subject: `EDITADO ***EN REVISION*** ${user.firstName} ${user.lastName} REF: ${newEvente.idEvent}`,
     html: `<!DOCTYPE html>
     <html lang="en">
       <head>
@@ -127,7 +124,7 @@ const eventInRevisionBuysAdmin = async (event ,user) => {
           <div class="container">
             <div class="franja-top"></div>
             <div class="container-data">
-              <h1>Evento en estado de revision</h1>
+              <h1>Edicion de Evento en Revision</h1>
     
             
               <a class="event-name" href="https://events-jean.vercel.app/detalles-del-evento/${_id}"
@@ -135,10 +132,10 @@ const eventInRevisionBuysAdmin = async (event ,user) => {
               >
 
               <p>
-               Fecha de cambio de estado:${dateActual}
+               Fecha de edicion:${dateActual}
               </p>
               <p>
-                Hora de cambio de estado:${hora}-${minutes}
+                Fecha de edicion:${hora}-${minutes}
               </p>
            
               <p>
@@ -165,5 +162,5 @@ const eventInRevisionBuysAdmin = async (event ,user) => {
   }
 };
 module.exports = {
-    eventInRevisionBuysAdmin,
+  eventInRevisionEditedAdmin,
 };

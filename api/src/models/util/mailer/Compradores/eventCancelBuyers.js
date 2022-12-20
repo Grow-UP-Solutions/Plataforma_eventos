@@ -2,6 +2,7 @@
 // CASO: 
 // 1. CUANDO UN ORGANIZADOR SACA DE PUBLICO UN EVENTO 
 // 2. CUANDO UNA FECHA DEJA DE SER PUBLICA Y ESTA ERA LA UNICA FECHA DEL EVENTO
+// 3. UN ADMIN PASA EL EVENTO O FECHA UNICA A REVISION
 //MOTIVO: AVISA QUE UN EVENTO HA SIDO CANCELADO
 
 
@@ -16,14 +17,15 @@ const { EMAIL, PASSWORD } = process.env;
   const minutes = fecha.getMinutes();
   const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
 
-const eventCancelBuyers = async (newEvent,event,user) => {
+    const eventCancelBuyers = async (event) => {
 
     console.log('eventCancelBuyers')
-  
-    for (let i = 0 ; i < newEvent.generalBuyers.length ; i ++){
+    console.log('compradores:',event.generalBuyers)
+    
+    for (let i=0 ; i < event.generalBuyers.length ; i++){
 
-        console.log('email',newEvent.generalBuyers[i].buyerEmail)
- 
+        console.log('mail de compradores:',event.generalBuyers[i].buyerEmail)
+
         const transporter = createTransport({
             service: 'gmail',
             secure: true,
@@ -35,8 +37,8 @@ const eventCancelBuyers = async (newEvent,event,user) => {
 
         let mail_options = {
             from: 'Lo quiero hacer',
-            to: newEvent.generalBuyers[i].buyerEmail,
-            subject: `EVENTO CANCELADO! - ${newEvent.title}`,
+            to: event.generalBuyers[i].buyerEmail,
+            subject: `EVENTO CANCELADO! - ${event.title}`,
             html: `<!DOCTYPE html>
             <html lang="en">
             <head>
@@ -138,19 +140,19 @@ const eventCancelBuyers = async (newEvent,event,user) => {
                     <h1>Evento Cancelado</h1>
             
                     
-                    <a class="event-name" href="https://events-jean.vercel.app/detalles-del-evento/${newEvent._id}"
-                        >Evento: ${newEvent.title}</a
+                    <a class="event-name" href="https://events-jean.vercel.app/detalles-del-evento/${event._id}"
+                        >Evento: ${event.title}</a
                     >
 
                     <p>
-                    Fecha del Evento :${newEvent.dates[0].dateFormated}
+                    Fecha del Evento:  ${event.dates[0].dateFormated}
                     </p>
                     <p>
-                        Hora del Evento :${newEvent.dates[0].start}-${newEvent.dates[0].end}
+                    Hora del Evento:  ${event.dates[0].start}-${event.dates[0].end}
                     </p>
                 
                     <p>
-                    Descripcion del evento: ${newEvent.longDescription}
+                    Descripcion del evento: ${event.longDescription}
                     </p>
             
                     <div class="container-date">
@@ -167,11 +169,12 @@ const eventCancelBuyers = async (newEvent,event,user) => {
         };
         try {
             const response = await transporter.sendMail(mail_options);
-            return { msg: ('SE ENVIO CON EXITO', response.response) };
+            console.log('SE ENVIO CON EXITO', response.response) 
         } catch (error) {
-            return { msg: ('FALLO EL ENVIO DE EMAIL', error) };
+            console.log('FALLO EL ENVIO DE EMAIL', error) 
+            // return { msg: ('FALLO EL ENVIO DE EMAIL', error) };
         }
-        }
+    }
 
 }
 

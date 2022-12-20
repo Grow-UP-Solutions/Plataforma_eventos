@@ -5,7 +5,6 @@ module.exports = async function generateEventComment(id, opinions) {
   try {
     const { idUser , opinion, rating, picture, dateEvent , eventTitle,time  } = opinions;
 
-    console.log('opinion',opinion)
 
     const user = await UsersFunctionDb.oneUser(idUser);
     const event = await Events.findOne({ _id: id });

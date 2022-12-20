@@ -120,7 +120,7 @@ const EventEdit = () => {
     isPublic: '',
     isOld: '',
     inRevision: '',
-    sendEmail: '',
+    sendEmail: false,
     opinions: '',
     notificaciones: '',
     rating: '',
@@ -130,6 +130,7 @@ const EventEdit = () => {
     generalBuyers: [],
     sells: '',
     idEvent: '',
+    isEdit: false,
   });
 
   useEffect(() => {
@@ -154,11 +155,11 @@ const EventEdit = () => {
         dates: eventDetails.dates,
         isPublic: eventDetails.isPublic,
         inRevision: eventDetails.inRevision,
-        sendEmail: eventDetails.sendEmail,
-        dateDelete: eventDetails.dateDelete,
+        sendEmail: false,
+        dateDelete: [],
         opinions: eventDetails.opinions,
         notificaciones: eventDetails.notificaciones,
-        rating: eventDetails.notificaciones,
+        rating: eventDetails.rating,
         payedEarnings: eventDetails.payedEarnings,
         pendingEarnings: eventDetails.pendingEarnings,
         overallEarnings: eventDetails.overallEarnings,
@@ -166,6 +167,7 @@ const EventEdit = () => {
         sells: eventDetails.sells,
         isOld: eventDetails.isOld,
         idEvent: eventDetails.idEvent,
+        isEdit: false,
       });
     }
   }, [eventDetails]);
@@ -569,6 +571,7 @@ const EventEdit = () => {
     e.preventDefault();
     setPost({
       ...post,
+      isEdit: true,
       [e.target.name]: e.target.value,
     });
   }
@@ -576,10 +579,8 @@ const EventEdit = () => {
   //chequeo por palabras
 
   const titleArray = post.title.split(' ');
-  //const titleArray = [1,2,3,4]
 
   const longDescriptionArray = post.longDescription.split(' ');
-  //const longDescriptionArray =[1,2,3,4,5,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 
   //--------------------------------------------------//
   //               POST - CATEGORIA                   //
@@ -605,6 +606,7 @@ const EventEdit = () => {
     }
     setPost({
       ...post,
+      isEdit: true,
       categories,
     });
   }
@@ -644,6 +646,7 @@ const EventEdit = () => {
       await axios.post('https://api.cloudinary.com/v1_1/dhmnttdy2/image/upload', formData).then((response) => {
         setPost({
           ...post,
+          isEdit: true,
           pictures: [...post.pictures, { cover: false, picture: response.data.secure_url }],
         });
         setImage({ files: '' });
@@ -670,6 +673,7 @@ const EventEdit = () => {
       });
       setPost({
         ...post,
+        isEdit: true,
         pictures: todas,
       });
     } else {
@@ -680,6 +684,7 @@ const EventEdit = () => {
       });
       setPost({
         ...post,
+        isEdit: true,
         pictures: todas,
       });
     }
@@ -695,6 +700,7 @@ const EventEdit = () => {
     if (e.target.checked) {
       setPost({
         ...post,
+        isEdit: true,
         [e.target.name]: true,
         departamento: '',
         municipio: '',
@@ -704,6 +710,7 @@ const EventEdit = () => {
     } else {
       setPost({
         ...post,
+        isEdit: true,
         [e.target.name]: false,
         link: '',
       });
@@ -713,6 +720,7 @@ const EventEdit = () => {
   function handleLink(e) {
     setPost({
       ...post,
+      isEdit: true,
       link: e.target.value,
     });
   }
@@ -791,12 +799,14 @@ const EventEdit = () => {
             if (result.isConfirmed) {
               setPost({
                 ...post,
+                isEdit: true,
                 dates: newFechas,
               });
             } else if (result.isDenied) {
               newFechas[i][e.target.name] = EventCopy.dates[j].start;
               setPost({
                 ...post,
+                isEdit: true,
                 dates: newFechas,
               });
             }
@@ -820,12 +830,14 @@ const EventEdit = () => {
             if (result.isConfirmed) {
               setPost({
                 ...post,
+                isEdit: true,
                 dates: newFechas,
               });
             } else if (result.isDenied) {
               newFechas[i][e.target.name] = EventCopy.dates[j].end;
               setPost({
                 ...post,
+                isEdit: true,
                 dates: newFechas,
               });
             }
@@ -849,6 +861,7 @@ const EventEdit = () => {
             if (result.isConfirmed) {
               setPost({
                 ...post,
+                isEdit: true,
                 dates: newFechas,
               });
             } else if (result.isDenied) {
@@ -856,6 +869,7 @@ const EventEdit = () => {
               newFechas[i].dateFormated = EventCopy.dates[j].dateFormated;
               setPost({
                 ...post,
+                isEdit: true,
                 dates: newFechas,
               });
             }
@@ -863,6 +877,7 @@ const EventEdit = () => {
         } else {
           setPost({
             ...post,
+            isEdit: true,
             dates: newFechas,
           });
         }
@@ -885,12 +900,14 @@ const EventEdit = () => {
                     if (result.isConfirmed) {
                       setPost({
                         ...post,
+                        isEdit: true,
                         dates: newFechas,
                       });
                     } else if (result.isDenied) {
                       newFechas[i].codigos[indice][e.target.name] = EventCopy.dates[j].codigos[b].descuento;
                       setPost({
                         ...post,
+                        isEdit: true,
                         dates: newFechas,
                       });
                     }
@@ -899,6 +916,7 @@ const EventEdit = () => {
               } else {
                 setPost({
                   ...post,
+                  isEdit: true,
                   dates: newFechas,
                 });
               }
@@ -999,6 +1017,7 @@ const EventEdit = () => {
   let addFormFields = () => {
     setPost({
       ...post,
+      isEdit: true,
       dates: [
         ...post.dates,
         {
@@ -1052,6 +1071,7 @@ const EventEdit = () => {
 
     setPost({
       ...post,
+      isEdit: true,
       dates: datesAux,
     });
   };
@@ -1080,7 +1100,7 @@ const EventEdit = () => {
       } else if (post.dates[i]._id === id && post.dates[i].sells > 0) {
         return Swal.fire({
           html:
-            `Ya hay ${newFechas[i].sells} cupo(s) comprado(s) para esta fecha, si la quitas de publicados el dinero será devuelto a los compradores. Esta devolución genera unos costos los cuales deberas asumir.` +
+            `Ya hay ${post.dates[i].sells} cupo(s) comprado(s) para esta fecha, si la quitas de publicados el dinero será devuelto a los compradores. Esta devolución genera unos costos los cuales deberas asumir.` +
             '<a href="/docs/terminos-condiciones/organizador" target="_blank">Ver sección &&&&&&&&&& en Términos y Condiciones.</a> ' +
             'Deseas quitar esta fecha de publicados? ',
           width: 600,
@@ -1099,7 +1119,6 @@ const EventEdit = () => {
             console.log('dateDeletes');
             setPost({
               ...post,
-              sendEmail: true,
               dateDelete: [...post.dateDelete, dateDeletes],
               dates: newFechas,
             });
@@ -1124,6 +1143,7 @@ const EventEdit = () => {
           if (datesAux[i].codigos[indice].length > 1) {
             datesAux[i].codigos.splice(indice, 1);
             setPost({
+              isEdit: true,
               ...post,
               dates: datesAux,
             });
@@ -1140,6 +1160,7 @@ const EventEdit = () => {
             };
             setPost({
               ...post,
+              isEdit: true,
               dates: datesAux,
             });
           }
@@ -1156,6 +1177,7 @@ const EventEdit = () => {
             datesAux[i].codigos.splice(indice, 1);
             setPost({
               ...post,
+              isEdit: true,
               dates: datesAux,
             });
           } else {
@@ -1171,6 +1193,7 @@ const EventEdit = () => {
             };
             setPost({
               ...post,
+              isEdit: true,
               dates: datesAux,
             });
           }
@@ -1189,12 +1212,14 @@ const EventEdit = () => {
       };
       setPost({
         ...post,
+        isEdit: true,
         dates: datesAux,
       });
     } else {
       datesAux[i].codigos.splice(indice, 1);
       setPost({
         ...post,
+        isEdit: true,
         dates: datesAux,
       });
     }
@@ -1214,6 +1239,7 @@ const EventEdit = () => {
     };
     setPost({
       ...post,
+      isEdit: true,
       dates: datesAux,
     });
     //setEd(false)
@@ -1228,6 +1254,7 @@ const EventEdit = () => {
 
     setPost({
       ...post,
+      isEdit: true,
       dates: newFechas,
     });
   };
@@ -1239,6 +1266,7 @@ const EventEdit = () => {
     datesAux[i].codigos[indice].ed = true;
     setPost({
       ...post,
+      isEdit: true,
       dates: datesAux,
     });
   };
@@ -1252,6 +1280,7 @@ const EventEdit = () => {
     datesAux[i].codigos[indice].ed = false;
     setPost({
       ...post,
+      isEdit: true,
       dates: datesAux,
     });
   };
@@ -1356,18 +1385,17 @@ const EventEdit = () => {
     e.preventDefault();
     console.log('cambios');
 
-    // if (Object.values(errors).length > 0) {
-    //   console.log('0')
-    //   setFailedSubmit(true);
-    //   return swal({
-    //     title: 'Completa los campos faltantes',
-    //     icon: 'warning',
-    //     button: 'Completar',
-    //     dangerMode: true,
-    //   });
-    // }
+    if (Object.values(errors).length > 0) {
+      console.log('0');
+      setFailedSubmit(true);
+      return swal({
+        title: 'Completa los campos faltantes',
+        icon: 'warning',
+        button: 'Completar',
+        dangerMode: true,
+      });
+    }
     if (post.sells > 0 && post.inRevision === false) {
-      console.log('2');
       swal({
         title:
           'Si ya hay Asistentes al evento es importante que le informes de inmediato los cambios que consideres podrían afectar su participación ',
@@ -1383,7 +1411,6 @@ const EventEdit = () => {
         }
       });
     } else if (post.sells === 0 && post.inRevision === false) {
-      console.log('3');
       swal({
         title: 'Este evento y sus fechas será publicado  ',
         buttons: true,
@@ -1398,7 +1425,6 @@ const EventEdit = () => {
         }
       });
     } else if (post.inRevision === true) {
-      console.log('1');
       swal({
         title: 'Este evento y sus fechas será publicado  ',
         buttons: true,
@@ -1415,7 +1441,6 @@ const EventEdit = () => {
         }
       });
     } else if (eventDetails === post) {
-      console.log('4');
       swal('No has hecho ninguna edición ');
     }
   };

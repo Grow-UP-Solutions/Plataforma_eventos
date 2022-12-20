@@ -18,7 +18,7 @@ async function createCategory(category) {
   try {
     const { name } = category;
     const categoryDB = await OneCategoryDb(name);
-    console.log(categoryDB);
+    
     if (!categoryDB) {
       const categories = await createCategoryDb(category);
       return categories;

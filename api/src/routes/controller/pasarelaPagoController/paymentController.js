@@ -144,8 +144,6 @@ router.get('/success', async (req, res) => {
     let ganancia = 0;
 
     if (response.status === 'approved' && response.status_detail === 'accredited') {
-      console.log({ auxBody });
-
       organizerEvent.pendingEarnings += auxBody[0].ganancia;
       organizerEvent.overallEarnings += auxBody[0].ganancia;
       event.pendingEarnings += auxBody[0].ganancia;
@@ -162,8 +160,6 @@ router.get('/success', async (req, res) => {
         eventTitle: event.title,
         dates: [],
       };
-
-      console.log('b', buyer);
 
       event.dates.forEach(async (e, i) => {
         for (let j = 0; j < auxBody[0].dates.length; ++j) {
@@ -199,7 +195,6 @@ router.get('/success', async (req, res) => {
 
             usuariosComprados.push(auxUsuariosComprados);
 
-            console.log('Id auxbody === Id eventDate');
             for (let x = 0; x < e.codigos.length; x++) {
               if (
                 auxBody[0].dates[j].codigoDescuento !== null &&
@@ -225,18 +220,13 @@ router.get('/success', async (req, res) => {
               codigo: auxBody[0].dates[j].codigoUsuario || auxBody[0].dates[j].codigoDescuento || null,
             });
 
-            console.log({ buyers: e.buyers });
-
             e.cupos = e.cupos - auxBody[0].dates[j].quantity;
             e.sells = e.sells + auxBody[0].dates[j].quantity;
             e.pendingEarnings = e.pendingEarnings + auxBody[0].dates[j].ganancias;
             e.overallEarnings = e.overallEarnings + auxBody[0].dates[j].ganancias;
-            console.log({ eActualizado: e });
           }
         }
       });
-
-      console.log('b', buyer);
 
       event.generalBuyers.push(buyer);
 
