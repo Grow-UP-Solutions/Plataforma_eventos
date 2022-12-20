@@ -2,13 +2,31 @@ const { Router } = require('express');
 const EventFunctionDb = require('../../models/util/functionDB/event/index.event.js');
 const UsersFunctionDb = require('../../models/util/functionDB/users/index.users.js');
 const { sendEmailToReportEvent } = require('../../models/util/mailer/mailToReportEvent.js');
+const { eventInRevisionBuys } = require('../../models/util/mailer/Compradores/eventInRevisionBuys.js')
+const { dateEventInRevisionBuys } = require('../../models/util/mailer/Compradores/dateEventInRevisionBuys.js')
+const { dateEventInRevisionBuysAdmin } = require('../../models/util/mailer/Administrador/dateEventInRevisionBuysAdmin.js')
+const { eventInRevisionBuysAdmin } = require('../../models/util/mailer/Administrador/eventInRevisionBuysAdmin.js')
+const { editEventInRevisionToAdmin } = require('../../models/util/mailer/Administrador/editEventInRevisionToAdmin.js')
+const { editEventToAdmin } = require('../../models/util/mailer/Administrador/editEventToAdmin.js')
+const { eventCancelBuyers } = require('../../models/util/mailer/Compradores/eventCancelBuyers.js')
+const { dateCanceltoBuyers } = require('../../models/util/mailer/Compradores/dateCanceltoBuyers.js')
+const { eventCancelToAdminbyOrg } = require('../../models/util/mailer/Administrador/eventCancelToAdminbyOrg.js')
+const { dateCanceltoAdminbyOrg } = require('../../models/util/mailer/Administrador/dateCanceltoAdminbyOrg.js')
+const { dateDeleteToBuyers } = require('../../models/util/mailer/Compradores/dateDeleteToBuyers.js')
+const { dateDeleteToAdmin } = require('../../models/util/mailer/Administrador/dateDeleteToAdmin.js')
+
+
+
+
 const {
   getAllEvents,
   createEvents,
   eventsUpdate,
   createOpinionsEvents,
   getOneEvent,
+  
 } = require('../services/events.services.js');
+
 
 const router = Router();
 
@@ -49,10 +67,12 @@ let contadorEvent = 0;
 
 router.post('/create', async (req, res) => {
   try {
+    
     const event = req.body;
+    
     contadorEvent++;
     event.idEvent = 'E' + contadorEvent;
-
+    
     for (i = 0; i < event.dates.length; i++) {
       event.dates[i].idDate = event.idEvent + '-' + (i + 1);
     }
@@ -97,7 +117,7 @@ router.post('/opinionsGenerate/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const comments = req.body;
-    console.log(comments);
+    
     const createOpinions = await createOpinionsEvents(id, comments);
     return res.status(200).json(createOpinions);
   } catch (error) {
@@ -108,7 +128,7 @@ router.post('/opinionsGenerate/:id', async (req, res) => {
 router.post('/:idEvent/payment/:idDate', async (req, res) => {
   const { idEvent, idDate } = req.params;
   const { codigoDescuento } = req.query;
-  console.log('*/*/', codigoDescuento);
+  
   try {
     const eventSoldOut = await paymentEvents(idEvent, idDate, codigoDescuento);
 
@@ -122,8 +142,45 @@ router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
 
+    console.log('BODY',req.body)
+  
     const newEvent = req.body;
+    const user = await UsersFunctionDb.oneUser(newEvent.organizer);
+    const event = await getOneEvent(id);
 
+
+    //mails para avisar evento/fecha cancelado(sacado de publico o eliminado)
+
+    if(newEvent.dates.length === 1){
+      console.log('tengo una sola fecha')
+      newEvent.dates[0].sendEmail === true ? eventCancelBuyers(event, user) :  ''
+      newEvent.dates[0].sendEmail === true ? eventCancelToAdminbyOrg(event, user) :  ''
+    }else{
+      for(let i = 0 ; i < newEvent.dates.length ; i ++){
+        newEvent.dates[i].sendEmail === true ? dateCanceltoBuyers(event, user , newEvent.dates[i]) : ''
+        newEvent.dates[0].sendEmail === true ? dateCanceltoAdminbyOrg(event, user , newEvent.dates[i]) :  ''
+      }
+    }
+
+
+    console.log('newEvent.dateDelete.length',newEvent.dateDelete.length)
+
+    if(newEvent.dateDelete.length){
+      for(let i = 0 ; i < newEvent.dateDelete.length; i++ ){
+        dateDeleteToBuyers(event , newEvent.dateDelete[i] )
+        dateDeleteToAdmin(event , user , newEvent.dateDelete[i] )
+      }
+    }
+
+    //mails para avisar evento editado
+    if(newEvent.inRevision === false && newEvent.sendEmail === false ){
+      editEventToAdmin(newEvent , user , event)
+    }else if(newEvent.inRevision === true && newEvent.sendEmail === false){
+      editEventInRevisionToAdmin(newEvent , user , event)
+    }
+
+   // newEvent.inRevision === true ? editEventInRevisionAdmin(newEvente,user) : editEventAdmin(newEvent,event,user)
+    
     const newEvente = await eventsUpdate(id, newEvent);
 
     return res.json(newEvente);
@@ -172,10 +229,13 @@ router.put('/inRevision/acceptOrReject', async (req, res) => {
 
   try {
     const event = await EventFunctionDb.oneEvent(idEvent);
+    const user = await UsersFunctionDb.oneUser(event.organizer);
 
     if (idDate) {
-      console.log('Entre al if principal');
+     
       if (event.dates.length === 1) {
+        event.inRevision === false && event.sells > 0 ? eventInRevisionBuys(event , user) : ''
+        event.inRevision === false  ? eventInRevisionBuysAdmin(event , user) : ''
         event.inRevision = !event.inRevision;
         event.dates[0].inRevision = !event.dates[0].inRevision;
       } else {
@@ -183,7 +243,9 @@ router.put('/inRevision/acceptOrReject', async (req, res) => {
 
         auxDates = auxDates.map((date) => {
           if (idDate === date._id.toString()) {
-            console.log('entre al if de fecha');
+           
+            date.inRevision === false && date.sells > 0 ? dateEventInRevisionBuys(event , user , date) : ''
+            date.inRevision === false ? dateEventInRevisionBuysAdmin(event , user , date) : ''
             date.inRevision = !date.inRevision;
           }
           return date;
@@ -202,6 +264,9 @@ router.put('/inRevision/acceptOrReject', async (req, res) => {
         event.dates.push(...auxDates);
       }
     } else {
+
+      event.inRevision === false && event.sells > 0 ? eventInRevisionBuys(event , user)   : ''
+      event.inRevision === false ? eventInRevisionBuysAdmin(event , user)   : ''
       event.inRevision = !event.inRevision;
 
       let auxDates = [...event.dates];
@@ -213,6 +278,8 @@ router.put('/inRevision/acceptOrReject', async (req, res) => {
 
       event.dates = [];
       event.dates.push(...auxDates);
+      
+      
     }
 
     event.save();
@@ -222,5 +289,9 @@ router.put('/inRevision/acceptOrReject', async (req, res) => {
     res.status(404).json({ message: error.message });
   }
 });
+
+
+
+
 
 module.exports = router;

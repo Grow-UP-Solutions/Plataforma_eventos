@@ -104,6 +104,8 @@ async function createOpinionsEvents(id, opinions) {
 
 
 
+
+
 module.exports = {
   getAllEvents,
   getOneEvent,

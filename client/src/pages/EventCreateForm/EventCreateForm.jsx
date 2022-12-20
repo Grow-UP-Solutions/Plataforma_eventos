@@ -178,6 +178,7 @@ const EventCreateForm = () => {
         dateFormated: '',
         dateFormated2: '',
         inRevision: false,
+        sendEmail:false,
         codigos: [
           {
             codigo: '',
@@ -193,6 +194,8 @@ const EventCreateForm = () => {
     ],
     isPublic: true,
     inRevision: false,
+    sendEmail:false,
+    dateDelete:[]
   });
 
   const [errors, setErrors] = useState({
@@ -981,6 +984,7 @@ const EventCreateForm = () => {
         buttons: true,
         dangerMode: true,
       }).then((publicar) => {
+        console.log(post)
         if (publicar) {
           dispatch(postEvent(post));
 
