@@ -178,8 +178,8 @@ const EventCreateForm = () => {
         dateFormated: '',
         dateFormated2: '',
         inRevision: false,
-        isOld:false,
-        sendEmail:false,
+        isOld: false,
+        sendEmail: false,
         codigos: [
           {
             codigo: '',
@@ -196,8 +196,8 @@ const EventCreateForm = () => {
     isPublic: true,
     inRevision: false,
     isOld: false,
-    sendEmail:false,
-    dateDelete:[]
+    sendEmail: false,
+    dateDelete: [],
   });
 
   const [errors, setErrors] = useState({
@@ -678,8 +678,8 @@ const EventCreateForm = () => {
           dateFormated: '',
           dateFormated2: '',
           inRevision: false,
-          isOld:false,
-          sendEmail:false,
+          isOld: false,
+          sendEmail: false,
           codigos: [
             {
               codigo: '',
@@ -989,7 +989,7 @@ const EventCreateForm = () => {
         buttons: true,
         dangerMode: true,
       }).then((publicar) => {
-        console.log(post)
+        console.log(post);
         if (publicar) {
           dispatch(postEvent(post));
 
@@ -1051,6 +1051,7 @@ const EventCreateForm = () => {
                     {/* form */}
                     <div className={styles.container1}>
                       <p className={styles.title}>Nombre del Evento</p>
+                      <p className={styles.titleResponsive}>Nombre del Evento</p>
                       <p className={styles.subTitle}>
                         Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
                         tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis
@@ -1121,6 +1122,7 @@ const EventCreateForm = () => {
                     {/* form */}
                     <div className={styles.container1}>
                       <p className={styles.title}>Categorías</p>
+                      <p className={styles.titleResponsive}>Categorías</p>
                       <p className={styles.subTitle}>
                         Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum
                         dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
@@ -1214,6 +1216,7 @@ const EventCreateForm = () => {
                       {/* shortDescription */}
                       <div className={styles.containerDescription}>
                         <p className={styles.title}>Descripción breve</p>
+                        <p className={styles.titleResponsive}>Descripción breve</p>
                         <p className={styles.subTitle}>
                           Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum
                           dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
@@ -1331,6 +1334,7 @@ const EventCreateForm = () => {
                     {/* form */}
                     <div className={styles.container1}>
                       <p className={styles.title}>Agrega fotos y/o videos</p>
+                      <p className={styles.titleResponsive}>Agrega fotos y/o videos</p>
                       <p className={styles.subTitle}>
                         Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum
                         dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
@@ -1343,52 +1347,57 @@ const EventCreateForm = () => {
                         ''
                       )}
 
-                      <Swiper
-                        slidesPerView={1}
-                        navigation
-                        spaceBetween={0}
-                        modules={[Navigation]}
-                        className={'swiperAddImageEventCreateForm'}
-                      >
-                        {post.pictures.length > 0 &&
-                          post.pictures.map((picture) => (
-                            <SwiperSlide>
-                              <div className={styles.containerGeneralImage}>
-                                <div className={styles.containerImage}>
-                                  <img className={styles.mySwiperImg} src={picture.picture} alt='' />
-                                </div>
-                                <div className={styles.containerBtnsImage}>
-                                  <div className={styles.containerCheckPortada}>
-                                    <label className={styles.subInput}> Quiero que esta sea la portada</label>
-                                    <input
-                                      className={styles.checkBox4}
-                                      type='checkbox'
-                                      name='cover'
-                                      value={picture.picture}
-                                      onChange={(e) => handleCover(e)}
-                                      defaultChecked={false}
+                      <div className='containerSwiperImage'>
+                        <Swiper
+                          slidesPerView={1}
+                          navigation
+                          spaceBetween={0}
+                          modules={[Navigation]}
+                          className={'swiper'}
+                        >
+                          {post.pictures.length > 0 &&
+                            post.pictures.map((picture) => (
+                              <SwiperSlide>
+                                <div className={styles.containerGeneralImage}>
+                                  <div className={styles.containerImage}>
+                                    <img className={styles.mySwiperImg} src={picture.picture} alt='' />
+                                  </div>
+                                  <div className={styles.containerBtnsImage}>
+                                    <div className={styles.containerCheckPortada}>
+                                      <label className={styles.subInput}> Quiero que esta sea la portada</label>
+                                      <input
+                                        className={styles.checkBox4}
+                                        type='checkbox'
+                                        name='cover'
+                                        value={picture.picture}
+                                        onChange={(e) => handleCover(e)}
+                                        defaultChecked={false}
+                                      />
+                                    </div>
+                                    <BsTrash
+                                      className={styles.mySwiperBtnDel}
+                                      onClick={(e) => fileRemove(e, picture)}
                                     />
                                   </div>
-                                  <BsTrash className={styles.mySwiperBtnDel} onClick={(e) => fileRemove(e, picture)} />
                                 </div>
-                              </div>
-                            </SwiperSlide>
-                          ))}
+                              </SwiperSlide>
+                            ))}
 
-                        <SwiperSlide>
-                          <div className={styles.containerGeneralImage}>
-                            <div className={`${styles.containerImage} ${styles.containerInputDragImage}`}>
-                              <input onChange={(e) => uploadImage(e)} type='file' className={styles.inputAddImage} />
-                              <ImImage className={styles.iconAddImage} />
-                              <span>Fotos: .Jpg, png. Max 100kb</span>
-                              <p className={styles.textDrag}>
-                                Arrastra los archivos aquí o haz click en{' '}
-                                <span className={styles.textOrangeSub}>Agregar archivos</span>
-                              </p>
+                          <SwiperSlide>
+                            <div className={styles.containerGeneralImage}>
+                              <div className={`${styles.containerImage} ${styles.containerInputDragImage}`}>
+                                <input onChange={(e) => uploadImage(e)} type='file' className={styles.inputAddImage} />
+                                <ImImage className={styles.iconAddImage} />
+                                <span>Fotos: .Jpg, png. Max 100kb</span>
+                                <p className={styles.textDrag}>
+                                  Arrastra los archivos aquí o haz click en{' '}
+                                  <span className={styles.textOrangeSub}>Agregar archivos</span>
+                                </p>
+                              </div>
                             </div>
-                          </div>
-                        </SwiperSlide>
-                      </Swiper>
+                          </SwiperSlide>
+                        </Swiper>
+                      </div>
 
                       {/* {image ? (
                         <button
@@ -1469,6 +1478,7 @@ const EventCreateForm = () => {
                     <div className={styles.container1}>
                       {/* Title*/}
                       <p className={styles.title}>¿Dónde es el evento?</p>
+                      <p className={styles.titleResponsive}>¿Dónde es el evento?</p>
                       <p className={styles.subTitle}>
                         Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum
                         dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
@@ -1736,6 +1746,7 @@ const EventCreateForm = () => {
                       {/* titulo*/}
                       <div>
                         <p className={styles.title}>Costo y fecha</p>
+                        <p className={styles.titleResponsive}>Costo y fecha</p>
                         <p className={styles.titleResponsive}>Asistentes al evento</p>
                         <p className={styles.subTitle}>
                           Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum
@@ -1811,7 +1822,11 @@ const EventCreateForm = () => {
                                 <label className={styles.subInfoTitle}>Tu ganas por cupo</label>
                                 <div className={styles.labelS}>
                                   <p>$</p>
-                                  <input className={styles.subInfoInput} placeholder={new Intl.NumberFormat('de-DE').format(date.gananciaCupo)} disabled />
+                                  <input
+                                    className={styles.subInfoInput}
+                                    placeholder={new Intl.NumberFormat('de-DE').format(date.gananciaCupo)}
+                                    disabled
+                                  />
                                 </div>
                                 <div>
                                   <p className={styles.subInfotxt}>Después de nuestra comisión + IVA</p>
@@ -1826,7 +1841,11 @@ const EventCreateForm = () => {
                                 <label className={styles.subInfoTitle}>Tu ganas por evento</label>
                                 <div className={styles.labelS}>
                                   <p>$</p>
-                                  <input className={styles.subInfoInput} placeholder={new Intl.NumberFormat('de-DE').format(date.gananciaEvento)} disabled />
+                                  <input
+                                    className={styles.subInfoInput}
+                                    placeholder={new Intl.NumberFormat('de-DE').format(date.gananciaEvento)}
+                                    disabled
+                                  />
                                 </div>
                                 <div>
                                   <p className={styles.subInfotxt}>

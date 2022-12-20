@@ -102,6 +102,23 @@
   gap: 1.2rem;
 }
 
+.containerSeeEvents {
+  width: 100%;
+  text-align: center;
+}
+.hr {
+  border: 0.1px solid rgb(219, 219, 219);
+  width: 100%;
+  margin-bottom: 5rem;
+  margin-top: 5rem;
+}
+.text {
+  color: rgb(194, 193, 193);
+  margin-bottom: 3rem;
+  font-size: 2rem;
+  font-style: italic;
+  text-align: center;
+}
 
 @media screen and (max-width: 1420px) {
   .containerCard {

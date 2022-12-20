@@ -1,8 +1,6 @@
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import LaunchOutlinedIcon from '@mui/icons-material/LaunchOutlined';
 import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
 import WarningOutlinedIcon from '@mui/icons-material/WarningOutlined';
@@ -11,6 +9,8 @@ import axios from 'axios';
 import 'bootstrap';
 import dotenv from 'dotenv';
 import React, { useContext, useEffect, useRef, useState } from 'react';
+import { BsPencilSquare, BsTrash } from 'react-icons/bs';
+import { ImImage } from 'react-icons/im';
 import { IoLocationOutline } from 'react-icons/io5';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -31,8 +31,6 @@ import { AuthContext } from '../../context/auth/AuthContext';
 import { getColombia, getEventsCopy, postEvent, putEvent } from '../../redux/actions';
 import { formatDateForm } from '../../utils/formatDateForm';
 import styles from './EventEdit.module.css';
-import { AiOutlineClose } from 'react-icons/ai';
-import { BsCamera, BsCardImage, BsInfoCircle, BsPencilSquare } from 'react-icons/bs';
 
 const EventEdit = () => {
   const dispatch = useDispatch();
@@ -70,7 +68,6 @@ const EventEdit = () => {
   const allEvents = [...eventos];
 
   const eventDetails = allEvents.find((e) => e._id === eventId);
- 
 
   const [post, setPost] = useState({
     idOrganizer: '',
@@ -104,8 +101,8 @@ const EventEdit = () => {
         dateFormated: '',
         dateFormated2: '',
         inRevision: false,
-        isOld:false,
-        sendEmail:false,
+        isOld: false,
+        sendEmail: false,
         codigos: [
           {
             codigo: '',
@@ -119,26 +116,24 @@ const EventEdit = () => {
         ],
       },
     ],
-    dateDelete:[],
+    dateDelete: [],
     isPublic: '',
-    isOld:'',
+    isOld: '',
     inRevision: '',
-    sendEmail:'',
-    opinions:'',
-    notificaciones:'',
-    rating:'',
-    payedEarnings:'',
-    pendingEarnings:'',
-    overallEarnings:'',
-    generalBuyers:[],
-    sells:'',
-    idEvent:''
+    sendEmail: '',
+    opinions: '',
+    notificaciones: '',
+    rating: '',
+    payedEarnings: '',
+    pendingEarnings: '',
+    overallEarnings: '',
+    generalBuyers: [],
+    sells: '',
+    idEvent: '',
   });
 
   useEffect(() => {
-   
     if (eventDetails) {
-     
       const auxCategories = eventDetails.categories.map((categorie) => categorie.name);
       setPost({
         ...post,
@@ -163,20 +158,17 @@ const EventEdit = () => {
         dateDelete: eventDetails.dateDelete,
         opinions: eventDetails.opinions,
         notificaciones: eventDetails.notificaciones,
-        rating:eventDetails.notificaciones,
-        payedEarnings:eventDetails.payedEarnings,
-        pendingEarnings:eventDetails.pendingEarnings,
-        overallEarnings:eventDetails.overallEarnings,
-        generalBuyers:eventDetails.generalBuyers,
-        sells:eventDetails.sells,
+        rating: eventDetails.notificaciones,
+        payedEarnings: eventDetails.payedEarnings,
+        pendingEarnings: eventDetails.pendingEarnings,
+        overallEarnings: eventDetails.overallEarnings,
+        generalBuyers: eventDetails.generalBuyers,
+        sells: eventDetails.sells,
         isOld: eventDetails.isOld,
-        idEvent:eventDetails.idEvent
+        idEvent: eventDetails.idEvent,
       });
-     
     }
   }, [eventDetails]);
-
- 
 
   //              para comparar            //
   const allEventsCopy = useSelector((state) => state.eventsCopy);
@@ -593,6 +585,7 @@ const EventEdit = () => {
   //               POST - CATEGORIA                   //
 
   const [seleccionados, setSeleccionados] = useState([]);
+  const [otherCategorie, setOtherCategorie] = useState(false);
   const [changed] = useState(false);
 
   function handleCategories(e) {
@@ -600,6 +593,10 @@ const EventEdit = () => {
     let categorieChecked = e.target.checked;
 
     let categories = post.categories;
+
+    if (categorieName === 'Otros') {
+      setOtherCategorie(!otherCategorie);
+    }
 
     if (categorieChecked) {
       categories.push(categorieName);
@@ -690,8 +687,11 @@ const EventEdit = () => {
 
   //--------------------------------------------------//
   //               POST  UBICACION                //
+  const [isEventOnline, setIsEventOnline] = useState(false);
 
   function handleCheck(e) {
+    setIsEventOnline(!isEventOnline);
+
     if (e.target.checked) {
       setPost({
         ...post,
@@ -909,7 +909,6 @@ const EventEdit = () => {
     }
   };
 
- 
   let removeFromPublic = (e, i, id) => {
     e.preventDefault();
     let newFechas = [...post.dates];
@@ -1018,8 +1017,8 @@ const EventEdit = () => {
           dateFormated: '',
           dateFormated2: '',
           inRevision: false,
-          isOld:false,
-          sendEmail:false,
+          isOld: false,
+          sendEmail: false,
           codigos: [
             {
               codigo: '',
@@ -1060,7 +1059,7 @@ const EventEdit = () => {
   let removeFormFields = (e, i, id) => {
     e.preventDefault();
     let newFechas = [...post.dates];
-    
+
     newFechas.splice(i, 1);
     for (let i = 0; i < post.dates.length; i++) {
       if (post.dates[i]._id === id && post.dates[i].sells === 0) {
@@ -1092,16 +1091,16 @@ const EventEdit = () => {
         }).then((result) => {
           if (result.isConfirmed) {
             let dateDeletes = {
-             id: post.dates[i]._id,
-             dateFormated : post.dates[i].dateFormated,
-             start: post.dates[i].start,
-             end: post.dates[i].end,
-            }
-            console.log('dateDeletes')
+              id: post.dates[i]._id,
+              dateFormated: post.dates[i].dateFormated,
+              start: post.dates[i].start,
+              end: post.dates[i].end,
+            };
+            console.log('dateDeletes');
             setPost({
               ...post,
               sendEmail: true,
-              dateDelete :[...post.dateDelete , dateDeletes],
+              dateDelete: [...post.dateDelete, dateDeletes],
               dates: newFechas,
             });
           }
@@ -1355,9 +1354,8 @@ const EventEdit = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('cambios')
-    
-    
+    console.log('cambios');
+
     // if (Object.values(errors).length > 0) {
     //   console.log('0')
     //   setFailedSubmit(true);
@@ -1367,9 +1365,9 @@ const EventEdit = () => {
     //     button: 'Completar',
     //     dangerMode: true,
     //   });
-    // }  
+    // }
     if (post.sells > 0 && post.inRevision === false) {
-      console.log('2')
+      console.log('2');
       swal({
         title:
           'Si ya hay Asistentes al evento es importante que le informes de inmediato los cambios que consideres podrían afectar su participación ',
@@ -1381,11 +1379,11 @@ const EventEdit = () => {
           swal('Tus cambios han sido guardados', {
             icon: 'success',
           });
-          navigate('/usuario/mis-eventos')
+          navigate('/usuario/mis-eventos');
         }
       });
-    }  else if (post.sells === 0 && post.inRevision === false) {
-      console.log('3')
+    } else if (post.sells === 0 && post.inRevision === false) {
+      console.log('3');
       swal({
         title: 'Este evento y sus fechas será publicado  ',
         buttons: true,
@@ -1400,7 +1398,7 @@ const EventEdit = () => {
         }
       });
     } else if (post.inRevision === true) {
-      console.log('1')
+      console.log('1');
       swal({
         title: 'Este evento y sus fechas será publicado  ',
         buttons: true,
@@ -1416,12 +1414,11 @@ const EventEdit = () => {
           );
         }
       });
-    }  else if (eventDetails === post) {
-      console.log('4')
+    } else if (eventDetails === post) {
+      console.log('4');
       swal('No has hecho ninguna edición ');
     }
-  }
-
+  };
 
   return (
     <div>
@@ -1539,6 +1536,7 @@ const EventEdit = () => {
                     {/* form */}
                     <div className={styles.container1}>
                       <p className={styles.title}>Categorías</p>
+                      <p className={styles.titleResponsive}>Categorías</p>
                       <p className={styles.subTitle}>
                         Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum
                         dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
@@ -1547,31 +1545,21 @@ const EventEdit = () => {
                         {post &&
                           categories.map((categorie) => (
                             <div className={styles.checks}>
-                              <label className={styles.labelsChecks}>
-                                <input
-                                  className={styles.checkBox}
-                                  type='checkbox'
-                                  value={categorie.name}
-                                  onChange={(e) => handleCategories(e)}
-                                  checked={post.categories.includes(categorie.name)}
-                                />
-                                {categorie.name}
-                              </label>
+                              <input
+                                className={styles.checkBox}
+                                type='checkbox'
+                                value={categorie.name}
+                                onChange={(e) => handleCategories(e)}
+                                checked={post.categories.includes(categorie.name)}
+                              />
+                              <label className={styles.labelsChecks}>{categorie.name}</label>
                             </div>
                           ))}
                       </div>
 
                       {/* otra categoria*/}
-                      <div className={styles.checkOther}>
-                        <input
-                          className={styles.checkBox}
-                          defaultChecked={false}
-                          type='checkbox'
-                          name='categories'
-                          value={post.categories}
-                        />
-                        <label className={styles.labelsChecks}>Otro</label>
 
+                      {otherCategorie && (
                         <div className={styles.otherCategorie}>
                           <label className={styles.subTitle}>Si escogiste ‘otro’, especifica : </label>
                           {failedSubmit && errors.otherCategorie ? (
@@ -1593,7 +1581,7 @@ const EventEdit = () => {
                             />
                           )}
                         </div>
-                      </div>
+                      )}
 
                       {errors.categories && <p className={styles.errors}>{errors.categories}</p>}
 
@@ -1644,6 +1632,7 @@ const EventEdit = () => {
                       {/* shortDescription */}
                       <div className={styles.containerDescription}>
                         <p className={styles.title}>Descripción breve</p>
+                        <p className={styles.titleResponsive}>Descripción breve</p>
                         <p className={styles.subTitle}>
                           Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum
                           dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
@@ -1762,6 +1751,7 @@ const EventEdit = () => {
                     {/* form */}
                     <div className={styles.container1}>
                       <p className={styles.title}>Agrega fotos y/o videos</p>
+                      <p className={styles.titleResponsive}>Agrega fotos y/o videos</p>
                       <p className={styles.subTitle}>
                         Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum
                         dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
@@ -1769,35 +1759,12 @@ const EventEdit = () => {
                       <p className={styles.subTitle4}>Fotos del Evento</p>
 
                       {failedSubmit && errors.pictures ? (
-                        <div>
-                          <p>Fotos: Jpg, png, Max.100kb </p>
-                          <p>Videos: .MP4 Max 100kb</p>
-                          <p>"Haz click en examinar para elegir los archivos y luedo en añadir"</p>
-                          <input
-                            type='file'
-                            multiple={true}
-                            onChange={(e) => {
-                              setImage(e.target.files);
-                            }}
-                          />
-                          {errors.pictures ? <p className={styles.errors}>{errors.pictures}</p> : null}
-                        </div>
+                        <div>{errors.pictures ? <p className={styles.errors}>{errors.pictures}</p> : null}</div>
                       ) : (
-                        <div>
-                          <p>Fotos: Jpg, png, Max.100kb </p>
-                          <p>Videos: .MP4 Max 100kb</p>
-                          <p>"Haz click en examinar para elegir los archivos y luedo en añadir"</p>
-                          <input
-                            type='file'
-                            multiple={true}
-                            onChange={(e) => {
-                              setImage(e.target.files);
-                            }}
-                          />
-                        </div>
+                        ''
                       )}
 
-                      {image ? (
+                      {/*    {image ? (
                         <button
                           onClick={(e) => {
                             uploadImage(e);
@@ -1806,42 +1773,59 @@ const EventEdit = () => {
                         >
                           <span>Agregar Imagen</span>
                         </button>
-                      ) : null}
+                      ) : null} */}
 
-                      {post.pictures.length > 0 ? (
-                        <div className={styles.dropFilePreview}>
-                          <Swiper
-                            slidesPerView={1}
-                            navigation
-                            spaceBetween={0}
-                            modules={[Navigation]}
-                            className={'swiperEditEventForm'}
-                          >
-                            {post.pictures.map((item, index) => (
+                      <div className='containerSwiperImage'>
+                        <Swiper
+                          slidesPerView={1}
+                          navigation
+                          spaceBetween={0}
+                          modules={[Navigation]}
+                          className={'swiper'}
+                        >
+                          {post.pictures.length > 0 &&
+                            post.pictures.map((item, index) => (
                               <div key={index} className={styles.mySwiper}>
                                 <SwiperSlide>
-                                  <img className={styles.mySwiperImg} src={item.picture} alt='' />
-                                  <button className={styles.mySwiperBtnDel} onClick={() => fileRemove(item)}>
-                                    x
-                                  </button>
-                                  <label className={styles.subInput}>
-                                    <input
-                                      className={styles.checkBox4}
-                                      type='checkbox'
-                                      name='cover'
-                                      value={item.picture}
-                                      onChange={(e) => handleCover(e)}
-                                      defaultChecked={false}
-                                    />
-                                    Quiero que esta sea la portada
-                                  </label>
+                                  <div className={styles.containerGeneralImage}>
+                                    <div className={styles.containerImage}>
+                                      <img className={styles.mySwiperImg} src={item.picture} alt='' />
+                                    </div>
+                                    <div className={styles.containerBtnsImage}>
+                                      <div className={styles.containerCheckPortada}>
+                                        {' '}
+                                        <label className={styles.subInput}>Quiero que esta sea la portada</label>
+                                        <input
+                                          className={styles.checkBox4}
+                                          type='checkbox'
+                                          name='cover'
+                                          value={item.picture}
+                                          onChange={(e) => handleCover(e)}
+                                          defaultChecked={false}
+                                        />
+                                      </div>
+                                      <BsTrash className={styles.mySwiperBtnDel} onClick={() => fileRemove(item)} />
+                                    </div>
+                                  </div>
                                 </SwiperSlide>
                               </div>
                             ))}
-                          </Swiper>
-                          {errors.pictures ? <p className={styles.errors}>{errors.pictures}</p> : null}
-                        </div>
-                      ) : null}
+                          <SwiperSlide>
+                            <div className={styles.containerGeneralImage}>
+                              <div className={`${styles.containerImage} ${styles.containerInputDragImage}`}>
+                                <input onChange={(e) => uploadImage(e)} type='file' className={styles.inputAddImage} />
+                                <ImImage className={styles.iconAddImage} />
+                                <span>Fotos: .Jpg, png. Max 100kb</span>
+                                <p className={styles.textDrag}>
+                                  Arrastra los archivos aquí o haz click en{' '}
+                                  <span className={styles.textOrangeSub}>Agregar archivos</span>
+                                </p>
+                              </div>
+                            </div>
+                          </SwiperSlide>
+                        </Swiper>
+                        {errors.pictures ? <p className={styles.errors}>{errors.pictures}</p> : null}
+                      </div>
                     </div>
                   </div>
                 </SwiperSlide>
@@ -1877,6 +1861,7 @@ const EventEdit = () => {
                     <div className={styles.container1}>
                       {/* Title*/}
                       <p className={styles.title}>¿Dónde es el evento?</p>
+                      <p className={styles.titleResponsive}>¿Dónde es el evento?</p>
                       <p className={styles.subTitle}>
                         Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum
                         dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
@@ -1884,128 +1869,143 @@ const EventEdit = () => {
 
                       {/* CheckBoxOnLine*/}
                       <div className={styles.containerOnLine}>
-                        <input
-                          className={styles.checkBox4}
-                          type='checkbox'
-                          defaultChecked={false}
-                          name='online'
-                          value={post.online}
-                          onChange={(e) => handleCheck(e)}
-                          id='check'
-                        />
-                        <label> Este es un evento en linea</label>
+                        <div className={styles.containerCheckBoxOnline}>
+                          <input
+                            className={styles.checkBox4}
+                            type='checkbox'
+                            defaultChecked={false}
+                            name='online'
+                            value={post.online}
+                            onChange={(e) => handleCheck(e)}
+                            id='check'
+                          />
+                          <label>Este es un evento en linea</label>
+                        </div>
 
                         {/*Online*/}
 
-                        {failedSubmit && errors.link ? (
-                          <div className={styles.online}>
-                            <input
-                              type='text'
-                              placeholder='Colocar el enlace del evento'
-                              name='link'
-                              value={post.link}
-                              onChange={(e) => handleLink(e)}
-                              required
-                            />
-                          </div>
-                        ) : (
-                          <div className={styles.online}>
-                            <input
-                              type='text'
-                              placeholder='Colocar el enlace del evento'
-                              name='link'
-                              value={post.link}
-                              onChange={(e) => handleChange(e)}
-                            />
-                          </div>
-                        )}
-                        {errors.link ? <p className={styles.errors}>{errors.link}</p> : null}
-
-                        {/*notOnline*/}
-                        <div className={styles.notOnline}>
-                          {/* Dpto */}
-                          <div className={styles.containerDirection}>
-                            {failedSubmit && errors.departamento ? (
-                              <input
-                                className={styles.select}
-                                list='dptos'
-                                id='myDep'
-                                name='departamento'
-                                placeholder='Departamento'
-                                value={post.departamento}
-                                onChange={(e) => handleChange(e)}
-                                required
-                              />
+                        {isEventOnline ? (
+                          <>
+                            {failedSubmit && errors.link ? (
+                              <div className={styles.online}>
+                                <input
+                                  type='text'
+                                  placeholder='Colocar el enlace del evento'
+                                  name='link'
+                                  value={post.link}
+                                  onChange={(e) => handleLink(e)}
+                                  required
+                                />
+                              </div>
                             ) : (
-                              <input
-                                className={styles.select}
-                                list='dptos'
-                                id='myDep'
-                                name='departamento'
-                                placeholder='Departamento'
-                                value={post.departamento}
-                                onChange={(e) => handleChange(e)}
-                              />
+                              <div className={styles.online}>
+                                <input
+                                  type='text'
+                                  placeholder='Colocar el enlace del evento'
+                                  name='link'
+                                  value={post.link}
+                                  onChange={(e) => handleChange(e)}
+                                />
+                              </div>
                             )}
-                            <datalist id='dptos'>
+                            {errors.link ? <p className={styles.errors}>{errors.link}</p> : null}
+                          </>
+                        ) : (
+                          <div className={styles.notOnline}>
+                            {/* Dpto */}
+                            <div className={styles.containerDirection}>
+                              {failedSubmit && errors.departamento ? (
+                                <input
+                                  className={styles.select}
+                                  list='dptos'
+                                  id='myDep'
+                                  name='departamento'
+                                  placeholder='Departamento'
+                                  value={post.departamento}
+                                  onChange={(e) => handleChange(e)}
+                                  required
+                                />
+                              ) : (
+                                <input
+                                  className={styles.select}
+                                  list='dptos'
+                                  id='myDep'
+                                  name='departamento'
+                                  placeholder='Departamento'
+                                  value={post.departamento}
+                                  onChange={(e) => handleChange(e)}
+                                />
+                              )}
+                              <datalist id='dptos'>
+                                {nuevoArrayDepartamentos &&
+                                  nuevoArrayDepartamentos.map((departamento) => (
+                                    <option value={departamento.departamento}>{departamento.departamento}</option>
+                                  ))}
+                              </datalist>
+
+                              {/* Municipio*/}
+
                               {nuevoArrayDepartamentos &&
                                 nuevoArrayDepartamentos.map((departamento) => (
-                                  <option value={departamento.departamento}>{departamento.departamento}</option>
+                                  <div>
+                                    {departamento.departamento === post.departamento && (
+                                      <div>
+                                        {failedSubmit && errors.municipio ? (
+                                          <div className={styles.Muni}>
+                                            <input
+                                              list='municipio'
+                                              id='myMuni'
+                                              name='municipio'
+                                              placeholder={departamento.capital}
+                                              value={post.municipio}
+                                              onChange={(e) => handleChange(e)}
+                                              required
+                                            />
+                                            <datalist id='municipio'>
+                                              <option>{departamento.capital}</option>
+                                              {departamento.municipio.map((m) => (
+                                                <option>{m}</option>
+                                              ))}
+                                            </datalist>
+                                          </div>
+                                        ) : (
+                                          <div className={styles.Muni}>
+                                            <input
+                                              list='municipio'
+                                              id='myMuni'
+                                              name='municipio'
+                                              placeholder={departamento.capital}
+                                              value={post.municipio}
+                                              onChange={(e) => handleChange(e)}
+                                            />
+                                            <datalist id='municipio'>
+                                              <option>{departamento.capital}</option>
+                                              {departamento.municipio.map((m) => (
+                                                <option>{m}</option>
+                                              ))}
+                                            </datalist>
+                                          </div>
+                                        )}
+                                      </div>
+                                    )}
+                                  </div>
                                 ))}
-                            </datalist>
+                            </div>
 
-                            {/* Municipio*/}
-
-                            {nuevoArrayDepartamentos &&
-                              nuevoArrayDepartamentos.map((departamento) => (
-                                <div>
-                                  {departamento.departamento === post.departamento && (
-                                    <div>
-                                      {failedSubmit && errors.municipio ? (
-                                        <div className={styles.Muni}>
-                                          <input
-                                            list='municipio'
-                                            id='myMuni'
-                                            name='municipio'
-                                            placeholder={departamento.capital}
-                                            value={post.municipio}
-                                            onChange={(e) => handleChange(e)}
-                                            required
-                                          />
-                                          <datalist id='municipio'>
-                                            <option>{departamento.capital}</option>
-                                            {departamento.municipio.map((m) => (
-                                              <option>{m}</option>
-                                            ))}
-                                          </datalist>
-                                        </div>
-                                      ) : (
-                                        <div className={styles.Muni}>
-                                          <input
-                                            list='municipio'
-                                            id='myMuni'
-                                            name='municipio'
-                                            placeholder={departamento.capital}
-                                            value={post.municipio}
-                                            onChange={(e) => handleChange(e)}
-                                          />
-                                          <datalist id='municipio'>
-                                            <option>{departamento.capital}</option>
-                                            {departamento.municipio.map((m) => (
-                                              <option>{m}</option>
-                                            ))}
-                                          </datalist>
-                                        </div>
-                                      )}
-                                    </div>
-                                  )}
-                                </div>
-                              ))}
-                          </div>
-
-                          {/* Direccion*/}
-                          {failedSubmit && errors.direccion ? (
-                            <div className={styles.direccionError}>
+                            {/* Direccion*/}
+                            {failedSubmit && errors.direccion ? (
+                              <div className={styles.direccionError}>
+                                <input
+                                  className={styles.input5}
+                                  type='text'
+                                  placeholder='Dirección del evento'
+                                  name='direccion'
+                                  value={post.direccion}
+                                  onChange={(e) => handleChange(e)}
+                                  required
+                                />
+                              </div>
+                            ) : (
                               <input
                                 className={styles.input5}
                                 type='text'
@@ -2013,24 +2013,24 @@ const EventEdit = () => {
                                 name='direccion'
                                 value={post.direccion}
                                 onChange={(e) => handleChange(e)}
-                                required
                               />
-                            </div>
-                          ) : (
-                            <input
-                              className={styles.input5}
-                              type='text'
-                              placeholder='Dirección del evento'
-                              name='direccion'
-                              value={post.direccion}
-                              onChange={(e) => handleChange(e)}
-                            />
-                          )}
-                          {errors.direccion ? <p className={styles.errors}>{errors.direccion}</p> : null}
+                            )}
+                            {errors.direccion ? <p className={styles.errors}>{errors.direccion}</p> : null}
 
-                          {/* Barrio*/}
-                          {failedSubmit && errors.barrio ? (
-                            <div className={styles.barrio}>
+                            {/* Barrio*/}
+                            {failedSubmit && errors.barrio ? (
+                              <div className={styles.barrio}>
+                                <input
+                                  className={styles.input5}
+                                  type='text'
+                                  placeholder='Barrio'
+                                  name='barrio'
+                                  value={post.barrio}
+                                  onChange={(e) => handleChange(e)}
+                                  required
+                                />
+                              </div>
+                            ) : (
                               <input
                                 className={styles.input5}
                                 type='text'
@@ -2038,41 +2038,33 @@ const EventEdit = () => {
                                 name='barrio'
                                 value={post.barrio}
                                 onChange={(e) => handleChange(e)}
-                                required
                               />
-                            </div>
-                          ) : (
-                            <input
-                              className={styles.input5}
-                              type='text'
-                              placeholder='Barrio'
-                              name='barrio'
-                              value={post.barrio}
-                              onChange={(e) => handleChange(e)}
-                            />
-                          )}
-                          {errors.barrio ? <p className={styles.errors}>{errors.barrio}</p> : null}
-
-                          {/* Map*/}
-                          <div className={styles.containerMap}>
-                            <p className={styles.titleMap}>Ubicación en el mapa</p>
-                            {post.municipio ? (
-                              <div>
-                                <img src={url} alt='mapaStaticGoogleMaps' />
-                              </div>
-                            ) : (
-                              <div>
-                                <img src={mapa} alt='mapaStaticGoogleMaps' />
-                              </div>
                             )}
-                            <p className={styles.subtextMap}>Texto google legal aqui</p>
+                            {errors.barrio ? <p className={styles.errors}>{errors.barrio}</p> : null}
 
-                            {/* <img  className={styles.icon} src={iconEditar} alt='n' /> */}
-                            <button className={styles.btn}>
-                              <img className={styles.icon} src={iconEditar} alt='n' />
-                            </button>
+                            {/* Map*/}
+                            <div className={styles.containerMap}>
+                              <p className={styles.titleMap}>Ubicación en el mapa</p>
+                              {post.municipio ? (
+                                <div>
+                                  <img src={url} alt='mapaStaticGoogleMaps' />
+                                </div>
+                              ) : (
+                                <div>
+                                  <img src={mapa} alt='mapaStaticGoogleMaps' />
+                                </div>
+                              )}
+                              <p className={styles.subtextMap}>Texto google legal aqui</p>
+
+                              {/* <img  className={styles.icon} src={iconEditar} alt='n' /> */}
+                              <button className={styles.btn}>
+                                <img className={styles.icon} src={iconEditar} alt='n' />
+                              </button>
+                            </div>
                           </div>
-                        </div>
+                        )}
+
+                        {/*notOnline*/}
                       </div>
 
                       {/*especialRequires*/}
@@ -2149,8 +2141,7 @@ const EventEdit = () => {
                           // (date.date === dateActual &&
                           //   date.end.slice(0, 2) <= hora &&
                           //   date.end.slice(3, 5) <= minutes + 2) ||
-                          date.isOld === true ||
-                          date.inRevision === true ? (
+                          date.isOld === true || date.inRevision === true ? (
                             ''
                           ) : (
                             <div>

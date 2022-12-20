@@ -10,11 +10,9 @@ import 'swiper/swiper.min.css';
 import basquet from '../../assets/imgs/basquet.svg';
 import Card from '../Cards/Card';
 import styles from './MyEventsOrganizer.module.css';
-import { fechaActual , hora , minutes } from '../../utils/fechaActual'
+import { fechaActual, hora, minutes } from '../../utils/fechaActual';
 
 const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
-
-
   //No Mostrar los eventos viejos
 
   if (fechaActual && myEventsCreated !== undefined) {
@@ -43,26 +41,22 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
 
   //si hay un evento en revision que lo saque de publicados
 
-  if ( myEventsCreated !== undefined) {
-    console.log('estoy aqui')
+  if (myEventsCreated !== undefined) {
+    console.log('estoy aqui');
     myEventsCreated.map((evento) => {
-      console.log('ahora aqui')
-      if(evento.inRevision === true){
-        console.log('hola')
-        evento.isPublic = false
+      console.log('ahora aqui');
+      if (evento.inRevision === true) {
+        console.log('hola');
+        evento.isPublic = false;
       }
     });
   }
-
- 
-
 
   const eventsNotOld = myEventsCreated.filter((e) => e.isOld === false);
 
   const eventsPublic = eventsNotOld.filter((e) => e.isPublic === true);
 
-  const eventsNoPublicDuplicate = eventsNotOld.filter((e) => e.isPublic === false)
-
+  const eventsNoPublicDuplicate = eventsNotOld.filter((e) => e.isPublic === false);
 
   //busco si hay alguna otra fecha no publica en algun evento y lo pusheo al array de los eventos no publcios
   for (let i = 0; i < myEventsCreated.length; i++) {
@@ -77,7 +71,7 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
 
   //para ver si en el array de los no publicos no hay eventos repetidos
   //puede pasar al estar pusheando fechas y no eventos
-  
+
   eventsNoPublicDuplicate.forEach(function(item) {
     if (!eventsNoPublic.includes(item)) {
       eventsNoPublic.push(item);
@@ -106,6 +100,7 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
 
   return (
     <div className={styles.container}>
+      <h2 className={styles.title}>Organizados por mí</h2>
       {myEventsCreated.length > 0 ? (
         <>
           <p className={styles.title}>Publicados</p>
@@ -131,7 +126,7 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
                       <Link className={styles.btn}>
                         <span>Evento En Revision</span>
                       </Link>
-                    </div>        
+                    </div>
                   ) : (
                     <div className={styles.btns}>
                       <Link className={styles.btn} to={'/organiza-un-evento-editar/' + event._id}>
@@ -181,7 +176,6 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
               ))}
             </Swiper>
           ) : (
-            
             <p className={styles.not_event}>No hay eventos ...</p>
           )}
           <hr className={styles.cardHr}></hr>
@@ -189,13 +183,13 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
           <p className={styles.title}>Por Publicar</p>
 
           {eventsNoPublic.length && eventsNoPublic.length <= 3 ? (
-            <div className={styles.containerCard}
+            <div
+              className={styles.containerCard}
               style={{
                 gridTemplateColumns: `repeat(${eventsNoPublic.length}, 1fr`,
               }}
-             >
-            
-              { eventsNoPublic.map((event, index) => (
+            >
+              {eventsNoPublic.map((event, index) => (
                 <div>
                   <Card
                     userData={userData}
@@ -204,7 +198,7 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
                     orgEvent={'true'}
                     datePublic={'false'}
                   />
-                    
+
                   {event.inRevision === false ? (
                     <div className={styles.btns}>
                       <Link className={styles.btn} to={'/organiza-un-evento-editar/' + event._id}>
@@ -245,7 +239,6 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
                       />
                     </div>
                     {event.inRevision === false ? (
-                    
                       <div className={styles.btns}>
                         <Link className={styles.btn} to={'/organiza-un-evento-editar/' + event._id}>
                           <BsPencilSquare className={styles.iconEdit} />
@@ -256,7 +249,6 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
                         </button>
                       </div>
                     ) : (
-                      
                       <div className={styles.btns}>
                         <Link className={styles.btn}>
                           <span>Evento En Revision</span>
@@ -272,13 +264,13 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
           )}
         </>
       ) : (
-        <div>
-          <p className={styles.not_event}>Aun no tienes eventos publicados o por publicar. Crea tu evento</p>
-          <p className={styles.not_event}>
-            <a href='/organiza-un-evento' target='_blank'>
-              aqui
-            </a>
-          </p>
+        <div className={styles.containerSeeEvents}>
+          <hr className={styles.hr}></hr>
+          <p className={styles.text}>Aun no tienes eventos publicados o por publicar. Crea tu evento</p>
+          <button className={styles.btn}>
+            <Link to='/organiza-un-evento'>Organizar un evento</Link>
+          </button>
+          <hr className={styles.hr}></hr>
         </div>
       )}
     </div>
