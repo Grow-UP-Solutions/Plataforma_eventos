@@ -11,17 +11,21 @@ import eventsApi from '../../axios/eventsApi';
 import { AuthContext } from '../../context/auth/AuthContext';
 import Card from '../Cards/Card';
 import styles from './Events.module.css';
+import {fechaActual ,hora ,minutes } from '../../utils/fechaActual'
 
 const Events = () => {
   //Fecha actual
-  const fecha = new Date();
-  const hora = fecha.getHours();
-  const minutes = fecha.getMinutes();
-  const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
+ 
 
   const todosLosEventos = useSelector((state) => state.events);
 
-  const allEvents = todosLosEventos.filter((event) => event.isPublic === true && event.inRevision === false);
+ 
+
+  const allEvents = todosLosEventos.filter((event) => 
+      event.isOld === false && 
+      event.isPublic === true && 
+      event.inRevision === false
+    );
 
   //POPULARES//
 

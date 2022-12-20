@@ -89,20 +89,23 @@ const EventEdit = () => {
     specialRequires: '',
     dates: [
       {
+        idDate: '',
         date: '',
         start: '',
         end: '',
         year: 0,
-        cupos: '',
-        price: '',
+        cupos: 0,
+        price: 0,
         sells: 0,
-        isPublic: '',
+        isPublic: true,
         precioAlPublico: '',
         gananciaCupo: '',
         gananciaEvento: '',
         dateFormated: '',
-        inRevision: '',
-        sendEmail:'',
+        dateFormated2: '',
+        inRevision: false,
+        isOld:false,
+        sendEmail:false,
         codigos: [
           {
             codigo: '',
@@ -111,13 +114,14 @@ const EventEdit = () => {
             cod: false,
             show: true,
             ed: false,
-            uses: '',
+            uses: 0,
           },
         ],
       },
     ],
     dateDelete:[],
     isPublic: '',
+    isOld:'',
     inRevision: '',
     sendEmail:'',
     opinions:'',
@@ -165,6 +169,7 @@ const EventEdit = () => {
         overallEarnings:eventDetails.overallEarnings,
         generalBuyers:eventDetails.generalBuyers,
         sells:eventDetails.sells,
+        isOld: eventDetails.isOld,
         idEvent:eventDetails.idEvent
       });
      
@@ -769,7 +774,7 @@ const EventEdit = () => {
           return Swal.fire({
             html:
               'Texto &&&&&&&&&&, ' +
-              '<a href="/user/perfil/datos" target="_blank">ver sección &&&& en Guía del Organizador</a> ' +
+              '<a href="/usuario/guia-organizador" target="_blank">ver sección &&&& en Guía del Organizador</a> ' +
               '. Si procedes, es importante que le informes de inmediato sobre este cambio a los Asistentes.',
             showDenyButton: true,
             showCancelButton: false,
@@ -805,7 +810,7 @@ const EventEdit = () => {
           return Swal.fire({
             html:
               'Texto &&&&&&&&&&, ' +
-              '<a href="/user/perfil/datos" target="_blank">ver sección &&&& en Guía del Organizador</a> ' +
+              '<a href="/usuario/guia-organizador" target="_blank">ver sección &&&& en Guía del Organizador</a> ' +
               '. Si procedes, es importante que le informes de inmediato sobre este cambio a los Asistentes.',
             showDenyButton: true,
             showCancelButton: false,
@@ -834,7 +839,7 @@ const EventEdit = () => {
           return Swal.fire({
             html:
               'Texto &&&&&&&&&&, ' +
-              '<a href="/user/perfil/datos" target="_blank">ver sección &&&& en Guía del Organizador</a> ' +
+              '<a href="/usuario/guia-organizador" target="_blank">ver sección &&&& en Guía del Organizador</a> ' +
               '. Si procedes, es importante que le informes de inmediato sobre este cambio a los Asistentes.',
             showDenyButton: true,
             showCancelButton: false,
@@ -950,7 +955,7 @@ const EventEdit = () => {
       return Swal.fire({
         html:
           `Ya hay ${newFechas[i].sells} cupo(s) comprado(s) para esta fecha, si la quitas de publicados el dinero será devuelto a los compradores. Esta devolución genera unos costos los cuales deberas asumir.` +
-          '<a href="/user/perfil/datos" target="_blank">Ver sección &&&&&&&&&& en Términos y Condiciones.</a> ' +
+          '<a href="/docs/terminos-condiciones/organizador" target="_blank">Ver sección &&&&&&&&&& en Términos y Condiciones.</a> ' +
           'Deseas quitar esta fecha de publicados? ',
         width: 600,
         icon: 'warning',
@@ -998,6 +1003,7 @@ const EventEdit = () => {
       dates: [
         ...post.dates,
         {
+          idDate: '',
           date: '',
           start: '',
           end: '',
@@ -1010,7 +1016,10 @@ const EventEdit = () => {
           gananciaCupo: '',
           gananciaEvento: '',
           dateFormated: '',
+          dateFormated2: '',
           inRevision: false,
+          isOld:false,
+          sendEmail:false,
           codigos: [
             {
               codigo: '',
@@ -1019,7 +1028,7 @@ const EventEdit = () => {
               cod: false,
               show: true,
               ed: false,
-              uses: '',
+              uses: 0,
             },
           ],
         },
@@ -1073,7 +1082,7 @@ const EventEdit = () => {
         return Swal.fire({
           html:
             `Ya hay ${newFechas[i].sells} cupo(s) comprado(s) para esta fecha, si la quitas de publicados el dinero será devuelto a los compradores. Esta devolución genera unos costos los cuales deberas asumir.` +
-            '<a href="/user/perfil/datos" target="_blank">Ver sección &&&&&&&&&& en Términos y Condiciones.</a> ' +
+            '<a href="/docs/terminos-condiciones/organizador" target="_blank">Ver sección &&&&&&&&&& en Términos y Condiciones.</a> ' +
             'Deseas quitar esta fecha de publicados? ',
           width: 600,
           icon: 'warning',
@@ -1369,7 +1378,7 @@ const EventEdit = () => {
       }).then((publicar) => {
         if (publicar) {
           dispatch(putEvent(post, eventId));
-          swal('Tu evento ha sido publicado ', {
+          swal('Tus cambios han sido guardados', {
             icon: 'success',
           });
           navigate('/usuario/mis-eventos')
@@ -1384,7 +1393,7 @@ const EventEdit = () => {
       }).then((publicar) => {
         if (publicar) {
           dispatch(postEvent(post, id));
-          swal('Tu evento ha sido publicado ', {
+          swal('Tus cambios han sido guardados', {
             icon: 'success',
           });
           navigate('/usuario/mis-eventos');
@@ -2136,10 +2145,11 @@ const EventEdit = () => {
                       {/* Dates*/}
                       <div>
                         {post.dates.map((date, index) =>
-                          new Date(date.date) < new Date(dateActual) ||
-                          (date.date === dateActual &&
-                            date.end.slice(0, 2) <= hora &&
-                            date.end.slice(3, 5) <= minutes + 2) ||
+                          // new Date(date.date) < new Date(dateActual) ||
+                          // (date.date === dateActual &&
+                          //   date.end.slice(0, 2) <= hora &&
+                          //   date.end.slice(3, 5) <= minutes + 2) ||
+                          date.isOld === true ||
                           date.inRevision === true ? (
                             ''
                           ) : (
@@ -2326,7 +2336,7 @@ const EventEdit = () => {
                                   </button>
                                 ) : (
                                   <button
-                                    className={styles.removePublic}
+                                    className={styles.addPublic}
                                     type='button'
                                     onClick={(e) => becomePublic(e, index, date._id)}
                                   >

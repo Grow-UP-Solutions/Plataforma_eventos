@@ -140,17 +140,17 @@ const dateCanceltoAdminbyOrg = async (event, user , date) => {
                     >
 
                     <p>
-                    Fecha cancelada :${date.dateFormated}
+                    Fecha y hora cancelada: 
                     </p>
                     <p>
-                    Hora :${date.start}-${date.end}
+                    ${date.dateFormated}  ${date.start}-${date.end}
                     </p>
 
                     <p>
                     Fecha de cancelacion :${dateActual}
                     </p>
                     <p>
-                    Hora :${hora}-${minutes}
+                    Hora de cancelacion :${hora}-${minutes}
                     </p>
                 
                     <p>
