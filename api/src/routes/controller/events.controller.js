@@ -142,28 +142,25 @@ router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
 
-    console.log('BODY',req.body)
-  
     const newEvent = req.body;
     const user = await UsersFunctionDb.oneUser(newEvent.organizer);
     const event = await getOneEvent(id);
 
-
     //mails para avisar evento/fecha cancelado(sacado de publico o eliminado)
 
     if(newEvent.dates.length === 1){
-      console.log('tengo una sola fecha')
+     
       newEvent.dates[0].sendEmail === true ? eventCancelBuyers(event, user) :  ''
       newEvent.dates[0].sendEmail === true ? eventCancelToAdminbyOrg(event, user) :  ''
     }else{
       for(let i = 0 ; i < newEvent.dates.length ; i ++){
         newEvent.dates[i].sendEmail === true ? dateCanceltoBuyers(event, user , newEvent.dates[i]) : ''
-        newEvent.dates[0].sendEmail === true ? dateCanceltoAdminbyOrg(event, user , newEvent.dates[i]) :  ''
+        newEvent.dates[i].sendEmail === true ? dateCanceltoAdminbyOrg(event, user , newEvent.dates[i]) :  ''
       }
     }
 
 
-    console.log('newEvent.dateDelete.length',newEvent.dateDelete.length)
+    
 
     if(newEvent.dateDelete.length){
       for(let i = 0 ; i < newEvent.dateDelete.length; i++ ){
@@ -268,6 +265,7 @@ router.put('/inRevision/acceptOrReject', async (req, res) => {
       event.inRevision === false && event.sells > 0 ? eventInRevisionBuys(event , user)   : ''
       event.inRevision === false ? eventInRevisionBuysAdmin(event , user)   : ''
       event.inRevision = !event.inRevision;
+      event.inRevision === false ? event.isPublic === false : event.isPublic === event.isPublic;
 
       let auxDates = [...event.dates];
 
@@ -278,7 +276,6 @@ router.put('/inRevision/acceptOrReject', async (req, res) => {
 
       event.dates = [];
       event.dates.push(...auxDates);
-      
       
     }
 

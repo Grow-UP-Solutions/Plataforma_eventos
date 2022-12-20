@@ -50,6 +50,10 @@ const EventSchema = new Schema(
           default: false,
         },
 
+        isOld: {
+          type: Boolean,
+        },
+
         sendEmail: {
           type: Boolean,
           default: false,
@@ -130,6 +134,11 @@ const EventSchema = new Schema(
     isPublic: {
       type: Boolean,
     },
+
+    isOld: {
+      type: Boolean,
+    },
+
     inRevision: {
       type: Boolean,
       default: false,

@@ -11,6 +11,7 @@ import swal from 'sweetalert';
 import eventsApi from '../../axios/eventsApi';
 import { AiOutlineClose } from 'react-icons/ai';
 import { Hearts } from 'react-loader-spinner';
+import {fechaActual , hora , minutes } from '../../utils/fechaActual'
 
 const Card = ({ event, listName, orgEvent, datePublic }) => {
   const { toggleScreenLogin, getEventsFavourites, getEventsWithoutFavourites } = useContext(UIContext);
@@ -24,40 +25,45 @@ const Card = ({ event, listName, orgEvent, datePublic }) => {
   const [isLoading, setIsLoading] = useState(true);
   const menuRef = useRef();
 
-  const fecha = new Date();
-  const hora = fecha.getHours();
-  const minutes = fecha.getMinutes();
-  const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
+  console.log('event',event)
 
-  if (dateActual && orgEvent !== 'true') {
+ 
+
+ //ocultar eventos viejos
+
+  if (fechaActual && orgEvent !== 'true') {
     event.dates.map((date) => {
-      if (new Date(date.date) < new Date(dateActual)) {
+      if (new Date(date.date) < new Date(fechaActual)) {
         if (event.dates.length === 1) {
-          date.isPublic = false;
-          event.isPublic = false;
+          date.isOld = true;
+          event.isOld = true;
         } else {
-          date.isPublic = false;
+          date.isOld = true;
         }
-      } else if (date.date === dateActual) {
+      } else if (date.date === fechaActual) {
         if (date.end.slice(0, 2) <= hora && date.end.slice(3, 5) <= minutes + 2) {
           if (event.dates.length === 1) {
-            date.isPublic = false;
-            event.isPublic = false;
+            date.isOld = true;
+            event.isOld = true;
           } else {
-            date.isPublic = false;
+            event.isOld = true;
           }
         }
       }
     });
   }
 
+
+  //rechequear esto
+
   if (event.dates.length === 1 && event.dates[0].isPublic === false) {
     event.isPublic = false;
-    console.log('event.ispublic', event.isPublic);
+    console.log('event.isOld', event.isOld);
   }
 
-  const datesPublic = event.dates.filter((date) => date.isPublic === true);
-  const datesNotPublic = event.dates.filter((date) => date.isPublic === false);
+  //filtro por fechas: para mostrar y no mostrar
+  const datesPublic = event.dates.filter((date) => date.isOld === false && date.isPublic === true);
+  const datesNotPublic = event.dates.filter((date) => date.isOld === true && date.isPublic === false);
 
   useEffect(() => {
     getUsers();
@@ -159,8 +165,8 @@ const Card = ({ event, listName, orgEvent, datePublic }) => {
 
   //PRECIO FECHA HOME//
 
-  const firstPublicDate = event.dates.find((date) => date.isPublic === true);
-  const firstNotPublicDate = event.dates.find((date) => date.isPublic === false);
+  const firstPublicDate = event.dates.find((date) => date.isOld === false && date.isPublic === true);
+  const firstNotPublicDate = event.dates.find((date) => date.isOld === true && date.isPublic === false);
 
   const [price, setPrice] = useState(firstPublicDate !== undefined ? firstPublicDate.price : '');
 
@@ -221,6 +227,8 @@ const Card = ({ event, listName, orgEvent, datePublic }) => {
           </Link>
         )}
 
+        {/* FECHAS */}
+
         <div className={styles.cardText}>
           {orgEvent === 'true' && datePublic === 'true' && selectedDate === '' ? (
             <p className={styles.cardDateCurrent}>
@@ -229,7 +237,7 @@ const Card = ({ event, listName, orgEvent, datePublic }) => {
           ) : orgEvent === 'true' && datePublic === 'true' && selectedDate !== '' ? (
             <p className={styles.cardDateCurrent}>{selectedDate.replace('de', '/')}</p>
           ) : orgEvent === 'true' && datePublic === 'false' && selectedDate === '' ? (
-            <p className={styles.cardDateCurrent}>{firstNotPublicDate.dateFormated.replace('de', '/')}</p>
+            <p className={styles.cardDateCurrent}>{firstNotPublicDate ? firstNotPublicDate.dateFormated.replace('de', '/'):''}</p>
           ) : orgEvent === 'true' && datePublic === 'false' && selectedDate !== '' ? (
             <p className={styles.cardDateCurrent}>{selectedDate.replace('de', '/')}</p>
           ) : orgEvent !== 'true' ? (
@@ -237,7 +245,10 @@ const Card = ({ event, listName, orgEvent, datePublic }) => {
               {event.dates && event.dates.length > 1 ? (
                 <select className={styles.cardDate} onChange={(e) => handlePrice(e)}>
                   {event.dates.map((date, index) =>
-                    date.cupos > 0 && date.isPublic === true && date.inRevision === false ? (
+                    date.cupos > 0 && 
+                    date.isOld === false && 
+                    date.isPublic === true && 
+                    date.inRevision === false ? (
                       date.dateFormated.slice(date.dateFormated.length - 4) === numCadena ? (
                         <option key={index} value={date.price}>
                           {date.dateFormated.slice(0, date.dateFormated.length - 7)}
@@ -256,17 +267,21 @@ const Card = ({ event, listName, orgEvent, datePublic }) => {
                   )}
                 </select>
               ) : event.dates[0].cupos === 0 &&
+                event.dates[0].isOld === false &&
                 event.dates[0].isPublic === true &&
                 event.dates[0].inRevision === false ? (
                 <p className={styles.cardCuposCurrent}>Cupos LLenos</p>
               ) : event.dates[0].dateFormated.slice(event.dates[0].dateFormated.length - 4) === numCadena &&
                 event.dates[0].isPublic === true &&
+                event.dates[0].isOld === false &&
                 event.dates[0].inRevision === false ? (
                 <p className={styles.cardDateCurrent}>
                   {event.dates[0].dateFormated.slice(0, event.dates[0].dateFormated.length - 7)}
                 </p>
-              ) : event.dates[0].isPublic === true && event.dates[0].inRevision === false ? (
-                <p className={styles.cardDateCurrent}>{event.dates[0].dateFormated.replace('de', '/')}</p>
+              ) : event.dates[0].isPublic === true 
+                  && event.dates[0].isOld === false 
+                  && event.dates[0].inRevision === false ? (
+                 <p className={styles.cardDateCurrent}>{event.dates[0].dateFormated.replace('de', '/')}</p>
               ) : (
                 ''
               )}
@@ -510,7 +525,7 @@ const Card = ({ event, listName, orgEvent, datePublic }) => {
                         </div>
                         <div className={styles.container_choosedate}>
                           {event.dates.map((date) =>
-                            date.isPublic === true ? (
+                            date.isOld === true ? (
                               <p onClick={(e) => chooseDate(e, date._id, date.dateFormated, date.price)}>{date.date}</p>
                             ) : (
                               ''
@@ -532,7 +547,7 @@ const Card = ({ event, listName, orgEvent, datePublic }) => {
                         <div className={styles.closeMenuGetDate}></div>
                         <div className={styles.container_choosedate}>
                           {event.dates.map((date) =>
-                            date.isPublic === false ? (
+                            date.isOld === false ? (
                               <p onClick={(e) => chooseDate(e, date._id, date.dateFormated, date.price)}>{date.date}</p>
                             ) : (
                               ''
