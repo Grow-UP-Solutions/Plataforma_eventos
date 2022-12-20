@@ -178,6 +178,7 @@ const EventCreateForm = () => {
         dateFormated: '',
         dateFormated2: '',
         inRevision: false,
+        isOld:false,
         sendEmail:false,
         codigos: [
           {
@@ -194,6 +195,7 @@ const EventCreateForm = () => {
     ],
     isPublic: true,
     inRevision: false,
+    isOld: false,
     sendEmail:false,
     dateDelete:[]
   });
@@ -674,12 +676,15 @@ const EventCreateForm = () => {
           gananciaCupo: '',
           gananciaEvento: '',
           dateFormated: '',
+          dateFormated2: '',
           inRevision: false,
+          isOld:false,
+          sendEmail:false,
           codigos: [
             {
               codigo: '',
-              descuento: 0,
-              cantidad: 0,
+              descuento: '',
+              cantidad: '',
               cod: false,
               show: true,
               ed: false,

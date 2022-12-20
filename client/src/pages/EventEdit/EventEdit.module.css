@@ -1249,6 +1249,17 @@
   font-weight: bold;
 }
 
+.addPublic {
+  border: none;
+  background-color: transparent;
+  color: #aa2929;
+  cursor: pointer;
+}
+.addPublic:hover {
+  font-weight: bold;
+}
+
+
 /* VISTA PREVIA */
 
 .btnVista {
