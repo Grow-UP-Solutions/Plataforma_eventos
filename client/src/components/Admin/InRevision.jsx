@@ -6,9 +6,10 @@ import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import { useNavigate, useParams } from 'react-router-dom';
 import eventsApi from '../../axios/eventsApi';
 import { AiOutlineConsoleSql } from 'react-icons/ai';
-import { fechaActual } from '../../utils/fechaActual';
+
 import { Link } from 'react-router-dom';
 import Loading from '../Loading/Loading';
+import { fechaActual , hora , minutes } from  '../../utils/fechaActual'
 
 const InRevision = () => {
   
@@ -26,7 +27,36 @@ const InRevision = () => {
   const getEvents = async () => {
     
       const userResult = await eventsApi.get(`/events`);
-      setEvents(userResult.data);
+
+      const eventos = userResult.data
+
+      if (fechaActual && eventos !== undefined) {
+        eventos.map((evento) => {
+          evento.dates.map((date) => {
+            if (new Date(date.date) < new Date(fechaActual)) {
+              if (evento.dates.length === 1) {
+                date.isOld = true;
+                evento.isOld = true;
+              } else {
+                date.isOld = true;
+              }
+            } else if (date.date === fechaActual) {
+              if (date.end.slice(0, 2) <= hora && date.end.slice(3, 5) <= minutes + 2) {
+                if (evento.dates.length === 1) {
+                  date.isOld = true;
+                  evento.isOld = true;
+                } else {
+                  date.isOld = true;
+                }
+              }
+            }
+          });
+        });
+      }
+
+      const eventsNotOld = eventos.filter((e) => e.isOld === false);
+
+      setEvents(eventsNotOld);
       setLoad(false)
     
   };
@@ -118,6 +148,7 @@ const InRevision = () => {
               {events !== undefined &&
                 events.slice(indexOfFirstEvent, indexOfLastEvent).map((event) =>
                   event.dates.map((date) =>
+                  date.isOld === false ?
                     
                       <tr key={event._id} className={style.tbody}>
                         <td className={style.tbody_name}>
@@ -157,6 +188,8 @@ const InRevision = () => {
                     
                         </td>
                       </tr>
+
+                  :''
                     
                   )
                 )}
