@@ -38,7 +38,7 @@ router.post('/orden', async (req, res) => {
 
   const telefono = userDB.tel?.split(' ').join('');
 
-  const isCuposLlenos = false;
+  let isCuposLlenos = false;
 
   dateEvent.forEach((date) => {
     if (date.cupos <= 0) isCuposLlenos = true;
@@ -144,8 +144,6 @@ router.get('/success', async (req, res) => {
     let ganancia = 0;
 
     if (response.status === 'approved' && response.status_detail === 'accredited') {
-
-      
       console.log({ auxBody });
 
       organizerEvent.pendingEarnings += auxBody[0].ganancia;
@@ -157,34 +155,28 @@ router.get('/success', async (req, res) => {
       let usuariosComprados = [];
 
       const buyer = {
-        buyer : user._id,
-        pictureBuyer:user.userpicture,
+        buyer: user._id,
+        pictureBuyer: user.userpicture,
         eventId: event._id,
         eventTitle: event.title,
-        dates: []
-      }
+        dates: [],
+      };
 
-      console.log('b',buyer)
-      
+      console.log('b', buyer);
 
       event.dates.forEach(async (e, i) => {
         for (let j = 0; j < auxBody[0].dates.length; ++j) {
-         
           if (e._id == auxBody[0].dates[j].id) {
-
-           const date=  {
+            const date = {
               dateId: auxBody[0].dates[j].id,
               dateFromated: e.dateFormated,
-              date:e.date,
-              start:e.start,
-              end:e.end,
-              quantity:auxBody[0].dates[j].quantity
-              }
+              date: e.date,
+              start: e.start,
+              end: e.end,
+              quantity: auxBody[0].dates[j].quantity,
+            };
 
-            buyer.dates.push(date)
-
-            
-      
+            buyer.dates.push(date);
 
             const auxUsuariosComprados = {
               idDate: auxBody[0].dates[j].id,
@@ -196,16 +188,16 @@ router.get('/success', async (req, res) => {
               start: '',
               end: '',
             };
-  
+
             if (e._id.toString() === auxBody[0].dates[j].id) {
               auxUsuariosComprados.date = e.date;
               auxUsuariosComprados.dateFormated = e.dateFormated;
               auxUsuariosComprados.start = e.start;
               auxUsuariosComprados.end = e.end;
             }
-  
+
             usuariosComprados.push(auxUsuariosComprados);
-  
+
             console.log('Id auxbody === Id eventDate');
             for (let x = 0; x < e.codigos.length; x++) {
               if (
@@ -242,8 +234,7 @@ router.get('/success', async (req, res) => {
         }
       });
 
-      console.log('b',buyer)
-
+      console.log('b', buyer);
 
       event.generalBuyers.push(buyer);
 
