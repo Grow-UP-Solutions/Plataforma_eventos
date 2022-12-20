@@ -8,10 +8,11 @@ const fecha = new Date();
   const minutes = fecha.getMinutes();
   const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
 
-const eventCreateAdministrador = async (events, organizer) => {
-  console.log('eventmail',events)
-  console.log('organizer',organizer)
-  const { title, _id, longDescription, idEvent, } = events;
+const editEventInRevisionToAdmin = async (newEvente,user) => {
+
+    console.log('editEventInRevisionAdmin')
+  
+
   const transporter = createTransport({
     service: 'gmail',
     secure: true,
@@ -24,7 +25,7 @@ const eventCreateAdministrador = async (events, organizer) => {
   let mail_options = {
     from: 'Lo quiero hacer',
     to: process.env.MAIL_CLIENT,
-    subject: `NUEVO - Publicado por ${organizer.firstName} ${organizer.lastName} REF: ${idEvent}`,
+    subject: `EDITADO ***EN REVISION*** ${user.firstName} ${user.lastName} REF: ${newEvente.idEvent}`,
     html: `<!DOCTYPE html>
     <html lang="en">
       <head>
@@ -123,19 +124,20 @@ const eventCreateAdministrador = async (events, organizer) => {
           <div class="container">
             <div class="franja-top"></div>
             <div class="container-data">
-              <h1>Evento creado</h1>
+              <h1>Edicion de Evento en Revision</h1>
     
-              <p>Hola, han creado un evento.</p>
-    
+            
               <a class="event-name" href="https://events-jean.vercel.app/detalles-del-evento/${_id}"
-                >${title}</a
+                >Evento: ${title}</a
               >
+
               <p>
-              Fecha de Creacion: ${dateActual}
-             </p>
-              <p>
-              Hora de Creacion: ${hora}:${minutes}
+               Fecha de edicion:${dateActual}
               </p>
+              <p>
+                Fecha de edicion:${hora}-${minutes}
+              </p>
+           
               <p>
                ${longDescription}
               </p>
@@ -160,5 +162,5 @@ const eventCreateAdministrador = async (events, organizer) => {
   }
 };
 module.exports = {
-  eventCreateAdministrador,
+  editEventInRevisionToAdmin,
 };

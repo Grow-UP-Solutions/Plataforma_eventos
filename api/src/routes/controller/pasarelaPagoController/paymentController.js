@@ -156,6 +156,7 @@ router.get('/success', async (req, res) => {
 
       const buyer = {
         buyer: user._id,
+        buyerEmail: user.email,
         pictureBuyer: user.userpicture,
         eventId: event._id,
         eventTitle: event.title,
@@ -219,6 +220,7 @@ router.get('/success', async (req, res) => {
 
             e.buyers.push({
               id: user._id,
+              email: user.email,
               cupos: auxBody[0].dates[j].quantity,
               codigo: auxBody[0].dates[j].codigoUsuario || auxBody[0].dates[j].codigoDescuento || null,
             });

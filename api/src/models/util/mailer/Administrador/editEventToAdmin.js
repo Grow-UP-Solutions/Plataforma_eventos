@@ -1,17 +1,24 @@
+// DESTINO: ADMINISTRADOR
+// CASO: 
+// 1. CUANDO UN ORGANIZADOR SACA DE PUBLICO UN EVENTO 
+// 2. CUANDO UNA FECHA DE JA DE SER PUBLICA Y ESTA ERA LA UNICA FECHA DEL EVENTO
+//MOTIVO: AVISA QUE UN EVENTO HA SIDO EDITADO
+
+
+
 const { createTransport } = require('nodemailer');
 require('dotenv').config();
 
 const { EMAIL, PASSWORD } = process.env;
 
-const fecha = new Date();
+  const fecha = new Date();
   const hora = fecha.getHours();
   const minutes = fecha.getMinutes();
   const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
 
-const eventCreateAdministrador = async (events, organizer) => {
-  console.log('eventmail',events)
-  console.log('organizer',organizer)
-  const { title, _id, longDescription, idEvent, } = events;
+const editEventToAdmin = async (newEvent,event,user) => {
+  
+ 
   const transporter = createTransport({
     service: 'gmail',
     secure: true,
@@ -24,7 +31,7 @@ const eventCreateAdministrador = async (events, organizer) => {
   let mail_options = {
     from: 'Lo quiero hacer',
     to: process.env.MAIL_CLIENT,
-    subject: `NUEVO - Publicado por ${organizer.firstName} ${organizer.lastName} REF: ${idEvent}`,
+    subject: `EVENTO EDITADO - ${user.firstName} ${user.lastName} REF: ${newEvent.idEvent}`,
     html: `<!DOCTYPE html>
     <html lang="en">
       <head>
@@ -123,21 +130,22 @@ const eventCreateAdministrador = async (events, organizer) => {
           <div class="container">
             <div class="franja-top"></div>
             <div class="container-data">
-              <h1>Evento creado</h1>
+              <h1>Este Evento ha sido editado</h1>
     
-              <p>Hola, han creado un evento.</p>
-    
-              <a class="event-name" href="https://events-jean.vercel.app/detalles-del-evento/${_id}"
-                >${title}</a
+            
+              <a class="event-name" href="https://events-jean.vercel.app/detalles-del-evento/${newEvent._id}"
+                >Evento: ${newEvent.title}</a
               >
+
               <p>
-              Fecha de Creacion: ${dateActual}
-             </p>
-              <p>
-              Hora de Creacion: ${hora}:${minutes}
+               Fecha de edicion:${dateActual}
               </p>
               <p>
-               ${longDescription}
+                Fecha de edicion:${hora}-${minutes}
+              </p>
+           
+              <p>
+              Descripcion del evento: : ${newEvent.longDescription}
               </p>
     
               <div class="container-date">
@@ -159,6 +167,8 @@ const eventCreateAdministrador = async (events, organizer) => {
     return { msg: ('FALLO EL ENVIO DE EMAIL', error) };
   }
 };
+
+
 module.exports = {
-  eventCreateAdministrador,
+  editEventToAdmin,
 };

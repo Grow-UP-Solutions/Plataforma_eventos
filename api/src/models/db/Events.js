@@ -49,6 +49,13 @@ const EventSchema = new Schema(
           type: Boolean,
           default: false,
         },
+
+        sendEmail: {
+          type: Boolean,
+          default: false,
+        },
+
+
         dateFormated: String,
         buyers: {
           type: Array,
@@ -128,6 +135,11 @@ const EventSchema = new Schema(
       default: false,
     },
 
+    sendEmail: {
+      type: Boolean,
+      default: false,
+    },
+
     rating: {
       type: Number,
       default: 0,
@@ -137,6 +149,12 @@ const EventSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'Users',
     },
+
+    dateDelete: {
+      type: Array,
+      default: [],
+    },
+    
 
     opinions: [
       {
