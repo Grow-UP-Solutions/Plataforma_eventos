@@ -38,7 +38,7 @@ router.post('/orden', async (req, res) => {
 
   const telefono = userDB.tel?.split(' ').join('');
 
-  const isCuposLlenos = false;
+  let isCuposLlenos = false;
 
   dateEvent.forEach((date) => {
     if (date.cupos <= 0) isCuposLlenos = true;
@@ -144,8 +144,6 @@ router.get('/success', async (req, res) => {
     let ganancia = 0;
 
     if (response.status === 'approved' && response.status_detail === 'accredited') {
-
-
       organizerEvent.pendingEarnings += auxBody[0].ganancia;
       organizerEvent.overallEarnings += auxBody[0].ganancia;
       event.pendingEarnings += auxBody[0].ganancia;
@@ -155,34 +153,27 @@ router.get('/success', async (req, res) => {
       let usuariosComprados = [];
 
       const buyer = {
-        buyer : user._id,
+        buyer: user._id,
         buyerEmail: user.email,
-        pictureBuyer:user.userpicture,
+        pictureBuyer: user.userpicture,
         eventId: event._id,
         eventTitle: event.title,
-        dates: []
-      }
-
-      
+        dates: [],
+      };
 
       event.dates.forEach(async (e, i) => {
         for (let j = 0; j < auxBody[0].dates.length; ++j) {
-         
           if (e._id == auxBody[0].dates[j].id) {
-
-           const date=  {
+            const date = {
               dateId: auxBody[0].dates[j].id,
               dateFromated: e.dateFormated,
-              date:e.date,
-              start:e.start,
-              end:e.end,
-              quantity:auxBody[0].dates[j].quantity
-              }
+              date: e.date,
+              start: e.start,
+              end: e.end,
+              quantity: auxBody[0].dates[j].quantity,
+            };
 
-            buyer.dates.push(date)
-
-            
-      
+            buyer.dates.push(date);
 
             const auxUsuariosComprados = {
               idDate: auxBody[0].dates[j].id,
@@ -194,16 +185,16 @@ router.get('/success', async (req, res) => {
               start: '',
               end: '',
             };
-  
+
             if (e._id.toString() === auxBody[0].dates[j].id) {
               auxUsuariosComprados.date = e.date;
               auxUsuariosComprados.dateFormated = e.dateFormated;
               auxUsuariosComprados.start = e.start;
               auxUsuariosComprados.end = e.end;
             }
-  
+
             usuariosComprados.push(auxUsuariosComprados);
-  
+
             for (let x = 0; x < e.codigos.length; x++) {
               if (
                 auxBody[0].dates[j].codigoDescuento !== null &&
@@ -229,18 +220,13 @@ router.get('/success', async (req, res) => {
               codigo: auxBody[0].dates[j].codigoUsuario || auxBody[0].dates[j].codigoDescuento || null,
             });
 
-
             e.cupos = e.cupos - auxBody[0].dates[j].quantity;
             e.sells = e.sells + auxBody[0].dates[j].quantity;
             e.pendingEarnings = e.pendingEarnings + auxBody[0].dates[j].ganancias;
             e.overallEarnings = e.overallEarnings + auxBody[0].dates[j].ganancias;
-           
           }
         }
       });
-
-   
-
 
       event.generalBuyers.push(buyer);
 
