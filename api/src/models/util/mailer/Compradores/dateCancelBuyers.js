@@ -1,7 +1,8 @@
 // DESTINO: COMPRADORES
 // CASO: 
-//  CUANDO UN ORGANIZADOR QUITA DE PUBLICOS A UNA FECHA Y ESTA FECHA NO ES UNICA, 
+//1.  CUANDO UN ORGANIZADOR QUITA DE PUBLICOS UNA FECHA Y ESTA FECHA NO ES UNICA, 
 //   ES DECIR EL EVENTO TIENE MAS FECHAS PUBLICAS
+//2.CUANDO UN ADMIN PASA UNA FECHA A REVISION
 //MOTIVO: AVISA QUE UNA FECHA HA SIDO CANCELADA
 
 
@@ -16,12 +17,10 @@ const { EMAIL, PASSWORD } = process.env;
   const minutes = fecha.getMinutes();
   const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
 
-const dateCanceltoBuyers = async (event, user , date) => {
+const dateCancelBuyers = async (event, date) => {
 
-  
     for (let i = 0 ; i < event.generalBuyers.length ; i ++){
 
- 
         const transporter = createTransport({
             service: 'gmail',
             secure: true,
@@ -141,10 +140,10 @@ const dateCanceltoBuyers = async (event, user , date) => {
                     >
 
                     <p>
-                    Fecha cancelada :${date.dateFormated}
+                    Fecha cancelada:  ${date.dateFormated}
                     </p>
                     <p>
-                    Hora :${date.start}-${date.end}
+                    Hora:  ${date.start}-${date.end}
                     </p>
                 
                     <p>
@@ -165,9 +164,9 @@ const dateCanceltoBuyers = async (event, user , date) => {
         };
         try {
             const response = await transporter.sendMail(mail_options);
-            return { msg: ('SE ENVIO CON EXITO', response.response) };
+            console.log('SE ENVIO CON EXITO', response.response)
         } catch (error) {
-            return { msg: ('FALLO EL ENVIO DE EMAIL', error) };
+            console.log('FALLO EL ENVIO DE EMAIL', error)
         }
         }
 
@@ -175,5 +174,5 @@ const dateCanceltoBuyers = async (event, user , date) => {
 
 
 module.exports = {
-    dateCanceltoBuyers,
+    dateCancelBuyers,
 };

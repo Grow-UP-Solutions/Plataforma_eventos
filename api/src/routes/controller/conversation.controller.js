@@ -15,7 +15,6 @@ const router = Router();
 
 router.get('/:userId', async (req, res) => {
   const { userId } = req.params;
-  console.log(userId);
   try {
     const allConversation = await findConversation(userId);
     res.status(200).json(allConversation);
@@ -73,7 +72,6 @@ router.put('/:idConversation', async (req, res) => {
 });
 router.put('/:idConversation/pinup', async (req, res) => {
   const { idConversation } = req.params;
-  console.log(idConversation);
   try {
     const pinupConversations = await pinupConversation(idConversation);
     return res.status(200).json(pinupConversations);

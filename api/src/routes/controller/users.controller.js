@@ -40,8 +40,7 @@ const { sendMailUserRejected } = require('../../models/util/mailer/mailUserRejec
 const { sendEmailToEventNewDate } = require('../../models/util/mailer/mailToEventNewDate.js');
 const { sendEmailToReportOrganizer } = require('../../models/util/mailer/mailToReportOrganizer.js');
 const { enviar_mail_contact } = require('../../models/util/mailer/contact.js');
-const { eventCreateAdministrador } = require('../../models/util/mailer/eventCreateAdministrador.js');
-const { eventCreateOrganizer } = require('../../models/util/mailer/eventeCreateOrganizer.js');
+
 
 const router = Router();
 /**/ ///////////////Rutas GET////////////// */
@@ -150,8 +149,6 @@ router.get('/getBankAccount/:id', async (req, res) => {
     const user = await UsersFunctionDb.oneUser(id);
 
     if (!user) throw new Error('Usuario con ese id no existe');
-
-    console.log({ bank: user.bank });
 
     res.json({ bankAccounts: user.bank });
   } catch (error) {
@@ -344,7 +341,6 @@ router.post('/commentOrganizer/:id', async (req, res) => {
   try {
     const opinion = req.body;
     const { id } = req.params;
-    console.log(opinion);
     const opinionCreat = await createOrganizerComment(id, opinion);
     return res.status(200).json(opinionCreat);
   } catch (error) {
@@ -822,8 +818,6 @@ router.post('/checkValidateCodeReferred', async (req, res) => {
   const { code } = req.body;
   try {
     const hasCode = await UsersFunctionDb.codeUser(code);
-
-    console.log({ hasCode });
 
     if (!hasCode) {
       throw new Error('No existe el código.');

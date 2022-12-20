@@ -85,10 +85,6 @@ const deleteCodeDiscountById = async (id) => {
   try {
     const codeDiscount = await CodeDiscountModel.findById(id);
 
-    console.log({
-      codeDiscount,
-    });
-
     if (codeDiscount.isRedimeed) throw new Error('Este código ya ha sido utilizado.');
 
     const codeDiscountDeleted = await CodeDiscountModel.findByIdAndDelete(id);
