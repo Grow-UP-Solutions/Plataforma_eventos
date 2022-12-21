@@ -78,7 +78,7 @@
 .input {
   height: 6rem;
   border-radius: 10px;
-  border: 1px solid var(--color-grey-4);
+  border: 1px solid var(--color-grey-2) !important;
   background-color: white;
   color: var(--color-grey-2);
   width: 100%;
@@ -87,7 +87,7 @@
 }
 .input:focus {
   outline: none;
-  border: 2px solid var(--color-blue);
+  border: 2px solid var(--color-blue) !important;
 }
 .input::placeholder {
   padding: 2px;
@@ -347,6 +347,12 @@
   margin-bottom: 2rem;
 }
 
+.containerCheckBoxOnline {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .containerOnLine label {
   color: #707070;
   font-size: 1.3rem;
@@ -367,8 +373,9 @@
   margin-top: 1rem;
 }
 
-.checkBox4:checked ~ .online {
-  display: block;
+.online input:focus {
+  outline: none;
+  border: 1px solid var(--color-orange);
 }
 
 /*5:notOnline */
@@ -376,10 +383,6 @@
 .notOnline {
   display: block;
   margin-top: 1rem;
-}
-
-.checkBox4:checked ~ .notOnline {
-  display: none;
 }
 
 /*5:Dpto - Municipio - Direccion - Barrio */
@@ -433,8 +436,11 @@
 /*5:Map */
 
 .containerMap {
-  margin-bottom: 5rem;
   margin-top: 1rem;
+}
+
+.containerMap div img {
+  height: 20rem;
 }
 
 .titleMap {
@@ -882,8 +888,9 @@
 .timeVerticalRed li span {
   position: absolute;
   color: #fff;
-  top: 5.4rem;
-  left: -1.1rem;
+  top: 4.6rem;
+
+  left: -1.2rem;
   font-size: 3.5rem;
   font-weight: bold;
 }
@@ -2073,15 +2080,6 @@
   background: #d53e27;
 }
 
-.timeVerticalRed li span {
-  position: absolute;
-  color: #fff;
-  top: 5.4rem;
-  left: -1.1rem;
-  font-size: 3.5rem;
-  font-weight: bold;
-}
-
 /*LINEA VERTICAL GRIS*/
 
 .timeVertical {
@@ -3162,5 +3160,11 @@
   .containerLine {
     margin-left: 3rem;
     margin-right: 3rem;
+  }
+}
+
+@media screen and (max-height: 781px) {
+  .container1 {
+    margin-top: 2rem;
   }
 }
