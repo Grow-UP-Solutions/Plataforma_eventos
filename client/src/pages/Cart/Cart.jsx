@@ -118,6 +118,7 @@ const Cart = () => {
 
   const [codigo, setCodigo] = useState('');
   const [desc, setDesc] = useState('');
+  const [ apllied, setApplied ] = useState(false)
 
   const handleCodigo = (e) => {
     e.preventDefault();
@@ -210,6 +211,7 @@ const Cart = () => {
             return swal({
               title: 'Codigo Aplicado',
             });
+            setApplied(true)
           } else if (currentDate[0].codigos[d].codigo === codigo && currentDate[0].codigos[d].cantidad === 0) {
             return swal({
               title: 'Ya no hay bonos disponibles para redimir con este código',
@@ -503,13 +505,7 @@ const Cart = () => {
                                 ) : (
                                   ''
                                 )}
-                                {/* {carrito.length >1 &&
-                               carrito.map((c) =>
-                                c.idDate === currentDate[0]._id ? (
-                                  <div>
-                                    <button onClick={(e)=>quitarFecha(e, c.idDate)}>Quitar Fecha</button>
-                                  </div>):
-                                  '')} */}
+                              
                               </div>
                             )}
                           </div>
@@ -607,14 +603,19 @@ const Cart = () => {
                                   >
                                     Aplicar
                                   </button>
-                                  <button
-                                    className={styles.quitar}
-                                    onClick={(e) => {
-                                      quitar(e, currentDate[0]._id);
-                                    }}
-                                  >
-                                    Quitar
-                                  </button>
+                                  {codigo !== '' ?
+                                   <button
+                                      className={styles.quitar}
+                                      onClick={(e) => {
+                                        quitar(e, currentDate[0]._id);
+                                      }}
+                                    >
+                                      Quitar
+                                    </button>
+                                    :''
+                                  
+                                  }
+                                 
                                 </div>
                               </div>
                             </div>
