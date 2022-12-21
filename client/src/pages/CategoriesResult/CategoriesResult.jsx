@@ -25,6 +25,7 @@ const CategoriesResult = () => {
 
   useEffect(() => {
     const getCategories = () => {
+    
       setLocal(events.filter((event) => event.categories.find((e) => e.name === name)));
       setLoad(false);
     };

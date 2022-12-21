@@ -549,6 +549,8 @@ const EventCreateForm = () => {
     });
   };
 
+ 
+
   function handleCover(e) {
     const todas = [...post.pictures];
     if (e.target.checked) {
@@ -557,6 +559,8 @@ const EventCreateForm = () => {
           foto.cover = true;
         }
       });
+      const portada = todas.filter(foto =>foto.cover===true)
+      console.log('portada',portada)
       setPost({
         ...post,
         pictures: todas,
@@ -567,12 +571,15 @@ const EventCreateForm = () => {
           foto.cover = false;
         }
       });
+     
       setPost({
         ...post,
         pictures: todas,
       });
     }
   }
+
+ 
 
   //--------------------------------------------------//
   //               POST  UBICACION                //
@@ -882,23 +889,7 @@ const EventCreateForm = () => {
 
   const fechaMinima = anio + '-' + mes + '-' + dia;
 
-  //-----------------------------------------------------//
-  //                  SCROLL_SNAP                     //
-
-  // const ref = useRef();
-
-  // const [scrollY, setScrollY] = useState(0);
-
-  // const scrollSections = (px) => {
-  //   ref.current.scrollTo({
-  //     top: scrollY + px,
-  //     left: 0,
-  //     behavior: 'smooth',
-  //   });
-
-  //   setScrollY(scrollY + px);
-  // };
-
+ 
   //--------------------------------------------------//
   //                VISTA PREVIA         //
 
@@ -1021,6 +1012,12 @@ const EventCreateForm = () => {
                 spaceBetween={0}
                 modules={[Pagination, Navigation]}
                 className='swiper'
+                // preventClicks={true}
+                // a11y={false}
+                // watchSlidesProgress= {true}
+                shortSwipes= {false}
+                // shortSwipes= {1}
+              
               >
                 <SwiperSlide>
                   {/* SECTION 1: Nombre del Evento */}
