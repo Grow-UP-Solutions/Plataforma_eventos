@@ -25,7 +25,7 @@ const Card = ({ event, listName, orgEvent, datePublic }) => {
   const [isLoading, setIsLoading] = useState(true);
   const menuRef = useRef();
 
-  console.log('event',event)
+ 
 
  
 
@@ -58,7 +58,7 @@ const Card = ({ event, listName, orgEvent, datePublic }) => {
 
   if (event.dates.length === 1 && event.dates[0].isPublic === false) {
     event.isPublic = false;
-    console.log('event.isOld', event.isOld);
+
   }
 
   //filtro por fechas: para mostrar y no mostrar

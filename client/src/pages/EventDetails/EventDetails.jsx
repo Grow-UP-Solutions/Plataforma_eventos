@@ -55,6 +55,7 @@ const EventDetails = () => {
   const [userBuyOrg , setUserBuyOrg] = useState([])
   const [datesBuy , setDateBuy] = useState([])
   const [assisted , setAssisted] = useState(false)
+  const [pictures, setPictures] = useState([])
   const {
     getEventsFavourites,
     getEffectRatingEvent,
@@ -77,17 +78,34 @@ const EventDetails = () => {
     dispatch(getEvents);
   }, [dispatch]);
 
+ 
+
   
   useEffect(() => {
     const obtenerDatos = async () => {
       const data = await eventsApi.get('/events/' + id);
       const json = data.data;
-      console.log('j',json.organizer)
+     
+      const noCover = json.pictures.filter(picture => picture.cover !== true)
+      
+      const cover = json.pictures.filter(picture => picture.cover === true)[0]
+    
+      if(cover !== undefined){
+        noCover.unshift(cover)
+        setPictures(noCover)
+      }else{
+        setPictures(noCover)
+      }
+      
       obtenerDatosU(json.organizer);
       getEffectRatingEvent(json.rating);
     };
     obtenerDatos();
   }, [eventDetails]);
+
+ 
+
+ 
 
 
 
@@ -95,8 +113,6 @@ const EventDetails = () => {
     
     const data = await eventsApi.get('/users/' + orgId);
     const json = data.data;
-
-   
 
     const eventBuyU = []
     const userBuyOrg = []
@@ -142,18 +158,7 @@ const EventDetails = () => {
   
   };
 
-  console.log('assisted',assisted)
 
-
- 
-
-  
-
-  
-
-
- 
- 
   //Favorito//
 
   useEffect(() => {
@@ -351,8 +356,15 @@ const EventDetails = () => {
             <div className={style.containerSwiper}>
               {eventDetails.pictures.length > 1 ? (
                 <div className={style.containerSwiperGeneral}>
-                  <Swiper slidesPerView={1} navigation modules={[Navigation]} className='mySwipperEventDetails'>
+                  {/* <Swiper slidesPerView={1} navigation modules={[Navigation]} className='mySwipperEventDetails'>
                     {eventDetails.pictures.map((picture) => (
+                      <SwiperSlide>
+                        <img className={style.img} src={picture.picture} alt='Not Found ):' />
+                      </SwiperSlide>
+                    ))}
+                  </Swiper> */}
+                    <Swiper slidesPerView={1} navigation modules={[Navigation]} className='mySwipperEventDetails'>
+                    {pictures.map((picture) => (
                       <SwiperSlide>
                         <img className={style.img} src={picture.picture} alt='Not Found ):' />
                       </SwiperSlide>
