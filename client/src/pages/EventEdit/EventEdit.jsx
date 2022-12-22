@@ -2040,7 +2040,6 @@ const EventEdit = () => {
                                 onChange={(e) => handleChange(e)}
                               />
                             )}
-                            {errors.direccion ? <p className={styles.errors}>{errors.direccion}</p> : null}
 
                             {/* Barrio*/}
                             {failedSubmit && errors.barrio ? (
