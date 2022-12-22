@@ -642,40 +642,6 @@
   height: 4.5rem;
 }
 
-/* .contStart input::-webkit-datetime-edit-fields-wrapper {
-  display: flex;
-}
-
-.contStart input::-webkit-datetime-edit-text {
-  padding: 19px 4px;
-}
-
-.contStart input::-webkit-datetime-edit-hour-field {
-  border-radius: 15%;
-  padding: 19px 13px;
-}
-
-.contStart input::-webkit-datetime-edit-minute-field {
-  background-color: #f2f4f5;
-  border-radius: 15%;
-  padding: 19px 13px;
-}
-
-.contStart input::-webkit-datetime-edit-ampm-field {
-  background-color: #bfcecc;
-  border-radius: 15%;
-  color: #fff;
-  padding: 19px 13px;
-}
-
-.contStart input::-webkit-clear-button {
-  display: none;
-}
-
-.contStart input::-webkit-inner-spin-button {
-  display: none;
-} */
-
 .addDelete {
   align-self: center;
   border: none;
