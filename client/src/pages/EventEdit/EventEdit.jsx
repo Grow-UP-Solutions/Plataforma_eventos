@@ -2150,21 +2150,17 @@ const EventEdit = () => {
                       {/* titulo*/}
                       <div>
                         <p className={styles.title}>Costo y fecha</p>
+                        <p className={styles.titleResponsive}>Costo y fecha</p>
                         <p className={styles.subTitle}>
                           Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum
                           dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh.{' '}
                         </p>
                       </div>
-
-                      <hr className={styles.hr}></hr>
+                      <hr className={styles.hrAsistentes}></hr>
 
                       {/* Dates*/}
                       <div>
                         {post.dates.map((date, index) =>
-                          // new Date(date.date) < new Date(dateActual) ||
-                          // (date.date === dateActual &&
-                          //   date.end.slice(0, 2) <= hora &&
-                          //   date.end.slice(3, 5) <= minutes + 2) ||
                           date.isOld === true || date.inRevision === true ? (
                             ''
                           ) : (
@@ -2173,74 +2169,64 @@ const EventEdit = () => {
                               <div className={styles.containerInfo} key={index}>
                                 {/* cupos*/}
                                 <div className={styles.containerSubInfo}>
-                                  <label className={styles.subInfoTitle}>
-                                    Máximo número de participantes
-                                    {failedSubmit && errors.cupos ? (
+                                  <label className={styles.subInfoTitle}>Máximo número de participantes</label>
+                                  {failedSubmit && errors.cupos ? (
+                                    <input
+                                      id='cupos'
+                                      type='number'
+                                      placeholder='10'
+                                      name='cupos'
+                                      value={date.cupos}
+                                      onChange={(e) => handleChanges(e, index, date._id)}
+                                      required
+                                    />
+                                  ) : (
+                                    <input
+                                      id='cupos'
+                                      className={styles.subInfoInput}
+                                      type='number'
+                                      placeholder='10'
+                                      name='cupos'
+                                      value={date.cupos || ''}
+                                      onChange={(e) => handleChanges(e, index, date._id)}
+                                    />
+                                  )}
+                                </div>
+                                <hr className={styles.hrAsistentesResposive}></hr>
+                                {/* precio*/}
+                                <div className={styles.containerSubInfo}>
+                                  <label className={styles.subInfoTitle}>Precio por cupo</label>
+                                  <div className={styles.labelS}>
+                                    <p>$</p>
+                                    {failedSubmit && errors.dates ? (
                                       <input
-                                        id='cupos'
                                         type='number'
-                                        placeholder='10'
-                                        name='cupos'
-                                        value={date.cupos}
+                                        placeholder='20.00'
+                                        name='price'
+                                        value={date.price || ''}
                                         onChange={(e) => handleChanges(e, index, date._id)}
                                         required
                                       />
                                     ) : (
                                       <input
-                                        id='cupos'
                                         className={styles.subInfoInput}
                                         type='number'
-                                        placeholder='10'
-                                        name='cupos'
-                                        value={date.cupos || ''}
+                                        placeholder='20.00'
+                                        name='price'
+                                        value={date.price || ''}
                                         onChange={(e) => handleChanges(e, index, date._id)}
                                       />
                                     )}
-                                  </label>
+                                  </div>
                                 </div>
-
-                                {/* precio*/}
-                                <div className={styles.containerSubInfo}>
-                                  <label className={styles.subInfoTitle}>
-                                    Precio por cupo
-                                    <div className={styles.labelS}>
-                                      <p>$</p>
-                                      {failedSubmit && errors.dates ? (
-                                        <input
-                                          type='number'
-                                          placeholder='20.00'
-                                          name='price'
-                                          value={date.price || ''}
-                                          onChange={(e) => handleChanges(e, index, date._id)}
-                                          required
-                                        />
-                                      ) : (
-                                        <input
-                                          className={styles.subInfoInput}
-                                          type='number'
-                                          placeholder='20.00'
-                                          name='price'
-                                          value={date.price || ''}
-                                          onChange={(e) => handleChanges(e, index, date._id)}
-                                        />
-                                      )}
-                                    </div>
-                                  </label>
-
-                                  {/* {date.price === '' ? <p>$21.990</p> : <p>{date.precioAlPublico}</p>}
-
-                            <p className={styles.subInfotxt}>Precio al público incluyendo costo de manejo e IVA</p> */}
-                                </div>
-
+                                <hr className={styles.hrAsistentesResposive}></hr>
                                 {/* ganacia x cupo*/}
                                 <div className={styles.containerSubInfo}>
-                                  <label className={styles.subInfoTitle}>
-                                    Tu ganas por cupo
-                                    <div className={styles.labelS}>
-                                      <p>$</p>
-                                      <input className={styles.subInfoInput} placeholder={date.gananciaCupo} disabled />
-                                    </div>
-                                  </label>
+                                  <label className={styles.subInfoTitle}>Tu ganas por cupo</label>
+                                  <div className={styles.labelS}>
+                                    <p>$</p>
+                                    <input className={styles.subInfoInput} placeholder={date.gananciaCupo} disabled />
+                                  </div>
                                   <p className={styles.subInfotxt}>Después de nuestra comisión + IVA</p>
                                   <a className={styles.btn6} href='user/perfil/datos' target='_blank'>
                                     Ver mas
@@ -2249,17 +2235,11 @@ const EventEdit = () => {
 
                                 {/* ganacia x evento*/}
                                 <div className={styles.containerSubInfo}>
-                                  <label className={styles.subInfoTitle}>
-                                    Tu ganas por evento
-                                    <div className={styles.labelS}>
-                                      <p>$</p>
-                                      <input
-                                        className={styles.subInfoInput}
-                                        placeholder={date.gananciaEvento}
-                                        disabled
-                                      />
-                                    </div>
-                                  </label>
+                                  <label className={styles.subInfoTitle}>Tu ganas por evento</label>
+                                  <div className={styles.labelS}>
+                                    <p>$</p>
+                                    <input className={styles.subInfoInput} placeholder={date.gananciaEvento} disabled />
+                                  </div>
                                   <p className={styles.subInfotxt}>
                                     Esto sería lo que ganarías si se venden todos tus cupos
                                   </p>
@@ -2321,7 +2301,7 @@ const EventEdit = () => {
 
                                 {/* hora fin*/}
                                 <div className={styles.contStart}>
-                                  <label>End</label>
+                                  <label>Termina</label>
                                   {failedSubmit && errors.dates ? (
                                     <input
                                       type='time'
@@ -2358,15 +2338,6 @@ const EventEdit = () => {
                                     Agregar a Publicados
                                   </button>
                                 )}
-
-                                {/* Remove date*/}
-                                {/* {
-                          index ? 
-                            <button className={styles.addDelete}  type="button"  onClick={() => removeFormFields(index,)}>
-                              <img className={styles.basquet} src={basquet} alt="n" />
-                            </button> 
-                          : null
-                        } */}
 
                                 <button
                                   className={styles.addDelete}
@@ -2405,118 +2376,112 @@ const EventEdit = () => {
                                             {/*codigo*/}
                                             <div className={styles.opcionesBonos} key={indice}>
                                               {/*%descuento-cantidad*/}
+
                                               {codigo.codigo.length && codigo.ed === false ? (
                                                 <div className={styles.descuentoCantidad}>
                                                   {/* descuento*/}
                                                   <div className={styles.descuento}>
-                                                    <label>
-                                                      Porcentaje
-                                                      <p>{codigo.descuento}</p>
-                                                    </label>
+                                                    <label>Porcentaje</label>
+                                                    <p>{codigo.descuento}</p>
                                                   </div>
 
                                                   {/* cantidad de bonos*/}
                                                   <div className={styles.descuento}>
-                                                    <label>
-                                                      Cantidad de bonos
-                                                      <p>{codigo.cantidad}</p>
-                                                    </label>
+                                                    <label>Cantidad de bonos</label>
+                                                    <p>{codigo.cantidad}</p>
                                                   </div>
                                                 </div>
                                               ) : (
                                                 <div className={styles.descuentoCantidad}>
                                                   {/* descuento*/}
                                                   <div className={styles.descuento}>
-                                                    <label>
-                                                      Porcentaje
-                                                      <div>
-                                                        {failedSubmit && errors.bonos ? (
-                                                          <input
-                                                            id='descuento'
-                                                            type='number'
-                                                            placeholder={codigo.descuento}
-                                                            name='descuento'
-                                                            value={codigo.descuento}
-                                                            max='100'
-                                                            min='1'
-                                                            onChange={(e) =>
-                                                              handleChanges(e, index, date._id, indice, codigo.codigo)
-                                                            }
-                                                            required
-                                                          />
-                                                        ) : codigo.ed === true ? (
-                                                          <input
-                                                            id='descuento'
-                                                            type='number'
-                                                            placeholder={codigo.descuento}
-                                                            name='descuento'
-                                                            value={codigo.descuento}
-                                                            max='100'
-                                                            min='1'
-                                                            onChange={(e) =>
-                                                              handleChanges(e, index, date._id, indice, codigo.codigo)
-                                                            }
-                                                            required
-                                                          />
-                                                        ) : (
-                                                          <input
-                                                            id='descuento'
-                                                            type='number'
-                                                            placeholder='-'
-                                                            name='descuento'
-                                                            value={codigo.descuento}
-                                                            max='100'
-                                                            min='1'
-                                                            onChange={(e) =>
-                                                              handleChanges(e, index, date._id, indice, codigo.codigo)
-                                                            }
-                                                          />
-                                                        )}
-                                                      </div>
-                                                    </label>
+                                                    <label>Porcentaje</label>
+                                                    <div>
+                                                      {failedSubmit && errors.bonos ? (
+                                                        <input
+                                                          id='descuento'
+                                                          type='number'
+                                                          placeholder={codigo.descuento}
+                                                          name='descuento'
+                                                          value={codigo.descuento}
+                                                          max='100'
+                                                          min='1'
+                                                          onChange={(e) =>
+                                                            handleChanges(e, index, date._id, indice, codigo.codigo)
+                                                          }
+                                                          required
+                                                        />
+                                                      ) : codigo.ed === true ? (
+                                                        <input
+                                                          id='descuento'
+                                                          type='number'
+                                                          placeholder={codigo.descuento}
+                                                          name='descuento'
+                                                          value={codigo.descuento}
+                                                          max='100'
+                                                          min='1'
+                                                          onChange={(e) =>
+                                                            handleChanges(e, index, date._id, indice, codigo.codigo)
+                                                          }
+                                                          required
+                                                        />
+                                                      ) : (
+                                                        <input
+                                                          id='descuento'
+                                                          type='number'
+                                                          placeholder='-'
+                                                          name='descuento'
+                                                          value={codigo.descuento}
+                                                          max='100'
+                                                          min='1'
+                                                          onChange={(e) =>
+                                                            handleChanges(e, index, date._id, indice, codigo.codigo)
+                                                          }
+                                                        />
+                                                      )}
+                                                    </div>
                                                   </div>
 
                                                   {/* cantidad de bonos*/}
                                                   <div className={styles.descuento}>
-                                                    <label>
-                                                      Cantidad de bonos
-                                                      <div>
-                                                        {failedSubmit && errors.bonos ? (
-                                                          <input
-                                                            type='number'
-                                                            placeholder={codigo.cantidad}
-                                                            name='cantidad'
-                                                            value={codigo.cantidad}
-                                                            onChange={(e) =>
-                                                              handleChanges(e, index, date._id, indice, codigo.codigo)
-                                                            }
-                                                            required
-                                                          />
-                                                        ) : codigo.ed === true ? (
-                                                          <input
-                                                            type='number'
-                                                            placeholder={codigo.cantidad}
-                                                            name='cantidad'
-                                                            value={codigo.cantidad}
-                                                            onChange={(e) =>
-                                                              handleChanges(e, index, date._id, indice, codigo.codigo)
-                                                            }
-                                                            required
-                                                          />
-                                                        ) : (
-                                                          <input
-                                                            className={styles.cantidad}
-                                                            type='number'
-                                                            placeholder={codigo.cantidad}
-                                                            name='cantidad'
-                                                            value={codigo.cantidad}
-                                                            onChange={(e) =>
-                                                              handleChanges(e, index, date._id, indice, codigo.codigo)
-                                                            }
-                                                          />
-                                                        )}
-                                                      </div>
-                                                    </label>
+                                                    <label>Cantidad de bonos</label>
+
+                                                    <div>
+                                                      {failedSubmit && errors.bonos ? (
+                                                        <input
+                                                          type='number'
+                                                          placeholder={codigo.cantidad}
+                                                          name='cantidad'
+                                                          value={codigo.cantidad}
+                                                          onChange={(e) =>
+                                                            handleChanges(e, index, date._id, indice, codigo.codigo)
+                                                          }
+                                                          required
+                                                        />
+                                                      ) : codigo.ed === true ? (
+                                                        <input
+                                                          type='number'
+                                                          placeholder={codigo.cantidad}
+                                                          name='cantidad'
+                                                          value={codigo.cantidad}
+                                                          onChange={(e) =>
+                                                            handleChanges(e, index, date._id, indice, codigo.codigo)
+                                                          }
+                                                          required
+                                                        />
+                                                      ) : (
+                                                        <input
+                                                          className={styles.cantidad}
+                                                          type='number'
+                                                          placeholder={codigo.cantidad}
+                                                          name='cantidad'
+                                                          value={codigo.cantidad}
+                                                          onChange={(e) =>
+                                                            handleChanges(e, index, date._id, indice, codigo.codigo)
+                                                          }
+                                                        />
+                                                      )}
+                                                    </div>
                                                   </div>
                                                 </div>
                                               )}
@@ -2524,21 +2489,18 @@ const EventEdit = () => {
                                               {/*codigo*/}
                                               {codigo.ed === true ? (
                                                 <div className={styles.descuento}>
-                                                  <label>
-                                                    Código
-                                                    <input
-                                                      className={styles.inputCodigo}
-                                                      placeholder={codigo.codigo}
-                                                      disabled
-                                                    />
-                                                  </label>
+                                                  <label>Código</label>
+
+                                                  <input
+                                                    className={styles.inputCodigo}
+                                                    placeholder={codigo.codigo}
+                                                    disabled
+                                                  />
                                                 </div>
                                               ) : (
                                                 <div className={styles.codigoAble}>
-                                                  <label>
-                                                    Código
-                                                    <p>{codigo.codigo}</p>
-                                                  </label>
+                                                  <label>Código</label>
+                                                  <p>{codigo.codigo}</p>
                                                 </div>
                                               )}
 
@@ -2554,28 +2516,54 @@ const EventEdit = () => {
                                                 </div>
                                               ) : codigo.cod === true ? (
                                                 <div className={styles.editarResetear}>
-                                                  {/*editar codigo*/}
-                                                  <button
-                                                    className={styles.editarCodigo}
-                                                    onClick={(e) => editarCodigo(e, index, indice)}
-                                                  >
-                                                    <BsPencilSquare className={styles.iconEdit} />
-                                                    <span>Editar</span>
-                                                  </button>
-                                                  {/*setear codigo*/}
-                                                  <button
-                                                    className={styles.editarCodigo}
-                                                    onClick={(e) => setearCodigo(e, index, indice)}
-                                                  >
-                                                    Resetear
-                                                  </button>
+                                                  <div className={styles.containerEditResetDltButtons}>
+                                                    <div className={styles.containerEditReset}>
+                                                      {/*editar codigo*/}
+                                                      <button
+                                                        className={styles.editarCodigo}
+                                                        onClick={(e) => editarCodigo(e, index, indice)}
+                                                      >
+                                                        <BsPencilSquare className={styles.iconEdit} />
+                                                        <span>Editar</span>
+                                                      </button>
+                                                      {/*setear codigo*/}
+                                                      <button
+                                                        className={styles.editarCodigo}
+                                                        onClick={(e) => setearCodigo(e, index, indice)}
+                                                      >
+                                                        Resetear
+                                                      </button>
+                                                    </div>
+                                                    <button
+                                                      className={styles.addDelete}
+                                                      onClick={(e) =>
+                                                        borrarCodigo(e, index, date._id, indice, codigo.codigo)
+                                                      }
+                                                    >
+                                                      <img className={styles.basquet} src={basquet} alt='n' />
+                                                    </button>
+                                                  </div>
+                                                  {codigo.ed === true && cambios === false ? (
+                                                    <div>
+                                                      <button
+                                                        className={styles.generarCodigo}
+                                                        onClick={(e) =>
+                                                          guardarCambios(e, index, date._id, indice, codigo.codigo)
+                                                        }
+                                                      >
+                                                        Guardar Cambios
+                                                      </button>
+                                                    </div>
+                                                  ) : (
+                                                    ''
+                                                  )}
                                                 </div>
                                               ) : (
                                                 ''
                                               )}
 
                                               {/*guardar codigo*/}
-                                              {codigo.ed === true && cambios === false ? (
+                                              {/*  {codigo.ed === true && cambios === false ? (
                                                 <div>
                                                   <button
                                                     className={styles.generarCodigo}
@@ -2588,19 +2576,10 @@ const EventEdit = () => {
                                                 </div>
                                               ) : (
                                                 ''
-                                              )}
+                                              )} */}
 
                                               {/*borrar codigo*/}
-                                              {
-                                                <button
-                                                  className={styles.addDelete}
-                                                  onClick={(e) =>
-                                                    borrarCodigo(e, index, date._id, indice, codigo.codigo)
-                                                  }
-                                                >
-                                                  <img className={styles.basquet} src={basquet} alt='n' />
-                                                </button>
-                                              }
+                                              {}
                                             </div>
                                           </div>
                                         ) : (

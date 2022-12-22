@@ -171,6 +171,14 @@
   opacity: 0 !important;
 }
 
+.eventsOrganizerSwiper {
+  margin-bottom: 2rem;
+}
+
+.eventsOrganizerSwiper .swiper {
+  width: 100rem;
+}
+
 /* MEDIA QUERIES */
 
 @media screen and (max-width: 1490px) {
