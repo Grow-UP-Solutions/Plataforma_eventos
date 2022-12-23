@@ -594,7 +594,33 @@ const Cart = () => {
                                     />
                                   </div>
                                 )}
+                                {c.codigoCorrecto === true  ? 
+                                  <div className={styles.btnsDisc}>                                                                 
+                                   <button
+                                      className={styles.quitar}
+                                      onClick={(e) => {
+                                        quitar(e, currentDate[0]._id);
+                                      }}
+                                    >
+                                      Quitar
+                                   </button>                            
+                                  </div>
+                                :
                                 <div className={styles.btnsDisc}>
+                                  
+                                <button
+                                    className={styles.quitar}
+                                    onClick={(e) => {
+                                      aplicar(e, currentDate[0]._id);
+                                    }}
+                                  >
+                                    Aplicar
+                                </button>
+                              </div>
+                                }
+                               
+                                {/* <div className={styles.btnsDisc}>
+                                  
                                   <button
                                     className={styles.quitar}
                                     onClick={(e) => {
@@ -616,7 +642,7 @@ const Cart = () => {
                                   
                                   }
                                  
-                                </div>
+                                </div> */}
                               </div>
                             </div>
                           ) : (

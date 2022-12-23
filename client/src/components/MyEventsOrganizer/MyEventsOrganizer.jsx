@@ -220,6 +220,7 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
               ))}
             </div>
           ) : eventsNoPublic.length > 3 ? (
+            <div>
             <Swiper
               slidesPerView={cardPerView}
               slidesPerGroup={cardPerView === 3 ? 3 : Math.trunc(cardPerView - 0.5)}
@@ -261,6 +262,7 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
                 </div>
               ))}
             </Swiper>
+            </div>
           ) : (
             <p className={styles.not_event}>No hay eventos por publicar ...</p>
           )}

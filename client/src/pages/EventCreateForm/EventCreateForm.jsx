@@ -655,6 +655,7 @@ const EventCreateForm = () => {
       }
     }
 
+
     setPost({
       ...post,
       dates: newFechas,

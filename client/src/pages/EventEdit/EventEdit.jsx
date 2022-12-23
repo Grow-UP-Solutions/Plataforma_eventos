@@ -1422,12 +1422,12 @@ const EventEdit = () => {
       });
     } else if (post.sells === 0 && post.inRevision === false) {
       swal({
-        title: 'Este evento y sus fechas será publicado  ',
+        title: 'Tus cambios seran guardados  ',
         buttons: true,
         dangerMode: true,
       }).then((publicar) => {
         if (publicar) {
-          dispatch(postEvent(post, id));
+          dispatch(putEvent(post, id));
           swal('Tus cambios han sido guardados', {
             icon: 'success',
           });
@@ -1436,7 +1436,7 @@ const EventEdit = () => {
       });
     } else if (post.inRevision === true) {
       swal({
-        title: 'Este evento y sus fechas será publicado  ',
+        title: 'Tus cambios seran guardados  ',
         buttons: true,
         dangerMode: true,
       }).then((publicar) => {
@@ -1469,6 +1469,11 @@ const EventEdit = () => {
                 modules={[Pagination, Navigation]}
                 className='swiper'
                 autoHeight={true}
+                 // preventClicks={true}
+                // a11y={false}
+                // watchSlidesProgress= {true}
+                shortSwipes= {false}
+                // shortSwipes= {1}
               >
                 <SwiperSlide>
                   {/* SECTION 1: Nombre del Evento */}
