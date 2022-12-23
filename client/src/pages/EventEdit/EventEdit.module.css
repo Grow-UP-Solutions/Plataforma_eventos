@@ -37,6 +37,11 @@
   display: flex;
 }
 
+.section7 {
+  width: 100%;
+  display: flex;
+}
+
 /*SECTION 1 */
 
 .container1 {
@@ -508,8 +513,10 @@
 /*6: cupos and prices*/
 
 .containerInfo {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   align-items: flex-start;
+  margin-bottom: 5rem;
   width: 100%;
 }
 
@@ -1688,6 +1695,10 @@
   align-items: center;
 }
 
+.containerCodigoAndDesc {
+  display: flex;
+}
+
 .descuentoCantidad {
   display: flex;
   align-items: center;
@@ -1718,6 +1729,10 @@
   text-align: center;
 }
 
+.descuento input:required {
+  border: 1px solid var(--color-orange);
+}
+
 .descuento p {
   border: 1px solid var(--color-grey-4);
   border-radius: 10px;
@@ -1732,6 +1747,7 @@
 .codigoAble {
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
   gap: 0.5rem;
 }
@@ -1761,7 +1777,6 @@
   margin-top: 1rem;
   background-color: white;
   text-align: right;
-  margin-right: 3rem;
 }
 
 .checkOther input:checked ~ .otherCategorie {
@@ -2138,9 +2153,14 @@
 
 /*Seccion 1*/
 .container1 input:required {
-  border: 3px solid red;
+  border: 1px solid var(--color-orange);
   background-color: white;
   box-shadow: none;
+}
+
+.container1 input:focus {
+  outline: none;
+  border: 1px solid var(--color-green);
 }
 
 .container1 input:required:invalid {
@@ -2381,7 +2401,7 @@
 
 .containerEditResetDltButtons {
   display: flex;
-  gap: 0.5rem;
+  gap: 1rem;
   align-items: center;
   justify-content: space-around;
 }
@@ -3051,6 +3071,57 @@
   object-fit: cover;
 }
 
+.swipeResponsive {
+  display: none;
+}
+
+.containerResponsiveDates .contDate {
+  margin-bottom: 1rem;
+}
+
+.containerCalendarAndDeleteButton {
+  display: flex;
+  gap: 5.2rem;
+}
+
+.containerResponsiveDates input {
+  background: none;
+  border: 1px solid var(--color-grey-4);
+  border-radius: 1rem;
+  font-weight: bold;
+  color: var(--color-grey-2);
+}
+
+.containerResponsiveDates .containerTimerResponsive {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.containerResponsiveDates .containerTimerResponsive .contStart {
+  margin-top: 2rem;
+  width: min-content;
+}
+
+.containerResponsiveDates .containerTimerResponsive .contStart label {
+  display: block;
+  font-size: 1.8rem;
+  margin-bottom: 0.2rem;
+}
+
+.containerResponsiveDates .containerTimerResponsive input:focus {
+  outline: none;
+  border: 2px solid var(--color-green);
+}
+
+.containerResponsiveDates .btnContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
 @media screen and (max-width: 1160px) {
   .containerLine {
     margin-right: 10rem;
@@ -3119,11 +3190,28 @@
 
   .containerResponsiveDates .contTimeAndDate,
   .containerResponsiveDates .checkBono,
-  .containerResponsiveDates .flex,
   .containerResponsiveDates .containerBtnsPublishEvent,
   .containerResponsiveDates .title,
   .containerResponsiveDates .hrAsistentes {
     display: block !important;
+  }
+  .containerResponsiveDates .flex {
+    display: flex;
+  }
+}
+
+@media screen and (max-width: 555px) {
+  .opcionesBonos {
+    flex-direction: column;
+  }
+  .editarResetear {
+    margin-top: 2rem;
+  }
+  .containerEditReset {
+    flex-direction: row;
+  }
+  .containerCodigoAndDesc {
+    gap: 1.5rem;
   }
 }
 

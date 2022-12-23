@@ -122,9 +122,9 @@
   background-color: var(--color-orange) !important;
 }
 
-/* .mySwipperEventDetails .swiper-wrapper .swiper-slide img {
-  max-width: 100% !important;
-} */
+.mySwipperEventDetails .swiper-wrapper .swiper-slide {
+  height: max-content;
+}
 
 .calendar-user .blueDay:not(.-selectedStart):not(.-selectedBetween):not(.-selectedEnd):not(.-selected) {
   background: var(--color-blue) !important;

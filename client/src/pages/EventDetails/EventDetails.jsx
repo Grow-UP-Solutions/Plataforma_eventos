@@ -352,7 +352,7 @@ const EventDetails = () => {
                   <Swiper slidesPerView={1} navigation modules={[Navigation]} className='mySwipperEventDetails'>
                     {pictures.map((picture) => (
                       <SwiperSlide>
-                        <img className={style.img} src={picture.picture} alt='Not Found ):' />
+                        <img className={style.imgSwiper} src={picture.picture} alt='Not Found ):' />
                       </SwiperSlide>
                     ))}
                   </Swiper>
