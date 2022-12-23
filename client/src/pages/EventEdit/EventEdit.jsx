@@ -782,15 +782,13 @@ const EventEdit = () => {
         ) {
           return Swal.fire({
             html:
-              'Texto &&&&&&&&&&, ' +
-              '<a href="/usuario/guia-organizador" target="_blank">ver sección &&&& en Guía del Organizador</a> ' +
-              '. Si procedes, es importante que le informes de inmediato sobre este cambio a los Asistentes.',
+              '<p>Texto &&&&&&&&&&, <a href="/usuario/guia-organizador" target="_blank">ver sección &&&& en Guía del Organizador</a>  . Si procedes, es importante que le informes de inmediato sobre este cambio a los Asistentes.</p>',
             showDenyButton: true,
             showCancelButton: false,
             confirmButtonText: 'Cambiar hora',
             denyButtonText: `Cerrar`,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
+            confirmButtonColor: '#d53e27',
+            cancelButtonColor: '#868686',
             width: 600,
             height: 600,
             customClass: {
@@ -820,13 +818,18 @@ const EventEdit = () => {
         ) {
           return Swal.fire({
             html:
-              'Texto &&&&&&&&&&, ' +
-              '<a href="/usuario/guia-organizador" target="_blank">ver sección &&&& en Guía del Organizador</a> ' +
-              '. Si procedes, es importante que le informes de inmediato sobre este cambio a los Asistentes.',
+              '<p>Texto &&&&&&&&&&, <a href="/usuario/guia-organizador" target="_blank">ver sección &&&& en Guía del Organizador</a>  . Si procedes, es importante que le informes de inmediato sobre este cambio a los Asistentes.</p>',
             showDenyButton: true,
             showCancelButton: false,
             confirmButtonText: 'Cambiar hora',
             denyButtonText: `Cerrar`,
+            confirmButtonColor: '#d53e27',
+            cancelButtonColor: '#868686',
+            width: 600,
+            height: 600,
+            customClass: {
+              html: 'swal2-title',
+            },
           }).then((result) => {
             if (result.isConfirmed) {
               setPost({
@@ -851,13 +854,19 @@ const EventEdit = () => {
         ) {
           return Swal.fire({
             html:
-              'Texto &&&&&&&&&&, ' +
-              '<a href="/usuario/guia-organizador" target="_blank">ver sección &&&& en Guía del Organizador</a> ' +
-              '. Si procedes, es importante que le informes de inmediato sobre este cambio a los Asistentes.',
+              '<p>Texto &&&&&&&&&&, <a href="/usuario/guia-organizador" target="_blank">ver sección &&&& en Guía del Organizador</a>  . Si procedes, es importante que le informes de inmediato sobre este cambio a los Asistentes.</p>',
+
             showDenyButton: true,
             showCancelButton: false,
             confirmButtonText: 'Cambiar fecha',
             denyButtonText: `Cerrar`,
+            confirmButtonColor: '#d53e27',
+            cancelButtonColor: '#868686',
+            width: 600,
+            height: 600,
+            customClass: {
+              html: 'swal2-title',
+            },
           }).then((result) => {
             if (result.isConfirmed) {
               setPost({
@@ -2956,7 +2965,7 @@ const EventEdit = () => {
                                       type='date'
                                       name='date'
                                       value={date.date || ''}
-                                      onChange={(e) => handleChanges(e, index)}
+                                      onChange={(e) => handleChanges(e, index, date._id)}
                                       min={fechaMinima}
                                       required
                                     />
@@ -2966,7 +2975,7 @@ const EventEdit = () => {
                                       type='date'
                                       name='date'
                                       value={date.date}
-                                      onChange={(e) => handleChanges(e, index)}
+                                      onChange={(e) => handleChanges(e, index, date._id)}
                                       min={fechaMinima}
                                     />
                                   )}
@@ -2991,7 +3000,7 @@ const EventEdit = () => {
                                       type='time'
                                       name='start'
                                       value={date.start}
-                                      onChange={(e) => handleChanges(e, index)}
+                                      onChange={(e) => handleChanges(e, index, date._id)}
                                       required
                                     />
                                   ) : (
@@ -2999,7 +3008,7 @@ const EventEdit = () => {
                                       type='time'
                                       name='start'
                                       value={date.start}
-                                      onChange={(e) => handleChanges(e, index)}
+                                      onChange={(e) => handleChanges(e, index, date._id)}
                                       step='900'
                                     />
                                   )}
@@ -3013,7 +3022,7 @@ const EventEdit = () => {
                                       type='time'
                                       name='end'
                                       value={date.end}
-                                      onChange={(e) => handleChanges(e, index)}
+                                      onChange={(e) => handleChanges(e, index, date._id)}
                                       required
                                     />
                                   ) : (
@@ -3021,7 +3030,7 @@ const EventEdit = () => {
                                       type='time'
                                       name='end'
                                       value={date.end}
-                                      onChange={(e) => handleChanges(e, index)}
+                                      onChange={(e) => handleChanges(e, index, date._id)}
                                     />
                                   )}
                                 </div>

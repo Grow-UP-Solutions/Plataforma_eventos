@@ -53,6 +53,21 @@
   background: var(--color-orange) !important;
 }
 
+/* SWAL FIRE */
+
+.swal2-html-container p {
+  font-size: 1.8rem;
+}
+
+.swal2-confirm {
+  font-size: 1.4rem !important;
+}
+
+.swal2-deny {
+  font-size: 1.4rem !important;
+  background-color: #868686 !important;
+}
+
 @media screen and (max-width: 712px) {
   .swiper-pagination-bullets {
     bottom: 16rem !important;
