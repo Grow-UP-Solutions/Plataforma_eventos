@@ -42,11 +42,11 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
   //si hay un evento en revision que lo saque de publicados
 
   if (myEventsCreated !== undefined) {
-    console.log('estoy aqui');
+   
     myEventsCreated.map((evento) => {
-      console.log('ahora aqui');
+     
       if (evento.inRevision === true) {
-        console.log('hola');
+       
         evento.isPublic = false;
       }
     });
@@ -79,7 +79,7 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
   });
 
   const deleteEvent = (e) => {
-    console.log('borrar evento');
+   
   };
 
   const [cardPerView, setCardPerView] = useState(3);

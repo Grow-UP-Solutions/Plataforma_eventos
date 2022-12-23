@@ -200,8 +200,20 @@ router.get('/success', async (req, res) => {
                 auxBody[0].dates[j].codigoDescuento !== null &&
                 e.codigos[x].codigo === auxBody[0].dates[j].codigoDescuento
               ) {
-                e.codigos[x].cantidad = e.codigos[x].cantidad - 1;
-                e.codigos[x].uses = e.codigos[x].uses + 1;
+               
+                if( e.codigos[x].cantidad > auxBody[0].dates[j].quantity ){
+
+                  e.codigos[x].cantidad = e.codigos[x].cantidad - auxBody[0].dates[j].quantity;
+                  e.codigos[x].uses = e.codigos[x].uses + auxBody[0].dates[j].quantity;
+
+                } else if( e.codigos[x].cantidad <= auxBody[0].dates[j].quantity ){
+
+                  e.codigos[x].uses = e.codigos[x].cantidad,
+                  e.codigos[x].cantidad = 0;
+                 
+
+                }
+             
               } else if (auxBody[0].dates[j].codigoUsuario !== null) {
                 const codigo = await CodeDiscount.findOne({ code: auxBody[0].dates[j].codigoUsuario });
 
