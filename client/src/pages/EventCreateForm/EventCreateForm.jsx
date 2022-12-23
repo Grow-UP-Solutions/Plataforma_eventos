@@ -161,7 +161,7 @@ const EventCreateForm = () => {
     direccion: '',
     barrio: '',
     specialRequires: '',
-    isEdit:false,
+    isEdit: false,
     dates: [
       {
         idDate: '',
@@ -549,8 +549,6 @@ const EventCreateForm = () => {
     });
   };
 
- 
-
   function handleCover(e) {
     const todas = [...post.pictures];
     if (e.target.checked) {
@@ -559,8 +557,8 @@ const EventCreateForm = () => {
           foto.cover = true;
         }
       });
-      const portada = todas.filter(foto =>foto.cover===true)
-      console.log('portada',portada)
+      const portada = todas.filter((foto) => foto.cover === true);
+      console.log('portada', portada);
       setPost({
         ...post,
         pictures: todas,
@@ -571,15 +569,13 @@ const EventCreateForm = () => {
           foto.cover = false;
         }
       });
-     
+
       setPost({
         ...post,
         pictures: todas,
       });
     }
   }
-
- 
 
   //--------------------------------------------------//
   //               POST  UBICACION                //
@@ -890,7 +886,6 @@ const EventCreateForm = () => {
 
   const fechaMinima = anio + '-' + mes + '-' + dia;
 
- 
   //--------------------------------------------------//
   //                VISTA PREVIA         //
 
@@ -1016,9 +1011,8 @@ const EventCreateForm = () => {
                 // preventClicks={true}
                 // a11y={false}
                 // watchSlidesProgress= {true}
-                shortSwipes= {false}
+                shortSwipes={false}
                 // shortSwipes= {1}
-              
               >
                 <SwiperSlide>
                   {/* SECTION 1: Nombre del Evento */}
@@ -1745,7 +1739,6 @@ const EventCreateForm = () => {
                       {/* titulo*/}
                       <div>
                         <p className={styles.title}>Costo y fecha</p>
-                        <p className={styles.titleResponsive}>Costo y fecha</p>
                         <p className={styles.titleResponsive}>Asistentes al evento</p>
                         <p className={styles.subTitle}>
                           Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh, Lorem ipsum
@@ -1827,12 +1820,10 @@ const EventCreateForm = () => {
                                     disabled
                                   />
                                 </div>
-                                <div>
-                                  <p className={styles.subInfotxt}>Después de nuestra comisión + IVA</p>
-                                  <a className={styles.btn6} href='user/perfil/datos' target='_blank'>
-                                    Ver mas
-                                  </a>
-                                </div>
+                                <p className={styles.subInfotxt}>Después de nuestra comisión + IVA</p>
+                                <a className={styles.btn6} href='user/perfil/datos' target='_blank'>
+                                  Ver mas
+                                </a>
                               </div>
                               <hr className={styles.hrAsistentesResposive}></hr>
                               {/* ganacia x evento*/}

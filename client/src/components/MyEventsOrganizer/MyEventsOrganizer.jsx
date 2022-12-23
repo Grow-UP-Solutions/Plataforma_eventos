@@ -139,42 +139,44 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
               ))}
             </div>
           ) : eventsPublic.length > 3 ? (
-            <Swiper
-              slidesPerView={cardPerView}
-              slidesPerGroup={cardPerView}
-              navigation
-              spaceBetween={0}
-              modules={[Navigation]}
-              className={styles.mySwipper}
-            >
-              {eventsPublic.map((event) => (
-                <div className={styles.card}>
-                  <SwiperSlide>
-                    <Card
-                      userData={userData}
-                      event={event}
-                      listName={'published'}
-                      orgEvent={'true'}
-                      datePublic={'true'}
-                    />
-                    {event.inRevision === false ? (
-                      <div className={styles.btns}>
-                        <Link className={styles.btn} to={'/organiza-un-evento-editar/' + event._id}>
-                          <BsPencilSquare className={styles.iconEdit} />
-                          <span>Editar</span>
-                        </Link>
-                      </div>
-                    ) : (
-                      <div className={styles.btns}>
-                        <Link className={styles.btn}>
-                          <span>Evento En Revision</span>
-                        </Link>
-                      </div>
-                    )}
-                  </SwiperSlide>
-                </div>
-              ))}
-            </Swiper>
+            <div className={'eventsOrganizerSwiper'}>
+              <Swiper
+                slidesPerView={cardPerView}
+                slidesPerGroup={cardPerView}
+                navigation
+                spaceBetween={0}
+                modules={[Navigation]}
+                className={'swiper'}
+              >
+                {eventsPublic.map((event) => (
+                  <div className={styles.card}>
+                    <SwiperSlide>
+                      <Card
+                        userData={userData}
+                        event={event}
+                        listName={'published'}
+                        orgEvent={'true'}
+                        datePublic={'true'}
+                      />
+                      {event.inRevision === false ? (
+                        <div className={styles.btns}>
+                          <Link className={styles.btn} to={'/organiza-un-evento-editar/' + event._id}>
+                            <BsPencilSquare className={styles.iconEdit} />
+                            <span>Editar</span>
+                          </Link>
+                        </div>
+                      ) : (
+                        <div className={styles.btns}>
+                          <Link className={styles.btn}>
+                            <span>Evento En Revision</span>
+                          </Link>
+                        </div>
+                      )}
+                    </SwiperSlide>
+                  </div>
+                ))}
+              </Swiper>
+            </div>
           ) : (
             <p className={styles.not_event}>No hay eventos ...</p>
           )}
