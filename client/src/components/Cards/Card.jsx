@@ -56,8 +56,12 @@ const Card = ({ event, listName, orgEvent, datePublic }) => {
   }
 
   //filtro por fechas: para mostrar y no mostrar
-  const datesPublic = event.dates.filter((date) => date.isOld === false && date.isPublic === true);
-  const datesNotPublic = event.dates.filter((date) => date.isOld === true && date.isPublic === false);
+  const datesPublic = event.dates.filter(
+    (date) => date.isOld === false && date.isPublic === true && date.inRevision === false
+  );
+  const datesNotPublic = event.dates.filter(
+    (date) => date.isOld === true && date.isPublic === false && date.inRevision === true
+  );
 
   useEffect(() => {
     getUsers();
@@ -157,10 +161,10 @@ const Card = ({ event, listName, orgEvent, datePublic }) => {
     }
   };
 
-  //PRECIO FECHA HOME//
+  //Para renderizar el precio de la primera fecha//
 
-  const firstPublicDate = event.dates.find((date) => date.isOld === false && date.isPublic === true);
-  const firstNotPublicDate = event.dates.find((date) => date.isOld === true && date.isPublic === false);
+  const firstPublicDate = event.dates.find((date) => date.isPublic === true && date.inRevision === false);
+  const firstNotPublicDate = event.dates.find((date) => date.isPublic === false || date.inRevision === true);
 
   const [price, setPrice] = useState(firstPublicDate !== undefined ? firstPublicDate.price : '');
 
@@ -232,7 +236,7 @@ const Card = ({ event, listName, orgEvent, datePublic }) => {
             <p className={styles.cardDateCurrent}>{selectedDate.replace('de', '/')}</p>
           ) : orgEvent === 'true' && datePublic === 'false' && selectedDate === '' ? (
             <p className={styles.cardDateCurrent}>
-              {firstNotPublicDate ? firstNotPublicDate.dateFormated.replace('de', '/') : ''}
+              {firstNotPublicDate ? firstNotPublicDate.dateFormated.replace('de', '/') : 'No tengo'}
             </p>
           ) : orgEvent === 'true' && datePublic === 'false' && selectedDate !== '' ? (
             <p className={styles.cardDateCurrent}>{selectedDate.replace('de', '/')}</p>

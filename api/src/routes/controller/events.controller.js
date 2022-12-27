@@ -195,15 +195,6 @@ router.put('/:id', async (req, res) => {
       eventInRevisionEditedAdmin(newEvent , user , event)
     }
 
-   // newEvent.inRevision === true ? editEventInRevisionAdmin(newEvente,user) : editEventAdmin(newEvent,event,user)
-    
-
-    // newEvent.dateDelete = []
-    // newEvent.sendEmail = false
-    // newEvent.isEdit = false
-    // for(let i = 0 ; i < newEvent.dates.length ; i++){
-    //   newEvent.dates[i].sendEmail = false
-    // }
 
     const newEvente = await eventsUpdate(id, newEvent);
 

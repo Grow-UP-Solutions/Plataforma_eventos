@@ -91,8 +91,34 @@ const Cart = () => {
         carrito[i].subtotal = num * carrito[i].price;
         carrito[i].ganancias = carrito[i].priceOrg * num;
 
-        if (carrito[i].codigoDescuento.length > 1) {
-          carrito[i].descuento = carrito[i].unit_disc * num;
+        if (carrito[i].codigoDescuento.length > 1 && carrito[i].codigoCantidad > 0) {
+          if (carrito[i].quantity <= carrito[i].codigoCantidad) {
+            const valorDescuentoCupos = carrito[i].codigoDescUnit * carrito[i].quantity;
+
+            carrito[i].descuento = valorDescuentoCupos;
+
+            carrito[i].unit_disc = valorDescuentoCupos / carrito[i].quantity;
+
+            carrito[i].unit_price = carrito[i].unit_price - carrito[i].unit_disc;
+
+            carrito[i].ganancias = carrito[i].ganancias - valorDescuentoCupos;
+
+            setDesc(carrito[i].descuento);
+          } else {
+            const valorDescuentoCupos = carrito[i].codigoDescUnit * carrito[i].codigoCantidad;
+
+            carrito[i].descuento = valorDescuentoCupos;
+
+            carrito[i].unit_disc = valorDescuentoCupos / carrito[i].codigoCantidad;
+
+            carrito[i].unit_price = carrito[i].unit_price - carrito[i].unit_disc;
+
+            carrito[i].unit_price = carrito[i].unit_price - carrito[i].unit_disc;
+
+            carrito[i].ganancias = carrito[i].ganancias - valorDescuentoCupos;
+
+            setDesc(carrito[i].descuento);
+          }
         }
       }
     }
@@ -100,10 +126,10 @@ const Cart = () => {
 
   useEffect(() => {
     const sTotal = [];
-    const dTotal = [];
+    // const dTotal = [];
     for (let i = 0; i < carrito.length; i++) {
       sTotal.push(carrito[i].subtotal);
-      dTotal.push(carrito[i].descuento);
+      // dTotal.push(carrito[i].descuento);
     }
 
     let total = sTotal.reduce((a, b) => a + b, 0);
@@ -112,8 +138,8 @@ const Cart = () => {
     let t = total + iva + administracion;
     setValorTotal(t);
 
-    let dtotal = dTotal.reduce((a, b) => a + b, 0);
-    setDescuentoTotal(dtotal);
+    // let dtotal = dTotal.reduce((a, b) => a + b, 0);
+    // setDescuentoTotal(dtotal);
   }, [numberBuyCupos]);
 
   // -----CODIGOS-------//
@@ -196,20 +222,52 @@ const Cart = () => {
         for (let d = 0; d < currentDate[0].codigos.length; d++) {
           if (currentDate[0].codigos[d].codigo === codigo && currentDate[0].codigos[d].cantidad > 0) {
             const descValor = currentDate[0].codigos[d].descuento; //10%
+
             carrito[c].codigoDescuento = codigo;
             carrito[c].codigoCorrecto = true;
+            carrito[c].codigoCantidad = currentDate[0].codigos[d].cantidad;
 
             const valorDescuento = (descValor * currentDate[0].price) / 100; //$1000
-            carrito[c].unit_disc = valorDescuento;
 
-            const valorDescuentoCupos = valorDescuento * carrito[c].quantity; //$2000
+            carrito[c].codigoDescUnit = valorDescuento;
 
-            carrito[c].descuento = valorDescuentoCupos; //$2000
+            if (carrito[c].quantity <= currentDate[0].codigos[d].cantidad) {
+              const valorDescuentoCupos = valorDescuento * carrito[c].quantity;
 
-            //const unitDic = carrito[c].unit_price - valorDescuento;
-            carrito[c].unit_price = carrito[c].unit_price - valorDescuento;
-            carrito[c].priceOrg = carrito[c].priceOrg - valorDescuento;
-            carrito[c].ganancias = carrito[c].ganancias - valorDescuentoCupos;
+              carrito[c].descuento = valorDescuentoCupos;
+
+              carrito[c].unit_disc = valorDescuentoCupos / carrito[c].quantity;
+
+              carrito[c].unit_price = carrito[c].unit_price - carrito[c].unit_disc;
+
+              carrito[c].ganancias = carrito[c].ganancias - valorDescuentoCupos;
+
+              setDesc(carrito[c].descuento);
+
+              return swal({
+                title: 'Codigo Aplicado',
+              });
+              setApplied(true);
+            } else {
+              const valorDescuentoCupos = valorDescuento * currentDate[0].codigos[d].cantidad;
+
+              carrito[c].descuento = valorDescuentoCupos;
+
+              carrito[c].unit_disc = valorDescuentoCupos / currentDate[0].codigos[d].cantidad;
+
+              carrito[c].unit_price = carrito[c].unit_price - carrito[c].unit_disc;
+
+              carrito[c].unit_price = carrito[c].unit_price - carrito[c].unit_disc;
+
+              carrito[c].ganancias = carrito[c].ganancias - valorDescuentoCupos;
+
+              setDesc(carrito[c].descuento);
+
+              return swal({
+                title: 'Codigo Aplicado',
+              });
+              setApplied(true);
+            }
 
             setDesc(carrito[c].descuento);
             return swal({
@@ -233,26 +291,6 @@ const Cart = () => {
                 icon: 'warning',
                 dangerMode: true,
               });
-
-              // carrito[c].codigoReferido = codeResult.data.codeDiscount[0].code;
-              // carrito[c].codigoCorrecto = true;
-              // carrito[c].descuento = codeResult.data.codeDiscount[0].value;
-
-              // const refUnit = codeResult.data.codeDiscount[0].value / carrito[c].quantity;
-
-              // //const descuentoUnit = carrito[c].unit_price - codeResult.data.codeDiscount[0].value
-
-              // carrito[c].unit_price = carrito[c].unit_price - refUnit;
-
-              // carrito[c].priceOrg = carrito[c].priceOrg - refUnit;
-
-              // carrito[c].ganancias = carrito[c].ganancias - codeResult.data.codeDiscount[0].value;
-
-              // setDesc(codeResult.data.codeDiscount[0].value);
-
-              // return swal({
-              //   title: 'Codigo Aplicado',
-              // });
             } else if (
               codeResult.data.codeDiscount.length === 1 &&
               codeResult.data.codeDiscount[0].isRedimeed === false &&
@@ -327,6 +365,8 @@ const Cart = () => {
         carrito[i].codigoReferido = '';
         carrito[i].descuento = '';
         carrito[i].codigoCorrecto = '';
+        carrito[i].codigoDescUnit = 0;
+        carrito[i].codigoCantidad = 0;
       }
     }
   };
@@ -394,7 +434,7 @@ const Cart = () => {
         const costoCarrito = costos / carrito.length;
 
         carrito[i].costos = costoCarrito / carrito[i].quantity;
-        carrito[i].unit_price = carrito[i].price + carrito[i].costos;
+        carrito[i].unit_price = carrito[i].unit_price + carrito[i].costos;
 
         ganancia.push(carrito[i].ganancias);
 
