@@ -274,7 +274,7 @@ const UserPage = () => {
                       checked={optionChecked === 'guide' ? true : false}
                     />
                     <label className={styles.labelOption} htmlFor='guide'>
-                      Guia Del Organizador
+                      Buenas prácticas
                     </label>
 
                     <IconGuide className={styles.iconMenu} />
@@ -523,7 +523,7 @@ const UserPage = () => {
                     />
                     {openMenuResponsive && (
                       <label className={styles.labelOption} htmlFor='guia del organizadorR'>
-                        Guia Del Organizador
+                        Buenas prácticas
                       </label>
                     )}
 
@@ -609,7 +609,7 @@ const UserPage = () => {
                           checked={optionSubMenuChecked === 'myEvents' ? true : false}
                         />
                         <label className={styles.labelOption} htmlFor='myEventsR'>
-                          Mis Eventos
+                          Organizados por mí
                         </label>
 
                         <IconEvents className={styles.iconMenu} />

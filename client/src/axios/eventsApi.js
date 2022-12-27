@@ -5,7 +5,7 @@ const eventsApi = axios.create({
 });
 
 /* http://localhost:3001 */
-/* https://plataformaeventos-production-e0ed.up.railway.app */
+/* https://plataformaeventos-production.up.railway.app */
 // TODO: configurar interceptores
 
 eventsApi.interceptors.request.use((config) => {

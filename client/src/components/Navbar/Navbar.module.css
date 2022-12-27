@@ -504,3 +504,17 @@
     right: 0;
   }
 }
+
+@media screen and (max-height: 781px) {
+  .container {
+    padding: 0.5rem 0;
+  }
+  .containerImgInput img {
+    width: 6.2rem;
+    height: 6.2rem;
+  }
+  .container img {
+    width: 6.2rem;
+    height: 6.2rem;
+  }
+}

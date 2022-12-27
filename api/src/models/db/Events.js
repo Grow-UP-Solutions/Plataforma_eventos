@@ -49,6 +49,17 @@ const EventSchema = new Schema(
           type: Boolean,
           default: false,
         },
+
+        isOld: {
+          type: Boolean,
+        },
+
+        sendEmail: {
+          type: Boolean,
+          default: false,
+        },
+
+
         dateFormated: String,
         buyers: {
           type: Array,
@@ -123,7 +134,17 @@ const EventSchema = new Schema(
     isPublic: {
       type: Boolean,
     },
+
+    isOld: {
+      type: Boolean,
+    },
+
     inRevision: {
+      type: Boolean,
+      default: false,
+    },
+
+    sendEmail: {
       type: Boolean,
       default: false,
     },
@@ -137,6 +158,18 @@ const EventSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'Users',
     },
+
+    dateDelete: {
+      type: Array,
+      default: [],
+    },
+
+    isEdit: {
+      type: Boolean,
+      default: false,
+    },
+    
+    
 
     opinions: [
       {

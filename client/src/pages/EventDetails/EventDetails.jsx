@@ -42,7 +42,7 @@ const EventDetails = () => {
   const dispatch = useDispatch();
   const allEvents = useSelector((state) => state.events);
   const eventDetails = allEvents.filter((event) => event._id === id)[0];
-  
+
   const [getDanger, setGetDanger] = useState(false);
   const [component, setComponent] = useState(null);
   const [description, setDescription] = useState(false);
@@ -51,10 +51,11 @@ const EventDetails = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { user } = useContext(AuthContext);
   const { notes, setNotes } = useContext(stateContext);
-  const [eventBuyUser , setEventBuyUser] = useState([])
-  const [userBuyOrg , setUserBuyOrg] = useState([])
-  const [datesBuy , setDateBuy] = useState([])
-  const [assisted , setAssisted] = useState(false)
+  const [eventBuyUser, setEventBuyUser] = useState([]);
+  const [userBuyOrg, setUserBuyOrg] = useState([]);
+  const [datesBuy, setDateBuy] = useState([]);
+  const [assisted, setAssisted] = useState(false);
+  const [pictures, setPictures] = useState([]);
   const {
     getEventsFavourites,
     getEffectRatingEvent,
@@ -77,83 +78,73 @@ const EventDetails = () => {
     dispatch(getEvents);
   }, [dispatch]);
 
-  
   useEffect(() => {
     const obtenerDatos = async () => {
       const data = await eventsApi.get('/events/' + id);
       const json = data.data;
-      console.log('j',json.organizer)
+
+      const noCover = json.pictures.filter((picture) => picture.cover !== true);
+
+      const cover = json.pictures.filter((picture) => picture.cover === true)[0];
+
+      if (cover !== undefined) {
+        noCover.unshift(cover);
+        setPictures(noCover);
+      } else {
+        setPictures(noCover);
+      }
+
       obtenerDatosU(json.organizer);
       getEffectRatingEvent(json.rating);
     };
     obtenerDatos();
   }, [eventDetails]);
 
-
-
   const obtenerDatosU = async (orgId) => {
-    
     const data = await eventsApi.get('/users/' + orgId);
     const json = data.data;
 
-   
+    const eventBuyU = [];
+    const userBuyOrg = [];
+    const datesBuy = [];
 
-    const eventBuyU = []
-    const userBuyOrg = []
-    const datesBuy = []
-
-    for(let i = 0; i < data.data.myEventsCreated.length ; i++){
-      for(let j = 0; j < data.data.myEventsCreated[i].generalBuyers.length ; j++){
-        if(  data.data.myEventsCreated[i]._id=== id && data.data.myEventsCreated[i].generalBuyers[j].buyer=== user.uid){
-            eventBuyU.push(data.data.myEventsCreated[i])
+    for (let i = 0; i < data.data.myEventsCreated.length; i++) {
+      for (let j = 0; j < data.data.myEventsCreated[i].generalBuyers.length; j++) {
+        if (
+          data.data.myEventsCreated[i]._id === id &&
+          data.data.myEventsCreated[i].generalBuyers[j].buyer === user.uid
+        ) {
+          eventBuyU.push(data.data.myEventsCreated[i]);
         }
       }
     }
 
-    for(let i = 0; i < data.data.myEventsCreated.length ; i++){
-      for(let j = 0; j < data.data.myEventsCreated[i].generalBuyers.length ; j++){
-       if( data.data.myEventsCreated[i].generalBuyers[j].buyer=== user.uid){
-           
-            userBuyOrg.push(data.data.myEventsCreated[i])
-            const compradores = data.data.myEventsCreated[i].generalBuyers
-            const usuarioFecha = compradores.filter(c=>c.buyer === user.uid)
-            datesBuy.push(usuarioFecha)
+    for (let i = 0; i < data.data.myEventsCreated.length; i++) {
+      for (let j = 0; j < data.data.myEventsCreated[i].generalBuyers.length; j++) {
+        if (data.data.myEventsCreated[i].generalBuyers[j].buyer === user.uid) {
+          userBuyOrg.push(data.data.myEventsCreated[i]);
+          const compradores = data.data.myEventsCreated[i].generalBuyers;
+          const usuarioFecha = compradores.filter((c) => c.buyer === user.uid);
+          datesBuy.push(usuarioFecha);
 
-              usuarioFecha[0].dates.map((date) => {
-                if (new Date(date.date) < new Date(dateActual)) {
-                  setAssisted(true)
-                  
-                } else if (date.date === dateActual) {
-                  if (date.end.slice(0, 2) <= hora && date.end.slice(3, 5) <= minutes + 2) {
-                    setAssisted(true)
-                  }
-                }
-              });
-            
+          usuarioFecha[0].dates.map((date) => {
+            if (new Date(date.date) < new Date(dateActual)) {
+              setAssisted(true);
+            } else if (date.date === dateActual) {
+              if (date.end.slice(0, 2) <= hora && date.end.slice(3, 5) <= minutes + 2) {
+                setAssisted(true);
+              }
+            }
+          });
         }
       }
     }
-  
-    setEventBuyUser(eventBuyU)
-    setUserBuyOrg(userBuyOrg)
-    setDateBuy(datesBuy)
 
-    
-  
+    setEventBuyUser(eventBuyU);
+    setUserBuyOrg(userBuyOrg);
+    setDateBuy(datesBuy);
   };
 
-  console.log('assisted',assisted)
-
-
- 
-
-  
-
-  
-
-
- 
- 
   //Favorito//
 
   useEffect(() => {
@@ -351,8 +342,15 @@ const EventDetails = () => {
             <div className={style.containerSwiper}>
               {eventDetails.pictures.length > 1 ? (
                 <div className={style.containerSwiperGeneral}>
-                  <Swiper slidesPerView={1} navigation modules={[Navigation]} className='mySwipperEventDetails'>
+                  {/* <Swiper slidesPerView={1} navigation modules={[Navigation]} className='mySwipperEventDetails'>
                     {eventDetails.pictures.map((picture) => (
+                      <SwiperSlide>
+                        <img className={style.img} src={picture.picture} alt='Not Found ):' />
+                      </SwiperSlide>
+                    ))}
+                  </Swiper> */}
+                  <Swiper slidesPerView={1} navigation modules={[Navigation]} className='mySwipperEventDetails'>
+                    {pictures.map((picture) => (
                       <SwiperSlide>
                         <img className={style.img} src={picture.picture} alt='Not Found ):' />
                       </SwiperSlide>
@@ -595,16 +593,14 @@ const EventDetails = () => {
           <Element name='comments'>{component ? component : ''}</Element>
         </div>
       </div>
-      {eventDetails !== undefined &&
+      {eventDetails !== undefined && (
         <div>
           <EventSideBar id={id} userBuyOrg={userBuyOrg} />
           <div className={style.containerCommentsEvents}>
-          <EventComments id={id} eventBuyUser={eventBuyUser} datesBuy={datesBuy} assisted={assisted} />
+            <EventComments id={id} eventBuyUser={eventBuyUser} datesBuy={datesBuy} assisted={assisted} />
           </div>
         </div>
-      }
-     
-     
+      )}
 
       <div className={style.containerMenuOpenEvent}>
         <input

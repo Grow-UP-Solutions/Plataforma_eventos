@@ -136,6 +136,8 @@ const EventDate = ({ id, openMenu }) => {
           codigoDescuento: '',
           codigoReferido: '',
           codigoCorrecto: '',
+          codigoCantidad:0,
+          codigoDescUnit:0,
           subtotal: price,
           descuento: '',
           priceOrg: priceOrg,

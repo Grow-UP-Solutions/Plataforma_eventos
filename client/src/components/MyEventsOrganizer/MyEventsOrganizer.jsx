@@ -10,30 +10,28 @@ import 'swiper/swiper.min.css';
 import basquet from '../../assets/imgs/basquet.svg';
 import Card from '../Cards/Card';
 import styles from './MyEventsOrganizer.module.css';
+import { fechaActual, hora, minutes } from '../../utils/fechaActual';
 
 const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
-  const fecha = new Date();
-  const hora = fecha.getHours();
-  const minutes = fecha.getMinutes();
-  const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
+  //No Mostrar los eventos viejos
 
-  if (dateActual && myEventsCreated !== undefined) {
+  if (fechaActual && myEventsCreated !== undefined) {
     myEventsCreated.map((evento) => {
       evento.dates.map((date) => {
-        if (new Date(date.date) < new Date(dateActual)) {
+        if (new Date(date.date) < new Date(fechaActual)) {
           if (evento.dates.length === 1) {
-            date.isPublic = false;
-            evento.isPublic = false;
+            date.isOld = true;
+            evento.isOld = true;
           } else {
-            date.isPublic = false;
+            date.isOld = true;
           }
-        } else if (date.date === dateActual) {
+        } else if (date.date === fechaActual) {
           if (date.end.slice(0, 2) <= hora && date.end.slice(3, 5) <= minutes + 2) {
             if (evento.dates.length === 1) {
-              date.isPublic = false;
-              evento.isPublic = false;
+              date.isOld = true;
+              evento.isOld = true;
             } else {
-              date.isPublic = false;
+              date.isOld = true;
             }
           }
         }
@@ -41,10 +39,26 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
     });
   }
 
-  const eventsPublic = myEventsCreated.filter((e) => e.isPublic === true);
+  //si hay un evento en revision que lo saque de publicados
 
-  const eventsNoPublicDuplicate = [];
+  if (myEventsCreated !== undefined) {
+   
+    myEventsCreated.map((evento) => {
+     
+      if (evento.inRevision === true) {
+       
+        evento.isPublic = false;
+      }
+    });
+  }
 
+  const eventsNotOld = myEventsCreated.filter((e) => e.isOld === false);
+
+  const eventsPublic = eventsNotOld.filter((e) => e.isPublic === true);
+
+  const eventsNoPublicDuplicate = eventsNotOld.filter((e) => e.isPublic === false);
+
+  //busco si hay alguna otra fecha no publica en algun evento y lo pusheo al array de los eventos no publcios
   for (let i = 0; i < myEventsCreated.length; i++) {
     for (let j = 0; j < myEventsCreated[i].dates.length; j++) {
       if (myEventsCreated[i].dates[j].isPublic === false) {
@@ -55,6 +69,9 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
 
   const eventsNoPublic = [];
 
+  //para ver si en el array de los no publicos no hay eventos repetidos
+  //puede pasar al estar pusheando fechas y no eventos
+
   eventsNoPublicDuplicate.forEach(function(item) {
     if (!eventsNoPublic.includes(item)) {
       eventsNoPublic.push(item);
@@ -62,7 +79,7 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
   });
 
   const deleteEvent = (e) => {
-    console.log('borrar evento');
+   
   };
 
   const [cardPerView, setCardPerView] = useState(3);
@@ -83,6 +100,7 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
 
   return (
     <div className={styles.container}>
+      <h2 className={styles.title}>Organizados por mí</h2>
       {myEventsCreated.length > 0 ? (
         <>
           <p className={styles.title}>Publicados</p>
@@ -103,17 +121,17 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
                     orgEvent={'true'}
                     datePublic={'true'}
                   />
-                  {event.inRevision === false ? (
+                  {event.inRevision === true ? (
                     <div className={styles.btns}>
-                      <Link className={styles.btn} to={'/organiza-un-evento-editar/' + event._id}>
-                        <BsPencilSquare className={styles.iconEdit} />
-                        <span>Editar</span>
+                      <Link className={styles.btn}>
+                        <span>Evento En Revision</span>
                       </Link>
                     </div>
                   ) : (
                     <div className={styles.btns}>
-                      <Link className={styles.btn}>
-                        <span>Evento En Revision</span>
+                      <Link className={styles.btn} to={'/organiza-un-evento-editar/' + event._id}>
+                        <BsPencilSquare className={styles.iconEdit} />
+                        <span>Editar</span>
                       </Link>
                     </div>
                   )}
@@ -121,42 +139,44 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
               ))}
             </div>
           ) : eventsPublic.length > 3 ? (
-            <Swiper
-              slidesPerView={cardPerView}
-              slidesPerGroup={cardPerView}
-              navigation
-              spaceBetween={0}
-              modules={[Navigation]}
-              className={styles.mySwipper}
-            >
-              {eventsPublic.map((event) => (
-                <div className={styles.card}>
-                  <SwiperSlide>
-                    <Card
-                      userData={userData}
-                      event={event}
-                      listName={'published'}
-                      orgEvent={'true'}
-                      datePublic={'true'}
-                    />
-                    {event.inRevision === false ? (
-                      <div className={styles.btns}>
-                        <Link className={styles.btn} to={'/organiza-un-evento-editar/' + event._id}>
-                          <BsPencilSquare className={styles.iconEdit} />
-                          <span>Editar</span>
-                        </Link>
-                      </div>
-                    ) : (
-                      <div className={styles.btns}>
-                        <Link className={styles.btn}>
-                          <span>Evento En Revision</span>
-                        </Link>
-                      </div>
-                    )}
-                  </SwiperSlide>
-                </div>
-              ))}
-            </Swiper>
+            <div className={'eventsOrganizerSwiper'}>
+              <Swiper
+                slidesPerView={cardPerView}
+                slidesPerGroup={cardPerView}
+                navigation
+                spaceBetween={0}
+                modules={[Navigation]}
+                className={'swiper'}
+              >
+                {eventsPublic.map((event) => (
+                  <div className={styles.card}>
+                    <SwiperSlide>
+                      <Card
+                        userData={userData}
+                        event={event}
+                        listName={'published'}
+                        orgEvent={'true'}
+                        datePublic={'true'}
+                      />
+                      {event.inRevision === false ? (
+                        <div className={styles.btns}>
+                          <Link className={styles.btn} to={'/organiza-un-evento-editar/' + event._id}>
+                            <BsPencilSquare className={styles.iconEdit} />
+                            <span>Editar</span>
+                          </Link>
+                        </div>
+                      ) : (
+                        <div className={styles.btns}>
+                          <Link className={styles.btn}>
+                            <span>Evento En Revision</span>
+                          </Link>
+                        </div>
+                      )}
+                    </SwiperSlide>
+                  </div>
+                ))}
+              </Swiper>
+            </div>
           ) : (
             <p className={styles.not_event}>No hay eventos ...</p>
           )}
@@ -164,7 +184,7 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
 
           <p className={styles.title}>Por Publicar</p>
 
-          {eventsNoPublic && eventsNoPublic.length <= 3 ? (
+          {eventsNoPublic.length && eventsNoPublic.length <= 3 ? (
             <div
               className={styles.containerCard}
               style={{
@@ -180,6 +200,7 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
                     orgEvent={'true'}
                     datePublic={'false'}
                   />
+
                   {event.inRevision === false ? (
                     <div className={styles.btns}>
                       <Link className={styles.btn} to={'/organiza-un-evento-editar/' + event._id}>
@@ -199,6 +220,7 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
               ))}
             </div>
           ) : eventsNoPublic.length > 3 ? (
+            <div>
             <Swiper
               slidesPerView={cardPerView}
               slidesPerGroup={cardPerView === 3 ? 3 : Math.trunc(cardPerView - 0.5)}
@@ -240,18 +262,19 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
                 </div>
               ))}
             </Swiper>
+            </div>
           ) : (
             <p className={styles.not_event}>No hay eventos por publicar ...</p>
           )}
         </>
       ) : (
-        <div>
-          <p className={styles.not_event}>Aun no tienes eventos publicados o por publicar. Crea tu evento</p>
-          <p className={styles.not_event}>
-            <a href='/organiza-un-evento' target='_blank'>
-              aqui
-            </a>
-          </p>
+        <div className={styles.containerSeeEvents}>
+          <hr className={styles.hr}></hr>
+          <p className={styles.text}>Aun no tienes eventos publicados o por publicar. Crea tu evento</p>
+          <button className={styles.btn}>
+            <Link to='/organiza-un-evento'>Organizar un evento</Link>
+          </button>
+          <hr className={styles.hr}></hr>
         </div>
       )}
     </div>

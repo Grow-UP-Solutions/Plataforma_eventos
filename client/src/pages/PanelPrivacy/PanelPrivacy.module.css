@@ -52,6 +52,7 @@
 
 .containerButtonsSection label {
   font-size: 1.6rem;
+  color: var(--color-grey-2);
   cursor: pointer;
 }
 
@@ -77,6 +78,7 @@
 .icon {
   margin-left: auto;
   font-size: 2rem;
+  color: var(--color-grey-2);
 }
 
 .containerComponent {
