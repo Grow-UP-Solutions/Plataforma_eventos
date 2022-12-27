@@ -1,0 +1,81 @@
+.sectionCategories {
+  padding: 2rem 0;
+}
+
+.titleCategories {
+  font-size: 2.5rem;
+  color: var(--color-grey-3);
+  letter-spacing: 1px;
+  margin-bottom: 3rem;
+}
+
+.listCategories {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  column-gap: 1rem;
+  row-gap: 5.5rem;
+}
+
+@media screen and (max-width: 1490px) {
+  .listCategories {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media screen and (max-width: 1160px) {
+  .listCategories {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.categorie {
+  width: 26rem;
+  height: 21rem;
+  overflow: hidden;
+  border-radius: 1rem;
+  box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.2);
+}
+
+@media screen and (max-width: 698px) {
+  .listCategories {
+    row-gap: 2rem;
+    grid-template-columns: repeat(2, 1fr);
+    justify-items: center;
+  }
+
+  .categorie {
+    width: 90%;
+  }
+}
+
+.categorie img {
+  object-fit: cover;
+  height: 15rem;
+  cursor: pointer;
+}
+
+.categorieText {
+  padding: 1rem 2rem;
+}
+
+.categorieTitle {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--color-grey-1);
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+}
+
+.categorieDescription {
+  font-size: 1.4rem;
+  color: var(--color-grey-1);
+}
+
+@media (max-width: 468px) {
+  .categorieTitle {
+    font-size: 1.8rem;
+  }
+  .categorieText {
+    padding: 1rem;
+  }
+}

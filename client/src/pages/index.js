@@ -23,3 +23,4 @@ export { default as ChangePassword } from './ChangePassword/ChangePassword';
 export { default as CheckSolicitudOrganizer } from './CheckSolicitudOrganizer/CheckSolicitudOrganizer';
 export { default as MercadoPago } from './MercadoPago/MercadoPago';
 export { default as MercadoPagoFail } from './MercadoPago/MercadoPagoFail';
+export { default as Categories } from './Categories/Categories';
