@@ -9,6 +9,7 @@ import { Swiper, SwiperSlide } from 'swiper/react/swiper-react';
 import 'swiper/swiper.min.css';
 import eventsApi from '../../axios/eventsApi';
 import { AuthContext } from '../../context/auth/AuthContext';
+import { UIContext } from '../../context/ui';
 import Card from '../Cards/Card';
 import styles from './Events.module.css';
 import {fechaActual ,hora ,minutes } from '../../utils/fechaActual'
@@ -62,7 +63,6 @@ const Events = () => {
   const eventsWeek = weekEvents.filter((e) => e !== undefined);
 
   //FRESQUITOS//
-
   const newEvents = allEvents.slice(allEvents.length - 18);
   const newEventsReverse = newEvents.reverse();
 
@@ -119,6 +119,10 @@ const Events = () => {
     if (window.innerWidth <= 1160) return setCardPerView(2.5);
     if (window.innerWidth <= 1490) return setCardPerView(3.5);
   };
+
+  //MI LISTA
+  const { /* eventsFavourites, */ setGetFav } = useContext(UIContext);
+
   return (
     <>
    

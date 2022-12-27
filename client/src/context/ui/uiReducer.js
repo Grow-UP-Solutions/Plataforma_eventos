@@ -30,22 +30,22 @@ export const uiReducer = (state, action) => {
         events: action.payload,
       };
 
-      case 'GET_ALL_USERS':
-        return {
-          ...state,
-          events: action.payload,
-        };
+    case 'GET_ALL_USERS':
+      return {
+        ...state,
+        events: action.payload,
+      };
 
     case 'GET_EVENTS_FAVOURITES':
       return {
         ...state,
-        eventsFavourites: action.payload,
+        eventsFavourites: action.payload.favorites,
       };
 
     case 'GET_EVENTS_WITHOUT_FAVOURITES':
       return {
         ...state,
-        eventsFavourites: action.payload,
+        eventsFavourites: action.payload.favorites,
       };
 
     case 'GET_RATING_ORGANIZER':
@@ -90,6 +90,11 @@ export const uiReducer = (state, action) => {
         deleteConversation: action.payload,
       };
 
+    case 'SET_GET_FAV':
+      return {
+        ...state,
+        eventsFavourites: action.payload,
+      };
 
     default:
     return state;
