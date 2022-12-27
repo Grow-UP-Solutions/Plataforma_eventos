@@ -8,7 +8,6 @@ import { FaCaretSquareRight } from 'react-icons/fa';
 
 const MyListUser = ({ myFavorites, myEventsBooked }) => {
   const eventos = myFavorites.concat(myEventsBooked);
-
   const eventosPublicos = eventos.filter((evento) => evento.isPublic === true && evento.inRevision === false);
 
   const orderByDate = eventosPublicos.sort((a, b) => {

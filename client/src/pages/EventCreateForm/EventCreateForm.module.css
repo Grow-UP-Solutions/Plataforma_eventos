@@ -905,7 +905,7 @@
 
 .errors {
   font-family: sans-serif;
-  color: #ba150a;
+  color: var(--color-orange);
   font-size: 14px;
   margin-top: 2rem;
   margin-bottom: 2rem;
@@ -913,9 +913,14 @@
 
 /*Seccion 1*/
 .container1 input:required {
-  border: 3px solid red;
+  border: 1px solid var(--color-orange);
   background-color: white;
   box-shadow: none;
+}
+
+.container1 input:focus {
+  outline: none;
+  border: 1px solid var(--color-blue);
 }
 
 .container1 input:required:invalid {
@@ -925,13 +930,13 @@
 /*Seccion 3*/
 
 .containerDescription textarea:required {
-  border: 3px solid red;
+  border: 3px solid var(--color-orange);
   background-color: white;
   box-shadow: none;
 }
 
 .containerDescription textarea:required {
-  border-color: #c00000;
+  border-color: var(--color-orange);
 }
 
 /*Seccion 4*/
@@ -940,7 +945,7 @@
   text-align: center;
   width: 50rem;
   height: 30rem;
-  border: 2px dashed red;
+  border: 2px dashed var(--color-orange);
   border-radius: 10px;
   align-items: center;
   justify-content: center;
@@ -1107,7 +1112,7 @@
 
 .addDate {
   background-color: transparent;
-  color: red;
+  color: var(--color-orange);
   cursor: pointer;
   margin-bottom: 2rem;
   border: none;
@@ -1244,8 +1249,7 @@
 .addBono {
   margin-top: 1rem;
   background-color: white;
-  text-align: right;
-  margin-right: 3rem;
+  text-align: center;
 }
 
 .checkBono input:checked ~ .paso .containerBono {
@@ -1419,7 +1423,7 @@
 .editarCodigo {
   font-size: 1.6rem;
   background-color: transparent;
-  color: red;
+  color: var(--color-orange);
   cursor: pointer;
   margin-bottom: 2rem;
   border: none;
@@ -2238,6 +2242,24 @@
   .containerResponsiveDates .title,
   .containerResponsiveDates .hrAsistentes {
     display: block !important;
+  }
+}
+.containerCodigoAndDesc {
+  display: flex;
+  gap: 1.2rem;
+}
+@media screen and (max-width: 555px) {
+  .opcionesBonos {
+    flex-direction: column;
+  }
+  .editarResetear {
+    margin-top: 2rem;
+  }
+  .containerEditReset {
+    flex-direction: row;
+  }
+  .containerCodigoAndDesc {
+    gap: 1.5rem;
   }
 }
 

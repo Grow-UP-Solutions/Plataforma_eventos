@@ -13,6 +13,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  width: 100%;
 }
 
 .containerSwiper {
@@ -21,7 +22,7 @@
 }
 
 .img {
-  max-height: 40rem;
+  max-height: 430px;
   width: 100%;
   object-fit: cover;
 }
@@ -381,6 +382,10 @@
   bottom: 24.5rem;
 }
 
+.containerSwiperGeneral {
+  width: 100%;
+}
+
 @keyframes spinner {
   0% {
     transform: rotate(0deg);
@@ -427,7 +432,7 @@
   .containerSwiper,
   .containerSwiperGeneral .imgSwiper,
   .img {
-    height: 55rem;
+    height: 430px;
   }
 
   .containerSwiperGeneral {

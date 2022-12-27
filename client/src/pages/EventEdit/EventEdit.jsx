@@ -14,6 +14,7 @@ import { ImImage } from 'react-icons/im';
 import { IoLocationOutline } from 'react-icons/io5';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { animateScroll as scroll } from 'react-scroll';
 import swal from 'sweetalert';
 import { Navigation, Pagination } from 'swiper';
 import 'swiper/modules/navigation/navigation.min.css';
@@ -28,10 +29,10 @@ import iconExclamacion2 from '../../assets/imgs/iconExclamacion2.svg';
 import mapa from '../../assets/imgs/mapa2.png';
 import eventsApi from '../../axios/eventsApi';
 import { AuthContext } from '../../context/auth/AuthContext';
-import { getColombia, getEventsCopy, postEvent, putEvent } from '../../redux/actions';
+import { stateContext } from '../../context/state/stateContext';
+import { getColombia, getEventsCopy, putEvent } from '../../redux/actions';
 import { formatDateForm } from '../../utils/formatDateForm';
 import styles from './EventEdit.module.css';
-
 const EventEdit = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -60,6 +61,10 @@ const EventEdit = () => {
 
   useEffect(() => {
     dispatch(getEventsCopy());
+  }, []);
+
+  useEffect(() => {
+    scroll.scrollToTop();
   }, []);
 
   //              evento a editar              //
@@ -901,11 +906,13 @@ const EventEdit = () => {
                   post.dates[i].codigos[a].descuento !== EventCopy.dates[j].codigos[b].descuento
                 ) {
                   return Swal.fire({
-                    html: 'Ya hay xx cupos vendidos. El cambio sólo aplicara a futuras ventas',
+                    html: '<p>Ya hay xx cupos vendidos. El cambio sólo aplicara a futuras ventas</p>',
                     showDenyButton: true,
                     showCancelButton: false,
                     confirmButtonText: 'Cambiar % de descuento',
                     denyButtonText: `Cerrar`,
+                    confirmButtonColor: '#d53e27',
+                    cancelButtonColor: '#868686',
                   }).then((result) => {
                     if (result.isConfirmed) {
                       setPost({
@@ -937,6 +944,19 @@ const EventEdit = () => {
     }
   };
 
+  const { notes, setNotes } = useContext(stateContext);
+
+  const notifications = async (buyers) => {
+    const create = {
+      type: 'cancelEvent',
+      idUser: user.uid,
+      title: post.title,
+      usersBuyers: buyers,
+    };
+    const json = await eventsApi.post('/users/notifications', create);
+    setNotes([...notes, json.data]);
+  };
+
   let removeFromPublic = (e, i, id) => {
     e.preventDefault();
     let newFechas = [...post.dates];
@@ -954,12 +974,14 @@ const EventEdit = () => {
               ...post,
               dates: newFechas,
             });
-            post.dates.map((date) => {
+
+            post.dates.map(async (date) => {
               if (
                 new Date(date.date) < new Date(dateActual) ||
                 (date.date === dateActual && date.end.slice(0, 2) <= hora && date.end.slice(3, 5) <= minutes + 2)
               ) {
                 date.isPublic = false;
+                notifications(date.buyers.map((buy) => buy.id));
               }
             });
             let allFalse = post.dates.filter((date) => date.isPublic === true);
@@ -980,15 +1002,19 @@ const EventEdit = () => {
       });
     } else if (newFechas[i].sells > 0) {
       return Swal.fire({
-        html:
-          `Ya hay ${newFechas[i].sells} cupo(s) comprado(s) para esta fecha, si la quitas de publicados el dinero será devuelto a los compradores. Esta devolución genera unos costos los cuales deberas asumir.` +
-          '<a href="/docs/terminos-condiciones/organizador" target="_blank">Ver sección &&&&&&&&&& en Términos y Condiciones.</a> ' +
-          'Deseas quitar esta fecha de publicados? ',
+        html: `<p>Ya hay ${newFechas[i].sells} cupo(s) comprado(s) para esta fecha, si la quitas de publicados el dinero será devuelto a los compradores. Esta devolución genera unos costos los cuales deberas asumir.
+          <a href="/docs/terminos-condiciones/organizador" target="_blank">Ver sección &&&&&&&&&& en Términos y Condiciones.</a>  
+          Deseas quitar esta fecha de publicados? </p> 
+          `,
         width: 600,
         icon: 'warning',
-        showCancelButton: true,
+        showCancelButton: false,
+        showDenyButton: true,
         confirmButtonText: 'Continuar',
+        denyButtonText: `Cerrar`,
         dangerMode: true,
+        confirmButtonColor: '#d53e27',
+        cancelButtonColor: '#868686',
       }).then((result) => {
         if (result.isConfirmed) {
           newFechas[i].sendEmail = true;
@@ -1109,14 +1135,15 @@ const EventEdit = () => {
         });
       } else if (post.dates[i]._id === id && post.dates[i].sells > 0) {
         return Swal.fire({
-          html:
-            `Ya hay ${post.dates[i].sells} cupo(s) comprado(s) para esta fecha, si la quitas de publicados el dinero será devuelto a los compradores. Esta devolución genera unos costos los cuales deberas asumir.` +
-            '<a href="/docs/terminos-condiciones/organizador" target="_blank">Ver sección &&&&&&&&&& en Términos y Condiciones.</a> ' +
-            'Deseas quitar esta fecha de publicados? ',
+          html: `<p>Ya hay ${post.dates[i].sells} cupo(s) comprado(s) para esta fecha, si la quitas de publicados el dinero será devuelto a los compradores. Esta devolución genera unos costos los cuales deberas asumir.
+            <a href="/docs/terminos-condiciones/organizador" target="_blank">Ver sección &&&&&&&&&& en Términos y Condiciones.</a> 
+            Deseas quitar esta fecha de publicados?</p>`,
           width: 600,
           icon: 'warning',
           showCancelButton: true,
           confirmButtonText: 'Continuar',
+          denyButtonText: `Cerrar`,
+
           dangerMode: true,
         }).then((result) => {
           if (result.isConfirmed) {
@@ -1469,10 +1496,10 @@ const EventEdit = () => {
                 modules={[Pagination, Navigation]}
                 className='swiper'
                 autoHeight={true}
-                 // preventClicks={true}
+                // preventClicks={true}
                 // a11y={false}
                 // watchSlidesProgress= {true}
-                shortSwipes= {false}
+                shortSwipes={false}
                 // shortSwipes= {1}
               >
                 <SwiperSlide>

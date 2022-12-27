@@ -40,9 +40,8 @@ async function createUsers(user, code) {
 
 async function createOrganizerComment(id, opinion) {
   try {
-   
     const generateComment = await UsersFunctionDb.commentUsers(id, opinion);
-   
+
     return generateComment;
   } catch (error) {
     throw new Error(error.message);
@@ -125,10 +124,19 @@ async function eventesDeleteFavorites(idUser, idEvent) {
 }
 
 async function sendNotificationsUser(notifications) {
-  const { type, idUser } = notifications;
-  const msg = validatonType(type);
+  const { type, idUser, title, usersBuyers } = notifications;
+  const msg = validatonType(type, title);
   try {
-    const newNotification = await UsersFunctionDb.sendNotification(idUser, msg);
+    let newNotification = '';
+
+    if (type === 'cancelEvent') {
+      usersBuyers.forEach(async (id) => {
+        await UsersFunctionDb.sendNotification(id, msg);
+      });
+    } else {
+      newNotification = await UsersFunctionDb.sendNotification(idUser, msg);
+    }
+
     return newNotification;
   } catch (error) {
     throw new Error(error.message);

@@ -13,7 +13,6 @@ import swal from 'sweetalert';
 import { animateScroll as scroll } from 'react-scroll';
 
 const Finance = ({ userData }) => {
-
   const { bank, setBank } = useContext(stateContext);
   const [isOpenModal, openModal, closeModal] = useModal(false);
   const [link, setLink] = useState(undefined);
@@ -27,15 +26,12 @@ const Finance = ({ userData }) => {
       try {
         const res = await eventsApi.get('/users/' + userData._id);
         setBank(res.data.bank);
-      } 
-      catch (error) {
-        console.log(error);  
+      } catch (error) {
+        console.log(error);
       }
-    }
+    };
     getBankAccount();
   }, [closeModal]);
-
- 
 
   /*console.log('userData',userData._id);
     const opcionesEliminar = [
@@ -53,14 +49,14 @@ const Finance = ({ userData }) => {
     return setTimeout(() => {
       openModal();
     }, 1000);
-  }
+  };
 
   const handleClickEdit = (num) => {
     setLink(num);
     return setTimeout(() => {
       openModal();
     }, 1000);
-  }
+  };
 
   const handleClickDelete = async (num) => {
     try {
@@ -71,18 +67,22 @@ const Finance = ({ userData }) => {
         icon: 'success',
         button: 'OK',
       });
-    } 
-    catch (error) {
-      console.log(error);  
+    } catch (error) {
+      console.log(error);
     }
-  }
+  };
 
   return (
     <div className={styles.container}>
       <div className={styles.containerSub}>
         <div className={styles.containerSub1}>
-          <p className={styles.texto}>Ganancias totales en facturas ya emitidas: ${new Intl.NumberFormat('de-DE').format(userData.payedEarnings)} </p>
-          <p className={styles.texto}>Ganancias pendientes en facturas por emitir: ${new Intl.NumberFormat('de-DE').format(userData.pendingEarnings)} </p>
+          <p className={styles.texto}>
+            Ganancias totales en facturas ya emitidas: ${new Intl.NumberFormat('de-DE').format(userData.payedEarnings)}{' '}
+          </p>
+          <p className={styles.texto}>
+            Ganancias pendientes en facturas por emitir: $
+            {new Intl.NumberFormat('de-DE').format(userData.pendingEarnings)}{' '}
+          </p>
           <p className={styles.subtexto}>
             Cifras mostradas son netas, es decir el monto indicado ya ha sido depositado en tu cuenta bancaria o esta
             proximo a ser liquidado.
@@ -106,8 +106,7 @@ const Finance = ({ userData }) => {
             suscipit lobortis nisl
           </p>
 
-          {
-            bank.length > 0 ?
+          {bank.length > 0 ? (
             bank.map((c) => (
               <div className={styles.containerBankAccount}>
                 <div>
@@ -119,8 +118,8 @@ const Finance = ({ userData }) => {
 
                 <div className={styles.containerBtnAccount}>
                   <div className={styles.btnEdit} onClick={() => handleClickEdit(c.bankAccount)}>
-                      <img className={styles.basquet} src={edit} alt='nw' /> 
-                      <button className={styles.btnAccount}>Editar</button>
+                    <img className={styles.basquet} src={edit} alt='nw' />
+                    <button className={styles.btnAccount}>Editar</button>
                   </div>
 
                   <div className={styles.vLine}></div>
@@ -130,18 +129,19 @@ const Finance = ({ userData }) => {
                     <button className={styles.btnAccount}>Eliminar</button>
                   </div>
                 </div>
-              </div> 
-            )) :
+              </div>
+            ))
+          ) : (
             <div className={styles.container_nocta}>
-              <p className={styles.nocta}>
-                Todavia no agregaste ninguna cuenta bancaria
-              </p>
+              <p className={styles.nocta}>Todavia no agregaste ninguna cuenta bancaria</p>
             </div>
-          }       
+          )}
 
           {/* <hr className={styles.hr}></hr> */}
 
-          <button className={styles.btnAdd} onClick={handleClickNewAccount}>+ Agregar cuenta</button>
+          <button className={styles.btnAdd} onClick={handleClickNewAccount}>
+            + Agregar cuenta
+          </button>
         </div>
       </div>
     </div>

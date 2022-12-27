@@ -59,6 +59,10 @@ const Cart = () => {
     }
   };
 
+  useEffect(() => {
+    scroll.scrollToTop();
+  }, []);
+
   // ----- carrito-------//
 
   useEffect(() => {
@@ -118,7 +122,7 @@ const Cart = () => {
 
   const [codigo, setCodigo] = useState('');
   const [desc, setDesc] = useState('');
-  const [ apllied, setApplied ] = useState(false)
+  const [apllied, setApplied] = useState(false);
 
   const handleCodigo = (e) => {
     e.preventDefault();
@@ -211,7 +215,7 @@ const Cart = () => {
             return swal({
               title: 'Codigo Aplicado',
             });
-            setApplied(true)
+            setApplied(true);
           } else if (currentDate[0].codigos[d].codigo === codigo && currentDate[0].codigos[d].cantidad === 0) {
             return swal({
               title: 'Ya no hay bonos disponibles para redimir con este código',
@@ -505,7 +509,6 @@ const Cart = () => {
                                 ) : (
                                   ''
                                 )}
-                              
                               </div>
                             )}
                           </div>
@@ -594,31 +597,30 @@ const Cart = () => {
                                     />
                                   </div>
                                 )}
-                                {c.codigoCorrecto === true  ? 
-                                  <div className={styles.btnsDisc}>                                                                 
-                                   <button
+                                {c.codigoCorrecto === true ? (
+                                  <div className={styles.btnsDisc}>
+                                    <button
                                       className={styles.quitar}
                                       onClick={(e) => {
                                         quitar(e, currentDate[0]._id);
                                       }}
                                     >
                                       Quitar
-                                   </button>                            
+                                    </button>
                                   </div>
-                                :
-                                <div className={styles.btnsDisc}>
-                                  
-                                <button
-                                    className={styles.quitar}
-                                    onClick={(e) => {
-                                      aplicar(e, currentDate[0]._id);
-                                    }}
-                                  >
-                                    Aplicar
-                                </button>
-                              </div>
-                                }
-                               
+                                ) : (
+                                  <div className={styles.btnsDisc}>
+                                    <button
+                                      className={styles.quitar}
+                                      onClick={(e) => {
+                                        aplicar(e, currentDate[0]._id);
+                                      }}
+                                    >
+                                      Aplicar
+                                    </button>
+                                  </div>
+                                )}
+
                                 {/* <div className={styles.btnsDisc}>
                                   
                                   <button

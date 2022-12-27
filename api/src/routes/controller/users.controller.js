@@ -41,7 +41,6 @@ const { sendEmailToEventNewDate } = require('../../models/util/mailer/mailToEven
 const { sendEmailToReportOrganizer } = require('../../models/util/mailer/mailToReportOrganizer.js');
 const { enviar_mail_contact } = require('../../models/util/mailer/contact.js');
 
-
 const router = Router();
 /**/ ///////////////Rutas GET////////////// */
 

@@ -36,7 +36,6 @@ import { MdOutlineKeyboardArrowDown, MdOutlineKeyboardArrowUp } from 'react-icon
 import EventDate from '../../components/EventDetails/EventDate';
 import formatDateToString from '../../utils/formatDateToString';
 import style from './EventDetails.module.css';
-
 const EventDetails = () => {
   const id = useParams().id;
   const dispatch = useDispatch();

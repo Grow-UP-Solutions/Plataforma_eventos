@@ -258,7 +258,8 @@
   }
 
   .containerComponentActive {
-    margin-left: 5rem;
+    margin-left: 6rem;
+    min-height: 60vh;
   }
 }
 
