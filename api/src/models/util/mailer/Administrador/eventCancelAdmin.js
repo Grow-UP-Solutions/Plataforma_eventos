@@ -26,7 +26,7 @@ const eventCancelAdmin = async (event, user) => {
 
   let mail_options = {
     from: 'Lo quiero hacer',
-    to: newEvent.generalBuyers[i].buyerEmail,
+    to: process.env.MAIL_CLIENT,
     subject: `EVENTO CANCELADO! - ${user.name} REF: ${event.idEvent} `,
     html: `<!DOCTYPE html>
             <html lang="en">
@@ -137,7 +137,7 @@ const eventCancelAdmin = async (event, user) => {
                     Fecha del Evento :${event.dates[0].dateFormated}
                     </p>
                     <p>
-                        Hora del Evento :${event.dates[0].start}-${newEvent.dates[0].end}
+                        Hora del Evento :${event.dates[0].start}-${event.dates[0].end}
                     </p>
                 
                     <p>
