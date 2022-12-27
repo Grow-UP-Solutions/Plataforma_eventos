@@ -109,7 +109,7 @@ const Navbar = ({ upper }) => {
         toggleScreenLogin();
         return setOpenMenu(false);
       case 'categories':
-        navigate('/#categories');
+        navigate('/categorias');
         return setOpenMenu(false);
       case 'createEvent':
         navigate('/organiza-un-evento/beneficios');
@@ -155,7 +155,7 @@ const Navbar = ({ upper }) => {
                 </li>
 
                 <li className={style.itemMenu}>
-                  <button onClick={() => handleClickUserOptionMenu('/usuario/perfil')}>Categorías</button>
+                  <button onClick={() => handleClickUserOptionMenu('/categorias')}>Categorías</button>
                 </li>
                 <li className={style.itemMenu}>
                   <button onClick={() => handleClickUserOptionMenu('/')}>Home</button>
@@ -209,9 +209,7 @@ const Navbar = ({ upper }) => {
                   </button>
                 </li>
                 <li className={style.itemMenu}>
-                  <button /* onClick={() => handleOpenMenu('categories')} */>
-                    <Link to={'/#categories'}>Categorías</Link>
-                  </button>
+                  <button onClick={() => handleOpenMenu('categories')}>Categorías</button>
                 </li>
 
                 <li className={`${style.itemMenu}`}>

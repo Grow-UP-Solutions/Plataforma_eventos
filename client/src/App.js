@@ -40,6 +40,7 @@ import {
   MyEventsAsistentes,
   MercadoPago,
   MercadoPagoFail,
+  Categories,
 } from './pages';
 import EventsOrganizerResult from './pages/EventsOrganizerResult/EventsOrganizerResult';
 import News from './pages/News/News';
@@ -101,6 +102,7 @@ function App() {
         <Route path={'/ordenes'} element={<Orders />} />
         <Route path={'/detalle-de-orden/:orderId/:userId'} element={<OrderDetail />} />
         <Route path={'/compras'} element={<Compras />} />
+        <Route path={'/categorias'} element={<Categories />} />
 
         {/* RUTAS PRIVADAS */}
         <Route
