@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
-import styles from './Categories.module.css';
-import { UIContext } from '../../context/ui';
 import { useNavigate } from 'react-router-dom';
+import { UIContext } from '../../context/ui';
+import styles from './Categories.module.css';
 
 const Categories = () => {
   const { categories } = useContext(UIContext);

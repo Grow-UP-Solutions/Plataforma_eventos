@@ -36,7 +36,6 @@ import { MdOutlineKeyboardArrowDown, MdOutlineKeyboardArrowUp } from 'react-icon
 import EventDate from '../../components/EventDetails/EventDate';
 import formatDateToString from '../../utils/formatDateToString';
 import style from './EventDetails.module.css';
-
 const EventDetails = () => {
   const id = useParams().id;
   const dispatch = useDispatch();
@@ -352,7 +351,7 @@ const EventDetails = () => {
                   <Swiper slidesPerView={1} navigation modules={[Navigation]} className='mySwipperEventDetails'>
                     {pictures.map((picture) => (
                       <SwiperSlide>
-                        <img className={style.img} src={picture.picture} alt='Not Found ):' />
+                        <img className={style.imgSwiper} src={picture.picture} alt='Not Found ):' />
                       </SwiperSlide>
                     ))}
                   </Swiper>

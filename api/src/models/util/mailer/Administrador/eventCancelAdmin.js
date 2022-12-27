@@ -1,39 +1,34 @@
 // DESTINO: ADMINISTRADOR
-// CASO: 
-// 1. CUANDO UN ORGANIZADOR SACA DE PUBLICO UN EVENTO 
+// CASO:
+// 1. CUANDO UN ORGANIZADOR SACA DE PUBLICO UN EVENTO
 // 2. CUANDO UNA FECHA DEJA DE SER PUBLICA Y ESTA ERA LA UNICA FECHA DEL EVENTO
 //MOTIVO: AVISA QUE UN EVENTO HA SIDO CANCELADO
-
-
 
 const { createTransport } = require('nodemailer');
 require('dotenv').config();
 
 const { EMAIL, PASSWORD } = process.env;
 
-  const fecha = new Date();
-  const hora = fecha.getHours();
-  const minutes = fecha.getMinutes();
-  const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
+const fecha = new Date();
+const hora = fecha.getHours();
+const minutes = fecha.getMinutes();
+const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
 
 const eventCancelAdmin = async (event, user) => {
+  const transporter = createTransport({
+    service: 'gmail',
+    secure: true,
+    auth: {
+      user: EMAIL,
+      pass: PASSWORD,
+    },
+  });
 
-   
- 
-        const transporter = createTransport({
-            service: 'gmail',
-            secure: true,
-            auth: {
-            user: EMAIL,
-            pass: PASSWORD,
-            },
-        });
-
-        let mail_options = {
-            from: 'Lo quiero hacer',
-            to: newEvent.generalBuyers[i].buyerEmail,
-            subject: `EVENTO CANCELADO! - ${user.name} REF: ${event.idEvent} `,
-            html: `<!DOCTYPE html>
+  let mail_options = {
+    from: 'Lo quiero hacer',
+    to: process.env.MAIL_CLIENT,
+    subject: `EVENTO CANCELADO! - ${user.name} REF: ${event.idEvent} `,
+    html: `<!DOCTYPE html>
             <html lang="en">
             <head>
                 <meta charset="UTF-8" />
@@ -142,7 +137,7 @@ const eventCancelAdmin = async (event, user) => {
                     Fecha del Evento :${event.dates[0].dateFormated}
                     </p>
                     <p>
-                        Hora del Evento :${event.dates[0].start}-${newEvent.dates[0].end}
+                        Hora del Evento :${event.dates[0].start}-${event.dates[0].end}
                     </p>
                 
                     <p>
@@ -160,18 +155,15 @@ const eventCancelAdmin = async (event, user) => {
             </body>
             </html>
         `,
-        };
-        try {
-            const response = await transporter.sendMail(mail_options);
-            return { msg: ('SE ENVIO CON EXITO', response.response) };
-        } catch (error) {
-            return { msg: ('FALLO EL ENVIO DE EMAIL', error) };
-        }
-        
-
-}
-
+  };
+  try {
+    const response = await transporter.sendMail(mail_options);
+    return { msg: ('SE ENVIO CON EXITO', response.response) };
+  } catch (error) {
+    return { msg: ('FALLO EL ENVIO DE EMAIL', error) };
+  }
+};
 
 module.exports = {
-    eventCancelAdmin,
+  eventCancelAdmin,
 };

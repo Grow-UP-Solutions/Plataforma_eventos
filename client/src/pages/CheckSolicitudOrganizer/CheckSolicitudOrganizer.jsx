@@ -3,7 +3,7 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useNavigate, useParams } from 'react-router-dom';
 import eventsApi from '../../axios/eventsApi';
 import styles from './CheckSolicitudOrganizer.module.css';
-
+import { animateScroll as scroll } from 'react-scroll';
 const CheckSolicitudOrganizer = () => {
   const { token } = useParams();
   const [userData, setUserData] = useState({});
@@ -42,6 +42,10 @@ const CheckSolicitudOrganizer = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    scroll.scrollToTop();
+  }, []);
 
   return (
     <div className={`${styles.page} container`}>

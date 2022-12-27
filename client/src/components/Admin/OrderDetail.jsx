@@ -9,98 +9,79 @@ import { AiOutlineConsoleSql } from 'react-icons/ai';
 import { fechaActual } from '../../utils/fechaActual';
 import { Link } from 'react-router-dom';
 import Loading from '../Loading/Loading';
-
+import { animateScroll as scroll } from 'react-scroll';
 const OrderDetail = () => {
+  console.log('entree');
 
-    console.log('entree')
-  
   const navigate = useNavigate();
- 
+
   const [userData, setUserData] = useState({});
 
   const [order, setOrder] = useState({});
 
   const [load, setLoad] = useState(true);
 
+  const orderId = useParams().orderId;
+  const userId = useParams().userId;
 
-  const orderId = useParams().orderId
-  const userId = useParams().userId
-
-
-  
   useEffect(() => {
     getUsers();
   }, [userId]);
-
+  useEffect(() => {
+    scroll.scrollToTop();
+  }, []);
   const getUsers = async () => {
+    console.log('userId', userId);
 
-    console.log('userId',userId)
-    
-      const userResult = await eventsApi.get(`/users/${userId}`);
-      setUserData(userResult.data);
-      setLoad(false)
-      console.log('userResult.data',userResult.data)
-      const value = userResult.data.ordenes.filter(order => order._id === orderId)[0]
-      setOrder(value);
-    
+    const userResult = await eventsApi.get(`/users/${userId}`);
+    setUserData(userResult.data);
+    setLoad(false);
+    console.log('userResult.data', userResult.data);
+    const value = userResult.data.ordenes.filter((order) => order._id === orderId)[0];
+    setOrder(value);
   };
 
-  console.log('order',order)
+  console.log('order', order);
 
-  
-
-
- 
-
-
- 
-
-
-
-  if(load){
-    return(
-      <Loading />
-    )
-   }else{
+  if (load) {
+    return <Loading />;
+  } else {
     return (
-    <div className={style.containerAdminProfile}>
+      <div className={style.containerAdminProfile}>
         <h1>Detalles de la Compra</h1>
-        {order !== undefined && 
-        <div className={style.containerAdmin}>
+        {order !== undefined && (
+          <div className={style.containerAdmin}>
             <p className={style.h2}>Orden Id: {order._id}</p>
             <p className={style.h2}>Evento: {order.motivo}</p>
             <p className={style.h2}>Codigo de La Transaccion: {order.codigoDeLaTransaccion}</p>
             <p className={style.h2}>Destino de Pago: {order.DestinoDePago}</p>
-            <p className={style.h2}>Fecha de Pago: {order.fechaDePago.slice(0,10)}</p>
-            <p className={style.h2}>Valor de la Transaccion: ${new Intl.NumberFormat('de-DE').format(order.valorDeLaTransaccion)}</p>
-            <p className={style.h2}>Costo de la Transaccion: ${new Intl.NumberFormat('de-DE').format(order.costoDeLaTransaccion)}</p>
+            <p className={style.h2}>Fecha de Pago: {order.fechaDePago.slice(0, 10)}</p>
+            <p className={style.h2}>
+              Valor de la Transaccion: ${new Intl.NumberFormat('de-DE').format(order.valorDeLaTransaccion)}
+            </p>
+            <p className={style.h2}>
+              Costo de la Transaccion: ${new Intl.NumberFormat('de-DE').format(order.costoDeLaTransaccion)}
+            </p>
             <p className={style.h2}>Referencia: {order.referencia}</p>
-            
-            {order.cuposComprados.map(cupo => 
-                <div>
-                     <p className={style.h2}>Fecha Comprada: {cupo.idDate}</p>
-                     <p className={style.h2}>Cantidad de Cupos: {cupo.cantidad}</p>
 
-                </div>
-                
-                )}
-           
-        </div>
-        
-        }
+            {order.cuposComprados.map((cupo) => (
+              <div>
+                <p className={style.h2}>Fecha Comprada: {cupo.idDate}</p>
+                <p className={style.h2}>Cantidad de Cupos: {cupo.cantidad}</p>
+              </div>
+            ))}
+          </div>
+        )}
 
-     <Link className={style.exit} to='/ordenes'>
-       <button className={style.exit}>Ir a Todas Las Compras</button>
-     </Link>
-        
+        <Link className={style.exit} to='/ordenes'>
+          <button className={style.exit}>Ir a Todas Las Compras</button>
+        </Link>
       </div>
     );
   }
-
 };
 
 export default OrderDetail;
-
 
 // import React, { useEffect } from 'react'
 // import { useDispatch, useSelector } from 'react-redux'
@@ -255,5 +236,3 @@ export default OrderDetail;
 // }
 
 // //CAMBIAR EL ESTADO
-
-

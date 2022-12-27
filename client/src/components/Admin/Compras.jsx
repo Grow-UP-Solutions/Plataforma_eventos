@@ -5,7 +5,7 @@ import { fechaActual } from '../../utils/fechaActual';
 import Loading from '../Loading/Loading';
 import Pagination from '../Pagination/Pagination';
 import style from './Compras.module.css';
-
+import { animateScroll as scroll } from 'react-scroll';
 const Compras = () => {
   const navigate = useNavigate();
 
@@ -26,6 +26,10 @@ const Compras = () => {
 
     const ordenesTotal = [];
   };
+
+  useEffect(() => {
+    scroll.scrollToTop();
+  }, []);
 
   const [currentPage, setCurretPage] = useState(1);
   const ordersPerPage = 25;

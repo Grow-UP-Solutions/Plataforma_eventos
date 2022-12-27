@@ -8,7 +8,7 @@ import eventsApi from '../../axios/eventsApi';
 import { AuthContext } from '../../context/auth';
 
 import PinField from 'react-pin-field';
-
+import { animateScroll as scroll } from 'react-scroll';
 const Verification = () => {
   const { path } = useParams();
   const { login } = useContext(AuthContext);
@@ -21,6 +21,10 @@ const Verification = () => {
   });
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    scroll.scrollToTop();
+  }, []);
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'));

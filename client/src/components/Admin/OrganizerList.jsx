@@ -10,11 +10,17 @@ import { fechaActual } from '../../utils/fechaActual';
 import { Link } from 'react-router-dom';
 import Loading from '../Loading/Loading';
 
+import { animateScroll as scroll } from 'react-scroll';
+
 const OrganizerList = () => {
   const [state, fetchUsers] = useFetch();
   const navigate = useNavigate();
   const [load, setLoad] = useState(true);
   const [userData, setUserData] = useState([]);
+
+  useEffect(() => {
+    scroll.scrollToTop();
+  }, []);
 
   useEffect(() => {
     getUserData();
@@ -23,9 +29,8 @@ const OrganizerList = () => {
   const getUserData = async () => {
     const userResult = await eventsApi.get(`/users`);
     setUserData(userResult.data);
-    setLoad(false)
+    setLoad(false);
   };
-
 
   const [currentPage, setCurretPage] = useState(1);
   const organizerPerPage = 10;
@@ -33,12 +38,9 @@ const OrganizerList = () => {
   const indexOfFirstOrg = indexOfLastOrg - organizerPerPage;
   const paginado = (pageNumber) => setCurretPage(pageNumber);
 
-
-  if(load){
-    return(
-      <Loading />
-    )
-   }else{
+  if (load) {
+    return <Loading />;
+  } else {
     return (
       <div className={style.container}>
         <div className={style.container_titles}>
@@ -57,26 +59,26 @@ const OrganizerList = () => {
 
             <tbody>
               {userData !== undefined &&
-                userData.slice(indexOfFirstOrg, indexOfLastOrg).map((e) => (
-                  e.isOrganizer===true ?
-                  <tr key={e.id} className={style.tbody}>
-                    <td className={style.tbody_name}>
-                      <img
-                        src={userData.userpicture}
-                        alt={e.first_name}
-                        style={{ maxWidth: '20%', borderRadius: '100px' }}
-                      />
-                      <Link to={'/organizador-facturas-pagar/' + e._id}>{e.name}</Link>
-                    </td>
-                    <td>{e.email}</td>
-                    
-                  </tr>
-                  :''
-                ))}
+                userData.slice(indexOfFirstOrg, indexOfLastOrg).map((e) =>
+                  e.isOrganizer === true ? (
+                    <tr key={e.id} className={style.tbody}>
+                      <td className={style.tbody_name}>
+                        <img
+                          src={userData.userpicture}
+                          alt={e.first_name}
+                          style={{ maxWidth: '20%', borderRadius: '100px' }}
+                        />
+                        <Link to={'/organizador-facturas-pagar/' + e._id}>{e.name}</Link>
+                      </td>
+                      <td>{e.email}</td>
+                    </tr>
+                  ) : (
+                    ''
+                  )
+                )}
             </tbody>
           </div>
 
-       
           {userData !== undefined && (
             <div className={style.container_pagination}>
               <Pagination organizerPerPage={organizerPerPage} state={userData.length} paginado={paginado} />

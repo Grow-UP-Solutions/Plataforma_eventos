@@ -11,7 +11,7 @@ import swal from 'sweetalert';
 import eventsApi from '../../axios/eventsApi';
 import { AiOutlineClose } from 'react-icons/ai';
 import { Hearts } from 'react-loader-spinner';
-import {fechaActual , hora , minutes } from '../../utils/fechaActual'
+import { fechaActual, hora, minutes } from '../../utils/fechaActual';
 
 const Card = ({ event, listName, orgEvent, datePublic }) => {
   const { toggleScreenLogin, getEventsFavourites, getEventsWithoutFavourites } = useContext(UIContext);
@@ -25,11 +25,7 @@ const Card = ({ event, listName, orgEvent, datePublic }) => {
   const [isLoading, setIsLoading] = useState(true);
   const menuRef = useRef();
 
- 
-
- 
-
- //ocultar eventos viejos
+  //ocultar eventos viejos
 
   if (fechaActual && orgEvent !== 'true') {
     event.dates.map((date) => {
@@ -53,7 +49,6 @@ const Card = ({ event, listName, orgEvent, datePublic }) => {
     });
   }
 
-
   //rechequear esto
 
   if (event.dates.length === 1 && event.dates[0].isPublic === false) {
@@ -61,8 +56,12 @@ const Card = ({ event, listName, orgEvent, datePublic }) => {
   }
 
   //filtro por fechas: para mostrar y no mostrar
-  const datesPublic = event.dates.filter((date) => date.isOld === false && date.isPublic === true && date.inRevision===false);
-  const datesNotPublic = event.dates.filter((date) => date.isOld === true && date.isPublic === false && date.inRevision===true);
+  const datesPublic = event.dates.filter(
+    (date) => date.isOld === false && date.isPublic === true && date.inRevision === false
+  );
+  const datesNotPublic = event.dates.filter(
+    (date) => date.isOld === true && date.isPublic === false && date.inRevision === true
+  );
 
   useEffect(() => {
     getUsers();
@@ -164,9 +163,8 @@ const Card = ({ event, listName, orgEvent, datePublic }) => {
 
   //Para renderizar el precio de la primera fecha//
 
-  const firstPublicDate = event.dates.find((date) =>  date.isPublic === true && date.inRevision === false);
-  const firstNotPublicDate = event.dates.find((date) => date.isPublic === false  || date.inRevision === true);
- 
+  const firstPublicDate = event.dates.find((date) => date.isPublic === true && date.inRevision === false);
+  const firstNotPublicDate = event.dates.find((date) => date.isPublic === false || date.inRevision === true);
 
   const [price, setPrice] = useState(firstPublicDate !== undefined ? firstPublicDate.price : '');
 
@@ -237,7 +235,9 @@ const Card = ({ event, listName, orgEvent, datePublic }) => {
           ) : orgEvent === 'true' && datePublic === 'true' && selectedDate !== '' ? (
             <p className={styles.cardDateCurrent}>{selectedDate.replace('de', '/')}</p>
           ) : orgEvent === 'true' && datePublic === 'false' && selectedDate === '' ? (
-            <p className={styles.cardDateCurrent}>{firstNotPublicDate ? firstNotPublicDate.dateFormated.replace('de', '/'):'No tengo'}</p>
+            <p className={styles.cardDateCurrent}>
+              {firstNotPublicDate ? firstNotPublicDate.dateFormated.replace('de', '/') : 'No tengo'}
+            </p>
           ) : orgEvent === 'true' && datePublic === 'false' && selectedDate !== '' ? (
             <p className={styles.cardDateCurrent}>{selectedDate.replace('de', '/')}</p>
           ) : orgEvent !== 'true' ? (
@@ -245,10 +245,7 @@ const Card = ({ event, listName, orgEvent, datePublic }) => {
               {event.dates && event.dates.length > 1 ? (
                 <select className={styles.cardDate} onChange={(e) => handlePrice(e)}>
                   {event.dates.map((date, index) =>
-                    date.cupos > 0 && 
-                    date.isOld === false && 
-                    date.isPublic === true && 
-                    date.inRevision === false ? (
+                    date.cupos > 0 && date.isOld === false && date.isPublic === true && date.inRevision === false ? (
                       date.dateFormated.slice(date.dateFormated.length - 4) === numCadena ? (
                         <option key={index} value={date.price}>
                           {date.dateFormated.slice(0, date.dateFormated.length - 7)}
@@ -259,10 +256,7 @@ const Card = ({ event, listName, orgEvent, datePublic }) => {
                         </option>
                       )
                     ) : (
-                    
-                     ''
-                      
-
+                      ''
                     )
                   )}
                 </select>
@@ -278,28 +272,17 @@ const Card = ({ event, listName, orgEvent, datePublic }) => {
                 <p className={styles.cardDateCurrent}>
                   {event.dates[0].dateFormated.slice(0, event.dates[0].dateFormated.length - 7)}
                 </p>
-              ) : event.dates[0].isPublic === true 
-                  && event.dates[0].isOld === false 
-                  && event.dates[0].inRevision === false ? (
-                 <p className={styles.cardDateCurrent}>{event.dates[0].dateFormated.replace('de', '/')}</p>
+              ) : event.dates[0].isPublic === true &&
+                event.dates[0].isOld === false &&
+                event.dates[0].inRevision === false ? (
+                <p className={styles.cardDateCurrent}>{event.dates[0].dateFormated.replace('de', '/')}</p>
               ) : (
                 ''
               )}
 
               {/* FAVORITO */}
               {isLoading ? (
-                <div className={styles.cardAddLoad}>
-                  ''
-                  {/* <Hearts
-                  height='40'
-                  width='40'
-                  color='#d53e27'
-                  ariaLabel='hearts-loading'
-                  wrapperStyle={{}}
-                  wrapperClass=''
-                  visible={true}
-                /> */}
-                </div>
+                <div className={styles.cardAddLoad}></div>
               ) : (
                 <div>
                   {event.organizer._id === user.uid || orgEvent === 'true' ? (
@@ -580,7 +563,13 @@ const Card = ({ event, listName, orgEvent, datePublic }) => {
                 </div>
                 <div className={styles.subDatos}>
                   <p>Ganancias:</p>
-                  {event.dates.map((date) => (date._id === selectedDateId ? <h4>${new Intl.NumberFormat('de-DE').format(date.overallEarnings)}</h4> : ''))}
+                  {event.dates.map((date) =>
+                    date._id === selectedDateId ? (
+                      <h4>${new Intl.NumberFormat('de-DE').format(date.overallEarnings)}</h4>
+                    ) : (
+                      ''
+                    )
+                  )}
                   <button onClick={(e) => handleEarns(e)}>Ver</button>
                 </div>
               </div>
