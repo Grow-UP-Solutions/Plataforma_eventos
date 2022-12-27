@@ -1,13 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Card } from '..';
 import styles from './MyListUser.module.css';
 import { Link } from 'react-router-dom';
 import Pagination from '../../components/Pagination/Pagination';
 import { useState } from 'react';
 import { FaCaretSquareRight } from 'react-icons/fa';
+import { UIContext } from '../../context/ui';
 
-const MyListUser = ({ myFavorites, myEventsBooked }) => {
-  const eventos = myFavorites.concat(myEventsBooked);
+const MyListUser = ({ /* myFavorites */ myEventsBooked }) => {
+  /* const eventos = myFavorites.concat(myEventsBooked); */
+
+  const { eventsFavourites } = useContext(UIContext);
+  console.log({ eventsFavourites, myEventsBooked });
+  const eventos = eventsFavourites.concat(myEventsBooked);
+  console.log({ eventos });
+
   const eventosPublicos = eventos.filter((evento) => evento.isPublic === true && evento.inRevision === false);
 
   const orderByDate = eventosPublicos.sort((a, b) => {

@@ -10,12 +10,13 @@ import { animateScroll as scroll } from 'react-scroll';
 const MercadoPago = () => {
   const [successInfo, setSucessInfo] = useState(null);
   const url = window.location.href.split('?')[1];
-  const { code, setCode } = useContext(stateContext);
+  const { notes, setNotes } = useContext(stateContext);
 
   useEffect(() => {
     if (!successInfo) {
       eventsApi.get(`/mercadoPago/success?${url}`).then((res) => {
         setSucessInfo(res.data);
+        notifications(res.data.oganizadorId, res.data.motivo, res.data.totalCupos, res.data.nameBuyer);
       });
     }
   }, [successInfo]);
@@ -23,6 +24,18 @@ const MercadoPago = () => {
   useEffect(() => {
     scroll.scrollToTop();
   }, []);
+
+  const notifications = async (idOrganizer, titleEvent, totalCupos, buyerName) => {
+    const create = {
+      type: 'successBuyEvent',
+      idUser: idOrganizer,
+      title: titleEvent,
+      userName: buyerName,
+      totalCupos,
+    };
+    const json = await eventsApi.post('/users/notifications', create);
+    setNotes([...notes, json.data]);
+  };
 
   if (successInfo !== null) {
     return (

@@ -13,7 +13,7 @@ import swal from 'sweetalert';
 import { animateScroll as scroll } from 'react-scroll';
 
 const Finance = ({ userData }) => {
-  const { bank, setBank } = useContext(stateContext);
+  const { bank, setBank, notes, setNotes } = useContext(stateContext);
   const [isOpenModal, openModal, closeModal] = useModal(false);
   const [link, setLink] = useState(undefined);
 
@@ -58,6 +58,15 @@ const Finance = ({ userData }) => {
     }, 1000);
   };
 
+  const notifications = async () => {
+    const bank = {
+      type: 'bank',
+      idUser: userData._id,
+    };
+    const json = await eventsApi.post('/users/notifications', bank);
+    setNotes([...notes, json.data]);
+  };
+
   const handleClickDelete = async (num) => {
     try {
       const res = await eventsApi.delete(`/users/deleteBankAccount/${userData._id}/${num}`);
@@ -67,6 +76,7 @@ const Finance = ({ userData }) => {
         icon: 'success',
         button: 'OK',
       });
+      notifications();
     } catch (error) {
       console.log(error);
     }

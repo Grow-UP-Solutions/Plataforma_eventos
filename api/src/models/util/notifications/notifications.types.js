@@ -5,4 +5,5 @@ module.exports = {
   FAVORITOS: 'favoritos',
   BANK: 'bank',
   CANCEL_EVENT: 'cancelEvent',
+  SUCCESS_BUY: 'successBuyEvent',
 };

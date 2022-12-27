@@ -124,8 +124,8 @@ async function eventesDeleteFavorites(idUser, idEvent) {
 }
 
 async function sendNotificationsUser(notifications) {
-  const { type, idUser, title, usersBuyers } = notifications;
-  const msg = validatonType(type, title);
+  const { type, idUser, title, usersBuyers, userName, totalCupos } = notifications;
+  const msg = validatonType(type, title, userName, totalCupos);
   try {
     let newNotification = '';
 

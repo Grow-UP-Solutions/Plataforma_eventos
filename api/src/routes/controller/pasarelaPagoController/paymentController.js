@@ -200,20 +200,12 @@ router.get('/success', async (req, res) => {
                 auxBody[0].dates[j].codigoDescuento !== null &&
                 e.codigos[x].codigo === auxBody[0].dates[j].codigoDescuento
               ) {
-               
-                if( e.codigos[x].cantidad > auxBody[0].dates[j].quantity ){
-
+                if (e.codigos[x].cantidad > auxBody[0].dates[j].quantity) {
                   e.codigos[x].cantidad = e.codigos[x].cantidad - auxBody[0].dates[j].quantity;
                   e.codigos[x].uses = e.codigos[x].uses + auxBody[0].dates[j].quantity;
-
-                } else if( e.codigos[x].cantidad <= auxBody[0].dates[j].quantity ){
-
-                  e.codigos[x].uses = e.codigos[x].cantidad,
-                  e.codigos[x].cantidad = 0;
-                 
-
+                } else if (e.codigos[x].cantidad <= auxBody[0].dates[j].quantity) {
+                  (e.codigos[x].uses = e.codigos[x].cantidad), (e.codigos[x].cantidad = 0);
                 }
-             
               } else if (auxBody[0].dates[j].codigoUsuario !== null) {
                 const codigo = await CodeDiscount.findOne({ code: auxBody[0].dates[j].codigoUsuario });
 
@@ -280,6 +272,8 @@ router.get('/success', async (req, res) => {
         oganizadorId: event.organizer._id,
         oganizadorRentas: event.organizer.isDeclarant,
         cuposComprados: usuariosComprados,
+        totalCupos,
+        nameBuyer: user.name,
       };
 
       factura = {
