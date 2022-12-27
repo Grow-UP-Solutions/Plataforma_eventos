@@ -61,7 +61,5 @@ const { eventsFavourites } = useContext(UIContext);
 
 const eventos = eventsFavourites.concat(myEventsBooked);
 
-
-
 state={eventos.length}
 */
