@@ -53,6 +53,21 @@
   background: var(--color-orange) !important;
 }
 
+/* SWAL FIRE */
+
+.swal2-html-container p {
+  font-size: 1.8rem;
+}
+
+.swal2-confirm {
+  font-size: 1.4rem !important;
+}
+
+.swal2-deny {
+  font-size: 1.4rem !important;
+  background-color: #868686 !important;
+}
+
 @media screen and (max-width: 712px) {
   .swiper-pagination-bullets {
     bottom: 16rem !important;
@@ -122,9 +137,14 @@
   background-color: var(--color-orange) !important;
 }
 
-/* .mySwipperEventDetails .swiper-wrapper .swiper-slide img {
-  max-width: 100% !important;
-} */
+.mySwipperEventDetails .swiper-wrapper .swiper-slide {
+  width: 770px;
+  height: 430px !important;
+}
+
+.mySwipperEventDetails .swiper-wrapper .swiper-slide img {
+  height: 100%;
+}
 
 .calendar-user .blueDay:not(.-selectedStart):not(.-selectedBetween):not(.-selectedEnd):not(.-selected) {
   background: var(--color-blue) !important;
@@ -195,9 +215,7 @@
 }
 
 @media screen and (max-width: 756px) {
-  .mySwipperEventDetails {
-    height: 100% !important;
-    width: 100%;
+  .mySwipperEventDetails .swiper-wrapper .swiper-slide {
   }
 }
 
@@ -216,6 +234,36 @@
 
   .calendar-user {
     font-size: 1px !important;
+  }
+}
+
+@media screen and (max-width: 522px) {
+  .mySwipperEventDetails .swiper-wrapper .swiper-slide {
+    height: 348px !important;
+  }
+}
+
+@media screen and (max-width: 434px) {
+  .mySwipperEventDetails .swiper-wrapper .swiper-slide {
+    height: 288px !important;
+  }
+}
+
+@media screen and (max-width: 383px) {
+  .mySwipperEventDetails .swiper-wrapper .swiper-slide {
+    height: 238px !important;
+  }
+}
+
+@media screen and (max-width: 336px) {
+  .mySwipperEventDetails .swiper-wrapper .swiper-slide {
+    height: 218px !important;
+  }
+}
+
+@media screen and (max-width: 302px) {
+  .mySwipperEventDetails .swiper-wrapper .swiper-slide {
+    height: 188px !important;
   }
 }
 

@@ -9,43 +9,37 @@ import { AiOutlineConsoleSql } from 'react-icons/ai';
 import { fechaActual } from '../../utils/fechaActual';
 import { Link } from 'react-router-dom';
 import Loading from '../Loading/Loading';
-
+import { animateScroll as scroll } from 'react-scroll';
 const Orders = () => {
-  
   const navigate = useNavigate();
- 
+
   const [userData, setUserData] = useState({});
 
   const [load, setLoad] = useState(true);
 
   const [orden, setOrden] = useState(true);
 
-  
   useEffect(() => {
     getUsers();
   }, []);
 
+  useEffect(() => {
+    scroll.scrollToTop();
+  }, []);
+
   const getUsers = async () => {
-    
-      const userResult = await eventsApi.get(`/users`);
-      setUserData(userResult.data);
-      setLoad(false)
+    const userResult = await eventsApi.get(`/users`);
+    setUserData(userResult.data);
+    setLoad(false);
 
-      const ordenesTotal = []
-      
+    const ordenesTotal = [];
 
-      const ordenes = userResult.data.map(u => u.ordenes.map(orden=>
+    const ordenes = userResult.data.map((u) => u.ordenes.map((orden) => ordenesTotal.push(orden)));
 
-        ordenesTotal.push(orden)
-      ))
-
-      setOrden(ordenesTotal)
-    
+    setOrden(ordenesTotal);
   };
 
-  console.log('userData:',userData)
-
-  
+  console.log('userData:', userData);
 
   const [currentPage, setCurretPage] = useState(1);
   const ordersPerPage = 10;
@@ -53,22 +47,9 @@ const Orders = () => {
   const indexOfFirsOrder = indexOfLastOrder - ordersPerPage;
   const paginado = (pageNumber) => setCurretPage(pageNumber);
 
-
-
-
- 
-
-  
-
- 
-
-
-
-  if(load){
-    return(
-      <Loading />
-    )
-   }else{
+  if (load) {
+    return <Loading />;
+  } else {
     return (
       <div className={style.container}>
         <div className={style.container_titles}>
@@ -92,49 +73,39 @@ const Orders = () => {
                 <th>Monto de la compra</th>
 
                 <th>Nº Identificacion de Compra</th>
-               
               </tr>
             </thead>
 
             <tbody>
               {userData !== undefined &&
                 userData.slice(indexOfFirsOrder, indexOfLastOrder).map((user) =>
-                user.ordenes.map(order =>
+                  user.ordenes.map((order) => (
                     <tr key={user._id} className={style.tbody}>
-                        <td>
-                          {user.firstName}
-                        </td>
-                        <td>{user.lastName}</td>
-                        <td>{user.email}</td>
-                        <td>{user.document}</td>
-                        <td>{user.city}</td>
-                        <td>{user.direction}</td>
-                        <td>{user.tel}</td>
-                        <td>{order.fechaDePago.slice(0,10)}</td>
-                        <td>{order.motivo}</td>
-                        <td> ${new Intl.NumberFormat('de-DE').format(order.valorDeLaTransaccion)}</td>
-                       
-                        <td>
+                      <td>{user.firstName}</td>
+                      <td>{user.lastName}</td>
+                      <td>{user.email}</td>
+                      <td>{user.document}</td>
+                      <td>{user.city}</td>
+                      <td>{user.direction}</td>
+                      <td>{user.tel}</td>
+                      <td>{order.fechaDePago.slice(0, 10)}</td>
+                      <td>{order.motivo}</td>
+                      <td> ${new Intl.NumberFormat('de-DE').format(order.valorDeLaTransaccion)}</td>
+
+                      <td>
                         <Link to={`/detalle-de-orden/${order._id}/${user._id}`}>{order._id}</Link>
-                        </td>
-                      </tr>
-                    )
-                    
+                      </td>
+                    </tr>
+                  ))
                 )}
             </tbody>
           </div>
 
-          {orden !== undefined &&
-            
-                  <div className={style.container_pagination}>
-                    <Pagination ordersPerPage={ordersPerPage} state={orden.length} paginado={paginado} />
-                  </div>
-          }
-
-         
-         
-            
-          
+          {orden !== undefined && (
+            <div className={style.container_pagination}>
+              <Pagination ordersPerPage={ordersPerPage} state={orden.length} paginado={paginado} />
+            </div>
+          )}
 
           <div className={style.container_exit}>
             <p className={style.exit} onClick={() => navigate('/admin')}>
@@ -145,10 +116,6 @@ const Orders = () => {
       </div>
     );
   }
-
 };
 
 export default Orders;
-
-
-

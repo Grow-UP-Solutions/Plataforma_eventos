@@ -9,7 +9,7 @@ import useValidateForm from '../../hooks/useValidateForm';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { IconChangePassword } from '../../assets/Icons';
 import styles from './ChangePassword.module.css';
-
+import { animateScroll as scroll } from 'react-scroll';
 const ChangePassword = () => {
   const { token } = useParams();
   const { logged, user } = useContext(AuthContext);
@@ -81,7 +81,9 @@ const ChangePassword = () => {
       console.log(error);
     }
   };
-
+  useEffect(() => {
+    scroll.scrollToTop();
+  }, []);
   return (
     <div className={`${styles.page} container`}>
       <div className={styles.container}>

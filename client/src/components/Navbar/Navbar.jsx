@@ -108,14 +108,17 @@ const Navbar = ({ upper }) => {
       case 'login':
         toggleScreenLogin();
         return setOpenMenu(false);
-      case 'register':
-        navigate('/registrate');
+      case 'categories':
+        navigate('/#categories');
         return setOpenMenu(false);
       case 'createEvent':
         navigate('/organiza-un-evento/beneficios');
         return setOpenMenu(false);
       case 'home':
         navigate('/');
+        return setOpenMenu(false);
+      case 'register':
+        navigate('/registrate');
         return setOpenMenu(false);
       default:
         setOpenMenu(!openMenu);
@@ -206,7 +209,9 @@ const Navbar = ({ upper }) => {
                   </button>
                 </li>
                 <li className={style.itemMenu}>
-                  <button onClick={() => handleOpenMenu('register')}>Categorías</button>
+                  <button /* onClick={() => handleOpenMenu('categories')} */>
+                    <Link to={'/#categories'}>Categorías</Link>
+                  </button>
                 </li>
 
                 <li className={`${style.itemMenu}`}>

@@ -258,12 +258,14 @@
   }
 
   .containerComponentActive {
-    margin-left: 5rem;
+    margin-left: 6rem;
+    min-height: 60vh;
   }
 }
 
 @media screen and (max-height: 781px) {
   .sideMenu {
+    top: 7rem;
     padding: 1rem 2rem;
   }
 

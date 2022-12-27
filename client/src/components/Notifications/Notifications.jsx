@@ -6,11 +6,10 @@ import { AuthContext } from '../../context/auth';
 import eventsApi from '../../axios/eventsApi';
 import swal from 'sweetalert';
 import Pagination from '../../components/Pagination/Pagination';
-import { Loading } from "../../components";
+import { Loading } from '../../components';
 import { animateScroll as scroll } from 'react-scroll';
 
 const Notifications = () => {
-
   const { setNotes } = useContext(stateContext);
   const { user } = useContext(AuthContext);
   const [state, setState] = useState([]);
@@ -18,7 +17,7 @@ const Notifications = () => {
   const [currentPage, setCurretPage] = useState(1);
   const CardPerPage = 8;
   const indexOfLastCard = currentPage * CardPerPage;
-  const indexOfFirstCard = indexOfLastCard - CardPerPage; 
+  const indexOfFirstCard = indexOfLastCard - CardPerPage;
   const currentCard = state.slice(indexOfFirstCard, indexOfLastCard);
   const paginado = (pageNumber) => setCurretPage(pageNumber);
 
@@ -59,11 +58,9 @@ const Notifications = () => {
 
   if (load) {
     return <Loading />;
-  }
-  else {
+  } else {
     return (
       <div className={style.container}>
-
         <div className={style.container_title}>
           <h1 className={style.title}>Notificaciones</h1>
           <button className={style.button} onClick={handleClickAllRead}>
@@ -72,34 +69,27 @@ const Notifications = () => {
         </div>
 
         <div className={style.container_notifications}>
-          {
-            state ? (
-              <>
-                <div>
-                  {
-                    currentCard.map((noti) => (
-                      <div
-                        className={noti.read === false ? style.notification : style.notification_read}
-                        onClick={() => handleClickRead(noti)}
-                      >
-                        <HiBell className={style.icon} />
-                        <p>{noti.msg}</p>
-                      </div>
-                    ))
-                  }
-                </div>
-              </>
-            ) : (<p>No hay notificaciones</p>)
-          }
+          {state ? (
+            <>
+              <div>
+                {currentCard.map((noti) => (
+                  <div
+                    className={noti.read === false ? style.notification : style.notification_read}
+                    onClick={() => handleClickRead(noti)}
+                  >
+                    <HiBell className={style.icon} />
+                    <p>{noti.msg}</p>
+                  </div>
+                ))}
+              </div>
+            </>
+          ) : (
+            <p>No hay notificaciones</p>
+          )}
         </div>
 
         <div className={style.container_pagination}>
-          <Pagination 
-            billsPerPage={CardPerPage}
-            state={state.length}
-            paginado={paginado}
-            page={currentPage}
-          />
+          <Pagination billsPerPage={CardPerPage} state={state.length} paginado={paginado} page={currentPage} />
         </div>
       </div>
     );

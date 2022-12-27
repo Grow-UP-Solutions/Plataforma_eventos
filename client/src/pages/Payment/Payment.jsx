@@ -1,17 +1,20 @@
-import React from 'react';
-import styles from './Payment.module.css';
-import { AiOutlineCloseCircle, AiOutlineCheckCircle } from 'react-icons/ai';
+import React, { useEffect } from 'react';
+import { AiOutlineCheckCircle, AiOutlineCloseCircle } from 'react-icons/ai';
 import { BiTime } from 'react-icons/bi';
-import { iconAchPse } from '../../assets/imgs';
 import { Link } from 'react-router-dom';
-
+import { animateScroll as scroll } from 'react-scroll';
+import { iconAchPse } from '../../assets/imgs';
+import styles from './Payment.module.css';
 const Payment = () => {
-  
+  useEffect(() => {
+    scroll.scrollToTop();
+  }, []);
+
   return (
     <div className={`${styles.pagePayment} container`}>
       <div className={styles.containerLogoPayment}>
         <span>Pago PSE </span>
-        <img src={iconAchPse} alt="icon-pse" />
+        <img src={iconAchPse} alt='icon-pse' />
       </div>
       <div className={styles.containerListOptions}>
         <div className={`${styles.containerOption} ${styles.optionReject} `}>

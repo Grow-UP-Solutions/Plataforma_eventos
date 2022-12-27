@@ -9,7 +9,7 @@ import { AiOutlineConsoleSql } from 'react-icons/ai';
 import { fechaActual } from '../../utils/fechaActual';
 import { Link } from 'react-router-dom';
 import Loading from '../Loading/Loading';
-
+import { animateScroll as scroll } from 'react-scroll';
 const OrganizerBills = () => {
   const [state, fetchUsers] = useFetch();
   const navigate = useNavigate();
@@ -21,7 +21,9 @@ const OrganizerBills = () => {
   useEffect(() => {
     getUserData();
   }, [id]);
-
+  useEffect(() => {
+    scroll.scrollToTop();
+  }, []);
   const getUserData = async () => {
     if (id) {
       const userResult = await eventsApi.get(`/users/${id}`);
@@ -37,7 +39,6 @@ const OrganizerBills = () => {
       setLoad(false);
     }
   };
-
 
   const [currentPage, setCurretPage] = useState(1);
   const billsPerPage = 6;
@@ -58,8 +59,6 @@ const OrganizerBills = () => {
   const pagar = async (e, eventId, dateId, pendingEarnigs) => {
     e.preventDefault();
 
-
-
     const payload = {
       datePay: fechaActual,
       billNumber: billNumber[dateId],
@@ -68,8 +67,6 @@ const OrganizerBills = () => {
       idOrg: id,
       ganancia: pendingEarnigs,
     };
-
-    
 
     try {
       const { data } = await eventsApi.put('/mercadoPago/adminPaymentOrganizer', payload);
@@ -131,15 +128,20 @@ const OrganizerBills = () => {
                         </td>
 
                         <td>${new Intl.NumberFormat('de-DE').format(date.overallEarnings)}</td>
-                        { date.isPay === false ?
+                        {date.isPay === false ? (
                           <td>
-                            <button className={style.pagar} onClick={(e) => pagar(e, event._id, date._id, date.overallEarnings)}>Pagar</button>
+                            <button
+                              className={style.pagar}
+                              onClick={(e) => pagar(e, event._id, date._id, date.overallEarnings)}
+                            >
+                              Pagar
+                            </button>
                           </td>
-                        : 
+                        ) : (
                           <td>
-                            <p className={style.pagado} >PAGADO</p>
+                            <p className={style.pagado}>PAGADO</p>
                           </td>
-                        }
+                        )}
                       </tr>
                     ) : (
                       ''

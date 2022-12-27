@@ -6,12 +6,14 @@
 
   max-width: 142rem;
   margin: 0 auto;
+  overflow-x: hidden;
 }
 
 .item1 {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  width: 100%;
 }
 
 .containerSwiper {
@@ -20,6 +22,9 @@
 }
 
 .img {
+  max-height: 430px;
+  width: 100%;
+  object-fit: cover;
 }
 
 .title {
@@ -377,6 +382,10 @@
   bottom: 24.5rem;
 }
 
+.containerSwiperGeneral {
+  width: 100%;
+}
+
 @keyframes spinner {
   0% {
     transform: rotate(0deg);
@@ -420,8 +429,10 @@
     margin: 0;
   }
 
-  .containerSwiper {
-    height: 55rem;
+  .containerSwiper,
+  .containerSwiperGeneral .imgSwiper,
+  .img {
+    height: 430px;
   }
 
   .containerSwiperGeneral {
@@ -456,7 +467,9 @@
 }
 
 @media screen and (max-width: 520px) {
-  .containerSwiper {
+  .containerSwiper,
+  .containerSwiperGeneral .imgSwiper,
+  .img {
     height: 52rem;
   }
   .containerMenuGetDanger {
@@ -465,7 +478,9 @@
 }
 
 @media screen and (max-width: 433px) {
-  .containerSwiper {
+  .containerSwiper,
+  .containerSwiperGeneral .imgSwiper,
+  .img {
     height: 43rem;
   }
 
@@ -498,19 +513,24 @@
   .checkOpenMenu:checked ~ .containerIconOpenMenu {
     bottom: 31rem;
   }
-  .containerSwiper {
+  .containerSwiper,
+  .containerSwiperGeneral .imgSwiper,
+  .img {
     height: 36rem;
   }
 }
 
 @media screen and (max-width: 335px) {
-  .containerSwiper {
+  .containerSwiper,
+  .containerSwiperGeneral .imgSwiper {
     height: 33rem;
   }
 }
 
 @media screen and (max-width: 300px) {
-  .containerSwiper {
+  .containerSwiper,
+  .containerSwiperGeneral .imgSwiper,
+  .img {
     height: 28rem;
   }
 }

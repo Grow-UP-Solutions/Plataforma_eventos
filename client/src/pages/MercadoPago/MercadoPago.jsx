@@ -1,35 +1,41 @@
-import React, { useEffect, useState, useContext } from 'react';
-import axios from 'axios';
-import styles from './MercadoPago.module.css';
-import { AiOutlineCloseCircle, AiOutlineCheckCircle } from 'react-icons/ai';
-import { BiTime } from 'react-icons/bi';
-import { iconAchPse } from '../../assets/imgs';
+import React, { useContext, useEffect, useState } from 'react';
+import { AiOutlineCheckCircle } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
-import { formatDateForm } from '../../utils/formatDateForm';
-import { stateContext } from '../../context/state/stateContext';
-import { useSelector } from 'react-redux';
 import eventsApi from '../../axios/eventsApi';
+import { stateContext } from '../../context/state/stateContext';
+import styles from './MercadoPago.module.css';
 // import { Box, Typography, Stack, Grid, Button, Container } from '@mui/material'
 // import { BsFillCheckCircleFill } from 'react-icons/bs'
-
+import { animateScroll as scroll } from 'react-scroll';
 const MercadoPago = () => {
   const [successInfo, setSucessInfo] = useState(null);
   const url = window.location.href.split('?')[1];
-  const { code, setCode } = useContext(stateContext);
-
-  console.log('url:', url);
-  console.log('MercadoPago');
-  console.log('code', code);
+  const { notes, setNotes } = useContext(stateContext);
 
   useEffect(() => {
     if (!successInfo) {
       eventsApi.get(`/mercadoPago/success?${url}`).then((res) => {
         setSucessInfo(res.data);
+        notifications(res.data.oganizadorId, res.data.motivo, res.data.totalCupos, res.data.nameBuyer);
       });
     }
   }, [successInfo]);
 
-  console.log({ successInfo });
+  useEffect(() => {
+    scroll.scrollToTop();
+  }, []);
+
+  const notifications = async (idOrganizer, titleEvent, totalCupos, buyerName) => {
+    const create = {
+      type: 'successBuyEvent',
+      idUser: idOrganizer,
+      title: titleEvent,
+      userName: buyerName,
+      totalCupos,
+    };
+    const json = await eventsApi.post('/users/notifications', create);
+    setNotes([...notes, json.data]);
+  };
 
   if (successInfo !== null) {
     return (
@@ -69,7 +75,7 @@ const MercadoPago = () => {
             <li>
               <p>
                 <span>Motivo:</span>
-                Evento  {successInfo.motivo}
+                Evento {successInfo.motivo}
               </p>
             </li>
             <li>

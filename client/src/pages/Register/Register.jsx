@@ -3,17 +3,17 @@ import styles from './Register.module.css';
 
 import { AuthContext } from '../../context/auth';
 
-import { Link, useNavigate } from 'react-router-dom';
-import { IconFacebook, IconGoogle } from '../../assets/Icons';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { MdOutlineClose } from 'react-icons/md';
+import { Link, useNavigate } from 'react-router-dom';
+import { IconGoogle } from '../../assets/Icons';
 
-import useValidateForm from '../../hooks/useValidateForm';
-import { UIContext } from '../../context/ui';
-import eventsApi from '../../axios/eventsApi';
-import { animateScroll as scroll } from 'react-scroll';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { animateScroll as scroll } from 'react-scroll';
+import eventsApi from '../../axios/eventsApi';
 import { stateContext } from '../../context/state/stateContext';
+import { UIContext } from '../../context/ui';
+import useValidateForm from '../../hooks/useValidateForm';
 
 const Register = () => {
   const { setResult } = useContext(stateContext);
@@ -115,7 +115,6 @@ const Register = () => {
 
   const navigateVerificate = () => {
     setSuccesData(false);
-
     navigate('/verificarmail/register');
   };
 
@@ -385,7 +384,7 @@ const Register = () => {
                 de registro. Recuerda ver la lista de no deseados y agréganos a tu lista de contactos.
               </p>
               <button onClick={() => navigateVerificate()} className={styles.btnOverlay}>
-                Listo
+                Continuar
               </button>
             </div>
           </div>

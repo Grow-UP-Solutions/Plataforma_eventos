@@ -59,6 +59,10 @@ const Cart = () => {
     }
   };
 
+  useEffect(() => {
+    scroll.scrollToTop();
+  }, []);
+
   // ----- carrito-------//
 
   useEffect(() => {
@@ -83,60 +87,49 @@ const Cart = () => {
 
     for (let i = 0; i < carrito.length; i++) {
       if (carrito[i].idDate === id) {
-
         carrito[i].quantity = num;
         carrito[i].subtotal = num * carrito[i].price;
         carrito[i].ganancias = carrito[i].priceOrg * num;
 
-        if (carrito[i].codigoDescuento.length > 1 && carrito[i].codigoCantidad > 0 ) {
+        if (carrito[i].codigoDescuento.length > 1 && carrito[i].codigoCantidad > 0) {
+          if (carrito[i].quantity <= carrito[i].codigoCantidad) {
+            const valorDescuentoCupos = carrito[i].codigoDescUnit * carrito[i].quantity;
 
+            carrito[i].descuento = valorDescuentoCupos;
 
-            if(carrito[i].quantity <= carrito[i].codigoCantidad ){
+            carrito[i].unit_disc = valorDescuentoCupos / carrito[i].quantity;
 
+            carrito[i].unit_price = carrito[i].unit_price - carrito[i].unit_disc;
 
-              const valorDescuentoCupos = carrito[i].codigoDescUnit * carrito[i].quantity; 
+            carrito[i].ganancias = carrito[i].ganancias - valorDescuentoCupos;
 
-              carrito[i].descuento = valorDescuentoCupos
+            setDesc(carrito[i].descuento);
+          } else {
+            const valorDescuentoCupos = carrito[i].codigoDescUnit * carrito[i].codigoCantidad;
 
-              carrito[i].unit_disc = valorDescuentoCupos / carrito[i].quantity ;
+            carrito[i].descuento = valorDescuentoCupos;
 
-              carrito[i].unit_price = carrito[i].unit_price - carrito[i].unit_disc
+            carrito[i].unit_disc = valorDescuentoCupos / carrito[i].codigoCantidad;
 
-              carrito[i].ganancias = carrito[i].ganancias - valorDescuentoCupos
+            carrito[i].unit_price = carrito[i].unit_price - carrito[i].unit_disc;
 
-              setDesc(carrito[i].descuento)
+            carrito[i].unit_price = carrito[i].unit_price - carrito[i].unit_disc;
 
-              }else{
+            carrito[i].ganancias = carrito[i].ganancias - valorDescuentoCupos;
 
-
-              const valorDescuentoCupos =  carrito[i].codigoDescUnit * carrito[i].codigoCantidad;
-
-              carrito[i].descuento = valorDescuentoCupos
-
-              carrito[i].unit_disc = valorDescuentoCupos / carrito[i].codigoCantidad
-
-              carrito[i].unit_price = carrito[i].unit_price - carrito[i].unit_disc
-
-              carrito[i].unit_price = carrito[i].unit_price - carrito[i].unit_disc;
-
-              carrito[i].ganancias = carrito[i].ganancias - valorDescuentoCupos
-
-              setDesc(carrito[i].descuento)
-
-    
-            }
-             
+            setDesc(carrito[i].descuento);
+          }
         }
       }
     }
-  }
+  };
 
   useEffect(() => {
     const sTotal = [];
-   // const dTotal = [];
+    // const dTotal = [];
     for (let i = 0; i < carrito.length; i++) {
       sTotal.push(carrito[i].subtotal);
-     // dTotal.push(carrito[i].descuento);
+      // dTotal.push(carrito[i].descuento);
     }
 
     let total = sTotal.reduce((a, b) => a + b, 0);
@@ -155,7 +148,7 @@ const Cart = () => {
 
   const [codigo, setCodigo] = useState('');
   const [desc, setDesc] = useState('');
-  const [ apllied, setApplied ] = useState(false)
+  const [apllied, setApplied] = useState(false);
 
   const handleCodigo = (e) => {
     e.preventDefault();
@@ -228,62 +221,59 @@ const Cart = () => {
       if (carrito[c].idDate === id) {
         for (let d = 0; d < currentDate[0].codigos.length; d++) {
           if (currentDate[0].codigos[d].codigo === codigo && currentDate[0].codigos[d].cantidad > 0) {
-
-
             const descValor = currentDate[0].codigos[d].descuento; //10%
 
             carrito[c].codigoDescuento = codigo;
             carrito[c].codigoCorrecto = true;
-            carrito[c].codigoCantidad = currentDate[0].codigos[d].cantidad
-          
+            carrito[c].codigoCantidad = currentDate[0].codigos[d].cantidad;
 
             const valorDescuento = (descValor * currentDate[0].price) / 100; //$1000
 
-            carrito[c].codigoDescUnit = valorDescuento
+            carrito[c].codigoDescUnit = valorDescuento;
 
-    
-            if(carrito[c].quantity <= currentDate[0].codigos[d].cantidad ){
+            if (carrito[c].quantity <= currentDate[0].codigos[d].cantidad) {
+              const valorDescuentoCupos = valorDescuento * carrito[c].quantity;
 
-              const valorDescuentoCupos = valorDescuento * carrito[c].quantity; 
+              carrito[c].descuento = valorDescuentoCupos;
 
-              carrito[c].descuento = valorDescuentoCupos
-
-              carrito[c].unit_disc = valorDescuentoCupos / carrito[c].quantity ;
-
-              carrito[c].unit_price = carrito[c].unit_price - carrito[c].unit_disc
-
-              carrito[c].ganancias = carrito[c].ganancias - valorDescuentoCupos
-
-              setDesc(carrito[c].descuento)
-
-              return swal({
-                title: 'Codigo Aplicado',
-              });
-              setApplied(true)
-
-            }else{
-
-              const valorDescuentoCupos = valorDescuento * currentDate[0].codigos[d].cantidad;
-
-              carrito[c].descuento = valorDescuentoCupos
-
-              carrito[c].unit_disc = valorDescuentoCupos / currentDate[0].codigos[d].cantidad
-
-              carrito[c].unit_price = carrito[c].unit_price - carrito[c].unit_disc
+              carrito[c].unit_disc = valorDescuentoCupos / carrito[c].quantity;
 
               carrito[c].unit_price = carrito[c].unit_price - carrito[c].unit_disc;
 
-              carrito[c].ganancias = carrito[c].ganancias - valorDescuentoCupos
+              carrito[c].ganancias = carrito[c].ganancias - valorDescuentoCupos;
 
-              setDesc(carrito[c].descuento)
+              setDesc(carrito[c].descuento);
 
               return swal({
                 title: 'Codigo Aplicado',
               });
-              setApplied(true)
+              setApplied(true);
+            } else {
+              const valorDescuentoCupos = valorDescuento * currentDate[0].codigos[d].cantidad;
 
+              carrito[c].descuento = valorDescuentoCupos;
+
+              carrito[c].unit_disc = valorDescuentoCupos / currentDate[0].codigos[d].cantidad;
+
+              carrito[c].unit_price = carrito[c].unit_price - carrito[c].unit_disc;
+
+              carrito[c].unit_price = carrito[c].unit_price - carrito[c].unit_disc;
+
+              carrito[c].ganancias = carrito[c].ganancias - valorDescuentoCupos;
+
+              setDesc(carrito[c].descuento);
+
+              return swal({
+                title: 'Codigo Aplicado',
+              });
+              setApplied(true);
             }
 
+            setDesc(carrito[c].descuento);
+            return swal({
+              title: 'Codigo Aplicado',
+            });
+            setApplied(true);
           } else if (currentDate[0].codigos[d].codigo === codigo && currentDate[0].codigos[d].cantidad === 0) {
             return swal({
               title: 'Ya no hay bonos disponibles para redimir con este código',
@@ -301,8 +291,6 @@ const Cart = () => {
                 icon: 'warning',
                 dangerMode: true,
               });
-
-              
             } else if (
               codeResult.data.codeDiscount.length === 1 &&
               codeResult.data.codeDiscount[0].isRedimeed === false &&
@@ -358,7 +346,6 @@ const Cart = () => {
   const quitar = (e, id) => {
     for (let i = 0; i < carrito.length; i++) {
       if (carrito[i].idDate === id) {
-
         const desc = carrito[i].descuento;
 
         const descUnit = carrito[i].descuento / carrito[i].quantity;
@@ -379,8 +366,7 @@ const Cart = () => {
         carrito[i].descuento = '';
         carrito[i].codigoCorrecto = '';
         carrito[i].codigoDescUnit = 0;
-        carrito[i].codigoCantidad = 0
-
+        carrito[i].codigoCantidad = 0;
       }
     }
   };
@@ -449,7 +435,6 @@ const Cart = () => {
 
         carrito[i].costos = costoCarrito / carrito[i].quantity;
         carrito[i].unit_price = carrito[i].unit_price + carrito[i].costos;
-
 
         ganancia.push(carrito[i].ganancias);
 
@@ -564,7 +549,6 @@ const Cart = () => {
                                 ) : (
                                   ''
                                 )}
-                              
                               </div>
                             )}
                           </div>
@@ -653,31 +637,30 @@ const Cart = () => {
                                     />
                                   </div>
                                 )}
-                                {c.codigoCorrecto === true  ? 
-                                  <div className={styles.btnsDisc}>                                                                 
-                                   <button
+                                {c.codigoCorrecto === true ? (
+                                  <div className={styles.btnsDisc}>
+                                    <button
                                       className={styles.quitar}
                                       onClick={(e) => {
                                         quitar(e, currentDate[0]._id);
                                       }}
                                     >
                                       Quitar
-                                   </button>                            
+                                    </button>
                                   </div>
-                                :
-                                <div className={styles.btnsDisc}>
-                                  
-                                <button
-                                    className={styles.quitar}
-                                    onClick={(e) => {
-                                      aplicar(e, currentDate[0]._id);
-                                    }}
-                                  >
-                                    Aplicar
-                                </button>
-                              </div>
-                                }
-                               
+                                ) : (
+                                  <div className={styles.btnsDisc}>
+                                    <button
+                                      className={styles.quitar}
+                                      onClick={(e) => {
+                                        aplicar(e, currentDate[0]._id);
+                                      }}
+                                    >
+                                      Aplicar
+                                    </button>
+                                  </div>
+                                )}
+
                                 {/* <div className={styles.btnsDisc}>
                                   
                                   <button
