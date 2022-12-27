@@ -6,8 +6,11 @@ import Pagination from '../../components/Pagination/Pagination';
 import { FaCaretSquareRight } from 'react-icons/fa';
 import { UIContext } from '../../context/ui';
 
-const MyListUser = ({ myFavorites, myEventsBooked }) => {
-  const eventos = myFavorites.concat(myEventsBooked);
+const MyListUser = ({ /* myFavorites, */ myEventsBooked }) => {
+  //const eventos = myFavorites.concat(myEventsBooked);
+  const { eventsFavourites } = useContext(UIContext);
+  const eventos = eventsFavourites.concat(myEventsBooked);
+
 
   const eventosPublicos = eventos.filter((evento) => evento.isPublic === true && evento.inRevision === false);
 
