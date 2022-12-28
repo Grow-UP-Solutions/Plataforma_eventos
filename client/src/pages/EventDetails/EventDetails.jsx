@@ -186,6 +186,7 @@ const EventDetails = () => {
     const fav = {
       type: 'favoritos',
       idUser: user.uid,
+      title: eventDetails.title,
     };
     const favorite = {
       idEvent: id,
