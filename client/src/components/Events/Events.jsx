@@ -12,21 +12,16 @@ import { AuthContext } from '../../context/auth/AuthContext';
 import { UIContext } from '../../context/ui';
 import Card from '../Cards/Card';
 import styles from './Events.module.css';
-import {fechaActual ,hora ,minutes } from '../../utils/fechaActual'
+import { fechaActual, hora, minutes } from '../../utils/fechaActual';
 
 const Events = () => {
   //Fecha actual
- 
 
   const todosLosEventos = useSelector((state) => state.events);
 
- 
-
-  const allEvents = todosLosEventos.filter((event) => 
-      event.isOld === false && 
-      event.isPublic === true && 
-      event.inRevision === false
-    );
+  const allEvents = todosLosEventos.filter(
+    (event) => event.isOld === false && event.isPublic === true && event.inRevision === false
+  );
 
   //POPULARES//
 
@@ -76,8 +71,8 @@ const Events = () => {
 
   useEffect(() => {}, [userData]);
 
-  const [misEventos , setMisEvetnos] = useState([])
-  const [moreEvents , setMoreEvents] = useState([])
+  const [misEventos, setMisEvetnos] = useState([]);
+  const [moreEvents, setMoreEvents] = useState([]);
 
   const getUserData = async () => {
     let userResult = {};
@@ -85,25 +80,21 @@ const Events = () => {
       userResult = await eventsApi.get(`/users/${user.uid}`);
       setUserData(userResult.data);
 
-      const userEventsFav = userResult.data.myFavorites.map(e=>e)
+      const userEventsFav = userResult.data.myFavorites.map((e) => e);
 
-      const userEventsBuy = userEventsFav.concat(userResult.data.myEventsBooked)
-      setMisEvetnos(userEventsBuy.slice(0,20))
+      let userEventsBuy = userEventsFav.concat(userResult.data.myEventsBooked);
+      let hash = {};
+      userEventsBuy = userEventsBuy.filter((o) => (hash[o._id] ? false : (hash[o._id] = true)));
 
-      if(userEventsBuy.length > 20) {
-        const moreEvents = userEventsBuy.slice(20,40)
-        setMoreEvents(moreEvents)
+      setMisEvetnos(userEventsBuy.slice(0, 20));
+
+      if (userEventsBuy.length > 20) {
+        const moreEvents = userEventsBuy.slice(20, 40);
+        setMoreEvents(moreEvents);
       }
-
     }
   };
 
-
-
-  
-
-  
- 
   const [cardPerView, setCardPerView] = useState(4);
 
   useEffect(() => {
@@ -125,10 +116,8 @@ const Events = () => {
 
   return (
     <>
-   
       <div className={`${styles.cardsSection} container`}>
-
-         {/* //POPULARES// */}
+        {/* //POPULARES// */}
         <p className={styles.titleCards}>Populares</p>
         <div className={styles.cardsCarousel}>
           <Swiper
@@ -153,7 +142,7 @@ const Events = () => {
           </Swiper>
         </div>
 
-         {/* //ESTA SEMANA// */}
+        {/* //ESTA SEMANA// */}
         <p className={styles.titleCards}>Esta Semana</p>
         <div className={styles.cardsCarousel}>
           <Swiper
@@ -203,11 +192,9 @@ const Events = () => {
           </Swiper>
         </div>
 
-
         {Object.keys(user).length > 0 && (
           <>
-
-          {/* //MI LISTA// */}
+            {/* //MI LISTA// */}
             <p className={styles.titleCards}>Mi Lista</p>
             <div className={styles.cardsCarousel}>
               <Swiper
@@ -218,7 +205,7 @@ const Events = () => {
                 modules={[Pagination, Navigation]}
                 className={styles.mySwipper}
               >
-                {misEventos!== undefined ? (
+                {misEventos !== undefined ? (
                   misEventos.map((event) => {
                     return (
                       <SwiperSlide key={`${event._id}-favourites`}>
@@ -233,7 +220,7 @@ const Events = () => {
             </div>
 
             {/* //MI LISTA: SEGUNDA LINEA// */}
-            {moreEvents !== undefined && moreEvents.length > 0 ?
+            {moreEvents !== undefined && moreEvents.length > 0 ? (
               <div className={styles.cardsCarousel}>
                 <Swiper
                   slidesPerView={cardPerView}
@@ -243,18 +230,18 @@ const Events = () => {
                   modules={[Pagination, Navigation]}
                   className={styles.mySwipper}
                 >
-                  {
-                    moreEvents.map((event) => {
-                      return (
-                        <SwiperSlide key={`${event._id}-favourites`}>
-                          <Card event={event} listName={'miLista'} />
-                        </SwiperSlide>
-                      );
-                    })  
-                  }
+                  {moreEvents.map((event) => {
+                    return (
+                      <SwiperSlide key={`${event._id}-favourites`}>
+                        <Card event={event} listName={'miLista'} />
+                      </SwiperSlide>
+                    );
+                  })}
                 </Swiper>
               </div>
-            :''}
+            ) : (
+              ''
+            )}
           </>
         )}
       </div>

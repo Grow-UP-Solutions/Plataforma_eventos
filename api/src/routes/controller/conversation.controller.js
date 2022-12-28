@@ -24,10 +24,10 @@ router.get('/:userId', async (req, res) => {
 });
 
 router.post('/create', async (req, res) => {
-  const menbers = req.body;
+  const members = req.body;
 
   try {
-    const newConversaton = await createConversation(menbers);
+    const newConversaton = await createConversation(members);
 
     res.status(200).json(newConversaton);
   } catch (error) {

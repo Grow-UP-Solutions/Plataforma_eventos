@@ -1,6 +1,6 @@
 const { EVENT, UPDATE_EVENT, FAVORITOS, BANK, CANCEL_EVENT, SUCCESS_BUY } = require('./notifications.types');
 
-module.exports = function validationType(type, title, userName, totalCupos) {
+module.exports = function validationType(type, title, userName, totalCupos, fecha) {
   if (type === EVENT) {
     return `Tu evento ${title} ha sido públicado.`;
   }
@@ -14,7 +14,7 @@ module.exports = function validationType(type, title, userName, totalCupos) {
     return 'Tus detalles bancarios han cambiado.';
   }
   if (type === CANCEL_EVENT) {
-    return `El evento ${title} ha sido cancelado.`;
+    return `El evento ${title} de ${fecha} ha sido cancelado.`;
   }
   if (type === SUCCESS_BUY) {
     return `${userName} ha comprado ${totalCupos} cupo(s) para el evento ${title}.`;

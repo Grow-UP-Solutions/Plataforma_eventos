@@ -13,7 +13,7 @@ import { AiOutlineClose } from 'react-icons/ai';
 import { Hearts } from 'react-loader-spinner';
 import { fechaActual, hora, minutes } from '../../utils/fechaActual';
 
-const Card = ({ event, listName, orgEvent, datePublic }) => {
+const Card = ({ event, listName, orgEvent, datePublic, isFavorite = true }) => {
   const { toggleScreenLogin, getEventsFavourites, getEventsWithoutFavourites } = useContext(UIContext);
   const { notes, setNotes } = useContext(stateContext);
   const currentYear = new Date().getFullYear();
@@ -281,58 +281,62 @@ const Card = ({ event, listName, orgEvent, datePublic }) => {
               )}
 
               {/* FAVORITO */}
-              {isLoading ? (
-                <div className={styles.cardAddLoad}></div>
-              ) : (
-                <div>
-                  {event.organizer._id === user.uid || orgEvent === 'true' ? (
-                    ''
-                  ) : user.uid && !heart ? (
-                    <div className={styles.cardAddFav} onClick={handleClickFav}>
-                      <input type='checkbox' id={`${event._id}-${listName}`} />
-                      <label htmlFor={`${event._id}-${listName}`}>
-                        <AddIcon className={styles.iconAddFavEvent} sx={{ fontSize: 30, color: '#868686' }} />
-                      </label>
-                    </div>
-                  ) : user.uid && heart ? (
-                    <div className={styles.cardAddFavHeart} onClick={handleClickWithoutFav}>
-                      <input type='checkbox' id={`${event._id}-${listName}`} />
-                      <label htmlFor={`${event._id}-${listName}`}>
-                        <FavoriteIcon className={styles.iconFavEvent} sx={{ fontSize: 25, color: 'white' }} />
-                      </label>
-                    </div>
+              {isFavorite && (
+                <>
+                  {isLoading ? (
+                    <div className={styles.cardAddLoad}></div>
                   ) : (
-                    <div className={styles.cardAddFav} ref={menuRef}>
-                      <input type='checkbox' id={`${event._id}-${listName}`} />
-                      <label htmlFor={`${event._id}-${listName}`} onClick={handleClickOpenDrop}>
-                        <AddIcon
-                          sx={{
-                            fontSize: 30,
-                            color: '#868686',
-                            cursor: 'pointer',
-                          }}
-                        />
-                      </label>
-                      {local && (
-                        <div className={styles.cardAddFavMenu}>
-                          <p>
-                            Para agregar este evento a tu lista{' '}
-                            <a
-                              onClick={(e) => {
-                                e.preventDefault();
-                                toggleScreenLogin();
+                    <div>
+                      {event.organizer._id === user.uid || orgEvent === 'true' ? (
+                        ''
+                      ) : user.uid && !heart ? (
+                        <div className={styles.cardAddFav} onClick={handleClickFav}>
+                          <input type='checkbox' id={`${event._id}-${listName}`} />
+                          <label htmlFor={`${event._id}-${listName}`}>
+                            <AddIcon className={styles.iconAddFavEvent} sx={{ fontSize: 30, color: '#868686' }} />
+                          </label>
+                        </div>
+                      ) : user.uid && heart ? (
+                        <div className={styles.cardAddFavHeart} onClick={handleClickWithoutFav}>
+                          <input type='checkbox' id={`${event._id}-${listName}`} />
+                          <label htmlFor={`${event._id}-${listName}`}>
+                            <FavoriteIcon className={styles.iconFavEvent} sx={{ fontSize: 25, color: 'white' }} />
+                          </label>
+                        </div>
+                      ) : (
+                        <div className={styles.cardAddFav} ref={menuRef}>
+                          <input type='checkbox' id={`${event._id}-${listName}`} />
+                          <label htmlFor={`${event._id}-${listName}`} onClick={handleClickOpenDrop}>
+                            <AddIcon
+                              sx={{
+                                fontSize: 30,
+                                color: '#868686',
+                                cursor: 'pointer',
                               }}
-                              href='/'
-                            >
-                              Ingresa
-                            </a>{' '}
-                            o <Link to={'/registrate'}>Registrate</Link>
-                          </p>
+                            />
+                          </label>
+                          {local && (
+                            <div className={styles.cardAddFavMenu}>
+                              <p>
+                                Para agregar este evento a tu lista{' '}
+                                <a
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    toggleScreenLogin();
+                                  }}
+                                  href='/'
+                                >
+                                  Ingresa
+                                </a>{' '}
+                                o <Link to={'/registrate'}>Registrate</Link>
+                              </p>
+                            </div>
+                          )}
                         </div>
                       )}
                     </div>
                   )}
-                </div>
+                </>
               )}
             </div>
           ) : (

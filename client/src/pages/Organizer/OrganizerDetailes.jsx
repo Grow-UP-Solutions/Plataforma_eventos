@@ -50,7 +50,7 @@ const OrganizerDetails = () => {
   const [userDetail, setUserDetail] = useState({
     organizer: {},
   });
-  const [eventsFromOrg , setEventsFromOrg] = useState([])
+  const [eventsFromOrg, setEventsFromOrg] = useState([]);
 
   useEffect(() => {
     scroll.scrollToTop();
@@ -71,29 +71,20 @@ const OrganizerDetails = () => {
     });
   }, []);
 
-  
-
   const obtenerDatos = async () => {
     const data = await eventsApi.get('/users/' + id);
     const json = data.data;
 
+    const eventsUserLog = [];
 
-    const eventsUserLog=[]
-
-    for(let i = 0; i < data.data.myEventsCreated.length ; i++){
-      
-      for(let j = 0; j < data.data.myEventsCreated[i].generalBuyers.length ; j++){
-        
-        if( data.data.myEventsCreated[i].generalBuyers[j].buyer=== user.uid){
-          
-          eventsUserLog.push(data.data.myEventsCreated[i])
+    for (let i = 0; i < data.data.myEventsCreated.length; i++) {
+      for (let j = 0; j < data.data.myEventsCreated[i].generalBuyers.length; j++) {
+        if (data.data.myEventsCreated[i].generalBuyers[j].buyer === user.uid) {
+          eventsUserLog.push(data.data.myEventsCreated[i]);
         }
       }
     }
 
-    
-  
-    
     setNextEvent(json);
     getEffectRatingOrganizer(json.rating);
     setUserDetail({
@@ -102,7 +93,7 @@ const OrganizerDetails = () => {
     setComponent(<AboutOrganizer userDetail={json.descriptionOrganizer} />);
     setStyle('aboutOrganizer');
     setLoad(false);
-    setEventsFromOrg(eventsUserLog)
+    setEventsFromOrg(eventsUserLog);
   };
 
   //Filtrar y ver si hay eventos comprados a este org//
@@ -116,12 +107,9 @@ const OrganizerDetails = () => {
 
   // }
 
-  
-
   const handleClickMessages = (e) => {
     e.preventDefault();
     const array = conversa.map((e) => e.members).flat();
-    const json = array.includes(id);
     if (conversation.senderId === conversation.receiverId) {
       swal({
         title: 'Mismo usuario de conversación',
@@ -129,11 +117,9 @@ const OrganizerDetails = () => {
         button: 'Cerrar',
         dangerMode: true,
       });
-    } else if (json === true) {
-      navigate('/usuario/mensajes');
     } else {
       eventsApi.post('/conversation/create', conversation).then((response) => {
-        navigate('/usuario/mensajes');
+        navigate(`/usuario/mensajes/${response.data._id}`);
       });
     }
   };
@@ -159,7 +145,7 @@ const OrganizerDetails = () => {
       setStyle('nextEvents');
     }
     if (name === 'Opinions') {
-      setComponent(<Opinions userDetail={userDetail.organizer}  eventsFromOrg={eventsFromOrg} />);
+      setComponent(<Opinions userDetail={userDetail.organizer} eventsFromOrg={eventsFromOrg} />);
       setStyle('opinions');
     } else {
       console.log('growup');
@@ -193,19 +179,16 @@ const OrganizerDetails = () => {
 
             <p className={styles.member}>Miembro desde {format(userDetail.organizer.createdAt, 'es_ES')}</p>
 
-
-            {eventsFromOrg !== undefined &&
-
-              eventsFromOrg.length>0 ?
+            {eventsFromOrg !== undefined && eventsFromOrg.length > 0 ? (
               <div className={styles.containerMess}>
                 <LocalPostOfficeIcon sx={{ fontSize: '1.6rem', color: '#d53e27' }} />
                 <button className={styles.message} onClick={logged === true ? handleClickMessages : handleAlert}>
                   Enviar Mensaje
                 </button>
               </div>
-              :''
-            }
-         
+            ) : (
+              ''
+            )}
 
             <div className={styles.containerButtons}>
               <button
