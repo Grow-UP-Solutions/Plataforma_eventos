@@ -26,12 +26,14 @@ const ExpectToAttendUser = ({ myEventsBooked }) => {
       <p className={styles.title}>Pendientes por asistir</p>
 
       {currentCard.length > 0 ? (
-        <div className={styles.containercard}>
-          {currentCard.map((event) => (
-            <div className={styles.card}>
-              <Card event={event} />
-            </div>
-          ))}
+        <>
+          <div className={styles.containercard}>
+            {currentCard.map((event) => (
+              <div className={styles.card}>
+                <Card event={event} />
+              </div>
+            ))}
+          </div>
           <div className={styles.container_pagination}>
             <Pagination
               billsPerPage={CardPerPage}
@@ -40,7 +42,7 @@ const ExpectToAttendUser = ({ myEventsBooked }) => {
               page={currentPage}
             />
           </div>
-        </div>
+        </>
       ) : (
         <>
           <div className={styles.containerSeeEvents}>

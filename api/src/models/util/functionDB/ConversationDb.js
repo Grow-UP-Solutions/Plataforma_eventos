@@ -19,8 +19,8 @@ async function findConversation(userId) {
   }
 }
 
-async function createConversation(menbers) {
-  const { senderId, receiverId } = menbers;
+async function createConversation(members) {
+  const { senderId, receiverId } = members;
   try {
     const conversation = await Conversation.findOne({
       members: [senderId, receiverId],

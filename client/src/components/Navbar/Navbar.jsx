@@ -23,6 +23,7 @@ const Navbar = ({ upper }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [openNotifications, setOpenNotifications] = useState(false);
   const [openMessages, setOpenMessages] = useState(false);
+
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const menuRef = useRef();
@@ -79,7 +80,7 @@ const Navbar = ({ upper }) => {
 
   const handleClickMessage = (e) => {
     e.preventDefault();
-    navigate('/usuario/mensajes');
+    navigate('/usuario/mensajes/conversaciones');
     setOpenMessages(false);
   };
 
@@ -128,6 +129,19 @@ const Navbar = ({ upper }) => {
   const handleClickUserOptionMenu = (option) => {
     setOpenMenu(false);
     navigate(option);
+  };
+
+  const hanldeClickMsg = async (conversationId) => {
+    const data = {
+      conversationId,
+    };
+
+    const res = await eventsApi.put('/message/update/' + userData._id, data);
+    const result = res.data.filter((e) => e.read === false);
+    const final = result.filter((e) => e.sender !== userData._id);
+    setMsg(final);
+    setOpenMessages(false);
+    navigate(`/usuario/mensajes/${conversationId}`);
   };
 
   return (
@@ -320,7 +334,13 @@ const Navbar = ({ upper }) => {
                     </p>
 
                     {msg.map((c, i) => (
-                      <div className={style.noty} key={i}>
+                      <div
+                        className={style.noty}
+                        key={i}
+                        onClick={() => {
+                          hanldeClickMsg(c.conversationId);
+                        }}
+                      >
                         <ConversationNoti msgs={c} id={user.uid} />
                       </div>
                     ))}

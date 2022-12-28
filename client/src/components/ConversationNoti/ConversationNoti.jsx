@@ -1,9 +1,9 @@
-
 import React, { useEffect, useState } from 'react';
 import style from './ConversationNoti.module.css';
 import avatar from '../../assets/imgs/no-avatar.png';
-import { format, register } from "timeago.js";
+import { format, register } from 'timeago.js';
 import eventsApi from '../../axios/eventsApi';
+import { useNavigate } from 'react-router-dom';
 
 const localeFunc = (number, index, total_sec) => {
   return [
@@ -26,9 +26,8 @@ const localeFunc = (number, index, total_sec) => {
 register('es_ES', localeFunc);
 
 const ConversationNoti = (msgs, id) => {
-
   const [name, setName] = useState([]);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const getUserName = async () => {
       let userResultName = {};
@@ -36,21 +35,20 @@ const ConversationNoti = (msgs, id) => {
         userResultName = await eventsApi.get(`/users/${msgs.msgs.sender}`);
         const result = userResultName.data;
         setName(result);
-      } 
-      catch (error) {
+      } catch (error) {
         console.log(error);
       }
     };
     getUserName();
-  }, [id]);  
+  }, [id]);
 
   return (
-    <div className={style.container}> 
+    <div className={style.container}>
       <div className={style.container_image}>
-        <img 
-          style={{width: '4.7rem', height: '4.7rem', borderRadius: '50%'}} 
-          src={name.userpicture ? name.userpicture : avatar} 
-          alt="avatar" 
+        <img
+          style={{ width: '4.7rem', height: '4.7rem', borderRadius: '50%' }}
+          src={name.userpicture ? name.userpicture : avatar}
+          alt='avatar'
         />
       </div>
 
@@ -61,6 +59,6 @@ const ConversationNoti = (msgs, id) => {
       </div>
     </div>
   );
-}
+};
 
 export default ConversationNoti;

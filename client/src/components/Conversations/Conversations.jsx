@@ -1,4 +1,3 @@
-
 import React, { useContext, useEffect, useState } from 'react';
 import styles from './Conversations.module.css';
 import { BiBlock, BiPin } from 'react-icons/bi';
@@ -10,7 +9,6 @@ import { stateContext } from '../../context/state/stateContext';
 import swal from 'sweetalert';
 
 const Conversations = ({ conversation, id }) => {
-
   const { setMsg } = useContext(stateContext);
   const [user, setUser] = useState('hola');
   const [messages, setMessages] = useState([]);
@@ -23,15 +21,14 @@ const Conversations = ({ conversation, id }) => {
       const friendId = conversation.members.find((m) => m !== id);
       const getUser = async () => {
         try {
-          const res = await eventsApi.get("/users/" + friendId);
+          const res = await eventsApi.get('/users/' + friendId);
           setUser(res.data);
         } catch (err) {
           console.log(err);
         }
       };
       getUser();
-    }
-    else {
+    } else {
       setGroup(true);
     }
   }, [id, conversation]);
@@ -39,10 +36,10 @@ const Conversations = ({ conversation, id }) => {
   useEffect(() => {
     const getMessages = async () => {
       const res = await eventsApi.get('/message/' + conversation._id);
-      const result = res.data.filter(e => e.read === false);
-      const final = result.filter(e => e.sender !== id);
+      const result = res.data.filter((e) => e.read === false);
+      const final = result.filter((e) => e.sender !== id);
       setMessages(final);
-    }
+    };
     getMessages();
   }, [conversation]);
 
@@ -53,14 +50,14 @@ const Conversations = ({ conversation, id }) => {
   const hanldeClickMsg = async (e) => {
     e.preventDefault();
     const data = {
-      conversationId: conversation._id
-    }
+      conversationId: conversation._id,
+    };
     const res = await eventsApi.put('/message/update/' + id, data);
-    const result = res.data.filter(e => e.read === false);
-    const final = result.filter(e => e.sender !== id);
+    const result = res.data.filter((e) => e.read === false);
+    const final = result.filter((e) => e.sender !== id);
     setMessages(final);
     setMsg(final);
-  }
+  };
 
   const handleClickFile = (e) => {
     e.preventDefault();
@@ -71,14 +68,14 @@ const Conversations = ({ conversation, id }) => {
       closeModal: true,
       dangerMode: true,
     });
-  }
+  };
 
   const handleClickPinUp = async (e) => {
     e.preventDefault();
     setClick(!click);
     const res = await eventsApi.put(`/conversation/${conversation._id}/pinup`);
-  }
-  
+  };
+
   const handleClickBlock = async (e) => {
     e.preventDefault();
     setBlocked(true);
@@ -90,45 +87,34 @@ const Conversations = ({ conversation, id }) => {
       closeModal: true,
       dangerMode: true,
     });
-  }
+  };
 
   return (
-    <div className={blocked === true ? styles.listChatC : styles.listChats} >
-
-      {
-        group ? 
+    <div onClick={hanldeClickMsg} className={blocked === true ? styles.listChatC : styles.listChats}>
+      {group ? (
         <div className={styles.itemChat}>
-          <img src={avatar_group} alt="imageAvatar" onClick={hanldeClickMsg}/>
+          <img src={avatar_group} alt='imageAvatar' onClick={hanldeClickMsg} />
 
-          <span><p className={styles.texto_p}>Grupo Evento</p></span>
+          <span>
+            <p className={styles.texto_p}>Grupo Evento</p>
+          </span>
 
           <div className={styles.itemChatDivisor} />
-        </div> :
-
-        <div className={styles.itemChat} >
-
-          <img src={user.userpicture ? user.userpicture : avatar} 
-            alt="imageAvatar" 
-            onClick={hanldeClickMsg}
-          />
+        </div>
+      ) : (
+        <div className={styles.itemChat}>
+          <img src={user.userpicture ? user.userpicture : avatar} alt='imageAvatar' onClick={hanldeClickMsg} />
           <span>{user.name}</span>
 
           <div className={styles.itemChatDivisor} />
 
-          {
-            conversation.locked === false ?
-            
+          {conversation.locked === false ? (
             <div className={styles.itemOptionsChat}>
-
-              <div className={styles.itemChatNumberMessage}>
-                {
-                  messages.length
-                }
-              </div>
+              <div className={styles.itemChatNumberMessage}>{messages.length}</div>
 
               <div className={styles.containerItemMenu} onClick={hanldeClickMsg}>
                 <FiMail className={styles.itemMenuIcon} />
-                <div className={styles.helperMenu} >
+                <div className={styles.helperMenu}>
                   <p>Marcar como leído</p>
                 </div>
               </div>
@@ -140,26 +126,21 @@ const Conversations = ({ conversation, id }) => {
                 </div>
               </div>
 
-              {
-                click === true ?
-                (<div className={styles.containerItemMenu} onClick={handleClickPinUp}>
-                  
-                  <BiPin className={styles.itemMenuIcon} style={{color: '#d53e27'}}/>
+              {click === true ? (
+                <div className={styles.containerItemMenu} onClick={handleClickPinUp}>
+                  <BiPin className={styles.itemMenuIcon} style={{ color: '#d53e27' }} />
                   <div className={styles.helperMenu}>
                     <p>Mensajes prioritarios</p>
-                  </div> 
-                    
-                </div>) : 
-                
-                (<div className={styles.containerItemMenu} onClick={handleClickPinUp}>
-                  
+                  </div>
+                </div>
+              ) : (
+                <div className={styles.containerItemMenu} onClick={handleClickPinUp}>
                   <BiPin className={styles.itemMenuIcon} />
                   <div className={styles.helperMenu}>
                     <p>Mensajes prioritarios</p>
-                  </div> 
-                  
-                </div>) 
-              }
+                  </div>
+                </div>
+              )}
 
               <div className={styles.containerItemMenu} onClick={handleClickBlock}>
                 <BiBlock className={styles.itemMenuIcon} />
@@ -167,13 +148,14 @@ const Conversations = ({ conversation, id }) => {
                   <p>Bloquear usuario</p>
                 </div>
               </div>
-
-            </div> : ''
-          }
-        </div>   
-      }   
+            </div>
+          ) : (
+            ''
+          )}
+        </div>
+      )}
     </div>
   );
-}
+};
 
 export default Conversations;

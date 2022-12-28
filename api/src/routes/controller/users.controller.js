@@ -346,6 +346,7 @@ router.post('/commentOrganizer/:id', async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 });
+
 router.post('/message/:id', async (req, res) => {
   try {
     const { id } = req.params;

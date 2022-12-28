@@ -947,6 +947,8 @@ const EventEdit = () => {
   const { notes, setNotes } = useContext(stateContext);
 
   const notifications = async (buyers) => {
+    console.log({ buyers });
+
     const create = {
       type: 'cancelEvent',
       idUser: user.uid,
@@ -956,6 +958,8 @@ const EventEdit = () => {
     const json = await eventsApi.post('/users/notifications', create);
     setNotes([...notes, json.data]);
   };
+
+  const [notificationsBuyers, setNotificationsBuyers] = useState(null);
 
   let removeFromPublic = (e, i, id) => {
     e.preventDefault();
@@ -981,7 +985,6 @@ const EventEdit = () => {
                 (date.date === dateActual && date.end.slice(0, 2) <= hora && date.end.slice(3, 5) <= minutes + 2)
               ) {
                 date.isPublic = false;
-                notifications(date.buyers.map((buy) => buy.id));
               }
             });
             let allFalse = post.dates.filter((date) => date.isPublic === true);
@@ -1004,7 +1007,7 @@ const EventEdit = () => {
       return Swal.fire({
         html: `<p>Ya hay ${newFechas[i].sells} cupo(s) comprado(s) para esta fecha, si la quitas de publicados el dinero será devuelto a los compradores. Esta devolución genera unos costos los cuales deberas asumir.
           <a href="/docs/terminos-condiciones/organizador" target="_blank">Ver sección &&&&&&&&&& en Términos y Condiciones.</a>  
-          Deseas quitar esta fecha de publicados? </p> 
+          ¿Deseas quitar esta fecha de publicados? </p> 
           `,
         width: 600,
         icon: 'warning',
@@ -1017,6 +1020,15 @@ const EventEdit = () => {
         cancelButtonColor: '#868686',
       }).then((result) => {
         if (result.isConfirmed) {
+          setNotificationsBuyers(
+            newFechas[i].buyers.map((buy) => {
+              return {
+                id: buy.id,
+                date: newFechas[i].dateFormated,
+              };
+            })
+          );
+          console.log({ notificationsBuyers });
           newFechas[i].sendEmail = true;
           setPost({
             ...post,
@@ -1311,7 +1323,6 @@ const EventEdit = () => {
   let guardarCambios = (e, i, id, indice, codigo) => {
     e.preventDefault();
     const datesAux = [...post.dates];
-
     swal('Cambio ha sido guardado');
     setCambios(true);
     datesAux[i].codigos[indice].ed = false;
@@ -1420,7 +1431,6 @@ const EventEdit = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('cambios');
 
     if (Object.values(errors).length > 0) {
       console.log('0');
@@ -1435,7 +1445,7 @@ const EventEdit = () => {
     if (post.sells > 0 && post.inRevision === false) {
       swal({
         title:
-          'Si ya hay Asistentes al evento es importante que le informes de inmediato los cambios que consideres podrían afectar su participación ',
+          'Si ya hay Asistentes al evento es importante que le informes de inmediato los cambios que consideres podrían afectar su participación.',
         buttons: true,
         dangerMode: true,
       }).then((publicar) => {
@@ -1444,6 +1454,8 @@ const EventEdit = () => {
           swal('Tus cambios han sido guardados', {
             icon: 'success',
           });
+          console.log({ notificationsBuyers });
+          notifications(notificationsBuyers);
           navigate('/usuario/mis-eventos');
         }
       });

@@ -36,6 +36,7 @@ const MyEventsAsistentes = () => {
       const event = json.data.filter((e) => e._id === eventid);
       const fecha = event[0].dates.find((d) => d._id === dateid);
       const todosUsers = res.data;
+      console.log({ buyers: fecha.buyers });
       const idBuyers = fecha.buyers;
 
       setEvent(event);
@@ -44,8 +45,9 @@ const MyEventsAsistentes = () => {
       if (idBuyers !== undefined) {
         const allBuyers = [];
         for (let j = 0; j < idBuyers.length; j++) {
-          const buyer = todosUsers.find((a) => a._id === idBuyers[j]);
+          const buyer = todosUsers.find((a) => a._id === idBuyers[j].id);
           allBuyers.push(buyer);
+          console.log({ allBuyers });
           setBuyers(allBuyers);
           setLoad(false);
         }
@@ -89,20 +91,15 @@ const MyEventsAsistentes = () => {
 
   const handleOneMessage = (e, buyerId) => {
     e.preventDefault();
-    const array = conversa.map((e) => e.members).flat();
-    const json = array.includes(buyerId);
+
     const data = {
       senderId: user.uid,
       receiverId: buyerId,
     };
 
-    if (json === true) {
-      return navigate('/usuario/mensajes');
-    } else {
-      return eventsApi.post('/conversation/create', data).then((response) => {
-        navigate('/usuario/mensajes');
-      });
-    }
+    return eventsApi.post('/conversation/create', data).then((response) => {
+      navigate(`/usuario/mensajes/${response.data._id}`);
+    });
   };
 
   const handleManyMessages = (e) => {
