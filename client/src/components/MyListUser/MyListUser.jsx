@@ -9,8 +9,9 @@ import { UIContext } from '../../context/ui';
 const MyListUser = ({ /* myFavorites, */ myEventsBooked }) => {
   //const eventos = myFavorites.concat(myEventsBooked);
   const { eventsFavourites } = useContext(UIContext);
-  const eventos = eventsFavourites.concat(myEventsBooked);
-
+  let eventos = eventsFavourites.concat(myEventsBooked);
+  let hash = {};
+  eventos = eventos.filter((o) => (hash[o._id] ? false : (hash[o._id] = true)));
 
   const eventosPublicos = eventos.filter((evento) => evento.isPublic === true && evento.inRevision === false);
 

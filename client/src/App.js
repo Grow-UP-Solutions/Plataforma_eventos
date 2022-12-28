@@ -151,7 +151,7 @@ function App() {
         />
 
         <Route
-          path='/usuario/mensajes'
+          path='/usuario/mensajes/:idConversation'
           element={
             <RutaPrivada>
               <Messages />

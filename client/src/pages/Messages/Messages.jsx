@@ -15,6 +15,7 @@ import { useModal } from '../../hooks/useModal';
 import styles from './Messages.module.css';
 import { Loading } from '../../components';
 import CurrentMessage from '../../components/CurrentMessage/CurrentMessage';
+import { useParams } from 'react-router-dom';
 
 const validate = (form) => {
   let errors = {};
@@ -48,7 +49,8 @@ const validate = (form) => {
 };
 
 const Messages = () => {
-  
+  const { idConversation } = useParams();
+  console.log({ idConversation });
   const { user } = useContext(AuthContext);
   const { getMessagesStar, msgStar, deleteConversation } = useContext(UIContext);
   const { setMsg } = useContext(stateContext);
@@ -77,11 +79,9 @@ const Messages = () => {
         const orden = json.sort((e) => {
           if (e.pinup === true) {
             return -1;
-          }
-          else if (e.pinup === false) {
+          } else if (e.pinup === false) {
             return 1;
-          }
-          else {
+          } else {
             return 0;
           }
         });
@@ -90,12 +90,18 @@ const Messages = () => {
         setLoad(false);
         const ubication = res.data.length - 1;
         setLast(res.data[ubication]._id);
+
+        if (idConversation === 'conversaciones') return;
+
+        const conversationInitial = orden.filter((conver) => idConversation === conver._id)[0];
+        console.log({ conversationInitial });
+        setCurrentChat(conversationInitial);
       } catch (err) {
         console.log(err);
       }
     };
     getConversations();
-  }, [id]);
+  }, [id, idConversation]);
 
   useEffect(() => {
     const getMessages = async () => {
@@ -132,7 +138,7 @@ const Messages = () => {
       console.log('no hay ref');
     } else {
       const lastItem = scrollRef.current.lastElementChild;
-      lastItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      if (lastItem) lastItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
   }, [messages]);
 
@@ -143,7 +149,7 @@ const Messages = () => {
       });
       console.log('desmonte mensajes');
     };
-  }, [last]); 
+  }, [last]);
 
   const handleChangeNewMessages = (e) => {
     e.preventDefault();
@@ -201,6 +207,7 @@ const Messages = () => {
   };
 
   const handleClickConversation = (c) => {
+    console.log({ conversation: c });
     setCurrentChat(c);
     setStar(false);
   };
