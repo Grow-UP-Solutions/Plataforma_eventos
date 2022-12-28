@@ -166,7 +166,7 @@ const Messages = () => {
       conversationId: currentChat._id,
     };
     if (Object.values(errors).length > 0) {
-      setNewMessage('');
+      /* setNewMessage(''); */
       return openModal();
     }
     try {

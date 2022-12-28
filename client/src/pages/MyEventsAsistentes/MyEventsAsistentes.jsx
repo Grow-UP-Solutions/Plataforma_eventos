@@ -44,7 +44,7 @@ const MyEventsAsistentes = () => {
       if (idBuyers !== undefined) {
         const allBuyers = [];
         for (let j = 0; j < idBuyers.length; j++) {
-          const buyer = todosUsers.find((a) => a._id === idBuyers[j]);
+          const buyer = todosUsers.find((a) => a._id === idBuyers[j].id);
           allBuyers.push(buyer);
           setBuyers(allBuyers);
           setLoad(false);
