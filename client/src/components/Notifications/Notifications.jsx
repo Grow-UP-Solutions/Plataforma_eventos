@@ -23,8 +23,11 @@ const Notifications = () => {
 
   useEffect(() => {
     getUserData();
-    scroll.scrollToTop();
   }, [user]);
+
+  useEffect(() => {
+    scroll.scrollToTop();
+  }, []);
 
   const getUserData = async () => {
     let userResult = {};
@@ -40,7 +43,7 @@ const Notifications = () => {
       idNotifications: noti._id,
     };
     const json = await eventsApi.put('/users/notifications', data);
-    setState(json.data);
+    setState(json.data.reverse());
     setNotes(json.data.filter((e) => e.read === false));
     swal({
       text: 'Notificacion Leída',

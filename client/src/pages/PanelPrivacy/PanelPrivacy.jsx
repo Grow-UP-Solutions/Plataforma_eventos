@@ -14,7 +14,7 @@ const PanelPrivacy = () => {
 
   useEffect(() => {
     scroll.scrollToTop();
-  }, []);
+  }, [component]);
 
   useEffect(() => {
     if (typeUser === 'usuario') {
