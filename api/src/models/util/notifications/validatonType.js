@@ -8,7 +8,7 @@ module.exports = function validationType(type, title, userName, totalCupos, fech
     return 'Un evento a sido modificado.';
   }
   if (type === FAVORITOS) {
-    return 'El evento a sido agregado a tu lista de eventos fávoritos.';
+    return `El evento ${title} a sido agregado a tu lista de eventos fávoritos.`;
   }
   if (type === BANK) {
     return 'Tus detalles bancarios han cambiado.';
