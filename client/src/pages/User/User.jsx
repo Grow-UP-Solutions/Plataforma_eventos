@@ -153,6 +153,10 @@ const UserPage = () => {
           setOptionSubMenuChecked('');
           setComponent(<GoodPracticeOrg />);
           break;
+        case 'mensajes':
+          console.log({ option });
+          setComponent(<MessagesResponsive />);
+          break;
         default:
           setComponent(<UserForm userData={userResult.data} />);
       }
@@ -190,7 +194,6 @@ const UserPage = () => {
 
     if (name === 'Pendientes por Asistir' || iconValue === 'Pendientes por Asistir') {
       // setComponent(<ExpectToAttendUser myFavorites={userData.myFavorites} myEventsBooked={userData.myEventsBooked} />);
-      console.log('Pendientes por asistir');
       navigate('/usuario/pendientes-asistir');
     }
 
@@ -199,7 +202,7 @@ const UserPage = () => {
       navigate('/usuario/perfil');
     }
     if (name === 'Mensajes' || iconValue === 'Mensajes') {
-      setComponent(<MessagesResponsive />);
+      navigate('/usuario/mensajes');
     }
     if (name === 'Plan de Referidos' || iconValue === 'Plan de Referidos') {
       // setComponent(<ReferralPlan userData={userData} />);

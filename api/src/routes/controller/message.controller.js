@@ -1,5 +1,7 @@
 const { Router } = require('express');
+const { findConversation } = require('../../models/util/functionDB/ConversationDb.js');
 const MessageFunctionDb = require('../../models/util/functionDB/message/index.message.js');
+const UsersFunctionDb = require('../../models/util/functionDB/users/index.users.js');
 const { updateMessage } = require('../services/message.service.js');
 
 const router = Router();
@@ -61,6 +63,26 @@ router.put('/update/:id', async (req, res) => {
   try {
     const newMessage = await updateMessage(id, conversationId);
     res.status(200).json(newMessage);
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
+});
+
+router.put('/readAllMessage/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const userConversations = await findConversation(id);
+    if (!userConversations) throw new Error('No hay conversaciones');
+
+    for (let i = 0; i < userConversations.length; i++) {
+      const allMessages = await MessageFunctionDb.findMessage(userConversations[i]._id);
+      for (let x = 0; x < allMessages.length; x++) {
+        allMessages[x].read = true;
+        allMessages[x].save();
+      }
+    }
+
+    res.json({ message: 'Todos los mensajes leídos correctamente.' });
   } catch (error) {
     res.status(500).json(error.message);
   }

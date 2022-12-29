@@ -70,6 +70,7 @@ router.put('/:idConversation', async (req, res) => {
     return res.status(500).json({ faill: error.message });
   }
 });
+
 router.put('/:idConversation/pinup', async (req, res) => {
   const { idConversation } = req.params;
   try {

@@ -1,7 +1,5 @@
-require('../../../../DB')
-const Users = require("../../../db/Users");
-const UsersFunctionDb = require("../users/index.users");
-
+require('../../../../DB');
+const UsersFunctionDb = require('../users/index.users');
 
 module.exports = async function allMessageReciverUserDB(idReciver) {
   let messageUser = await UsersFunctionDb.oneUser(idReciver);
