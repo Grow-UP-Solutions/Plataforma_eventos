@@ -127,8 +127,8 @@ const eventInRevisionEditedAdmin = async (newEvente,user) => {
               <h1>Edicion de Evento en Revision</h1>
     
             
-              <a class="event-name" href="https://events-jean.vercel.app/detalles-del-evento/${_id}"
-                >Evento: ${title}</a
+              <a class="event-name" href="https://events-jean.vercel.app/detalles-del-evento/${newEvente._id}"
+                >Evento: ${newEvente.title}</a
               >
 
               <p>
@@ -139,7 +139,7 @@ const eventInRevisionEditedAdmin = async (newEvente,user) => {
               </p>
            
               <p>
-               ${longDescription}
+               ${newEvente.longDescription}
               </p>
     
               <div class="container-date">

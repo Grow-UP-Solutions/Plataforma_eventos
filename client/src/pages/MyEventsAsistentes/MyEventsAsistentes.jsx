@@ -170,13 +170,13 @@ const MyEventsAsistentes = () => {
                                 </ExcelFile>
                               </div>
 
-                              <div className={styles.btnTop2}>
+                              {/* <div className={styles.btnTop2}>
                                 <MailOutlineIcon sx={{ fontSize: '3rem', color: '#d53e27' }} />
                                 <button className={styles.button} onClick={(e) => handleManyMessages(e)}>
                                   <p>Enviar Mensaje a</p>
                                   <p>seleccionados</p>
                                 </button>
-                              </div>
+                              </div> */}
                             </th>
                           </tr>
                         </thead>
