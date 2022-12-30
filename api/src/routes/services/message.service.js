@@ -1,13 +1,13 @@
-const MessageFunctionDb = require("../../models/util/functionDB/message/index.message.js");
-
+const MessageFunctionDb = require('../../models/util/functionDB/message/index.message.js');
 
 async function updateMessage(id, conversationId) {
   try {
-    
     const message = await MessageFunctionDb.findMessage(id);
-    
+
+    console.log({ message });
+
     if (!message) {
-      throw new Error("No existe mensaje en esta conversacion");
+      throw new Error('No existe mensaje en esta conversacion');
     }
     const newMessage = await MessageFunctionDb.updateAll(id, conversationId);
     return newMessage;
@@ -16,6 +16,6 @@ async function updateMessage(id, conversationId) {
   }
 }
 
-module.exports={
-  updateMessage
-}
+module.exports = {
+  updateMessage,
+};

@@ -242,8 +242,12 @@ const Messages = () => {
 
   const handleClickAllReadMessages = async (e) => {
     e.preventDefault();
-    const res = await eventsApi.put('/message/update/' + user.uid);
-    setMsg(res.data.filter((e) => e.read === false));
+    try {
+      await eventsApi.put(`/message/readAllMessage/${id}`);
+      setMsg([]);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleClickFile = (e) => {
