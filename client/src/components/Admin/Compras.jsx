@@ -6,12 +6,17 @@ import Loading from '../Loading/Loading';
 import Pagination from '../Pagination/Pagination';
 import style from './Compras.module.css';
 import { animateScroll as scroll } from 'react-scroll';
+import ExportExcel from 'react-export-excel';
+import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
+
 const Compras = () => {
+
   const navigate = useNavigate();
-
   const [load, setLoad] = useState(true);
-
   const [sells, setSells] = useState(true);
+  const ExcelFile = ExportExcel.ExcelFile;
+  const ExcelSheet = ExportExcel.ExcelSheet;
+  const ExcelColumn = ExportExcel.ExcelColumn;
 
   useEffect(() => {
     getsells();
@@ -45,6 +50,25 @@ const Compras = () => {
         <div className={style.container_titles}>
           <h1>Lista de compras</h1>
           <h5>{fechaActual}</h5>
+        </div>
+
+        <div>
+          <DescriptionOutlinedIcon sx={{ fontSize: '3rem', color: '#d53e27' }} />
+          <ExcelFile
+            element={<button>Descargar Lista</button>}
+            filename='Excel Listado Compras'
+          >
+            <ExcelSheet data={sells} name='Compras' >
+              <ExcelColumn label='Nombre evento' value='eventName' />
+              <ExcelColumn label='Nombre comprador' value='buyerName' />
+              <ExcelColumn label='Apellido comprador' value='buyerLastName' />
+              <ExcelColumn label='Nombre organizador' value='organizerName' />
+              <ExcelColumn label='Apellido organizador' value='organizerLastName' />
+              <ExcelColumn label='Valor recaudado por LQQH' value='adminEarns' />
+              <ExcelColumn label='Neto para el organizador' value='comision' /> 
+            </ExcelSheet>
+
+          </ExcelFile>
         </div>
 
         <div className={style.container_table}>

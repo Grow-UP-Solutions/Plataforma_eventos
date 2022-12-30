@@ -163,9 +163,9 @@ const MyEventsAsistentes = () => {
                                   filename='Excel Lista Asistentes'
                                 >
                                   <ExcelSheet data={buyers} name='Asistentes'>
-                                    <ExcelColumn labe='name' value='name' />
-                                    <ExcelColumn labe='email' value='email' />
-                                    <ExcelColumn labe='city' value='city' />
+                                    <ExcelColumn label='name' value='name' />
+                                    <ExcelColumn label='email' value='email' />
+                                    <ExcelColumn label='city' value='city' />
                                   </ExcelSheet>
                                 </ExcelFile>
                               </div>
