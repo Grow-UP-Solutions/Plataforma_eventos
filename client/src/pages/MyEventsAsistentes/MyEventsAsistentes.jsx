@@ -22,6 +22,7 @@ const MyEventsAsistentes = () => {
   const [event, setEvent] = useState([]);
   const [date, setDate] = useState([]);
   const [buyers, setBuyers] = useState([]);
+  const [buyer, setBuyer] = useState([]);
   const [load, setLoad] = useState(true);
   const navigate = useNavigate();
 
@@ -38,6 +39,7 @@ const MyEventsAsistentes = () => {
       const fecha = event[0].dates.find((d) => d._id === dateid);
       const todosUsers = res.data;
       console.log({ buyers: fecha.buyers });
+      setBuyer(fecha.buyers);
       const idBuyers = fecha.buyers;
 
       setEvent(event);
@@ -138,7 +140,7 @@ const MyEventsAsistentes = () => {
                   <p className={styles.date}>
                     {d.dateFormated} - {d.start} - {d.end}{' '}
                   </p>
-                  {buyers.length > 1 ? (
+                  {buyer.length > 0 ? (
                     <div className={styles.containerTable}>
                       <table className={styles.table}>
                         <thead>
@@ -162,10 +164,10 @@ const MyEventsAsistentes = () => {
                                   element={<button className={styles.button}>Descargar Lista</button>}
                                   filename='Excel Lista Asistentes'
                                 >
-                                  <ExcelSheet data={buyers} name='Asistentes'>
-                                    <ExcelColumn label='name' value='name' />
-                                    <ExcelColumn label='email' value='email' />
-                                    <ExcelColumn label='city' value='city' />
+                                  <ExcelSheet data={buyer} name='Asistentes'>
+                                    <ExcelColumn label='nombre' value='name' />
+                                    <ExcelColumn label='cupos' value='cupos' />
+                                    <ExcelColumn label='codigo' value='codigo' />
                                   </ExcelSheet>
                                 </ExcelFile>
                               </div>
@@ -181,8 +183,8 @@ const MyEventsAsistentes = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {buyers.map((b) => (
-                            <tr key={b._id}>
+                          {buyer.map((b) => (
+                            <tr key={b.id}>
                               {/* <td className={styles.input}>
                                 <input
                                   type='checkbox'
@@ -199,12 +201,12 @@ const MyEventsAsistentes = () => {
                                   alt='img-user'
                                 />
                               </td>
-                              <td>{b.name}</td>
-                              <td>1</td>
+                              <td>{b.name ? b.name : b.email}</td>
+                              <td>{b.cupos}</td>
                               <td>
                                 <div className={styles.btn}>
                                   <MailOutlineIcon sx={{ fontSize: '2rem', color: '#d53e27' }} />
-                                  <p className={styles.button1} onClick={(e) => handleOneMessage(e, b._id)}>
+                                  <p className={styles.button1} onClick={(e) => handleOneMessage(e, b.id)}>
                                     Enviar Mensaje
                                   </p>
                                 </div>
