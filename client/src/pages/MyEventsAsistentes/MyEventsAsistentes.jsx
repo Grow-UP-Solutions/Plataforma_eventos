@@ -140,7 +140,7 @@ const MyEventsAsistentes = () => {
                   <p className={styles.date}>
                     {d.dateFormated} - {d.start} - {d.end}{' '}
                   </p>
-                  {buyer.length > 1 ? (
+                  {buyer.length > 0 ? (
                     <div className={styles.containerTable}>
                       <table className={styles.table}>
                         <thead>
@@ -165,7 +165,7 @@ const MyEventsAsistentes = () => {
                                   filename='Excel Lista Asistentes'
                                 >
                                   <ExcelSheet data={buyer} name='Asistentes'>
-                                    <ExcelColumn label='name' value='name' />
+                                    <ExcelColumn label='nombre' value='name' />
                                     <ExcelColumn label='cupos' value='cupos' />
                                     <ExcelColumn label='codigo' value='codigo' />
                                   </ExcelSheet>

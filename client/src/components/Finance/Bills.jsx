@@ -8,7 +8,9 @@ import { fechaActual } from '../../utils/fechaActual';
 import Loading from '../Loading/Loading';
 import Pagination from '../Pagination/Pagination';
 import style from './Bills.module.css';
+
 const Bills = () => {
+
   const [state, fetchUsers] = useFetch();
   const navigate = useNavigate();
   const id = useParams().id;
@@ -56,6 +58,7 @@ const Bills = () => {
               <tr className={style.tr}>
                 <th className={style.th_first}>Nombre del evento</th>
                 <th>Fecha del evento</th>
+                <th>Hora inicio del evento</th>
                 <th>Fecha de facturacion</th>
                 <th>Número de factura</th>
                 <th>Tu ganancia</th>
@@ -77,6 +80,7 @@ const Bills = () => {
                           <p>{event.title}</p>
                         </td>
                         <td>{date.date}</td>
+                        <td>{date.start}</td>
                         <td>{date.isPay === false ? 'PENDIENTE' : date.datePay}</td>
                         <td>{date.isPay === false ? 'PENDIENTE' : date.billNumber}</td>
                         <td>${new Intl.NumberFormat('de-DE').format(date.overallEarnings)}</td>
