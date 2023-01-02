@@ -473,6 +473,21 @@
   cursor: pointer;
 }
 
+.containerTerm {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.containerTerm .textTerms {
+  margin: 0;
+}
+
+.checkBox {
+  accent-color: #d53e27;
+}
+
 .containerResponsiveForm .textTerms {
   margin-top: 4rem;
   font-size: 1.8rem;
