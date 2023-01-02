@@ -3122,6 +3122,14 @@
   gap: 2rem;
 }
 
+.messageAddDate {
+  text-align: center;
+  font-size: 1.4rem;
+  color: var(--color-blue);
+  font-weight: 500;
+  margin-bottom: 2rem;
+}
+
 @media screen and (max-width: 1160px) {
   .containerLine {
     margin-right: 10rem;

@@ -3352,11 +3352,9 @@ const EventEdit = () => {
                       {/* agregar dates */}
                       <div className={styles.containerResponsiveDates}>
                         <div className={styles.flex}>
-                          <div>
-                            <button className={styles.addDate} type='button' onClick={() => addFormFields()}>
-                              + Crear Nueva Fecha
-                            </button>
-                          </div>
+                          <p className={styles.messageAddDate}>
+                            Si desea crear más fechas/horarios para su evento por favor hacerlo desde un ordenador.
+                          </p>
                         </div>
                       </div>
 
