@@ -36,7 +36,7 @@ const MyListUser = ({ /* myFavorites, */ myEventsBooked }) => {
         <div className={styles.containercard}>
           {currentCard.map((event) => (
             <div className={styles.card}>
-              <Card event={event} isFavorite={false} />
+              <Card event={event} />
             </div>
           ))}
         </div>
