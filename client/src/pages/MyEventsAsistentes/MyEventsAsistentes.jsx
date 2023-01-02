@@ -9,12 +9,14 @@ import { Loading } from '../../components';
 import { AuthContext } from '../../context/auth/AuthContext';
 import { stateContext } from '../../context/state/stateContext';
 import styles from './MyEventsAsistentes.module.css';
+import avatar from '../../assets/imgs/no-avatar.png';
 
 const ExcelFile = ExportExcel.ExcelFile;
 const ExcelSheet = ExportExcel.ExcelSheet;
 const ExcelColumn = ExportExcel.ExcelColumn;
 
 const MyEventsAsistentes = () => {
+
   const eventid = useParams().eventId;
   const dateid = useParams().dateId;
   const { user } = useContext(AuthContext);
@@ -57,7 +59,7 @@ const MyEventsAsistentes = () => {
   }, []);
 
   // SELECCION DE CHECKBOX
-  const [seleccionados, setSeleccionados] = useState([]);
+  /* const [seleccionados, setSeleccionados] = useState([]);
 
   const selectBuyer = (e) => {
     let buyerId = e.target.value;
@@ -83,7 +85,7 @@ const MyEventsAsistentes = () => {
   const saber = (a) => {
     let gast = seleccionados.includes(a);
     return gast;
-  };
+  }; */
 
   //MENSAJES
   const { setResult, conversa } = useContext(stateContext);
@@ -102,7 +104,7 @@ const MyEventsAsistentes = () => {
     });
   };
 
-  const handleManyMessages = (e) => {
+  /* const handleManyMessages = (e) => {
     e.preventDefault();
     const data = {
       senderId: user.uid,
@@ -111,7 +113,7 @@ const MyEventsAsistentes = () => {
     eventsApi.post('/conversation/buyer/create', data).then((response) => {
       navigate('/usuario/mensajes');
     });
-  };
+  }; */
 
   //SALIR
   const handleClickExit = (e) => {
@@ -143,7 +145,7 @@ const MyEventsAsistentes = () => {
                       <table className={styles.table}>
                         <thead>
                           <tr>
-                            <th className={styles.input}>
+                            {/* <th className={styles.input}>
                               <input
                                 type='checkbox'
                                 onChange={(e) => selectAll(e)}
@@ -151,8 +153,8 @@ const MyEventsAsistentes = () => {
                                 value={buyers._id}
                                 class={styles.checkBox}
                               />
-                            </th>
-                            <th>Seleccionar Todos</th>
+                            </th> */}
+                            <th></th>
                             <th>Usuario</th>
                             <th>Cupos Comprados</th>
                             <th className={styles.two}>
@@ -183,7 +185,7 @@ const MyEventsAsistentes = () => {
                         <tbody>
                           {buyers.map((b) => (
                             <tr key={b._id}>
-                              <td className={styles.input}>
+                              {/* <td className={styles.input}>
                                 <input
                                   type='checkbox'
                                   onChange={(e) => selectBuyer(e)}
@@ -191,9 +193,9 @@ const MyEventsAsistentes = () => {
                                   className={styles.checkBox}
                                   checked={saber(b._id) ? true : false}
                                 />
-                              </td>
+                              </td> */}
                               <td>
-                                <img className={styles.userImg} src={b.userpicture} alt='img-user' />
+                                <img className={styles.userImg} src={b.userpicture ? b.userpicture : avatar} alt='img-user' />
                               </td>
                               <td>{b.name}</td>
                               <td>1</td>

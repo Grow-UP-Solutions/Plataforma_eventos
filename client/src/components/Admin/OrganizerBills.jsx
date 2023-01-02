@@ -10,7 +10,10 @@ import { fechaActual } from '../../utils/fechaActual';
 import { Link } from 'react-router-dom';
 import Loading from '../Loading/Loading';
 import { animateScroll as scroll } from 'react-scroll';
+import swal from 'sweetalert';
+
 const OrganizerBills = () => {
+
   const [state, fetchUsers] = useFetch();
   const navigate = useNavigate();
   const id = useParams().id;
@@ -21,9 +24,11 @@ const OrganizerBills = () => {
   useEffect(() => {
     getUserData();
   }, [id]);
+
   useEffect(() => {
     scroll.scrollToTop();
   }, []);
+
   const getUserData = async () => {
     if (id) {
       const userResult = await eventsApi.get(`/users/${id}`);
@@ -71,6 +76,11 @@ const OrganizerBills = () => {
     try {
       const { data } = await eventsApi.put('/mercadoPago/adminPaymentOrganizer', payload);
       console.log({ data });
+      swal({
+        text: 'Pagado',
+        icon: 'success',
+        button: 'OK',
+      });
     } catch (error) {
       console.log({ error });
     }
