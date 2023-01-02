@@ -339,17 +339,21 @@ const Navbar = ({ upper }) => {
                       Marcar todas como leidas
                     </p>
 
-                    {msg.map((c, i) => (
-                      <div
-                        className={style.noty}
-                        key={i}
-                        onClick={() => {
-                          hanldeClickMsg(c.conversationId);
-                        }}
-                      >
-                        <ConversationNoti msgs={c} id={user.uid} />
-                      </div>
-                    ))}
+                    {msg.length > 0 ? (
+                      msg.map((c, i) => (
+                        <div
+                          className={style.noty}
+                          key={i}
+                          onClick={() => {
+                            hanldeClickMsg(c.conversationId);
+                          }}
+                        >
+                          <ConversationNoti msgs={c} id={user.uid} />
+                        </div>
+                      ))
+                    ) : (
+                      <p>No hay mensajes.</p>
+                    )}
 
                     <p className={style.link_notis} onClick={handleClickMessage}>
                       Ver todos los mensajes
@@ -366,12 +370,16 @@ const Navbar = ({ upper }) => {
                     <p className={style.link_noti} onClick={handleClickAllReadNotifications}>
                       Marcar todas como leidas
                     </p>
-                    {notes.map((e) => (
-                      <div className={style.noty}>
-                        <IoNotifications className={style.iconNav} />
-                        <p onClick={handleClickNotifications}>{e.msg}</p>
-                      </div>
-                    ))}
+                    {notes.length > 0 ? (
+                      notes.map((e) => (
+                        <div className={style.noty}>
+                          <IoNotifications className={style.iconNav} />
+                          <p onClick={handleClickNotifications}>{e.msg}</p>
+                        </div>
+                      ))
+                    ) : (
+                      <p>No hay notificaciones.</p>
+                    )}
                     <p className={style.link_notis} onClick={handleClickNotifications}>
                       Ver todas las notificaciones
                     </p>

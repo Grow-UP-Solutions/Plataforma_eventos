@@ -37,8 +37,8 @@ import { IoIosArrowBack, IoIosArrowDown, IoIosArrowForward, IoIosArrowUp } from 
 import { useNavigate, useParams } from 'react-router-dom';
 import { animateScroll as scroll } from 'react-scroll';
 import eventsApi from '../../axios/eventsApi';
-import eventDateToCalendarFormat from '../../utils/checkDatesInCalendar';
 import { UIContext } from '../../context/ui';
+import eventDateToCalendarFormat from '../../utils/checkDatesInCalendar';
 
 const UserPage = () => {
   const { option } = useParams();
@@ -80,6 +80,8 @@ const UserPage = () => {
 
   const getUserData = async () => {
     if (user.uid) {
+      setComponent(<Loading />);
+
       const userResult = await eventsApi.get(`/users/${user.uid}`);
       setUserData(userResult.data);
       const json = userResult.data.myFavorites;

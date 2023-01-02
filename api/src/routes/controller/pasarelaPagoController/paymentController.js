@@ -219,6 +219,8 @@ router.get('/success', async (req, res) => {
 
             e.buyers.push({
               id: user._id,
+              name: user.name,
+              picture: user.userpicture,
               email: user.email,
               cupos: auxBody[0].dates[j].quantity,
               codigo: auxBody[0].dates[j].codigoUsuario || auxBody[0].dates[j].codigoDescuento || null,

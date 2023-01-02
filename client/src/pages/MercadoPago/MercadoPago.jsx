@@ -7,6 +7,7 @@ import styles from './MercadoPago.module.css';
 // import { Box, Typography, Stack, Grid, Button, Container } from '@mui/material'
 // import { BsFillCheckCircleFill } from 'react-icons/bs'
 import { animateScroll as scroll } from 'react-scroll';
+import Loading from '../../components/Loading/Loading';
 const MercadoPago = () => {
   const [successInfo, setSucessInfo] = useState(null);
   const url = window.location.href.split('?')[1];
@@ -112,7 +113,7 @@ const MercadoPago = () => {
       </div>
     );
   } else {
-    return <div>Loading</div>;
+    return <Loading />;
   }
 };
 
