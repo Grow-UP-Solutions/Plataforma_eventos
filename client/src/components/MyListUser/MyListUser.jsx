@@ -7,15 +7,34 @@ import { FaCaretSquareRight } from 'react-icons/fa';
 import { UIContext } from '../../context/ui';
 
 const MyListUser = ({ /* myFavorites, */ myEventsBooked }) => {
+
+  function eliminarObjetosDuplicados(arr, prop) {
+    var nuevoArray = [];
+    var lookup  = {};
+
+    for (var i in arr) {
+      lookup[arr[i][prop]] = arr[i];
+    }
+
+    for (i in lookup) {
+      nuevoArray.push(lookup[i]);
+    }
+
+    return nuevoArray;
+  }
+
   //const eventos = myFavorites.concat(myEventsBooked);
   const { eventsFavourites } = useContext(UIContext);
   let eventos = eventsFavourites.concat(myEventsBooked);
-  let hash = {};
-  eventos = eventos.filter((o) => (hash[o._id] ? false : (hash[o._id] = true)));
+  /* let hash = {};
+  eventos = eventos.filter((o) => (hash[o._id] ? false : (hash[o._id] = true))); */
 
   const eventosPublicos = eventos.filter((evento) => evento.isPublic === true && evento.inRevision === false);
 
-  const orderByDate = eventosPublicos.sort((a, b) => {
+  const respo = eliminarObjetosDuplicados(eventosPublicos, '_id');
+  console.log('unicos:', respo);
+
+  const orderByDate = respo.sort((a, b) => {
     if (a.dates[0].date < b.dates[0].date) return -1;
     if (b.dates[0].date < a.dates[0].date) return 1;
     return 0;
@@ -52,7 +71,7 @@ const MyListUser = ({ /* myFavorites, */ myEventsBooked }) => {
       )}
 
       <div className={styles.container_pagination}>
-        <Pagination billsPerPage={CardPerPage} state={eventosPublicos.length} paginado={paginado} page={currentPage} />
+        <Pagination billsPerPage={CardPerPage} state={respo.length} paginado={paginado} page={currentPage} />
       </div>
     </div>
   );
