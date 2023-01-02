@@ -42,18 +42,15 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
   //si hay un evento en revision que lo saque de publicados
 
   if (myEventsCreated !== undefined) {
-   
     myEventsCreated.map((evento) => {
-     
       if (evento.inRevision === true) {
-       
         evento.isPublic = false;
       }
     });
   }
 
   const eventsNotOld = myEventsCreated.filter((e) => e.isOld === false);
-
+  console.log({ eventsNotOld });
   const eventsPublic = eventsNotOld.filter((e) => e.isPublic === true);
 
   const eventsNoPublicDuplicate = eventsNotOld.filter((e) => e.isPublic === false);
@@ -78,9 +75,7 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
     }
   });
 
-  const deleteEvent = (e) => {
-   
-  };
+  const deleteEvent = (e) => {};
 
   const [cardPerView, setCardPerView] = useState(3);
 
@@ -97,6 +92,8 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
     if (window.innerWidth <= 1160) return setCardPerView(2.5);
     if (window.innerWidth <= 1490) return setCardPerView(3);
   };
+
+  console.log({ eventsPublic });
 
   return (
     <div className={styles.container}>
@@ -221,47 +218,47 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
             </div>
           ) : eventsNoPublic.length > 3 ? (
             <div>
-            <Swiper
-              slidesPerView={cardPerView}
-              slidesPerGroup={cardPerView === 3 ? 3 : Math.trunc(cardPerView - 0.5)}
-              navigation
-              spaceBetween={0}
-              modules={[Navigation]}
-              className={styles.mySwipper}
-            >
-              {eventsNoPublic.map((event, index) => (
-                <div className={styles.card}>
-                  <SwiperSlide>
-                    <div>
-                      <Card
-                        userData={userData}
-                        event={event}
-                        listName={'to-publish'}
-                        orgEvent={'true'}
-                        datePublic={'false'}
-                      />
-                    </div>
-                    {event.inRevision === false ? (
-                      <div className={styles.btns}>
-                        <Link className={styles.btn} to={'/organiza-un-evento-editar/' + event._id}>
-                          <BsPencilSquare className={styles.iconEdit} />
-                          <span>Editar</span>
-                        </Link>
-                        <button className={styles.btn} onClick={(e) => deleteEvent(e)}>
-                          <img src={basquet} alt='n' />
-                        </button>
+              <Swiper
+                slidesPerView={cardPerView}
+                slidesPerGroup={cardPerView === 3 ? 3 : Math.trunc(cardPerView - 0.5)}
+                navigation
+                spaceBetween={0}
+                modules={[Navigation]}
+                className={styles.mySwipper}
+              >
+                {eventsNoPublic.map((event, index) => (
+                  <div className={styles.card}>
+                    <SwiperSlide>
+                      <div>
+                        <Card
+                          userData={userData}
+                          event={event}
+                          listName={'to-publish'}
+                          orgEvent={'true'}
+                          datePublic={'false'}
+                        />
                       </div>
-                    ) : (
-                      <div className={styles.btns}>
-                        <Link className={styles.btn}>
-                          <span>Evento En Revision</span>
-                        </Link>
-                      </div>
-                    )}
-                  </SwiperSlide>
-                </div>
-              ))}
-            </Swiper>
+                      {event.inRevision === false ? (
+                        <div className={styles.btns}>
+                          <Link className={styles.btn} to={'/organiza-un-evento-editar/' + event._id}>
+                            <BsPencilSquare className={styles.iconEdit} />
+                            <span>Editar</span>
+                          </Link>
+                          <button className={styles.btn} onClick={(e) => deleteEvent(e)}>
+                            <img src={basquet} alt='n' />
+                          </button>
+                        </div>
+                      ) : (
+                        <div className={styles.btns}>
+                          <Link className={styles.btn}>
+                            <span>Evento En Revision</span>
+                          </Link>
+                        </div>
+                      )}
+                    </SwiperSlide>
+                  </div>
+                ))}
+              </Swiper>
             </div>
           ) : (
             <p className={styles.not_event}>No hay eventos por publicar ...</p>

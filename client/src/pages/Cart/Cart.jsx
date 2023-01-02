@@ -1,24 +1,15 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { MdOutlineArrowBackIos } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { animateScroll as scroll } from 'react-scroll';
-import { iconExclamation } from '../../assets/imgs';
-import CardProduct from '../../components/CardProduct/CardProduct';
-import FormProductPay from '../../components/FormProductPay/FormProductPay';
-import styles from './Cart.module.css';
-import { iconArrowLeft, iconArrowRight } from '../../assets/imgs';
-import { useState } from 'react';
-import { stateContext } from '../../context/state/stateContext';
-import { iconPayU, iconAchPse } from '../../assets/imgs';
-import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
-import { UIContext } from '../../context/ui';
-import { getReferalCode } from '../../redux/actions';
+import { iconArrowLeft, iconArrowRight, iconExclamation } from '../../assets/imgs';
 import eventsApi from '../../axios/eventsApi';
 import { AuthContext } from '../../context/auth';
+import { stateContext } from '../../context/state/stateContext';
 import { administracion, iva } from '../../utils/administracion';
-import { MdOutlineArrowBackIos } from 'react-icons/md';
-import { postPayment } from '../../redux/actions';
+import styles from './Cart.module.css';
 
 const Cart = () => {
   const id = useParams().id;
@@ -247,7 +238,6 @@ const Cart = () => {
               return swal({
                 title: 'Codigo Aplicado',
               });
-              setApplied(true);
             } else {
               const valorDescuentoCupos = valorDescuento * currentDate[0].codigos[d].cantidad;
 
@@ -266,14 +256,7 @@ const Cart = () => {
               return swal({
                 title: 'Codigo Aplicado',
               });
-              setApplied(true);
             }
-
-            setDesc(carrito[c].descuento);
-            return swal({
-              title: 'Codigo Aplicado',
-            });
-            setApplied(true);
           } else if (currentDate[0].codigos[d].codigo === codigo && currentDate[0].codigos[d].cantidad === 0) {
             return swal({
               title: 'Ya no hay bonos disponibles para redimir con este código',

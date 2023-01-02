@@ -16,7 +16,6 @@ const ExcelSheet = ExportExcel.ExcelSheet;
 const ExcelColumn = ExportExcel.ExcelColumn;
 
 const MyEventsAsistentes = () => {
-
   const eventid = useParams().eventId;
   const dateid = useParams().dateId;
   const { user } = useContext(AuthContext);
@@ -91,7 +90,7 @@ const MyEventsAsistentes = () => {
   const { setResult, conversa } = useContext(stateContext);
   const [conversation, setConversation] = useState([]);
 
-  const handleOneMessage = (e, buyerId) => {
+  const handleOneMessage = async (e, buyerId) => {
     e.preventDefault();
 
     const data = {
@@ -99,9 +98,8 @@ const MyEventsAsistentes = () => {
       receiverId: buyerId,
     };
 
-    return eventsApi.post('/conversation/create', data).then((response) => {
-      navigate(`/usuario/mensajes/${response.data._id}`);
-    });
+    const response = await eventsApi.post('/conversation/create', data);
+    navigate(`/usuario/mensajes/${response.data._id}`);
   };
 
   /* const handleManyMessages = (e) => {
@@ -195,7 +193,11 @@ const MyEventsAsistentes = () => {
                                 />
                               </td> */}
                               <td>
-                                <img className={styles.userImg} src={b.userpicture ? b.userpicture : avatar} alt='img-user' />
+                                <img
+                                  className={styles.userImg}
+                                  src={b.userpicture ? b.userpicture : avatar}
+                                  alt='img-user'
+                                />
                               </td>
                               <td>{b.name}</td>
                               <td>1</td>

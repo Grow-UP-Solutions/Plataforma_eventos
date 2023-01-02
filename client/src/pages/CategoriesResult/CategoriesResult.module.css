@@ -33,7 +33,7 @@
   color: var(--color-blue);
   text-align: center;
   width: 100%;
-  margin-top: 1rem;
+  margin-top: 10rem;
 }
 
 @media screen and (max-width: 1272px) {
