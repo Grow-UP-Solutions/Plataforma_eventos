@@ -92,8 +92,14 @@ const Navbar = ({ upper }) => {
 
   const handleClickAllReadMessages = async (e) => {
     e.preventDefault();
-    const res = await eventsApi.put('/message/update/' + user.uid);
-    setMsg(res.data.filter((e) => e.read === false));
+    try {
+      const res = await eventsApi.put(`/message/readAllMessage/${user.uid}`);
+      setMsg([]);
+      /* setMsg(res.data.filter((e) => e.read === false)); */
+    } 
+    catch (error) {
+      console.log(error);
+    }
   };
 
   const handleClickAllReadNotifications = async (e) => {

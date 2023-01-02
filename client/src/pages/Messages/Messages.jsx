@@ -69,6 +69,7 @@ const Messages = () => {
   const [isOpenModal, openModal, closeModal] = useModal(false);
   const [load, setLoad] = useState(true);
   const [last, setLast] = useState();
+  const [tap, setTap] = useState(false);
   const scrollRef = useRef(null);
 
   useEffect(() => {
@@ -101,7 +102,7 @@ const Messages = () => {
       }
     };
     getConversations();
-  }, [id, idConversation]);
+  }, [tap, id, idConversation]);
 
   useEffect(() => {
     const getMessages = async () => {
@@ -245,6 +246,12 @@ const Messages = () => {
     try {
       await eventsApi.put(`/message/readAllMessage/${id}`);
       setMsg([]);
+      setTap(!tap);
+      swal({
+        text: 'Mensajes leidos',
+        icon: 'success',
+        button: 'OK',
+      });
     } catch (error) {
       console.log(error);
     }
