@@ -1,6 +1,6 @@
 /* CHAT */
 .containerChatMessage {
-  padding: 2rem;
+  padding: 2px 2rem;
   overflow: hidden;
 }
 
@@ -21,11 +21,11 @@
 }
 
 .ownMessage {
-  align-self: flex-start;
+  align-self: flex-end;
 }
 
 .otherMessage {
-  align-self: flex-end;
+  align-self: flex-start;
   background-color: var(--color-grey-6);
 }
 

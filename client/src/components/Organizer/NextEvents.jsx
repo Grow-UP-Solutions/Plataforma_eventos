@@ -4,7 +4,6 @@ import styles from './NextEvents.module.css';
 import Pagination from '../../components/Pagination/Pagination';
 
 const NextEvent = ({ nextEvent }) => {
-  console.log('nextEvent:',nextEvent)
   const [currentPage, setCurretPage] = useState(1);
   const CardPerPage = 8;
   const indexOfLastCard = currentPage * CardPerPage;
@@ -12,13 +11,17 @@ const NextEvent = ({ nextEvent }) => {
   const currentCard = nextEvent.myEventsCreated.slice(indexOfFirstCard, indexOfLastCard);
   const paginado = (pageNumber) => setCurretPage(pageNumber);
 
-  console.log({ currentCard });
-
   return (
     <div className={styles.container}>
       {currentCard.length > 0 ? (
         <>
-          <div className={styles.containercard}>
+          <div
+            className={styles.containercard}
+            style={{
+              display: 'grid',
+              gridTemplateColumns: `repeat(${currentCard.length > 3 ? '4' : currentCard.length}, 1fr`,
+            }}
+          >
             {currentCard.map((event) => (
               <div className={styles.card}>
                 <Card event={event} />
@@ -36,7 +39,7 @@ const NextEvent = ({ nextEvent }) => {
           </div>
         </>
       ) : (
-        <p className={styles.notHaveEvents}>No ha organizado próximos eventos ...</p>
+        <p className={styles.notHaveEvents}>No ha organizado próximos eventos...</p>
       )}
     </div>
   );

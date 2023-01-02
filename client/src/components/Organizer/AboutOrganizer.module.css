@@ -1,19 +1,24 @@
-.container{
-	margin-top: 6rem;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 100%; 
+.container {
+  margin-top: 6rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
-.description{
-	font-family: 'Raleway';
-	color:#959595;
-	width: 50%;
-	font-size: 1.4rem;
-	letter-spacing: 1.2px;
-	margin-bottom: 10rem;
-	line-height: 2rem;
-	justify-content: left;
-	text-align: center;
+.description {
+  color: var(--color-grey-3);
+  font-size: 1.4rem;
+  letter-spacing: 1.2px;
+  margin-bottom: 10rem;
+  line-height: 1.4;
+  text-align: center;
+  padding: 0 2rem;
+  width: 50%;
+}
+
+@media screen and (max-width: 1246px) {
+  .description {
+    width: 80%;
+  }
 }
