@@ -10,7 +10,6 @@ import ExportExcel from 'react-export-excel';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 
 const Compras = () => {
-
   const navigate = useNavigate();
   const [load, setLoad] = useState(true);
   const [sells, setSells] = useState(true);
@@ -54,20 +53,16 @@ const Compras = () => {
 
         <div>
           <DescriptionOutlinedIcon sx={{ fontSize: '3rem', color: '#d53e27' }} />
-          <ExcelFile
-            element={<button>Descargar Lista</button>}
-            filename='Excel Listado Compras'
-          >
-            <ExcelSheet data={sells} name='Compras' >
+          <ExcelFile element={<button>Descargar Lista</button>} filename='Excel Listado Compras'>
+            <ExcelSheet data={sells} name='Compras'>
               <ExcelColumn label='Nombre evento' value='eventName' />
               <ExcelColumn label='Nombre comprador' value='buyerName' />
               <ExcelColumn label='Apellido comprador' value='buyerLastName' />
               <ExcelColumn label='Nombre organizador' value='organizerName' />
               <ExcelColumn label='Apellido organizador' value='organizerLastName' />
               <ExcelColumn label='Valor recaudado por LQQH' value='adminEarns' />
-              <ExcelColumn label='Neto para el organizador' value='comision' /> 
+              <ExcelColumn label='Neto para el organizador' value='comision' />
             </ExcelSheet>
-
           </ExcelFile>
         </div>
 
@@ -159,11 +154,9 @@ const Compras = () => {
           </table>
         </div>
 
-        {sells !== undefined && (
-          <div className={style.container_pagination}>
-            <Pagination ordersPerPage={ordersPerPage} state={sells.length} paginado={paginado} page={currentPage}/>
-          </div>
-        )}
+        <div className={style.container_pagination}>
+          <Pagination ordersPerPage={ordersPerPage} state={sells.length} paginado={paginado} />
+        </div>
 
         <div className={style.container_exit}>
           <p className={style.exit} onClick={() => navigate('/admin')}>

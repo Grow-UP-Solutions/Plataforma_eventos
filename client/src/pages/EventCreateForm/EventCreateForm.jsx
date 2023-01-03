@@ -2193,11 +2193,9 @@ const EventCreateForm = () => {
 
                       {/* agregar dates */}
                       <div className={styles.flex}>
-                        <div>
-                          <button className={styles.addDate} type='button' onClick={() => addFormFields()}>
-                            + Crear Nueva Fecha
-                          </button>
-                        </div>
+                        <button className={styles.addDate} type='button' onClick={() => addFormFields()}>
+                          + Crear Nueva Fecha / Horario
+                        </button>
                       </div>
 
                       {/*botones*/}
@@ -2834,11 +2832,9 @@ const EventCreateForm = () => {
                       {/* agregar dates */}
                       <div className={styles.containerResponsiveDates}>
                         <div className={styles.flex}>
-                          <div>
-                            <button className={styles.addDate} type='button' onClick={() => addFormFields()}>
-                              + Crear Nueva Fecha
-                            </button>
-                          </div>
+                          <p className={styles.messageAddDate}>
+                            Si desea crear más fechas/horarios para su evento por favor hacerlo desde un ordenador.
+                          </p>
                         </div>
                       </div>
 

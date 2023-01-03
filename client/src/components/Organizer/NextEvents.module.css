@@ -1,16 +1,13 @@
 .container {
   margin: 0 auto;
   margin-top: 9rem;
-  max-width: 1420px;
 }
 
 .containercard {
-  margin-top: 20px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
+  width: min-content;
+  margin: 0 auto;
   gap: 2rem;
-  align-content: flex-start;
+  justify-items: center;
 }
 
 .card {
@@ -29,4 +26,22 @@
   text-align: center;
   width: 100%;
   margin-top: 1rem;
+}
+
+@media screen and (max-width: 1270px) {
+  .containercard {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+@media screen and (max-width: 961px) {
+  .containercard {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media screen and (max-width: 313px) {
+  .containercard {
+    grid-template-columns: none !important;
+  }
 }

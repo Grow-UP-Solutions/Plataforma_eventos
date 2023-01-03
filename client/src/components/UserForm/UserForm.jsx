@@ -277,7 +277,7 @@ const UserForm = ({ userData }) => {
   const txtAddress = useRef();
   const txtCity = useRef();
   const txtTel = useRef();
-  const txtPhone = useRef();
+  /* const txtPhone = useRef(); */
   const txtDocument = useRef();
   const txtAreaDescription = useRef();
   useEffect(() => {
@@ -296,9 +296,9 @@ const UserForm = ({ userData }) => {
     txtTel.current.focus();
   }, [canWriteInput.tel]);
 
-  useEffect(() => {
+  /*   useEffect(() => {
     txtPhone.current.focus();
-  }, [canWriteInput.phone]);
+  }, [canWriteInput.phone]); */
 
   useEffect(() => {
     txtDocument.current.focus();
@@ -1107,7 +1107,7 @@ const UserForm = ({ userData }) => {
             </div>
             {errorFields.tel && <span className={styles.errorMessageField}>{errorFields.tel}</span>}
           </div>
-          <div className={styles.formGroup}>
+          {/*           <div className={styles.formGroup}>
             <div className={styles.subFormGroup}>
               <div className={styles.inputsContainer}>
                 <label htmlFor='phone'>Celular:</label>
@@ -1129,7 +1129,7 @@ const UserForm = ({ userData }) => {
               </button>
             </div>
             {errorFields.phone && <span className={styles.errorMessageField}>{errorFields.phone}</span>}
-          </div>
+          </div> */}
 
           {/* PASSWORD */}
 
