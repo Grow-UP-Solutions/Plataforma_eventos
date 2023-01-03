@@ -31,6 +31,7 @@ const {
   createOpinionsEvents,
   getOneEvent,
 } = require('../services/events.services.js');
+const getEventId = require('../../models/util/helpers/getIDEvent.js');
 
 const router = Router();
 
@@ -65,15 +66,12 @@ router.get('/:id/buyer', async (req, res) => {
   }
 });
 
-let contadorEvent = 0;
-
 router.post('/create', async (req, res) => {
   try {
     const event = req.body;
     const user = await UsersFunctionDb.oneUser(event.idOrganizer);
 
-    contadorEvent++;
-    event.idEvent = 'E' + contadorEvent;
+    event.idEvent = 'E' + (await getEventId());
 
     for (i = 0; i < event.dates.length; i++) {
       event.dates[i].idDate = event.idEvent + '-' + (i + 1);
@@ -93,8 +91,7 @@ router.post('/createAndNotPublic', async (req, res) => {
   try {
     const event = req.body;
 
-    contadorEvent++;
-    event.idEvent = 'E' + contadorEvent;
+    event.idEvent = 'E' + (await getEventId());
 
     for (i = 0; i < event.dates.length; i++) {
       event.dates[i].idDate = event.idEvent + '-' + (i + 1);

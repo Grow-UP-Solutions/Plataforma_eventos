@@ -40,6 +40,8 @@ const { sendMailUserRejected } = require('../../models/util/mailer/mailUserRejec
 const { sendEmailToEventNewDate } = require('../../models/util/mailer/mailToEventNewDate.js');
 const { sendEmailToReportOrganizer } = require('../../models/util/mailer/mailToReportOrganizer.js');
 const { enviar_mail_contact } = require('../../models/util/mailer/contact.js');
+const getIDUser = require('../../models/util/helpers/getIDUser.js');
+const getIDOrganizer = require('../../models/util/helpers/getIDOrganizer.js');
 
 const router = Router();
 /**/ ///////////////Rutas GET////////////// */
@@ -157,16 +159,13 @@ router.get('/getBankAccount/:id', async (req, res) => {
 
 /**/ //////////////Rutas POST/////////////// */
 
-let contadorIdOrganizer = 0;
-
 router.post('/acceptOrRejectedOrganizer', async (req, res) => {
   const { option, id } = req.body;
   let message = '';
   try {
     const user = await getUser(id);
     if (option === 'accept') {
-      contadorIdOrganizer++;
-      user.idOrganizer = 'Z' + contadorIdOrganizer;
+      user.idOrganizer = 'Z' + (await getIDOrganizer());
       user.isOrganizer = true;
       user.isProccessingToOrganizer = false;
       user.isRejected = false;
@@ -293,15 +292,14 @@ router.delete('/notifications', async (req, res) => {
     res.status(500).json(error.Menssage);
   }
 });
-let contadorIdUser = 0;
+
 router.post('/create', [check('email', 'El email es obligatorio').isEmail(), validateFields], async (req, res) => {
   try {
     const user = req.body;
 
     const { codeReferral } = req.query;
 
-    contadorIdUser++;
-    user.idUser = 'U' + contadorIdUser;
+    user.idUser = 'U' + (await getIDUser());
 
     const userCreate = await createUsers(user, codeReferral);
 

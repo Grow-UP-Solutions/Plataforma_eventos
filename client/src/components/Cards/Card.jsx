@@ -1,17 +1,15 @@
-import React, { useContext, useEffect, useState, useRef } from 'react';
-import styles from './Card.module.css';
-import { Link, useResolvedPath } from 'react-router-dom';
-import { Rating } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { UIContext } from '../../context/ui';
-import { AuthContext } from '../../context/auth/AuthContext';
-import { stateContext } from '../../context/state/stateContext';
+import { Rating } from '@mui/material';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
 import eventsApi from '../../axios/eventsApi';
-import { AiOutlineClose } from 'react-icons/ai';
-import { Hearts } from 'react-loader-spinner';
+import { AuthContext } from '../../context/auth/AuthContext';
+import { stateContext } from '../../context/state/stateContext';
+import { UIContext } from '../../context/ui';
 import { fechaActual, hora, minutes } from '../../utils/fechaActual';
+import styles from './Card.module.css';
 
 const Card = ({ event, listName, orgEvent, datePublic, isFavorite = true }) => {
   const { toggleScreenLogin, getEventsFavourites, getEventsWithoutFavourites } = useContext(UIContext);
@@ -169,10 +167,6 @@ const Card = ({ event, listName, orgEvent, datePublic, isFavorite = true }) => {
 
   const [price, setPrice] = useState(firstPublicDate !== undefined ? firstPublicDate.price : '');
 
-  function handlePrice(e) {
-    setPrice(e.target.value);
-  }
-
   // PORTADA//
   const portada = event.pictures.filter((p) => p.cover === true)[0];
 
@@ -194,12 +188,20 @@ const Card = ({ event, listName, orgEvent, datePublic, isFavorite = true }) => {
     setGetDates(!getDates);
   };
 
+  function handlePrice(e, index) {
+    const eIndex = e.target.value;
+    const date = event.dates[index || eIndex];
+    setPrice(date.price);
+    if (orgEvent === 'true') {
+      setSelectedDateId(date._id);
+      setGetDates(false);
+    }
+  }
+
   const chooseDate = (e, dateId, dateF, datePrice) => {
     e.preventDefault();
     setSelectedDateId(dateId);
     setGetDates(false);
-    setSelectedDate(dateF);
-    setDatePrice(datePrice);
   };
 
   const handleEarns = (e) => {
@@ -229,30 +231,26 @@ const Card = ({ event, listName, orgEvent, datePublic, isFavorite = true }) => {
         {/* FECHAS */}
 
         <div className={styles.cardText}>
-          {orgEvent === 'true' && datePublic === 'true' && selectedDate === '' ? (
-            <p className={styles.cardDateCurrent}>
-              {firstPublicDate !== undefined ? firstPublicDate.dateFormated.replace('de', '/') : ''}
-            </p>
-          ) : orgEvent === 'true' && datePublic === 'true' && selectedDate !== '' ? (
+          {datePublic === 'true' && selectedDate !== '' ? (
             <p className={styles.cardDateCurrent}>{selectedDate.replace('de', '/')}</p>
-          ) : orgEvent === 'true' && datePublic === 'false' && selectedDate === '' ? (
+          ) : datePublic === 'false' && selectedDate === '' ? (
             <p className={styles.cardDateCurrent}>
               {firstNotPublicDate ? firstNotPublicDate.dateFormated.replace('de', '/') : 'No tengo'}
             </p>
-          ) : orgEvent === 'true' && datePublic === 'false' && selectedDate !== '' ? (
+          ) : datePublic === 'false' && selectedDate !== '' ? (
             <p className={styles.cardDateCurrent}>{selectedDate.replace('de', '/')}</p>
-          ) : orgEvent !== 'true' ? (
+          ) : (
             <div>
               {event.dates && event.dates.length > 1 ? (
                 <select className={styles.cardDate} onChange={(e) => handlePrice(e)}>
                   {event.dates.map((date, index) =>
                     date.cupos > 0 && date.isOld === false && date.isPublic === true && date.inRevision === false ? (
                       date.dateFormated.slice(date.dateFormated.length - 4) === numCadena ? (
-                        <option key={index} value={date.price}>
+                        <option key={index} value={index}>
                           {date.dateFormated.slice(0, date.dateFormated.length - 7)}
                         </option>
                       ) : (
-                        <option key={index} value={date.price}>
+                        <option key={index} value={index}>
                           {date.dateFormated.replace('de', '/')}
                         </option>
                       )
@@ -340,8 +338,6 @@ const Card = ({ event, listName, orgEvent, datePublic, isFavorite = true }) => {
                 </>
               )}
             </div>
-          ) : (
-            ''
           )}
 
           {/* RATING */}
@@ -381,20 +377,12 @@ const Card = ({ event, listName, orgEvent, datePublic, isFavorite = true }) => {
                   />
                 </Link>
                 <Link to={`/sobre-el-organizador/${organizer[0]._id}`}>
-                  <p className={styles.cardOrgName}>{organizer[0].name}</p>
+                  <p className={styles.cardOrgName}>{organizer[0].nickname || organizer[0].name}</p>
                 </Link>
               </div>
               <div className={styles.vLine}></div>
               {/* PRICE */}
-              {orgEvent === 'true' && datePrice === undefined ? (
-                <div>
-                  <p className={styles.cardPrice}>${new Intl.NumberFormat('de-DE').format(event.dates[0].price)}</p>
-                </div>
-              ) : orgEvent === 'true' && datePrice !== undefined ? (
-                <div>
-                  <p className={styles.cardPrice}>${new Intl.NumberFormat('de-DE').format(datePrice)}</p>
-                </div>
-              ) : orgEvent === undefined && datePrice === undefined && price !== '' ? (
+              {datePrice === undefined && price !== '' ? (
                 <p className={styles.cardPrice}>${new Intl.NumberFormat('de-DE').format(price)}</p>
               ) : (
                 <p className={styles.cardPrice}>${new Intl.NumberFormat('de-DE').format(event.dates[0].price)}</p>
@@ -512,12 +500,8 @@ const Card = ({ event, listName, orgEvent, datePublic, isFavorite = true }) => {
                             </button> */}
                         </div>
                         <div className={styles.container_choosedate}>
-                          {event.dates.map((date) =>
-                            date.isOld === true ? (
-                              <p onClick={(e) => chooseDate(e, date._id, date.dateFormated, date.price)}>{date.date}</p>
-                            ) : (
-                              ''
-                            )
+                          {event.dates.map((date, index) =>
+                            date.isOld === true ? <p onClick={(e) => handlePrice(index)}>{date.date}</p> : ''
                           )}
                         </div>
                       </div>
@@ -534,12 +518,8 @@ const Card = ({ event, listName, orgEvent, datePublic, isFavorite = true }) => {
                       <div className={styles.containerMenuGetDates} ref={menuRef}>
                         <div className={styles.closeMenuGetDate}></div>
                         <div className={styles.container_choosedate}>
-                          {event.dates.map((date) =>
-                            date.isOld === false ? (
-                              <p onClick={(e) => chooseDate(e, date._id, date.dateFormated, date.price)}>{date.date}</p>
-                            ) : (
-                              ''
-                            )
+                          {event.dates.map((date, index) =>
+                            date.isOld === false ? <p onClick={(e) => handlePrice(index)}>{date.date}</p> : ''
                           )}
                         </div>
                       </div>
