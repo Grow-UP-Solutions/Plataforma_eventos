@@ -1,10 +1,9 @@
 import React from 'react';
 import style from './Pagination.module.css';
 
-const Pagination = ({ billsPerPage, state, paginado, page }) => {
+const Pagination = ({ ordersPerPage, state, paginado, page }) => {
   const pageNumbers = [];
-
-  for (let i = 1; i <= Math.ceil(state / billsPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(state / ordersPerPage); i++) {
     pageNumbers.push(i);
   }
 

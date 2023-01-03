@@ -380,8 +380,8 @@ const Register = () => {
             <div className={styles.containerInfoOverlay}>
               <h2>Ya casi eres parte de 'LO QUE QUIERO HACER'</h2>
               <p>
-                Hemos enviado un código de validación a tu correo electrónico, lo necesitarás para finalizar tu proceso
-                de registro. Recuerda ver la lista de no deseados y agréganos a tu lista de contactos.
+                Para finalizar tu proceso de registro haz click en Continuar y te enviemos un código de validación a tu
+                correo electrónico. Recuerda ver el buzón de no deseados y agregarnos a tu lista de contactos.
               </p>
               <button onClick={() => navigateVerificate()} className={styles.btnOverlay}>
                 Continuar

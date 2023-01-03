@@ -1,62 +1,54 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Rating } from "@mui/material";
-import styles from "./Opinions.module.css";
-import eventsApi from "../../axios/eventsApi";
-import { AuthContext } from "../../context/auth/AuthContext";
-import swal from "sweetalert";
-import CardComments from "../CardComments/CardComments";
-import { UIContext } from "../../context/ui";
+import React, { useContext, useEffect, useState } from 'react';
+import { Rating } from '@mui/material';
+import styles from './Opinions.module.css';
+import eventsApi from '../../axios/eventsApi';
+import { AuthContext } from '../../context/auth/AuthContext';
+import swal from 'sweetalert';
+import CardComments from '../CardComments/CardComments';
+import { UIContext } from '../../context/ui';
 
-const Opinions = ({ userDetail , eventsFromOrg}) => {
+const Opinions = ({ userDetail, eventsFromOrg }) => {
   const id = userDetail._id;
   const [opinion, setOpinion] = useState([]);
   const [number, setNumber] = useState(0);
   const [value, setValue] = useState(0);
-  const [newOpinion, setNewOpinion] = useState("");
+  const [newOpinion, setNewOpinion] = useState('');
   const { user } = useContext(AuthContext);
   const { getRatingOrganizer } = useContext(UIContext);
   const [assisted, setAssisted] = useState(false);
- 
 
-
-  
   const fecha = new Date();
   const hora = fecha.getHours();
   const minutes = fecha.getMinutes();
   const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
 
-  console.log('eventsFromOrg',eventsFromOrg)
+  console.log('eventsFromOrg', eventsFromOrg);
   useEffect(() => {
-    if(eventsFromOrg[0] !== undefined){
-    const comprador = eventsFromOrg[0].generalBuyers.filter(b=>b.buyer === user.uid)
-    const fecha = comprador[0]
+    if (eventsFromOrg[0] !== undefined) {
+      const comprador = eventsFromOrg[0].generalBuyers.filter((b) => b.buyer === user.uid);
+      const fecha = comprador[0];
 
-    console.log('fecha',fecha)
+      console.log('fecha', fecha);
 
-    fecha.dates.map((date) => {
-      if (new Date(date.date) < new Date(dateActual)) {
-        setAssisted(true)
-        
-      } else if (date.date === dateActual) {
-        if (date.end.slice(0, 2) <= hora && date.end.slice(3, 5) <= minutes + 2) {
-          setAssisted(true)
+      fecha.dates.map((date) => {
+        if (new Date(date.date) < new Date(dateActual)) {
+          setAssisted(true);
+        } else if (date.date === dateActual) {
+          if (date.end.slice(0, 2) <= hora && date.end.slice(3, 5) <= minutes + 2) {
+            setAssisted(true);
+          }
         }
-      }
-    })};
-  
+      });
+    }
   }, [user]);
-  console.log('assisted',assisted)
-  
-
-  
-  
+  console.log('assisted', assisted);
 
   useEffect(() => {
     const getAllComments = async () => {
       try {
-        const res = await eventsApi.get("/users/" + id);
+        const res = await eventsApi.get('/users/' + id);
         setOpinion(res.data.opinionsOrg);
-        
+
         if (userDetail.opinionsOrg.length > 0) {
           setNumber(calcRatingEffect());
         } else {
@@ -72,8 +64,8 @@ const Opinions = ({ userDetail , eventsFromOrg}) => {
   //RTING//
 
   const calcRatingEffect = () => {
-    const opinionsRated = userDetail.opinionsOrg.filter((e) => e.rating > 0 );
-    const ratings = opinionsRated.map((e) => e.rating );
+    const opinionsRated = userDetail.opinionsOrg.filter((e) => e.rating > 0);
+    const ratings = opinionsRated.map((e) => e.rating);
     const suma = ratings.reduce((prev, current) => prev + current);
     const result = (suma / opinionsRated.length).toFixed(1);
     return result;
@@ -84,7 +76,7 @@ const Opinions = ({ userDetail , eventsFromOrg}) => {
       const resu = (num / 1).toFixed(1);
       return resu;
     } else {
-      const opinionsWithRanking = opinion.filter((e) => e.rating > 0 );
+      const opinionsWithRanking = opinion.filter((e) => e.rating > 0);
       const ratings = opinionsWithRanking.map((e) => e.rating);
       const suma = ratings.reduce((prev, current) => prev + current);
       const otherSuma = suma + num;
@@ -124,14 +116,14 @@ const Opinions = ({ userDetail , eventsFromOrg}) => {
       opinion: newOpinion,
       picture: eventsFromOrg[0].generalBuyers[0].pictureBuyer,
       dateEvent: eventsFromOrg[0].generalBuyers[0].dates[0].date,
-      eventTitle: eventsFromOrg[0].generalBuyers[0].eventTitle
+      eventTitle: eventsFromOrg[0].generalBuyers[0].eventTitle,
     };
 
     try {
-      const res = await eventsApi.post("/users/commentOrganizer/" + id, data);
-      console.log('res.data',res.data)
+      const res = await eventsApi.post('/users/commentOrganizer/' + id, data);
+      console.log('res.data', res.data);
       setOpinion([...opinion, res.data]);
-      setNewOpinion("");
+      setNewOpinion('');
       setValue(0);
       setNumber(calcRating(res.data.rating));
       getRatingOrganizer(id, { rating: calcRating(res.data.rating) });
@@ -143,9 +135,9 @@ const Opinions = ({ userDetail , eventsFromOrg}) => {
   const handleAlert = (e) => {
     e.preventDefault();
     swal({
-      title: "Debes estar registrado para poder enviar un comentario",
-      icon: "warning",
-      button: "Cerrar",
+      title: 'Debes estar registrado para poder enviar un comentario',
+      icon: 'warning',
+      button: 'Cerrar',
       dangerMode: true,
     });
   };
@@ -155,10 +147,9 @@ const Opinions = ({ userDetail , eventsFromOrg}) => {
       <div className={styles.containerOpinions}>
         <div className={styles.subTitle}>
           <p className={styles.ratNumber}>
-            {opinion.length} opiniones - {number} de 5 Positivas{" "}
+            {opinion.length} opiniones - {number} de 5 Positivas{' '}
           </p>
         </div>
-
 
         {/* VER OPINIONES */}
 
@@ -179,42 +170,37 @@ const Opinions = ({ userDetail , eventsFromOrg}) => {
         )}
 
         {/* ESCRIBIR OPINION */}
-        {assisted === true  && eventsFromOrg !== undefined ?
+        {assisted === true && eventsFromOrg !== undefined ? (
+          <div>
+            <textarea
+              className={styles.textarea}
+              type='text'
+              placeholder='Escribe un Comentario'
+              value={newOpinion}
+              onChange={(e) => setNewOpinion(e.target.value)}
+            />
 
-            <div>
-              <textarea
-                className={styles.textarea}
-                type="text"
-                placeholder="Escribe un Comentario"
-                value={newOpinion}
-                onChange={(e) => setNewOpinion(e.target.value)}
+            <div className={styles.contRate}>
+              <p className={styles.pRate}>Rate:</p>
+
+              <Rating
+                className={styles.rating}
+                name='half-rating'
+                value={value}
+                precision={0.5}
+                onChange={(e) => setValue(e.target.value)}
               />
-
-              <div className={styles.contRate}>
-                <p className={styles.pRate}>Rate:</p>
-
-                <Rating
-                  className={styles.rating}
-                  name="half-rating"
-                  value={value}
-                  precision={0.5}
-                  onChange={(e) => setValue(e.target.value)}
-                />
-              </div>
-
-              <div className={styles.contBtn}>
-                <button
-                  className={styles.button}
-                  onClick={user.uid ? handlePostComments : handleAlert}
-                >
-                  Enviar
-                </button>
-              </div>
             </div>
-          :''
-           
-        }
-        
+
+            <div className={styles.contBtn}>
+              <button className={styles.button} onClick={user.uid ? handlePostComments : handleAlert}>
+                Enviar
+              </button>
+            </div>
+          </div>
+        ) : (
+          ''
+        )}
       </div>
     </div>
   );

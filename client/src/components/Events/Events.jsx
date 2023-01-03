@@ -192,7 +192,7 @@ const Events = () => {
           </Swiper>
         </div>
 
-        {Object.keys(user).length > 0 && (
+        {Object.keys(user).length > 0 && misEventos.length > 0 && (
           <>
             {/* //MI LISTA// */}
             <p className={styles.titleCards}>Mi Lista</p>

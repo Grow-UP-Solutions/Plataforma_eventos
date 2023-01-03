@@ -10,6 +10,7 @@ const calculoDeComicion = require('../../../models/util/calculoDeComiciones/calc
 const { getCodeDiscountByCode } = require('../../../models/util/functionDB/CodeDiscountDb');
 const EventFunctionDb = require('../../../models/util/functionDB/event/index.event');
 const UsersFunctionDb = require('../../../models/util/functionDB/users/index.users');
+const getIDBuy = require('../../../models/util/helpers/getIDBuy');
 const { ACCESS_TOKEN } = process.env;
 
 mercadopago.configure({
@@ -17,7 +18,6 @@ mercadopago.configure({
 });
 
 let auxBody = [];
-let idCompra = 0;
 router.post('/orden', async (req, res) => {
   const { dates, idUser, idEvent, ganancia } = req.body;
 
@@ -80,8 +80,8 @@ router.post('/orden', async (req, res) => {
       },
 
       back_urls: {
-        success: `http://localhost:3000/mercadoPago/success`,
-        failure: `http://localhost:3000/mercadoPago/fail`,
+        success: `https://events-jean.vercel.app/mercadoPago/success`,
+        failure: `https://events-jean.vercel.app/mercadoPago/fail`,
       },
       auto_return: 'approved',
       taxes: [
@@ -293,10 +293,8 @@ router.get('/success', async (req, res) => {
       const today = new Date();
       const timeNow = today.toLocaleTimeString('en-US');
 
-      idCompra++;
-
       const newOrder = new Order({
-        idCompra: 'C' + idCompra,
+        idCompra: 'C' + (await getIDBuy()),
         idEvent: event.idEvent,
         idOrganizer: organizerEvent.idOrganizer,
         organizerName: organizerEvent.firstName,

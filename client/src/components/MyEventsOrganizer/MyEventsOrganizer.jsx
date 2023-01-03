@@ -100,41 +100,42 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
       <h2 className={styles.title}>Organizados por mí</h2>
       {myEventsCreated.length > 0 ? (
         <>
-          <p className={styles.title}>Publicados</p>
-
           {eventsPublic && eventsPublic.length <= 3 ? (
-            <div
-              className={styles.containerCard}
-              style={{
-                gridTemplateColumns: `repeat(${eventsPublic.length}, 1fr`,
-              }}
-            >
-              {eventsPublic.map((event) => (
-                <div>
-                  <Card
-                    userData={userData}
-                    event={event}
-                    listName={'published'}
-                    orgEvent={'true'}
-                    datePublic={'true'}
-                  />
-                  {event.inRevision === true ? (
-                    <div className={styles.btns}>
-                      <Link className={styles.btn}>
-                        <span>Evento En Revision</span>
-                      </Link>
-                    </div>
-                  ) : (
-                    <div className={styles.btns}>
-                      <Link className={styles.btn} to={'/organiza-un-evento-editar/' + event._id}>
-                        <BsPencilSquare className={styles.iconEdit} />
-                        <span>Editar</span>
-                      </Link>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
+            <>
+              <p className={styles.title}>Publicados</p>
+              <div
+                className={styles.containerCard}
+                style={{
+                  gridTemplateColumns: `repeat(${eventsPublic.length}, 1fr`,
+                }}
+              >
+                {eventsPublic.map((event) => (
+                  <div>
+                    <Card
+                      userData={userData}
+                      event={event}
+                      listName={'published'}
+                      orgEvent={'true'}
+                      datePublic={'true'}
+                    />
+                    {event.inRevision === true ? (
+                      <div className={styles.btns}>
+                        <Link className={styles.btn}>
+                          <span>Evento En Revision</span>
+                        </Link>
+                      </div>
+                    ) : (
+                      <div className={styles.btns}>
+                        <Link className={styles.btn} to={'/organiza-un-evento-editar/' + event._id}>
+                          <BsPencilSquare className={styles.iconEdit} />
+                          <span>Editar</span>
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </>
           ) : eventsPublic.length > 3 ? (
             <div className={'eventsOrganizerSwiper'}>
               <Swiper
