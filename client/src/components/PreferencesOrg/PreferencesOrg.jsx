@@ -10,8 +10,6 @@ const opcionesEliminar = [
 ];
 
 const PreferencesOrg = ({ userData }) => {
-  console.log({ userData });
-
   return (
     <div className={styles.container}>
       <div className={styles.containerSub}>

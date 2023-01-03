@@ -20,9 +20,6 @@ const EventComments = ({ id, eventBuyUser, datesBuy, assisted }) => {
   const eventDetails = allEvents.filter((event) => event._id === id)[0];
   const { getRatingEvent } = useContext(UIContext);
 
-  console.log('datesBuy', datesBuy);
-  console.log('eventBuyUser', eventBuyUser);
-
   useEffect(() => {
     const getAllComments = async () => {
       try {
@@ -68,7 +65,6 @@ const EventComments = ({ id, eventBuyUser, datesBuy, assisted }) => {
   const handlePostComments = async (e) => {
     e.preventDefault();
     const fecha = datesBuy[0];
-    console.log('fecha', fecha);
     const data = {
       idUser: user.uid,
       rating: value,
@@ -78,7 +74,6 @@ const EventComments = ({ id, eventBuyUser, datesBuy, assisted }) => {
       dateEvent: fecha[0].dates[0].date,
       eventTitle: eventBuyUser[0].title,
     };
-    console.log('data', data);
     try {
       const res = await eventsApi.post('/events/opinionsGenerate/' + id, data);
       setOpinion([...opinion, res.data]);

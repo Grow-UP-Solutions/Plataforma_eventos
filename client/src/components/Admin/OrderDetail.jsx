@@ -11,8 +11,6 @@ import { Link } from 'react-router-dom';
 import Loading from '../Loading/Loading';
 import { animateScroll as scroll } from 'react-scroll';
 const OrderDetail = () => {
-  console.log('entree');
-
   const navigate = useNavigate();
 
   const [userData, setUserData] = useState({});
@@ -31,17 +29,12 @@ const OrderDetail = () => {
     scroll.scrollToTop();
   }, []);
   const getUsers = async () => {
-    console.log('userId', userId);
-
     const userResult = await eventsApi.get(`/users/${userId}`);
     setUserData(userResult.data);
     setLoad(false);
-    console.log('userResult.data', userResult.data);
     const value = userResult.data.ordenes.filter((order) => order._id === orderId)[0];
     setOrder(value);
   };
-
-  console.log('order', order);
 
   if (load) {
     return <Loading />;

@@ -60,8 +60,6 @@ const ModalFinance = ({ closeModal, idUser, num }) => {
     };
     try {
       const res = await eventsApi.put(`/users/editBankAccount/${idUser}/${num}`, json);
-      console.log('res.data', res.data);
-      console.log('json', json);
       setBank(res.data);
       setState('');
       setData('');

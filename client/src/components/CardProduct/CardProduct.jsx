@@ -12,8 +12,6 @@ import { stateContext } from '../../context/state/stateContext';
 
 const CardProduct = ({ event }) => {
   const { carrito, setCarrito } = useContext(stateContext);
-  console.log('carrito:', carrito);
-  console.log('event:', event);
 
   const datesToBuy = [];
 
@@ -34,7 +32,6 @@ const CardProduct = ({ event }) => {
   const indexOfFirstCard = indexOfLastCard - CardPerPage;
   const currentCard = event.dates.slice(indexOfFirstCard, indexOfLastCard);
   const paginado = (pageNumber) => setCurretPage(pageNumber);
-  console.log('currentCard', currentCard);
 
   const handlePrev = (e) => {
     if (currentPage === 1) {

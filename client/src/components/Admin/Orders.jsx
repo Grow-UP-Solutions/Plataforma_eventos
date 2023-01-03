@@ -39,8 +39,6 @@ const Orders = () => {
     setOrden(ordenesTotal);
   };
 
-  console.log('userData:', userData);
-
   const [currentPage, setCurretPage] = useState(1);
   const ordersPerPage = 10;
   const indexOfLastOrder = currentPage * ordersPerPage;

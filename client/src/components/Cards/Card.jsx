@@ -182,27 +182,22 @@ const Card = ({ event, listName, orgEvent, datePublic, isFavorite = true }) => {
   const [selectedDateId, setSelectedDateId] = useState(event.dates[0]._id);
   const [selectedDate, setSelectedDate] = useState('');
   const [datePrice, setDatePrice] = useState(undefined);
-
+  const selectRef = useRef();
   const handleDates = (e) => {
     e.preventDefault();
     setGetDates(!getDates);
   };
 
   function handlePrice(e, index) {
-    const eIndex = e.target.value;
-    const date = event.dates[index || eIndex];
+    const eIndex = e.target.value ? e.target.value : index;
+    const date = event.dates[eIndex];
     setPrice(date.price);
     if (orgEvent === 'true') {
       setSelectedDateId(date._id);
       setGetDates(false);
+      selectRef.current.selectedIndex = eIndex;
     }
   }
-
-  const chooseDate = (e, dateId, dateF, datePrice) => {
-    e.preventDefault();
-    setSelectedDateId(dateId);
-    setGetDates(false);
-  };
 
   const handleEarns = (e) => {
     e.preventDefault();
@@ -242,7 +237,7 @@ const Card = ({ event, listName, orgEvent, datePublic, isFavorite = true }) => {
           ) : (
             <div>
               {event.dates && event.dates.length > 1 ? (
-                <select className={styles.cardDate} onChange={(e) => handlePrice(e)}>
+                <select ref={selectRef} className={styles.cardDate} onChange={(e) => handlePrice(e)}>
                   {event.dates.map((date, index) =>
                     date.cupos > 0 && date.isOld === false && date.isPublic === true && date.inRevision === false ? (
                       date.dateFormated.slice(date.dateFormated.length - 4) === numCadena ? (
@@ -501,7 +496,7 @@ const Card = ({ event, listName, orgEvent, datePublic, isFavorite = true }) => {
                         </div>
                         <div className={styles.container_choosedate}>
                           {event.dates.map((date, index) =>
-                            date.isOld === true ? <p onClick={(e) => handlePrice(index)}>{date.date}</p> : ''
+                            date.isOld === false ? <p onClick={(e) => handlePrice(e, index)}>{date.date}</p> : ''
                           )}
                         </div>
                       </div>
@@ -519,7 +514,7 @@ const Card = ({ event, listName, orgEvent, datePublic, isFavorite = true }) => {
                         <div className={styles.closeMenuGetDate}></div>
                         <div className={styles.container_choosedate}>
                           {event.dates.map((date, index) =>
-                            date.isOld === false ? <p onClick={(e) => handlePrice(index)}>{date.date}</p> : ''
+                            date.isOld === false ? <p onClick={(e) => handlePrice(e, index)}>{date.date}</p> : ''
                           )}
                         </div>
                       </div>

@@ -34,7 +34,6 @@ const EventDateMap = ({ id, cupos }) => {
         setSubTotal(total);
 
         let t = total + iva + administracion;
-        console.log(t);
 
         setValorTotal(t);
       }

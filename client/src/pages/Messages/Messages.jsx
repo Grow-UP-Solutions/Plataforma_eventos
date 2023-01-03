@@ -50,7 +50,6 @@ const validate = (form) => {
 
 const Messages = () => {
   const { idConversation } = useParams();
-  console.log({ idConversation });
   const { user } = useContext(AuthContext);
   const { getMessagesStar, msgStar, deleteConversation } = useContext(UIContext);
   const { setMsg } = useContext(stateContext);
@@ -95,7 +94,6 @@ const Messages = () => {
         if (idConversation === 'conversaciones') return;
 
         const conversationInitial = orden.filter((conver) => idConversation === conver._id)[0];
-        console.log({ conversationInitial });
         setCurrentChat(conversationInitial);
       } catch (err) {
         console.log(err);
@@ -133,10 +131,7 @@ const Messages = () => {
   }, []);
 
   useEffect(() => {
-    console.log('ref:', scrollRef);
-
     if (scrollRef.current === null) {
-      console.log('no hay ref');
     } else {
       const lastItem = scrollRef.current.lastElementChild;
       if (lastItem) lastItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -148,7 +143,6 @@ const Messages = () => {
       deleteConversation({
         idLastConversation: last,
       });
-      console.log('desmonte mensajes');
     };
   }, [last]);
 
@@ -208,7 +202,6 @@ const Messages = () => {
   };
 
   const handleClickConversation = (c) => {
-    console.log({ conversation: c });
     setCurrentChat(c);
     setStar(false);
   };
