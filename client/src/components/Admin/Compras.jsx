@@ -161,7 +161,7 @@ const Compras = () => {
 
         {sells !== undefined && (
           <div className={style.container_pagination}>
-            <Pagination ordersPerPage={ordersPerPage} state={sells.length} paginado={paginado} />
+            <Pagination ordersPerPage={ordersPerPage} state={sells.length} paginado={paginado} page={currentPage}/>
           </div>
         )}
 
