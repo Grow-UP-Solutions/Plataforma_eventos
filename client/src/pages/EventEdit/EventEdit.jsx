@@ -748,7 +748,6 @@ const EventEdit = () => {
 
   let handleChanges = (e, i, id, indice, codigo) => {
     e.preventDefault();
-    console.log({ e, i, id, indice, codigo });
     let newFechas = [...post.dates];
 
     if (e.target.name === 'cupos') {
@@ -947,8 +946,6 @@ const EventEdit = () => {
   const { notes, setNotes } = useContext(stateContext);
 
   const notifications = async (buyers) => {
-    console.log({ buyers });
-
     const create = {
       type: 'cancelEvent',
       idUser: user.uid,
@@ -1028,7 +1025,6 @@ const EventEdit = () => {
               };
             })
           );
-          console.log({ notificationsBuyers });
           newFechas[i].sendEmail = true;
           setPost({
             ...post,
@@ -1165,7 +1161,6 @@ const EventEdit = () => {
               start: post.dates[i].start,
               end: post.dates[i].end,
             };
-            console.log('dateDeletes');
             setPost({
               ...post,
               dateDelete: [...post.dateDelete, dateDeletes],
@@ -1433,7 +1428,6 @@ const EventEdit = () => {
     e.preventDefault();
 
     if (Object.values(errors).length > 0) {
-      console.log('0');
       setFailedSubmit(true);
       return swal({
         title: 'Completa los campos faltantes',
@@ -1454,7 +1448,6 @@ const EventEdit = () => {
           swal('Tus cambios han sido guardados', {
             icon: 'success',
           });
-          console.log({ notificationsBuyers });
           notifications(notificationsBuyers);
           navigate('/usuario/mis-eventos');
         }
@@ -2745,8 +2738,6 @@ const EventEdit = () => {
                                           slidesPerView={1}
                                           spaceBetween={40}
                                           navigation
-                                          onSlideChange={() => console.log('slide change')}
-                                          onSwiper={(swiper) => console.log(swiper)}
                                           modules={[Pagination, Navigation]}
                                           className={styles.mySwipperInfo}
                                         >
@@ -3395,8 +3386,6 @@ const EventEdit = () => {
                                             slidesPerView={1}
                                             spaceBetween={40}
                                             navigation
-                                            onSlideChange={() => console.log('slide change')}
-                                            onSwiper={(swiper) => console.log(swiper)}
                                             modules={[Pagination, Navigation]}
                                             className={styles.mySwipperInfo}
                                           >

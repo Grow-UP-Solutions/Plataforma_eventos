@@ -19,8 +19,6 @@ const ExpectToAttendUser = ({ myEventsBooked }) => {
   const currentCard = orderByDate.slice(indexOfFirstCard, indexOfLastCard);
   const paginado = (pageNumber) => setCurretPage(pageNumber);
 
-  console.log({ currentCard });
-
   return (
     <div className={styles.container}>
       <p className={styles.title}>Pendientes por asistir</p>

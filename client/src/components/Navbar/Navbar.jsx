@@ -96,8 +96,7 @@ const Navbar = ({ upper }) => {
       const res = await eventsApi.put(`/message/readAllMessage/${user.uid}`);
       setMsg([]);
       /* setMsg(res.data.filter((e) => e.read === false)); */
-    } 
-    catch (error) {
+    } catch (error) {
       console.log(error);
     }
   };

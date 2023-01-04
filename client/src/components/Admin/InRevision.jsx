@@ -75,11 +75,8 @@ const InRevision = () => {
       idDate: idDate,
     };
 
-    console.log('p', payload);
-
     try {
       const { data } = await eventsApi.put('events/inRevision/acceptOrReject', payload);
-      console.log({ data });
       setTimeout(function() {
         getEvents();
       }, 500);
@@ -95,11 +92,8 @@ const InRevision = () => {
       idEvent: idEvent,
     };
 
-    console.log('p', payload);
-
     try {
       const { data } = await eventsApi.put('events/inRevision/acceptOrReject', payload);
-      console.log({ data });
       setTimeout(function() {
         getEvents();
       }, 2000);

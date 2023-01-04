@@ -454,10 +454,7 @@ const Cart = () => {
         dates: f,
       };
 
-      console.log('payload', payload);
-
       const json = await eventsApi.post('/mercadoPago/orden', payload);
-      console.log('res:', json.data);
 
       window.location.assign(json.data.init_point);
     } else {

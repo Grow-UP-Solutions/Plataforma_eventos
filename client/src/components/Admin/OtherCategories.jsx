@@ -44,7 +44,6 @@ const OtherCategories = () => {
     for (let i = 0; i < state.length; i++) {
       for (let j = 1; j < state.length; j++) {
         if (state[i] === state[j]) {
-          console.log(state[i]);
         } else {
           const uniqueCat = {
             categorie: state[i],
@@ -54,8 +53,6 @@ const OtherCategories = () => {
         }
       }
     }
-
-    console.log('u', unique);
   }, [state]);
 
   //   for(let i = 0 ; i < state.length ; i ++){

@@ -22,13 +22,10 @@ const Opinions = ({ userDetail, eventsFromOrg }) => {
   const minutes = fecha.getMinutes();
   const dateActual = fecha.getFullYear() + '-' + (fecha.getMonth() + 1) + '-' + fecha.getDate();
 
-  console.log('eventsFromOrg', eventsFromOrg);
   useEffect(() => {
     if (eventsFromOrg[0] !== undefined) {
       const comprador = eventsFromOrg[0].generalBuyers.filter((b) => b.buyer === user.uid);
       const fecha = comprador[0];
-
-      console.log('fecha', fecha);
 
       fecha.dates.map((date) => {
         if (new Date(date.date) < new Date(dateActual)) {
@@ -41,7 +38,6 @@ const Opinions = ({ userDetail, eventsFromOrg }) => {
       });
     }
   }, [user]);
-  console.log('assisted', assisted);
 
   useEffect(() => {
     const getAllComments = async () => {
@@ -121,7 +117,6 @@ const Opinions = ({ userDetail, eventsFromOrg }) => {
 
     try {
       const res = await eventsApi.post('/users/commentOrganizer/' + id, data);
-      console.log('res.data', res.data);
       setOpinion([...opinion, res.data]);
       setNewOpinion('');
       setValue(0);

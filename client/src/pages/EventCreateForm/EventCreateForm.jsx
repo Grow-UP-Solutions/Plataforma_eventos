@@ -534,7 +534,6 @@ const EventCreateForm = () => {
       formData.append('file', e.target.files[i]);
       formData.append('upload_preset', 'wp0l2oeg');
       await axios.post('https://api.cloudinary.com/v1_1/dhmnttdy2/image/upload', formData).then((response) => {
-        console.log('r:', response);
         setPost({
           ...post,
           pictures: [...post.pictures, { cover: false, picture: response.data.secure_url }],
@@ -562,7 +561,6 @@ const EventCreateForm = () => {
         }
       });
       const portada = todas.filter((foto) => foto.cover === true);
-      console.log('portada', portada);
       setPost({
         ...post,
         pictures: todas,
@@ -981,7 +979,6 @@ const EventCreateForm = () => {
         buttons: true,
         dangerMode: true,
       }).then((publicar) => {
-        console.log(post);
         if (publicar) {
           dispatch(postEvent(post));
 
@@ -2227,8 +2224,6 @@ const EventCreateForm = () => {
                                           slidesPerView={1}
                                           spaceBetween={40}
                                           navigation
-                                          onSlideChange={() => console.log('slide change')}
-                                          onSwiper={(swiper) => console.log(swiper)}
                                           modules={[Pagination, Navigation]}
                                           className={styles.mySwipperInfo}
                                         >
@@ -2880,8 +2875,6 @@ const EventCreateForm = () => {
                                             slidesPerView={1}
                                             spaceBetween={40}
                                             navigation
-                                            onSlideChange={() => console.log('slide change')}
-                                            onSwiper={(swiper) => console.log(swiper)}
                                             modules={[Pagination, Navigation]}
                                             className={styles.mySwipperInfo}
                                           >

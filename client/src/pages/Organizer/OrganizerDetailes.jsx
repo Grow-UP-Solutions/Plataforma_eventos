@@ -148,7 +148,6 @@ const OrganizerDetails = () => {
       setComponent(<Opinions userDetail={userDetail.organizer} eventsFromOrg={eventsFromOrg} />);
       setStyle('opinions');
     } else {
-      console.log('growup');
     }
   };
 

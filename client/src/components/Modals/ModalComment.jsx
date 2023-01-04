@@ -15,8 +15,6 @@ const ModalComment = ({ closeModal, event, organizer, opinion }) => {
   const [isLoadingReport, setIsLoadingReport] = useState(false);
   const [resultMessageReport, setResultMessageReport] = useState(false);
 
-  console.log({ opinion });
-
   const sendEmailToReportOrganizer = async () => {
     if (textAreaDetailsReason.current.value === '') {
       return setResultMessageReport({

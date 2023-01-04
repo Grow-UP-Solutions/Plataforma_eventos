@@ -210,7 +210,6 @@ const UserForm = ({ userData }) => {
       try {
         const result = await eventsApi.post(`/users/isSamePassword/${userData._id}`, { password: value });
 
-        console.log(result);
         checkValidate = result.data.success;
       } catch (error) {
         console.log(error);

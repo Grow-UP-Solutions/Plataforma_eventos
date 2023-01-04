@@ -13,7 +13,6 @@ import { animateScroll as scroll } from 'react-scroll';
 import swal from 'sweetalert';
 
 const OrganizerBills = () => {
-
   const [state, fetchUsers] = useFetch();
   const navigate = useNavigate();
   const id = useParams().id;
@@ -75,7 +74,6 @@ const OrganizerBills = () => {
 
     try {
       const { data } = await eventsApi.put('/mercadoPago/adminPaymentOrganizer', payload);
-      console.log({ data });
       swal({
         text: 'Pagado',
         icon: 'success',

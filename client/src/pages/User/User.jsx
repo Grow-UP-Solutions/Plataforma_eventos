@@ -94,12 +94,9 @@ const UserPage = () => {
           break;
         case 'mi-lista':
           if (widthScreen <= 756) {
-            console.log({ widthTest: widthScreen });
             setOptionChecked('eventos');
             setGetFav(json);
           } else {
-            console.log({ widthTestElse: widthScreen });
-
             setOptionChecked('eventos');
             setIsMenuOpen(true);
             setOptionSubMenuChecked('myListEvents');
@@ -112,11 +109,8 @@ const UserPage = () => {
           break;
         case 'pendientes-asistir':
           if (widthScreen <= 756) {
-            console.log({ widthTest: widthScreen });
             setOptionChecked('eventos');
           } else {
-            console.log({ widthTestElse: widthScreen });
-
             setOptionChecked('eventos');
             setIsMenuOpen(true);
             setOptionSubMenuChecked('eventsForAssist');
@@ -156,7 +150,6 @@ const UserPage = () => {
           setComponent(<GoodPracticeOrg />);
           break;
         case 'mensajes':
-          console.log({ option });
           setComponent(<MessagesResponsive />);
           break;
         default:

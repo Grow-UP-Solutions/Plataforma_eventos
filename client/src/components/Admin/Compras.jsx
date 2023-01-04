@@ -25,9 +25,6 @@ const Compras = () => {
     const sellResult = await eventsApi.get(`/order`);
     setSells(sellResult.data);
     setLoad(false);
-
-    console.log(new Intl.NumberFormat('de-DE').format(parseInt(sellResult.data[0].adminEarns)));
-
     const ordenesTotal = [];
   };
 
