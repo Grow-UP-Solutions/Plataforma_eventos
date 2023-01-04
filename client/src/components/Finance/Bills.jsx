@@ -8,12 +8,18 @@ import { fechaActual } from '../../utils/fechaActual';
 import Loading from '../Loading/Loading';
 import Pagination from '../Pagination/Pagination';
 import style from './Bills.module.css';
+import ExportExcel from 'react-export-excel';
+
+const ExcelFile = ExportExcel.ExcelFile;
+const ExcelSheet = ExportExcel.ExcelSheet;
+const ExcelColumn = ExportExcel.ExcelColumn;
 
 const Bills = () => {
   const [state, fetchUsers] = useFetch();
   const navigate = useNavigate();
   const id = useParams().id;
   const [userData, setUserData] = useState({});
+  const [data, setData] = useState([]);
   const [load, setLoad] = useState(true);
 
   useEffect(() => {
@@ -72,7 +78,7 @@ const Bills = () => {
                           <img
                             src={event.pictures[0].picture}
                             alt={''}
-                            style={{ maxWidth: '20%', borderRadius: '100px' }}
+                            style={{ maxWidth: '20%', borderRadius: '10px' }}
                           />
                           <p>{event.title}</p>
                         </td>
@@ -80,7 +86,7 @@ const Bills = () => {
                         <td>{date.start}</td>
                         <td>{date.isPay === false ? 'PENDIENTE' : date.datePay}</td>
                         <td>{date.isPay === false ? 'PENDIENTE' : date.billNumber}</td>
-                        <td>${new Intl.NumberFormat('de-DE').format(date.overallEarnings)}</td>
+                        <td>${new Intl.NumberFormat('de-DE').format(Math.round(date.overallEarnings))}</td>
                         <td>
                           <input type='checkbox' />
                         </td>
@@ -94,14 +100,22 @@ const Bills = () => {
           </div>
 
           <div className={style.container_download}>
-            <div className={style.container_one}>
+            {/* <div className={style.container_one}>
               <DescriptionOutlinedIcon fontSize='large' color='#d53e27' />
               <p>Descargar factura de selecionados (PDF)</p>
-            </div>
+            </div> */}
 
             <div className={style.container_two}>
               <DescriptionOutlinedIcon fontSize='large' />
-              <p>Descargar reporte de páginas (EXCEL)</p>
+              <ExcelFile
+                element={<p>Descargar reporte de páginas (EXCEL)</p>}
+                filename='Excel Reporte de Pagina'
+              >
+                <ExcelSheet data={data} name='Reporte'>
+                  <ExcelColumn label='nombre' value='name' />
+                </ExcelSheet>
+              </ExcelFile>
+              
             </div>
           </div>
           {userData.myEventsCreated !== undefined && (

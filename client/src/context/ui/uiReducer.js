@@ -96,6 +96,18 @@ export const uiReducer = (state, action) => {
         eventsFavourites: action.payload,
       };
 
+    case 'GET_EVENT_PUBLIC':
+      return {
+        ...state,
+        eventPublic: action.payload,
+      };
+
+    case 'GET_EVENT_SAVE':
+      return {
+        ...state,
+        eventSave: action.payload,
+      };
+
     default:
     return state;
   }
