@@ -87,11 +87,11 @@ const Finance = ({ userData }) => {
       <div className={styles.containerSub}>
         <div className={styles.containerSub1}>
           <p className={styles.texto}>
-            Ganancias totales en facturas ya emitidas: ${new Intl.NumberFormat('de-DE').format(userData.payedEarnings)}{' '}
+            Ganancias totales en facturas ya emitidas: ${new Intl.NumberFormat('de-DE').format(Math.round(userData.payedEarnings))}{' '}
           </p>
           <p className={styles.texto}>
             Ganancias pendientes en facturas por emitir: $
-            {new Intl.NumberFormat('de-DE').format(userData.pendingEarnings)}{' '}
+            {new Intl.NumberFormat('de-DE').format(Math.round(userData.pendingEarnings))}{' '}
           </p>
           <p className={styles.subtexto}>
             Cifras mostradas son netas, es decir el monto indicado ya ha sido depositado en tu cuenta bancaria o esta

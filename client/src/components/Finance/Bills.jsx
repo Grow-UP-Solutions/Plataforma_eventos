@@ -78,7 +78,7 @@ const Bills = () => {
                           <img
                             src={event.pictures[0].picture}
                             alt={''}
-                            style={{ maxWidth: '20%', borderRadius: '100px' }}
+                            style={{ maxWidth: '20%', borderRadius: '10px' }}
                           />
                           <p>{event.title}</p>
                         </td>
@@ -86,7 +86,7 @@ const Bills = () => {
                         <td>{date.start}</td>
                         <td>{date.isPay === false ? 'PENDIENTE' : date.datePay}</td>
                         <td>{date.isPay === false ? 'PENDIENTE' : date.billNumber}</td>
-                        <td>${new Intl.NumberFormat('de-DE').format(date.overallEarnings)}</td>
+                        <td>${new Intl.NumberFormat('de-DE').format(Math.round(date.overallEarnings))}</td>
                         <td>
                           <input type='checkbox' />
                         </td>

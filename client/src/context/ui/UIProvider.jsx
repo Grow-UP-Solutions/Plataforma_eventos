@@ -12,6 +12,8 @@ const UI_INITIAL_STATE = {
   msgStar: [],
   codeReferal: [],
   deleteConversation: '',
+  eventPublic: [],
+  eventSave: [],
 };
 
 export const UIProvider = ({ children }) => {
@@ -86,6 +88,14 @@ export const UIProvider = ({ children }) => {
     dispatch({type: 'SET_GET_FAV', payload: json});
   }
 
+  const getEventPublic = (json) => {
+    dispatch({type: 'GET_EVENT_PUBLIC', payload: json});
+  }
+
+  const getEventSave = (json) => {
+    dispatch({type: 'GET_EVENT_SAVE', payload: json});
+  }
+
   return (
     <UIContext.Provider
       value={{
@@ -106,6 +116,8 @@ export const UIProvider = ({ children }) => {
         getMessagesStar,
         deleteConversation,
         setGetFav,
+        getEventPublic,
+        getEventSave,
       }}
     >
       {children}
