@@ -20,7 +20,7 @@ async function getOneEvent(id) {
     }
     return event;
   } catch (error) {
-    throw new error.message();
+    throw new Error(error.message);
   }
 }
 

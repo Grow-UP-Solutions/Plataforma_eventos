@@ -226,7 +226,9 @@ const Card = ({ event, listName, orgEvent, datePublic, isFavorite = true }) => {
         {/* FECHAS */}
 
         <div className={styles.cardText}>
-          {datePublic === 'true' && selectedDate !== '' ? (
+          {event.dates[0].date.length <= 0 ? (
+            <div />
+          ) : datePublic === 'true' && selectedDate !== '' ? (
             <p className={styles.cardDateCurrent}>{selectedDate.replace('de', '/')}</p>
           ) : datePublic === 'false' && selectedDate === '' ? (
             <p className={styles.cardDateCurrent}>
