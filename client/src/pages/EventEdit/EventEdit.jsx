@@ -1039,6 +1039,17 @@ const EventEdit = () => {
 
   let becomePublic = (e, i, id) => {
     e.preventDefault();
+
+    if (Object.values(errors).length > 0) {
+      setFailedSubmit(true);
+      return swal({
+        title: 'Completa los campos faltantes',
+        icon: 'warning',
+        button: 'Completar',
+        dangerMode: true,
+      });
+    }
+
     let newFechas = [...post.dates];
     newFechas[i].isPublic = true;
 
@@ -1427,15 +1438,16 @@ const EventEdit = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (Object.values(errors).length > 0) {
+    if (errors.title || post.pictures.length <= 0) {
       setFailedSubmit(true);
       return swal({
-        title: 'Completa los campos faltantes',
+        title: 'Para guardar los cambios necesita un título y una imagen.',
         icon: 'warning',
         button: 'Completar',
         dangerMode: true,
       });
     }
+
     if (post.sells > 0 && post.inRevision === false) {
       swal({
         title:
@@ -1459,7 +1471,7 @@ const EventEdit = () => {
         dangerMode: true,
       }).then((publicar) => {
         if (publicar) {
-          dispatch(putEvent(post, id));
+          dispatch(putEvent(post, eventId));
           swal('Tus cambios han sido guardados', {
             icon: 'success',
           });

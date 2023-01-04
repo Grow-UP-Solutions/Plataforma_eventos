@@ -54,9 +54,8 @@ export function postEventSave(payload) {
 
 export function putEvent(payload, id) {
   return async function(dispatch) {
+    console.log({ id });
     const json = await eventsApi.put(`/events/${id}`, payload);
-    console.log('res:', json.data);
-
     return dispatch({
       type: 'PUT_EVENT',
       payload: json.data,
