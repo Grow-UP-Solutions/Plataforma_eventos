@@ -1166,6 +1166,7 @@
 }
 
 .addPublic {
+  align-self: center;
   border: none;
   background-color: transparent;
   color: #aa2929;

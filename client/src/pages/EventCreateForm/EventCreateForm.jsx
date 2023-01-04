@@ -903,10 +903,11 @@ const EventCreateForm = () => {
   function handleSave(e) {
     e.preventDefault();
 
-    if (Object.values(errors).length > 0) {
-      setFailedSubmit(true);
+    console.log({ errors });
+
+    if (errors.title || post.pictures.length <= 0) {
       return swal({
-        title: 'Completa los campos faltantes',
+        title: 'Si desea guardar al menos colocar título y una imagen.',
         icon: 'warning',
         button: 'Completar',
         dangerMode: true,
@@ -1078,9 +1079,9 @@ const EventCreateForm = () => {
                       )}
 
                       {titleArray.length > 10 ? (
-                        <p className={styles.errors}>Máximo 10 palabras</p>
+                        <p className={styles.errors}>Máximo 75 caracteres</p>
                       ) : (
-                        <p className={styles.subInput}>Máximo 10 palabras</p>
+                        <p className={styles.subInput}>Máximo 75 caracteres</p>
                       )}
                       {errors.title ? <p className={styles.errors}>{errors.title}</p> : null}
                     </div>

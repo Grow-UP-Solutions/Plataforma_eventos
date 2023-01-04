@@ -143,18 +143,21 @@ router.put('/:id', async (req, res) => {
     const { id } = req.params;
 
     const newEvent = req.body;
+
+    console.log(newEvent.dates);
+
     const user = await UsersFunctionDb.oneUser(newEvent.idOrganizer);
     const event = await getOneEvent(id);
 
     //mails para avisar evento/fecha cancelado(sacado de publico)
 
     if (newEvent.dates.length === 1) {
-      newEvent.dates[0].sendEmail === true ? eventCancelBuyers(event) : '';
-      newEvent.dates[0].sendEmail === true ? eventCancelAdmin(event, user) : '';
+      newEvent.dates[0].sendEmail === true ? await eventCancelBuyers(event) : '';
+      newEvent.dates[0].sendEmail === true ? await eventCancelAdmin(event, user) : '';
     } else {
       for (let i = 0; i < newEvent.dates.length; i++) {
-        newEvent.dates[i].sendEmail === true ? dateCancelBuyers(event, newEvent.dates[i]) : '';
-        newEvent.dates[i].sendEmail === true ? dateCancelAdmin(event, user, newEvent.dates[i]) : '';
+        newEvent.dates[i].sendEmail === true ? await dateCancelBuyers(event, newEvent.dates[i]) : '';
+        newEvent.dates[i].sendEmail === true ? await dateCancelAdmin(event, user, newEvent.dates[i]) : '';
       }
     }
 
@@ -162,23 +165,23 @@ router.put('/:id', async (req, res) => {
 
     if (newEvent.dateDelete.length) {
       for (let i = 0; i < newEvent.dateDelete.length; i++) {
-        dateCancelBuyers(event, newEvent.dateDelete[i]);
-        dateCancelAdmin(event, user, newEvent.dateDelete[i]);
+        await dateCancelBuyers(event, newEvent.dateDelete[i]);
+        await dateCancelAdmin(event, user, newEvent.dateDelete[i]);
       }
     }
 
     //mails para avisar evento editado
     if (newEvent.inRevision === false && newEvent.isEdit === true) {
-      eventEdited(newEvent, user);
+      await eventEdited(newEvent, user);
     } else if (newEvent.inRevision === true && newEvent.isEdit === true) {
-      eventInRevisionEditedAdmin(newEvent, user, event);
+      await eventInRevisionEditedAdmin(newEvent, user, event);
     }
 
     const newEvente = await eventsUpdate(id, newEvent);
 
-    return res.json(newEvente);
+    res.json(newEvente);
   } catch (error) {
-    return res.status(500).json({ FALLO_UPDATE: error.message });
+    res.status(500).json({ FALLO_UPDATE: error.message });
   }
 });
 
