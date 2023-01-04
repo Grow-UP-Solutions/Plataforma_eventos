@@ -27,8 +27,6 @@ const CategoriesResult = () => {
 
   const todosLosEventos = useSelector((state) => state.events);
 
-  console.log('todosLosEventos', todosLosEventos);
-
   useEffect(() => {
     const categorieEvents = todosLosEventos.filter((event) => event.categories.find((e) => e.name === name));
 

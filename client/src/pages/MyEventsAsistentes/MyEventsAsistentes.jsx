@@ -38,7 +38,6 @@ const MyEventsAsistentes = () => {
       const event = json.data.filter((e) => e._id === eventid);
       const fecha = event[0].dates.find((d) => d._id === dateid);
       const todosUsers = res.data;
-      console.log({ buyers: fecha.buyers });
       setBuyer(fecha.buyers);
       const idBuyers = fecha.buyers;
 
@@ -50,7 +49,6 @@ const MyEventsAsistentes = () => {
         for (let j = 0; j < idBuyers.length; j++) {
           const buyer = todosUsers.find((a) => a._id === idBuyers[j].id);
           allBuyers.push(buyer);
-          console.log({ allBuyers });
           setBuyers(allBuyers);
           setLoad(false);
         }

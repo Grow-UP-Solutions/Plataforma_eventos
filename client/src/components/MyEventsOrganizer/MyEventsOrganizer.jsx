@@ -50,7 +50,6 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
   }
 
   const eventsNotOld = myEventsCreated.filter((e) => e.isOld === false);
-  console.log({ eventsNotOld });
   const eventsPublic = eventsNotOld.filter((e) => e.isPublic === true);
 
   const eventsNoPublicDuplicate = eventsNotOld.filter((e) => e.isPublic === false);
@@ -92,8 +91,6 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
     if (window.innerWidth <= 1160) return setCardPerView(2.5);
     if (window.innerWidth <= 1490) return setCardPerView(3);
   };
-
-  console.log({ eventsPublic });
 
   return (
     <div className={styles.container}>

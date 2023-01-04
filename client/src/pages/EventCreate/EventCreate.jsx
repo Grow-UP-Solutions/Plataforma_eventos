@@ -51,7 +51,6 @@ const EventCreate = () => {
         buttons: ['Cerrar', 'Continuar'],
       }).then((continuar) => {
         if (continuar) {
-          console.log('perfil incompleto');
           navigate('/usuario/perfil');
         }
       });
@@ -66,7 +65,6 @@ const EventCreate = () => {
         buttons: ['Cerrar', 'Continuar'],
       }).then((continuar) => {
         if (continuar) {
-          console.log('perfil completo pero no org');
           navigate('/usuario/perfil');
         }
       });
@@ -81,7 +79,6 @@ const EventCreate = () => {
         buttons: ['Cerrar', 'Continuar'],
       }).then((continuar) => {
         if (continuar) {
-          console.log('perfil completo pero no org y solicitud ya esta en proceso');
           swal({
             title:
               'Tu solicitud para ser Organizador ya está en proceso de verificación. Te estaremos escribiendo muy pronto con el resultado',
@@ -94,7 +91,6 @@ const EventCreate = () => {
         buttons: ['Cerrar', 'Ingresar'],
       }).then((ingresar) => {
         if (ingresar) {
-          console.log('ingreso');
           toggleScreenLogin();
           if (userData.isOrganizer) {
             navigate('/organiza-un-evento');

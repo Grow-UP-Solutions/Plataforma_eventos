@@ -10,7 +10,6 @@ import Pagination from '../Pagination/Pagination';
 import style from './Bills.module.css';
 
 const Bills = () => {
-
   const [state, fetchUsers] = useFetch();
   const navigate = useNavigate();
   const id = useParams().id;
@@ -32,8 +31,6 @@ const Bills = () => {
     }
     setLoad(false);
   };
-
-  console.log('userData:', userData);
 
   const [currentPage, setCurretPage] = useState(1);
   const billsPerPage = 25;

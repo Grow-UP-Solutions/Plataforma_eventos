@@ -116,10 +116,7 @@ const MessagesResponsive = () => {
   }, []);
 
   useEffect(() => {
-    console.log('ref:', scrollRef);
-
     if (scrollRef.current === null) {
-      console.log('no hay ref');
     } else {
       const lastItem = scrollRef.current.lastElementChild;
       lastItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -131,7 +128,6 @@ const MessagesResponsive = () => {
       deleteConversation({
         idLastConversation: last,
       });
-      console.log('desmonte mensajes');
     };
   }, [last]);
 
