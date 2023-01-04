@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import eventsApi from '../../axios/eventsApi';
 import style from './ModalFinance.module.css';
 import { stateContext } from '../../context/state/stateContext';
@@ -6,10 +6,17 @@ import swal from 'sweetalert';
 
 const banco = ['Banco Frances', 'Banco ICBC', 'Banco Colombia', 'Banco Alianza', 'Banco JP Morgan'];
 
-const ModalFinance = ({ closeModal, idUser, num }) => {
-  const [state, setState] = useState('');
+const ModalFinance = ({ closeModal, idUser, num, banck }) => {
+
+  const [state, setState] = useState(banck);
   const [data, setData] = useState(num);
   const { bank, setBank, notes, setNotes } = useContext(stateContext);
+
+  useEffect(() => {
+    console.log('num:', num);
+    setState(banck);
+    setData(num);
+  }, [num, banck]);
 
   const notifications = async () => {
     const bank = {

@@ -16,6 +16,7 @@ const Finance = ({ userData }) => {
   const { bank, setBank, notes, setNotes } = useContext(stateContext);
   const [isOpenModal, openModal, closeModal] = useModal(false);
   const [link, setLink] = useState(undefined);
+  const [linkBank, setLinkBank] = useState(undefined);
 
   useEffect(() => {
     scroll.scrollToTop();
@@ -51,8 +52,9 @@ const Finance = ({ userData }) => {
     }, 1000);
   };
 
-  const handleClickEdit = (num) => {
+  const handleClickEdit = (num, banck) => {
     setLink(num);
+    setLinkBank(banck);
     return setTimeout(() => {
       openModal();
     }, 1000);
@@ -104,7 +106,7 @@ const Finance = ({ userData }) => {
       </div>
 
       <Modal isOpen={isOpenModal} closeModal={closeModal}>
-        <ModalFinance closeModal={closeModal} idUser={userData._id} num={link} />
+        <ModalFinance closeModal={closeModal} idUser={userData._id} num={link} banck={linkBank}/>
       </Modal>
 
       <div className={styles.containerSub}>
@@ -127,7 +129,7 @@ const Finance = ({ userData }) => {
                 </div>
 
                 <div className={styles.containerBtnAccount}>
-                  <div className={styles.btnEdit} onClick={() => handleClickEdit(c.bankAccount)}>
+                  <div className={styles.btnEdit} onClick={() => handleClickEdit(c.bankAccount, c.bankName)}>
                     <img className={styles.basquet} src={edit} alt='nw' />
                     <button className={styles.btnAccount}>Editar</button>
                   </div>
