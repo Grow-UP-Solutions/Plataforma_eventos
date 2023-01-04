@@ -8,6 +8,7 @@ import { animateScroll as scroll } from 'react-scroll';
 import eventsApi from "../../axios/eventsApi";
 import { useParams } from 'react-router-dom';
 import { Loading } from "../../components";
+import { fechaActual, hora, minutes } from '../../utils/fechaActual';
 
 const EventsOrganizerResult = () => {
 
@@ -31,8 +32,56 @@ const EventsOrganizerResult = () => {
     
     const getEventsOrganizer = async () => {
       const res = await eventsApi.get('/users/' + result);
-      const filtro = res.data.myEventsCreated.filter((e) => e._id !== id);
-      setLocal(filtro);
+      const events = res.data.myEventsCreated.filter((e) => e._id !== id);
+
+      events.map((event) => {
+        if (fechaActual) {
+          event.dates.map((date) => {
+            if (new Date(date.date) < new Date(fechaActual)) {
+              if (event.dates.length === 1) {
+                date.isOld = true;
+                event.isOld = true;
+              } else {
+                date.isOld = true;
+              }
+            } else if (date.date === fechaActual) {
+              if (date.end.slice(0, 2) <= hora && date.end.slice(3, 5) <= minutes + 2) {
+                if (event.dates.length === 1) {
+                  date.isOld = true;
+                  event.isOld = true;
+                } else {
+                  event.isOld = true;
+                }
+              }
+            }
+          });
+        }
+      });
+    
+      // filtrar los eventos actuales por fecha: fechas viejas no mostrar
+      const eventsToShow = [];
+  
+      for (let i = 0; i < events.length; i++) {
+        for (let j = 0; j < events[i].dates.length; j++) {
+          if (
+            events[i].dates[j].isOld === false &&
+            events[i].dates[j].isPublic === true &&
+            events[i].dates[j].inRevision === false
+          ) {
+            eventsToShow.push(events[i]);
+          }
+        }
+      }
+  
+      // sacar eventos repetidos
+      eventsToShow.forEach(function(item) {
+        if (!eventsToShow.includes(item)) {
+          eventsToShow.push(item);
+        }
+      });
+
+
+      setLocal(eventsToShow);
       setName(res.data.name);
       setLoad(false);
     }

@@ -29,7 +29,7 @@ const MyListUser = ({ /* myFavorites, */ myEventsBooked }) => {
   /* let hash = {};
   eventos = eventos.filter((o) => (hash[o._id] ? false : (hash[o._id] = true))); */
 
-  const eventosPublicos = eventos.filter((evento) => evento.isPublic === true && evento.inRevision === false);
+  const eventosPublicos = eventos.filter((evento) => evento.isOld === false && evento.isPublic === true && evento.inRevision === false);
 
   const respo = eliminarObjetosDuplicados(eventosPublicos, '_id');
   console.log('unicos:', respo);
