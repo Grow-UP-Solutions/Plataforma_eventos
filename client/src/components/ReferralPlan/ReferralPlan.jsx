@@ -196,7 +196,7 @@ const ReferralPlan = ({ userData }) => {
           <p>{userData.referralCode}</p>
         </div>
 
-        <div className={styles.containerLinkCode}>
+        {/* <div className={styles.containerLinkCode}>
           <FiLink2 className={styles.shareIcon} />
           <label htmlFor='redes'>Compartir código</label>
           <input type='checkbox' id='redes' />
@@ -220,7 +220,7 @@ const ReferralPlan = ({ userData }) => {
               </CopyToClipboard>
             </li>
           </ul>
-        </div>
+        </div> */}
 
         <div className={styles.codeDesc}>
           <p>
