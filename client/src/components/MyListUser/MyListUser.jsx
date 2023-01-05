@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import Pagination from '../../components/Pagination/Pagination';
 import { FaCaretSquareRight } from 'react-icons/fa';
 import { UIContext } from '../../context/ui';
+import { fechaActual, hora, minutes } from '../../utils/fechaActual';
 
 const MyListUser = ({ /* myFavorites, */ myEventsBooked }) => {
 
@@ -28,6 +29,30 @@ const MyListUser = ({ /* myFavorites, */ myEventsBooked }) => {
   let eventos = eventsFavourites.concat(myEventsBooked);
   /* let hash = {};
   eventos = eventos.filter((o) => (hash[o._id] ? false : (hash[o._id] = true))); */
+
+  eventos.map((event) => {
+    if (fechaActual) {
+      event.dates.map((date) => {
+        if (new Date(date.date) < new Date(fechaActual)) {
+          if (event.dates.length === 1) {
+            date.isOld = true;
+            event.isOld = true;
+          } else {
+            date.isOld = true;
+          }
+        } else if (date.date === fechaActual) {
+          if (date.end.slice(0, 2) <= hora && date.end.slice(3, 5) <= minutes + 2) {
+            if (event.dates.length === 1) {
+              date.isOld = true;
+              event.isOld = true;
+            } else {
+              event.isOld = true;
+            }
+          }
+        }
+      });
+    }
+  });
 
   const eventosPublicos = eventos.filter((evento) => evento.isOld === false && evento.isPublic === true && evento.inRevision === false);
 
