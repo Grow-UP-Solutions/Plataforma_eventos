@@ -103,7 +103,7 @@ function App() {
         <Route path={'/detalle-de-orden/:orderId/:userId'} element={<OrderDetail />} />
         <Route path={'/compras'} element={<Compras />} />
         <Route path={'/categorias'} element={<Categories />} />
-
+        <Route path='/usuario/:option' element={<UserPage />} />
         {/* RUTAS PRIVADAS */}
         <Route
           path='/organiza-un-evento'
@@ -137,15 +137,6 @@ function App() {
           element={
             <RutaPrivada>
               <Payment />
-            </RutaPrivada>
-          }
-        />
-
-        <Route
-          path='/usuario/:option'
-          element={
-            <RutaPrivada>
-              <UserPage />
             </RutaPrivada>
           }
         />
