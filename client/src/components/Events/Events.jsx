@@ -61,7 +61,23 @@ const Events = () => {
   const newEvents = allEvents.slice(allEvents.length - 18);
   const newEventsReverse = newEvents.reverse();
 
-  //USUARIO//
+  //USUARIO - MI LISTA //
+  function eliminarObjetosDuplicados(arr, prop) {
+    var nuevoArray = [];
+    var lookup = {};
+
+    for (var i in arr) {
+      lookup[arr[i][prop]] = arr[i];
+    }
+
+    for (i in lookup) {
+      nuevoArray.push(lookup[i]);
+    }
+
+    return nuevoArray;
+  }
+
+
   const { user } = useContext(AuthContext);
   const [userData, setUserData] = useState({});
 
@@ -71,7 +87,7 @@ const Events = () => {
 
   useEffect(() => {}, [userData]);
 
-  const [misEventos, setMisEvetnos] = useState([]);
+  const [misEventos, setMisEventos] = useState([]);
   const [moreEvents, setMoreEvents] = useState([]);
 
   const getUserData = async () => {
@@ -86,10 +102,40 @@ const Events = () => {
       let hash = {};
       userEventsBuy = userEventsBuy.filter((o) => (hash[o._id] ? false : (hash[o._id] = true)));
 
-      setMisEvetnos(userEventsBuy.slice(0, 20));
+      userEventsBuy.map((event) => {
+        if (fechaActual) {
+          event.dates.map((date) => {
+            if (new Date(date.date) < new Date(fechaActual)) {
+              if (event.dates.length === 1) {
+                date.isOld = true;
+                event.isOld = true;
+              } else {
+                date.isOld = true;
+              }
+            } else if (date.date === fechaActual) {
+              if (date.end.slice(0, 2) <= hora && date.end.slice(3, 5) <= minutes + 2) {
+                if (event.dates.length === 1) {
+                  date.isOld = true;
+                  event.isOld = true;
+                } else {
+                  event.isOld = true;
+                }
+              }
+            }
+          });
+        }
+      });
 
-      if (userEventsBuy.length > 20) {
-        const moreEvents = userEventsBuy.slice(20, 40);
+      const eventosPublicos = userEventsBuy.filter(
+        (evento) => evento.isOld === false && evento.isPublic === true && evento.inRevision === false
+      );
+
+      const respo = eliminarObjetosDuplicados(eventosPublicos, '_id');
+    
+      setMisEventos(respo.slice(0, 20));
+
+      if (respo.length > 20) {
+        const moreEvents = respo.slice(20, 40);
         setMoreEvents(moreEvents);
       }
     }
@@ -111,7 +157,6 @@ const Events = () => {
     if (window.innerWidth <= 1490) return setCardPerView(3.5);
   };
 
-  //MI LISTA
   const { /* eventsFavourites, */ setGetFav } = useContext(UIContext);
 
   return (
