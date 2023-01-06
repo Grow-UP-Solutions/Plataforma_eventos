@@ -1,0 +1,71 @@
+.container {
+  max-width: 1420px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.title {
+  font-size: 4rem;
+  font-weight: bold;
+  color: var(--color-blue);
+  margin-top: 30px;
+}
+
+.container_text p {
+  font-size: 1.4rem;
+  color: var(--color-grey-3);
+  margin-top: 20px;
+}
+
+
+
+
+
+.containerComponent {
+  margin-top: 4rem;
+}
+
+.container_box {
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.containerButtonTypeUser {
+}
+
+.containerButtonTypeUser input {
+  display: none;
+}
+
+.containerButtonTypeUser label {
+  font-size: 1.6rem;
+  color: var(--color-grey-3);
+  cursor: pointer;
+}
+
+.containerButtonTypeUser input:checked ~ label {
+  color: var(--color-orange);
+  border-bottom: 2px solid var(--color-orange);
+  padding-bottom: 0.5rem;
+}
+
+.box1,
+.box2 {
+  font-family: 'Raleway', sans-serif;
+  font-size: 1.6rem;
+  color: var(--color-grey-3);
+}
+
+.box_event {
+  color: var(--color-orange);
+  border-bottom: 2px solid var(--color-orange);
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+
+.hidden {
+  border-right: 2px solid var(--color-grey-3);
+  margin-left: 10px;
+  margin-right: 10px;
+}

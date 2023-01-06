@@ -760,7 +760,7 @@ const Cart = () => {
                   ></input>
                   <label className={styles.textTerms}>
                     Confirmo que he leído el ACUERDO DE EXONERACIÓN DE RESPONSABILIDAD LEGAL (USUARIO).{' '}
-                    <a className={styles.enlace} href='/seguridad' target='_blank'>
+                    <a className={styles.enlace} href='/acuerdo' target='_blank'>
                       Leer aqui
                     </a>{' '}
                   </label>

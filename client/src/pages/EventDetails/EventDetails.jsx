@@ -485,7 +485,7 @@ const EventDetails = () => {
                   </div>
                   <div className={style.containerDescription}>
                     <h2 className={style.menuTitle}>
-                      ¿Por qué consideras que el contenido de esta opinión es inapropiado?{' '}
+                      ¿Por qué consideras que el contenido de esta descripción es inapropiado?{' '}
                     </h2>
                   </div>
                   <div className={style.containerDanger}>
