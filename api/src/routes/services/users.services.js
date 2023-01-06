@@ -139,6 +139,8 @@ async function sendNotificationsUser(notifications) {
       newNotification = await UsersFunctionDb.sendNotification(idUser, msg);
     }
 
+    console.log({ newNotification });
+
     return newNotification;
   } catch (error) {
     throw new Error(error.message);

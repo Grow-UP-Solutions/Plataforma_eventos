@@ -154,7 +154,7 @@ const UserSchema = new Schema(
 
     opinionsOrg: [
       {
-        idUser:{
+        idUser: {
           type: String,
         },
 
@@ -182,17 +182,14 @@ const UserSchema = new Schema(
         picture: {
           type: String,
         },
-        
+
         opinion: String,
       },
     ],
     notifications: [
       {
         msg: String,
-        date: {
-          type: Date,
-          timestamps: true,
-        },
+
         read: {
           type: Boolean,
           default: false,
@@ -200,6 +197,10 @@ const UserSchema = new Schema(
         delete: {
           type: Boolean,
           default: false,
+        },
+        date: {
+          type: Date,
+          default: new Date(),
         },
       },
     ],
