@@ -92,7 +92,7 @@ const Notifications = () => {
         </div>
 
         <div className={style.container_pagination}>
-          <Pagination billsPerPage={CardPerPage} state={state.length} paginado={paginado} page={currentPage} />
+          <Pagination ordersPerPage={CardPerPage} state={state.length} paginado={paginado} page={currentPage} />
         </div>
       </div>
     );

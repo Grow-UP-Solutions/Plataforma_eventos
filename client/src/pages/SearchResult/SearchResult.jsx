@@ -219,7 +219,7 @@ const SearchResult = () => {
         </div>
 
         <div className={style.container_pagination}>
-          <Pagination billsPerPage={CardPerPage} state={local.length} paginado={paginado} page={currentPage} />
+          <Pagination ordersPerPage={CardPerPage} state={local.length} paginado={paginado} page={currentPage} />
         </div>
       </div>
     );
