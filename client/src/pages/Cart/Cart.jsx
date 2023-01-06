@@ -72,7 +72,7 @@ const Cart = () => {
   const [numberBuyCupos, setNumberBuyCupos] = useState(0);
 
   const handleNumberBuyCupos = (e, num, id, cupos) => {
-    if (num <= -1) return;
+    if (num === 0) return;
     if (num > cupos) return;
     setNumberBuyCupos(num);
 

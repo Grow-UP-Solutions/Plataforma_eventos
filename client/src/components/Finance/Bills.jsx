@@ -107,20 +107,16 @@ const Bills = () => {
 
             <div className={style.container_two}>
               <DescriptionOutlinedIcon fontSize='large' />
-              <ExcelFile
-                element={<p>Descargar reporte de páginas (EXCEL)</p>}
-                filename='Excel Reporte de Pagina'
-              >
+              <ExcelFile element={<p>Descargar reporte de páginas (EXCEL)</p>} filename='Excel Reporte de Pagina'>
                 <ExcelSheet data={data} name='Reporte'>
                   <ExcelColumn label='nombre' value='name' />
                 </ExcelSheet>
               </ExcelFile>
-              
             </div>
           </div>
           {userData.myEventsCreated !== undefined && (
             <div className={style.container_pagination}>
-              <Pagination billsPerPage={billsPerPage} state={userData.myEventsCreated.length} paginado={paginado} />
+              <Pagination ordersPerPage={billsPerPage} state={userData.myEventsCreated.length} paginado={paginado} />
             </div>
           )}
 

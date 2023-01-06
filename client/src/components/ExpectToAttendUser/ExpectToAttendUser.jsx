@@ -7,10 +7,9 @@ import { useState } from 'react';
 import { fechaActual, hora, minutes } from '../../utils/fechaActual';
 
 const ExpectToAttendUser = ({ myEventsBooked }) => {
-
   function eliminarObjetosDuplicados(arr, prop) {
     var nuevoArray = [];
-    var lookup  = {};
+    var lookup = {};
 
     for (var i in arr) {
       lookup[arr[i][prop]] = arr[i];
@@ -53,7 +52,9 @@ const ExpectToAttendUser = ({ myEventsBooked }) => {
     }
   });
 
-  const eventosPublicos = orderByDate.filter((evento) => evento.isOld === false && evento.isPublic === true && evento.inRevision === false);
+  const eventosPublicos = orderByDate.filter(
+    (evento) => evento.isOld === false && evento.isPublic === true && evento.inRevision === false
+  );
 
   const respo = eliminarObjetosDuplicados(eventosPublicos, '_id');
 
@@ -78,12 +79,7 @@ const ExpectToAttendUser = ({ myEventsBooked }) => {
             ))}
           </div>
           <div className={styles.container_pagination}>
-            <Pagination
-              billsPerPage={CardPerPage}
-              state={respo.length}
-              paginado={paginado}
-              page={currentPage}
-            />
+            <Pagination ordersPerPage={CardPerPage} state={respo.length} paginado={paginado} page={currentPage} />
           </div>
         </>
       ) : (

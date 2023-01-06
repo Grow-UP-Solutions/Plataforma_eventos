@@ -23,9 +23,8 @@ const UserList = () => {
   const getUserData = async () => {
     const userResult = await eventsApi.get(`/users`);
     setUserData(userResult.data);
-    setLoad(false)
+    setLoad(false);
   };
-
 
   const [currentPage, setCurretPage] = useState(1);
   const organizerPerPage = 10;
@@ -33,12 +32,9 @@ const UserList = () => {
   const indexOfFirstOrg = indexOfLastOrg - organizerPerPage;
   const paginado = (pageNumber) => setCurretPage(pageNumber);
 
-
-  if(load){
-    return(
-      <Loading />
-    )
-   }else{
+  if (load) {
+    return <Loading />;
+  } else {
     return (
       <div className={style.container}>
         <div className={style.container_titles}>
@@ -58,7 +54,6 @@ const UserList = () => {
             <tbody>
               {userData !== undefined &&
                 userData.slice(indexOfFirstOrg, indexOfLastOrg).map((e) => (
-                 
                   <tr key={e.id} className={style.tbody}>
                     <td className={style.tbody_name}>
                       <img
@@ -69,17 +64,14 @@ const UserList = () => {
                       <Link to={'/organizador-facturas-pagar/' + e._id}>{e.name}</Link>
                     </td>
                     <td>{e.email}</td>
-                    
                   </tr>
-                  
                 ))}
             </tbody>
           </div>
 
-       
           {userData !== undefined && (
             <div className={style.container_pagination}>
-              <Pagination organizerPerPage={organizerPerPage} state={userData.length} paginado={paginado} />
+              <Pagination ordersPerPage={organizerPerPage} state={userData.length} paginado={paginado} />
             </div>
           )}
 

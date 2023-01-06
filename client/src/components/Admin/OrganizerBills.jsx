@@ -172,7 +172,7 @@ const OrganizerBills = () => {
           </div>
           {userData.myEventsCreated !== undefined && (
             <div className={style.container_pagination}>
-              <Pagination billsPerPage={billsPerPage} state={userData.myEventsCreated.length} paginado={paginado} />
+              <Pagination ordersPerPage={billsPerPage} state={userData.myEventsCreated.length} paginado={paginado} />
             </div>
           )}
 

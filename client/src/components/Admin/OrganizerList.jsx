@@ -81,7 +81,7 @@ const OrganizerList = () => {
 
           {userData !== undefined && (
             <div className={style.container_pagination}>
-              <Pagination organizerPerPage={organizerPerPage} state={userData.length} paginado={paginado} />
+              <Pagination ordersPerPage={organizerPerPage} state={userData.length} paginado={paginado} />
             </div>
           )}
 

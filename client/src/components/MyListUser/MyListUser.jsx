@@ -6,23 +6,10 @@ import Pagination from '../../components/Pagination/Pagination';
 import { FaCaretSquareRight } from 'react-icons/fa';
 import { UIContext } from '../../context/ui';
 import { fechaActual, hora, minutes } from '../../utils/fechaActual';
+import { eliminarObjetosDuplicados} from '../../utils/eliminarObjetosDuplicados';
 
 const MyListUser = ({ /* myFavorites, */ myEventsBooked }) => {
 
-  function eliminarObjetosDuplicados(arr, prop) {
-    var nuevoArray = [];
-    var lookup  = {};
-
-    for (var i in arr) {
-      lookup[arr[i][prop]] = arr[i];
-    }
-
-    for (i in lookup) {
-      nuevoArray.push(lookup[i]);
-    }
-
-    return nuevoArray;
-  }
 
   //const eventos = myFavorites.concat(myEventsBooked);
   const { eventsFavourites } = useContext(UIContext);
@@ -54,7 +41,9 @@ const MyListUser = ({ /* myFavorites, */ myEventsBooked }) => {
     }
   });
 
-  const eventosPublicos = eventos.filter((evento) => evento.isOld === false && evento.isPublic === true && evento.inRevision === false);
+  const eventosPublicos = eventos.filter(
+    (evento) => evento.isOld === false && evento.isPublic === true && evento.inRevision === false
+  );
 
   const respo = eliminarObjetosDuplicados(eventosPublicos, '_id');
   console.log('unicos:', respo);
@@ -96,7 +85,7 @@ const MyListUser = ({ /* myFavorites, */ myEventsBooked }) => {
       )}
 
       <div className={styles.container_pagination}>
-        <Pagination billsPerPage={CardPerPage} state={respo.length} paginado={paginado} page={currentPage} />
+        <Pagination ordersPerPage={CardPerPage} state={respo.length} paginado={paginado} page={currentPage} />
       </div>
     </div>
   );

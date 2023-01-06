@@ -5,12 +5,11 @@ import Pagination from '../../components/Pagination/Pagination';
 import { fechaActual, hora, minutes } from '../../utils/fechaActual';
 
 const NextEvent = ({ nextEvent }) => {
-
-  const events = nextEvent.myEventsCreated
+  const events = nextEvent.myEventsCreated;
 
   function eliminarObjetosDuplicados(arr, prop) {
     var nuevoArray = [];
-    var lookup  = {};
+    var lookup = {};
 
     for (var i in arr) {
       lookup[arr[i][prop]] = arr[i];
@@ -47,32 +46,29 @@ const NextEvent = ({ nextEvent }) => {
     }
   });
 
-    // filtrar los eventos actuales por fecha: fechas viejas no mostrar
-    const eventsToShow = [];
+  // filtrar los eventos actuales por fecha: fechas viejas no mostrar
+  const eventsToShow = [];
 
-    for (let i = 0; i < events.length; i++) {
-      for (let j = 0; j < events[i].dates.length; j++) {
-        if (
-          events[i].dates[j].isOld === false &&
-          events[i].dates[j].isPublic === true &&
-          events[i].dates[j].inRevision === false
-        ) {
-          eventsToShow.push(events[i]);
-        }
+  for (let i = 0; i < events.length; i++) {
+    for (let j = 0; j < events[i].dates.length; j++) {
+      if (
+        events[i].dates[j].isOld === false &&
+        events[i].dates[j].isPublic === true &&
+        events[i].dates[j].inRevision === false
+      ) {
+        eventsToShow.push(events[i]);
       }
     }
+  }
 
-    // sacar eventos repetidos
-    /* eventsToShow.forEach(function(item) {
+  // sacar eventos repetidos
+  /* eventsToShow.forEach(function(item) {
       if (!eventsToShow.includes(item)) {
         eventsToShow.push(item);
       }
     }); */
 
-    const respo = eliminarObjetosDuplicados(eventsToShow, '_id');
-
-
-
+  const respo = eliminarObjetosDuplicados(eventsToShow, '_id');
 
   const [currentPage, setCurretPage] = useState(1);
   const CardPerPage = 8;
@@ -100,12 +96,7 @@ const NextEvent = ({ nextEvent }) => {
           </div>
 
           <div className={styles.container_pagination}>
-            <Pagination
-              billsPerPage={CardPerPage}
-              state={respo.length}
-              paginado={paginado}
-              page={currentPage}
-            />
+            <Pagination ordersPerPage={CardPerPage} state={respo.length} paginado={paginado} page={currentPage} />
           </div>
         </>
       ) : (

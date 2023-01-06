@@ -110,7 +110,7 @@ const OtherCategories = () => {
           <div className={style.container_download}></div>
           {state !== undefined && (
             <div className={style.container_pagination}>
-              <Pagination catPerPage={catPerPage} state={state.length} paginado={paginado} />
+              <Pagination ordersPerPage={catPerPage} state={state.length} paginado={paginado} />
             </div>
           )}
 

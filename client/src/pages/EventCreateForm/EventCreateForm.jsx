@@ -527,7 +527,7 @@ const EventCreateForm = () => {
   // const [imageSelected, setImageSelected] = useState('');
 
   async function uploadImage(e) {
-    e.preventDefault();
+    console.log({ files: e.target.files });
 
     for (let i = 0; i < e.target.files.length; i++) {
       const formData = new FormData();
@@ -554,13 +554,15 @@ const EventCreateForm = () => {
 
   function handleCover(e) {
     const todas = [...post.pictures];
+
     if (e.target.checked) {
       todas.map((foto) => {
         if (foto.picture === e.target.value) {
           foto.cover = true;
+        } else {
+          foto.cover = false;
         }
       });
-      const portada = todas.filter((foto) => foto.cover === true);
       setPost({
         ...post,
         pictures: todas,
@@ -1352,8 +1354,8 @@ const EventCreateForm = () => {
                           className={'swiper'}
                         >
                           {post.pictures.length > 0 &&
-                            post.pictures.map((picture) => (
-                              <SwiperSlide>
+                            post.pictures.map((picture, index) => (
+                              <SwiperSlide key={index}>
                                 <div className={styles.containerGeneralImage}>
                                   <div className={styles.containerImage}>
                                     <img className={styles.mySwiperImg} src={picture.picture} alt='' />
@@ -1367,7 +1369,7 @@ const EventCreateForm = () => {
                                         name='cover'
                                         value={picture.picture}
                                         onChange={(e) => handleCover(e)}
-                                        defaultChecked={false}
+                                        checked={picture.cover}
                                       />
                                     </div>
                                     <BsTrash
@@ -1382,7 +1384,12 @@ const EventCreateForm = () => {
                           <SwiperSlide>
                             <div className={styles.containerGeneralImage}>
                               <div className={`${styles.containerImage} ${styles.containerInputDragImage}`}>
-                                <input onChange={(e) => uploadImage(e)} type='file' className={styles.inputAddImage} />
+                                <input
+                                  type='file'
+                                  onChange={(e) => uploadImage(e)}
+                                  accept='image/png, image/jpeg'
+                                  className={styles.inputAddImage}
+                                />
                                 <ImImage className={styles.iconAddImage} />
                                 <span>Fotos: .Jpg, png. Max 100kb</span>
                                 <p className={styles.textDrag}>
