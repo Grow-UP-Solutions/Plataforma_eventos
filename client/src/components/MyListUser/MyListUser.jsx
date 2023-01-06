@@ -6,22 +6,10 @@ import Pagination from '../../components/Pagination/Pagination';
 import { FaCaretSquareRight } from 'react-icons/fa';
 import { UIContext } from '../../context/ui';
 import { fechaActual, hora, minutes } from '../../utils/fechaActual';
+import { eliminarObjetosDuplicados} from '../../utils/eliminarObjetosDuplicados';
 
 const MyListUser = ({ /* myFavorites, */ myEventsBooked }) => {
-  function eliminarObjetosDuplicados(arr, prop) {
-    var nuevoArray = [];
-    var lookup = {};
 
-    for (var i in arr) {
-      lookup[arr[i][prop]] = arr[i];
-    }
-
-    for (i in lookup) {
-      nuevoArray.push(lookup[i]);
-    }
-
-    return nuevoArray;
-  }
 
   //const eventos = myFavorites.concat(myEventsBooked);
   const { eventsFavourites } = useContext(UIContext);
