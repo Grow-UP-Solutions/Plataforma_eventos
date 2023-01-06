@@ -178,7 +178,7 @@ const InRevision = () => {
 
           {events !== undefined && (
             <div className={style.container_pagination}>
-              <Pagination eventsPerPage={eventsPerPage} state={events.length} paginado={paginado} />
+              <Pagination ordersPerPage={eventsPerPage} state={events.length} paginado={paginado} />
             </div>
           )}
 

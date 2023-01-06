@@ -12,7 +12,7 @@ const EventDateMap = ({ id, cupos }) => {
   const [numberBuyCupos, setNumberBuyCupos] = useState(1);
 
   const handleNumberBuyCupos = (num) => {
-    if (num <= -1) return;
+    if (num === 0) return;
     if (num > cupos) return;
 
     setNumberBuyCupos(num);

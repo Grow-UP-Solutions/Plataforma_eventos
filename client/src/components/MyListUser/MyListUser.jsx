@@ -8,10 +8,9 @@ import { UIContext } from '../../context/ui';
 import { fechaActual, hora, minutes } from '../../utils/fechaActual';
 
 const MyListUser = ({ /* myFavorites, */ myEventsBooked }) => {
-
   function eliminarObjetosDuplicados(arr, prop) {
     var nuevoArray = [];
-    var lookup  = {};
+    var lookup = {};
 
     for (var i in arr) {
       lookup[arr[i][prop]] = arr[i];
@@ -54,7 +53,9 @@ const MyListUser = ({ /* myFavorites, */ myEventsBooked }) => {
     }
   });
 
-  const eventosPublicos = eventos.filter((evento) => evento.isOld === false && evento.isPublic === true && evento.inRevision === false);
+  const eventosPublicos = eventos.filter(
+    (evento) => evento.isOld === false && evento.isPublic === true && evento.inRevision === false
+  );
 
   const respo = eliminarObjetosDuplicados(eventosPublicos, '_id');
   console.log('unicos:', respo);
@@ -96,7 +97,7 @@ const MyListUser = ({ /* myFavorites, */ myEventsBooked }) => {
       )}
 
       <div className={styles.container_pagination}>
-        <Pagination billsPerPage={CardPerPage} state={respo.length} paginado={paginado} page={currentPage} />
+        <Pagination ordersPerPage={CardPerPage} state={respo.length} paginado={paginado} page={currentPage} />
       </div>
     </div>
   );
