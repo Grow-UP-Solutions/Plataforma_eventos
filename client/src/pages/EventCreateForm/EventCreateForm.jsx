@@ -1015,6 +1015,7 @@ const EventCreateForm = () => {
                 // watchSlidesProgress= {true}
                 shortSwipes={false}
                 // shortSwipes= {1}
+                onSlideChange={() => scroll.scrollToTop()}
               >
                 <SwiperSlide>
                   {/* SECTION 1: Nombre del Evento */}

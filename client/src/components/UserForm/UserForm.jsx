@@ -157,7 +157,7 @@ const UserForm = ({ userData }) => {
 
   const [canWriteInput, setCanWriteInput] = useState({
     name: true,
-    lastName: true,
+    lastName: false,
     nickname: true,
     email: true,
     direction: true,
@@ -493,6 +493,8 @@ const UserForm = ({ userData }) => {
           password: changePassword.newPassword,
         };
       }
+
+      console.log({ userFormDataCompleted });
 
       try {
         await eventsApi.put(`/users/update/${userData._id}`, userFormDataCompleted);
@@ -873,12 +875,9 @@ const UserForm = ({ userData }) => {
           {userData.isOrganizer && (
             <>
               <div className={styles.organizerContainer}>
-                <p>El organizador es la persona que puede publicar eventos en "Lo que quiero hacer"</p>
-
                 <div className={styles.containerOrganizerApprobed}>
                   <AiOutlineCheck className={styles.iconOrganizerApprobed} />
                   <span>Organizador aprobado.</span>
-                  <BsInfoCircle className={styles.iconOrganizerInfo} />
                 </div>
 
                 <button onClick={() => navigate('/organiza-un-evento')} className={styles.btnCreateEvent}>
@@ -895,8 +894,7 @@ const UserForm = ({ userData }) => {
       {/* FORM */}
       <div className={styles.containerForm}>
         <p className={styles.textPoliticsData}>
-          Todos tus datos serán tratados conforma a la normatividad de{' '}
-          <Link to='/docs/seguridad/usuario'>Politicas de Seguridad</Link> y nuetras{' '}
+          Todos tus datos serán tratados conforma a la normatividad de Politicas de Datos y nuetra{' '}
           <Link to='/docs/privacidad/usuario'>Politica de privacidad</Link>.
         </p>
         <form>
@@ -1029,12 +1027,12 @@ const UserForm = ({ userData }) => {
                 </div>
                 {checkVerifyEmail ? (
                   <div className={styles.containerButtonsChangeMail}>
-                    <button onClick={() => updateUserData()}>Guardar</button>
+                    <button onClick={(e) => updateUserData(e)}>Guardar</button>
+                    <button onClick={cancelChangeEmail}>Cancelar</button>
                   </div>
                 ) : (
                   <div className={styles.containerButtonsChangeMail}>
                     <button onClick={verifyEmail}>Verificar</button>
-                    <button onClick={cancelChangeEmail}>Cancelar</button>
                   </div>
                 )}
               </div>

@@ -1,16 +1,16 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useRef } from 'react';
 import styles from './Login.module.css';
 
 import { AuthContext } from '../../context/auth/';
 import { UIContext } from '../../context/ui';
 
 import { CgClose } from 'react-icons/cg';
-import { IconFacebook, IconGoogle } from '../../assets/Icons';
+import { IconGoogle } from '../../assets/Icons';
 
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import eventsApi from '../../axios/eventsApi';
 import useValidateForm from '../../hooks/useValidateForm';
-import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -39,6 +39,8 @@ const Login = () => {
     message: '',
   });
 
+  const inputPassword = useRef();
+
   const onLogin = async (e) => {
     e.preventDefault();
     const regex = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[*/-_&@^]).{12,20}$/;
@@ -49,6 +51,19 @@ const Login = () => {
       });
 
     if (errorLogin) setErrorLogin(false);
+
+    if (inputPassword.current.value.length <= 0) {
+      return setErrorLogin({
+        result: true,
+        message: 'Ingrese su contraseña',
+      });
+    }
+
+    if (!regex.test(inputPassword.current.value))
+      return setErrorLogin({
+        result: true,
+        message: 'Contraseña incorrecta',
+      });
 
     if (!regex.test(formData.password))
       return setErrorLogin({
@@ -183,7 +198,7 @@ const Login = () => {
           </div>
           <div className={styles.formGroup}>
             <label htmlFor='password'>Contraseña</label>
-            <input onChange={handleChangeInputValue} type='password' id='password' />
+            <input ref={inputPassword} onChange={handleChangeInputValue} type='password' id='password' />
           </div>
           {errorLogin.result && (
             <div className={styles.messageError}>
