@@ -271,6 +271,11 @@
   color: var(--color-orange);
 }
 
+.container_noty {
+  
+  
+}
+
 .noty {
   border-top: 0.5px solid var(--color-grey-3);
   padding: 1rem;
@@ -295,6 +300,12 @@
   display: flex;
   justify-content: center;
   text-decoration: underline;
+}
+
+.text_date {
+  font-family: 'Raleway', sans-serif;
+  font-size: 1rem;
+  margin-left: 5rem;
 }
 
 /* MENU RESPONSIVE */

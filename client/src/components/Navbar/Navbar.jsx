@@ -12,11 +12,32 @@ import { IoNotifications, IoCaretDownSharp, IoCaretUpSharp, IoClose, IoHeartCirc
 import logo from '../../assets/imgs/logoNav.svg';
 import eventsApi from '../../axios/eventsApi';
 import ConversationNoti from '../ConversationNoti/ConversationNoti';
-
+import { format, register } from 'timeago.js';
 import { ImFacebook, ImLinkedin2, ImTwitter, ImYoutube } from 'react-icons/im';
 import { FaInstagram, FaTiktok } from 'react-icons/fa';
 
+const localeFunc = (number, index, total_sec) => {
+  return [
+    ['justo ahora', 'en un rato'],
+    ['hace %s segundos', 'en %s segundos'],
+    ['hace 1 minuto', 'en 1 minuto'],
+    ['hace %s minutos', 'en %s minutos'],
+    ['hace 1 hora', 'en 1 hora'],
+    ['hace %s horas', 'en %s horas'],
+    ['hace 1 día', 'en 1 día'],
+    ['hace %s días', 'en %s días'],
+    ['hace 1 semana', 'en 1 semana'],
+    ['hace %s semanas', 'en %s semanas'],
+    ['hace 1 mes', 'en 1 mes'],
+    ['hace %s meses', 'en %s meses'],
+    ['hace 1 año', 'en 1 año'],
+    ['hace %s años', 'en %s años'],
+  ][index];
+};
+register('es_ES', localeFunc);
+
 const Navbar = ({ upper }) => {
+
   const { toggleScreenLogin } = useContext(UIContext);
   const { user, logged, logout } = useContext(AuthContext);
   const { notes, setNotes, msg, setMsg } = useContext(stateContext);
@@ -351,7 +372,7 @@ const Navbar = ({ upper }) => {
                         </div>
                       ))
                     ) : (
-                      <p>No hay mensajes.</p>
+                      <p>No hay mensajes nuevos.</p>
                     )}
 
                     <p className={style.link_notis} onClick={handleClickMessage}>
@@ -371,13 +392,16 @@ const Navbar = ({ upper }) => {
                     </p>
                     {notes.length > 0 ? (
                       notes.map((e) => (
-                        <div className={style.noty}>
-                          <IoNotifications className={style.iconNav} />
-                          <p onClick={handleClickNotifications}>{e.msg}</p>
+                        <div className={style.container_noty}>
+                          <div className={style.noty}>
+                            <IoNotifications className={style.iconNav} />
+                            <p onClick={handleClickNotifications}>{e.msg}</p>
+                          </div>
+                          <p className={style.text_date}>{format(e.date, 'es_ES')}</p>
                         </div>
                       ))
                     ) : (
-                      <p>No hay notificaciones.</p>
+                      <p>No hay notificaciones nuevas.</p>
                     )}
                     <p className={style.link_notis} onClick={handleClickNotifications}>
                       Ver todas las notificaciones
