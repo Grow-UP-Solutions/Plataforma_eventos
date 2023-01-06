@@ -6,9 +6,24 @@ import { fechaActual, hora, minutes } from '../../utils/fechaActual';
 
 const NextEvent = ({ nextEvent }) => {
 
- const events = nextEvent.myEventsCreated
+  const events = nextEvent.myEventsCreated
 
- events.map((event) => {
+  function eliminarObjetosDuplicados(arr, prop) {
+    var nuevoArray = [];
+    var lookup  = {};
+
+    for (var i in arr) {
+      lookup[arr[i][prop]] = arr[i];
+    }
+
+    for (i in lookup) {
+      nuevoArray.push(lookup[i]);
+    }
+
+    return nuevoArray;
+  }
+
+  events.map((event) => {
     if (fechaActual) {
       event.dates.map((date) => {
         if (new Date(date.date) < new Date(fechaActual)) {
@@ -48,11 +63,13 @@ const NextEvent = ({ nextEvent }) => {
     }
 
     // sacar eventos repetidos
-    eventsToShow.forEach(function(item) {
+    /* eventsToShow.forEach(function(item) {
       if (!eventsToShow.includes(item)) {
         eventsToShow.push(item);
       }
-    });
+    }); */
+
+    const respo = eliminarObjetosDuplicados(eventsToShow, '_id');
 
 
 
@@ -61,7 +78,7 @@ const NextEvent = ({ nextEvent }) => {
   const CardPerPage = 8;
   const indexOfLastCard = currentPage * CardPerPage;
   const indexOfFirstCard = indexOfLastCard - CardPerPage;
-  const currentCard = eventsToShow.slice(indexOfFirstCard, indexOfLastCard);
+  const currentCard = respo.slice(indexOfFirstCard, indexOfLastCard);
   const paginado = (pageNumber) => setCurretPage(pageNumber);
 
   return (
@@ -85,7 +102,7 @@ const NextEvent = ({ nextEvent }) => {
           <div className={styles.container_pagination}>
             <Pagination
               billsPerPage={CardPerPage}
-              state={eventsToShow.length}
+              state={respo.length}
               paginado={paginado}
               page={currentPage}
             />
