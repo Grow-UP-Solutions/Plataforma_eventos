@@ -1,13 +1,41 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import style from './ReleaseAgreement.module.css';
+import { animateScroll as scroll } from 'react-scroll';
 
 const ReleaseAgreement = () => {
 
   const [info, setInfo] = useState('usuario');
 
+  useEffect(() => {
+    scroll.scrollToTop();
+  }, []);
+
+  const handleInputTypeUser = (e) => {
+    setInfo(e.target.id);
+  };
+
   return (
-    <div>
+    <div className={style.container}>
+      <div className={style.containerComponent}>
+        <div className={style.container_box}>
+          <div className={style.containerButtonTypeUser}>
+            <input
+              onChange={handleInputTypeUser}
+              type='checkbox'
+              checked={info === 'organizador'}
+              id='organizador'
+            />
+            <label htmlFor='organizador'>Organizador</label>
+          </div>
+          <span className={style.hidden}></span>
+          <div className={style.containerButtonTypeUser}>
+            <input onChange={handleInputTypeUser} type='checkbox' checked={info === 'usuario'} id='usuario' />
+            <label htmlFor='usuario'>Usuario</label>
+          </div>
+        </div>
+      </div>
+
       <h1 className={style.title}>Acuerdo de Exoneración</h1>
 
       {info === 'usuario' && (
