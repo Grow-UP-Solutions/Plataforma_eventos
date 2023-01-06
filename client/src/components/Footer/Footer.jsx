@@ -80,7 +80,7 @@ const Footer = () => {
           <p className={styles.titleSocial}>Siguenos</p>
           <ul className={styles.listSocial}>
             <li>
-              <a href='https://www.facebook.com/' target='_blank' rel='noreferrer noopener'>
+              <a href='https://www.facebook.com/loquequierohacer' target='_blank' rel='noreferrer noopener'>
                 <ImFacebook className={styles.icons} />
               </a>
             </li>
@@ -90,7 +90,7 @@ const Footer = () => {
               </a>
             </li>
             <li>
-              <a href='https://www.twitter.com/' target='_blank' rel='noreferrer noopener'>
+              <a href='https://twitter.com/_loquequiero' target='_blank' rel='noreferrer noopener'>
                 <ImTwitter className={styles.icons} />
               </a>
             </li>
@@ -105,7 +105,7 @@ const Footer = () => {
               </a>
             </li>
             <li>
-              <a href='https://www.linkedin.com/' target='_blank' rel='noreferrer noopener'>
+              <a href='https://www.linkedin.com/company/loquequierohacer' target='_blank' rel='noreferrer noopener'>
                 <ImLinkedin2 className={styles.icons} />
               </a>
             </li>
