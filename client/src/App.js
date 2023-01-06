@@ -46,6 +46,7 @@ import EventsOrganizerResult from './pages/EventsOrganizerResult/EventsOrganizer
 import News from './pages/News/News';
 import PanelPrivacy from './pages/PanelPrivacy/PanelPrivacy';
 import Press from './pages/Press/Press';
+import ReleaseAgreement from './pages/ReleaseAgreement/ReleaseAgreement';
 import { getEvents } from './redux/actions';
 import RutaPrivada from './router/RutaPrivada';
 
@@ -103,6 +104,7 @@ function App() {
         <Route path={'/detalle-de-orden/:orderId/:userId'} element={<OrderDetail />} />
         <Route path={'/compras'} element={<Compras />} />
         <Route path={'/categorias'} element={<Categories />} />
+        <Route path={'/acuerdo'} element={<ReleaseAgreement />} />
 
         {/* RUTAS PRIVADAS */}
         <Route

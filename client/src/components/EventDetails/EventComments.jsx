@@ -106,9 +106,16 @@ const EventComments = ({ id, eventBuyUser, datesBuy, assisted }) => {
           </div>
 
           <div className={styles.subTitle}>
-            <p className={styles.ratNumber}>
-              {opinion.length} opiniones - {number} de 5 Positivas
-            </p>
+            {
+              opinion.length > 0 ?
+              <p className={styles.ratNumber}>
+                {opinion.length} opiniones - {number} de 5 Positivas
+              </p> :
+              <p className={styles.ratNumber}>
+                {opinion.length} opiniones 
+              </p>
+            }
+
           </div>
 
           {/* //VER OPINIONES// */}
