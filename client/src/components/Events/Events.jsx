@@ -13,6 +13,7 @@ import { UIContext } from '../../context/ui';
 import Card from '../Cards/Card';
 import styles from './Events.module.css';
 import { fechaActual, hora, minutes } from '../../utils/fechaActual';
+import { eliminarObjetosDuplicados} from '../../utils/eliminarObjetosDuplicados';
 
 const Events = () => {
   //Fecha actual
@@ -62,20 +63,7 @@ const Events = () => {
   const newEventsReverse = newEvents.reverse();
 
   //USUARIO - MI LISTA //
-  function eliminarObjetosDuplicados(arr, prop) {
-    var nuevoArray = [];
-    var lookup = {};
-
-    for (var i in arr) {
-      lookup[arr[i][prop]] = arr[i];
-    }
-
-    for (i in lookup) {
-      nuevoArray.push(lookup[i]);
-    }
-
-    return nuevoArray;
-  }
+  
 
 
   const { user } = useContext(AuthContext);
