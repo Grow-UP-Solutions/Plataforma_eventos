@@ -643,10 +643,9 @@ const EventEdit = () => {
   const [image, setImage] = useState({ files: '' });
 
   async function uploadImage(e) {
-    e.preventDefault();
-    for (let i = 0; i < image.length; i++) {
+    for (let i = 0; i < e.target.files.length; i++) {
       const formData = new FormData();
-      formData.append('file', image[i]);
+      formData.append('file', e.target.files[i]);
       formData.append('upload_preset', 'wp0l2oeg');
       await axios.post('https://api.cloudinary.com/v1_1/dhmnttdy2/image/upload', formData).then((response) => {
         setPost({
@@ -674,6 +673,8 @@ const EventEdit = () => {
       todas.map((foto) => {
         if (foto.picture === e.target.value) {
           foto.cover = true;
+        } else {
+          foto.cover = false;
         }
       });
       setPost({
@@ -1878,7 +1879,6 @@ const EventEdit = () => {
                                     </div>
                                     <div className={styles.containerBtnsImage}>
                                       <div className={styles.containerCheckPortada}>
-                                        {' '}
                                         <label className={styles.subInput}>Quiero que esta sea la portada</label>
                                         <input
                                           className={styles.checkBox4}
@@ -1886,7 +1886,7 @@ const EventEdit = () => {
                                           name='cover'
                                           value={item.picture}
                                           onChange={(e) => handleCover(e)}
-                                          defaultChecked={false}
+                                          checked={item.cover}
                                         />
                                       </div>
                                       <BsTrash className={styles.mySwiperBtnDel} onClick={() => fileRemove(item)} />
@@ -1898,7 +1898,12 @@ const EventEdit = () => {
                           <SwiperSlide>
                             <div className={styles.containerGeneralImage}>
                               <div className={`${styles.containerImage} ${styles.containerInputDragImage}`}>
-                                <input onChange={(e) => uploadImage(e)} type='file' className={styles.inputAddImage} />
+                                <input
+                                  accept='image/png, image/jpeg'
+                                  onChange={(e) => uploadImage(e)}
+                                  type='file'
+                                  className={styles.inputAddImage}
+                                />
                                 <ImImage className={styles.iconAddImage} />
                                 <span>Fotos: .Jpg, png. Max 100kb</span>
                                 <p className={styles.textDrag}>

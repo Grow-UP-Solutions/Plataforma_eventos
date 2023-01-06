@@ -1,14 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
-import styles from './EventComments.module.css';
-import foto from '../../assets/imgs/comments.png';
-import { Rating } from '@mui/material';
-import eventsApi from '../../axios/eventsApi';
 import { useSelector } from 'react-redux';
-import { AuthContext } from '../../context/auth/AuthContext';
-import CardComments from '../CardComments/CardComments';
+import { Rating } from '@mui/material';
 import swal from 'sweetalert';
+import foto from '../../assets/imgs/comments.png';
+import eventsApi from '../../axios/eventsApi';
+import { AuthContext } from '../../context/auth/AuthContext';
 import { UIContext } from '../../context/ui';
-import { AiOutlineConsoleSql } from 'react-icons/ai';
+import CardComments from '../CardComments/CardComments';
+import styles from './EventComments.module.css';
 
 const EventComments = ({ id, eventBuyUser, datesBuy, assisted }) => {
   const [opinion, setOpinion] = useState([]);
@@ -106,16 +105,13 @@ const EventComments = ({ id, eventBuyUser, datesBuy, assisted }) => {
           </div>
 
           <div className={styles.subTitle}>
-            {
-              opinion.length > 0 ?
+            {opinion.length > 0 ? (
               <p className={styles.ratNumber}>
                 {opinion.length} opiniones - {number} de 5 Positivas
-              </p> :
-              <p className={styles.ratNumber}>
-                {opinion.length} opiniones 
               </p>
-            }
-
+            ) : (
+              <p className={styles.ratNumber}>{opinion.length} opiniones</p>
+            )}
           </div>
 
           {/* //VER OPINIONES// */}

@@ -36,6 +36,7 @@ import { MdOutlineKeyboardArrowDown, MdOutlineKeyboardArrowUp } from 'react-icon
 import EventDate from '../../components/EventDetails/EventDate';
 import formatDateToString from '../../utils/formatDateToString';
 import style from './EventDetails.module.css';
+import Loading from '../../components/Loading/Loading';
 const EventDetails = () => {
   const id = useParams().id;
   const dispatch = useDispatch();
@@ -126,17 +127,34 @@ const EventDetails = () => {
           const usuarioFecha = compradores.filter((c) => c.buyer === user.uid);
           datesBuy.push(usuarioFecha);
 
-          usuarioFecha[0].dates.map((date) => {
-            if (new Date(date.date) < new Date(dateActual)) {
+          /* usuarioFecha[0].dates.map((date) => {
+            console.log(date)
+            console.log(usuarioFecha[0].eventId === eventDetails._id, new Date(date.date) < new Date(dateActual));
+            if (new Date(date.date) < new Date(dateActual) && usuarioFecha[0].eventId === eventDetails._id) {
               setAssisted(true);
-            } else if (date.date === dateActual) {
+            } else if (date.date === dateActual && usuarioFecha[0].eventId === eventDetails._id) {
               if (date.end.slice(0, 2) <= hora && date.end.slice(3, 5) <= minutes + 2) {
                 setAssisted(true);
               }
             }
-          });
+          }); */
         }
       }
+    }
+
+    if (eventDetails) {
+      const datesEvent = eventDetails.dates;
+      datesEvent.forEach((date) => {
+        date.buyers.forEach((buyer) => {
+          if (new Date(date.date) < new Date(dateActual) && buyer.id === user.uid) {
+            setAssisted(true);
+          } else if (date.date === dateActual && buyer.id === user.uid) {
+            if (date.end.slice(0, 2) <= hora && date.end.slice(3, 5) <= minutes + 2) {
+              setAssisted(true);
+            }
+          }
+        });
+      });
     }
 
     setEventBuyUser(eventBuyU);
@@ -333,6 +351,10 @@ const EventDetails = () => {
   const handleCheckOpenMenuEvent = () => {
     setOpenMenuEvent(!openMenuEvent);
   };
+
+  if (!eventDetails) {
+    return <Loading />;
+  }
 
   return (
     <div className={`${style.container}`}>
