@@ -313,7 +313,7 @@ router.get('/success', async (req, res) => {
         timeBuy: timeNow,
         adminEarns: response.net_amount,
         comision: response.net_amount * 0.16,
-        iva: response.net_amount * 0.19,
+        iva: comision * 0.19,
         organizerEarns: auxBody[0].ganancia,
       });
 

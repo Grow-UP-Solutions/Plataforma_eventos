@@ -10,6 +10,7 @@ import { Loading } from '../../components';
 import { fechaActual, hora, minutes } from '../../utils/fechaActual';
 
 const EventsOrganizerResult = () => {
+
   const id = useParams().id;
   const { result } = useContext(stateContext);
   const [local, setLocal] = useState([]);
@@ -55,6 +56,21 @@ const EventsOrganizerResult = () => {
         }
       });
 
+      function eliminarObjetosDuplicados(arr, prop) {
+        var nuevoArray = [];
+        var lookup = {};
+    
+        for (var i in arr) {
+          lookup[arr[i][prop]] = arr[i];
+        }
+    
+        for (i in lookup) {
+          nuevoArray.push(lookup[i]);
+        }
+    
+        return nuevoArray;
+      }
+
       // filtrar los eventos actuales por fecha: fechas viejas no mostrar
       const eventsToShow = [];
 
@@ -71,13 +87,15 @@ const EventsOrganizerResult = () => {
       }
 
       // sacar eventos repetidos
-      eventsToShow.forEach(function(item) {
+      /* eventsToShow.forEach(function(item) {
         if (!eventsToShow.includes(item)) {
           eventsToShow.push(item);
         }
-      });
+      }); */
 
-      setLocal(eventsToShow);
+      const respo = eliminarObjetosDuplicados(eventsToShow, '_id');
+
+      setLocal(respo);
       setName(res.data.name);
       setLoad(false);
     };
