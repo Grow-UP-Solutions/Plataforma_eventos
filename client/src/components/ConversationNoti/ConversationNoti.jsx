@@ -26,8 +26,10 @@ const localeFunc = (number, index, total_sec) => {
 register('es_ES', localeFunc);
 
 const ConversationNoti = (msgs, id) => {
+
   const [name, setName] = useState([]);
   const navigate = useNavigate();
+  
   useEffect(() => {
     const getUserName = async () => {
       let userResultName = {};

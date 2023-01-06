@@ -194,7 +194,7 @@ function App() {
         <Footer />
       </div>
       <div className='footer_extra'>
-        <p>© 2019 LO QUE QUIERO HACER S.A.S</p>
+        <p>© 2019 LO QUE QUIERO HACER S.A.S - by GROW UP SOLUTIONS</p>
       </div>
       {isMenuLoginOpen && <Login />}
     </div>

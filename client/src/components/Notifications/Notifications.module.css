@@ -36,7 +36,7 @@
 }
 
 .notification {
-  display: flex;
+ /*  display: flex; */
   background-color: var(--color-grey-4);
   border-bottom: 0.1px solid rgb(219, 219, 219);
   width: 80.6rem;
@@ -48,12 +48,22 @@
 }
 
 .notification_read {
-  display: flex;
+  /* display: flex; */
   border-bottom: 0.1px solid rgb(219, 219, 219);
   width: 80.6rem;
   margin-left: auto;
   margin-right: auto;
   padding: 2rem;
+}
+
+.div_noty {
+  display: flex;
+}
+
+.date_format {
+  font-family: 'Raleway', sans-serif;
+  font-size: 1rem;
+  margin-left: 4rem;
 }
 
 .notification p,

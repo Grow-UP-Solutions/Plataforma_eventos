@@ -8,8 +8,30 @@ import swal from 'sweetalert';
 import Pagination from '../../components/Pagination/Pagination';
 import { Loading } from '../../components';
 import { animateScroll as scroll } from 'react-scroll';
+import { format, register } from 'timeago.js';
+
+const localeFunc = (number, index, total_sec) => {
+  return [
+    ['justo ahora', 'en un rato'],
+    ['hace %s segundos', 'en %s segundos'],
+    ['hace 1 minuto', 'en 1 minuto'],
+    ['hace %s minutos', 'en %s minutos'],
+    ['hace 1 hora', 'en 1 hora'],
+    ['hace %s horas', 'en %s horas'],
+    ['hace 1 día', 'en 1 día'],
+    ['hace %s días', 'en %s días'],
+    ['hace 1 semana', 'en 1 semana'],
+    ['hace %s semanas', 'en %s semanas'],
+    ['hace 1 mes', 'en 1 mes'],
+    ['hace %s meses', 'en %s meses'],
+    ['hace 1 año', 'en 1 año'],
+    ['hace %s años', 'en %s años'],
+  ][index];
+};
+register('es_ES', localeFunc);
 
 const Notifications = () => {
+
   const { setNotes } = useContext(stateContext);
   const { user } = useContext(AuthContext);
   const [state, setState] = useState([]);
@@ -76,12 +98,17 @@ const Notifications = () => {
             <>
               <div>
                 {currentCard.map((noti) => (
-                  <div
-                    className={noti.read === false ? style.notification : style.notification_read}
-                    onClick={() => handleClickRead(noti)}
-                  >
-                    <HiBell className={style.icon} />
-                    <p>{noti.msg}</p>
+                  <div className={noti.read === false ? style.notification : style.notification_read}>
+                    <div
+                      className={style.div_noty}
+                      onClick={() => handleClickRead(noti)}
+                    >
+                      <HiBell className={style.icon} />
+                      <p>{noti.msg}</p>
+                    </div>
+                    <div className={style.date_format}>
+                      <p >{format(noti.date, 'es_ES')}</p>
+                    </div>
                   </div>
                 ))}
               </div>
