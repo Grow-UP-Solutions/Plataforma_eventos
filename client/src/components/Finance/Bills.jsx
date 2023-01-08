@@ -15,7 +15,6 @@ const ExcelSheet = ExportExcel.ExcelSheet;
 const ExcelColumn = ExportExcel.ExcelColumn;
 
 const Bills = () => {
-  const [state, fetchUsers] = useFetch();
   const navigate = useNavigate();
   const id = useParams().id;
   const [userData, setUserData] = useState({});
@@ -56,18 +55,17 @@ const Bills = () => {
         </div>
 
         <div className={style.container_table}>
-          <div className={style.container_headbody}>
+          <table className={style.container_headbody}>
             <thead className={style.thead}>
               <tr className={style.tr}>
                 <th className={style.th_first}>Nombre del evento</th>
-                <th>Fecha del evento</th>
-                <th>Hora inicio del evento</th>
+                <th className={style.thDate}>Fecha del evento</th>
+                <th className={style.thStart}>Hora inicio del evento</th>
                 <th>Fecha de facturacion</th>
                 <th>Número de factura</th>
                 <th>Tu ganancia</th>
               </tr>
             </thead>
-
             <tbody>
               {userData.myEventsCreated !== undefined &&
                 userData.myEventsCreated.slice(indexOfFirstBill, indexOfLastBill).map((event) =>
@@ -75,15 +73,11 @@ const Bills = () => {
                     date.sells > 0 ? (
                       <tr key={event._id} className={style.tbody}>
                         <td className={style.tbody_name}>
-                          <img
-                            src={event.pictures[0].picture}
-                            alt={''}
-                            style={{ maxWidth: '20%', borderRadius: '10px' }}
-                          />
+                          <img src={event.pictures[0].picture} alt={''} style={{ borderRadius: '10px' }} />
                           <p>{event.title}</p>
                         </td>
-                        <td>{date.date}</td>
-                        <td>{date.start}</td>
+                        <td className={style.tdDate}>{date.date}</td>
+                        <td className={style.tdStart}>{date.start}</td>
                         <td>{date.isPay === false ? 'PENDIENTE' : date.datePay}</td>
                         <td>{date.isPay === false ? 'PENDIENTE' : date.billNumber}</td>
                         <td>${new Intl.NumberFormat('de-DE').format(Math.round(date.overallEarnings))}</td>
@@ -97,7 +91,7 @@ const Bills = () => {
                   )
                 )}
             </tbody>
-          </div>
+          </table>
 
           <div className={style.container_download}>
             {/* <div className={style.container_one}>

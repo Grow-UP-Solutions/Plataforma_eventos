@@ -1,75 +1,76 @@
-.container{
+.container {
   max-width: 1420px;
   margin: 0 auto;
   margin-top: 5rem;
 }
 
-.containerTop{
+.containerTop {
   text-align: center;
 }
 
-.title{
+.title {
   color: #585858;
   font-size: 2.5rem;
   margin-bottom: 4rem;
   font-weight: 900;
 }
 
-.eventTitle{
-  color:#1B3C6A;
+.eventTitle {
+  color: #1b3c6a;
   font-size: 3rem;
   font-weight: 1000;
   margin-bottom: 1rem;
 }
 
-.location{
-  color:#868686;
+.location {
+  color: #868686;
   font-size: 1.9rem;
   font-size: 500;
   margin-bottom: 1rem;
 }
 
-.date{
-  color:#585858;
+.date {
+  color: #585858;
   font-size: 1.9rem;
   font-size: 500;
   margin-bottom: 1rem;
 }
 
-.flex{
-  display:flex;
+.flex {
+  display: flex;
   text-align: center;
 }
 
-.containerTable{
+.containerTable {
   display: grid;
   text-align: center;
   justify-content: center;
-  margin-top: 10rem;
+  margin-top: 5rem;
 }
-  
+
+.table {
+  border-spacing: 3rem;
+}
+
 .table td,
 .table th {
-  padding: 2vh 2.5vh 2vh 2.5vh;
   text-align: center;
 }
-  
+
 .table th {
   color: #707070;
   text-align: center;
   font-weight: 600;
   position: sticky;
-  top: 0px;
   outline: 0;
   max-height: 98vh;
   overflow: auto;
   font-size: 1.8rem;
 }
-  
+
 .table td {
   text-align: center;
   font-size: 1.8rem;
-  padding-left: 1vw;
   font-weight: 400;
   width: fit-content;
   color: rgba(112, 112, 112, 255);
@@ -107,15 +108,16 @@
   display: none;
 }
 
-.btn{
+.btn {
   display: flex;
   justify-content: center;
   gap: 1rem;
 }
 
-.btnTop1, .btnTop2 {
-  margin-left: .3rem;
-  margin-right: .3rem;
+.btnTop1,
+.btnTop2 {
+  margin-left: 0.3rem;
+  margin-right: 0.3rem;
 }
 
 .btnTop2 {
@@ -123,7 +125,7 @@
   border-left: 1px solid #f0f0f0;
 }
 
-.button{
+.button {
   display: block;
   background-color: transparent;
   border: none;
@@ -162,4 +164,15 @@
 .hr {
   border: 0.1px solid rgb(219, 219, 219);
   width: 100%;
+}
+
+@media screen and (max-width: 352px) {
+  .table {
+    border-spacing: 1rem;
+  }
+
+  .btn {
+    align-items: center;
+    flex-direction: column;
+  }
 }

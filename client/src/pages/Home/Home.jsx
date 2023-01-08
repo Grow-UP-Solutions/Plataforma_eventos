@@ -43,7 +43,7 @@ const Home = ({ handleNav }) => {
 
   return (
     <div>
-      <InView rootMargin='-350px' as='div' onChange={(inView, entry) => handleNav(inView)}>
+      <InView rootMargin='-100px' as='div' onChange={(inView, entry) => handleNav(inView)}>
         <CarrouselHome />
       </InView>
       <HowItWorks />

@@ -15,6 +15,8 @@
 }
 
 .containerSub1 {
+  display: flex;
+  flex-direction: column;
 }
 
 .title {
@@ -25,10 +27,15 @@
 }
 
 .texto {
+  display: flex;
+}
+
+.texto * {
   color: #585858;
   font-size: 2rem;
   margin-bottom: 1.5rem;
   font-weight: 600;
+  display: inline;
 }
 
 .subtexto {
@@ -49,29 +56,15 @@
   background-color: #29aa7900;
 }
 
-.containerBankAccount {
-  display: flex;
-}
-
 .containerSub2 {
   display: block;
 }
 
 .containerBankAccount {
   display: flex;
-  margin-bottom: 3rem;
-}
-
-.containerBankAccount {
-  display: flex;
   justify-content: space-between;
-  align-items: center;
-}
-
-.containerBankAccount > div {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
+  align-items: flex-end;
+  margin-bottom: 3rem;
 }
 
 .containerBankAccount div label {
@@ -94,19 +87,17 @@
 
 .containerBtnAccount {
   display: flex;
-  align-items: center;
+  gap: 1.2rem;
 }
 
 .btnEdit {
   display: flex;
   align-items: center;
-  padding: 1rem;
 }
 
 .btnDelete {
   display: flex;
   align-items: center;
-  padding: 1rem;
 }
 
 .btnAccount {
@@ -125,7 +116,7 @@
   width: 1.5rem;
   cursor: pointer;
   color: var(--color-orange);
-  margin-left: .5rem;
+  margin-left: 0.5rem;
 }
 
 .vLine {
@@ -161,4 +152,29 @@
   /* font-weight: bold; */
   font-family: 'Raleway', sans-serif;
   color: var(--color-blue);
+}
+
+@media screen and (max-width: 756px) {
+  .containerSub1 {
+    margin: 0 auto;
+    max-width: 80%;
+    align-items: center;
+    text-align: center;
+  }
+
+  .texto {
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .containerSub1 > *:not(:last-child) {
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--color-grey-4);
+  }
+}
+
+@media screen and (max-width: 390px) {
+  .btnAccount {
+    display: none;
+  }
 }
