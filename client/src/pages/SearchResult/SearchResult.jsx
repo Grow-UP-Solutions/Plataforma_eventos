@@ -10,6 +10,7 @@ import { Loading } from '../../components';
 import { fechaActual, hora, minutes } from '../../utils/fechaActual';
 
 const SearchResult = () => {
+
   const { muni } = useContext(stateContext);
   const { result } = useContext(stateContext);
   const { events } = useContext(UIContext);
@@ -27,6 +28,21 @@ const SearchResult = () => {
   }, []);
 
   //use effect al entrar en el componente
+
+  function eliminarObjetosDuplicados(arr, prop) {
+    var nuevoArray = [];
+    var lookup = {};
+
+    for (var i in arr) {
+      lookup[arr[i][prop]] = arr[i];
+    }
+
+    for (i in lookup) {
+      nuevoArray.push(lookup[i]);
+    }
+
+    return nuevoArray;
+  }
 
   useEffect(() => {
     const eventos = events;
@@ -72,15 +88,17 @@ const SearchResult = () => {
     }
 
     // sacar eventos repetidos
-    eventsToShow.forEach(function(item) {
+    /* eventsToShow.forEach(function(item) {
       if (!eventsToShow.includes(item)) {
         eventsToShow.push(item);
       }
-    });
+    }); */
+
+    const respo = eliminarObjetosDuplicados(eventsToShow, '_id');
 
     //ordenar los eventos por fecha
 
-    const order = eventsToShow.sort((a, b) => {
+    const order = respo.sort((a, b) => {
       if (a.dates[0].date > b.dates[0].date) return 1;
       if (b.dates[0].date > a.dates[0].date) return -1;
       if (a.dates[0].date === b.dates[0].date) {
@@ -158,15 +176,17 @@ const SearchResult = () => {
     }
 
     // sacar eventos repetidos
-    eventsToShow.forEach(function(item) {
+    /* eventsToShow.forEach(function(item) {
       if (!eventsToShow.includes(item)) {
         eventsToShow.push(item);
       }
-    });
+    }); */
+
+    const respo = eliminarObjetosDuplicados(eventsToShow, '_id');
 
     //ordenar los eventos por fecha
 
-    const order = eventsToShow.sort((a, b) => {
+    const order = respo.sort((a, b) => {
       if (a.dates[0].date > b.dates[0].date) return 1;
       if (b.dates[0].date > a.dates[0].date) return -1;
       if (a.dates[0].date === b.dates[0].date) {

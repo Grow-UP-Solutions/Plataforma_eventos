@@ -10,6 +10,7 @@ import { fechaActual, hora, minutes } from '../../utils/fechaActual';
 import { useSelector } from 'react-redux';
 
 const CategoriesResult = () => {
+  
   const name = useParams().data;
   const { events } = useContext(UIContext);
   const [local, setLocal] = useState([]);
@@ -24,6 +25,21 @@ const CategoriesResult = () => {
   useEffect(() => {
     scroll.scrollToTop();
   }, []);
+
+  function eliminarObjetosDuplicados(arr, prop) {
+    var nuevoArray = [];
+    var lookup = {};
+
+    for (var i in arr) {
+      lookup[arr[i][prop]] = arr[i];
+    }
+
+    for (i in lookup) {
+      nuevoArray.push(lookup[i]);
+    }
+
+    return nuevoArray;
+  }
 
   const todosLosEventos = useSelector((state) => state.events);
 
@@ -68,13 +84,15 @@ const CategoriesResult = () => {
       }
     }
 
-    eventsToShow.forEach(function(item) {
+    /* eventsToShow.forEach(function(item) {
       if (!eventsToShow.includes(item)) {
         eventsToShow.push(item);
       }
-    });
+    }); */
 
-    const order = eventsToShow.sort((a, b) => {
+    const respo = eliminarObjetosDuplicados(eventsToShow, '_id');
+
+    const order = respo.sort((a, b) => {
       if (a.dates[0].date > b.dates[0].date) return 1;
       if (b.dates[0].date > a.dates[0].date) return -1;
       if (a.dates[0].date === b.dates[0].date) {
