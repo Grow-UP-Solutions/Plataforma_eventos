@@ -30,6 +30,7 @@ import { stateContext } from '../../context/state/stateContext';
 import { getColombia, postEvent, postEventSave } from '../../redux/actions';
 import { formatDateForm } from '../../utils/formatDateForm';
 import styles from './EventCreateForm.module.css';
+import mapa from '../../assets/imgs/mapa2.png';
 
 import { ImImage } from 'react-icons/im';
 import { animateScroll as scroll } from 'react-scroll';
@@ -614,12 +615,12 @@ const EventCreateForm = () => {
     });
   }
 
-  dotenv.config();
-  const location = `${post.municipio}, ${post.departamento}`;
-  const apiKey = 'AIzaSyBr-FUseqSbsY6EMqIGNnGmegD39R--nBA';
-  const zoom = '14';
-  const size = '200x100';
-  const url = `https://maps.googleapis.com/maps/api/staticmap?center=${location}&zoom=${zoom}&size=${size}&key=${apiKey}`;
+  // dotenv.config();
+  // const location = `${post.municipio}, ${post.departamento}`;
+  // const apiKey = 'AIzaSyBr-FUseqSbsY6EMqIGNnGmegD39R--nBA';
+  // const zoom = '14';
+  // const size = '200x100';
+  // const url = `https://maps.googleapis.com/maps/api/staticmap?center=${location}&zoom=${zoom}&size=${size}&key=${apiKey}`;
 
   //--------------------------------------------------//
   //               POST  PRICE  && DATE        //
@@ -2306,9 +2307,12 @@ const EventCreateForm = () => {
                                             </p>
                                           </div>
                                           <div className={styles.imgLoc}>
-                                            <div>
+                                             <div>
+                                                <img src={mapa} alt="mapa" />
+                                              </div>
+                                            {/* <div>
                                               <img src={url} alt='mapaStaticGoogleMaps' />
-                                            </div>
+                                            </div> */}
                                           </div>
                                         </div>
                                       ) : (
@@ -2961,8 +2965,11 @@ const EventCreateForm = () => {
                                             </div>
                                             <div className={styles.imgLoc}>
                                               <div>
-                                                <img src={url} alt='mapaStaticGoogleMaps' />
+                                                <img src={mapa} alt="mapa" />
                                               </div>
+                                              {/* <div>
+                                                <img src={url} alt='mapaStaticGoogleMaps' />
+                                              </div> */}
                                             </div>
                                           </div>
                                         ) : (
