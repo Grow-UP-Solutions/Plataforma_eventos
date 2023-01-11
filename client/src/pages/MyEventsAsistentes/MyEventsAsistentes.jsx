@@ -1,15 +1,16 @@
+import React, { useContext, useEffect, useState } from 'react';
+
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
-import React, { useContext, useEffect, useState } from 'react';
 import ExportExcel from 'react-export-excel';
 import { useNavigate, useParams } from 'react-router-dom';
 import { animateScroll as scroll } from 'react-scroll';
+import avatar from '../../assets/imgs/no-avatar.png';
 import eventsApi from '../../axios/eventsApi';
 import { Loading } from '../../components';
 import { AuthContext } from '../../context/auth/AuthContext';
 import { stateContext } from '../../context/state/stateContext';
 import styles from './MyEventsAsistentes.module.css';
-import avatar from '../../assets/imgs/no-avatar.png';
 
 const ExcelFile = ExportExcel.ExcelFile;
 const ExcelSheet = ExportExcel.ExcelSheet;
@@ -52,6 +53,8 @@ const MyEventsAsistentes = () => {
           setBuyers(allBuyers);
           setLoad(false);
         }
+
+        console.log(allBuyers);
       }
     };
     getAll();

@@ -88,25 +88,26 @@ const Finance = ({ userData }) => {
     <div className={styles.container}>
       <div className={styles.containerSub}>
         <div className={styles.containerSub1}>
-          <p className={styles.texto}>
-            Ganancias totales en facturas ya emitidas: ${new Intl.NumberFormat('de-DE').format(Math.round(userData.payedEarnings))}{' '}
-          </p>
-          <p className={styles.texto}>
-            Ganancias pendientes en facturas por emitir: $
-            {new Intl.NumberFormat('de-DE').format(Math.round(userData.pendingEarnings))}{' '}
-          </p>
+          <div className={styles.texto}>
+            <p>Ganancias totales en facturas ya emitidas:</p>
+            <span> ${new Intl.NumberFormat('de-DE').format(Math.round(userData.payedEarnings))} </span>
+          </div>
+          <div className={styles.texto}>
+            <p>Ganancias pendientes en facturas por emitir:</p>
+            <span> ${new Intl.NumberFormat('de-DE').format(Math.round(userData.pendingEarnings))}</span>
+          </div>
           <p className={styles.subtexto}>
             Cifras mostradas son netas, es decir el monto indicado ya ha sido depositado en tu cuenta bancaria o esta
             proximo a ser liquidado.
           </p>
           <Link to={'/facturas/' + userData._id}>
-            <button className={styles.btn}>Detalles</button>
+            <button className={styles.btn}>Ver Historico</button>
           </Link>
         </div>
       </div>
 
       <Modal isOpen={isOpenModal} closeModal={closeModal}>
-        <ModalFinance closeModal={closeModal} idUser={userData._id} num={link} banck={linkBank}/>
+        <ModalFinance closeModal={closeModal} idUser={userData._id} num={link} banck={linkBank} />
       </Modal>
 
       <div className={styles.containerSub}>
@@ -121,19 +122,21 @@ const Finance = ({ userData }) => {
           {bank.length > 0 ? (
             bank.map((c) => (
               <div className={styles.containerBankAccount}>
-                <div>
-                  <p>{c.bankName}</p>
-                </div>
-                <div>
-                  <p>{c.bankAccount}</p>
+                <div className={styles.containerBankNameAndBankAccount}>
+                  <div>
+                    <p>{c.bankName}</p>
+                  </div>
+                  <div>
+                    <p>{c.bankAccount}</p>
+                  </div>
                 </div>
 
                 <div className={styles.containerBtnAccount}>
                   <div className={styles.btnEdit} onClick={() => handleClickEdit(c.bankAccount, c.bankName)}>
                     <img className={styles.basquet} src={edit} alt='nw' />
+
                     <button className={styles.btnAccount}>Editar</button>
                   </div>
-
                   <div className={styles.vLine}></div>
 
                   <div className={styles.btnDelete} onClick={() => handleClickDelete(c.bankAccount)}>
