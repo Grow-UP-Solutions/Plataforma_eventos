@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { BsPencilSquare } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import { Navigation } from 'swiper';
@@ -11,68 +11,91 @@ import basquet from '../../assets/imgs/basquet.svg';
 import Card from '../Cards/Card';
 import styles from './MyEventsOrganizer.module.css';
 import { fechaActual, hora, minutes } from '../../utils/fechaActual';
+import eventsApi from '../../axios/eventsApi';
+import { AuthContext } from '../../context/auth';
+import { UIContext } from '../../context/ui';
 
 const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
   //No Mostrar los eventos viejos
 
-  if (fechaActual && myEventsCreated !== undefined) {
-    myEventsCreated.map((evento) => {
-      evento.dates.map((date) => {
-        if (new Date(date.date) < new Date(fechaActual)) {
-          if (evento.dates.length === 1) {
-            date.isOld = true;
-            evento.isOld = true;
-          } else {
-            date.isOld = true;
-          }
-        } else if (date.date === fechaActual) {
-          if (date.end.slice(0, 2) <= hora && date.end.slice(3, 5) <= minutes + 2) {
-            if (evento.dates.length === 1) {
-              date.isOld = true;
-              evento.isOld = true;
-            } else {
-              date.isOld = true;
+  const [eventsPublic, setEventsPublic] = useState([]);
+  const [eventsNoPublic, setEventsNoPublic] = useState([]);
+  const { user } = useContext(AuthContext);
+  const { eventPublic, eventSave } = useContext(UIContext);
+
+  useEffect(() => {
+    const getEventsOrga = async () => {
+
+      const userResult = await eventsApi.get(`/users/${user.uid}`);
+      const myEventsCreated = userResult.data.myEventsCreated;
+
+      if (fechaActual && myEventsCreated !== undefined) {
+        myEventsCreated.map((evento) => {
+          evento.dates.map((date) => {
+            if (new Date(date.date) < new Date(fechaActual)) {
+              if (evento.dates.length === 1) {
+                date.isOld = true;
+                evento.isOld = true;
+              } else {
+                date.isOld = true;
+              }
+            } else if (date.date === fechaActual) {
+              if (date.end.slice(0, 2) <= hora && date.end.slice(3, 5) <= minutes + 2) {
+                if (evento.dates.length === 1) {
+                  date.isOld = true;
+                  evento.isOld = true;
+                } else {
+                  date.isOld = true;
+                }
+              }
             }
+          });
+        });
+      }
+    
+      //si hay un evento en revision que lo saque de publicados
+    
+      if (myEventsCreated !== undefined) {
+        myEventsCreated.map((evento) => {
+          if (evento.inRevision === true) {
+            evento.isPublic = false;
+          }
+        });
+      }
+    
+      const eventsNotOld = myEventsCreated.filter((e) => e.isOld === false);
+      const eventsPublic = eventsNotOld.filter((e) => e.isPublic === true);
+
+      setEventsPublic(eventsPublic);
+
+    
+      const eventsNoPublicDuplicate = eventsNotOld.filter((e) => e.isPublic === false);
+    
+      //busco si hay alguna otra fecha no publica en algun evento y lo pusheo al array de los eventos no publcios
+      for (let i = 0; i < myEventsCreated.length; i++) {
+        for (let j = 0; j < myEventsCreated[i].dates.length; j++) {
+          if (myEventsCreated[i].dates[j].isPublic === false) {
+            eventsNoPublicDuplicate.push(myEventsCreated[i]);
           }
         }
+      }
+    
+      const eventsNoPublic = [];
+    
+      //para ver si en el array de los no publicos no hay eventos repetidos
+      //puede pasar al estar pusheando fechas y no eventos
+    
+      eventsNoPublicDuplicate.forEach(function(item) {
+        if (!eventsNoPublic.includes(item)) {
+          eventsNoPublic.push(item);
+        }
       });
-    });
-  }
 
-  //si hay un evento en revision que lo saque de publicados
-
-  if (myEventsCreated !== undefined) {
-    myEventsCreated.map((evento) => {
-      if (evento.inRevision === true) {
-        evento.isPublic = false;
-      }
-    });
-  }
-
-  const eventsNotOld = myEventsCreated.filter((e) => e.isOld === false);
-  const eventsPublic = eventsNotOld.filter((e) => e.isPublic === true);
-
-  const eventsNoPublicDuplicate = eventsNotOld.filter((e) => e.isPublic === false);
-
-  //busco si hay alguna otra fecha no publica en algun evento y lo pusheo al array de los eventos no publcios
-  for (let i = 0; i < myEventsCreated.length; i++) {
-    for (let j = 0; j < myEventsCreated[i].dates.length; j++) {
-      if (myEventsCreated[i].dates[j].isPublic === false) {
-        eventsNoPublicDuplicate.push(myEventsCreated[i]);
-      }
+      setEventsNoPublic(eventsNoPublic);
     }
-  }
+    getEventsOrga();
+  }, []);
 
-  const eventsNoPublic = [];
-
-  //para ver si en el array de los no publicos no hay eventos repetidos
-  //puede pasar al estar pusheando fechas y no eventos
-
-  eventsNoPublicDuplicate.forEach(function(item) {
-    if (!eventsNoPublic.includes(item)) {
-      eventsNoPublic.push(item);
-    }
-  });
 
   const deleteEvent = (e) => {};
 

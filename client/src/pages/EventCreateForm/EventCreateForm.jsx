@@ -33,6 +33,7 @@ import styles from './EventCreateForm.module.css';
 
 import { ImImage } from 'react-icons/im';
 import { animateScroll as scroll } from 'react-scroll';
+import { UIContext } from '../../context/ui';
 const EventCreateForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -921,11 +922,14 @@ const EventCreateForm = () => {
         dangerMode: true,
       }).then((guardar) => {
         if (guardar) {
-          dispatch(postEventSave(post));
-          swal('Tu evento ha sido guardado ', {
-            icon: 'success',
+          //dispatch(postEventSave(post));
+          eventsApi.post('/events/createAndNotPublic', post).then((response) => {
+
+            swal('Tu evento ha sido guardado ', {
+              icon: 'success',
+            });
+            navigate('/usuario/mis-eventos');
           });
-          navigate('/usuario/mis-eventos');
         }
       });
     }
@@ -951,6 +955,7 @@ const EventCreateForm = () => {
   //                  SUBMIT              //
 
   const { notes, setNotes } = useContext(stateContext);
+  const { getEventPublic, getEventSave } = useContext(UIContext);
 
   const notifications = async () => {
     const create = {
@@ -983,14 +988,18 @@ const EventCreateForm = () => {
         dangerMode: true,
       }).then((publicar) => {
         if (publicar) {
-          dispatch(postEvent(post));
+          //dispatch(postEvent(post));
 
           notifications();
+          
 
-          swal('Tu evento ha sido publicado. Recibirás un correo con los detalles. ', {
-            icon: 'success',
+          eventsApi.post('/events/create', post).then((response) => {
+
+            swal('Tu evento ha sido publicado. Recibirás un correo con los detalles. ', {
+              icon: 'success',
+            });
+            navigate('/usuario/mis-eventos');
           });
-          navigate('/usuario/mis-eventos');
         }
       });
     }
