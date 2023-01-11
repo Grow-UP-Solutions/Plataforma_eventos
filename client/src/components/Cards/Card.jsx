@@ -121,6 +121,7 @@ const Card = ({ event, listName, orgEvent, datePublic, isFavorite = true }) => {
       type: 'favoritos',
       idUser: user.uid,
       title: event.title,
+      date: new Date(),
     };
 
     const favorite = {

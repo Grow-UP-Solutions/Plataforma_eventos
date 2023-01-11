@@ -32,7 +32,6 @@ function rootReducer(state = initialState, action) {
         users: action.payload,
       };
     case 'POST_PAYMENT':
-      console.log({ payload: action.payload });
       return {
         ...state,
         successPayment: action.payload,

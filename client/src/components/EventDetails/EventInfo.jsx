@@ -44,6 +44,7 @@ const EventInfo = ({ id }) => {
     const fav = {
       type: 'favoritos',
       idUser: user.uid,
+      date: new Date(),
     };
     const favorite = {
       idEvent: id,

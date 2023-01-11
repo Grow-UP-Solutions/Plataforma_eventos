@@ -3,7 +3,7 @@ import eventsApi from '../../axios/eventsApi';
 
 //EVENTS
 export function getEvents() {
-  return async function(dispatch) {
+  return async function (dispatch) {
     const json = await eventsApi.get('/events');
 
     return dispatch({
@@ -14,7 +14,7 @@ export function getEvents() {
 }
 
 export function getEventsCopy() {
-  return async function(dispatch) {
+  return async function (dispatch) {
     const json = await eventsApi.get('/events');
 
     return dispatch({
@@ -25,7 +25,7 @@ export function getEventsCopy() {
 }
 
 export function postEvent(payload) {
-  return async function(dispatch) {
+  return async function (dispatch) {
     console.log('payload,', payload);
 
     const json = await eventsApi.post('/events/create', payload);
@@ -39,11 +39,10 @@ export function postEvent(payload) {
 }
 
 export function postEventSave(payload) {
-  return async function(dispatch) {
+  return async function (dispatch) {
     console.log('payload,', payload);
 
     const json = await eventsApi.post('/events/createAndNotPublic', payload);
-    console.log('res:', json.data);
 
     return dispatch({
       type: 'POST_EVENT',
@@ -53,7 +52,7 @@ export function postEventSave(payload) {
 }
 
 export function putEvent(payload, id) {
-  return async function(dispatch) {
+  return async function (dispatch) {
     console.log({ id });
     const json = await eventsApi.put(`/events/${id}`, payload);
     return dispatch({
@@ -65,7 +64,7 @@ export function putEvent(payload, id) {
 
 export function getUsers() {
   console.log('entre a get user');
-  return async function(dispatch) {
+  return async function (dispatch) {
     const json = await eventsApi.get('/users');
     console.log('jason', json.data);
     return dispatch({
@@ -76,7 +75,7 @@ export function getUsers() {
 }
 
 export function getColombia() {
-  return async function(dispatch) {
+  return async function (dispatch) {
     const json = await axios.get('https://www.datos.gov.co/resource/xdk5-pm3f.json');
 
     return dispatch({
