@@ -6,9 +6,8 @@
 .container_titles h1,
 h3,
 h5 {
-  font-family: 'Raleway', sans-serif;
-  text-align: center;
   margin-top: 2rem;
+  text-align: center;
 }
 
 .container_titles h1 {
@@ -32,36 +31,46 @@ h5 {
 
 .container_table {
   margin-top: 4rem;
-  display: grid;
-  justify-content: center;
+}
+
+.container_headbody {
+  margin: 0 auto;
+  border-spacing: 2rem;
 }
 
 .thead th {
-  font-family: 'Raleway', sans-serif;
   font-size: 1.6rem;
   font-weight: bold;
   color: var(--color-grey-2);
-  padding: 3rem 6.3rem;
+  padding-bottom: 1rem;
   border-bottom: 0.2px solid var(--color-grey-6);
 }
 
 .tbody {
-  font-family: 'Raleway', sans-serif;
   font-size: 1.6rem;
   color: var(--color-grey-2);
   text-align: center;
 }
 
 .tbody td {
-  padding: 3rem 0;
+  padding-bottom: 1rem;
   border-bottom: 0.2px solid var(--color-grey-6);
 }
 
 .tbody_name {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 3rem;
+  justify-content: space-between;
+  gap: 1.6rem;
+}
+
+.tbody_name img {
+  width: 16rem;
+  height: 10rem;
+}
+
+.tbody_name p {
+  width: 50px;
 }
 
 .tbody input {
@@ -119,4 +128,23 @@ h5 {
   font-family: 'Raleway', sans-serif;
   border-bottom: 1px solid var(--color-orange);
   cursor: pointer;
+}
+
+@media screen and (max-width: 686px) {
+  .tbody_name {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+@media screen and (max-width: 472px) {
+  .tbody_name img,
+  .tdDate,
+  .tdStart,
+  .thDate,
+  .thStart {
+    display: none;
+  }
 }
