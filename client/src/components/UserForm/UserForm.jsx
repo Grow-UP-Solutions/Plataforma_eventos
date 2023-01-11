@@ -195,7 +195,7 @@ const UserForm = ({ userData }) => {
   const handleChangeInputPassword = async (e) => {
     const id = e.target.id;
     const value = e.target.value;
-    const regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[().#?!@$%^&*-]).{12,20}$/;
+    const regex = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[().#?!@$%^&*-]).{12,20}$/;
     let checkValidate = false;
 
     if (value === '') {
@@ -206,7 +206,7 @@ const UserForm = ({ userData }) => {
     }
 
     // TODO: currentPassword -> Comparar la contraseña.
-    if (id === 'currentPassword') {
+    if (id === 'currentPassword' && value.length > 11) {
       try {
         const result = await eventsApi.post(`/users/isSamePassword/${userData._id}`, { password: value });
 
@@ -223,7 +223,46 @@ const UserForm = ({ userData }) => {
     }
 
     if (id === 'confirmNewPassword') {
-      checkValidate = changePassword.newPassword === value;
+      if (!regex.test(value)) {
+        setErrorPassword({
+          ...errorPassword,
+          [id]: {
+            result: false,
+            message: 'El formato debe tener entre 12 a 20 caracteres y contar con un caracter especial.',
+          },
+        });
+
+        setCheckSuccessPassword({
+          ...checkSuccessPassword,
+          [id]: false,
+        });
+
+        return setChangePassword({
+          ...changePassword,
+          [id]: value,
+        });
+      } else if (changePassword.newPassword !== value) {
+        checkValidate = false;
+        setErrorPassword({
+          ...errorPassword,
+          [id]: {
+            result: false,
+            message: 'Las contraseñas no coinciden',
+          },
+        });
+
+        setCheckSuccessPassword({
+          ...checkSuccessPassword,
+          [id]: false,
+        });
+
+        return setChangePassword({
+          ...changePassword,
+          [id]: value,
+        });
+      } else {
+        checkValidate = true;
+      }
     }
 
     if (checkValidate) {
@@ -1178,7 +1217,7 @@ const UserForm = ({ userData }) => {
                     {errorPassword.currentPassword === false && (
                       <span className={styles.errorMessage}>
                         Has ingresado una contraseña que no coincide con la registrada,intenta <br /> de nuevo o
-                        <Link to={'/contactanos'}>comunicate con nosotros</Link>.
+                        <Link to={'/contactanos'}> comunicate con nosotros</Link>.
                       </span>
                     )}
                   </div>
@@ -1210,7 +1249,9 @@ const UserForm = ({ userData }) => {
                       {checkSuccessPassword.newPassword && <AiOutlineCheck className={styles.iconCheckPassword} />}
                     </div>
                     {errorPassword.newPassword === false && (
-                      <span className={styles.errorMessage}>El formato debe tener entre 12 y 20 caracteres.</span>
+                      <span className={styles.errorMessage}>
+                        El formato debe tener entre 12 a 20 caracteres y contar con un caracter especial.
+                      </span>
                     )}
                   </div>
 
@@ -1243,8 +1284,8 @@ const UserForm = ({ userData }) => {
                         <AiOutlineCheck className={styles.iconCheckPassword} />
                       )}
                     </div>
-                    {errorPassword.confirmNewPassword === false && (
-                      <span className={styles.errorMessage}>Las contraseñas no coinciden</span>
+                    {errorPassword.confirmNewPassword && errorPassword.confirmNewPassword.result === false && (
+                      <span className={styles.errorMessage}>{errorPassword.confirmNewPassword.message}</span>
                     )}
                   </div>
                 </>
