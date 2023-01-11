@@ -56,13 +56,8 @@ const EventDetails = () => {
   const [datesBuy, setDateBuy] = useState([]);
   const [assisted, setAssisted] = useState(false);
   const [pictures, setPictures] = useState([]);
-  const {
-    getEventsFavourites,
-    getEffectRatingEvent,
-    ratingEvent,
-    getEventsWithoutFavourites,
-    toggleScreenLogin,
-  } = useContext(UIContext);
+  const { getEventsFavourites, getEffectRatingEvent, ratingEvent, getEventsWithoutFavourites, toggleScreenLogin } =
+    useContext(UIContext);
   const menuRef = useRef();
 
   const fecha = new Date();
@@ -205,6 +200,7 @@ const EventDetails = () => {
       type: 'favoritos',
       idUser: user.uid,
       title: eventDetails.title,
+      date: new Date(),
     };
     const favorite = {
       idEvent: id,

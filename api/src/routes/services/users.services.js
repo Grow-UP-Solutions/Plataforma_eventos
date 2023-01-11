@@ -124,7 +124,7 @@ async function eventesDeleteFavorites(idUser, idEvent) {
 }
 
 async function sendNotificationsUser(notifications) {
-  const { type, idUser, title, usersBuyers, userName, totalCupos } = notifications;
+  const { type, idUser, title, usersBuyers, userName, totalCupos, date } = notifications;
   let fecha = '';
   if (usersBuyers) fecha = usersBuyers[0].date;
   const msg = validatonType(type, title, userName, totalCupos, fecha);
@@ -136,10 +136,8 @@ async function sendNotificationsUser(notifications) {
         await UsersFunctionDb.sendNotification(user.id, msg);
       });
     } else {
-      newNotification = await UsersFunctionDb.sendNotification(idUser, msg);
+      newNotification = await UsersFunctionDb.sendNotification(idUser, msg, date);
     }
-
-    console.log({ newNotification });
 
     return newNotification;
   } catch (error) {
