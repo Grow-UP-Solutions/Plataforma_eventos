@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, /* useRef, */ useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import eventsApi from '../../axios/eventsApi';
 import { fechaActual } from '../../utils/fechaActual';
@@ -6,16 +6,20 @@ import Loading from '../Loading/Loading';
 import Pagination from '../Pagination/Pagination';
 import style from './Compras.module.css';
 import { animateScroll as scroll } from 'react-scroll';
-import ExportExcel from 'react-export-excel';
+//import ExportExcel from 'react-export-excel';
+//import { DownloadTableExcel } from 'react-export-table-to-excel';
+//import XLSX from 'xlsx';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 
 const Compras = () => {
+
   const navigate = useNavigate();
+  //const tableRef = useRef(null);
   const [load, setLoad] = useState(true);
   const [sells, setSells] = useState(true);
-  const ExcelFile = ExportExcel.ExcelFile;
+  /* const ExcelFile = ExportExcel.ExcelFile;
   const ExcelSheet = ExportExcel.ExcelSheet;
-  const ExcelColumn = ExportExcel.ExcelColumn;
+  const ExcelColumn = ExportExcel.ExcelColumn; */
 
   useEffect(() => {
     getsells();
@@ -38,6 +42,15 @@ const Compras = () => {
   const indexOfFirsOrder = indexOfLastOrder - ordersPerPage;
   const paginado = (pageNumber) => setCurretPage(pageNumber);
 
+  /* const handleClickExportExcel = (e) => {
+    e.preventDefault();
+    let wb = XLSX.utils.book_new(),
+    ws = XLSX.utils.json_to_sheet(sells);
+
+    XLSX.utils.book_append_sheet(wb, ws, 'Compras');
+    XLSX.writeFile(wb, 'Lista Compras.xlsx');
+  } */
+
   if (load) {
     return <Loading />;
   } else {
@@ -48,7 +61,23 @@ const Compras = () => {
           <h5>{fechaActual}</h5>
         </div>
 
-        <div>
+        {/* <div>
+          <DescriptionOutlinedIcon sx={{ fontSize: '3rem', color: '#d53e27' }} />
+          <button onClick={handleClickExportExcel}>Descargar Lista</button>
+        </div> */}
+
+        {/* <div>
+          <DescriptionOutlinedIcon sx={{ fontSize: '3rem', color: '#d53e27' }} />
+          <DownloadTableExcel
+            filename="Listado de Compras"
+            sheet="Compras"
+            currentTableRef={tableRef.current}
+          >
+            <button>Descargar Lista</button>
+          </DownloadTableExcel>
+        </div> */}
+
+        {/* <div>
           <DescriptionOutlinedIcon sx={{ fontSize: '3rem', color: '#d53e27' }} />
           <ExcelFile element={<button>Descargar Lista</button>} filename='Excel Listado Compras'>
             <ExcelSheet data={sells} name='Compras'>
@@ -61,10 +90,10 @@ const Compras = () => {
               <ExcelColumn label='Neto para el organizador' value='comision' />
             </ExcelSheet>
           </ExcelFile>
-        </div>
+        </div> */}
 
         <div className={style.container_table}>
-          <table className={style.table}>
+          <table className={style.table} /* ref={tableRef} */>
             <thead className={style.thead}>
               <tr className={style.tr}>
                 <th>Codigo del Organizador</th>
