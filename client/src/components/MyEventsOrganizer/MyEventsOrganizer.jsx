@@ -52,6 +52,20 @@ const MyEventsOrganizer = ({ myEventsCreated, userData }) => {
           });
         });
       }
+
+      myEventsCreated.map((event)=>{
+        if(event.dates.length >1){
+          for (let x = 0; x < event.dates.length; x++) {
+            if (event.dates[x].isOld === false) {
+              event.isOld = false;
+            }else{
+              event.isOld = true;
+            }
+               
+          }
+        }
+      })
+    
     
       //si hay un evento en revision que lo saque de publicados
     

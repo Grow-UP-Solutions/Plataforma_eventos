@@ -15,14 +15,57 @@ import styles from './Events.module.css';
 import { fechaActual, hora, minutes } from '../../utils/fechaActual';
 import { eliminarObjetosDuplicados} from '../../utils/eliminarObjetosDuplicados';
 
+
 const Events = () => {
   //Fecha actual
 
   const todosLosEventos = useSelector((state) => state.events);
 
+  if (fechaActual) {
+    todosLosEventos.map((event)=>{
+    event.dates.map((date) => {
+      if (new Date(date.date) < new Date(fechaActual)) {
+       
+        if (event.dates.length === 1) {
+          date.isOld = true;
+          event.isOld = true;
+        } else {
+        
+          date.isOld = true;
+        }
+      } else if (date.date === fechaActual) {
+       
+        if (date.end.slice(0, 2) <= hora && date.end.slice(3, 5) <= minutes + 2) {
+          if (event.dates.length === 1) {
+            date.isOld = true;
+            event.isOld = true;
+          } else {
+            event.isOld = true;
+          }
+        }
+      }
+    })
+   } )
+  }
+
+  todosLosEventos.map((event)=>{
+    if(event.dates.length >1){
+      for (let x = 0; x < event.dates.length; x++) {
+        if (event.dates[x].isOld === false) {
+          event.isOld = false;
+        }else{
+          event.isOld = true;
+        }
+           
+      }
+    }
+  })
+
   const allEvents = todosLosEventos.filter(
     (event) => event.isOld === false && event.isPublic === true && event.inRevision === false
   );
+
+  console.log('a',allEvents)
 
   //POPULARES//
 
