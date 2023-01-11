@@ -30,7 +30,7 @@ import { stateContext } from '../../context/state/stateContext';
 import { getColombia, postEvent, postEventSave } from '../../redux/actions';
 import { formatDateForm } from '../../utils/formatDateForm';
 import styles from './EventCreateForm.module.css';
-import mapa from '../../assets/imgs/mapa2.png';
+import {mapa} from '../../assets/imgs/mapa2.png';
 
 import { ImImage } from 'react-icons/im';
 import { animateScroll as scroll } from 'react-scroll';
